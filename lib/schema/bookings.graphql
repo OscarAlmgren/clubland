@@ -1,0 +1,236 @@
+query GetBookings($pagination: PaginationInput, $status: BookingStatus) {
+  bookings(pagination: $pagination, status: $status) {
+    nodes {
+      id
+      club {
+        id
+        name
+        location {
+          address
+          city
+          state
+        }
+        contact {
+          phone
+        }
+      }
+      service
+      date
+      time
+      partySize
+      duration
+      status
+      confirmationCode
+      specialRequests
+      guests {
+        name
+        relationship
+        dietaryRestrictions
+      }
+      totalCost
+      paymentRequired
+      accessInfo {
+        checkInMethod
+        qrCode
+        accessCode
+        earlyArrival
+        lateGrace
+      }
+      cancellation {
+        allowedUntil
+        penalty
+      }
+      createdAt
+      updatedAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      hasNextPage
+    }
+  }
+}
+
+query GetBookingDetails($id: ID!) {
+  booking(id: $id) {
+    id
+    club {
+      id
+      name
+      description
+      location {
+        address
+        city
+        state
+        coordinates {
+          lat
+          lng
+        }
+      }
+      contact {
+        phone
+        email
+      }
+      images {
+        url
+        type
+      }
+    }
+    service
+    date
+    time
+    partySize
+    duration
+    status
+    confirmationCode
+    specialRequests
+    guests {
+      name
+      relationship
+      dietaryRestrictions
+    }
+    totalCost
+    paymentRequired
+    paymentStatus
+    accessInfo {
+      checkInMethod
+      qrCode
+      accessCode
+      earlyArrival
+      lateGrace
+      validUntil
+    }
+    cancellation {
+      allowedUntil
+      penalty
+      reason
+    }
+    reminders {
+      type
+      scheduledAt
+      sent
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+query CheckServiceAvailability($clubId: ID!, $service: String!, $date: String!, $partySize: Int!, $duration: Int) {
+  checkServiceAvailability(
+    clubId: $clubId
+    service: $service
+    date: $date
+    partySize: $partySize
+    duration: $duration
+  ) {
+    available
+    timeSlots {
+      time
+      available
+      tableType
+      duration
+      price
+      restrictions
+    }
+    policies {
+      advanceBookingRequired
+      maxAdvanceDays
+      cancellationDeadlineHours
+      noShowPolicy
+    }
+  }
+}
+
+mutation CreateBooking($input: CreateBookingInput!) {
+  createBooking(input: $input) {
+    id
+    club {
+      id
+      name
+      location {
+        address
+        city
+        state
+      }
+      contact {
+        phone
+      }
+    }
+    service
+    date
+    time
+    partySize
+    status
+    confirmationCode
+    totalCost
+    accessInfo {
+      qrCode
+      accessCode
+      checkInMethod
+    }
+    createdAt
+  }
+}
+
+mutation UpdateBooking($id: ID!, $input: UpdateBookingInput!) {
+  updateBooking(id: $id, input: $input) {
+    id
+    service
+    date
+    time
+    partySize
+    specialRequests
+    guests {
+      name
+      relationship
+      dietaryRestrictions
+    }
+    updatedAt
+  }
+}
+
+mutation CancelBooking($id: ID!, $reason: String) {
+  cancelBooking(id: $id, reason: $reason) {
+    id
+    status
+    cancellation {
+      reason
+      canceledAt
+      refundAmount
+    }
+  }
+}
+
+mutation ConfirmBooking($id: ID!) {
+  confirmBooking(id: $id) {
+    id
+    status
+    accessInfo {
+      qrCode
+      accessCode
+    }
+  }
+}
+
+query GetUpcomingBookings {
+  upcomingBookings {
+    id
+    club {
+      id
+      name
+      location {
+        city
+        state
+      }
+    }
+    service
+    date
+    time
+    status
+    confirmationCode
+    accessInfo {
+      qrCode
+    }
+  }
+}

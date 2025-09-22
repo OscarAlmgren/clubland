@@ -1,0 +1,274 @@
+import 'dart:convert';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
+
+import '../constants/storage_keys.dart';
+import '../errors/exceptions.dart';
+
+/// Secure storage wrapper for sensitive data
+abstract class SecureStorage {
+  Future<void> write(String key, String value);
+  Future<String?> read(String key);
+  Future<void> delete(String key);
+  Future<void> deleteAll();
+  Future<bool> containsKey(String key);
+  Future<Map<String, String>> readAll();
+}
+
+/// Implementation of secure storage using FlutterSecureStorage
+class SecureStorageImpl implements SecureStorage {
+  final FlutterSecureStorage _storage;
+  final Logger _logger;
+
+  SecureStorageImpl({
+    FlutterSecureStorage? storage,
+    Logger? logger,
+  })  : _storage = storage ?? const FlutterSecureStorage(),
+        _logger = logger ?? Logger();
+
+  @override
+  Future<void> write(String key, String value) async {
+    try {
+      await _storage.write(key: key, value: value);
+      _logger.d('Secure storage write successful for key: $key');
+    } catch (e) {
+      _logger.e('Failed to write to secure storage: $e');
+      throw StorageException.writeError();
+    }
+  }
+
+  @override
+  Future<String?> read(String key) async {
+    try {
+      final value = await _storage.read(key: key);
+      _logger.d('Secure storage read for key: $key ${value != null ? 'found' : 'not found'}');
+      return value;
+    } catch (e) {
+      _logger.e('Failed to read from secure storage: $e');
+      throw StorageException.readError();
+    }
+  }
+
+  @override
+  Future<void> delete(String key) async {
+    try {
+      await _storage.delete(key: key);
+      _logger.d('Secure storage delete successful for key: $key');
+    } catch (e) {
+      _logger.e('Failed to delete from secure storage: $e');
+      throw StorageException.writeError();
+    }
+  }
+
+  @override
+  Future<void> deleteAll() async {
+    try {
+      await _storage.deleteAll();
+      _logger.i('All secure storage data cleared');
+    } catch (e) {
+      _logger.e('Failed to clear secure storage: $e');
+      throw StorageException.writeError();
+    }
+  }
+
+  @override
+  Future<bool> containsKey(String key) async {
+    try {
+      return await _storage.containsKey(key: key);
+    } catch (e) {
+      _logger.e('Failed to check secure storage key: $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<Map<String, String>> readAll() async {
+    try {
+      return await _storage.readAll();
+    } catch (e) {
+      _logger.e('Failed to read all from secure storage: $e');
+      throw StorageException.readError();
+    }
+  }
+}
+
+/// Enhanced secure storage with additional features
+class EnhancedSecureStorage extends SecureStorageImpl {
+  EnhancedSecureStorage({
+    super.storage,
+    super.logger,
+  });
+
+  /// Write JSON object to secure storage
+  Future<void> writeJson(String key, Map<String, dynamic> value) async {
+    try {
+      final jsonString = jsonEncode(value);
+      await write(key, jsonString);
+    } catch (e) {
+      _logger.e('Failed to write JSON to secure storage: $e');
+      throw StorageException.writeError();
+    }
+  }
+
+  /// Read JSON object from secure storage
+  Future<Map<String, dynamic>?> readJson(String key) async {
+    try {
+      final jsonString = await read(key);
+      if (jsonString == null) return null;
+
+      return jsonDecode(jsonString) as Map<String, dynamic>;
+    } catch (e) {
+      _logger.e('Failed to read JSON from secure storage: $e');
+      throw StorageException.readError();
+    }
+  }
+
+  /// Write encrypted string to secure storage
+  Future<void> writeEncrypted(String key, String value, {String? encryptionKey}) async {
+    try {
+      // In a real implementation, you would encrypt the value here
+      // For now, we'll just use the regular write method
+      // TODO: Implement actual encryption
+      await write(key, value);
+      _logger.d('Encrypted write to secure storage for key: $key');
+    } catch (e) {
+      _logger.e('Failed to write encrypted data: $e');
+      throw StorageException.encryptionFailed();
+    }
+  }
+
+  /// Read encrypted string from secure storage
+  Future<String?> readEncrypted(String key, {String? encryptionKey}) async {
+    try {
+      // In a real implementation, you would decrypt the value here
+      // For now, we'll just use the regular read method
+      // TODO: Implement actual decryption
+      final value = await read(key);
+      if (value != null) {
+        _logger.d('Encrypted read from secure storage for key: $key');
+      }
+      return value;
+    } catch (e) {
+      _logger.e('Failed to read encrypted data: $e');
+      throw StorageException.decryptionFailed();
+    }
+  }
+
+  /// Check if storage is available
+  Future<bool> isAvailable() async {
+    try {
+      // Try to write and read a test value
+      const testKey = '_test_key_';
+      const testValue = 'test';
+
+      await write(testKey, testValue);
+      final readValue = await read(testKey);
+      await delete(testKey);
+
+      return readValue == testValue;
+    } catch (e) {
+      _logger.w('Secure storage not available: $e');
+      return false;
+    }
+  }
+
+  /// Get storage size (approximate)
+  Future<int> getStorageSize() async {
+    try {
+      final allData = await readAll();
+      var totalSize = 0;
+
+      for (final entry in allData.entries) {
+        totalSize += entry.key.length + entry.value.length;
+      }
+
+      return totalSize;
+    } catch (e) {
+      _logger.e('Failed to calculate storage size: $e');
+      return 0;
+    }
+  }
+
+  /// Backup all data to a JSON string
+  Future<String> backup() async {
+    try {
+      final allData = await readAll();
+      return jsonEncode(allData);
+    } catch (e) {
+      _logger.e('Failed to backup secure storage: $e');
+      throw StorageException.readError();
+    }
+  }
+
+  /// Restore data from a backup JSON string
+  Future<void> restore(String backupData) async {
+    try {
+      final data = jsonDecode(backupData) as Map<String, dynamic>;
+
+      for (final entry in data.entries) {
+        await write(entry.key, entry.value.toString());
+      }
+
+      _logger.i('Secure storage restored from backup');
+    } catch (e) {
+      _logger.e('Failed to restore secure storage: $e');
+      throw StorageException.writeError();
+    }
+  }
+}
+
+/// Secure storage service with predefined key operations
+class SecureStorageService {
+  final EnhancedSecureStorage _storage;
+
+  SecureStorageService(this._storage);
+
+  // Authentication tokens
+  Future<void> saveAccessToken(String token) => _storage.write(StorageKeys.accessToken, token);
+  Future<String?> getAccessToken() => _storage.read(StorageKeys.accessToken);
+  Future<void> deleteAccessToken() => _storage.delete(StorageKeys.accessToken);
+
+  Future<void> saveRefreshToken(String token) => _storage.write(StorageKeys.refreshToken, token);
+  Future<String?> getRefreshToken() => _storage.read(StorageKeys.refreshToken);
+  Future<void> deleteRefreshToken() => _storage.delete(StorageKeys.refreshToken);
+
+  // User credentials
+  Future<void> saveUserCredentials(Map<String, dynamic> credentials) =>
+      _storage.writeJson(StorageKeys.userCredentials, credentials);
+  Future<Map<String, dynamic>?> getUserCredentials() => _storage.readJson(StorageKeys.userCredentials);
+  Future<void> deleteUserCredentials() => _storage.delete(StorageKeys.userCredentials);
+
+  // Biometric settings
+  Future<void> setBiometricEnabled(bool enabled) =>
+      _storage.write(StorageKeys.biometricEnabled, enabled.toString());
+  Future<bool> isBiometricEnabled() async {
+    final value = await _storage.read(StorageKeys.biometricEnabled);
+    return value?.toLowerCase() == 'true';
+  }
+
+  // Hanko session
+  Future<void> saveHankoSessionId(String sessionId) =>
+      _storage.write(StorageKeys.hankoSessionId, sessionId);
+  Future<String?> getHankoSessionId() => _storage.read(StorageKeys.hankoSessionId);
+  Future<void> deleteHankoSessionId() => _storage.delete(StorageKeys.hankoSessionId);
+
+  // Clear all authentication data
+  Future<void> clearAuthData() async {
+    await Future.wait([
+      deleteAccessToken(),
+      deleteRefreshToken(),
+      deleteUserCredentials(),
+      deleteHankoSessionId(),
+    ]);
+  }
+
+  // Check if user is logged in
+  Future<bool> isLoggedIn() async {
+    final accessToken = await getAccessToken();
+    return accessToken != null && accessToken.isNotEmpty;
+  }
+
+  // Storage health check
+  Future<bool> isHealthy() => _storage.isAvailable();
+}

@@ -1,0 +1,129 @@
+mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    token
+    refreshToken
+    expiresAt
+    user {
+      id
+      email
+      username
+      firstName
+      lastName
+      clubId
+      roles
+      permissions
+      status
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation RefreshToken($refreshToken: String!) {
+  refreshToken(refreshToken: $refreshToken) {
+    token
+    refreshToken
+    expiresAt
+    user {
+      id
+      email
+      status
+    }
+  }
+}
+
+mutation Logout {
+  logout {
+    success
+    message
+  }
+}
+
+query Me {
+  me {
+    id
+    email
+    username
+    firstName
+    lastName
+    clubId
+    status
+    roles
+    permissions
+    profile {
+      avatar
+      phoneNumber
+      dateOfBirth
+      address {
+        street
+        city
+        state
+        postalCode
+        country
+      }
+      preferences {
+        language
+        currency
+        notifications {
+          push
+          email
+          sms
+        }
+        privacy {
+          profileVisibility
+          activitySharing
+          locationSharing
+        }
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateProfile($input: ProfileUpdateInput!) {
+  updateProfile(input: $input) {
+    id
+    profile {
+      avatar
+      phoneNumber
+      dateOfBirth
+      address {
+        street
+        city
+        state
+        postalCode
+        country
+      }
+      preferences {
+        language
+        currency
+        notifications {
+          push
+          email
+          sms
+        }
+        privacy {
+          profileVisibility
+          activitySharing
+          locationSharing
+        }
+      }
+    }
+    updatedAt
+  }
+}
+
+mutation ChangePassword($input: ChangePasswordInput!) {
+  changePassword(input: $input) {
+    success
+    message
+  }
+}
+
+mutation EnableBiometric($enabled: Boolean!) {
+  enableBiometric(enabled: $enabled) {
+    success
+    message
+  }
+}

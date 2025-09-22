@@ -1,0 +1,232 @@
+query GetClubs($pagination: PaginationInput, $filter: ClubFilterInput) {
+  clubs(pagination: $pagination, filter: $filter) {
+    nodes {
+      id
+      name
+      description
+      location {
+        address
+        city
+        state
+        country
+        coordinates {
+          lat
+          lng
+        }
+      }
+      contact {
+        phone
+        email
+        website
+      }
+      images {
+        url
+        caption
+        type
+      }
+      amenities
+      rating {
+        average
+        count
+      }
+      reciprocalInfo {
+        isReciprocal
+        agreementType
+        accessRules
+        fees {
+          facilityFee
+          guestFee
+        }
+        restrictions
+      }
+      status
+      createdAt
+      updatedAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
+
+query GetClubDetails($id: ID!) {
+  club(id: $id) {
+    id
+    name
+    description
+    location {
+      address
+      city
+      state
+      country
+      coordinates {
+        lat
+        lng
+      }
+    }
+    contact {
+      phone
+      email
+      website
+    }
+    images {
+      url
+      caption
+      type
+    }
+    amenities
+    facilities {
+      type
+      name
+      description
+      capacity
+      bookingRequired
+      operatingHours {
+        day
+        openTime
+        closeTime
+      }
+      images {
+        url
+        caption
+      }
+    }
+    rating {
+      average
+      count
+    }
+    reciprocalInfo {
+      isReciprocal
+      agreementType
+      accessRules
+      fees {
+        facilityFee
+        guestFee
+      }
+      restrictions
+      advanceBookingRequired
+      maxAdvanceBookingDays
+    }
+    policies {
+      dressCode
+      guestPolicy
+      ageRestrictions
+      cancellationPolicy
+    }
+    virtualTour {
+      available
+      tourUrl
+      images360 {
+        url
+        title
+      }
+    }
+    reviews {
+      nodes {
+        id
+        rating
+        comment
+        author {
+          id
+          firstName
+          lastName
+          avatar
+        }
+        createdAt
+      }
+      pageInfo {
+        total
+        average
+      }
+    }
+    status
+    createdAt
+    updatedAt
+  }
+}
+
+query SearchNearbyClubs($lat: Float!, $lng: Float!, $radius: Float!, $amenities: [String!]) {
+  searchNearbyClubs(lat: $lat, lng: $lng, radius: $radius, amenities: $amenities) {
+    id
+    name
+    description
+    location {
+      address
+      city
+      state
+      coordinates {
+        lat
+        lng
+      }
+    }
+    distance
+    amenities
+    rating {
+      average
+      count
+    }
+    reciprocalInfo {
+      isReciprocal
+      fees {
+        facilityFee
+        guestFee
+      }
+    }
+    images {
+      url
+      type
+    }
+  }
+}
+
+query GetFavoriteClubs {
+  favoriteClubs {
+    id
+    name
+    location {
+      city
+      state
+    }
+    images {
+      url
+      type
+    }
+    rating {
+      average
+      count
+    }
+    lastVisited
+  }
+}
+
+mutation AddClubToFavorites($clubId: ID!) {
+  addClubToFavorites(clubId: $clubId) {
+    success
+    message
+  }
+}
+
+mutation RemoveClubFromFavorites($clubId: ID!) {
+  removeClubFromFavorites(clubId: $clubId) {
+    success
+    message
+  }
+}
+
+mutation ReviewClub($input: ClubReviewInput!) {
+  reviewClub(input: $input) {
+    id
+    rating
+    comment
+    author {
+      id
+      firstName
+      lastName
+    }
+    createdAt
+  }
+}

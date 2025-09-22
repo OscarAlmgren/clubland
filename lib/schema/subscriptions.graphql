@@ -1,0 +1,137 @@
+subscription NotificationReceived {
+  notificationReceived {
+    id
+    type
+    title
+    message
+    data
+    priority
+    status
+    createdAt
+  }
+}
+
+subscription BookingStatusChanged($bookingId: ID) {
+  bookingStatusChanged(bookingId: $bookingId) {
+    id
+    status
+    confirmationCode
+    accessInfo {
+      qrCode
+      accessCode
+    }
+    updatedAt
+  }
+}
+
+subscription VisitStatusChanged($clubId: ID) {
+  visitStatusChanged(clubId: $clubId) {
+    id
+    status
+    member {
+      id
+      firstName
+      lastName
+    }
+    club {
+      id
+      name
+    }
+    checkInTime
+    checkOutTime
+    services
+    location {
+      area
+      timestamp
+    }
+  }
+}
+
+subscription ClubUpdates($clubId: ID!) {
+  clubUpdates(clubId: $clubId) {
+    id
+    type
+    title
+    message
+    data
+    club {
+      id
+      name
+    }
+    createdAt
+  }
+}
+
+subscription SocialActivityUpdates($memberId: ID) {
+  socialActivityUpdates(memberId: $memberId) {
+    id
+    type
+    actor {
+      id
+      firstName
+      lastName
+      avatar
+    }
+    activity {
+      type
+      title
+      description
+      data
+    }
+    timestamp
+  }
+}
+
+subscription MessageReceived($conversationId: ID!) {
+  messageReceived(conversationId: $conversationId) {
+    id
+    content
+    sender {
+      id
+      firstName
+      lastName
+      avatar
+    }
+    timestamp
+    readBy {
+      memberId
+      readAt
+    }
+  }
+}
+
+subscription LocationUpdates($visitId: ID!) {
+  locationUpdates(visitId: $visitId) {
+    visitId
+    currentArea
+    recommendations {
+      type
+      title
+      description
+      location
+      availableUntil
+    }
+    occupancy {
+      area
+      level
+      capacity
+    }
+    timestamp
+  }
+}
+
+subscription SystemAlerts {
+  systemAlerts {
+    id
+    level
+    title
+    message
+    affectedServices
+    estimatedResolution
+    updates {
+      timestamp
+      message
+    }
+    createdAt
+  }
+}
