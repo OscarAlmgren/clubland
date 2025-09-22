@@ -1,7 +1,7 @@
 class AppConstants {
   // App information
   static const String appName = 'Clubland';
-  static const String appSlogan = 'Your World of Clubs';
+  static const String appSlogan = 'Reciprocal Clubs of the World';
   static const String appVersion = '1.0.0';
 
   // Environment
