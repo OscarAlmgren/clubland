@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:gql/ast.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../constants/api_constants.dart';
-import '../errors/error_handler.dart';
+import '../errors/error_handler.dart' as app_error;
 import 'network_info.dart';
 
 /// Custom error handling link
@@ -14,7 +15,7 @@ class ErrorHandlingLink extends Link {
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) =>
-      forward!(request).handleError((error) {
+      forward!(request).handleError((Object error) {
         logger?.e('GraphQL Link Error: $error');
 
         if (error is OperationException) {
@@ -22,21 +23,21 @@ class ErrorHandlingLink extends Link {
           _handleGraphQLError(error);
         } else {
           // Handle other errors
-          final failure = ErrorHandler.handleException(error);
-          ErrorHandler.showErrorToUser(failure);
+          final failure = app_error.ErrorHandler.handleException(error);
+          app_error.ErrorHandler.showErrorToUser(failure);
         }
       });
 
   void _handleGraphQLError(OperationException error) {
-    final failure = ErrorHandler.handleException(error);
+    final failure = app_error.ErrorHandler.handleException(error);
 
     // Check for authentication errors
     if (error.graphqlErrors.any(
       (e) => e.extensions?['code'] == 'UNAUTHENTICATED',
     )) {
-      ErrorHandler.handleAuthError(failure);
+      app_error.ErrorHandler.handleAuthError(failure);
     } else {
-      ErrorHandler.showErrorToUser(failure);
+      app_error.ErrorHandler.showErrorToUser(failure);
     }
   }
 }
@@ -62,7 +63,7 @@ class RetryLink extends Link {
     Request request,
     NextLink? forward,
     int attempt,
-  ) => forward!(request).handleError((error) async {
+  ) => forward!(request).handleError((Object error) async {
     if (attempt < maxRetries && _shouldRetry(error)) {
       final delay = _calculateDelay(attempt);
       logger?.w(
@@ -72,7 +73,7 @@ class RetryLink extends Link {
       await Future.delayed(delay);
       return _executeWithRetry(request, forward, attempt + 1);
     } else {
-      throw error;
+      throw Exception('Error after maximum retries: $error');
     }
   });
 
@@ -152,7 +153,7 @@ class CachingLink extends Link {
   @override
   Stream<Response> request(Request request, [NextLink? forward]) {
     // Only cache queries, not mutations or subscriptions
-    if (request.operation.type != OperationType.query) {
+    if (request.operation.getOperationType() != OperationType.query) {
       return forward!(request);
     }
 
@@ -191,7 +192,7 @@ class DeduplicationLink extends Link {
 
     forward!(request).listen(
       controller.add,
-      onError: (error) {
+      onError: (Object error) {
         controller.addError(error);
       },
       onDone: () {
@@ -237,7 +238,7 @@ class PerformanceLink extends Link {
 
           return response;
         })
-        .handleError((error) {
+        .handleError((Object error) {
           stopwatch.stop();
           final duration = stopwatch.elapsedMilliseconds;
 
