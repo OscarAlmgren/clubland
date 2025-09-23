@@ -1,6 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('UserEntity', () {
@@ -9,8 +8,7 @@ void main() {
       email: 'test@example.com',
       firstName: 'John',
       lastName: 'Doe',
-      status: UserStatus.active,
-      createdAt: DateTime(2023, 1, 1),
+      createdAt: DateTime(2023),
     );
 
     test('should create user with all properties', () {
@@ -19,7 +17,7 @@ void main() {
       expect(testUser.firstName, 'John');
       expect(testUser.lastName, 'Doe');
       expect(testUser.status, UserStatus.active);
-      expect(testUser.createdAt, DateTime(2023, 1, 1));
+      expect(testUser.createdAt, DateTime(2023));
     });
 
     test('should get full name when both first and last name provided', () {
@@ -31,7 +29,6 @@ void main() {
         id: '123',
         email: 'test@example.com',
         firstName: 'John',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
       expect(userWithFirstNameOnly.fullName, 'John');
@@ -42,7 +39,6 @@ void main() {
         id: '123',
         email: 'test@example.com',
         lastName: 'Doe',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
       expect(userWithLastNameOnly.fullName, 'Doe');
@@ -52,7 +48,6 @@ void main() {
       final userWithNoNames = UserEntity(
         id: '123',
         email: 'test@example.com',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
       expect(userWithNoNames.fullName, 'test@example.com');
@@ -65,7 +60,6 @@ void main() {
         username: 'johndoe',
         firstName: 'John',
         lastName: 'Doe',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
       expect(userWithUsername.displayName, 'johndoe');
@@ -79,8 +73,7 @@ void main() {
       final userWithRoles = UserEntity(
         id: '123',
         email: 'test@example.com',
-        status: UserStatus.active,
-        roles: ['admin', 'user'],
+        roles: const ['admin', 'user'],
         createdAt: DateTime.now(),
       );
 
@@ -93,8 +86,7 @@ void main() {
       final userWithPermissions = UserEntity(
         id: '123',
         email: 'test@example.com',
-        status: UserStatus.active,
-        permissions: ['read', 'write'],
+        permissions: const ['read', 'write'],
         createdAt: DateTime.now(),
       );
 
@@ -109,8 +101,7 @@ void main() {
         email: 'test@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        status: UserStatus.active,
-        createdAt: DateTime(2023, 1, 1),
+        createdAt: DateTime(2023),
       );
 
       final user2 = UserEntity(
@@ -118,8 +109,7 @@ void main() {
         email: 'test@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        status: UserStatus.active,
-        createdAt: DateTime(2023, 1, 1),
+        createdAt: DateTime(2023),
       );
 
       expect(user1, equals(user2));
@@ -131,7 +121,6 @@ void main() {
         email: 'test@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
 
@@ -140,7 +129,6 @@ void main() {
         email: 'test2@example.com',
         firstName: 'Jane',
         lastName: 'Smith',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
 
