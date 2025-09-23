@@ -1,0 +1,400 @@
+import 'package:flutter/material.dart';
+
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_text_styles.dart';
+import 'app_button.dart';
+
+/// Error page widget for displaying errors in the app
+class ErrorPage extends StatelessWidget {
+  final String error;
+  final StackTrace? stackTrace;
+  final VoidCallback? onRetry;
+  final String? retryText;
+  final String? title;
+  final IconData? icon;
+
+  const ErrorPage({
+    super.key,
+    required this.error,
+    this.stackTrace,
+    this.onRetry,
+    this.retryText,
+    this.title,
+    this.icon,
+  });
+
+  /// Network error page
+  const ErrorPage.network({
+    super.key,
+    this.error = 'No internet connection. Please check your network and try again.',
+    this.stackTrace,
+    this.onRetry,
+    this.retryText = 'Retry',
+    this.title = 'Connection Error',
+    this.icon = Icons.wifi_off,
+  });
+
+  /// Server error page
+  const ErrorPage.server({
+    super.key,
+    this.error = 'Something went wrong on our end. Please try again later.',
+    this.stackTrace,
+    this.onRetry,
+    this.retryText = 'Try Again',
+    this.title = 'Server Error',
+    this.icon = Icons.error_outline,
+  });
+
+  /// Not found error page
+  const ErrorPage.notFound({
+    super.key,
+    this.error = 'The page you are looking for could not be found.',
+    this.stackTrace,
+    this.onRetry,
+    this.retryText = 'Go Home',
+    this.title = 'Page Not Found',
+    this.icon = Icons.search_off,
+  });
+
+  /// Permission denied error page
+  const ErrorPage.permissionDenied({
+    super.key,
+    this.error = 'You do not have permission to access this page.',
+    this.stackTrace,
+    this.onRetry,
+    this.retryText = 'Go Back',
+    this.title = 'Access Denied',
+    this.icon = Icons.lock_outline,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      backgroundColor: colorScheme.background,
+      body: SafeArea(
+        child: Padding(
+          padding: AppSpacing.pagePadding,
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: size.width * 0.8,
+                maxHeight: size.height * 0.8,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Error Icon
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: colorScheme.errorContainer.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      icon ?? Icons.error_outline,
+                      size: 60,
+                      color: colorScheme.error,
+                    ),
+                  ),
+
+                  AppSpacing.verticalSpaceXXL,
+
+                  // Error Title
+                  Text(
+                    title ?? 'Oops! Something went wrong',
+                    style: AppTextStyles.headlineMedium.copyWith(
+                      color: colorScheme.onBackground,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  AppSpacing.verticalSpaceLG,
+
+                  // Error Message
+                  Text(
+                    error,
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  AppSpacing.verticalSpaceXXL,
+
+                  // Action Buttons
+                  Column(
+                    children: [
+                      if (onRetry != null) ...[
+                        SizedBox(
+                          width: double.infinity,
+                          child: AppButton.primary(
+                            text: retryText ?? 'Try Again',
+                            onPressed: onRetry,
+                          ),
+                        ),
+                        AppSpacing.verticalSpaceLG,
+                      ],
+                      SizedBox(
+                        width: double.infinity,
+                        child: AppButton.outline(
+                          text: 'Go Home',
+                          onPressed: () => _goHome(context),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Debug Information (only in debug mode)
+                  if (stackTrace != null) ...[
+                    AppSpacing.verticalSpaceXXL,
+                    _buildDebugInfo(context),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDebugInfo(BuildContext context) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        dividerColor: Colors.transparent,
+      ),
+      child: ExpansionTile(
+        title: Text(
+          'Debug Information',
+          style: AppTextStyles.labelMedium.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+        children: [
+          Container(
+            width: double.infinity,
+            padding: AppSpacing.paddingLG,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Error Details:',
+                  style: AppTextStyles.labelMedium.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                AppSpacing.verticalSpaceXS,
+                Text(
+                  error,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+                if (stackTrace != null) ...[
+                  AppSpacing.verticalSpaceSM,
+                  Text(
+                    'Stack Trace:',
+                    style: AppTextStyles.labelMedium.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  AppSpacing.verticalSpaceXS,
+                  Container(
+                    constraints: const BoxConstraints(maxHeight: 200),
+                    child: SingleChildScrollView(
+                      child: Text(
+                        stackTrace.toString(),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _goHome(BuildContext context) {
+    // This would use the router to navigate home
+    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+  }
+}
+
+/// Specialized error widgets for common scenarios
+class NetworkErrorWidget extends StatelessWidget {
+  final VoidCallback? onRetry;
+
+  const NetworkErrorWidget({
+    super.key,
+    this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.wifi_off,
+            size: 64,
+            color: Theme.of(context).colorScheme.error,
+          ),
+          AppSpacing.verticalSpaceLG,
+          Text(
+            'No Internet Connection',
+            style: AppTextStyles.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+          AppSpacing.verticalSpaceSM,
+          Text(
+            'Please check your internet connection and try again.',
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          if (onRetry != null) ...[
+            AppSpacing.verticalSpaceLG,
+            AppButton.primary(
+              text: 'Retry',
+              onPressed: onRetry,
+              isFullWidth: false,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Empty state widget
+class EmptyStateWidget extends StatelessWidget {
+  final String title;
+  final String message;
+  final IconData icon;
+  final String? actionText;
+  final VoidCallback? onAction;
+
+  const EmptyStateWidget({
+    super.key,
+    required this.title,
+    required this.message,
+    this.icon = Icons.inbox_outlined,
+    this.actionText,
+    this.onAction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: AppSpacing.pagePadding,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 80,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            AppSpacing.verticalSpaceLG,
+            Text(
+              title,
+              style: AppTextStyles.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            AppSpacing.verticalSpaceSM,
+            Text(
+              message,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            if (actionText != null && onAction != null) ...[
+              AppSpacing.verticalSpaceLG,
+              AppButton.primary(
+                text: actionText!,
+                onPressed: onAction,
+                isFullWidth: false,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Loading error widget for async operations
+class LoadingErrorWidget extends StatelessWidget {
+  final String error;
+  final VoidCallback? onRetry;
+
+  const LoadingErrorWidget({
+    super.key,
+    required this.error,
+    this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: AppSpacing.paddingLG,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 48,
+            color: Theme.of(context).colorScheme.error,
+          ),
+          AppSpacing.verticalSpaceMD,
+          Text(
+            'Something went wrong',
+            style: AppTextStyles.titleSmall,
+            textAlign: TextAlign.center,
+          ),
+          AppSpacing.verticalSpaceXS,
+          Text(
+            error,
+            style: AppTextStyles.bodySmall.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (onRetry != null) ...[
+            AppSpacing.verticalSpaceMD,
+            AppButton.outline(
+              text: 'Retry',
+              onPressed: onRetry,
+              size: AppButtonSize.small,
+              isFullWidth: false,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
