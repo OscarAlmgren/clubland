@@ -175,7 +175,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         // Hanko Auth Button
                         AppButton.outline(
                           text: 'Continue with Hanko',
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.fingerprint,
                             size: AppSizing.iconMD,
                           ),
