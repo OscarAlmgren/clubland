@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../../../core/design_system/design_system.dart';
 
 /// Profile page - user profile and settings
@@ -40,10 +38,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   AppSpacing.verticalSpaceMD,
-                  Text(
-                    'John Doe',
-                    style: AppTextStyles.titleLarge,
-                  ),
+                  Text('John Doe', style: AppTextStyles.titleLarge),
                   AppSpacing.verticalSpaceXS,
                   Text(
                     'john.doe@example.com',
@@ -63,10 +58,7 @@ class ProfilePage extends StatelessWidget {
                               color: colorScheme.primary,
                             ),
                           ),
-                          Text(
-                            'Visits',
-                            style: AppTextStyles.bodySmall,
-                          ),
+                          Text('Visits', style: AppTextStyles.bodySmall),
                         ],
                       ),
                       Container(
@@ -82,10 +74,7 @@ class ProfilePage extends StatelessWidget {
                               color: AppColors.membershipTierColors['gold'],
                             ),
                           ),
-                          Text(
-                            'Membership',
-                            style: AppTextStyles.bodySmall,
-                          ),
+                          Text('Membership', style: AppTextStyles.bodySmall),
                         ],
                       ),
                       Container(
@@ -101,10 +90,7 @@ class ProfilePage extends StatelessWidget {
                               color: colorScheme.primary,
                             ),
                           ),
-                          Text(
-                            'Clubs',
-                            style: AppTextStyles.bodySmall,
-                          ),
+                          Text('Clubs', style: AppTextStyles.bodySmall),
                         ],
                       ),
                     ],
@@ -116,78 +102,62 @@ class ProfilePage extends StatelessWidget {
             AppSpacing.verticalSpaceXXL,
 
             // Menu Items
-            _buildMenuSection(
-              context,
-              'Account',
-              [
-                _MenuItem(
-                  icon: Icons.person_outline,
-                  title: 'Edit Profile',
-                  onTap: () {},
-                ),
-                _MenuItem(
-                  icon: Icons.card_membership,
-                  title: 'Membership',
-                  subtitle: 'Gold Member',
-                  onTap: () {},
-                ),
-                _MenuItem(
-                  icon: Icons.payment,
-                  title: 'Payment Methods',
-                  onTap: () {},
-                ),
-              ],
-            ),
+            _buildMenuSection(context, 'Account', [
+              _MenuItem(
+                icon: Icons.person_outline,
+                title: 'Edit Profile',
+                onTap: () {},
+              ),
+              _MenuItem(
+                icon: Icons.card_membership,
+                title: 'Membership',
+                subtitle: 'Gold Member',
+                onTap: () {},
+              ),
+              _MenuItem(
+                icon: Icons.payment,
+                title: 'Payment Methods',
+                onTap: () {},
+              ),
+            ]),
 
             AppSpacing.verticalSpaceXL,
 
-            _buildMenuSection(
-              context,
-              'Preferences',
-              [
-                _MenuItem(
-                  icon: Icons.notifications_outline,
-                  title: 'Notifications',
-                  onTap: () {},
-                ),
-                _MenuItem(
-                  icon: Icons.security,
-                  title: 'Privacy & Security',
-                  onTap: () {},
-                ),
-                _MenuItem(
-                  icon: Icons.language,
-                  title: 'Language',
-                  subtitle: 'English',
-                  onTap: () {},
-                ),
-              ],
-            ),
+            _buildMenuSection(context, 'Preferences', [
+              _MenuItem(
+                icon: Icons.notifications_outlined,
+                title: 'Notifications',
+                onTap: () {},
+              ),
+              _MenuItem(
+                icon: Icons.security,
+                title: 'Privacy & Security',
+                onTap: () {},
+              ),
+              _MenuItem(
+                icon: Icons.language,
+                title: 'Language',
+                subtitle: 'English',
+                onTap: () {},
+              ),
+            ]),
 
             AppSpacing.verticalSpaceXL,
 
-            _buildMenuSection(
-              context,
-              'Support',
-              [
-                _MenuItem(
-                  icon: Icons.help_outline,
-                  title: 'Help & Support',
-                  onTap: () {},
-                ),
-                _MenuItem(
-                  icon: Icons.info_outline,
-                  title: 'About',
-                  onTap: () {},
-                ),
-                _MenuItem(
-                  icon: Icons.logout,
-                  title: 'Sign Out',
-                  onTap: () {},
-                  isDestructive: true,
-                ),
-              ],
-            ),
+            _buildMenuSection(context, 'Support', [
+              _MenuItem(
+                icon: Icons.help_outline,
+                title: 'Help & Support',
+                onTap: () {},
+              ),
+              _MenuItem(icon: Icons.info_outline, title: 'About', onTap: () {}),
+              _MenuItem(
+                icon: Icons.logout,
+                title: 'Sign Out',
+                onTap: () {},
+                isDestructive: true,
+              ),
+            ]),
           ],
         ),
       ),
@@ -198,83 +168,82 @@ class ProfilePage extends StatelessWidget {
     BuildContext context,
     String title,
     List<_MenuItem> items,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: AppSpacing.horizontalSpaceMD,
-          child: Text(
-            title,
-            style: AppTextStyles.titleSmall.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+  ) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Text(
+          title,
+          style: AppTextStyles.titleSmall.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        AppSpacing.verticalSpaceSM,
-        AppCard(
-          child: Column(
-            children: items.asMap().entries.map((entry) {
-              final index = entry.key;
-              final item = entry.value;
-              final isLast = index == items.length - 1;
+      ),
+      AppSpacing.verticalSpaceSM,
+      AppCard(
+        child: Column(
+          children: items.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value;
+            final isLast = index == items.length - 1;
 
-              return Column(
-                children: [
-                  ListTile(
-                    leading: Icon(
-                      item.icon,
+            return Column(
+              children: [
+                ListTile(
+                  leading: Icon(
+                    item.icon,
+                    color: item.isDestructive
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.onSurface,
+                  ),
+                  title: Text(
+                    item.title,
+                    style: AppTextStyles.bodyMedium.copyWith(
                       color: item.isDestructive
                           ? Theme.of(context).colorScheme.error
                           : Theme.of(context).colorScheme.onSurface,
                     ),
-                    title: Text(
-                      item.title,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: item.isDestructive
-                            ? Theme.of(context).colorScheme.error
-                            : Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                    subtitle: item.subtitle != null
-                        ? Text(
-                            item.subtitle!,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
-                          )
-                        : null,
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: item.onTap,
                   ),
-                  if (!isLast)
-                    Divider(
-                      height: 1,
-                      indent: 56,
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-                    ),
-                ],
-              );
-            }).toList(),
-          ),
+                  subtitle: item.subtitle != null
+                      ? Text(
+                          item.subtitle!,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          ),
+                        )
+                      : null,
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: item.onTap,
+                ),
+                if (!isLast)
+                  Divider(
+                    height: 1,
+                    indent: 56,
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+              ],
+            );
+          }).toList(),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
 
 class _MenuItem {
+  const _MenuItem({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    this.subtitle,
+    this.isDestructive = false,
+  });
   final IconData icon;
   final String title;
   final String? subtitle;
   final VoidCallback onTap;
   final bool isDestructive;
-
-  const _MenuItem({
-    required this.icon,
-    required this.title,
-    this.subtitle,
-    required this.onTap,
-    this.isDestructive = false,
-  });
 }
