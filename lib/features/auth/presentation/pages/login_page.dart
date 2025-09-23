@@ -147,9 +147,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         Row(
                           children: [
                             Expanded(
-                              child: Divider(
-                                color: colorScheme.outline.withOpacity(0.3),
-                              ),
+                              child: Divider(color: colorScheme.outline),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -163,9 +161,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ),
                             Expanded(
-                              child: Divider(
-                                color: colorScheme.outline.withOpacity(0.3),
-                              ),
+                              child: Divider(color: colorScheme.outline),
                             ),
                           ],
                         ),
@@ -191,7 +187,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Don\'t have an account? ',
+                      "Don't have an account?",
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
