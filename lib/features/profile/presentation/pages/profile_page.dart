@@ -64,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                       Container(
                         width: 1,
                         height: 40,
-                        color: colorScheme.outline.withOpacity(0.3),
+                        color: colorScheme.outline.withValues(alpha: 0.3),
                       ),
                       Column(
                         children: [
@@ -80,7 +80,7 @@ class ProfilePage extends StatelessWidget {
                       Container(
                         width: 1,
                         height: 40,
-                        color: colorScheme.outline.withOpacity(0.3),
+                        color: colorScheme.outline.withValues(alpha: 0.3),
                       ),
                       Column(
                         children: [
