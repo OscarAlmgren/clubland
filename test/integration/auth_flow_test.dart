@@ -1,10 +1,9 @@
+import 'package:clubland/core/errors/failures.dart';
+import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
-
-import 'package:clubland/core/errors/failures.dart';
-import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 
 import '../helpers/mock_providers.dart';
 import '../helpers/test_helpers.dart';
@@ -19,9 +18,7 @@ void main() {
     mockLoginUsecase = MockLoginUsecase();
   });
 
-  tearDown(() {
-    MockProviders.resetAll();
-  });
+  tearDown(MockProviders.resetAll);
 
   group('Authentication Flow Integration Tests', () {
     final testUser = UserEntity(
@@ -34,16 +31,20 @@ void main() {
 
     test('Login usecase returns success', () async {
       // Mock the login usecase to return success
-      when(() => mockLoginUsecase.call(
-        email: any(named: 'email'),
-        password: any(named: 'password'),
-      )).thenAnswer(
-        (_) async => Right<Failure, AuthSessionEntity>(AuthSessionEntity(
-          accessToken: 'test-token',
-          refreshToken: 'test-refresh',
-          expiresAt: DateTime.now().add(const Duration(hours: 1)),
-          user: testUser,
-        )),
+      when(
+        () => mockLoginUsecase.call(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer(
+        (_) async => Right<Failure, AuthSessionEntity>(
+          AuthSessionEntity(
+            accessToken: 'test-token',
+            refreshToken: 'test-refresh',
+            expiresAt: DateTime.now().add(const Duration(hours: 1)),
+            user: testUser,
+          ),
+        ),
       );
 
       // Execute the usecase
@@ -63,21 +64,24 @@ void main() {
       );
 
       // Verify the usecase was called
-      verify(() => mockLoginUsecase.call(
-        email: 'test@example.com',
-        password: 'password123',
-      )).called(1);
+      verify(
+        () => mockLoginUsecase.call(
+          email: 'test@example.com',
+          password: 'password123',
+        ),
+      ).called(1);
     });
 
     test('Login usecase returns failure for invalid credentials', () async {
       // Mock the login usecase to return failure
-      when(() => mockLoginUsecase.call(
-        email: any(named: 'email'),
-        password: any(named: 'password'),
-      )).thenAnswer(
-        (_) async => Left<Failure, AuthSessionEntity>(
-          AuthFailure.invalidCredentials(),
+      when(
+        () => mockLoginUsecase.call(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
         ),
+      ).thenAnswer(
+        (_) async =>
+            Left<Failure, AuthSessionEntity>(AuthFailure.invalidCredentials()),
       );
 
       // Execute the usecase
@@ -94,10 +98,12 @@ void main() {
       );
 
       // Verify the usecase was called
-      verify(() => mockLoginUsecase.call(
-        email: 'invalid@example.com',
-        password: 'wrongpassword',
-      )).called(1);
+      verify(
+        () => mockLoginUsecase.call(
+          email: 'invalid@example.com',
+          password: 'wrongpassword',
+        ),
+      ).called(1);
     });
   });
 }
