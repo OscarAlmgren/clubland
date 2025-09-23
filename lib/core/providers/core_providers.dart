@@ -13,58 +13,38 @@ part 'core_providers.g.dart';
 
 /// Logger provider
 @Riverpod(keepAlive: true)
-Logger logger(LoggerRef ref) {
-  return Logger(
-    printer: PrettyPrinter(
-      methodCount: 2,
-      errorMethodCount: 8,
-      lineLength: 120,
-      colors: true,
-      printEmojis: true,
-      printTime: false,
-    ),
-  );
-}
+Logger logger(LoggerRef ref) => Logger(printer: PrettyPrinter());
 
 /// Flutter Secure Storage provider
 @Riverpod(keepAlive: true)
-FlutterSecureStorage flutterSecureStorage(FlutterSecureStorageRef ref) {
-  return const FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
-    iOptions: IOSOptions(
-      accessibility: KeychainItemAccessibility.first_unlock_this_device,
-    ),
-  );
-}
+FlutterSecureStorage flutterSecureStorage(FlutterSecureStorageRef ref) =>
+    const FlutterSecureStorage(
+      iOptions: IOSOptions(
+        accessibility: KeychainAccessibility.first_unlock_this_device,
+      ),
+    );
 
 /// Enhanced Secure Storage provider
 @Riverpod(keepAlive: true)
-EnhancedSecureStorage secureStorage(SecureStorageRef ref) {
-  return EnhancedSecureStorage(
-    storage: ref.watch(flutterSecureStorageProvider),
-    logger: ref.watch(loggerProvider),
-  );
-}
+EnhancedSecureStorage secureStorage(SecureStorageRef ref) =>
+    EnhancedSecureStorage(
+      storage: ref.watch(flutterSecureStorageProvider),
+      logger: ref.watch(loggerProvider),
+    );
 
 /// Secure Storage Service provider
 @Riverpod(keepAlive: true)
-SecureStorageService secureStorageService(SecureStorageServiceRef ref) {
-  return SecureStorageService(ref.watch(secureStorageProvider));
-}
+SecureStorageService secureStorageService(SecureStorageServiceRef ref) =>
+    SecureStorageService(ref.watch(secureStorageProvider));
 
 /// Connectivity provider
 @Riverpod(keepAlive: true)
-Connectivity connectivity(ConnectivityRef ref) {
-  return Connectivity();
-}
+Connectivity connectivity(ConnectivityRef ref) => Connectivity();
 
 /// Network Info provider
 @Riverpod(keepAlive: true)
-NetworkInfo networkInfo(NetworkInfoRef ref) {
-  return EnhancedNetworkInfo(ref.watch(connectivityProvider));
-}
+NetworkInfo networkInfo(NetworkInfoRef ref) =>
+    EnhancedNetworkInfo(ref.watch(connectivityProvider));
 
 /// Storage Manager provider
 @Riverpod(keepAlive: true)
@@ -106,7 +86,7 @@ Future<void> graphqlClient(GraphqlClientRef ref) async {
 
 /// Connectivity Stream provider
 @riverpod
-Stream<ConnectivityResult> connectivityStream(ConnectivityStreamRef ref) {
+Stream<List<ConnectivityResult>> connectivityStream(ConnectivityStreamRef ref) {
   final connectivity = ref.watch(connectivityProvider);
   return connectivity.onConnectivityChanged;
 }
@@ -123,11 +103,11 @@ class NetworkStatus extends _$NetworkStatus {
       next.when(
         data: (_) => ref.invalidateSelf(),
         loading: () {},
-        error: (_, __) {},
+        error: (_, stackTrace) {},
       );
     });
 
-    return await networkInfo.getNetworkDetails();
+    return networkInfo.getNetworkDetails();
   }
 
   /// Check if connected
@@ -170,7 +150,7 @@ class AppInitialization extends _$AppInitialization {
 
       logger.i('App initialization completed successfully');
       return true;
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       final logger = ref.read(loggerProvider);
       logger.e('App initialization failed', error: e, stackTrace: stackTrace);
       return false;

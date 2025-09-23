@@ -18,6 +18,7 @@ analyzer:
     missing_required_param: warning
     todo: ignore
     invalid_annotation_target: warning
+    lines_longer_than_80_chars: ignore
 
 linter:
   rules:
