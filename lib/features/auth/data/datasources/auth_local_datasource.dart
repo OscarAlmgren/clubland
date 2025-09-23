@@ -42,11 +42,11 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
           // TODO: Implement proper serialization/deserialization
           // For now, return mock data
           final user = UserEntity(
-            id: userData['id'] ?? 'mock-id',
-            email: userData['email'] ?? 'mock@example.com',
-            firstName: userData['firstName'],
-            lastName: userData['lastName'],
-            clubId: userData['clubId'],
+            id: userData['id'] as String? ?? 'mock-id',
+            email: userData['email'] as String? ?? 'mock@example.com',
+            firstName: userData['firstName'] as String?,
+            lastName: userData['lastName'] as String?,
+            clubId: userData['clubId'] as String?,
             status: UserStatus.active,
             createdAt: DateTime.now(),
           );
@@ -55,7 +55,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       }
 
       return const Right(null);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(CacheFailure.retrievalFailed(e.toString()));
     }
   }
@@ -72,20 +72,20 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
           // TODO: Implement proper serialization/deserialization
           // For now, return mock session
           final user = UserEntity(
-            id: sessionData['userId'] ?? 'mock-id',
-            email: sessionData['userEmail'] ?? 'mock@example.com',
+            id: sessionData['userId'] as String? ?? 'mock-id',
+            email: sessionData['userEmail'] as String? ?? 'mock@example.com',
             status: UserStatus.active,
             createdAt: DateTime.now(),
           );
 
           final session = AuthSessionEntity(
-            accessToken: sessionData['accessToken'] ?? '',
-            refreshToken: sessionData['refreshToken'] ?? '',
+            accessToken: sessionData['accessToken'] as String? ?? '',
+            refreshToken: sessionData['refreshToken'] as String? ?? '',
             expiresAt: DateTime.parse(
-              sessionData['expiresAt'] ?? DateTime.now().toIso8601String(),
+              sessionData['expiresAt'] as String? ?? DateTime.now().toIso8601String(),
             ),
             user: user,
-            hankoSessionId: sessionData['hankoSessionId'],
+            hankoSessionId: sessionData['hankoSessionId'] as String?,
           );
 
           return Right(session);
@@ -93,7 +93,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       }
 
       return const Right(null);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(CacheFailure.retrievalFailed(e.toString()));
     }
   }
@@ -117,7 +117,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
       // Also store user separately
       await storeUser(session.user);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheFailure.storageFailed(e.toString());
     }
   }
@@ -143,7 +143,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       };
 
       await userStorage.writeJson(_userKey, userData);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheFailure.storageFailed(e.toString());
     }
   }
@@ -154,7 +154,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       final storage = await _storage;
       final userStorage = storage.userStorage;
       await userStorage.delete(_sessionKey);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheFailure.deletionFailed(e.toString());
     }
   }
@@ -165,7 +165,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       final storage = await _storage;
       final userStorage = storage.userStorage;
       await userStorage.delete(_userKey);
-    } catch (e) {
+    } on Exception catch (e) {
       throw CacheFailure.deletionFailed(e.toString());
     }
   }
