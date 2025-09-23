@@ -8,11 +8,13 @@ import 'local_storage.dart';
 
 /// Cache entry metadata
 class CacheEntry<T> {
-  final T data;
-  final DateTime createdAt;
-  final DateTime expiresAt;
-  final String etag;
-  final Map<String, dynamic> metadata;
+  factory CacheEntry.fromJson(Map<String, dynamic> json) => CacheEntry(
+    data: json['data'] as T,
+    createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
+    expiresAt: DateTime.fromMillisecondsSinceEpoch(json['expiresAt'] as int),
+    etag: json['etag'] as String? ?? '',
+    metadata: Map<String, dynamic>.from(json['metadata'] as Map? ?? {}),
+  );
 
   CacheEntry({
     required this.data,
@@ -21,39 +23,35 @@ class CacheEntry<T> {
     required this.etag,
     this.metadata = const {},
   });
+  final T data;
+  final DateTime createdAt;
+  final DateTime expiresAt;
+  final String etag;
+  final Map<String, dynamic> metadata;
 
   bool get isExpired => DateTime.now().isAfter(expiresAt);
 
   Map<String, dynamic> toJson() => {
-        'data': data,
-        'createdAt': createdAt.millisecondsSinceEpoch,
-        'expiresAt': expiresAt.millisecondsSinceEpoch,
-        'etag': etag,
-        'metadata': metadata,
-      };
-
-  factory CacheEntry.fromJson(Map<String, dynamic> json) => CacheEntry(
-        data: json['data'],
-        createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt']),
-        expiresAt: DateTime.fromMillisecondsSinceEpoch(json['expiresAt']),
-        etag: json['etag'] ?? '',
-        metadata: Map<String, dynamic>.from(json['metadata'] ?? {}),
-      );
+    'data': data,
+    'createdAt': createdAt.millisecondsSinceEpoch,
+    'expiresAt': expiresAt.millisecondsSinceEpoch,
+    'etag': etag,
+    'metadata': metadata,
+  };
 }
 
 /// Cache policy configuration
 class CachePolicy {
-  final Duration maxAge;
-  final Duration staleWhileRevalidate;
-  final bool allowStale;
-  final int maxSize;
-
   const CachePolicy({
     this.maxAge = ApiConstants.defaultCacheMaxAge,
     this.staleWhileRevalidate = const Duration(minutes: 5),
     this.allowStale = true,
     this.maxSize = 1000,
   });
+  final Duration maxAge;
+  final Duration staleWhileRevalidate;
+  final bool allowStale;
+  final int maxSize;
 
   static const short = CachePolicy(
     maxAge: ApiConstants.shortCacheMaxAge,
@@ -73,16 +71,13 @@ class CachePolicy {
 
 /// Advanced cache manager with TTL, LRU eviction, and persistence
 class CacheManager {
+  CacheManager({required TypedLocalStorage storage, Logger? logger})
+    : _storage = storage,
+      _logger = logger ?? Logger();
   final TypedLocalStorage _storage;
   final Logger _logger;
   final Map<String, CachePolicy> _policies = {};
   final Map<String, DateTime> _accessTimes = {};
-
-  CacheManager({
-    required TypedLocalStorage storage,
-    Logger? logger,
-  })  : _storage = storage,
-        _logger = logger ?? Logger();
 
   /// Initialize cache manager
   Future<void> init() async {
@@ -129,7 +124,9 @@ class CacheManager {
       await _storage.writeJson(key, entry.toJson());
       _accessTimes[key] = DateTime.now();
 
-      _logger.d('Cache entry stored: $key (expires in ${effectiveMaxAge.inMinutes}min)');
+      _logger.d(
+        'Cache entry stored: $key (expires in ${effectiveMaxAge.inMinutes}min)',
+      );
 
       // Check if we need to evict old entries
       await _enforceMaxSize(policy);
@@ -187,7 +184,7 @@ class CacheManager {
 
   /// Check if cache contains a valid entry
   Future<bool> contains(String key, {bool allowStale = true}) async {
-    final entry = await getEntry(key);
+    final entry = await getEntry<dynamic>(key);
     if (entry == null) return false;
 
     return allowStale || !entry.isExpired;
@@ -227,7 +224,9 @@ class CacheManager {
         await remove(key);
       }
 
-      _logger.i('Invalidated ${matchingKeys.length} cache entries matching: $pattern');
+      _logger.i(
+        'Invalidated ${matchingKeys.length} cache entries matching: $pattern',
+      );
     } catch (e) {
       _logger.e('Failed to invalidate cache pattern: $e');
     }
@@ -242,7 +241,7 @@ class CacheManager {
       var totalSize = await _storage.getSize();
 
       for (final key in keys) {
-        final entry = await getEntry(key);
+        final entry = await getEntry<dynamic>(key);
         if (entry != null) {
           if (entry.isExpired) {
             expiredEntries++;
@@ -272,7 +271,7 @@ class CacheManager {
       var cleanedCount = 0;
 
       for (final key in keys) {
-        final entry = await getEntry(key);
+        final entry = await getEntry<dynamic>(key);
         if (entry != null && entry.isExpired) {
           await remove(key);
           cleanedCount++;
@@ -296,8 +295,10 @@ class CacheManager {
       // Sort keys by last access time (LRU)
       final sortedKeys = keys.toList()
         ..sort((a, b) {
-          final aTime = _accessTimes[a] ?? DateTime.fromMillisecondsSinceEpoch(0);
-          final bTime = _accessTimes[b] ?? DateTime.fromMillisecondsSinceEpoch(0);
+          final aTime =
+              _accessTimes[a] ?? DateTime.fromMillisecondsSinceEpoch(0);
+          final bTime =
+              _accessTimes[b] ?? DateTime.fromMillisecondsSinceEpoch(0);
           return aTime.compareTo(bTime);
         });
 
@@ -328,12 +329,6 @@ class CacheManager {
 
 /// Cache statistics
 class CacheStats {
-  final int totalEntries;
-  final int validEntries;
-  final int expiredEntries;
-  final int totalSizeBytes;
-  final double hitRate;
-
   const CacheStats({
     required this.totalEntries,
     required this.validEntries,
@@ -343,15 +338,21 @@ class CacheStats {
   });
 
   factory CacheStats.empty() => const CacheStats(
-        totalEntries: 0,
-        validEntries: 0,
-        expiredEntries: 0,
-        totalSizeBytes: 0,
-        hitRate: 0.0,
-      );
+    totalEntries: 0,
+    validEntries: 0,
+    expiredEntries: 0,
+    totalSizeBytes: 0,
+    hitRate: 0.0,
+  );
+  final int totalEntries;
+  final int validEntries;
+  final int expiredEntries;
+  final int totalSizeBytes;
+  final double hitRate;
 
   @override
-  String toString() => '''
+  String toString() =>
+      '''
 CacheStats(
   totalEntries: $totalEntries,
   validEntries: $validEntries,
@@ -363,11 +364,10 @@ CacheStats(
 
 /// Specialized cache managers for different data types
 class AppCacheManager {
-  final CacheManager _cacheManager;
-
   AppCacheManager(this._cacheManager) {
     _setupPolicies();
   }
+  final CacheManager _cacheManager;
 
   void _setupPolicies() {
     // User data - medium cache
@@ -380,10 +380,10 @@ class AppCacheManager {
     _cacheManager.setPolicy('search_', CachePolicy.short);
 
     // Images - very long cache
-    _cacheManager.setPolicy('image_', const CachePolicy(
-      maxAge: Duration(days: 7),
-      maxSize: 5000,
-    ));
+    _cacheManager.setPolicy(
+      'image_',
+      const CachePolicy(maxAge: Duration(days: 7), maxSize: 5000),
+    );
 
     // API responses - medium cache
     _cacheManager.setPolicy('api_', CachePolicy.medium);
@@ -404,24 +404,30 @@ class AppCacheManager {
       _cacheManager.get<Map<String, dynamic>>('club_$clubId');
 
   /// Cache search results
-  Future<void> cacheSearchResults(String query, List<Map<String, dynamic>> results) =>
-      _cacheManager.put('search_${query.hashCode}', results);
+  Future<void> cacheSearchResults(
+    String query,
+    List<Map<String, dynamic>> results,
+  ) => _cacheManager.put('search_${query.hashCode}', results);
 
   Future<List<Map<String, dynamic>>?> getSearchResults(String query) =>
       _cacheManager.get<List<Map<String, dynamic>>>('search_${query.hashCode}');
 
   /// Cache API responses
-  Future<void> cacheApiResponse(String endpoint, Map<String, dynamic> response) =>
-      _cacheManager.put('api_${endpoint.hashCode}', response);
+  Future<void> cacheApiResponse(
+    String endpoint,
+    Map<String, dynamic> response,
+  ) => _cacheManager.put('api_${endpoint.hashCode}', response);
 
   Future<Map<String, dynamic>?> getApiResponse(String endpoint) =>
       _cacheManager.get<Map<String, dynamic>>('api_${endpoint.hashCode}');
 
   /// Invalidate user cache
-  Future<void> invalidateUserCache() => _cacheManager.invalidatePattern('user_');
+  Future<void> invalidateUserCache() =>
+      _cacheManager.invalidatePattern('user_');
 
   /// Invalidate club cache
-  Future<void> invalidateClubCache() => _cacheManager.invalidatePattern('club_');
+  Future<void> invalidateClubCache() =>
+      _cacheManager.invalidatePattern('club_');
 
   /// Get cache statistics
   Future<CacheStats> getStats() => _cacheManager.getStats();
