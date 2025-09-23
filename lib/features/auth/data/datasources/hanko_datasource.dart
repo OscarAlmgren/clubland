@@ -24,11 +24,6 @@ abstract class HankoDataSource {
 
 /// Hanko authentication response
 class HankoAuthResponse {
-  final String sessionId;
-  final String status;
-  final String? message;
-  final Map<String, dynamic>? metadata;
-
   const HankoAuthResponse({
     required this.sessionId,
     required this.status,
@@ -36,38 +31,44 @@ class HankoAuthResponse {
     this.metadata,
   });
 
-  factory HankoAuthResponse.fromJson(Map<String, dynamic> json) {
-    return HankoAuthResponse(
-      sessionId: json['sessionId'] as String,
-      status: json['status'] as String,
-      message: json['message'] as String?,
-      metadata: json['metadata'] as Map<String, dynamic>?,
-    );
-  }
+  factory HankoAuthResponse.fromJson(Map<String, dynamic> json) =>
+      HankoAuthResponse(
+        sessionId: json['sessionId'] as String,
+        status: json['status'] as String,
+        message: json['message'] as String?,
+        metadata: json['metadata'] as Map<String, dynamic>?,
+      );
+  final String sessionId;
+  final String status;
+  final String? message;
+  final Map<String, dynamic>? metadata;
 }
 
 /// Implementation of Hanko data source
 class HankoDataSourceImpl implements HankoDataSource {
-  final Dio _dio;
-  final Logger _logger;
-  final String _baseUrl;
-  final String _projectId;
-
   HankoDataSourceImpl({
     required Dio dio,
     required Logger logger,
     String? baseUrl,
     String? projectId,
-  })  : _dio = dio,
-        _logger = logger,
-        _baseUrl = baseUrl ?? const String.fromEnvironment(
-          'HANKO_BASE_URL',
-          defaultValue: 'https://api.hanko.io',
-        ),
-        _projectId = projectId ?? const String.fromEnvironment(
-          'HANKO_PROJECT_ID',
-          defaultValue: 'demo-project',
-        );
+  }) : _dio = dio,
+       _logger = logger,
+       _baseUrl =
+           baseUrl ??
+           const String.fromEnvironment(
+             'HANKO_BASE_URL',
+             defaultValue: 'https://api.hanko.io',
+           ),
+       _projectId =
+           projectId ??
+           const String.fromEnvironment(
+             'HANKO_PROJECT_ID',
+             defaultValue: 'demo-project',
+           );
+  final Dio _dio;
+  final Logger _logger;
+  final String _baseUrl;
+  final String _projectId;
 
   @override
   Future<Either<Failure, HankoAuthResponse>> initiateLogin(String email) async {
@@ -76,28 +77,24 @@ class HankoDataSourceImpl implements HankoDataSource {
 
       final response = await _dio.post(
         '$_baseUrl/v1/projects/$_projectId/auth/login/init',
-        data: {
-          'email': email,
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
+        data: {'email': email},
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
       if (response.statusCode == 200) {
-        final hankoResponse = HankoAuthResponse.fromJson(response.data);
+        final hankoResponse = HankoAuthResponse.fromJson(response.data as Map<String, dynamic>);
         _logger.i('Hanko login initiated successfully');
         return Right(hankoResponse);
       } else {
-        _logger.e('Hanko login initiation failed with status: ${response.statusCode}');
+        _logger.e(
+          'Hanko login initiation failed with status: ${response.statusCode}',
+        );
         return Left(AuthFailure.hankoError('Login initiation failed'));
       }
     } on DioException catch (e) {
       _logger.e('Hanko login initiation error: ${e.message}');
       return Left(_handleDioError(e));
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error during Hanko login initiation: $e');
       return Left(AuthFailure.unexpected(e.toString()));
     }
@@ -113,38 +110,32 @@ class HankoDataSourceImpl implements HankoDataSource {
 
       final response = await _dio.post(
         '$_baseUrl/v1/projects/$_projectId/auth/login/complete',
-        data: {
-          'sessionId': sessionId,
-          'credential': credential,
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
+        data: {'sessionId': sessionId, 'credential': credential},
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
       if (response.statusCode == 200) {
         final sessionData = response.data;
 
         // Create user entity from Hanko response
+        final userData = sessionData['user'] as Map<String, dynamic>;
         final user = UserEntity(
-          id: sessionData['user']['id'],
-          email: sessionData['user']['email'],
-          firstName: sessionData['user']['firstName'],
-          lastName: sessionData['user']['lastName'],
+          id: userData['id'] as String,
+          email: userData['email'] as String,
+          firstName: userData['firstName'] as String?,
+          lastName: userData['lastName'] as String?,
           status: UserStatus.active,
-          createdAt: DateTime.parse(sessionData['user']['createdAt']),
-          updatedAt: sessionData['user']['updatedAt'] != null
-              ? DateTime.parse(sessionData['user']['updatedAt'])
+          createdAt: DateTime.parse(userData['createdAt'] as String),
+          updatedAt: userData['updatedAt'] != null
+              ? DateTime.parse(userData['updatedAt'] as String)
               : null,
         );
 
         // Create auth session
         final session = AuthSessionEntity(
-          accessToken: sessionData['accessToken'],
-          refreshToken: sessionData['refreshToken'],
-          expiresAt: DateTime.parse(sessionData['expiresAt']),
+          accessToken: sessionData['accessToken'] as String,
+          refreshToken: sessionData['refreshToken'] as String,
+          expiresAt: DateTime.parse(sessionData['expiresAt'] as String),
           user: user,
           hankoSessionId: sessionId,
         );
@@ -152,47 +143,47 @@ class HankoDataSourceImpl implements HankoDataSource {
         _logger.i('Hanko login completed successfully');
         return Right(session);
       } else {
-        _logger.e('Hanko login completion failed with status: ${response.statusCode}');
+        _logger.e(
+          'Hanko login completion failed with status: ${response.statusCode}',
+        );
         return Left(AuthFailure.hankoError('Login completion failed'));
       }
     } on DioException catch (e) {
       _logger.e('Hanko login completion error: ${e.message}');
       return Left(_handleDioError(e));
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error during Hanko login completion: $e');
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, HankoAuthResponse>> initiateRegistration(String email) async {
+  Future<Either<Failure, HankoAuthResponse>> initiateRegistration(
+    String email,
+  ) async {
     try {
       _logger.d('Initiating Hanko registration for email: $email');
 
       final response = await _dio.post(
         '$_baseUrl/v1/projects/$_projectId/auth/register/init',
-        data: {
-          'email': email,
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
+        data: {'email': email},
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
       if (response.statusCode == 200) {
-        final hankoResponse = HankoAuthResponse.fromJson(response.data);
+        final hankoResponse = HankoAuthResponse.fromJson(response.data as Map<String, dynamic>);
         _logger.i('Hanko registration initiated successfully');
         return Right(hankoResponse);
       } else {
-        _logger.e('Hanko registration initiation failed with status: ${response.statusCode}');
+        _logger.e(
+          'Hanko registration initiation failed with status: ${response.statusCode}',
+        );
         return Left(AuthFailure.hankoError('Registration initiation failed'));
       }
     } on DioException catch (e) {
       _logger.e('Hanko registration initiation error: ${e.message}');
       return Left(_handleDioError(e));
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error during Hanko registration initiation: $e');
       return Left(AuthFailure.unexpected(e.toString()));
     }
@@ -213,25 +204,19 @@ class HankoDataSourceImpl implements HankoDataSource {
         data: {
           'sessionId': sessionId,
           'credential': credential,
-          'profile': {
-            'firstName': firstName,
-            'lastName': lastName,
-          },
+          'profile': {'firstName': firstName, 'lastName': lastName},
         },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
       if (response.statusCode == 201) {
         final sessionData = response.data;
 
         // Create user entity from Hanko response
+        final userData = sessionData['user'] as Map<String, dynamic>;
         final user = UserEntity(
-          id: sessionData['user']['id'],
-          email: sessionData['user']['email'],
+          id: userData['id'] as String,
+          email: userData['email'] as String,
           firstName: firstName,
           lastName: lastName,
           status: UserStatus.active,
@@ -240,9 +225,9 @@ class HankoDataSourceImpl implements HankoDataSource {
 
         // Create auth session
         final session = AuthSessionEntity(
-          accessToken: sessionData['accessToken'],
-          refreshToken: sessionData['refreshToken'],
-          expiresAt: DateTime.parse(sessionData['expiresAt']),
+          accessToken: sessionData['accessToken'] as String,
+          refreshToken: sessionData['refreshToken'] as String,
+          expiresAt: DateTime.parse(sessionData['expiresAt'] as String),
           user: user,
           hankoSessionId: sessionId,
         );
@@ -250,13 +235,15 @@ class HankoDataSourceImpl implements HankoDataSource {
         _logger.i('Hanko registration completed successfully');
         return Right(session);
       } else {
-        _logger.e('Hanko registration completion failed with status: ${response.statusCode}');
+        _logger.e(
+          'Hanko registration completion failed with status: ${response.statusCode}',
+        );
         return Left(AuthFailure.hankoError('Registration completion failed'));
       }
     } on DioException catch (e) {
       _logger.e('Hanko registration completion error: ${e.message}');
       return Left(_handleDioError(e));
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error during Hanko registration completion: $e');
       return Left(AuthFailure.unexpected(e.toString()));
     }
@@ -269,14 +256,8 @@ class HankoDataSourceImpl implements HankoDataSource {
 
       final response = await _dio.get(
         '$_baseUrl/v1/projects/$_projectId/users/check',
-        queryParameters: {
-          'email': email,
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
+        queryParameters: {'email': email},
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
       if (response.statusCode == 200) {
@@ -284,13 +265,15 @@ class HankoDataSourceImpl implements HankoDataSource {
         _logger.d('Email registration check completed: $isRegistered');
         return Right(isRegistered);
       } else {
-        _logger.e('Email registration check failed with status: ${response.statusCode}');
+        _logger.e(
+          'Email registration check failed with status: ${response.statusCode}',
+        );
         return Left(AuthFailure.hankoError('Email check failed'));
       }
     } on DioException catch (e) {
       _logger.e('Email registration check error: ${e.message}');
       return Left(_handleDioError(e));
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Unexpected error during email registration check: $e');
       return Left(AuthFailure.unexpected(e.toString()));
     }
@@ -307,7 +290,7 @@ class HankoDataSourceImpl implements HankoDataSource {
         return NetworkFailure.noConnection();
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode ?? 0;
-        final message = error.response?.data?['message'] ?? 'Unknown error';
+        final message = error.response?.data?['message'] as String? ?? 'Unknown error';
 
         if (statusCode == 401) {
           return AuthFailure.invalidCredentials();
@@ -322,8 +305,9 @@ class HankoDataSourceImpl implements HankoDataSource {
         }
       case DioExceptionType.cancel:
         return AuthFailure.unexpected('Request was cancelled');
+      case DioExceptionType.badCertificate:
+        return NetworkFailure.serverError(0, 'Bad certificate');
       case DioExceptionType.unknown:
-      default:
         return AuthFailure.unexpected(error.message ?? 'Unknown error');
     }
   }
