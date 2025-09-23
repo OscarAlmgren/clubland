@@ -20,15 +20,15 @@ dependencies:
   riverpod_annotation: ^2.3.3
 
   # Navigation
-  go_router: ^12.1.3
+  go_router: ^16.2.2
 
   # HTTP & GraphQL
   dio: ^5.4.0
   graphql_flutter: ^5.1.2
-  gql: ^0.14.0
+  gql: ^1.0.1
 
   # Authentication & Security
-  flutter_secure_storage: ^9.0.0
+  flutter_secure_storage: ^10.0.0-beta.4
   local_auth: ^2.1.7
   crypto: ^3.0.3
 
@@ -39,46 +39,47 @@ dependencies:
 
   # UI & UX
   cached_network_image: ^3.3.0
-  lottie: ^2.7.0
+  lottie: ^3.3.2
   shimmer: ^3.0.0
-  photo_view: ^0.14.0
+  photo_view: ^0.15.0
   smooth_page_indicator: ^1.1.0
   flutter_staggered_animations: ^1.1.1
 
   # Maps & Location
   google_maps_flutter: ^2.5.0
-  geolocator: ^10.1.0
-  geocoding: ^2.1.1
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
 
   # Push Notifications
-  firebase_core: ^2.24.2
-  firebase_messaging: ^14.7.10
-  firebase_analytics: ^10.7.4
-  firebase_crashlytics: ^3.4.8
-  firebase_performance: ^0.9.3+6
+  firebase_core: ^4.1.1
+  firebase_messaging: ^16.0.2
+  firebase_analytics: ^12.0.2
+  firebase_crashlytics: ^5.0.2
+  firebase_performance: ^0.11.1
 
   # Permissions
-  permission_handler: ^11.1.0
+  permission_handler: ^12.0.1
 
   # Utils
   equatable: ^2.0.5
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
-  intl: ^0.18.1
+  intl: ^0.20.2
   uuid: ^4.2.1
   url_launcher: ^6.2.2
-  share_plus: ^7.2.1
-  package_info_plus: ^4.2.0
-  device_info_plus: ^9.1.1
-  connectivity_plus: ^5.0.2
+  share_plus: ^12.0.0
+  package_info_plus: ^8.3.1
+  device_info_plus: ^12.1.0
+  connectivity_plus: ^6.1.5
+  dartz: ^0.10.1
 
   # QR Codes
   qr_flutter: ^4.1.0
-  mobile_scanner: ^3.5.2
+  mobile_scanner: ^7.0.1
 
   # Image Processing
   image_picker: ^1.0.4
-  image_cropper: ^5.0.1
+  image_cropper: ^10.0.0+1
 
   # Icons & Fonts
   cupertino_icons: ^1.0.8
@@ -102,16 +103,16 @@ dev_dependencies:
   riverpod_lint: ^2.3.7
 
   # GraphQL Code Generation
-  graphql_codegen: ^0.13.3
+  graphql_codegen: ^1.1.1
 
   # Testing
   mocktail: ^1.0.2
   golden_toolkit: ^0.15.0
-  alchemist: ^0.7.0
+  alchemist: ^0.12.1
 
   # Code Quality
-  flutter_lints: ^3.0.1
-  very_good_analysis: ^5.1.0
+  flutter_lints: ^6.0.0
+  very_good_analysis: ^10.0.0
 
 # Hive Type Adapters
   hive_generator: ^2.0.1
