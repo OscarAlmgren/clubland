@@ -4,8 +4,8 @@ import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/services.dart' as flutter_services;
+import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:logger/logger.dart';
 
 import '../constants/app_constants.dart';
@@ -87,7 +87,7 @@ class ErrorHandler {
       return _handleGraphQLException(exception);
     }
 
-    if (exception is PlatformException) {
+    if (exception is flutter_services.PlatformException) {
       return _handlePlatformException(exception);
     }
 
@@ -213,7 +213,7 @@ class ErrorHandler {
   }
 
   /// Handle platform exceptions
-  static PlatformFailure _handlePlatformException(PlatformException exception) {
+  static PlatformFailure _handlePlatformException(flutter_services.PlatformException exception) {
     switch (exception.code) {
       case 'permission_denied':
         return PlatformFailure.permissionDenied(exception.message ?? 'Permission denied');

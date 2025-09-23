@@ -11,12 +11,13 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [message, code];
 
   @override
-  String toString() => 'Failure: $message${code != null ? ' (Code: $code)' : ''}';
+  String toString() =>
+      'Failure: $message${code != null ? ' (Code: $code)' : ''}';
 }
 
 /// Authentication related failures
 class AuthFailure extends Failure {
-  const AuthFailure(String message, [String? code]) : super(message, code);
+  const AuthFailure(super.message, [super.code]);
 
   factory AuthFailure.invalidCredentials() =>
       const AuthFailure('Invalid credentials provided', 'INVALID_CREDENTIALS');
@@ -27,22 +28,34 @@ class AuthFailure extends Failure {
   factory AuthFailure.unauthorized() =>
       const AuthFailure('Unauthorized access', 'UNAUTHORIZED');
 
-  factory AuthFailure.biometricNotAvailable() =>
-      const AuthFailure('Biometric authentication not available', 'BIOMETRIC_UNAVAILABLE');
+  factory AuthFailure.biometricNotAvailable() => const AuthFailure(
+    'Biometric authentication not available',
+    'BIOMETRIC_UNAVAILABLE',
+  );
 
-  factory AuthFailure.biometricNotEnrolled() =>
-      const AuthFailure('No biometric credentials enrolled', 'BIOMETRIC_NOT_ENROLLED');
+  factory AuthFailure.biometricNotEnrolled() => const AuthFailure(
+    'No biometric credentials enrolled',
+    'BIOMETRIC_NOT_ENROLLED',
+  );
 
   factory AuthFailure.hankoError(String message) =>
       AuthFailure('Hanko authentication error: $message', 'HANKO_ERROR');
 
-  factory AuthFailure.tokenRefreshFailed() =>
-      const AuthFailure('Failed to refresh authentication token', 'TOKEN_REFRESH_FAILED');
+  factory AuthFailure.tokenRefreshFailed() => const AuthFailure(
+    'Failed to refresh authentication token',
+    'TOKEN_REFRESH_FAILED',
+  );
+
+  factory AuthFailure.unexpected(String message) =>
+      AuthFailure('Unexpected authentication error: $message', 'UNEXPECTED_ERROR');
+
+  factory AuthFailure.notImplemented() =>
+      const AuthFailure('Authentication feature not implemented', 'NOT_IMPLEMENTED');
 }
 
 /// Network related failures
 class NetworkFailure extends Failure {
-  const NetworkFailure(String message, [String? code]) : super(message, code);
+  const NetworkFailure(super.message, [super.code]);
 
   factory NetworkFailure.noConnection() =>
       const NetworkFailure('No internet connection available', 'NO_CONNECTION');
@@ -68,18 +81,26 @@ class NetworkFailure extends Failure {
 
 /// GraphQL specific failures
 class GraphQLFailure extends Failure {
-  const GraphQLFailure(String message, [String? code, this.extensions]) : super(message, code);
+  const GraphQLFailure(super.message, [super.code, this.extensions]);
 
   final Map<String, dynamic>? extensions;
 
-  factory GraphQLFailure.validationError(String message, [Map<String, dynamic>? extensions]) =>
-      GraphQLFailure('Validation error: $message', 'VALIDATION_ERROR', extensions);
+  factory GraphQLFailure.validationError(
+    String message, [
+    Map<String, dynamic>? extensions,
+  ]) => GraphQLFailure(
+    'Validation error: $message',
+    'VALIDATION_ERROR',
+    extensions,
+  );
 
   factory GraphQLFailure.businessLogicError(String message) =>
       GraphQLFailure('Business logic error: $message', 'BUSINESS_LOGIC_ERROR');
 
-  factory GraphQLFailure.subscriptionFailed() =>
-      const GraphQLFailure('GraphQL subscription failed', 'SUBSCRIPTION_FAILED');
+  factory GraphQLFailure.subscriptionFailed() => const GraphQLFailure(
+    'GraphQL subscription failed',
+    'SUBSCRIPTION_FAILED',
+  );
 
   factory GraphQLFailure.queryFailed(String query) =>
       GraphQLFailure('GraphQL query failed: $query', 'QUERY_FAILED');
@@ -91,12 +112,13 @@ class GraphQLFailure extends Failure {
   List<Object?> get props => [message, code, extensions];
 
   @override
-  String toString() => 'GraphQLFailure: $message${code != null ? ' (Code: $code)' : ''}';
+  String toString() =>
+      'GraphQLFailure: $message${code != null ? ' (Code: $code)' : ''}';
 }
 
 /// Local storage failures
 class StorageFailure extends Failure {
-  const StorageFailure(String message, [String? code]) : super(message, code);
+  const StorageFailure(super.message, [super.code]);
 
   factory StorageFailure.encryptionFailed() =>
       const StorageFailure('Failed to encrypt data', 'ENCRYPTION_FAILED');
@@ -113,8 +135,10 @@ class StorageFailure extends Failure {
   factory StorageFailure.storageCorrupted() =>
       const StorageFailure('Storage is corrupted', 'STORAGE_CORRUPTED');
 
-  factory StorageFailure.secureStorageUnavailable() =>
-      const StorageFailure('Secure storage unavailable', 'SECURE_STORAGE_UNAVAILABLE');
+  factory StorageFailure.secureStorageUnavailable() => const StorageFailure(
+    'Secure storage unavailable',
+    'SECURE_STORAGE_UNAVAILABLE',
+  );
 
   factory StorageFailure.quotaExceeded() =>
       const StorageFailure('Storage quota exceeded', 'QUOTA_EXCEEDED');
@@ -122,7 +146,7 @@ class StorageFailure extends Failure {
 
 /// Cache related failures
 class CacheFailure extends Failure {
-  const CacheFailure(String message, [String? code]) : super(message, code);
+  const CacheFailure(super.message, [super.code]);
 
   factory CacheFailure.notFound() =>
       const CacheFailure('Cache entry not found', 'CACHE_NOT_FOUND');
@@ -139,13 +163,24 @@ class CacheFailure extends Failure {
   factory CacheFailure.readFailed() =>
       const CacheFailure('Failed to read from cache', 'CACHE_READ_FAILED');
 
-  factory CacheFailure.invalidationFailed() =>
-      const CacheFailure('Failed to invalidate cache', 'CACHE_INVALIDATION_FAILED');
+  factory CacheFailure.invalidationFailed() => const CacheFailure(
+    'Failed to invalidate cache',
+    'CACHE_INVALIDATION_FAILED',
+  );
+
+  factory CacheFailure.retrievalFailed(String error) =>
+      CacheFailure('Failed to retrieve from cache: $error', 'CACHE_RETRIEVAL_FAILED');
+
+  factory CacheFailure.storageFailed(String error) =>
+      CacheFailure('Failed to store in cache: $error', 'CACHE_STORAGE_FAILED');
+
+  factory CacheFailure.deletionFailed(String error) =>
+      CacheFailure('Failed to delete from cache: $error', 'CACHE_DELETION_FAILED');
 }
 
 /// Location and maps failures
 class LocationFailure extends Failure {
-  const LocationFailure(String message, [String? code]) : super(message, code);
+  const LocationFailure(super.message, [super.code]);
 
   factory LocationFailure.permissionDenied() =>
       const LocationFailure('Location permission denied', 'PERMISSION_DENIED');
@@ -168,7 +203,7 @@ class LocationFailure extends Failure {
 
 /// Validation failures
 class ValidationFailure extends Failure {
-  const ValidationFailure(String message, [String? code, this.errors]) : super(message, code);
+  const ValidationFailure(super.message, [super.code, this.errors]);
 
   final Map<String, List<String>>? errors;
 
@@ -178,14 +213,20 @@ class ValidationFailure extends Failure {
   factory ValidationFailure.invalidPhoneNumber() =>
       const ValidationFailure('Invalid phone number format', 'INVALID_PHONE');
 
-  factory ValidationFailure.passwordTooWeak() =>
-      const ValidationFailure('Password does not meet requirements', 'WEAK_PASSWORD');
+  factory ValidationFailure.passwordTooWeak() => const ValidationFailure(
+    'Password does not meet requirements',
+    'WEAK_PASSWORD',
+  );
 
   factory ValidationFailure.fieldRequired(String fieldName) =>
       ValidationFailure('$fieldName is required', 'FIELD_REQUIRED');
 
   factory ValidationFailure.formErrors(Map<String, List<String>> errors) =>
-      ValidationFailure('Form validation failed', 'FORM_VALIDATION_FAILED', errors);
+      ValidationFailure(
+        'Form validation failed',
+        'FORM_VALIDATION_FAILED',
+        errors,
+      );
 
   factory ValidationFailure.invalidInput(String field, String value) =>
       ValidationFailure('Invalid input for $field: $value', 'INVALID_INPUT');
@@ -195,7 +236,8 @@ class ValidationFailure extends Failure {
 
   @override
   String toString() {
-    var result = 'ValidationFailure: $message${code != null ? ' (Code: $code)' : ''}';
+    var result =
+        'ValidationFailure: $message${code != null ? ' (Code: $code)' : ''}';
     if (errors != null && errors!.isNotEmpty) {
       result += '\nErrors: ${errors.toString()}';
     }
@@ -205,31 +247,47 @@ class ValidationFailure extends Failure {
 
 /// Business logic failures
 class BusinessLogicFailure extends Failure {
-  const BusinessLogicFailure(String message, [String? code]) : super(message, code);
+  const BusinessLogicFailure(super.message, [super.code]);
 
   factory BusinessLogicFailure.bookingConflict() =>
       const BusinessLogicFailure('Booking time conflict', 'BOOKING_CONFLICT');
 
   factory BusinessLogicFailure.insufficientPermissions() =>
-      const BusinessLogicFailure('Insufficient permissions', 'INSUFFICIENT_PERMISSIONS');
+      const BusinessLogicFailure(
+        'Insufficient permissions',
+        'INSUFFICIENT_PERMISSIONS',
+      );
 
   factory BusinessLogicFailure.quotaExceeded() =>
       const BusinessLogicFailure('Usage quota exceeded', 'QUOTA_EXCEEDED');
 
-  factory BusinessLogicFailure.invalidOperation() =>
-      const BusinessLogicFailure('Invalid operation for current state', 'INVALID_OPERATION');
+  factory BusinessLogicFailure.invalidOperation() => const BusinessLogicFailure(
+    'Invalid operation for current state',
+    'INVALID_OPERATION',
+  );
 
   factory BusinessLogicFailure.membershipRequired() =>
-      const BusinessLogicFailure('Valid membership required', 'MEMBERSHIP_REQUIRED');
+      const BusinessLogicFailure(
+        'Valid membership required',
+        'MEMBERSHIP_REQUIRED',
+      );
 
-  factory BusinessLogicFailure.clubNotAvailable() =>
-      const BusinessLogicFailure('Club not available for reciprocal visits', 'CLUB_NOT_AVAILABLE');
+  factory BusinessLogicFailure.clubNotAvailable() => const BusinessLogicFailure(
+    'Club not available for reciprocal visits',
+    'CLUB_NOT_AVAILABLE',
+  );
 
   factory BusinessLogicFailure.visitAlreadyActive() =>
-      const BusinessLogicFailure('A visit is already active', 'VISIT_ALREADY_ACTIVE');
+      const BusinessLogicFailure(
+        'A visit is already active',
+        'VISIT_ALREADY_ACTIVE',
+      );
 
   factory BusinessLogicFailure.reservationNotFound() =>
-      const BusinessLogicFailure('Reservation not found', 'RESERVATION_NOT_FOUND');
+      const BusinessLogicFailure(
+        'Reservation not found',
+        'RESERVATION_NOT_FOUND',
+      );
 
   factory BusinessLogicFailure.checkInTooEarly() =>
       const BusinessLogicFailure('Check-in is too early', 'CHECK_IN_TOO_EARLY');
@@ -240,7 +298,7 @@ class BusinessLogicFailure extends Failure {
 
 /// File and media failures
 class MediaFailure extends Failure {
-  const MediaFailure(String message, [String? code]) : super(message, code);
+  const MediaFailure(super.message, [super.code]);
 
   factory MediaFailure.unsupportedFormat() =>
       const MediaFailure('Unsupported file format', 'UNSUPPORTED_FORMAT');
@@ -254,8 +312,10 @@ class MediaFailure extends Failure {
   factory MediaFailure.corruptedFile() =>
       const MediaFailure('File is corrupted', 'CORRUPTED_FILE');
 
-  factory MediaFailure.permissionDenied() =>
-      const MediaFailure('Media access permission denied', 'MEDIA_PERMISSION_DENIED');
+  factory MediaFailure.permissionDenied() => const MediaFailure(
+    'Media access permission denied',
+    'MEDIA_PERMISSION_DENIED',
+  );
 
   factory MediaFailure.compressionFailed() =>
       const MediaFailure('Image compression failed', 'COMPRESSION_FAILED');
@@ -266,13 +326,15 @@ class MediaFailure extends Failure {
 
 /// Platform specific failures
 class PlatformFailure extends Failure {
-  const PlatformFailure(String message, [String? code]) : super(message, code);
+  const PlatformFailure(super.message, [super.code]);
 
   factory PlatformFailure.unsupportedPlatform() =>
       const PlatformFailure('Platform not supported', 'UNSUPPORTED_PLATFORM');
 
-  factory PlatformFailure.featureUnavailable() =>
-      const PlatformFailure('Feature not available on this platform', 'FEATURE_UNAVAILABLE');
+  factory PlatformFailure.featureUnavailable() => const PlatformFailure(
+    'Feature not available on this platform',
+    'FEATURE_UNAVAILABLE',
+  );
 
   factory PlatformFailure.nativeError(String error) =>
       PlatformFailure('Native platform error: $error', 'NATIVE_ERROR');
@@ -286,7 +348,7 @@ class PlatformFailure extends Failure {
 
 /// Unknown or unexpected failures
 class UnknownFailure extends Failure {
-  const UnknownFailure(String message, [String? code]) : super(message, code);
+  const UnknownFailure(super.message, [super.code]);
 
   factory UnknownFailure.unexpected(String error) =>
       UnknownFailure('Unexpected error: $error', 'UNEXPECTED_ERROR');

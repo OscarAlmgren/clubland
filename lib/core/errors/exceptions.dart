@@ -6,15 +6,18 @@ abstract class AppException implements Exception {
   final String? code;
 
   @override
-  String toString() => 'AppException: $message${code != null ? ' (Code: $code)' : ''}';
+  String toString() =>
+      'AppException: $message${code != null ? ' (Code: $code)' : ''}';
 }
 
 /// Authentication related exceptions
 class AuthException extends AppException {
-  const AuthException(String message, [String? code]) : super(message, code);
+  const AuthException(super.message, [super.code]);
 
-  factory AuthException.invalidCredentials() =>
-      const AuthException('Invalid credentials provided', 'INVALID_CREDENTIALS');
+  factory AuthException.invalidCredentials() => const AuthException(
+    'Invalid credentials provided',
+    'INVALID_CREDENTIALS',
+  );
 
   factory AuthException.sessionExpired() =>
       const AuthException('Session has expired', 'SESSION_EXPIRED');
@@ -22,11 +25,15 @@ class AuthException extends AppException {
   factory AuthException.unauthorized() =>
       const AuthException('Unauthorized access', 'UNAUTHORIZED');
 
-  factory AuthException.biometricNotAvailable() =>
-      const AuthException('Biometric authentication not available', 'BIOMETRIC_UNAVAILABLE');
+  factory AuthException.biometricNotAvailable() => const AuthException(
+    'Biometric authentication not available',
+    'BIOMETRIC_UNAVAILABLE',
+  );
 
-  factory AuthException.biometricNotEnrolled() =>
-      const AuthException('No biometric credentials enrolled', 'BIOMETRIC_NOT_ENROLLED');
+  factory AuthException.biometricNotEnrolled() => const AuthException(
+    'No biometric credentials enrolled',
+    'BIOMETRIC_NOT_ENROLLED',
+  );
 
   factory AuthException.hankoError(String message) =>
       AuthException('Hanko authentication error: $message', 'HANKO_ERROR');
@@ -34,10 +41,12 @@ class AuthException extends AppException {
 
 /// Network related exceptions
 class NetworkException extends AppException {
-  const NetworkException(String message, [String? code]) : super(message, code);
+  const NetworkException(super.message, [super.code]);
 
-  factory NetworkException.noConnection() =>
-      const NetworkException('No internet connection available', 'NO_CONNECTION');
+  factory NetworkException.noConnection() => const NetworkException(
+    'No internet connection available',
+    'NO_CONNECTION',
+  );
 
   factory NetworkException.timeout() =>
       const NetworkException('Request timed out', 'TIMEOUT');
@@ -57,29 +66,41 @@ class NetworkException extends AppException {
 
 /// GraphQL specific exceptions
 class GraphQLException extends AppException {
-  const GraphQLException(String message, [String? code, this.extensions]) : super(message, code);
+  const GraphQLException(super.message, [super.code, this.extensions]);
 
   final Map<String, dynamic>? extensions;
 
-  factory GraphQLException.validationError(String message, Map<String, dynamic>? extensions) =>
-      GraphQLException('Validation error: $message', 'VALIDATION_ERROR', extensions);
+  factory GraphQLException.validationError(
+    String message,
+    Map<String, dynamic>? extensions,
+  ) => GraphQLException(
+    'Validation error: $message',
+    'VALIDATION_ERROR',
+    extensions,
+  );
 
   factory GraphQLException.businessLogicError(String message) =>
-      GraphQLException('Business logic error: $message', 'BUSINESS_LOGIC_ERROR');
+      GraphQLException(
+        'Business logic error: $message',
+        'BUSINESS_LOGIC_ERROR',
+      );
 
   factory GraphQLException.rateLimited() =>
       const GraphQLException('Rate limit exceeded', 'RATE_LIMITED');
 
-  factory GraphQLException.blockchainError(String message) =>
-      GraphQLException('Blockchain operation failed: $message', 'BLOCKCHAIN_ERROR');
+  factory GraphQLException.blockchainError(String message) => GraphQLException(
+    'Blockchain operation failed: $message',
+    'BLOCKCHAIN_ERROR',
+  );
 
   @override
-  String toString() => 'GraphQLException: $message${code != null ? ' (Code: $code)' : ''}';
+  String toString() =>
+      'GraphQLException: $message${code != null ? ' (Code: $code)' : ''}';
 }
 
 /// Local storage exceptions
 class StorageException extends AppException {
-  const StorageException(String message, [String? code]) : super(message, code);
+  const StorageException(super.message, [super.code]);
 
   factory StorageException.encryptionFailed() =>
       const StorageException('Failed to encrypt data', 'ENCRYPTION_FAILED');
@@ -96,16 +117,20 @@ class StorageException extends AppException {
   factory StorageException.storageCorrupted() =>
       const StorageException('Storage is corrupted', 'STORAGE_CORRUPTED');
 
-  factory StorageException.secureStorageUnavailable() =>
-      const StorageException('Secure storage unavailable', 'SECURE_STORAGE_UNAVAILABLE');
+  factory StorageException.secureStorageUnavailable() => const StorageException(
+    'Secure storage unavailable',
+    'SECURE_STORAGE_UNAVAILABLE',
+  );
 }
 
 /// Location and maps exceptions
 class LocationException extends AppException {
-  const LocationException(String message, [String? code]) : super(message, code);
+  const LocationException(super.message, [super.code]);
 
-  factory LocationException.permissionDenied() =>
-      const LocationException('Location permission denied', 'PERMISSION_DENIED');
+  factory LocationException.permissionDenied() => const LocationException(
+    'Location permission denied',
+    'PERMISSION_DENIED',
+  );
 
   factory LocationException.serviceDisabled() =>
       const LocationException('Location service disabled', 'SERVICE_DISABLED');
@@ -119,7 +144,7 @@ class LocationException extends AppException {
 
 /// Cache related exceptions
 class CacheException extends AppException {
-  const CacheException(String message, [String? code]) : super(message, code);
+  const CacheException(super.message, [super.code]);
 
   factory CacheException.notFound() =>
       const CacheException('Cache entry not found', 'CACHE_NOT_FOUND');
@@ -139,7 +164,7 @@ class CacheException extends AppException {
 
 /// Validation exceptions
 class ValidationException extends AppException {
-  const ValidationException(String message, [String? code, this.errors]) : super(message, code);
+  const ValidationException(super.message, [super.code, this.errors]);
 
   final Map<String, List<String>>? errors;
 
@@ -149,18 +174,25 @@ class ValidationException extends AppException {
   factory ValidationException.invalidPhoneNumber() =>
       const ValidationException('Invalid phone number format', 'INVALID_PHONE');
 
-  factory ValidationException.passwordTooWeak() =>
-      const ValidationException('Password does not meet requirements', 'WEAK_PASSWORD');
+  factory ValidationException.passwordTooWeak() => const ValidationException(
+    'Password does not meet requirements',
+    'WEAK_PASSWORD',
+  );
 
   factory ValidationException.fieldRequired(String fieldName) =>
       ValidationException('$fieldName is required', 'FIELD_REQUIRED');
 
   factory ValidationException.formErrors(Map<String, List<String>> errors) =>
-      ValidationException('Form validation failed', 'FORM_VALIDATION_FAILED', errors);
+      ValidationException(
+        'Form validation failed',
+        'FORM_VALIDATION_FAILED',
+        errors,
+      );
 
   @override
   String toString() {
-    var result = 'ValidationException: $message${code != null ? ' (Code: $code)' : ''}';
+    var result =
+        'ValidationException: $message${code != null ? ' (Code: $code)' : ''}';
     if (errors != null && errors!.isNotEmpty) {
       result += '\nErrors: ${errors.toString()}';
     }
@@ -170,30 +202,42 @@ class ValidationException extends AppException {
 
 /// Business logic exceptions
 class BusinessLogicException extends AppException {
-  const BusinessLogicException(String message, [String? code]) : super(message, code);
+  const BusinessLogicException(super.message, [super.code]);
 
   factory BusinessLogicException.bookingConflict() =>
       const BusinessLogicException('Booking time conflict', 'BOOKING_CONFLICT');
 
   factory BusinessLogicException.insufficientPermissions() =>
-      const BusinessLogicException('Insufficient permissions', 'INSUFFICIENT_PERMISSIONS');
+      const BusinessLogicException(
+        'Insufficient permissions',
+        'INSUFFICIENT_PERMISSIONS',
+      );
 
   factory BusinessLogicException.quotaExceeded() =>
       const BusinessLogicException('Usage quota exceeded', 'QUOTA_EXCEEDED');
 
   factory BusinessLogicException.invalidOperation() =>
-      const BusinessLogicException('Invalid operation for current state', 'INVALID_OPERATION');
+      const BusinessLogicException(
+        'Invalid operation for current state',
+        'INVALID_OPERATION',
+      );
 
   factory BusinessLogicException.membershipRequired() =>
-      const BusinessLogicException('Valid membership required', 'MEMBERSHIP_REQUIRED');
+      const BusinessLogicException(
+        'Valid membership required',
+        'MEMBERSHIP_REQUIRED',
+      );
 
   factory BusinessLogicException.clubNotAvailable() =>
-      const BusinessLogicException('Club not available for reciprocal visits', 'CLUB_NOT_AVAILABLE');
+      const BusinessLogicException(
+        'Club not available for reciprocal visits',
+        'CLUB_NOT_AVAILABLE',
+      );
 }
 
 /// File and media exceptions
 class MediaException extends AppException {
-  const MediaException(String message, [String? code]) : super(message, code);
+  const MediaException(super.message, [super.code]);
 
   factory MediaException.unsupportedFormat() =>
       const MediaException('Unsupported file format', 'UNSUPPORTED_FORMAT');
@@ -207,19 +251,23 @@ class MediaException extends AppException {
   factory MediaException.corruptedFile() =>
       const MediaException('File is corrupted', 'CORRUPTED_FILE');
 
-  factory MediaException.permissionDenied() =>
-      const MediaException('Media access permission denied', 'MEDIA_PERMISSION_DENIED');
+  factory MediaException.permissionDenied() => const MediaException(
+    'Media access permission denied',
+    'MEDIA_PERMISSION_DENIED',
+  );
 }
 
 /// Platform specific exceptions
 class PlatformException extends AppException {
-  const PlatformException(String message, [String? code]) : super(message, code);
+  const PlatformException(super.message, [super.code]);
 
   factory PlatformException.unsupportedPlatform() =>
       const PlatformException('Platform not supported', 'UNSUPPORTED_PLATFORM');
 
-  factory PlatformException.featureUnavailable() =>
-      const PlatformException('Feature not available on this platform', 'FEATURE_UNAVAILABLE');
+  factory PlatformException.featureUnavailable() => const PlatformException(
+    'Feature not available on this platform',
+    'FEATURE_UNAVAILABLE',
+  );
 
   factory PlatformException.nativeError(String error) =>
       PlatformException('Native platform error: $error', 'NATIVE_ERROR');

@@ -263,6 +263,10 @@ class SecureStorageService {
     ]);
   }
 
+  // Aliases for auth repository compatibility
+  Future<void> storeAccessToken(String token) => saveAccessToken(token);
+  Future<void> storeRefreshToken(String token) => saveRefreshToken(token);
+
   // Check if user is logged in
   Future<bool> isLoggedIn() async {
     final accessToken = await getAccessToken();

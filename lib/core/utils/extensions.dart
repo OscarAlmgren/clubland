@@ -1,3 +1,4 @@
+import 'dart:math' show pow;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -370,5 +371,3 @@ extension ColorExtensions on Color {
   }
 }
 
-/// Import required for pow function
-import 'dart:math' show pow;
