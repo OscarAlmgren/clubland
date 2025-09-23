@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/design_system/design_system.dart';
@@ -27,11 +26,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
-    final authController = ref.read(authControllerProvider.notifier);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: AppSpacing.pagePadding,
@@ -55,7 +53,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               height: 80,
                               decoration: BoxDecoration(
                                 color: colorScheme.primary,
-                                borderRadius: BorderRadius.circular(AppSizing.radiusLG),
+                                borderRadius: BorderRadius.circular(
+                                  AppSizing.radiusLG,
+                                ),
                               ),
                               child: Icon(
                                 Icons.location_city,
@@ -67,7 +67,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             Text(
                               'Welcome to Clubland',
                               style: AppTextStyles.headlineMedium.copyWith(
-                                color: colorScheme.onBackground,
+                                color: colorScheme.onSurface,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -152,7 +152,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ),
                             Padding(
-                              padding: AppSpacing.horizontalSpaceMD,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
                               child: Text(
                                 'or',
                                 style: AppTextStyles.bodySmall.copyWith(
@@ -216,27 +218,27 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  void _handleLogin() async {
+  Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      await ref.read(authControllerProvider.notifier).login(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
+      await ref
+          .read(authControllerProvider.notifier)
+          .login(
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+          );
     }
   }
 
-  void _handleHankoLogin() async {
+  Future<void> _handleHankoLogin() async {
     if (_emailController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your email first'),
-        ),
+        const SnackBar(content: Text('Please enter your email first')),
       );
       return;
     }
 
-    await ref.read(authControllerProvider.notifier).loginWithHanko(
-      email: _emailController.text.trim(),
-    );
+    await ref
+        .read(authControllerProvider.notifier)
+        .loginWithHanko(email: _emailController.text.trim());
   }
 }
