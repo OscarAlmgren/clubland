@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../constants/app_constants.dart';
@@ -9,9 +10,7 @@ part 'app_providers.g.dart';
 @riverpod
 class AppThemeMode extends _$AppThemeMode {
   @override
-  ThemeMode build() {
-    return ThemeMode.system;
-  }
+  ThemeMode build() => ThemeMode.system;
 
   void setThemeMode(ThemeMode mode) {
     state = mode;
@@ -37,9 +36,7 @@ class AppThemeMode extends _$AppThemeMode {
 @riverpod
 class AppLocale extends _$AppLocale {
   @override
-  Locale build() {
-    return const Locale('en', 'US');
-  }
+  Locale build() => const Locale('en', 'US');
 
   void setLocale(Locale locale) {
     state = locale;
@@ -49,15 +46,6 @@ class AppLocale extends _$AppLocale {
 
 /// App settings model
 class AppSettings {
-  final bool enableNotifications;
-  final bool enableAnalytics;
-  final bool enableCrashReporting;
-  final bool enableLocationServices;
-  final bool wifiOnlySync;
-  final bool autoSync;
-  final String imageQuality;
-  final bool reducedMotion;
-
   const AppSettings({
     this.enableNotifications = true,
     this.enableAnalytics = AppConstants.enableAnalytics,
@@ -69,6 +57,27 @@ class AppSettings {
     this.reducedMotion = false,
   });
 
+  factory AppSettings.fromJson(Map<String, dynamic> json) => AppSettings(
+    enableNotifications: json['enableNotifications'] as bool? ?? true,
+    enableAnalytics: json['enableAnalytics'] as bool? ?? AppConstants.enableAnalytics,
+    enableCrashReporting:
+        json['enableCrashReporting'] as bool? ?? AppConstants.enableCrashReporting,
+    enableLocationServices:
+        json['enableLocationServices'] as bool? ?? AppConstants.enableLocationFeatures,
+    wifiOnlySync: json['wifiOnlySync'] as bool? ?? false,
+    autoSync: json['autoSync'] as bool? ?? true,
+    imageQuality: json['imageQuality'] as String? ?? 'high',
+    reducedMotion: json['reducedMotion'] as bool? ?? false,
+  );
+  final bool enableNotifications;
+  final bool enableAnalytics;
+  final bool enableCrashReporting;
+  final bool enableLocationServices;
+  final bool wifiOnlySync;
+  final bool autoSync;
+  final String imageQuality;
+  final bool reducedMotion;
+
   AppSettings copyWith({
     bool? enableNotifications,
     bool? enableAnalytics,
@@ -78,40 +87,28 @@ class AppSettings {
     bool? autoSync,
     String? imageQuality,
     bool? reducedMotion,
-  }) {
-    return AppSettings(
-      enableNotifications: enableNotifications ?? this.enableNotifications,
-      enableAnalytics: enableAnalytics ?? this.enableAnalytics,
-      enableCrashReporting: enableCrashReporting ?? this.enableCrashReporting,
-      enableLocationServices: enableLocationServices ?? this.enableLocationServices,
-      wifiOnlySync: wifiOnlySync ?? this.wifiOnlySync,
-      autoSync: autoSync ?? this.autoSync,
-      imageQuality: imageQuality ?? this.imageQuality,
-      reducedMotion: reducedMotion ?? this.reducedMotion,
-    );
-  }
+  }) => AppSettings(
+    enableNotifications: enableNotifications ?? this.enableNotifications,
+    enableAnalytics: enableAnalytics ?? this.enableAnalytics,
+    enableCrashReporting: enableCrashReporting ?? this.enableCrashReporting,
+    enableLocationServices:
+        enableLocationServices ?? this.enableLocationServices,
+    wifiOnlySync: wifiOnlySync ?? this.wifiOnlySync,
+    autoSync: autoSync ?? this.autoSync,
+    imageQuality: imageQuality ?? this.imageQuality,
+    reducedMotion: reducedMotion ?? this.reducedMotion,
+  );
 
   Map<String, dynamic> toJson() => {
-        'enableNotifications': enableNotifications,
-        'enableAnalytics': enableAnalytics,
-        'enableCrashReporting': enableCrashReporting,
-        'enableLocationServices': enableLocationServices,
-        'wifiOnlySync': wifiOnlySync,
-        'autoSync': autoSync,
-        'imageQuality': imageQuality,
-        'reducedMotion': reducedMotion,
-      };
-
-  factory AppSettings.fromJson(Map<String, dynamic> json) => AppSettings(
-        enableNotifications: json['enableNotifications'] ?? true,
-        enableAnalytics: json['enableAnalytics'] ?? AppConstants.enableAnalytics,
-        enableCrashReporting: json['enableCrashReporting'] ?? AppConstants.enableCrashReporting,
-        enableLocationServices: json['enableLocationServices'] ?? AppConstants.enableLocationFeatures,
-        wifiOnlySync: json['wifiOnlySync'] ?? false,
-        autoSync: json['autoSync'] ?? true,
-        imageQuality: json['imageQuality'] ?? 'high',
-        reducedMotion: json['reducedMotion'] ?? false,
-      );
+    'enableNotifications': enableNotifications,
+    'enableAnalytics': enableAnalytics,
+    'enableCrashReporting': enableCrashReporting,
+    'enableLocationServices': enableLocationServices,
+    'wifiOnlySync': wifiOnlySync,
+    'autoSync': autoSync,
+    'imageQuality': imageQuality,
+    'reducedMotion': reducedMotion,
+  };
 }
 
 /// App settings provider
@@ -128,7 +125,10 @@ class AppSettingsNotifier extends _$AppSettingsNotifier {
     // TODO: Save to storage
   }
 
-  Future<void> updateSetting<T>(T value, AppSettings Function(AppSettings, T) updater) async {
+  Future<void> updateSetting<T>(
+    T value,
+    AppSettings Function(AppSettings, T) updater,
+  ) async {
     final currentSettings = state.value ?? const AppSettings();
     final newSettings = updater(currentSettings, value);
     await updateSettings(newSettings);
@@ -164,29 +164,12 @@ class AppSettingsNotifier extends _$AppSettingsNotifier {
 }
 
 /// App lifecycle state provider
-@riverpod
-class AppLifecycleState extends _$AppLifecycleState {
-  @override
-  AppLifecycleState build() {
-    return AppLifecycleState.resumed;
-  }
-
-  void updateState(AppLifecycleState newState) {
-    state = newState;
-  }
-}
+final appLifecycleStateProvider = StateProvider<AppLifecycleState>(
+  (ref) => AppLifecycleState.resumed,
+);
 
 /// Device info model
 class DeviceInfo {
-  final String platform;
-  final String version;
-  final String model;
-  final bool isPhysicalDevice;
-  final bool isTablet;
-  final double screenWidth;
-  final double screenHeight;
-  final double pixelRatio;
-
   const DeviceInfo({
     required this.platform,
     required this.version,
@@ -197,20 +180,28 @@ class DeviceInfo {
     required this.screenHeight,
     required this.pixelRatio,
   });
+  final String platform;
+  final String version;
+  final String model;
+  final bool isPhysicalDevice;
+  final bool isTablet;
+  final double screenWidth;
+  final double screenHeight;
+  final double pixelRatio;
 
   bool get isMobile => !isTablet;
   bool get isLargeScreen => screenWidth >= 768;
 
   Map<String, dynamic> toJson() => {
-        'platform': platform,
-        'version': version,
-        'model': model,
-        'isPhysicalDevice': isPhysicalDevice,
-        'isTablet': isTablet,
-        'screenWidth': screenWidth,
-        'screenHeight': screenHeight,
-        'pixelRatio': pixelRatio,
-      };
+    'platform': platform,
+    'version': version,
+    'model': model,
+    'isPhysicalDevice': isPhysicalDevice,
+    'isTablet': isTablet,
+    'screenWidth': screenWidth,
+    'screenHeight': screenHeight,
+    'pixelRatio': pixelRatio,
+  };
 }
 
 /// Device info provider
@@ -241,13 +232,6 @@ enum PermissionStatus {
 
 /// App permissions model
 class AppPermissions {
-  final PermissionStatus camera;
-  final PermissionStatus location;
-  final PermissionStatus notifications;
-  final PermissionStatus microphone;
-  final PermissionStatus storage;
-  final PermissionStatus contacts;
-
   const AppPermissions({
     this.camera = PermissionStatus.denied,
     this.location = PermissionStatus.denied,
@@ -256,6 +240,12 @@ class AppPermissions {
     this.storage = PermissionStatus.denied,
     this.contacts = PermissionStatus.denied,
   });
+  final PermissionStatus camera;
+  final PermissionStatus location;
+  final PermissionStatus notifications;
+  final PermissionStatus microphone;
+  final PermissionStatus storage;
+  final PermissionStatus contacts;
 
   AppPermissions copyWith({
     PermissionStatus? camera,
@@ -264,29 +254,28 @@ class AppPermissions {
     PermissionStatus? microphone,
     PermissionStatus? storage,
     PermissionStatus? contacts,
-  }) {
-    return AppPermissions(
-      camera: camera ?? this.camera,
-      location: location ?? this.location,
-      notifications: notifications ?? this.notifications,
-      microphone: microphone ?? this.microphone,
-      storage: storage ?? this.storage,
-      contacts: contacts ?? this.contacts,
-    );
-  }
+  }) => AppPermissions(
+    camera: camera ?? this.camera,
+    location: location ?? this.location,
+    notifications: notifications ?? this.notifications,
+    microphone: microphone ?? this.microphone,
+    storage: storage ?? this.storage,
+    contacts: contacts ?? this.contacts,
+  );
 
   bool get hasLocationPermission => location == PermissionStatus.granted;
-  bool get hasNotificationPermission => notifications == PermissionStatus.granted;
+  bool get hasNotificationPermission =>
+      notifications == PermissionStatus.granted;
   bool get hasCameraPermission => camera == PermissionStatus.granted;
 
   Map<String, String> toJson() => {
-        'camera': camera.name,
-        'location': location.name,
-        'notifications': notifications.name,
-        'microphone': microphone.name,
-        'storage': storage.name,
-        'contacts': contacts.name,
-      };
+    'camera': camera.name,
+    'location': location.name,
+    'notifications': notifications.name,
+    'microphone': microphone.name,
+    'storage': storage.name,
+    'contacts': contacts.name,
+  };
 }
 
 /// App permissions provider
@@ -302,7 +291,7 @@ class AppPermissionsNotifier extends _$AppPermissionsNotifier {
     // TODO: Implement permission request
     state = AsyncData(
       state.value?.copyWith(location: PermissionStatus.granted) ??
-      const AppPermissions(location: PermissionStatus.granted),
+          const AppPermissions(location: PermissionStatus.granted),
     );
   }
 
@@ -310,7 +299,7 @@ class AppPermissionsNotifier extends _$AppPermissionsNotifier {
     // TODO: Implement permission request
     state = AsyncData(
       state.value?.copyWith(notifications: PermissionStatus.granted) ??
-      const AppPermissions(notifications: PermissionStatus.granted),
+          const AppPermissions(notifications: PermissionStatus.granted),
     );
   }
 
@@ -318,7 +307,7 @@ class AppPermissionsNotifier extends _$AppPermissionsNotifier {
     // TODO: Implement permission request
     state = AsyncData(
       state.value?.copyWith(camera: PermissionStatus.granted) ??
-      const AppPermissions(camera: PermissionStatus.granted),
+          const AppPermissions(camera: PermissionStatus.granted),
     );
   }
 
@@ -329,23 +318,18 @@ class AppPermissionsNotifier extends _$AppPermissionsNotifier {
 
 /// App state model for global app state
 class AppState {
-  final bool isInitialized;
-  final bool isOnline;
-  final bool isLoading;
-  final String? error;
-  final DateTime lastSyncTime;
-
   const AppState({
     this.isInitialized = false,
     this.isOnline = true,
     this.isLoading = false,
     this.error,
-    DateTime? lastSyncTime,
-  }) : lastSyncTime = lastSyncTime ?? const Duration().inMilliseconds != 0
-         ? lastSyncTime!
-         : const Duration().inMilliseconds == 0
-           ? DateTime.fromMillisecondsSinceEpoch(0)
-           : DateTime.fromMillisecondsSinceEpoch(0);
+    this.lastSyncTime,
+  });
+  final bool isInitialized;
+  final bool isOnline;
+  final bool isLoading;
+  final String? error;
+  final DateTime? lastSyncTime;
 
   AppState copyWith({
     bool? isInitialized,
@@ -353,24 +337,20 @@ class AppState {
     bool? isLoading,
     String? error,
     DateTime? lastSyncTime,
-  }) {
-    return AppState(
-      isInitialized: isInitialized ?? this.isInitialized,
-      isOnline: isOnline ?? this.isOnline,
-      isLoading: isLoading ?? this.isLoading,
-      error: error,
-      lastSyncTime: lastSyncTime ?? this.lastSyncTime,
-    );
-  }
+  }) => AppState(
+    isInitialized: isInitialized ?? this.isInitialized,
+    isOnline: isOnline ?? this.isOnline,
+    isLoading: isLoading ?? this.isLoading,
+    error: error ?? this.error,
+    lastSyncTime: lastSyncTime ?? this.lastSyncTime,
+  );
 }
 
 /// Global app state provider
 @riverpod
 class GlobalAppState extends _$GlobalAppState {
   @override
-  AppState build() {
-    return const AppState();
-  }
+  AppState build() => const AppState();
 
   void setInitialized(bool isInitialized) {
     state = state.copyWith(isInitialized: isInitialized);

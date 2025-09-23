@@ -22,7 +22,7 @@ final deviceInfoProvider = AutoDisposeFutureProvider<DeviceInfo>.internal(
 );
 
 typedef DeviceInfoRef = AutoDisposeFutureProviderRef<DeviceInfo>;
-String _$appThemeModeHash() => r'94ccb6bbb948417bda87f77fbf6af03ba0fda45f';
+String _$appThemeModeHash() => r'0258da4ba681e5505de173421d4731f68b166595';
 
 /// App theme mode provider
 ///
@@ -39,7 +39,7 @@ final appThemeModeProvider =
 );
 
 typedef _$AppThemeMode = AutoDisposeNotifier<ThemeMode>;
-String _$appLocaleHash() => r'1fb43152439fdfe942f91c4025dc9333f7231b56';
+String _$appLocaleHash() => r'4665ebb95249c0693dee586eadc04435dd16a7e6';
 
 /// App locale provider
 ///
@@ -75,24 +75,6 @@ final appSettingsNotifierProvider =
 );
 
 typedef _$AppSettingsNotifier = AutoDisposeAsyncNotifier<AppSettings>;
-String _$appLifecycleStateHash() => r'b18fbdd9906182e3f9c98923992278f2e98fb35d';
-
-/// App lifecycle state provider
-///
-/// Copied from [AppLifecycleState].
-@ProviderFor(AppLifecycleState)
-final appLifecycleStateProvider =
-    AutoDisposeNotifierProvider<AppLifecycleState, AppLifecycleState>.internal(
-  AppLifecycleState.new,
-  name: r'appLifecycleStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appLifecycleStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$AppLifecycleState = AutoDisposeNotifier<AppLifecycleState>;
 String _$appPermissionsNotifierHash() =>
     r'9c7ea3a699284c89628f0a2345d28bef0a677cc9';
 
@@ -112,7 +94,7 @@ final appPermissionsNotifierProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$AppPermissionsNotifier = AutoDisposeAsyncNotifier<AppPermissions>;
-String _$globalAppStateHash() => r'3c4e6e034d7bb5ba7487b4e117937ac764cddced';
+String _$globalAppStateHash() => r'8a247e8ab6bae55ab99384b55e9a5be1207bcc93';
 
 /// Global app state provider
 ///
