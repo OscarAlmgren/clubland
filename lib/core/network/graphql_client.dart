@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 import '../constants/api_constants.dart';
 import '../constants/app_constants.dart';
 import '../constants/storage_keys.dart';
-import '../errors/error_handler.dart';
+import '../errors/error_handler.dart' as app_error;
 
 /// GraphQL client configuration and setup
 class GraphQLClientConfig {
@@ -26,18 +26,21 @@ class GraphQLClientConfig {
     final wsLink = WebSocketLink(
       '${baseUrl.replaceFirst('http', 'ws')}${ApiConstants.graphqlWsEndpoint}',
       config: SocketClientConfig(
-        autoReconnect: true,
-        inactivityTimeout: Duration(seconds: 30),
-        initialPayload: () async => await _getWebSocketPayload(),
+        initialPayload: () async => _getWebSocketPayload(),
       ),
     );
 
     final authLink = AuthLink(getToken: _getAuthToken);
-    final errorLink = ErrorLink(errorHandler: _handleGraphQLError);
+    final errorLink = ErrorLink(
+      onException: (request, forward, exception) {
+        _handleGraphQLError(OperationException(linkException: exception));
+        return null;
+      },
+    );
     final loggerLink = _createLoggerLink();
 
     // Combine links
-    Link link = Link.from([
+    var link = Link.from([
       errorLink,
       if (AppConstants.enableNetworkLogging) loggerLink,
       authLink,
@@ -59,10 +62,7 @@ class GraphQLClientConfig {
           error: ErrorPolicy.all,
           cacheReread: CacheRereadPolicy.mergeOptimistic,
         ),
-        query: Policies(
-          fetch: FetchPolicy.cacheFirst,
-          error: ErrorPolicy.all,
-        ),
+        query: Policies(fetch: FetchPolicy.cacheFirst, error: ErrorPolicy.all),
         mutate: Policies(
           fetch: FetchPolicy.networkOnly,
           error: ErrorPolicy.all,
@@ -78,9 +78,7 @@ class GraphQLClientConfig {
   }
 
   /// Get the configured GraphQL client
-  static GraphQLClient get client {
-    return _client;
-  }
+  static GraphQLClient get client => _client;
 
   /// Get authentication token for requests
   static Future<String?> _getAuthToken() async {
@@ -119,12 +117,12 @@ class GraphQLClientConfig {
     }
 
     // Convert to app failure and handle
-    final failure = ErrorHandler.handleException(error);
-    ErrorHandler.showErrorToUser(failure);
+    final failure = app_error.ErrorHandler.handleException(error);
+    app_error.ErrorHandler.showErrorToUser(failure);
   }
 
   /// Handle authentication errors
-  static void _handleAuthenticationError() async {
+  static Future<void> _handleAuthenticationError() async {
     _logger.w('Authentication error detected, clearing tokens');
 
     try {
@@ -136,29 +134,29 @@ class GraphQLClientConfig {
   }
 
   /// Create logger link for debugging
-  static Link _createLoggerLink() {
-    return Link.function((request, [forward]) {
-      _logger.d('GraphQL Request: ${request.operation.operationName}');
-      _logger.d('Variables: ${request.variables}');
+  static Link _createLoggerLink() => Link.function((request, [forward]) {
+    _logger.d('GraphQL Request: ${request.operation.operationName}');
+    _logger.d('Variables: ${request.variables}');
 
-      return forward!(request).map((response) {
-        if (response.errors?.isNotEmpty == true) {
-          _logger.e('GraphQL Errors: ${response.errors}');
-        }
+    return forward!(request).map((response) {
+      if (response.errors?.isNotEmpty ?? false) {
+        _logger.e('GraphQL Errors: ${response.errors}');
+      }
 
-        if (AppConstants.isDebugMode) {
-          _logger.d('GraphQL Response: ${response.data}');
-        }
+      if (AppConstants.isDebugMode) {
+        _logger.d('GraphQL Response: ${response.data}');
+      }
 
-        return response;
-      });
+      return response;
     });
-  }
+  });
 
   /// Refresh authentication token
   static Future<bool> refreshToken() async {
     try {
-      final refreshToken = await _secureStorage.read(key: StorageKeys.refreshToken);
+      final refreshToken = await _secureStorage.read(
+        key: StorageKeys.refreshToken,
+      );
       if (refreshToken == null) {
         _logger.w('No refresh token available');
         return false;
@@ -178,7 +176,7 @@ class GraphQLClientConfig {
   /// Clear cache
   static Future<void> clearCache() async {
     try {
-      await _client.cache.store.reset();
+      _client.cache.store.reset();
       _logger.i('GraphQL cache cleared');
     } catch (e) {
       _logger.e('Failed to clear GraphQL cache: $e');
@@ -201,7 +199,7 @@ class GraphQLClientConfig {
   /// Dispose client resources
   static Future<void> dispose() async {
     try {
-      await _client.cache.store.reset();
+      _client.cache.store.reset();
       _logger.i('GraphQL client disposed');
     } catch (e) {
       _logger.e('Failed to dispose GraphQL client: $e');
@@ -213,22 +211,24 @@ class GraphQLClientConfig {
 class GraphQLHelpers {
   /// Execute query with error handling
   static Future<QueryResult<T>> executeQuery<T>(
-    QueryOptions options, {
+    QueryOptions<T> options, {
     bool showErrorToUser = true,
   }) async {
     try {
       final result = await GraphQLClientConfig.client.query<T>(options);
 
       if (result.hasException && showErrorToUser) {
-        final failure = ErrorHandler.handleException(result.exception!);
-        ErrorHandler.showErrorToUser(failure);
+        final failure = app_error.ErrorHandler.handleException(
+          result.exception!,
+        );
+        app_error.ErrorHandler.showErrorToUser(failure);
       }
 
       return result;
     } catch (e) {
       if (showErrorToUser) {
-        final failure = ErrorHandler.handleException(e);
-        ErrorHandler.showErrorToUser(failure);
+        final failure = app_error.ErrorHandler.handleException(e);
+        app_error.ErrorHandler.showErrorToUser(failure);
       }
       rethrow;
     }
@@ -236,22 +236,24 @@ class GraphQLHelpers {
 
   /// Execute mutation with error handling
   static Future<QueryResult<T>> executeMutation<T>(
-    MutationOptions options, {
+    MutationOptions<T> options, {
     bool showErrorToUser = true,
   }) async {
     try {
       final result = await GraphQLClientConfig.client.mutate<T>(options);
 
       if (result.hasException && showErrorToUser) {
-        final failure = ErrorHandler.handleException(result.exception!);
-        ErrorHandler.showErrorToUser(failure);
+        final failure = app_error.ErrorHandler.handleException(
+          result.exception!,
+        );
+        app_error.ErrorHandler.showErrorToUser(failure);
       }
 
       return result;
     } catch (e) {
       if (showErrorToUser) {
-        final failure = ErrorHandler.handleException(e);
-        ErrorHandler.showErrorToUser(failure);
+        final failure = app_error.ErrorHandler.handleException(e);
+        app_error.ErrorHandler.showErrorToUser(failure);
       }
       rethrow;
     }
@@ -259,29 +261,30 @@ class GraphQLHelpers {
 
   /// Subscribe with error handling
   static Stream<QueryResult<T>> executeSubscription<T>(
-    SubscriptionOptions options, {
+    SubscriptionOptions<T> options, {
     bool showErrorToUser = true,
   }) {
     try {
-      return GraphQLClientConfig.client.subscribe<T>(options).handleError((error) {
+      return GraphQLClientConfig.client.subscribe<T>(options).handleError((
+        Object error,
+      ) {
         if (showErrorToUser) {
-          final failure = ErrorHandler.handleException(error);
-          ErrorHandler.showErrorToUser(failure);
+          final failure = app_error.ErrorHandler.handleException(error);
+          app_error.ErrorHandler.showErrorToUser(failure);
         }
       });
     } catch (e) {
       if (showErrorToUser) {
-        final failure = ErrorHandler.handleException(e);
-        ErrorHandler.showErrorToUser(failure);
+        final failure = app_error.ErrorHandler.handleException(e);
+        app_error.ErrorHandler.showErrorToUser(failure);
       }
       rethrow;
     }
   }
 
   /// Check if operation was successful
-  static bool isSuccess<T>(QueryResult<T> result) {
-    return !result.hasException && result.data != null;
-  }
+  static bool isSuccess<T>(QueryResult<T> result) =>
+      !result.hasException && result.data != null;
 
   /// Extract data from result safely
   static T? extractData<T>(QueryResult<T> result) {
@@ -293,7 +296,7 @@ class GraphQLHelpers {
 
   /// Get error message from result
   static String? getErrorMessage<T>(QueryResult<T> result) {
-    if (result.exception?.graphqlErrors.isNotEmpty == true) {
+    if (result.exception?.graphqlErrors.isNotEmpty ?? false) {
       return result.exception!.graphqlErrors.first.message;
     }
     if (result.exception?.linkException != null) {

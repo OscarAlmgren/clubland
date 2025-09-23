@@ -9,31 +9,31 @@ import 'network_info.dart';
 
 /// Custom error handling link
 class ErrorHandlingLink extends Link {
+  ErrorHandlingLink({this.logger});
   final Logger? logger;
 
-  ErrorHandlingLink({this.logger});
-
   @override
-  Stream<Response> request(Request request, [NextLink? forward]) {
-    return forward!(request).handleError((error) {
-      logger?.e('GraphQL Link Error: $error');
+  Stream<Response> request(Request request, [NextLink? forward]) =>
+      forward!(request).handleError((error) {
+        logger?.e('GraphQL Link Error: $error');
 
-      if (error is OperationException) {
-        // Handle specific GraphQL errors
-        _handleGraphQLError(error);
-      } else {
-        // Handle other errors
-        final failure = ErrorHandler.handleException(error);
-        ErrorHandler.showErrorToUser(failure);
-      }
-    });
-  }
+        if (error is OperationException) {
+          // Handle specific GraphQL errors
+          _handleGraphQLError(error);
+        } else {
+          // Handle other errors
+          final failure = ErrorHandler.handleException(error);
+          ErrorHandler.showErrorToUser(failure);
+        }
+      });
 
   void _handleGraphQLError(OperationException error) {
     final failure = ErrorHandler.handleException(error);
 
     // Check for authentication errors
-    if (error.graphqlErrors.any((e) => e.extensions?['code'] == 'UNAUTHENTICATED')) {
+    if (error.graphqlErrors.any(
+      (e) => e.extensions?['code'] == 'UNAUTHENTICATED',
+    )) {
       ErrorHandler.handleAuthError(failure);
     } else {
       ErrorHandler.showErrorToUser(failure);
@@ -43,36 +43,38 @@ class ErrorHandlingLink extends Link {
 
 /// Retry link with exponential backoff
 class RetryLink extends Link {
-  final int maxRetries;
-  final Duration initialDelay;
-  final double backoffMultiplier;
-  final Logger? logger;
-
   RetryLink({
     this.maxRetries = ApiConstants.maxRetries,
     this.initialDelay = ApiConstants.retryDelay,
     this.backoffMultiplier = 2.0,
     this.logger,
   });
+  final int maxRetries;
+  final Duration initialDelay;
+  final double backoffMultiplier;
+  final Logger? logger;
 
   @override
-  Stream<Response> request(Request request, [NextLink? forward]) {
-    return _executeWithRetry(request, forward, 0);
-  }
+  Stream<Response> request(Request request, [NextLink? forward]) =>
+      _executeWithRetry(request, forward, 0);
 
-  Stream<Response> _executeWithRetry(Request request, NextLink? forward, int attempt) {
-    return forward!(request).handleError((error) async {
-      if (attempt < maxRetries && _shouldRetry(error)) {
-        final delay = _calculateDelay(attempt);
-        logger?.w('Request failed, retrying in ${delay.inMilliseconds}ms (attempt ${attempt + 1}/$maxRetries)');
+  Stream<Response> _executeWithRetry(
+    Request request,
+    NextLink? forward,
+    int attempt,
+  ) => forward!(request).handleError((error) async {
+    if (attempt < maxRetries && _shouldRetry(error)) {
+      final delay = _calculateDelay(attempt);
+      logger?.w(
+        'Request failed, retrying in ${delay.inMilliseconds}ms (attempt ${attempt + 1}/$maxRetries)',
+      );
 
-        await Future.delayed(delay);
-        return _executeWithRetry(request, forward, attempt + 1);
-      } else {
-        throw error;
-      }
-    });
-  }
+      await Future.delayed(delay);
+      return _executeWithRetry(request, forward, attempt + 1);
+    } else {
+      throw error;
+    }
+  });
 
   bool _shouldRetry(dynamic error) {
     if (error is OperationException) {
@@ -101,22 +103,24 @@ class RetryLink extends Link {
 
 /// Network-aware link that handles offline scenarios
 class NetworkAwareLink extends Link {
-  final NetworkInfo networkInfo;
-  final Logger? logger;
-
-  NetworkAwareLink({
-    required this.networkInfo,
-    this.logger,
-  });
+  NetworkAwareLink({required this.networkInfo, this.logger});
+  late final NetworkInfo networkInfo;
+  late final Logger? logger;
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) async* {
     final isConnected = await networkInfo.isConnected;
 
     if (!isConnected) {
-      logger?.w('No network connection, failing request: ${request.operation.operationName}');
-      throw const OperationException(
-        linkException: NetworkException('No internet connection'),
+      logger?.w(
+        'No network connection, failing request: ${request.operation.operationName}',
+      );
+      throw OperationException(
+        linkException: NetworkException(
+          message: 'No internet connection',
+          originalException: OperationException(),
+          uri: null,
+        ),
       );
     }
 
@@ -124,7 +128,9 @@ class NetworkAwareLink extends Link {
     if (request.isSubscription) {
       final connectionType = await networkInfo.connectionType;
       if (connectionType == ConnectionType.mobile) {
-        logger?.i('Starting subscription on mobile connection: ${request.operation.operationName}');
+        logger?.i(
+          'Starting subscription on mobile connection: ${request.operation.operationName}',
+        );
       }
     }
 
@@ -134,15 +140,14 @@ class NetworkAwareLink extends Link {
 
 /// Caching link with custom cache policies
 class CachingLink extends Link {
-  final Duration defaultMaxAge;
-  final Map<String, Duration> operationMaxAge;
-  final Logger? logger;
-
   CachingLink({
     this.defaultMaxAge = ApiConstants.defaultCacheMaxAge,
     this.operationMaxAge = const {},
     this.logger,
   });
+  final Duration defaultMaxAge;
+  final Map<String, Duration> operationMaxAge;
+  final Logger? logger;
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) {
@@ -166,10 +171,9 @@ class CachingLink extends Link {
 
 /// Request deduplication link
 class DeduplicationLink extends Link {
+  DeduplicationLink({this.logger});
   final Map<String, StreamController<Response>> _pendingRequests = {};
   final Logger? logger;
-
-  DeduplicationLink({this.logger});
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) {
@@ -186,9 +190,7 @@ class DeduplicationLink extends Link {
     _pendingRequests[requestKey] = controller;
 
     forward!(request).listen(
-      (response) {
-        controller.add(response);
-      },
+      controller.add,
       onError: (error) {
         controller.addError(error);
       },
@@ -201,16 +203,14 @@ class DeduplicationLink extends Link {
     return controller.stream;
   }
 
-  String _generateRequestKey(Request request) {
-    return '${request.operation.operationName}_${request.variables.hashCode}';
-  }
+  String _generateRequestKey(Request request) =>
+      '${request.operation.operationName}_${request.variables.hashCode}';
 }
 
 /// Performance monitoring link
 class PerformanceLink extends Link {
-  final Logger? logger;
-
   PerformanceLink({this.logger});
+  final Logger? logger;
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) {
@@ -219,24 +219,32 @@ class PerformanceLink extends Link {
 
     logger?.d('Starting GraphQL operation: $operationName');
 
-    return forward!(request).map((response) {
-      stopwatch.stop();
-      final duration = stopwatch.elapsedMilliseconds;
+    return forward!(request)
+        .map((response) {
+          stopwatch.stop();
+          final duration = stopwatch.elapsedMilliseconds;
 
-      logger?.i('GraphQL operation completed: $operationName in ${duration}ms');
+          logger?.i(
+            'GraphQL operation completed: $operationName in ${duration}ms',
+          );
 
-      // Log slow operations
-      if (duration > 1000) {
-        logger?.w('Slow GraphQL operation detected: $operationName took ${duration}ms');
-      }
+          // Log slow operations
+          if (duration > 1000) {
+            logger?.w(
+              'Slow GraphQL operation detected: $operationName took ${duration}ms',
+            );
+          }
 
-      return response;
-    }).handleError((error) {
-      stopwatch.stop();
-      final duration = stopwatch.elapsedMilliseconds;
+          return response;
+        })
+        .handleError((error) {
+          stopwatch.stop();
+          final duration = stopwatch.elapsedMilliseconds;
 
-      logger?.e('GraphQL operation failed: $operationName after ${duration}ms - $error');
-    });
+          logger?.e(
+            'GraphQL operation failed: $operationName after ${duration}ms - $error',
+          );
+        });
   }
 }
 
@@ -261,11 +269,7 @@ class LinkFactory {
       DeduplicationLink(logger: logger),
       CachingLink(logger: logger),
       authLink,
-      Link.split(
-        (request) => request.isSubscription,
-        wsLink,
-        httpLink,
-      ),
+      Link.split((request) => request.isSubscription, wsLink, httpLink),
     ]);
   }
 
@@ -287,11 +291,7 @@ class LinkFactory {
       DeduplicationLink(logger: logger),
       CachingLink(logger: logger),
       authLink,
-      Link.split(
-        (request) => request.isSubscription,
-        wsLink,
-        httpLink,
-      ),
+      Link.split((request) => request.isSubscription, wsLink, httpLink),
     ]);
   }
 }
