@@ -31,7 +31,7 @@ class AppTheme {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       surfaceTintColor: AppColors.lightColorScheme.surface,
-      shadowColor: AppColors.lightColorScheme.shadow.withOpacity(0.1),
+      shadowColor: AppColors.lightColorScheme.shadow.withValues(alpha: 0.1),
     ),
 
     // Elevated Button Theme
@@ -75,20 +75,18 @@ class AppTheme {
     // Input Decoration Theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.lightColorScheme.surfaceVariant.withOpacity(0.3),
+      fillColor: AppColors.lightColorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
       contentPadding: const EdgeInsets.all(16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
           color: AppColors.lightColorScheme.outline,
-          width: 1,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-          color: AppColors.lightColorScheme.outline.withOpacity(0.5),
-          width: 1,
+          color: AppColors.lightColorScheme.outline.withValues(alpha: 0.5),
         ),
       ),
       focusedBorder: OutlineInputBorder(
@@ -102,7 +100,6 @@ class AppTheme {
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
           color: AppColors.lightColorScheme.error,
-          width: 1,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
@@ -116,7 +113,7 @@ class AppTheme {
         color: AppColors.lightColorScheme.onSurfaceVariant,
       ),
       hintStyle: AppTextStyles.bodyMedium.copyWith(
-        color: AppColors.lightColorScheme.onSurfaceVariant.withOpacity(0.6),
+        color: AppColors.lightColorScheme.onSurfaceVariant.withValues(alpha: 0.6),
       ),
       errorStyle: AppTextStyles.bodySmall.copyWith(
         color: AppColors.lightColorScheme.error,
@@ -168,7 +165,7 @@ class AppTheme {
 
     // Chip Theme
     chipTheme: ChipThemeData(
-      backgroundColor: AppColors.lightColorScheme.surfaceVariant,
+      backgroundColor: AppColors.lightColorScheme.surfaceContainerHighest,
       labelStyle: AppTextStyles.labelMedium,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -188,17 +185,17 @@ class AppTheme {
 
     // Switch Theme
     switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.lightColorScheme.onPrimary;
         }
         return AppColors.lightColorScheme.outline;
       }),
-      trackColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.lightColorScheme.primary;
         }
-        return AppColors.lightColorScheme.surfaceVariant;
+        return AppColors.lightColorScheme.surfaceContainerHighest;
       }),
     ),
 
@@ -209,7 +206,7 @@ class AppTheme {
 
     // Divider Theme
     dividerTheme: DividerThemeData(
-      color: AppColors.lightColorScheme.outline.withOpacity(0.2),
+      color: AppColors.lightColorScheme.outline.withValues(alpha: 0.2),
       thickness: 1,
       space: 1,
     ),
@@ -240,7 +237,7 @@ class AppTheme {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: AppColors.darkColorScheme.surface,
-      shadowColor: AppColors.darkColorScheme.shadow.withOpacity(0.3),
+      shadowColor: AppColors.darkColorScheme.shadow.withValues(alpha: 0.3),
     ),
 
     // Elevated Button Theme
@@ -284,20 +281,18 @@ class AppTheme {
     // Input Decoration Theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.darkColorScheme.surfaceVariant.withOpacity(0.3),
+      fillColor: AppColors.darkColorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
       contentPadding: const EdgeInsets.all(16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
           color: AppColors.darkColorScheme.outline,
-          width: 1,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-          color: AppColors.darkColorScheme.outline.withOpacity(0.5),
-          width: 1,
+          color: AppColors.darkColorScheme.outline.withValues(alpha: 0.5),
         ),
       ),
       focusedBorder: OutlineInputBorder(
@@ -311,7 +306,6 @@ class AppTheme {
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
           color: AppColors.darkColorScheme.error,
-          width: 1,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
@@ -325,7 +319,7 @@ class AppTheme {
         color: AppColors.darkColorScheme.onSurfaceVariant,
       ),
       hintStyle: AppTextStyles.bodyMedium.copyWith(
-        color: AppColors.darkColorScheme.onSurfaceVariant.withOpacity(0.6),
+        color: AppColors.darkColorScheme.onSurfaceVariant.withValues(alpha: 0.6),
       ),
       errorStyle: AppTextStyles.bodySmall.copyWith(
         color: AppColors.darkColorScheme.error,
@@ -377,7 +371,7 @@ class AppTheme {
 
     // Chip Theme
     chipTheme: ChipThemeData(
-      backgroundColor: AppColors.darkColorScheme.surfaceVariant,
+      backgroundColor: AppColors.darkColorScheme.surfaceContainerHighest,
       labelStyle: AppTextStyles.labelMedium,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -397,17 +391,17 @@ class AppTheme {
 
     // Switch Theme
     switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.darkColorScheme.onPrimary;
         }
         return AppColors.darkColorScheme.outline;
       }),
-      trackColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return AppColors.darkColorScheme.primary;
         }
-        return AppColors.darkColorScheme.surfaceVariant;
+        return AppColors.darkColorScheme.surfaceContainerHighest;
       }),
     ),
 
@@ -418,7 +412,7 @@ class AppTheme {
 
     // Divider Theme
     dividerTheme: DividerThemeData(
-      color: AppColors.darkColorScheme.outline.withOpacity(0.2),
+      color: AppColors.darkColorScheme.outline.withValues(alpha: 0.2),
       thickness: 1,
       space: 1,
     ),
