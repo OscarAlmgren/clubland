@@ -6,15 +6,30 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/errors/retry_service.dart';
 import '../../../../core/storage/secure_storage.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../datasources/auth_remote_datasource.dart';
 import '../datasources/auth_local_datasource.dart';
+import '../datasources/auth_remote_datasource.dart';
 import '../datasources/hanko_datasource.dart';
 
 /// Implementation of AuthRepository
 class AuthRepositoryImpl implements AuthRepository {
+  AuthRepositoryImpl({
+    AuthRemoteDataSource? remoteDataSource,
+    AuthLocalDataSource? localDataSource,
+    HankoDataSource? hankoDataSource,
+    required SecureStorageService secureStorage,
+    required Logger logger,
+  }) : _remoteDataSource = remoteDataSource ?? AuthRemoteDataSourceImpl(),
+       _localDataSource = localDataSource ?? AuthLocalDataSourceImpl(),
+       _hankoDataSource =
+           hankoDataSource ??
+           HankoDataSourceImpl(dio: _createConfiguredDio(), logger: logger),
+       _secureStorage = secureStorage,
+       _logger = logger,
+       _authStateController = StreamController<AuthSessionEntity?>.broadcast();
   final AuthRemoteDataSource _remoteDataSource;
   final AuthLocalDataSource _localDataSource;
   final HankoDataSource _hankoDataSource;
@@ -22,24 +37,9 @@ class AuthRepositoryImpl implements AuthRepository {
   final Logger _logger;
   final StreamController<AuthSessionEntity?> _authStateController;
 
-  AuthRepositoryImpl({
-    AuthRemoteDataSource? remoteDataSource,
-    AuthLocalDataSource? localDataSource,
-    HankoDataSource? hankoDataSource,
-    required SecureStorageService secureStorage,
-    required Logger logger,
-  })  : _remoteDataSource = remoteDataSource ?? AuthRemoteDataSourceImpl(),
-        _localDataSource = localDataSource ?? AuthLocalDataSourceImpl(),
-        _hankoDataSource = hankoDataSource ?? HankoDataSourceImpl(
-          dio: _createConfiguredDio(),
-          logger: logger,
-        ),
-        _secureStorage = secureStorage,
-        _logger = logger,
-        _authStateController = StreamController<AuthSessionEntity?>.broadcast();
-
   @override
-  Stream<AuthSessionEntity?> get authStateChanges => _authStateController.stream;
+  Stream<AuthSessionEntity?> get authStateChanges =>
+      _authStateController.stream;
 
   @override
   Future<Either<Failure, AuthSessionEntity>> login({
@@ -49,25 +49,25 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       _logger.d('Attempting login for email: $email');
 
-      // Call remote data source
+      // Call remote data source with retry logic
       final result = await _remoteDataSource.login(
         email: email,
         password: password,
+      ).withRetry(
+        config: RetryService.authRetryConfig(),
+        operationName: 'login',
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (session) async {
-          // Store session locally
-          await _storeSession(session);
+      return result.fold((failure) => Left(failure), (session) async {
+        // Store session locally
+        await _storeSession(session);
 
-          // Notify auth state change
-          _authStateController.add(session);
+        // Notify auth state change
+        _authStateController.add(session);
 
-          _logger.i('Login successful for user: ${session.user.email}');
-          return Right(session);
-        },
-      );
+        _logger.i('Login successful for user: ${session.user.email}');
+        return Right(session);
+      });
     } catch (e, stackTrace) {
       _logger.e('Login failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -82,47 +82,47 @@ class AuthRepositoryImpl implements AuthRepository {
       _logger.d('Attempting Hanko login for email: $email');
 
       // First check if email is registered with Hanko
-      final isRegisteredResult = await _hankoDataSource.isEmailRegistered(email);
-
-      return isRegisteredResult.fold(
-        (failure) => Left(failure),
-        (isRegistered) async {
-          if (!isRegistered) {
-            return Left(AuthFailure.invalidCredentials());
-          }
-
-          // Initiate Hanko login
-          final initResult = await _hankoDataSource.initiateLogin(email);
-
-          return initResult.fold(
-            (failure) => Left(failure),
-            (hankoResponse) async {
-              // Store Hanko session ID for completion
-              await _secureStorage.saveHankoSessionId(hankoResponse.sessionId);
-
-              // For now, return a mock session with Hanko session ID
-              // In a real implementation, this would wait for user to complete authentication
-              final user = UserEntity(
-                id: 'hanko-pending-${hankoResponse.sessionId}',
-                email: email,
-                status: UserStatus.pending,
-                createdAt: DateTime.now(),
-              );
-
-              final session = AuthSessionEntity(
-                accessToken: 'pending-hanko-auth',
-                refreshToken: 'pending-hanko-refresh',
-                expiresAt: DateTime.now().add(const Duration(minutes: 10)),
-                user: user,
-                hankoSessionId: hankoResponse.sessionId,
-              );
-
-              _logger.i('Hanko login initiated for user: $email');
-              return Right(session);
-            },
-          );
-        },
+      final isRegisteredResult = await _hankoDataSource.isEmailRegistered(
+        email,
       );
+
+      return isRegisteredResult.fold((failure) => Left(failure), (
+        isRegistered,
+      ) async {
+        if (!isRegistered) {
+          return Left(AuthFailure.invalidCredentials());
+        }
+
+        // Initiate Hanko login
+        final initResult = await _hankoDataSource.initiateLogin(email);
+
+        return initResult.fold((failure) => Left(failure), (
+          hankoResponse,
+        ) async {
+          // Store Hanko session ID for completion
+          await _secureStorage.saveHankoSessionId(hankoResponse.sessionId);
+
+          // For now, return a mock session with Hanko session ID
+          // In a real implementation, this would wait for user to complete authentication
+          final user = UserEntity(
+            id: 'hanko-pending-${hankoResponse.sessionId}',
+            email: email,
+            status: UserStatus.pending,
+            createdAt: DateTime.now(),
+          );
+
+          final session = AuthSessionEntity(
+            accessToken: 'pending-hanko-auth',
+            refreshToken: 'pending-hanko-refresh',
+            expiresAt: DateTime.now().add(const Duration(minutes: 10)),
+            user: user,
+            hankoSessionId: hankoResponse.sessionId,
+          );
+
+          _logger.i('Hanko login initiated for user: $email');
+          return Right(session);
+        });
+      });
     } catch (e, stackTrace) {
       _logger.e('Hanko login failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -142,21 +142,22 @@ class AuthRepositoryImpl implements AuthRepository {
         credential: credential,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (session) async {
-          await _storeSession(session);
-          _authStateController.add(session);
+      return result.fold((failure) => Left(failure), (session) async {
+        await _storeSession(session);
+        _authStateController.add(session);
 
-          // Clear the stored Hanko session ID as authentication is complete
-          await _secureStorage.deleteHankoSessionId();
+        // Clear the stored Hanko session ID as authentication is complete
+        await _secureStorage.deleteHankoSessionId();
 
-          _logger.i('Hanko authentication completed successfully');
-          return Right(session);
-        },
-      );
+        _logger.i('Hanko authentication completed successfully');
+        return Right(session);
+      });
     } catch (e, stackTrace) {
-      _logger.e('Hanko auth completion failed', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'Hanko auth completion failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -180,16 +181,13 @@ class AuthRepositoryImpl implements AuthRepository {
         clubId: clubId,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (session) async {
-          await _storeSession(session);
-          _authStateController.add(session);
+      return result.fold((failure) => Left(failure), (session) async {
+        await _storeSession(session);
+        _authStateController.add(session);
 
-          _logger.i('Registration successful for user: ${session.user.email}');
-          return Right(session);
-        },
-      );
+        _logger.i('Registration successful for user: ${session.user.email}');
+        return Right(session);
+      });
     } catch (e, stackTrace) {
       _logger.e('Registration failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -204,21 +202,18 @@ class AuthRepositoryImpl implements AuthRepository {
       // Call remote logout
       final result = await _remoteDataSource.logout();
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) async {
-          if (success) {
-            // Clear local session
-            await _clearSession();
+      return result.fold((failure) => Left(failure), (success) async {
+        if (success) {
+          // Clear local session
+          await _clearSession();
 
-            // Notify auth state change
-            _authStateController.add(null);
+          // Notify auth state change
+          _authStateController.add(null);
 
-            _logger.i('Logout successful');
-          }
-          return Right(success);
-        },
-      );
+          _logger.i('Logout successful');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
       _logger.e('Logout failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -234,18 +229,18 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final result = await _remoteDataSource.refreshToken(
         refreshToken: refreshToken,
+      ).withRetry(
+        config: RetryService.authRetryConfig(),
+        operationName: 'refreshToken',
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (session) async {
-          await _storeSession(session);
-          _authStateController.add(session);
+      return result.fold((failure) => Left(failure), (session) async {
+        await _storeSession(session);
+        _authStateController.add(session);
 
-          _logger.d('Token refresh successful');
-          return Right(session);
-        },
-      );
+        _logger.d('Token refresh successful');
+        return Right(session);
+      });
     } catch (e, stackTrace) {
       _logger.e('Token refresh failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -303,7 +298,11 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return await _remoteDataSource.checkEmailAvailability(email: email);
     } catch (e, stackTrace) {
-      _logger.e('Email availability check failed', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'Email availability check failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -313,7 +312,11 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return await _remoteDataSource.getUserPermissions();
     } catch (e, stackTrace) {
-      _logger.e('Get user permissions failed', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'Get user permissions failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -333,7 +336,11 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       return await _remoteDataSource.authenticateWithBiometrics();
     } catch (e, stackTrace) {
-      _logger.e('Biometric authentication failed', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'Biometric authentication failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -363,27 +370,24 @@ class AuthRepositoryImpl implements AuthRepository {
         profile: profile,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (user) async {
-          // Update local user data
-          await _localDataSource.storeUser(user);
+      return result.fold((failure) => Left(failure), (user) async {
+        // Update local user data
+        await _localDataSource.storeUser(user);
 
-          // Update the current session with new user data if it's the current user
-          final sessionResult = await getCurrentSession();
-          if (sessionResult.isRight()) {
-            final session = sessionResult.getOrElse(() => null);
-            if (session != null && session.user.id == userId) {
-              final updatedSession = session.copyWith(user: user);
-              await _storeSession(updatedSession);
-              _authStateController.add(updatedSession);
-            }
+        // Update the current session with new user data if it's the current user
+        final sessionResult = await getCurrentSession();
+        if (sessionResult.isRight()) {
+          final session = sessionResult.getOrElse(() => null);
+          if (session != null && session.user.id == userId) {
+            final updatedSession = session.copyWith(user: user);
+            await _storeSession(updatedSession);
+            _authStateController.add(updatedSession);
           }
+        }
 
-          _logger.i('Profile updated successfully for user: $userId');
-          return Right(user);
-        },
-      );
+        _logger.i('Profile updated successfully for user: $userId');
+        return Right(user);
+      });
     } catch (e, stackTrace) {
       _logger.e('Profile update failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -403,15 +407,12 @@ class AuthRepositoryImpl implements AuthRepository {
         newPassword: newPassword,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) {
-          if (success) {
-            _logger.i('Password changed successfully');
-          }
-          return Right(success);
-        },
-      );
+      return result.fold((failure) => Left(failure), (success) {
+        if (success) {
+          _logger.i('Password changed successfully');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
       _logger.e('Password change failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -425,21 +426,20 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       _logger.d('Requesting password reset for email: $email');
 
-      final result = await _remoteDataSource.requestPasswordReset(
-        email: email,
-      );
+      final result = await _remoteDataSource.requestPasswordReset(email: email);
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) {
-          if (success) {
-            _logger.i('Password reset requested for: $email');
-          }
-          return Right(success);
-        },
-      );
+      return result.fold((failure) => Left(failure), (success) {
+        if (success) {
+          _logger.i('Password reset requested for: $email');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
-      _logger.e('Password reset request failed', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'Password reset request failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -457,15 +457,12 @@ class AuthRepositoryImpl implements AuthRepository {
         newPassword: newPassword,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) {
-          if (success) {
-            _logger.i('Password reset completed successfully');
-          }
-          return Right(success);
-        },
-      );
+      return result.fold((failure) => Left(failure), (success) {
+        if (success) {
+          _logger.i('Password reset completed successfully');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
       _logger.e('Password reset failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -479,24 +476,19 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       _logger.d('Attempting account deletion');
 
-      final result = await _remoteDataSource.deleteAccount(
-        password: password,
-      );
+      final result = await _remoteDataSource.deleteAccount(password: password);
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) async {
-          if (success) {
-            // Clear all local data on successful account deletion
-            await _clearSession();
-            await _localDataSource.clearUser();
-            _authStateController.add(null);
+      return result.fold((failure) => Left(failure), (success) async {
+        if (success) {
+          // Clear all local data on successful account deletion
+          await _clearSession();
+          await _localDataSource.clearUser();
+          _authStateController.add(null);
 
-            _logger.i('Account deleted successfully');
-          }
-          return Right(success);
-        },
-      );
+          _logger.i('Account deleted successfully');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
       _logger.e('Account deletion failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -504,46 +496,39 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> verifyEmail({
-    required String token,
-  }) async {
+  Future<Either<Failure, bool>> verifyEmail({required String token}) async {
     try {
       _logger.d('Verifying email with token');
 
-      final result = await _remoteDataSource.verifyEmail(
-        token: token,
-      );
+      final result = await _remoteDataSource.verifyEmail(token: token);
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) async {
-          if (success) {
-            // Refresh user data to get updated verification status
-            final userResult = await getCurrentUser();
-            if (userResult.isRight()) {
-              final user = userResult.getOrElse(() => null);
-              if (user != null) {
-                final updatedUser = user.copyWith(status: UserStatus.verified);
-                await _localDataSource.storeUser(updatedUser);
+      return result.fold((failure) => Left(failure), (success) async {
+        if (success) {
+          // Refresh user data to get updated verification status
+          final userResult = await getCurrentUser();
+          if (userResult.isRight()) {
+            final user = userResult.getOrElse(() => null);
+            if (user != null) {
+              final updatedUser = user.copyWith(status: UserStatus.verified);
+              await _localDataSource.storeUser(updatedUser);
 
-                // Update session with verified user
-                final sessionResult = await getCurrentSession();
-                if (sessionResult.isRight()) {
-                  final session = sessionResult.getOrElse(() => null);
-                  if (session != null) {
-                    final updatedSession = session.copyWith(user: updatedUser);
-                    await _storeSession(updatedSession);
-                    _authStateController.add(updatedSession);
-                  }
+              // Update session with verified user
+              final sessionResult = await getCurrentSession();
+              if (sessionResult.isRight()) {
+                final session = sessionResult.getOrElse(() => null);
+                if (session != null) {
+                  final updatedSession = session.copyWith(user: updatedUser);
+                  await _storeSession(updatedSession);
+                  _authStateController.add(updatedSession);
                 }
               }
             }
-
-            _logger.i('Email verified successfully');
           }
-          return Right(success);
-        },
-      );
+
+          _logger.i('Email verified successfully');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
       _logger.e('Email verification failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -557,17 +542,18 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final result = await _remoteDataSource.resendEmailVerification();
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) {
-          if (success) {
-            _logger.i('Email verification resent successfully');
-          }
-          return Right(success);
-        },
-      );
+      return result.fold((failure) => Left(failure), (success) {
+        if (success) {
+          _logger.i('Email verification resent successfully');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
-      _logger.e('Resend email verification failed', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'Resend email verification failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -585,15 +571,12 @@ class AuthRepositoryImpl implements AuthRepository {
         token: token,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) {
-          if (success) {
-            _logger.i('Social account linked successfully: $provider');
-          }
-          return Right(success);
-        },
-      );
+      return result.fold((failure) => Left(failure), (success) {
+        if (success) {
+          _logger.i('Social account linked successfully: $provider');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
       _logger.e('Link social account failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -611,17 +594,18 @@ class AuthRepositoryImpl implements AuthRepository {
         provider: provider,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) {
-          if (success) {
-            _logger.i('Social account unlinked successfully: $provider');
-          }
-          return Right(success);
-        },
-      );
+      return result.fold((failure) => Left(failure), (success) {
+        if (success) {
+          _logger.i('Social account unlinked successfully: $provider');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
-      _logger.e('Unlink social account failed', error: e, stackTrace: stackTrace);
+      _logger.e(
+        'Unlink social account failed',
+        error: e,
+        stackTrace: stackTrace,
+      );
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -633,13 +617,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final result = await _remoteDataSource.getLinkedAccounts();
 
-      return result.fold(
-        (failure) => Left(failure),
-        (accounts) {
-          _logger.d('Retrieved ${accounts.length} linked accounts');
-          return Right(accounts);
-        },
-      );
+      return result.fold((failure) => Left(failure), (accounts) {
+        _logger.d('Retrieved ${accounts.length} linked accounts');
+        return Right(accounts);
+      });
     } catch (e, stackTrace) {
       _logger.e('Get linked accounts failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -653,13 +634,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final result = await _remoteDataSource.getSessionHistory();
 
-      return result.fold(
-        (failure) => Left(failure),
-        (sessions) {
-          _logger.d('Retrieved ${sessions.length} session history entries');
-          return Right(sessions);
-        },
-      );
+      return result.fold((failure) => Left(failure), (sessions) {
+        _logger.d('Retrieved ${sessions.length} session history entries');
+        return Right(sessions);
+      });
     } catch (e, stackTrace) {
       _logger.e('Get session history failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -677,15 +655,12 @@ class AuthRepositoryImpl implements AuthRepository {
         sessionId: sessionId,
       );
 
-      return result.fold(
-        (failure) => Left(failure),
-        (success) {
-          if (success) {
-            _logger.i('Session revoked successfully: $sessionId');
-          }
-          return Right(success);
-        },
-      );
+      return result.fold((failure) => Left(failure), (success) {
+        if (success) {
+          _logger.i('Session revoked successfully: $sessionId');
+        }
+        return Right(success);
+      });
     } catch (e, stackTrace) {
       _logger.e('Revoke session failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -699,13 +674,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final result = await _remoteDataSource.getActiveSessions();
 
-      return result.fold(
-        (failure) => Left(failure),
-        (sessions) {
-          _logger.d('Retrieved ${sessions.length} active sessions');
-          return Right(sessions);
-        },
-      );
+      return result.fold((failure) => Left(failure), (sessions) {
+        _logger.d('Retrieved ${sessions.length} active sessions');
+        return Right(sessions);
+      });
     } catch (e, stackTrace) {
       _logger.e('Get active sessions failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
@@ -728,23 +700,27 @@ class AuthRepositoryImpl implements AuthRepository {
 
   /// Create configured Dio instance for Hanko
   static Dio _createConfiguredDio() {
-    final dio = Dio(BaseOptions(
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      sendTimeout: const Duration(seconds: 30),
-    ));
+    final dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+      ),
+    );
 
     // Add interceptors for logging and error handling
-    dio.interceptors.add(LogInterceptor(
-      requestBody: true,
-      responseBody: true,
-      error: true,
-      logPrint: (object) {
-        // Only log in debug mode for security
-        // ignore: avoid_print
-        if (kDebugMode) print(object);
-      },
-    ));
+    dio.interceptors.add(
+      LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+        error: true,
+        logPrint: (object) {
+          // Only log in debug mode for security
+          // ignore: avoid_print
+          if (kDebugMode) print(object);
+        },
+      ),
+    );
 
     return dio;
   }

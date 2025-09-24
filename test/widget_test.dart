@@ -1,7 +1,7 @@
+import 'package:clubland/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:clubland/main.dart';
 import 'helpers/test_helpers.dart';
 
 void main() {
@@ -10,7 +10,9 @@ void main() {
     await Hive.initFlutter();
   });
 
-  testWidgets('App should start and show splash screen', (WidgetTester tester) async {
+  testWidgets('App should start and show splash screen', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const ClublandApp());
     await tester.pump();
 
