@@ -118,14 +118,14 @@ class HankoDataSourceImpl implements HankoDataSource {
         final sessionData = response.data;
 
         // Create user entity from Hanko response
-        final userData = sessionData['user'] as Map<String, dynamic>;
+        final userData = sessionData?['user'] as Map<String, dynamic>? ?? {};
         final user = UserEntity(
-          id: userData['id'] as String,
-          email: userData['email'] as String,
+          id: userData['id'] as String? ?? '',
+          email: userData['email'] as String? ?? '',
           firstName: userData['firstName'] as String?,
           lastName: userData['lastName'] as String?,
           status: UserStatus.active,
-          createdAt: DateTime.parse(userData['createdAt'] as String),
+          createdAt: DateTime.parse(userData['createdAt'] as String? ?? DateTime.now().toIso8601String()),
           updatedAt: userData['updatedAt'] != null
               ? DateTime.parse(userData['updatedAt'] as String)
               : null,
@@ -133,9 +133,9 @@ class HankoDataSourceImpl implements HankoDataSource {
 
         // Create auth session
         final session = AuthSessionEntity(
-          accessToken: sessionData['accessToken'] as String,
-          refreshToken: sessionData['refreshToken'] as String,
-          expiresAt: DateTime.parse(sessionData['expiresAt'] as String),
+          accessToken: sessionData?['accessToken'] as String? ?? '',
+          refreshToken: sessionData?['refreshToken'] as String? ?? '',
+          expiresAt: DateTime.parse(sessionData?['expiresAt'] as String? ?? DateTime.now().add(const Duration(hours: 1)).toIso8601String()),
           user: user,
           hankoSessionId: sessionId,
         );
@@ -213,7 +213,7 @@ class HankoDataSourceImpl implements HankoDataSource {
         final sessionData = response.data;
 
         // Create user entity from Hanko response
-        final userData = sessionData['user'] as Map<String, dynamic>;
+        final userData = sessionData?['user'] as Map<String, dynamic>? ?? {};
         final user = UserEntity(
           id: userData['id'] as String,
           email: userData['email'] as String,
@@ -225,9 +225,9 @@ class HankoDataSourceImpl implements HankoDataSource {
 
         // Create auth session
         final session = AuthSessionEntity(
-          accessToken: sessionData['accessToken'] as String,
-          refreshToken: sessionData['refreshToken'] as String,
-          expiresAt: DateTime.parse(sessionData['expiresAt'] as String),
+          accessToken: sessionData?['accessToken'] as String? ?? '',
+          refreshToken: sessionData?['refreshToken'] as String? ?? '',
+          expiresAt: DateTime.parse(sessionData?['expiresAt'] as String? ?? DateTime.now().add(const Duration(hours: 1)).toIso8601String()),
           user: user,
           hankoSessionId: sessionId,
         );
@@ -261,7 +261,7 @@ class HankoDataSourceImpl implements HankoDataSource {
       );
 
       if (response.statusCode == 200) {
-        final isRegistered = response.data['exists'] as bool;
+        final isRegistered = response.data?['exists'] as bool? ?? false;
         _logger.d('Email registration check completed: $isRegistered');
         return Right(isRegistered);
       } else {

@@ -523,7 +523,7 @@ class AuthRepositoryImpl implements AuthRepository {
             if (userResult.isRight()) {
               final user = userResult.getOrElse(() => null);
               if (user != null) {
-                final updatedUser = user.copyWith(emailVerified: true);
+                final updatedUser = user.copyWith(status: UserStatus.verified);
                 await _localDataSource.storeUser(updatedUser);
 
                 // Update session with verified user

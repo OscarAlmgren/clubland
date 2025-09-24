@@ -124,6 +124,7 @@ class UserProfile extends Equatable {
   const UserProfile({
     this.avatar,
     this.phoneNumber,
+    required this.fullName,
     this.dateOfBirth,
     this.address,
     this.preferences = const UserPreferences(),
@@ -136,6 +137,7 @@ class UserProfile extends Equatable {
   List<Object?> get props => [
         avatar,
         phoneNumber,
+        fullName,
         dateOfBirth,
         address,
         preferences,
@@ -147,6 +149,7 @@ class UserProfile extends Equatable {
   UserProfile copyWith({
     String? avatar,
     String? phoneNumber,
+    String? fullName,
     DateTime? dateOfBirth,
     UserAddress? address,
     UserPreferences? preferences,
@@ -157,6 +160,7 @@ class UserProfile extends Equatable {
     return UserProfile(
       avatar: avatar ?? this.avatar,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      fullName: fullName ?? this.fullName,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       address: address ?? this.address,
       preferences: preferences ?? this.preferences,
