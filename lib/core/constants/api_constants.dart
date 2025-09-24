@@ -1,24 +1,25 @@
+import '../config/environment_config.dart';
+
 class ApiConstants {
-  // Base URLs per environment
-  static const String devBaseUrl = 'http://localhost:8080';
-  static const String stagingBaseUrl = 'https://staging-api.reciprocal-clubs.com';
-  static const String prodBaseUrl = 'https://api.reciprocal-clubs.com';
+  // Base URLs (now using environment configuration)
+  static String get baseUrl => EnvironmentConfig.apiBaseUrl;
+  static String get graphqlUrl => EnvironmentConfig.graphqlEndpoint;
 
   // GraphQL endpoints
   static const String graphqlEndpoint = '/graphql';
   static const String graphqlWsEndpoint = '/graphql';
 
   // Authentication endpoints
-  static const String hankoBaseUrl = 'http://localhost:8000';
+  static String get hankoBaseUrl => EnvironmentConfig.hankoBaseUrl;
   static const String authEndpoint = '/auth';
   static const String loginEndpoint = '/auth/login';
   static const String refreshEndpoint = '/auth/refresh';
   static const String logoutEndpoint = '/auth/logout';
 
-  // API timeouts
-  static const Duration connectTimeout = Duration(seconds: 30);
-  static const Duration receiveTimeout = Duration(seconds: 30);
-  static const Duration sendTimeout = Duration(seconds: 30);
+  // API timeouts (now using environment configuration)
+  static Duration get connectTimeout => Duration(milliseconds: EnvironmentConfig.connectTimeout);
+  static Duration get receiveTimeout => Duration(milliseconds: EnvironmentConfig.receiveTimeout);
+  static Duration get sendTimeout => Duration(milliseconds: EnvironmentConfig.sendTimeout);
 
   // Pagination
   static const int defaultPageSize = 20;

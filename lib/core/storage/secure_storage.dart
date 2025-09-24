@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 
 import '../constants/storage_keys.dart';
 import '../errors/exceptions.dart';
+import '../security/encryption_service.dart';
 
 /// Secure storage wrapper for sensitive data
 abstract class SecureStorage {
@@ -127,10 +128,9 @@ class EnhancedSecureStorage extends SecureStorageImpl {
   /// Write encrypted string to secure storage
   Future<void> writeEncrypted(String key, String value, {String? encryptionKey}) async {
     try {
-      // In a real implementation, you would encrypt the value here
-      // For now, we'll just use the regular write method
-      // TODO: Implement actual encryption
-      await write(key, value);
+      final encryptionService = EncryptionService.instance;
+      final encryptedValue = encryptionService.encryptText(value);
+      await write(key, encryptedValue);
       _logger.d('Encrypted write to secure storage for key: $key');
     } catch (e) {
       _logger.e('Failed to write encrypted data: $e');
@@ -141,14 +141,13 @@ class EnhancedSecureStorage extends SecureStorageImpl {
   /// Read encrypted string from secure storage
   Future<String?> readEncrypted(String key, {String? encryptionKey}) async {
     try {
-      // In a real implementation, you would decrypt the value here
-      // For now, we'll just use the regular read method
-      // TODO: Implement actual decryption
-      final value = await read(key);
-      if (value != null) {
-        _logger.d('Encrypted read from secure storage for key: $key');
-      }
-      return value;
+      final encryptedValue = await read(key);
+      if (encryptedValue == null) return null;
+
+      final encryptionService = EncryptionService.instance;
+      final decryptedValue = encryptionService.decryptText(encryptedValue);
+      _logger.d('Encrypted read from secure storage for key: $key');
+      return decryptedValue;
     } catch (e) {
       _logger.e('Failed to read encrypted data: $e');
       throw StorageException.decryptionFailed();

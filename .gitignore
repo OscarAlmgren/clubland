@@ -43,3 +43,25 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Environment files (contain sensitive data)
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+
+# Security keys and certificates
+*.key
+*.p12
+*.jks
+*.keystore
+android/app/upload-keystore.jks
+
+# Crashlytics
+**/android/**/crashlytics-build.properties
+
+# Firebase
+**/ios/**/GoogleService-Info.plist
+**/android/**/google-services.json
+firebase_app_id_file.json
