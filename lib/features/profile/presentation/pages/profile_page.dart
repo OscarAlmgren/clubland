@@ -2,6 +2,7 @@ import '../../../../core/design_system/design_system.dart';
 
 /// Profile page - user profile and settings
 class ProfilePage extends StatelessWidget {
+  /// Constructs a [ProfilePage]
   const ProfilePage({super.key});
 
   @override
