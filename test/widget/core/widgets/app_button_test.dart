@@ -32,18 +32,30 @@ void main() {
       );
 
       expect(find.text('Secondary Button'), findsOneWidget);
-      expect(find.byType(OutlinedButton), findsOneWidget);
+      expect(find.byType(ElevatedButton), findsOneWidget);
     });
 
-    testWidgets('should render text button', (tester) async {
+    testWidgets('should render outline button', (tester) async {
       await tester.pumpApp(
-        AppButton.text(
-          text: 'Text Button',
+        AppButton.outline(
+          text: 'Outline Button',
           onPressed: () {},
         ),
       );
 
-      expect(find.text('Text Button'), findsOneWidget);
+      expect(find.text('Outline Button'), findsOneWidget);
+      expect(find.byType(OutlinedButton), findsOneWidget);
+    });
+
+    testWidgets('should render ghost button', (tester) async {
+      await tester.pumpApp(
+        AppButton.ghost(
+          text: 'Ghost Button',
+          onPressed: () {},
+        ),
+      );
+
+      expect(find.text('Ghost Button'), findsOneWidget);
       expect(find.byType(TextButton), findsOneWidget);
     });
 
@@ -81,15 +93,29 @@ void main() {
         ),
       );
 
+      // When isLoading is true, the button should still have onPressed but _handlePress won't execute the callback
       final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
-      expect(button.onPressed, null);
+      expect(button.onPressed, isNotNull);
+
+      // Test that tapping doesn't trigger the callback when loading
+      var wasPressed = false;
+      await tester.pumpApp(
+        AppButton.primary(
+          text: 'Loading Button',
+          isLoading: true,
+          onPressed: () => wasPressed = true,
+        ),
+      );
+
+      await tester.tap(find.byType(ElevatedButton));
+      expect(wasPressed, false);
     });
 
     testWidgets('should show icon when provided', (tester) async {
       await tester.pumpApp(
         AppButton.primary(
           text: 'Button with Icon',
-          icon: Icons.add,
+          leading: const Icon(Icons.add),
           onPressed: () {},
         ),
       );
@@ -98,13 +124,11 @@ void main() {
       expect(find.text('Button with Icon'), findsOneWidget);
     });
 
-    testWidgets('should apply custom width when provided', (tester) async {
-      const customWidth = 200.0;
-
+    testWidgets('should not expand to full width when isFullWidth is false', (tester) async {
       await tester.pumpApp(
         AppButton.primary(
           text: 'Custom Width',
-          width: customWidth,
+          isFullWidth: false,
           onPressed: () {},
         ),
       );
@@ -115,7 +139,7 @@ void main() {
           matching: find.byType(SizedBox),
         ),
       );
-      expect(container.width, customWidth);
+      expect(container.width, null);
     });
 
     testWidgets('should expand to full width by default', (tester) async {
@@ -168,7 +192,10 @@ void main() {
             label: 'Accessible Button',
             isButton: true,
             isEnabled: true,
+            isFocusable: true,
+            hasEnabledState: true,
             hasTapAction: true,
+            hasFocusAction: true,
           ),
         );
       });
@@ -182,11 +209,16 @@ void main() {
           ),
         );
 
+        // The button is still enabled but doesn't execute the callback when loading
         expect(
           tester.getSemantics(find.byType(ElevatedButton)),
           matchesSemantics(
             isButton: true,
-            isEnabled: false,
+            isEnabled: true,
+            isFocusable: true,
+            hasEnabledState: true,
+            hasTapAction: true,
+            hasFocusAction: true,
           ),
         );
       });
