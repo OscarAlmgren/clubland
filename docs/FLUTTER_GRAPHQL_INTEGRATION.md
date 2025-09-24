@@ -442,7 +442,7 @@ class AuthNotifier extends _$AuthNotifier {
       final authService = ref.read(authServiceProvider);
       final result = await authService.login(email, password);
       state = AsyncData(result.user);
-    } catch (e) {
+    } on Exception catch (e) {
       state = AsyncError(e, StackTrace.current);
     }
   }
@@ -659,7 +659,7 @@ mixin GraphQLMutationMixin<T extends ConsumerStatefulWidget> on ConsumerState<T>
         _isLoading = false;
       });
       return data;
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() {
         _error = e.toString();
         _isLoading = false;

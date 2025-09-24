@@ -289,14 +289,14 @@ class ClubRepositoryImpl implements ClubRepository {
         final clubs = await remoteSource.searchClubs(params);
         await localSource.cacheClubs(clubs);
         return Right(clubs.map((e) => e.toEntity()).toList());
-      } catch (e) {
+      } on Exception catch (e) {
         return Left(ServerFailure(e.toString()));
       }
     } else {
       try {
         final cachedClubs = await localSource.getCachedClubs();
         return Right(cachedClubs.map((e) => e.toEntity()).toList());
-      } catch (e) {
+      } on Exception catch (e) {
         return Left(CacheFailure(e.toString()));
       }
     }
@@ -1105,7 +1105,7 @@ class _InfiniteScrollListState<T> extends State<InfiniteScrollList<T>> {
         _hasMore = newItems.length == widget.pageSize;
         _isLoading = false;
       });
-    } catch (e) {
+    } on Exception catch (e) {
       setState(() => _isLoading = false);
       // Handle error
     }
