@@ -5,14 +5,13 @@ import 'package:intl/intl.dart';
 /// String extensions
 extension StringExtensions on String {
   /// Check if string is a valid email
-  bool get isValidEmail {
-    return RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(this);
-  }
+  bool get isValidEmail => RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  ).hasMatch(this);
 
   /// Check if string is a valid phone number
-  bool get isValidPhoneNumber {
-    return RegExp(r'^\+?[\d\s\-\(\)]+$').hasMatch(this) && length >= 10;
-  }
+  bool get isValidPhoneNumber =>
+      RegExp(r'^\+?[\d\s\-\(\)]+$').hasMatch(this) && length >= 10;
 
   /// Capitalize first letter
   String get capitalize {
@@ -21,9 +20,7 @@ extension StringExtensions on String {
   }
 
   /// Title case
-  String get titleCase {
-    return split(' ').map((word) => word.capitalize).join(' ');
-  }
+  String get titleCase => split(' ').map((word) => word.capitalize).join(' ');
 
   /// Check if string is empty or null
   bool get isNullOrEmpty => isEmpty;
@@ -32,9 +29,12 @@ extension StringExtensions on String {
   String get removeWhitespace => replaceAll(RegExp(r'\s+'), '');
 
   /// Format as currency
-  String formatAsCurrency({String symbol = '\$', int decimalPlaces = 2}) {
+  String formatAsCurrency({String symbol = r'$', int decimalPlaces = 2}) {
     final amount = double.tryParse(this) ?? 0.0;
-    return NumberFormat.currency(symbol: symbol, decimalDigits: decimalPlaces).format(amount);
+    return NumberFormat.currency(
+      symbol: symbol,
+      decimalDigits: decimalPlaces,
+    ).format(amount);
   }
 
   /// Truncate string with ellipsis
@@ -44,12 +44,10 @@ extension StringExtensions on String {
   }
 
   /// Convert to slug (URL-friendly string)
-  String get toSlug {
-    return toLowerCase()
-        .replaceAll(RegExp(r'[^\w\s-]'), '')
-        .replaceAll(RegExp(r'[-\s]+'), '-')
-        .trim();
-  }
+  String get toSlug => toLowerCase()
+      .replaceAll(RegExp(r'[^\w\s-]'), '')
+      .replaceAll(RegExp(r'[-\s]+'), '-')
+      .trim();
 
   /// Check if string contains only digits
   bool get isNumeric => RegExp(r'^[0-9]+$').hasMatch(this);
@@ -58,7 +56,7 @@ extension StringExtensions on String {
   DateTime? get toDateTime {
     try {
       return DateTime.parse(this);
-    } catch (e) {
+    } on Exception {
       return null;
     }
   }
@@ -111,13 +109,17 @@ extension DateTimeExtensions on DateTime {
   /// Check if date is yesterday
   bool get isYesterday {
     final yesterday = DateTime.now().subtract(const Duration(days: 1));
-    return year == yesterday.year && month == yesterday.month && day == yesterday.day;
+    return year == yesterday.year &&
+        month == yesterday.month &&
+        day == yesterday.day;
   }
 
   /// Check if date is tomorrow
   bool get isTomorrow {
     final tomorrow = DateTime.now().add(const Duration(days: 1));
-    return year == tomorrow.year && month == tomorrow.month && day == tomorrow.day;
+    return year == tomorrow.year &&
+        month == tomorrow.month &&
+        day == tomorrow.day;
   }
 
   /// Get start of day
@@ -136,7 +138,8 @@ extension DateTimeExtensions on DateTime {
 
     while (addedDays < days) {
       date = date.add(const Duration(days: 1));
-      if (date.weekday != DateTime.saturday && date.weekday != DateTime.sunday) {
+      if (date.weekday != DateTime.saturday &&
+          date.weekday != DateTime.sunday) {
         addedDays++;
       }
     }
@@ -247,7 +250,11 @@ extension BuildContextExtensions on BuildContext {
   bool get isKeyboardVisible => keyboardHeight > 0;
 
   /// Show snackbar
-  void showSnackBar(String message, {Duration? duration, Color? backgroundColor}) {
+  void showSnackBar(
+    String message, {
+    Duration? duration,
+    Color? backgroundColor,
+  }) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -268,9 +275,8 @@ extension BuildContextExtensions on BuildContext {
   }
 
   /// Push named route
-  Future<T?> pushNamed<T>(String routeName, {Object? arguments}) {
-    return Navigator.of(this).pushNamed<T>(routeName, arguments: arguments);
-  }
+  Future<T?> pushNamed<T>(String routeName, {Object? arguments}) =>
+      Navigator.of(this).pushNamed<T>(routeName, arguments: arguments);
 
   /// Pop current route
   void pop<T>([T? result]) {
@@ -282,13 +288,9 @@ extension BuildContextExtensions on BuildContext {
     String routeName,
     bool Function(Route<dynamic>) predicate, {
     Object? arguments,
-  }) {
-    return Navigator.of(this).pushNamedAndRemoveUntil<T>(
-      routeName,
-      predicate,
-      arguments: arguments,
-    );
-  }
+  }) => Navigator.of(
+    this,
+  ).pushNamedAndRemoveUntil<T>(routeName, predicate, arguments: arguments);
 }
 
 /// Duration extensions
@@ -317,19 +319,20 @@ extension DurationExtensions on Duration {
 /// Double extensions
 extension DoubleExtensions on double {
   /// Format as currency
-  String toCurrency({String symbol = '\$', int decimalPlaces = 2}) {
-    return NumberFormat.currency(symbol: symbol, decimalDigits: decimalPlaces).format(this);
-  }
+  String toCurrency({String symbol = r'$', int decimalPlaces = 2}) =>
+      NumberFormat.currency(
+        symbol: symbol,
+        decimalDigits: decimalPlaces,
+      ).format(this);
 
   /// Format as percentage
-  String toPercentage({int decimalPlaces = 1}) {
-    return NumberFormat.percentPattern().format(this / 100);
-  }
+  String toPercentage({int decimalPlaces = 1}) =>
+      NumberFormat.percentPattern().format(this / 100);
 
   /// Round to decimal places
   double roundToDecimalPlaces(int decimalPlaces) {
     final mod = pow(10.0, decimalPlaces);
-    return ((this * mod).round().toDouble() / mod);
+    return (this * mod).round().toDouble() / mod;
   }
 
   /// Convert to file size string
@@ -350,13 +353,12 @@ extension DoubleExtensions on double {
 /// Color extensions
 extension ColorExtensions on Color {
   /// Convert to hex string
-  String get hexString {
-    return '#${(value & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
-  }
+  String get hexString =>
+      '#${(toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
 
   /// Lighten color
   Color lighten([double amount = 0.1]) {
-    assert(amount >= 0 && amount <= 1);
+    assert(amount >= 0 && amount <= 1, 'amount must be between 0.0 and 1.0');
     final hsl = HSLColor.fromColor(this);
     final lightness = (hsl.lightness + amount).clamp(0.0, 1.0);
     return hsl.withLightness(lightness).toColor();
@@ -364,10 +366,9 @@ extension ColorExtensions on Color {
 
   /// Darken color
   Color darken([double amount = 0.1]) {
-    assert(amount >= 0 && amount <= 1);
+    assert(amount >= 0 && amount <= 1, 'amount must be between 0.0 and 1.0');
     final hsl = HSLColor.fromColor(this);
     final lightness = (hsl.lightness - amount).clamp(0.0, 1.0);
     return hsl.withLightness(lightness).toColor();
   }
 }
-
