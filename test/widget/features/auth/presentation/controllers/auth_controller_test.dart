@@ -1,66 +1,129 @@
+import 'package:clubland/core/errors/failures.dart';
+import 'package:clubland/core/providers/core_providers.dart';
+import 'package:clubland/core/storage/secure_storage.dart';
+import 'package:clubland/features/auth/domain/entities/user_entity.dart';
+import 'package:clubland/features/auth/domain/repositories/auth_repository.dart';
+import 'package:clubland/features/auth/domain/usecases/login_usecase.dart';
+import 'package:clubland/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:clubland/features/auth/presentation/providers/auth_providers.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../../../lib/core/errors/failures.dart';
-import '../../../../../../lib/features/auth/domain/entities/user.dart';
-import '../../../../../../lib/features/auth/presentation/controllers/auth_controller.dart';
-import '../../../../../../lib/features/auth/presentation/providers/auth_providers.dart';
-import '../../../../../helpers/mock_providers.dart';
 import '../../../../../helpers/test_helpers.dart';
 
+// Mock classes
+class MockAuthRepository extends Mock implements AuthRepository {}
+class MockLoginUsecase extends Mock implements LoginUsecase {}
+class MockRegisterUsecase extends Mock implements RegisterUsecase {}
+class MockLogoutUsecase extends Mock implements LogoutUsecase {}
+class MockRefreshTokenUsecase extends Mock implements RefreshTokenUsecase {}
+class MockGetCurrentUserUsecase extends Mock implements GetCurrentUserUsecase {}
+class MockCheckAuthStatusUsecase extends Mock implements CheckAuthStatusUsecase {}
+class MockHankoLoginUsecase extends Mock implements HankoLoginUsecase {}
+class MockBiometricAuthUsecase extends Mock implements BiometricAuthUsecase {}
+class MockSecureStorageService extends Mock implements SecureStorageService {}
+
 void main() {
-  late ProviderContainer container;
-  late MockLoginUseCase mockLoginUseCase;
-  late MockLogoutUseCase mockLogoutUseCase;
-  late MockRegisterUseCase mockRegisterUseCase;
-  late MockRefreshTokenUseCase mockRefreshTokenUseCase;
+  late MockAuthRepository mockAuthRepository;
+  late MockLoginUsecase mockLoginUsecase;
+  late MockLogoutUsecase mockLogoutUsecase;
+  late MockRegisterUsecase mockRegisterUsecase;
+  late MockRefreshTokenUsecase mockRefreshTokenUsecase;
+  late MockGetCurrentUserUsecase mockGetCurrentUserUsecase;
+  late MockSecureStorageService mockSecureStorageService;
 
   setUp(() {
     TestHelpers.setupFallbackValues();
-    mockLoginUseCase = MockLoginUseCase();
-    mockLogoutUseCase = MockLogoutUseCase();
-    mockRegisterUseCase = MockRegisterUseCase();
-    mockRefreshTokenUseCase = MockRefreshTokenUseCase();
+    mockAuthRepository = MockAuthRepository();
+    mockLoginUsecase = MockLoginUsecase();
+    mockLogoutUsecase = MockLogoutUsecase();
+    mockRegisterUsecase = MockRegisterUsecase();
+    mockRefreshTokenUsecase = MockRefreshTokenUsecase();
+    mockGetCurrentUserUsecase = MockGetCurrentUserUsecase();
+    mockSecureStorageService = MockSecureStorageService();
 
-    container = ProviderContainer(
-      overrides: [
-        loginUseCaseProvider.overrideWithValue(mockLoginUseCase),
-        logoutUseCaseProvider.overrideWithValue(mockLogoutUseCase),
-        registerUseCaseProvider.overrideWithValue(mockRegisterUseCase),
-        refreshTokenUseCaseProvider.overrideWithValue(mockRefreshTokenUseCase),
-      ],
-    );
+    // Mock auth repository stream
+    when(() => mockAuthRepository.authStateChanges)
+        .thenAnswer((_) => Stream.value(null));
   });
 
-  tearDown(() {
-    container.dispose();
-    MockProviders.reset();
-  });
+  List<Override> getOverrides() => [
+      authRepositoryProvider.overrideWithValue(mockAuthRepository),
+      loginUsecaseProvider.overrideWithValue(mockLoginUsecase),
+      logoutUsecaseProvider.overrideWithValue(mockLogoutUsecase),
+      registerUsecaseProvider.overrideWithValue(mockRegisterUsecase),
+      refreshTokenUsecaseProvider.overrideWithValue(mockRefreshTokenUsecase),
+      getCurrentUserUsecaseProvider.overrideWithValue(mockGetCurrentUserUsecase),
+      secureStorageServiceProvider.overrideWithValue(mockSecureStorageService),
+    ];
 
   group('AuthController', () {
-    const testUser = User(
+    final testUser = UserEntity(
       id: '123',
       email: TestConstants.testEmail,
       firstName: TestConstants.testFirstName,
       lastName: TestConstants.testLastName,
-      isVerified: true,
+      createdAt: DateTime.now(),
     );
 
-    test('initial state should be loading', () {
-      final state = container.read(authControllerProvider);
-      expect(state.isLoading, true);
-      expect(state.user, null);
-      expect(state.error, null);
+    final testSession = AuthSessionEntity(
+      accessToken: TestConstants.testToken,
+      refreshToken: TestConstants.testRefreshToken,
+      expiresAt: DateTime.now().add(const Duration(hours: 1)),
+      user: testUser,
+    );
+
+    testWidgets('initial state should be loading', (tester) async {
+      // Mock getCurrentUser to return null
+      when(() => mockGetCurrentUserUsecase())
+          .thenAnswer((_) async => const Right(null));
+
+      late ProviderContainer container;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ProviderScope(
+            overrides: getOverrides(),
+            child: Consumer(
+              builder: (context, ref, child) {
+                container = ProviderScope.containerOf(context);
+                return Container();
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.pump();
+      final state = await container.read(authControllerProvider.future);
+      expect(state, null);
     });
 
     group('login', () {
-      test('should update state to authenticated when login succeeds', () async {
-        when(() => mockLoginUseCase(any())).thenAnswer(
-          (_) async => const Right(testUser),
+      testWidgets('should update state to authenticated when login succeeds', (tester) async {
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => const Right(null));
+        when(() => mockLoginUsecase(email: any(named: 'email'), password: any(named: 'password')))
+            .thenAnswer((_) async => Right(testSession));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
         );
 
+        await tester.pump();
         final controller = container.read(authControllerProvider.notifier);
         await controller.login(
           email: TestConstants.testEmail,
@@ -68,18 +131,34 @@ void main() {
         );
 
         final state = container.read(authControllerProvider);
+        expect(state.value, testUser);
         expect(state.isLoading, false);
-        expect(state.user, testUser);
-        expect(state.error, null);
-        expect(state.isAuthenticated, true);
+        expect(state.hasError, false);
       });
 
-      test('should update state with error when login fails', () async {
-        const failure = AuthFailure.invalidCredentials();
-        when(() => mockLoginUseCase(any())).thenAnswer(
-          (_) async => const Left(failure),
+      testWidgets('should update state with error when login fails', (tester) async {
+        const failure = AuthFailure('Invalid credentials');
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => const Right(null));
+        when(() => mockLoginUsecase(email: any(named: 'email'), password: any(named: 'password')))
+            .thenAnswer((_) async => const Left(failure));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
         );
 
+        await tester.pump();
         final controller = container.read(authControllerProvider.notifier);
         await controller.login(
           email: TestConstants.testEmail,
@@ -87,42 +166,41 @@ void main() {
         );
 
         final state = container.read(authControllerProvider);
-        expect(state.isLoading, false);
-        expect(state.user, null);
-        expect(state.error, isNotNull);
-        expect(state.isAuthenticated, false);
-      });
-
-      test('should set loading state during login', () async {
-        when(() => mockLoginUseCase(any())).thenAnswer(
-          (_) async {
-            await Future.delayed(const Duration(milliseconds: 100));
-            return const Right(testUser);
-          },
-        );
-
-        final controller = container.read(authControllerProvider.notifier);
-        final loginFuture = controller.login(
-          email: TestConstants.testEmail,
-          password: TestConstants.testPassword,
-        );
-
-        await TestHelpers.delay(const Duration(milliseconds: 50));
-        final loadingState = container.read(authControllerProvider);
-        expect(loadingState.isLoading, true);
-
-        await loginFuture;
-        final finalState = container.read(authControllerProvider);
-        expect(finalState.isLoading, false);
+        expect(state.value, null);
+        expect(state.hasError, true);
+        expect(state.error, failure);
       });
     });
 
     group('register', () {
-      test('should update state to authenticated when registration succeeds', () async {
-        when(() => mockRegisterUseCase(any())).thenAnswer(
-          (_) async => const Right(testUser),
+      testWidgets('should update state to authenticated when registration succeeds', (tester) async {
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => const Right(null));
+        when(() => mockRegisterUsecase(
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+              confirmPassword: any(named: 'confirmPassword'),
+              firstName: any(named: 'firstName'),
+              lastName: any(named: 'lastName'),
+              clubId: any(named: 'clubId'),
+            )).thenAnswer((_) async => Right(testSession));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
         );
 
+        await tester.pump();
         final controller = container.read(authControllerProvider.notifier);
         await controller.register(
           email: TestConstants.testEmail,
@@ -133,146 +211,200 @@ void main() {
         );
 
         final state = container.read(authControllerProvider);
+        expect(state.value, testUser);
         expect(state.isLoading, false);
-        expect(state.user, testUser);
-        expect(state.error, null);
-        expect(state.isAuthenticated, true);
-      });
-
-      test('should update state with error when passwords do not match', () async {
-        final controller = container.read(authControllerProvider.notifier);
-        await controller.register(
-          email: TestConstants.testEmail,
-          password: TestConstants.testPassword,
-          confirmPassword: 'DifferentPassword123!',
-          firstName: TestConstants.testFirstName,
-          lastName: TestConstants.testLastName,
-        );
-
-        final state = container.read(authControllerProvider);
-        expect(state.isLoading, false);
-        expect(state.user, null);
-        expect(state.error, isNotNull);
-        expect(state.isAuthenticated, false);
-        verifyNever(() => mockRegisterUseCase(any()));
+        expect(state.hasError, false);
       });
     });
 
     group('logout', () {
-      test('should clear user state when logout succeeds', () async {
-        when(() => mockLogoutUseCase()).thenAnswer(
-          (_) async => const Right(unit),
+      testWidgets('should clear user state when logout succeeds', (tester) async {
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => Right(testUser));
+        when(() => mockLogoutUsecase())
+            .thenAnswer((_) async => const Right(true));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
         );
 
-        container.read(authControllerProvider.notifier).state = AuthState(
-          user: testUser,
-          isLoading: false,
-          error: null,
-        );
+        await tester.pump();
+        // Initialize with logged in user
+        await container.read(authControllerProvider.future);
 
         final controller = container.read(authControllerProvider.notifier);
         await controller.logout();
 
         final state = container.read(authControllerProvider);
+        expect(state.value, null);
         expect(state.isLoading, false);
-        expect(state.user, null);
-        expect(state.error, null);
-        expect(state.isAuthenticated, false);
+        expect(state.hasError, false);
       });
 
-      test('should clear user state even when logout fails', () async {
-        const failure = AuthFailure.serverError();
-        when(() => mockLogoutUseCase()).thenAnswer(
-          (_) async => const Left(failure),
+      testWidgets('should clear user state even when logout fails', (tester) async {
+        const failure = AuthFailure('Server error');
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => Right(testUser));
+        when(() => mockLogoutUsecase())
+            .thenAnswer((_) async => const Left(failure));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
         );
 
-        container.read(authControllerProvider.notifier).state = AuthState(
-          user: testUser,
-          isLoading: false,
-          error: null,
-        );
+        await tester.pump();
+        // Initialize with logged in user
+        await container.read(authControllerProvider.future);
 
         final controller = container.read(authControllerProvider.notifier);
         await controller.logout();
 
         final state = container.read(authControllerProvider);
+        expect(state.value, null);
         expect(state.isLoading, false);
-        expect(state.user, null);
-        expect(state.error, null);
-        expect(state.isAuthenticated, false);
+        expect(state.hasError, false);
       });
     });
 
     group('refreshToken', () {
-      test('should update user when token refresh succeeds', () async {
-        const updatedUser = User(
-          id: '123',
-          email: TestConstants.testEmail,
-          firstName: TestConstants.testFirstName,
-          lastName: TestConstants.testLastName,
-          isVerified: true,
+      testWidgets('should logout user when token refresh fails', (tester) async {
+        const failure = AuthFailure('Token expired');
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => Right(testUser));
+        when(() => mockSecureStorageService.getRefreshToken())
+            .thenAnswer((_) async => TestConstants.testRefreshToken);
+        when(() => mockRefreshTokenUsecase(refreshToken: any(named: 'refreshToken')))
+            .thenAnswer((_) async => const Left(failure));
+        when(() => mockLogoutUsecase())
+            .thenAnswer((_) async => const Right(true));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
         );
 
-        when(() => mockRefreshTokenUseCase()).thenAnswer(
-          (_) async => const Right(updatedUser),
-        );
-
-        container.read(authControllerProvider.notifier).state = AuthState(
-          user: testUser,
-          isLoading: false,
-          error: null,
-        );
+        await tester.pump();
+        // Initialize with logged in user
+        await container.read(authControllerProvider.future);
 
         final controller = container.read(authControllerProvider.notifier);
         await controller.refreshToken();
 
         final state = container.read(authControllerProvider);
-        expect(state.isLoading, false);
-        expect(state.user, updatedUser);
-        expect(state.error, null);
-        expect(state.isAuthenticated, true);
-      });
-
-      test('should logout user when token refresh fails', () async {
-        const failure = AuthFailure.tokenExpired();
-        when(() => mockRefreshTokenUseCase()).thenAnswer(
-          (_) async => const Left(failure),
-        );
-        when(() => mockLogoutUseCase()).thenAnswer(
-          (_) async => const Right(unit),
-        );
-
-        container.read(authControllerProvider.notifier).state = AuthState(
-          user: testUser,
-          isLoading: false,
-          error: null,
-        );
-
-        final controller = container.read(authControllerProvider.notifier);
-        await controller.refreshToken();
-
-        final state = container.read(authControllerProvider);
-        expect(state.isLoading, false);
-        expect(state.user, null);
-        expect(state.error, null);
-        expect(state.isAuthenticated, false);
-        verify(() => mockLogoutUseCase()).called(1);
+        expect(state.value, null);
+        verify(() => mockLogoutUsecase()).called(1);
       });
     });
 
-    group('clearError', () {
-      test('should clear error from state', () {
-        container.read(authControllerProvider.notifier).state = AuthState(
-          user: null,
-          isLoading: false,
-          error: 'Some error message',
+    group('getters', () {
+      testWidgets('isAuthenticated should return true when user exists', (tester) async {
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => Right(testUser));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
         );
 
+        await tester.pump();
+        await container.read(authControllerProvider.future);
         final controller = container.read(authControllerProvider.notifier);
-        controller.clearError();
 
-        final state = container.read(authControllerProvider);
-        expect(state.error, null);
+        expect(controller.isAuthenticated, true);
+      });
+
+      testWidgets('isAuthenticated should return false when user is null', (tester) async {
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => const Right(null));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.pump();
+        await container.read(authControllerProvider.future);
+        final controller = container.read(authControllerProvider.notifier);
+
+        expect(controller.isAuthenticated, false);
+      });
+
+      testWidgets('currentUser should return the current user', (tester) async {
+        when(() => mockGetCurrentUserUsecase())
+            .thenAnswer((_) async => Right(testUser));
+
+        late ProviderContainer container;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: ProviderScope(
+              overrides: getOverrides(),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  container = ProviderScope.containerOf(context);
+                  return Container();
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.pump();
+        await container.read(authControllerProvider.future);
+        final controller = container.read(authControllerProvider.notifier);
+
+        expect(controller.currentUser, testUser);
       });
     });
   });

@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../lib/core/design_system/design_system.dart';
+import '../../lib/features/auth/domain/entities/user_entity.dart';
+import '../../lib/features/auth/data/datasources/hanko_datasource.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
 
@@ -81,6 +83,31 @@ class TestHelpers {
   static void setupFallbackValues() {
     registerFallbackValue(Uri.parse('https://example.com'));
     registerFallbackValue(const Duration(seconds: 1));
+    registerFallbackValue(
+      AuthSessionEntity(
+        accessToken: 'test-token',
+        refreshToken: 'test-refresh',
+        expiresAt: DateTime.now().add(const Duration(hours: 1)),
+        user: UserEntity(
+          id: 'test-id',
+          email: 'test@example.com',
+          createdAt: DateTime.now(),
+        ),
+      ),
+    );
+    registerFallbackValue(
+      UserEntity(
+        id: 'test-id',
+        email: 'test@example.com',
+        createdAt: DateTime.now(),
+      ),
+    );
+    registerFallbackValue(
+      const HankoAuthResponse(
+        sessionId: 'test-session-id',
+        status: 'pending',
+      ),
+    );
   }
 
   static Future<void> delay([Duration? duration]) async {

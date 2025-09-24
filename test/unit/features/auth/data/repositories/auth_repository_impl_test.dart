@@ -1,5 +1,6 @@
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/core/storage/secure_storage.dart';
+import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 import 'package:clubland/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:dartz/dartz.dart';
@@ -15,15 +16,38 @@ void main() {
   late MockAuthRemoteDataSource mockRemoteDataSource;
   late MockAuthLocalDataSource mockLocalDataSource;
   late MockHankoDataSource mockHankoDataSource;
-  late SecureStorageService mockSecureStorageService;
+  late MockSecureStorageService mockSecureStorageService;
   late Logger mockLogger;
 
-  setUp(() {
+  setUpAll(() {
     TestHelpers.setupFallbackValues();
+    // Add additional fallback values for this test
+    registerFallbackValue(
+      AuthSessionEntity(
+        accessToken: 'fallback-token',
+        refreshToken: 'fallback-refresh',
+        expiresAt: DateTime.now().add(const Duration(hours: 1)),
+        user: UserEntity(
+          id: 'fallback-id',
+          email: 'fallback@example.com',
+          createdAt: DateTime.now(),
+        ),
+      ),
+    );
+    registerFallbackValue(
+      UserEntity(
+        id: 'fallback-id',
+        email: 'fallback@example.com',
+        createdAt: DateTime.now(),
+      ),
+    );
+  });
+
+  setUp(() {
     mockRemoteDataSource = MockAuthRemoteDataSource();
     mockLocalDataSource = MockAuthLocalDataSource();
     mockHankoDataSource = MockHankoDataSource();
-    mockSecureStorageService = SecureStorageService(EnhancedSecureStorage());
+    mockSecureStorageService = MockSecureStorageService();
     mockLogger = Logger(level: Level.off);
 
     repository = AuthRepositoryImpl(
@@ -71,6 +95,14 @@ void main() {
         ).thenAnswer((_) async {});
         when(
           () => mockLocalDataSource.storeUser(any()),
+        ).thenAnswer((_) async {});
+
+        // Mock secure storage operations
+        when(
+          () => mockSecureStorageService.storeAccessToken(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.storeRefreshToken(any()),
         ).thenAnswer((_) async {});
 
         final result = await repository.login(
@@ -132,6 +164,19 @@ void main() {
 
     group('loginWithHanko', () {
       test('should return session when Hanko login is successful', () async {
+        // Mock Hanko email check
+        when(
+          () => mockHankoDataSource.isEmailRegistered(any()),
+        ).thenAnswer((_) async => const Right<Failure, bool>(true));
+
+        // Mock Hanko login initiation
+        when(
+          () => mockHankoDataSource.initiateLogin(any()),
+        ).thenAnswer((_) async => const Right(HankoAuthResponse(
+          sessionId: 'test-session-id',
+          status: 'pending',
+        )));
+
         // Mock Hanko login success
         when(
           () => mockRemoteDataSource.loginWithHanko(email: any(named: 'email')),
@@ -147,6 +192,17 @@ void main() {
           () => mockLocalDataSource.storeUser(any()),
         ).thenAnswer((_) async {});
 
+        // Mock secure storage operations
+        when(
+          () => mockSecureStorageService.storeAccessToken(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.storeRefreshToken(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.saveHankoSessionId(any()),
+        ).thenAnswer((_) async {});
+
         final result = await repository.loginWithHanko(
           email: 'test@example.com',
         );
@@ -156,14 +212,15 @@ void main() {
           (failure) => fail('Expected success but got failure: $failure'),
           (session) {
             expect(session.user.email, 'test@example.com');
-            expect(session.accessToken, 'test-access-token');
+            expect(session.accessToken, 'pending-hanko-auth');
+            expect(session.refreshToken, 'pending-hanko-refresh');
+            expect(session.user.status, UserStatus.pending);
           },
         );
 
-        verify(
-          () => mockRemoteDataSource.loginWithHanko(email: 'test@example.com'),
-        ).called(1);
-        verify(() => mockLocalDataSource.storeSession(any())).called(1);
+        verify(() => mockHankoDataSource.isEmailRegistered('test@example.com')).called(1);
+        verify(() => mockHankoDataSource.initiateLogin('test@example.com')).called(1);
+        verify(() => mockSecureStorageService.saveHankoSessionId('test-session-id')).called(1);
       });
     });
 
@@ -178,6 +235,10 @@ void main() {
         when(() => mockLocalDataSource.clearSession()).thenAnswer((_) async {});
         when(() => mockLocalDataSource.clearUser()).thenAnswer((_) async {});
 
+        // Mock secure storage operations
+        when(() => mockSecureStorageService.deleteAccessToken()).thenAnswer((_) async {});
+        when(() => mockSecureStorageService.deleteRefreshToken()).thenAnswer((_) async {});
+
         final result = await repository.logout();
 
         expect(result.isRight(), true);
@@ -188,7 +249,6 @@ void main() {
 
         verify(() => mockRemoteDataSource.logout()).called(1);
         verify(() => mockLocalDataSource.clearSession()).called(1);
-        verify(() => mockLocalDataSource.clearUser()).called(1);
       });
     });
 

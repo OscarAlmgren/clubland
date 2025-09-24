@@ -6,7 +6,7 @@ part of 'core_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loggerHash() => r'8bd58391ba548aab2111e64e039880fa20669cf0';
+String _$loggerHash() => r'b7ba73120c1546e652fcce65783a94907481969d';
 
 /// Logger provider
 ///
@@ -23,7 +23,7 @@ final loggerProvider = Provider<Logger>.internal(
 
 typedef LoggerRef = ProviderRef<Logger>;
 String _$flutterSecureStorageHash() =>
-    r'3a76790ecf8cf35ca2196b6fa260704ea226ae22';
+    r'eccec398e3b6173411085c9fca88fb0100aa6282';
 
 /// Flutter Secure Storage provider
 ///
@@ -40,7 +40,7 @@ final flutterSecureStorageProvider = Provider<FlutterSecureStorage>.internal(
 );
 
 typedef FlutterSecureStorageRef = ProviderRef<FlutterSecureStorage>;
-String _$secureStorageHash() => r'26249fe168c3c1e9667568a421ba45af078ae90e';
+String _$secureStorageHash() => r'5e925588e2dc3fe0e73ef3ca4ac0feb898f1585d';
 
 /// Enhanced Secure Storage provider
 ///
@@ -58,7 +58,7 @@ final secureStorageProvider = Provider<EnhancedSecureStorage>.internal(
 
 typedef SecureStorageRef = ProviderRef<EnhancedSecureStorage>;
 String _$secureStorageServiceHash() =>
-    r'd45c682ab5714f82f7c80e86026474e4cf7acbdd';
+    r'84a72a9551c06e6ca6ae0d8379bc858864569f98';
 
 /// Secure Storage Service provider
 ///
@@ -75,7 +75,7 @@ final secureStorageServiceProvider = Provider<SecureStorageService>.internal(
 );
 
 typedef SecureStorageServiceRef = ProviderRef<SecureStorageService>;
-String _$connectivityHash() => r'bc5ac7cbbc66e8357ccb71af393503e9e7ca7874';
+String _$connectivityHash() => r'fd33e159c65466f0bf8ec37b98d05eba415da792';
 
 /// Connectivity provider
 ///
@@ -91,7 +91,7 @@ final connectivityProvider = Provider<Connectivity>.internal(
 );
 
 typedef ConnectivityRef = ProviderRef<Connectivity>;
-String _$networkInfoHash() => r'd3fc85b9cfa8db232c9f3ce085af258357a7807c';
+String _$networkInfoHash() => r'10064a21e9417a84dce3c58ddf29421eeefda9bf';
 
 /// Network Info provider
 ///
@@ -158,14 +158,14 @@ final graphqlClientProvider = FutureProvider<void>.internal(
 
 typedef GraphqlClientRef = FutureProviderRef<void>;
 String _$connectivityStreamHash() =>
-    r'9b1c1f300bb046994f0b91840a51acd238707190';
+    r'24437ac151a73b1470b9509029f9475bd787b2ba';
 
 /// Connectivity Stream provider
 ///
 /// Copied from [connectivityStream].
 @ProviderFor(connectivityStream)
 final connectivityStreamProvider =
-    AutoDisposeStreamProvider<ConnectivityResult>.internal(
+    AutoDisposeStreamProvider<List<ConnectivityResult>>.internal(
   connectivityStream,
   name: r'connectivityStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -176,8 +176,8 @@ final connectivityStreamProvider =
 );
 
 typedef ConnectivityStreamRef
-    = AutoDisposeStreamProviderRef<ConnectivityResult>;
-String _$networkStatusHash() => r'91d7b8e5b8c3be87f7781809d5c1bbcde195df98';
+    = AutoDisposeStreamProviderRef<List<ConnectivityResult>>;
+String _$networkStatusHash() => r'18531ee014ed65f695347879b7cbc7f4744585fb';
 
 /// Network Status provider
 ///
@@ -195,7 +195,7 @@ final networkStatusProvider =
 );
 
 typedef _$NetworkStatus = AutoDisposeAsyncNotifier<NetworkDetails>;
-String _$appInitializationHash() => r'8cc02239d5fa6ce8c149a0265e808842dd663abf';
+String _$appInitializationHash() => r'5b98ac4d64de6d92b6df3239f10d942450d7ab5b';
 
 /// App Initialization provider
 ///

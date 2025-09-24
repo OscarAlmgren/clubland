@@ -11,6 +11,8 @@ class MockLocalStorage extends Mock implements LocalStorage {}
 
 class MockSecureStorage extends Mock implements SecureStorage {}
 
+class MockSecureStorageService extends Mock implements SecureStorageService {}
+
 class MockAuthRepository extends Mock implements AuthRepository {}
 
 class MockAuthLocalDataSource extends Mock implements AuthLocalDataSource {}
