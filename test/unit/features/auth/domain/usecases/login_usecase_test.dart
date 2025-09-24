@@ -2,142 +2,232 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../../../lib/core/errors/failures.dart';
-import '../../../../../../lib/features/auth/domain/entities/user.dart';
-import '../../../../../../lib/features/auth/domain/usecases/login_usecase.dart';
+import 'package:clubland/core/errors/failures.dart';
+import 'package:clubland/features/auth/domain/entities/user_entity.dart';
+import 'package:clubland/features/auth/domain/usecases/login_usecase.dart';
+
 import '../../../../../helpers/mock_providers.dart';
 import '../../../../../helpers/test_helpers.dart';
 
 void main() {
-  late LoginUseCase useCase;
+  late LoginUsecase useCase;
   late MockAuthRepository mockAuthRepository;
 
   setUp(() {
+    TestHelpers.setupFallbackValues();
     mockAuthRepository = MockAuthRepository();
-    useCase = LoginUseCase(mockAuthRepository);
+    useCase = LoginUsecase(mockAuthRepository);
   });
 
   tearDown(() {
     reset(mockAuthRepository);
   });
 
-  group('LoginUseCase', () {
-    const testUser = User(
+  group('LoginUsecase', () {
+    final testUser = UserEntity(
       id: '123',
-      email: TestConstants.testEmail,
-      firstName: TestConstants.testFirstName,
-      lastName: TestConstants.testLastName,
-      isVerified: true,
+      email: 'test@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      createdAt: DateTime.now(),
     );
 
-    test('should return user when login is successful', () async {
-      when(() => mockAuthRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => const Right(testUser));
+    final testSession = AuthSessionEntity(
+      accessToken: 'test-access-token',
+      refreshToken: 'test-refresh-token',
+      expiresAt: DateTime.now().add(const Duration(hours: 1)),
+      user: testUser,
+    );
 
-      final result = await useCase(LoginParams(
-        email: TestConstants.testEmail,
-        password: TestConstants.testPassword,
-      ));
+    test('should return session when login is successful', () async {
+      // Mock repository login success
+      when(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
 
-      expect(result, const Right(testUser));
-      verify(() => mockAuthRepository.login(
-            email: TestConstants.testEmail,
-            password: TestConstants.testPassword,
-          )).called(1);
+      final result = await useCase.call(
+        email: 'test@example.com',
+        password: 'password123',
+      );
+
+      expect(result.isRight(), true);
+      result.fold(
+        (failure) => fail('Expected success but got failure: $failure'),
+        (session) {
+          expect(session.user.email, 'test@example.com');
+          expect(session.accessToken, 'test-access-token');
+        },
+      );
+
+      verify(
+        () => mockAuthRepository.login(
+          email: 'test@example.com',
+          password: 'password123',
+        ),
+      ).called(1);
     });
 
-    test('should return failure when login fails', () async {
-      const failure = AuthFailure.invalidCredentials();
-      when(() => mockAuthRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => const Left(failure));
+    test('should return failure when repository login fails', () async {
+      // Mock repository login failure
+      when(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer(
+        (_) async => Left<Failure, AuthSessionEntity>(
+          AuthFailure.invalidCredentials(),
+        ),
+      );
 
-      final result = await useCase(LoginParams(
-        email: TestConstants.testEmail,
-        password: TestConstants.testPassword,
-      ));
+      final result = await useCase.call(
+        email: 'invalid@example.com',
+        password: 'wrongpassword',
+      );
 
-      expect(result, const Left(failure));
-      verify(() => mockAuthRepository.login(
-            email: TestConstants.testEmail,
-            password: TestConstants.testPassword,
-          )).called(1);
+      expect(result.isLeft(), true);
+      result.fold(
+        (failure) => expect(failure, isA<AuthFailure>()),
+        (session) => fail('Expected failure but got success: $session'),
+      );
+
+      verify(
+        () => mockAuthRepository.login(
+          email: 'invalid@example.com',
+          password: 'wrongpassword',
+        ),
+      ).called(1);
     });
 
-    test('should return failure for empty email', () async {
-      final result = await useCase(LoginParams(
+    test('should return validation failure for empty email', () async {
+      final result = await useCase.call(
         email: '',
-        password: TestConstants.testPassword,
-      ));
+        password: 'password123',
+      );
 
       expect(result.isLeft(), true);
-      verifyNever(() => mockAuthRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ));
+      result.fold(
+        (failure) => expect(failure, isA<ValidationFailure>()),
+        (session) => fail('Expected validation failure but got success'),
+      );
+
+      // Repository should not be called for invalid input
+      verifyNever(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      );
     });
 
-    test('should return failure for empty password', () async {
-      final result = await useCase(LoginParams(
-        email: TestConstants.testEmail,
+    test('should return validation failure for invalid email format', () async {
+      final result = await useCase.call(
+        email: 'invalid-email',
+        password: 'password123',
+      );
+
+      expect(result.isLeft(), true);
+      result.fold(
+        (failure) => expect(failure, isA<ValidationFailure>()),
+        (session) => fail('Expected validation failure but got success'),
+      );
+
+      // Repository should not be called for invalid input
+      verifyNever(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      );
+    });
+
+    test('should return validation failure for empty password', () async {
+      final result = await useCase.call(
+        email: 'test@example.com',
         password: '',
-      ));
+      );
 
       expect(result.isLeft(), true);
-      verifyNever(() => mockAuthRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ));
+      result.fold(
+        (failure) => expect(failure, isA<ValidationFailure>()),
+        (session) => fail('Expected validation failure but got success'),
+      );
+
+      // Repository should not be called for invalid input
+      verifyNever(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      );
     });
 
-    test('should trim email before login', () async {
-      when(() => mockAuthRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => const Right(testUser));
-
-      await useCase(LoginParams(
-        email: '  ${TestConstants.testEmail}  ',
-        password: TestConstants.testPassword,
-      ));
-
-      verify(() => mockAuthRepository.login(
-            email: TestConstants.testEmail,
-            password: TestConstants.testPassword,
-          )).called(1);
-    });
-  });
-
-  group('LoginParams', () {
-    test('should support equality comparison', () {
-      const params1 = LoginParams(
-        email: TestConstants.testEmail,
-        password: TestConstants.testPassword,
+    test('should return validation failure for weak password', () async {
+      final result = await useCase.call(
+        email: 'test@example.com',
+        password: '123', // Too short
       );
 
-      const params2 = LoginParams(
-        email: TestConstants.testEmail,
-        password: TestConstants.testPassword,
+      expect(result.isLeft(), true);
+      result.fold(
+        (failure) => expect(failure, isA<ValidationFailure>()),
+        (session) => fail('Expected validation failure but got success'),
       );
 
-      expect(params1, equals(params2));
+      // Repository should not be called for invalid input
+      verifyNever(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      );
     });
 
-    test('should support inequality comparison', () {
-      const params1 = LoginParams(
-        email: TestConstants.testEmail,
-        password: TestConstants.testPassword,
+    test('should trim and lowercase email before calling repository', () async {
+      // Mock repository login success
+      when(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
+
+      await useCase.call(
+        email: '  Test@Example.Com  ',
+        password: 'password123',
       );
 
-      const params2 = LoginParams(
-        email: 'different@example.com',
-        password: TestConstants.testPassword,
+      // Verify the email was trimmed and lowercased
+      verify(
+        () => mockAuthRepository.login(
+          email: 'test@example.com',
+          password: 'password123',
+        ),
+      ).called(1);
+    });
+
+    test('should handle repository exceptions gracefully', () async {
+      // Mock repository to throw an exception
+      when(
+        () => mockAuthRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenThrow(Exception('Network error'));
+
+      final result = await useCase.call(
+        email: 'test@example.com',
+        password: 'password123',
       );
 
-      expect(params1, isNot(equals(params2)));
+      expect(result.isLeft(), true);
+      result.fold(
+        (failure) => expect(failure, isA<Failure>()),
+        (session) => fail('Expected failure but got success'),
+      );
     });
   });
 }
