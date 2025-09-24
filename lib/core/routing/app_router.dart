@@ -3,12 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/presentation/controllers/auth_controller.dart';
-import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
-import '../../features/home/presentation/pages/home_page.dart';
-import '../../features/clubs/presentation/pages/clubs_page.dart';
+import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/bookings/presentation/pages/bookings_page.dart';
+import '../../features/clubs/presentation/pages/clubs_page.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../design_system/widgets/error_page.dart';
 import 'app_routes.dart';
@@ -22,25 +22,21 @@ final navigatorKey = GlobalKey<NavigatorState>();
 /// App router configuration using GoRouter
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
-  final authController = ref.watch(authControllerProvider.notifier);
+  ref.watch(authControllerProvider.notifier);
   final authState = ref.watch(authControllerProvider);
 
   return GoRouter(
     navigatorKey: navigatorKey,
     debugLogDiagnostics: true,
     initialLocation: AppRoutes.splash,
-    redirect: (context, state) {
-      return RouteGuards.redirect(
-        context: context,
-        state: state,
-        authState: authState,
-      );
-    },
+    redirect: (context, state) => RouteGuards.redirect(
+      context: context,
+      state: state,
+      authState: authState,
+    ),
     errorBuilder: (context, state) => ErrorPage(
       error: state.error?.toString() ?? 'Unknown error',
-      stackTrace: state.error is Exception
-          ? StackTrace.current
-          : null,
+      stackTrace: state.error is Exception ? StackTrace.current : null,
     ),
     routes: [
       // Splash Route
@@ -69,9 +65,8 @@ GoRouter appRouter(AppRouterRef ref) {
       GoRoute(
         path: AppRoutes.resetPassword,
         name: 'resetPassword',
-        builder: (context, state) => ResetPasswordPage(
-          token: state.uri.queryParameters['token'],
-        ),
+        builder: (context, state) =>
+            ResetPasswordPage(token: state.uri.queryParameters['token']),
       ),
       GoRoute(
         path: AppRoutes.hankoAuth,
@@ -84,9 +79,7 @@ GoRouter appRouter(AppRouterRef ref) {
 
       // Main App Routes with Shell Navigation
       ShellRoute(
-        builder: (context, state, child) {
-          return MainShell(child: child);
-        },
+        builder: (context, state, child) => MainShell(child: child),
         routes: [
           // Home
           GoRoute(
@@ -120,9 +113,8 @@ GoRouter appRouter(AppRouterRef ref) {
               GoRoute(
                 path: 'search',
                 name: 'clubSearch',
-                builder: (context, state) => ClubSearchPage(
-                  query: state.uri.queryParameters['q'],
-                ),
+                builder: (context, state) =>
+                    ClubSearchPage(query: state.uri.queryParameters['q']),
               ),
               GoRoute(
                 path: 'nearby',
@@ -154,7 +146,8 @@ GoRouter appRouter(AppRouterRef ref) {
                     path: 'edit',
                     name: 'editBooking',
                     builder: (context, state) => EditBookingPage(
-                      bookingId: state.pathParameters[AppRoutes.bookingIdParam]!,
+                      bookingId:
+                          state.pathParameters[AppRoutes.bookingIdParam]!,
                     ),
                   ),
                 ],
@@ -323,9 +316,8 @@ GoRouter appRouter(AppRouterRef ref) {
       GoRoute(
         path: AppRoutes.shareClub,
         name: 'shareClub',
-        builder: (context, state) => ShareClubPage(
-          clubId: state.pathParameters[AppRoutes.clubIdParam]!,
-        ),
+        builder: (context, state) =>
+            ShareClubPage(clubId: state.pathParameters[AppRoutes.clubIdParam]!),
       ),
       GoRoute(
         path: AppRoutes.shareBooking,
@@ -345,7 +337,9 @@ GoRouter appRouter(AppRouterRef ref) {
         path: AppRoutes.error,
         name: 'error',
         builder: (context, state) => ErrorPage(
-          error: state.uri.queryParameters[AppRoutes.errorParam] ?? 'Unknown error',
+          error:
+              state.uri.queryParameters[AppRoutes.errorParam] ??
+              'Unknown error',
         ),
       ),
       GoRoute(
@@ -393,251 +387,290 @@ extension AppRouterExtension on GoRouter {
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Forgot Password')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Forgot Password')));
 }
 
 class ResetPasswordPage extends StatelessWidget {
-  final String? token;
   const ResetPasswordPage({super.key, this.token});
+  final String? token;
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Reset Password')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Reset Password')));
 }
 
 class HankoAuthPage extends StatelessWidget {
+  const HankoAuthPage({super.key, this.email, this.sessionId});
   final String? email;
   final String? sessionId;
-  const HankoAuthPage({super.key, this.email, this.sessionId});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Hanko Auth')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Hanko Auth')));
 }
 
 class MainShell extends StatelessWidget {
-  final Widget child;
   const MainShell({super.key, required this.child});
+  final Widget child;
   @override
   Widget build(BuildContext context) => Scaffold(body: child);
 }
 
 class ClubDetailsPage extends StatelessWidget {
-  final String clubId;
   const ClubDetailsPage({super.key, required this.clubId});
+  final String clubId;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Club Details: $clubId')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Club Details: $clubId')));
 }
 
 class CreateBookingPage extends StatelessWidget {
-  final String clubId;
   const CreateBookingPage({super.key, required this.clubId});
+  final String clubId;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Create Booking for: $clubId')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Create Booking for: $clubId')));
 }
 
 class ClubSearchPage extends StatelessWidget {
-  final String? query;
   const ClubSearchPage({super.key, this.query});
+  final String? query;
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Club Search')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Club Search')));
 }
 
 class NearbyClubsPage extends StatelessWidget {
   const NearbyClubsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Nearby Clubs')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Nearby Clubs')));
 }
 
 class FavoriteClubsPage extends StatelessWidget {
   const FavoriteClubsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Favorite Clubs')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Favorite Clubs')));
 }
 
 class BookingDetailsPage extends StatelessWidget {
-  final String bookingId;
   const BookingDetailsPage({super.key, required this.bookingId});
+  final String bookingId;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Booking Details: $bookingId')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Booking Details: $bookingId')));
 }
 
 class EditBookingPage extends StatelessWidget {
-  final String bookingId;
   const EditBookingPage({super.key, required this.bookingId});
+  final String bookingId;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Edit Booking: $bookingId')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Edit Booking: $bookingId')));
 }
 
 class BookingHistoryPage extends StatelessWidget {
   const BookingHistoryPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Booking History')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Booking History')));
 }
 
 class EditProfilePage extends StatelessWidget {
   const EditProfilePage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Edit Profile')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Edit Profile')));
 }
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Settings')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Settings')));
 }
 
 class NotificationSettingsPage extends StatelessWidget {
   const NotificationSettingsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Notification Settings')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Notification Settings')));
 }
 
 class PrivacySettingsPage extends StatelessWidget {
   const PrivacySettingsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Privacy Settings')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Privacy Settings')));
 }
 
 class SecuritySettingsPage extends StatelessWidget {
   const SecuritySettingsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Security Settings')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Security Settings')));
 }
 
 class SupportPage extends StatelessWidget {
   const SupportPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Support')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Support')));
 }
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('About')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('About')));
 }
 
 class MembershipPage extends StatelessWidget {
   const MembershipPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Membership')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Membership')));
 }
 
 class MembershipTiersPage extends StatelessWidget {
   const MembershipTiersPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Membership Tiers')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Membership Tiers')));
 }
 
 class MembershipUpgradePage extends StatelessWidget {
   const MembershipUpgradePage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Membership Upgrade')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Membership Upgrade')));
 }
 
 class MembershipBenefitsPage extends StatelessWidget {
   const MembershipBenefitsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Membership Benefits')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Membership Benefits')));
 }
 
 class PaymentsPage extends StatelessWidget {
   const PaymentsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Payments')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Payments')));
 }
 
 class PaymentMethodsPage extends StatelessWidget {
   const PaymentMethodsPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Payment Methods')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Payment Methods')));
 }
 
 class AddPaymentMethodPage extends StatelessWidget {
   const AddPaymentMethodPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Add Payment Method')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Add Payment Method')));
 }
 
 class PaymentHistoryPage extends StatelessWidget {
   const PaymentHistoryPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Payment History')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Payment History')));
 }
 
 class InvoicesPage extends StatelessWidget {
   const InvoicesPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Invoices')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Invoices')));
 }
 
 class QRScannerPage extends StatelessWidget {
   const QRScannerPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('QR Scanner')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('QR Scanner')));
 }
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Map')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Map')));
 }
 
 class CameraPage extends StatelessWidget {
   const CameraPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Camera')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('Camera')));
 }
 
 class ImageViewerPage extends StatelessWidget {
+  const ImageViewerPage({super.key, required this.imageUrl, this.heroTag});
   final String imageUrl;
   final String? heroTag;
-  const ImageViewerPage({super.key, required this.imageUrl, this.heroTag});
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Image Viewer: $imageUrl')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Image Viewer: $imageUrl')));
 }
 
 class WebViewPage extends StatelessWidget {
+  const WebViewPage({super.key, required this.url, this.title});
   final String url;
   final String? title;
-  const WebViewPage({super.key, required this.url, this.title});
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Web View: $url')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Web View: $url')));
 }
 
 class ClubInvitePage extends StatelessWidget {
-  final String inviteCode;
   const ClubInvitePage({super.key, required this.inviteCode});
+  final String inviteCode;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Club Invite: $inviteCode')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Club Invite: $inviteCode')));
 }
 
 class EventInvitePage extends StatelessWidget {
-  final String eventId;
   const EventInvitePage({super.key, required this.eventId});
+  final String eventId;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Event Invite: $eventId')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Event Invite: $eventId')));
 }
 
 class ShareClubPage extends StatelessWidget {
-  final String clubId;
   const ShareClubPage({super.key, required this.clubId});
+  final String clubId;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Share Club: $clubId')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Share Club: $clubId')));
 }
 
 class ShareBookingPage extends StatelessWidget {
-  final String bookingId;
   const ShareBookingPage({super.key, required this.bookingId});
+  final String bookingId;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Share Booking: $bookingId')));
+  Widget build(BuildContext context) =>
+      Scaffold(body: Center(child: Text('Share Booking: $bookingId')));
 }
 
 class NotFoundPage extends StatelessWidget {
   const NotFoundPage({super.key});
   @override
-  Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('404 - Page Not Found')));
+  Widget build(BuildContext context) =>
+      const Scaffold(body: Center(child: Text('404 - Page Not Found')));
 }
 
 class MaintenancePage extends StatelessWidget {
-  final String? message;
   const MaintenancePage({super.key, this.message});
+  final String? message;
   @override
-  Widget build(BuildContext context) => Scaffold(body: Center(child: Text('Maintenance: ${message ?? 'Under maintenance'}')));
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(child: Text('Maintenance: ${message ?? 'Under maintenance'}')),
+  );
 }

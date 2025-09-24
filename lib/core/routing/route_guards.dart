@@ -173,7 +173,7 @@ class RouteGuards {
 
   /// Extract club ID from path
   static String? _extractClubIdFromPath(String path) {
-    final regex = RegExp(r'/clubs/([^/]+)');
+    final regex = RegExp('/clubs/([^/]+)');
     final match = regex.firstMatch(path);
     return match?.group(1);
   }
@@ -231,7 +231,8 @@ class RouteGuards {
   /// Check for app maintenance mode
   static String? _checkMaintenanceMode(String path) {
     // This would typically check a remote config or feature flag
-    const isMaintenanceMode = false; // TODO: Implement actual check
+    const isMaintenanceMode =
+        false; // TODO(oscaralmgren): Implement actual check
 
     if (isMaintenanceMode && path != AppRoutes.maintenance) {
       return AppRoutes.maintenance;
@@ -287,18 +288,18 @@ class RouteGuards {
 /// Extension methods for user permissions
 extension UserPermissionsExtension on UserEntity {
   /// Check if user has any of the specified roles
-  bool hasAnyRole(List<String> roles) => roles.any((role) => hasRole(role));
+  bool hasAnyRole(List<String> roles) => roles.any(hasRole);
 
   /// Check if user has all of the specified roles
-  bool hasAllRoles(List<String> roles) => roles.every((role) => hasRole(role));
+  bool hasAllRoles(List<String> roles) => roles.every(hasRole);
 
   /// Check if user has any of the specified permissions
   bool hasAnyPermission(List<String> permissions) =>
-      permissions.any((permission) => hasPermission(permission));
+      permissions.any(hasPermission);
 
   /// Check if user has all of the specified permissions
   bool hasAllPermissions(List<String> permissions) =>
-      permissions.every((permission) => hasPermission(permission));
+      permissions.every(hasPermission);
 
   /// Check if user is a premium member
   bool get isPremiumMember =>

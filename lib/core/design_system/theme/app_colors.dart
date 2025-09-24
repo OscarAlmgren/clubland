@@ -32,7 +32,6 @@ class AppColors {
   static const ColorScheme lightColorScheme = ColorScheme.light(
     // Primary Colors
     primary: brandPrimary,
-    onPrimary: Colors.white,
     primaryContainer: Color(0xFFE3F2FD),
     onPrimaryContainer: Color(0xFF0D47A1),
 
@@ -50,19 +49,11 @@ class AppColors {
 
     // Error Colors
     error: error,
-    onError: Colors.white,
     errorContainer: Color(0xFFFFEBEE),
     onErrorContainer: Color(0xFFB71C1C),
-
-    // Surface Colors
-    surface: Colors.white,
     onSurface: neutral900,
-    surfaceVariant: neutral100,
+    surfaceContainerHighest: neutral100,
     onSurfaceVariant: neutral700,
-
-    // Background Colors
-    background: neutral100,
-    onBackground: neutral900,
 
     // Outline Colors
     outline: neutral400,
@@ -103,16 +94,9 @@ class AppColors {
     onError: Colors.white,
     errorContainer: Color(0xFFD32F2F),
     onErrorContainer: Color(0xFFFFEBEE),
-
-    // Surface Colors
-    surface: Color(0xFF121212),
     onSurface: Color(0xFFE0E0E0),
-    surfaceVariant: Color(0xFF1E1E1E),
+    surfaceContainerHighest: Color(0xFF1E1E1E),
     onSurfaceVariant: Color(0xFFBDBDBD),
-
-    // Background Colors
-    background: Color(0xFF0A0A0A),
-    onBackground: Color(0xFFE0E0E0),
 
     // Outline Colors
     outline: Color(0xFF616161),
@@ -171,46 +155,31 @@ class AppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      brandPrimary,
-      Color(0xFF2E3B4E),
-    ],
+    colors: [brandPrimary, Color(0xFF2E3B4E)],
   );
 
   static const LinearGradient secondaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      brandSecondary,
-      Color(0xFF1B5E20),
-    ],
+    colors: [brandSecondary, Color(0xFF1B5E20)],
   );
 
   static const LinearGradient accentGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      brandAccent,
-      Color(0xFFB8860B),
-    ],
+    colors: [brandAccent, Color(0xFFB8860B)],
   );
 
   static const LinearGradient surfaceGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0xFFFAFAFA),
-      Color(0xFFF5F5F5),
-    ],
+    colors: [Color(0xFFFAFAFA), Color(0xFFF5F5F5)],
   );
 
   static const LinearGradient cardGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      Colors.white,
-      Color(0xFFFCFCFC),
-    ],
+    colors: [Colors.white, Color(0xFFFCFCFC)],
   );
 
   // Helper methods
@@ -223,9 +192,8 @@ class AppColors {
   static Color getBookingStatusColor(String status) =>
       bookingStatusColors[status.toLowerCase()] ?? neutral500;
 
-  static Color getMembershipTierColor(String tier) {
-    return membershipTierColors[tier.toLowerCase()] ?? neutral500;
-  }
+  static Color getMembershipTierColor(String tier) =>
+      membershipTierColors[tier.toLowerCase()] ?? neutral500;
 
   /// Get color with opacity
   static Color withOpacity(Color color, double opacity) =>

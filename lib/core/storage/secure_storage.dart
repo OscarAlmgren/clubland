@@ -19,21 +19,19 @@ abstract class SecureStorage {
 
 /// Implementation of secure storage using FlutterSecureStorage
 class SecureStorageImpl implements SecureStorage {
+  /// Constructs a [SecureStorageImpl]
+  SecureStorageImpl({FlutterSecureStorage? storage, Logger? logger})
+    : _storage = storage ?? const FlutterSecureStorage(),
+      _logger = logger ?? Logger();
   final FlutterSecureStorage _storage;
   final Logger _logger;
-
-  SecureStorageImpl({
-    FlutterSecureStorage? storage,
-    Logger? logger,
-  })  : _storage = storage ?? const FlutterSecureStorage(),
-        _logger = logger ?? Logger();
 
   @override
   Future<void> write(String key, String value) async {
     try {
       await _storage.write(key: key, value: value);
       _logger.d('Secure storage write successful for key: $key');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to write to secure storage: $e');
       throw StorageException.writeError();
     }
@@ -43,9 +41,11 @@ class SecureStorageImpl implements SecureStorage {
   Future<String?> read(String key) async {
     try {
       final value = await _storage.read(key: key);
-      _logger.d('Secure storage read for key: $key ${value != null ? 'found' : 'not found'}');
+      _logger.d(
+        'Secure storage read for key: $key ${value != null ? 'found' : 'not found'}',
+      );
       return value;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to read from secure storage: $e');
       throw StorageException.readError();
     }
@@ -56,7 +56,7 @@ class SecureStorageImpl implements SecureStorage {
     try {
       await _storage.delete(key: key);
       _logger.d('Secure storage delete successful for key: $key');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to delete from secure storage: $e');
       throw StorageException.writeError();
     }
@@ -67,7 +67,7 @@ class SecureStorageImpl implements SecureStorage {
     try {
       await _storage.deleteAll();
       _logger.i('All secure storage data cleared');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to clear secure storage: $e');
       throw StorageException.writeError();
     }
@@ -77,7 +77,7 @@ class SecureStorageImpl implements SecureStorage {
   Future<bool> containsKey(String key) async {
     try {
       return await _storage.containsKey(key: key);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to check secure storage key: $e');
       return false;
     }
@@ -87,7 +87,7 @@ class SecureStorageImpl implements SecureStorage {
   Future<Map<String, String>> readAll() async {
     try {
       return await _storage.readAll();
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to read all from secure storage: $e');
       throw StorageException.readError();
     }
@@ -96,17 +96,14 @@ class SecureStorageImpl implements SecureStorage {
 
 /// Enhanced secure storage with additional features
 class EnhancedSecureStorage extends SecureStorageImpl {
-  EnhancedSecureStorage({
-    super.storage,
-    super.logger,
-  });
+  EnhancedSecureStorage({super.storage, super.logger});
 
   /// Write JSON object to secure storage
   Future<void> writeJson(String key, Map<String, dynamic> value) async {
     try {
       final jsonString = jsonEncode(value);
       await write(key, jsonString);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to write JSON to secure storage: $e');
       throw StorageException.writeError();
     }
@@ -119,20 +116,24 @@ class EnhancedSecureStorage extends SecureStorageImpl {
       if (jsonString == null) return null;
 
       return jsonDecode(jsonString) as Map<String, dynamic>;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to read JSON from secure storage: $e');
       throw StorageException.readError();
     }
   }
 
   /// Write encrypted string to secure storage
-  Future<void> writeEncrypted(String key, String value, {String? encryptionKey}) async {
+  Future<void> writeEncrypted(
+    String key,
+    String value, {
+    String? encryptionKey,
+  }) async {
     try {
       final encryptionService = EncryptionService.instance;
       final encryptedValue = encryptionService.encryptText(value);
       await write(key, encryptedValue);
       _logger.d('Encrypted write to secure storage for key: $key');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to write encrypted data: $e');
       throw StorageException.encryptionFailed();
     }
@@ -148,7 +149,7 @@ class EnhancedSecureStorage extends SecureStorageImpl {
       final decryptedValue = encryptionService.decryptText(encryptedValue);
       _logger.d('Encrypted read from secure storage for key: $key');
       return decryptedValue;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to read encrypted data: $e');
       throw StorageException.decryptionFailed();
     }
@@ -166,7 +167,7 @@ class EnhancedSecureStorage extends SecureStorageImpl {
       await delete(testKey);
 
       return readValue == testValue;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.w('Secure storage not available: $e');
       return false;
     }
@@ -183,7 +184,7 @@ class EnhancedSecureStorage extends SecureStorageImpl {
       }
 
       return totalSize;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to calculate storage size: $e');
       return 0;
     }
@@ -194,7 +195,7 @@ class EnhancedSecureStorage extends SecureStorageImpl {
     try {
       final allData = await readAll();
       return jsonEncode(allData);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to backup secure storage: $e');
       throw StorageException.readError();
     }
@@ -210,7 +211,7 @@ class EnhancedSecureStorage extends SecureStorageImpl {
       }
 
       _logger.i('Secure storage restored from backup');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to restore secure storage: $e');
       throw StorageException.writeError();
     }
@@ -219,24 +220,28 @@ class EnhancedSecureStorage extends SecureStorageImpl {
 
 /// Secure storage service with predefined key operations
 class SecureStorageService {
+  SecureStorageService(this._storage);
   final EnhancedSecureStorage _storage;
 
-  SecureStorageService(this._storage);
-
   // Authentication tokens
-  Future<void> saveAccessToken(String token) => _storage.write(StorageKeys.accessToken, token);
+  Future<void> saveAccessToken(String token) =>
+      _storage.write(StorageKeys.accessToken, token);
   Future<String?> getAccessToken() => _storage.read(StorageKeys.accessToken);
   Future<void> deleteAccessToken() => _storage.delete(StorageKeys.accessToken);
 
-  Future<void> saveRefreshToken(String token) => _storage.write(StorageKeys.refreshToken, token);
+  Future<void> saveRefreshToken(String token) =>
+      _storage.write(StorageKeys.refreshToken, token);
   Future<String?> getRefreshToken() => _storage.read(StorageKeys.refreshToken);
-  Future<void> deleteRefreshToken() => _storage.delete(StorageKeys.refreshToken);
+  Future<void> deleteRefreshToken() =>
+      _storage.delete(StorageKeys.refreshToken);
 
   // User credentials
   Future<void> saveUserCredentials(Map<String, dynamic> credentials) =>
       _storage.writeJson(StorageKeys.userCredentials, credentials);
-  Future<Map<String, dynamic>?> getUserCredentials() => _storage.readJson(StorageKeys.userCredentials);
-  Future<void> deleteUserCredentials() => _storage.delete(StorageKeys.userCredentials);
+  Future<Map<String, dynamic>?> getUserCredentials() =>
+      _storage.readJson(StorageKeys.userCredentials);
+  Future<void> deleteUserCredentials() =>
+      _storage.delete(StorageKeys.userCredentials);
 
   // Biometric settings
   Future<void> setBiometricEnabled(bool enabled) =>
@@ -249,8 +254,10 @@ class SecureStorageService {
   // Hanko session
   Future<void> saveHankoSessionId(String sessionId) =>
       _storage.write(StorageKeys.hankoSessionId, sessionId);
-  Future<String?> getHankoSessionId() => _storage.read(StorageKeys.hankoSessionId);
-  Future<void> deleteHankoSessionId() => _storage.delete(StorageKeys.hankoSessionId);
+  Future<String?> getHankoSessionId() =>
+      _storage.read(StorageKeys.hankoSessionId);
+  Future<void> deleteHankoSessionId() =>
+      _storage.delete(StorageKeys.hankoSessionId);
 
   // Clear all authentication data
   Future<void> clearAuthData() async {

@@ -66,10 +66,6 @@ class NetworkException extends AppException {
 
 /// GraphQL specific exceptions
 class GraphQLException extends AppException {
-  const GraphQLException(super.message, [super.code, this.extensions]);
-
-  final Map<String, dynamic>? extensions;
-
   factory GraphQLException.validationError(
     String message,
     Map<String, dynamic>? extensions,
@@ -92,6 +88,9 @@ class GraphQLException extends AppException {
     'Blockchain operation failed: $message',
     'BLOCKCHAIN_ERROR',
   );
+  const GraphQLException(super.message, [super.code, this.extensions]);
+
+  final Map<String, dynamic>? extensions;
 
   @override
   String toString() =>
@@ -164,10 +163,6 @@ class CacheException extends AppException {
 
 /// Validation exceptions
 class ValidationException extends AppException {
-  const ValidationException(super.message, [super.code, this.errors]);
-
-  final Map<String, List<String>>? errors;
-
   factory ValidationException.invalidEmail() =>
       const ValidationException('Invalid email format', 'INVALID_EMAIL');
 
@@ -188,13 +183,16 @@ class ValidationException extends AppException {
         'FORM_VALIDATION_FAILED',
         errors,
       );
+  const ValidationException(super.message, [super.code, this.errors]);
+
+  final Map<String, List<String>>? errors;
 
   @override
   String toString() {
     var result =
         'ValidationException: $message${code != null ? ' (Code: $code)' : ''}';
     if (errors != null && errors!.isNotEmpty) {
-      result += '\nErrors: ${errors.toString()}';
+      result += '\nErrors: ${errors}';
     }
     return result;
   }

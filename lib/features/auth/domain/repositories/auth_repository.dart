@@ -52,9 +52,7 @@ abstract class AuthRepository {
   });
 
   /// Request password reset
-  Future<Either<Failure, bool>> requestPasswordReset({
-    required String email,
-  });
+  Future<Either<Failure, bool>> requestPasswordReset({required String email});
 
   /// Reset password with token
   Future<Either<Failure, bool>> resetPassword({
@@ -63,9 +61,7 @@ abstract class AuthRepository {
   });
 
   /// Enable/disable biometric authentication
-  Future<Either<Failure, bool>> setBiometricAuth({
-    required bool enabled,
-  });
+  Future<Either<Failure, bool>> setBiometricAuth({required bool enabled});
 
   /// Check if biometric authentication is available
   Future<bool> isBiometricAvailable();
@@ -74,17 +70,13 @@ abstract class AuthRepository {
   Future<Either<Failure, bool>> authenticateWithBiometrics();
 
   /// Delete user account
-  Future<Either<Failure, bool>> deleteAccount({
-    required String password,
-  });
+  Future<Either<Failure, bool>> deleteAccount({required String password});
 
   /// Get user permissions
   Future<Either<Failure, List<String>>> getUserPermissions();
 
   /// Verify email address
-  Future<Either<Failure, bool>> verifyEmail({
-    required String token,
-  });
+  Future<Either<Failure, bool>> verifyEmail({required String token});
 
   /// Resend email verification
   Future<Either<Failure, bool>> resendEmailVerification();
@@ -96,9 +88,7 @@ abstract class AuthRepository {
   });
 
   /// Unlink social account
-  Future<Either<Failure, bool>> unlinkSocialAccount({
-    required String provider,
-  });
+  Future<Either<Failure, bool>> unlinkSocialAccount({required String provider});
 
   /// Get linked social accounts
   Future<Either<Failure, List<SocialAccount>>> getLinkedAccounts();
@@ -113,17 +103,13 @@ abstract class AuthRepository {
   });
 
   /// Check if email is available
-  Future<Either<Failure, bool>> checkEmailAvailability({
-    required String email,
-  });
+  Future<Either<Failure, bool>> checkEmailAvailability({required String email});
 
   /// Get session history
   Future<Either<Failure, List<AuthSession>>> getSessionHistory();
 
   /// Revoke session
-  Future<Either<Failure, bool>> revokeSession({
-    required String sessionId,
-  });
+  Future<Either<Failure, bool>> revokeSession({required String sessionId});
 
   /// Get active sessions
   Future<Either<Failure, List<AuthSession>>> getActiveSessions();
@@ -131,4 +117,3 @@ abstract class AuthRepository {
   /// Subscribe to auth state changes
   Stream<AuthSessionEntity?> get authStateChanges;
 }
-

@@ -4,7 +4,9 @@ void main() {
   runApp(const ClublandDemo());
 }
 
+/// ClublandDemo view
 class ClublandDemo extends StatelessWidget {
+  /// Constructs a [ClublandDemo]
   const ClublandDemo({super.key});
 
   @override
@@ -16,7 +18,9 @@ class ClublandDemo extends StatelessWidget {
   );
 }
 
+/// WelcomeScreen
 class WelcomeScreen extends StatelessWidget {
+  /// Constructs a WelcomeScreen
   const WelcomeScreen({super.key});
 
   @override
@@ -108,7 +112,9 @@ class WelcomeScreen extends StatelessWidget {
   );
 }
 
+/// FeaturesScreen
 class FeaturesScreen extends StatelessWidget {
+  /// Constructs a [FeaturesScreen]
   const FeaturesScreen({super.key});
 
   @override
@@ -170,17 +176,16 @@ class FeaturesScreen extends StatelessWidget {
 }
 
 class _FeatureCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-  final VoidCallback onTap;
-
   const _FeatureCard({
     required this.icon,
     required this.title,
     required this.description,
     required this.onTap,
   });
+  final IconData icon;
+  final String title;
+  final String description;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) => Card(

@@ -14,7 +14,7 @@ class AppThemeMode extends _$AppThemeMode {
 
   void setThemeMode(ThemeMode mode) {
     state = mode;
-    // TODO: Persist to storage
+    // TODO(oscaralmgren): Persist to storage
   }
 
   void toggleTheme() {
@@ -40,12 +40,13 @@ class AppLocale extends _$AppLocale {
 
   void setLocale(Locale locale) {
     state = locale;
-    // TODO: Persist to storage
+    // TODO(oscaralmgren): Persist to storage
   }
 }
 
 /// App settings model
 class AppSettings {
+  /// Construct a [AppSettings]
   const AppSettings({
     this.enableNotifications = true,
     this.enableAnalytics = AppConstants.enableAnalytics,
@@ -59,11 +60,14 @@ class AppSettings {
 
   factory AppSettings.fromJson(Map<String, dynamic> json) => AppSettings(
     enableNotifications: json['enableNotifications'] as bool? ?? true,
-    enableAnalytics: json['enableAnalytics'] as bool? ?? AppConstants.enableAnalytics,
+    enableAnalytics:
+        json['enableAnalytics'] as bool? ?? AppConstants.enableAnalytics,
     enableCrashReporting:
-        json['enableCrashReporting'] as bool? ?? AppConstants.enableCrashReporting,
+        json['enableCrashReporting'] as bool? ??
+        AppConstants.enableCrashReporting,
     enableLocationServices:
-        json['enableLocationServices'] as bool? ?? AppConstants.enableLocationFeatures,
+        json['enableLocationServices'] as bool? ??
+        AppConstants.enableLocationFeatures,
     wifiOnlySync: json['wifiOnlySync'] as bool? ?? false,
     autoSync: json['autoSync'] as bool? ?? true,
     imageQuality: json['imageQuality'] as String? ?? 'high',
@@ -116,13 +120,13 @@ class AppSettings {
 class AppSettingsNotifier extends _$AppSettingsNotifier {
   @override
   Future<AppSettings> build() async {
-    // TODO: Load from storage
+    // TODO(oscaralmgren): Load from storage
     return const AppSettings();
   }
 
   Future<void> updateSettings(AppSettings settings) async {
     state = AsyncData(settings);
-    // TODO: Save to storage
+    // TODO(oscaralmgren): Save to storage
   }
 
   Future<void> updateSetting<T>(
@@ -207,7 +211,7 @@ class DeviceInfo {
 /// Device info provider
 @riverpod
 Future<DeviceInfo> deviceInfo(DeviceInfoRef ref) async {
-  // TODO: Implement actual device info gathering
+  // TODO(oscaralmgren): Implement actual device info gathering
   return const DeviceInfo(
     platform: 'Flutter',
     version: '3.16.0',
@@ -283,12 +287,12 @@ class AppPermissions {
 class AppPermissionsNotifier extends _$AppPermissionsNotifier {
   @override
   Future<AppPermissions> build() async {
-    // TODO: Check actual permissions
+    // TODO(oscaralmgren): Check actual permissions
     return const AppPermissions();
   }
 
   Future<void> requestLocationPermission() async {
-    // TODO: Implement permission request
+    // TODO(oscaralmgren): Implement permission request
     state = AsyncData(
       state.value?.copyWith(location: PermissionStatus.granted) ??
           const AppPermissions(location: PermissionStatus.granted),
@@ -296,7 +300,7 @@ class AppPermissionsNotifier extends _$AppPermissionsNotifier {
   }
 
   Future<void> requestNotificationPermission() async {
-    // TODO: Implement permission request
+    // TODO(oscaralmgren): Implement permission request
     state = AsyncData(
       state.value?.copyWith(notifications: PermissionStatus.granted) ??
           const AppPermissions(notifications: PermissionStatus.granted),
@@ -304,7 +308,7 @@ class AppPermissionsNotifier extends _$AppPermissionsNotifier {
   }
 
   Future<void> requestCameraPermission() async {
-    // TODO: Implement permission request
+    // TODO(oscaralmgren): Implement permission request
     state = AsyncData(
       state.value?.copyWith(camera: PermissionStatus.granted) ??
           const AppPermissions(camera: PermissionStatus.granted),
@@ -373,6 +377,6 @@ class GlobalAppState extends _$GlobalAppState {
   }
 
   void clearError() {
-    state = state.copyWith(error: null);
+    state = state.copyWith();
   }
 }

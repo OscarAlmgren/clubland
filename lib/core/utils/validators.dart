@@ -8,7 +8,9 @@ class Validators {
       return 'Email is required';
     }
 
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     if (!emailRegex.hasMatch(value)) {
       return 'Please enter a valid email address';
     }
@@ -27,17 +29,17 @@ class Validators {
     }
 
     // Check for at least one uppercase letter
-    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+    if (!RegExp('[A-Z]').hasMatch(value)) {
       return 'Password must contain at least one uppercase letter';
     }
 
     // Check for at least one lowercase letter
-    if (!RegExp(r'[a-z]').hasMatch(value)) {
+    if (!RegExp('[a-z]').hasMatch(value)) {
       return 'Password must contain at least one lowercase letter';
     }
 
     // Check for at least one digit
-    if (!RegExp(r'[0-9]').hasMatch(value)) {
+    if (!RegExp('[0-9]').hasMatch(value)) {
       return 'Password must contain at least one number';
     }
 
@@ -105,7 +107,11 @@ class Validators {
   }
 
   /// Date validation
-  static String? validateDate(String? value, {bool isFutureRequired = false, bool isPastRequired = false}) {
+  static String? validateDate(
+    String? value, {
+    bool isFutureRequired = false,
+    bool isPastRequired = false,
+  }) {
     if (value == null || value.isEmpty) {
       return 'Date is required';
     }
@@ -113,7 +119,7 @@ class Validators {
     DateTime? date;
     try {
       date = DateFormat('yyyy-MM-dd').parse(value);
-    } catch (e) {
+    } on Exception {
       return 'Please enter a valid date';
     }
 
@@ -131,7 +137,11 @@ class Validators {
   }
 
   /// Age validation (for date of birth)
-  static String? validateAge(String? value, {int minAge = 18, int maxAge = 120}) {
+  static String? validateAge(
+    String? value, {
+    int minAge = 18,
+    int maxAge = 120,
+  }) {
     if (value == null || value.isEmpty) {
       return 'Date of birth is required';
     }
@@ -139,7 +149,7 @@ class Validators {
     DateTime? birthDate;
     try {
       birthDate = DateFormat('yyyy-MM-dd').parse(value);
-    } catch (e) {
+    } on Exception {
       return 'Please enter a valid date';
     }
 
@@ -258,7 +268,9 @@ class Validators {
     }
     // UK postal code validation
     else if (countryCode == 'GB') {
-      if (!RegExp(r'^[A-Za-z]{1,2}\d[A-Za-z\d]? \d[A-Za-z]{2}$').hasMatch(value)) {
+      if (!RegExp(
+        r'^[A-Za-z]{1,2}\d[A-Za-z\d]? \d[A-Za-z]{2}$',
+      ).hasMatch(value)) {
         return 'Please enter a valid postal code';
       }
     }
@@ -297,7 +309,12 @@ class Validators {
   }
 
   /// Number validation
-  static String? validateNumber(String? value, {double? min, double? max, bool isRequired = true}) {
+  static String? validateNumber(
+    String? value, {
+    double? min,
+    double? max,
+    bool isRequired = true,
+  }) {
     if (value == null || value.isEmpty) {
       return isRequired ? 'Number is required' : null;
     }
@@ -319,7 +336,12 @@ class Validators {
   }
 
   /// Integer validation
-  static String? validateInteger(String? value, {int? min, int? max, bool isRequired = true}) {
+  static String? validateInteger(
+    String? value, {
+    int? min,
+    int? max,
+    bool isRequired = true,
+  }) {
     if (value == null || value.isEmpty) {
       return isRequired ? 'Number is required' : null;
     }
@@ -341,7 +363,12 @@ class Validators {
   }
 
   /// Length validation
-  static String? validateLength(String? value, {int? minLength, int? maxLength, bool isRequired = true}) {
+  static String? validateLength(
+    String? value, {
+    int? minLength,
+    int? maxLength,
+    bool isRequired = true,
+  }) {
     if (value == null || value.isEmpty) {
       return isRequired ? 'Field is required' : null;
     }
@@ -358,7 +385,10 @@ class Validators {
   }
 
   /// Custom validation with multiple validators
-  static String? validateMultiple(String? value, List<String? Function(String?)> validators) {
+  static String? validateMultiple(
+    String? value,
+    List<String? Function(String?)> validators,
+  ) {
     for (final validator in validators) {
       final result = validator(value);
       if (result != null) {

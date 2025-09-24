@@ -24,24 +24,25 @@ class AuthController extends _$AuthController {
       logger.d('Initializing authentication...');
 
       // Listen to auth state changes from repository
-      final authRepository = ref.read(authRepositoryProvider);
-      ref.listen(
-        authRepositoryProvider,
-        (_, repository) {
-          repository.authStateChanges.listen((session) {
-            if (session != null) {
-              state = AsyncData(session.user);
-            } else {
-              state = const AsyncData(null);
-            }
-          });
-        },
-      );
+      ref.read(authRepositoryProvider);
+      ref.listen(authRepositoryProvider, (_, repository) {
+        repository.authStateChanges.listen((session) {
+          if (session != null) {
+            state = AsyncData(session.user);
+          } else {
+            state = const AsyncData(null);
+          }
+        });
+      });
 
       logger.d('Authentication initialized');
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       final logger = ref.read(loggerProvider);
-      logger.e('Failed to initialize authentication', error: e, stackTrace: stackTrace);
+      logger.e(
+        'Failed to initialize authentication',
+        error: e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -51,24 +52,20 @@ class AuthController extends _$AuthController {
       final getCurrentUserUsecase = ref.read(getCurrentUserUsecaseProvider);
       final result = await getCurrentUserUsecase();
 
-      return result.fold(
-        (failure) {
-          ErrorHandler.logWarning('Failed to load stored user: ${failure.message}');
-          return null;
-        },
-        (user) => user,
-      );
-    } catch (e) {
+      return result.fold((failure) {
+        ErrorHandler.logWarning(
+          'Failed to load stored user: ${failure.message}',
+        );
+        return null;
+      }, (user) => user);
+    } on Exception catch (e) {
       ErrorHandler.logError('Error loading stored user', error: e);
       return null;
     }
   }
 
   /// Login with email and password
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     state = const AsyncLoading();
 
     try {
@@ -85,7 +82,7 @@ class AuthController extends _$AuthController {
           _onLoginSuccess(session);
         },
       );
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
@@ -93,9 +90,7 @@ class AuthController extends _$AuthController {
   }
 
   /// Login with Hanko (passwordless)
-  Future<void> loginWithHanko({
-    required String email,
-  }) async {
+  Future<void> loginWithHanko({required String email}) async {
     state = const AsyncLoading();
 
     try {
@@ -112,7 +107,7 @@ class AuthController extends _$AuthController {
           _onLoginSuccess(session);
         },
       );
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
@@ -143,7 +138,7 @@ class AuthController extends _$AuthController {
           _onLoginSuccess(session);
         },
       );
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
@@ -182,7 +177,7 @@ class AuthController extends _$AuthController {
           _onLoginSuccess(session);
         },
       );
-    } catch (e, stackTrace) {
+    } on Exception catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
@@ -195,11 +190,8 @@ class AuthController extends _$AuthController {
       final logoutUsecase = ref.read(logoutUsecaseProvider);
       final result = await logoutUsecase();
 
-      result.fold(
-        (failure) => ErrorHandler.showErrorToUser(failure),
-        (_) => _onLogoutSuccess(),
-      );
-    } catch (e) {
+      result.fold(ErrorHandler.showErrorToUser, (_) => _onLogoutSuccess());
+    } on Exception catch (e) {
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
     }
@@ -229,24 +221,22 @@ class AuthController extends _$AuthController {
           _onTokenRefreshSuccess(session);
         },
       );
-    } catch (e) {
+    } on Exception catch (e) {
       ErrorHandler.logError('Error refreshing token', error: e);
       await logout();
     }
   }
 
   /// Update user profile
-  Future<void> updateProfile({
-    required UserProfile profile,
-  }) async {
+  Future<void> updateProfile({required UserProfile profile}) async {
     final currentUser = state.value;
     if (currentUser == null) return;
 
     try {
-      // TODO: Implement profile update usecase
+      // TODO(oscaralmgren): Implement profile update usecase
       final updatedUser = currentUser.copyWith(profile: profile);
       state = AsyncData(updatedUser);
-    } catch (e) {
+    } on Exception catch (e) {
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
     }
@@ -258,16 +248,13 @@ class AuthController extends _$AuthController {
       final biometricAuthUsecase = ref.read(biometricAuthUsecaseProvider);
       final result = await biometricAuthUsecase.authenticate();
 
-      result.fold(
-        (failure) => ErrorHandler.showErrorToUser(failure),
-        (success) {
-          if (success) {
-            // Biometric auth successful, user is already logged in
-            ErrorHandler.logInfo('Biometric authentication successful');
-          }
-        },
-      );
-    } catch (e) {
+      result.fold(ErrorHandler.showErrorToUser, (success) {
+        if (success) {
+          // Biometric auth successful, user is already logged in
+          ErrorHandler.logInfo('Biometric authentication successful');
+        }
+      });
+    } on Exception catch (e) {
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
     }
@@ -277,17 +264,18 @@ class AuthController extends _$AuthController {
   Future<void> setBiometricAuth({required bool enabled}) async {
     try {
       final biometricAuthUsecase = ref.read(biometricAuthUsecaseProvider);
-      final result = await biometricAuthUsecase.setBiometricAuth(enabled: enabled);
-
-      result.fold(
-        (failure) => ErrorHandler.showErrorToUser(failure),
-        (success) {
-          if (success) {
-            ErrorHandler.logInfo('Biometric authentication ${enabled ? 'enabled' : 'disabled'}');
-          }
-        },
+      final result = await biometricAuthUsecase.setBiometricAuth(
+        enabled: enabled,
       );
-    } catch (e) {
+
+      result.fold(ErrorHandler.showErrorToUser, (success) {
+        if (success) {
+          ErrorHandler.logInfo(
+            'Biometric authentication ${enabled ? 'enabled' : 'disabled'}',
+          );
+        }
+      });
+    } on Exception catch (e) {
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
     }
@@ -300,7 +288,7 @@ class AuthController extends _$AuthController {
     // Invalidate other providers that depend on auth state
     ref.invalidate(currentUserProvider);
 
-    // TODO: Navigate to main app
+    // TODO(oscaralmgren): Navigate to main app
   }
 
   /// Handle successful logout
@@ -312,7 +300,7 @@ class AuthController extends _$AuthController {
     ref.invalidate(currentUserProvider);
     ref.invalidate(authSessionProvider);
 
-    // TODO: Navigate to login screen
+    // TODO(oscaralmgren): Navigate to login screen
   }
 
   /// Handle successful token refresh
@@ -369,10 +357,7 @@ Future<AuthSessionEntity?> authSession(AuthSessionRef ref) async {
   final authRepository = ref.read(authRepositoryProvider);
   final result = await authRepository.getCurrentSession();
 
-  return result.fold(
-    (failure) => null,
-    (session) => session,
-  );
+  return result.fold((failure) => null, (session) => session);
 }
 
 /// User permissions provider
@@ -384,15 +369,12 @@ Future<List<String>> userPermissions(UserPermissionsRef ref) async {
   final authRepository = ref.read(authRepositoryProvider);
   final result = await authRepository.getUserPermissions();
 
-  return result.fold(
-    (failure) => [],
-    (permissions) => permissions,
-  );
+  return result.fold((failure) => [], (permissions) => permissions);
 }
 
 /// Biometric availability provider
 @riverpod
 Future<bool> biometricAvailable(BiometricAvailableRef ref) async {
   final authRepository = ref.read(authRepositoryProvider);
-  return await authRepository.isBiometricAvailable();
+  return authRepository.isBiometricAvailable();
 }

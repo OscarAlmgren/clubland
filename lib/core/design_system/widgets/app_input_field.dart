@@ -5,42 +5,10 @@ import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 
 /// Input field variants
-enum AppInputVariant {
-  filled,
-  outlined,
-  underlined,
-}
+enum AppInputVariant { filled, outlined, underlined }
 
 /// Custom app input field widget with consistent styling
 class AppInputField extends StatefulWidget {
-  final String? label;
-  final String? hint;
-  final String? helperText;
-  final String? errorText;
-  final String? initialValue;
-  final TextEditingController? controller;
-  final ValueChanged<String>? onChanged;
-  final VoidCallback? onTap;
-  final ValueChanged<String>? onSubmitted;
-  final FormFieldValidator<String>? validator;
-  final bool obscureText;
-  final bool enabled;
-  final bool readOnly;
-  final bool autofocus;
-  final int? maxLines;
-  final int? minLines;
-  final int? maxLength;
-  final TextInputType? keyboardType;
-  final TextInputAction? textInputAction;
-  final TextCapitalization textCapitalization;
-  final List<TextInputFormatter>? inputFormatters;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final String? prefixText;
-  final String? suffixText;
-  final AppInputVariant variant;
-  final FocusNode? focusNode;
-
   const AppInputField({
     super.key,
     this.label,
@@ -92,16 +60,16 @@ class AppInputField extends StatefulWidget {
     this.suffixIcon,
     this.variant = AppInputVariant.filled,
     this.focusNode,
-  })  : obscureText = false,
-        maxLines = 1,
-        minLines = null,
-        maxLength = null,
-        keyboardType = TextInputType.emailAddress,
-        textInputAction = TextInputAction.next,
-        textCapitalization = TextCapitalization.none,
-        inputFormatters = null,
-        prefixText = null,
-        suffixText = null;
+  }) : obscureText = false,
+       maxLines = 1,
+       minLines = null,
+       maxLength = null,
+       keyboardType = TextInputType.emailAddress,
+       textInputAction = TextInputAction.next,
+       textCapitalization = TextCapitalization.none,
+       inputFormatters = null,
+       prefixText = null,
+       suffixText = null;
 
   /// Password input field
   const AppInputField.password({
@@ -123,16 +91,16 @@ class AppInputField extends StatefulWidget {
     this.suffixIcon,
     this.variant = AppInputVariant.filled,
     this.focusNode,
-  })  : obscureText = true,
-        maxLines = 1,
-        minLines = null,
-        maxLength = null,
-        keyboardType = TextInputType.visiblePassword,
-        textInputAction = TextInputAction.done,
-        textCapitalization = TextCapitalization.none,
-        inputFormatters = null,
-        prefixText = null,
-        suffixText = null;
+  }) : obscureText = true,
+       maxLines = 1,
+       minLines = null,
+       maxLength = null,
+       keyboardType = TextInputType.visiblePassword,
+       textInputAction = TextInputAction.done,
+       textCapitalization = TextCapitalization.none,
+       inputFormatters = null,
+       prefixText = null,
+       suffixText = null;
 
   /// Search input field
   const AppInputField.search({
@@ -154,16 +122,16 @@ class AppInputField extends StatefulWidget {
     this.suffixIcon,
     this.variant = AppInputVariant.filled,
     this.focusNode,
-  })  : obscureText = false,
-        maxLines = 1,
-        minLines = null,
-        maxLength = null,
-        keyboardType = TextInputType.text,
-        textInputAction = TextInputAction.search,
-        textCapitalization = TextCapitalization.none,
-        inputFormatters = null,
-        prefixText = null,
-        suffixText = null;
+  }) : obscureText = false,
+       maxLines = 1,
+       minLines = null,
+       maxLength = null,
+       keyboardType = TextInputType.text,
+       textInputAction = TextInputAction.search,
+       textCapitalization = TextCapitalization.none,
+       inputFormatters = null,
+       prefixText = null,
+       suffixText = null;
 
   /// Multiline text area
   const AppInputField.textarea({
@@ -172,7 +140,7 @@ class AppInputField extends StatefulWidget {
     this.hint,
     this.helperText,
     this.errorText,
-    this.initialValue,
+    String? initialValue,
     this.controller,
     this.onChanged,
     this.onTap,
@@ -188,13 +156,41 @@ class AppInputField extends StatefulWidget {
     this.suffixIcon,
     this.variant = AppInputVariant.filled,
     this.focusNode,
-  })  : obscureText = false,
-        keyboardType = TextInputType.multiline,
-        textInputAction = TextInputAction.newline,
-        textCapitalization = TextCapitalization.sentences,
-        inputFormatters = null,
-        prefixText = null,
-        suffixText = null;
+  }) : obscureText = false,
+       keyboardType = TextInputType.multiline,
+       textInputAction = TextInputAction.newline,
+       textCapitalization = TextCapitalization.sentences,
+       inputFormatters = null,
+       prefixText = null,
+       suffixText = null,
+       initialValue = initialValue;
+  final String? label;
+  final String? hint;
+  final String? helperText;
+  final String? errorText;
+  final String? initialValue;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onTap;
+  final ValueChanged<String>? onSubmitted;
+  final FormFieldValidator<String>? validator;
+  final bool obscureText;
+  final bool enabled;
+  final bool readOnly;
+  final bool autofocus;
+  final int? maxLines;
+  final int? minLines;
+  final int? maxLength;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final String? prefixText;
+  final String? suffixText;
+  final AppInputVariant variant;
+  final FocusNode? focusNode;
 
   @override
   State<AppInputField> createState() => _AppInputFieldState();
@@ -285,9 +281,8 @@ class _AppInputFieldState extends State<AppInputField> {
 
   InputDecoration _buildInputDecoration(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final theme = Theme.of(context);
 
-    Widget? suffixIcon = widget.suffixIcon;
+    var suffixIcon = widget.suffixIcon;
 
     // Add show/hide password icon for password fields
     if (widget.obscureText && widget.suffixIcon == null) {
@@ -314,10 +309,10 @@ class _AppInputFieldState extends State<AppInputField> {
           suffixText: widget.suffixText,
           filled: true,
           fillColor: widget.errorText != null
-              ? colorScheme.errorContainer.withOpacity(0.1)
+              ? colorScheme.errorContainer.withValues(alpha: 0.1)
               : _hasFocus
-                  ? colorScheme.primaryContainer.withOpacity(0.1)
-                  : colorScheme.surfaceVariant.withOpacity(0.3),
+              ? colorScheme.primaryContainer.withValues(alpha: 0.1)
+              : colorScheme.surfaceContainerHighest.withValues(alpha: .3),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSizing.radiusLG),
             borderSide: BorderSide.none,
@@ -337,17 +332,11 @@ class _AppInputFieldState extends State<AppInputField> {
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-            borderSide: BorderSide(
-              color: colorScheme.error,
-              width: 1,
-            ),
+            borderSide: BorderSide(color: colorScheme.error),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-            borderSide: BorderSide(
-              color: colorScheme.error,
-              width: 2,
-            ),
+            borderSide: BorderSide(color: colorScheme.error, width: 2),
           ),
           contentPadding: const EdgeInsets.all(AppSpacing.lg),
         );
@@ -361,16 +350,12 @@ class _AppInputFieldState extends State<AppInputField> {
           suffixText: widget.suffixText,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-            borderSide: BorderSide(
-              color: colorScheme.outline,
-              width: 1,
-            ),
+            borderSide: BorderSide(color: colorScheme.outline),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSizing.radiusLG),
             borderSide: BorderSide(
-              color: colorScheme.outline.withOpacity(0.5),
-              width: 1,
+              color: colorScheme.outline.withValues(alpha: .5),
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -384,17 +369,11 @@ class _AppInputFieldState extends State<AppInputField> {
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-            borderSide: BorderSide(
-              color: colorScheme.error,
-              width: 1,
-            ),
+            borderSide: BorderSide(color: colorScheme.error),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-            borderSide: BorderSide(
-              color: colorScheme.error,
-              width: 2,
-            ),
+            borderSide: BorderSide(color: colorScheme.error, width: 2),
           ),
           contentPadding: const EdgeInsets.all(AppSpacing.lg),
         );
@@ -407,15 +386,11 @@ class _AppInputFieldState extends State<AppInputField> {
           prefixText: widget.prefixText,
           suffixText: widget.suffixText,
           border: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: colorScheme.outline,
-              width: 1,
-            ),
+            borderSide: BorderSide(color: colorScheme.outline),
           ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: colorScheme.outline.withOpacity(0.5),
-              width: 1,
+              color: colorScheme.outline.withValues(alpha: .5),
             ),
           ),
           focusedBorder: UnderlineInputBorder(
@@ -427,16 +402,10 @@ class _AppInputFieldState extends State<AppInputField> {
             ),
           ),
           errorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: colorScheme.error,
-              width: 1,
-            ),
+            borderSide: BorderSide(color: colorScheme.error),
           ),
           focusedErrorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: colorScheme.error,
-              width: 2,
-            ),
+            borderSide: BorderSide(color: colorScheme.error, width: 2),
           ),
           contentPadding: const EdgeInsets.symmetric(
             vertical: AppSpacing.md,

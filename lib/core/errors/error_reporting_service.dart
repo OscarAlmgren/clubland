@@ -8,16 +8,15 @@ import 'failures.dart';
 
 /// Service for comprehensive error reporting and analytics
 class ErrorReportingService {
-  static ErrorReportingService? _instance;
-  final Logger _logger;
-  final List<ErrorReport> _errorQueue = [];
-  Timer? _batchTimer;
-
   ErrorReportingService._() : _logger = Logger() {
     if (EnvironmentConfig.enableCrashReporting) {
       _initializeBatchReporting();
     }
   }
+  static ErrorReportingService? _instance;
+  final Logger _logger;
+  final List<ErrorReport> _errorQueue = [];
+  Timer? _batchTimer;
 
   static ErrorReportingService get instance {
     _instance ??= ErrorReportingService._();
@@ -65,7 +64,7 @@ class ErrorReportingService {
     Map<String, dynamic>? context,
     ErrorSeverity severity = ErrorSeverity.error,
   }) {
-    final failure = NetworkFailure.serverError(0, 'Unexpected error: ${error.toString()}');
+    final failure = NetworkFailure.serverError(0, 'Unexpected error: $error');
 
     reportFailure(
       failure: failure,
@@ -118,20 +117,27 @@ class ErrorReportingService {
 
     // Show critical errors to user in debug mode
     if (kDebugMode && report.severity == ErrorSeverity.critical) {
-      _logger.e('CRITICAL ERROR: ${report.operation} - ${report.failure.message}');
+      _logger.e(
+        'CRITICAL ERROR: ${report.operation} - ${report.failure.message}',
+      );
     }
   }
 
   /// Log error locally
   void _logError(ErrorReport report) {
-    final logMessage = 'Operation: ${report.operation} | '
+    final logMessage =
+        'Operation: ${report.operation} | '
         'Failure: ${report.failure.runtimeType} | '
         'Code: ${report.failure.code} | '
         'Message: ${report.failure.message}';
 
     switch (report.severity) {
       case ErrorSeverity.debug:
-        _logger.d(logMessage, error: report.failure, stackTrace: report.stackTrace);
+        _logger.d(
+          logMessage,
+          error: report.failure,
+          stackTrace: report.stackTrace,
+        );
         break;
       case ErrorSeverity.info:
         _logger.i(logMessage);
@@ -140,10 +146,18 @@ class ErrorReportingService {
         _logger.w(logMessage, error: report.failure);
         break;
       case ErrorSeverity.error:
-        _logger.e(logMessage, error: report.failure, stackTrace: report.stackTrace);
+        _logger.e(
+          logMessage,
+          error: report.failure,
+          stackTrace: report.stackTrace,
+        );
         break;
       case ErrorSeverity.critical:
-        _logger.f(logMessage, error: report.failure, stackTrace: report.stackTrace);
+        _logger.f(
+          logMessage,
+          error: report.failure,
+          stackTrace: report.stackTrace,
+        );
         break;
     }
 
@@ -174,7 +188,7 @@ class ErrorReportingService {
       _logger.d('Processing error batch: ${batch.length} errors');
     }
 
-    // TODO: Send to actual crash reporting service (Sentry, Firebase, etc.)
+    // TODO(oscaralmgren): Send to actual crash reporting service (Sentry, Firebase, etc.)
     _sendToRemoteService(batch);
   }
 
@@ -183,19 +197,21 @@ class ErrorReportingService {
     try {
       // Mock implementation - replace with actual service
       if (kDebugMode) {
-        _logger.d('Would send ${reports.length} error reports to remote service');
+        _logger.d(
+          'Would send ${reports.length} error reports to remote service',
+        );
 
         for (final report in reports) {
           _logger.d('Report: ${report.operation} - ${report.failure.message}');
         }
       }
 
-      // TODO: Implement actual service integration
+      // TODO(oscaralmgren): Implement actual service integration
       // Examples:
       // - Sentry.captureException()
       // - Firebase Crashlytics.recordError()
       // - Custom API endpoint
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.w('Failed to send error reports to remote service: $e');
 
       // Re-queue reports for next batch
@@ -220,13 +236,13 @@ class ErrorReportingService {
 
   /// Get build number for reporting
   String _getBuildNumber() {
-    // TODO: Get actual build number from package_info_plus
+    // TODO(oscaralmgren): Get actual build number from package_info_plus
     return 'dev-build';
   }
 
   /// Get device info for reporting
   Map<String, dynamic> _getDeviceInfo() {
-    // TODO: Get actual device info from device_info_plus
+    // TODO(oscaralmgren): Get actual device info from device_info_plus
     return {
       'platform': defaultTargetPlatform.name,
       'isWeb': kIsWeb,
@@ -235,13 +251,11 @@ class ErrorReportingService {
   }
 
   /// Get error statistics
-  Map<String, dynamic> getErrorStats() {
-    return {
-      'queueSize': _errorQueue.length,
-      'batchTimerActive': _batchTimer?.isActive ?? false,
-      'reportingEnabled': EnvironmentConfig.enableCrashReporting,
-    };
-  }
+  Map<String, dynamic> getErrorStats() => {
+    'queueSize': _errorQueue.length,
+    'batchTimerActive': _batchTimer?.isActive ?? false,
+    'reportingEnabled': EnvironmentConfig.enableCrashReporting,
+  };
 
   /// Clear error queue (for testing)
   void clearQueue() {
@@ -257,6 +271,41 @@ class ErrorReportingService {
 
 /// Error report model
 class ErrorReport {
+  /// Construct a [ErrorReport]
+  const ErrorReport({
+    required this.failure,
+    required this.operation,
+    required this.context,
+    required this.severity,
+    required this.timestamp,
+    required this.environment,
+    required this.buildNumber,
+    required this.deviceInfo,
+    this.stackTrace,
+    this.userId,
+  });
+
+  /// Convert from JSON
+  factory ErrorReport.fromJson(Map<String, dynamic> json) => ErrorReport(
+    failure: NetworkFailure(
+      json['failure']['message'] as String,
+      json['failure']['code'] as String?,
+    ),
+    operation: json['operation'] as String,
+    stackTrace: json['stackTrace'] != null
+        ? StackTrace.fromString(json['stackTrace'] as String)
+        : null,
+    userId: json['userId'] as String?,
+    context: Map<String, dynamic>.from(json['context'] as Map),
+    severity: ErrorSeverity.values.firstWhere(
+      (e) => e.name == json['severity'],
+      orElse: () => ErrorSeverity.error,
+    ),
+    timestamp: DateTime.parse(json['timestamp'] as String),
+    environment: json['environment'] as String,
+    buildNumber: json['buildNumber'] as String,
+    deviceInfo: Map<String, dynamic>.from(json['deviceInfo'] as Map),
+  );
   final Failure failure;
   final String operation;
   final StackTrace? stackTrace;
@@ -268,72 +317,27 @@ class ErrorReport {
   final String buildNumber;
   final Map<String, dynamic> deviceInfo;
 
-  const ErrorReport({
-    required this.failure,
-    required this.operation,
-    this.stackTrace,
-    this.userId,
-    required this.context,
-    required this.severity,
-    required this.timestamp,
-    required this.environment,
-    required this.buildNumber,
-    required this.deviceInfo,
-  });
-
   /// Convert to JSON for remote reporting
-  Map<String, dynamic> toJson() {
-    return {
-      'failure': {
-        'type': failure.runtimeType.toString(),
-        'message': failure.message,
-        'code': failure.code,
-      },
-      'operation': operation,
-      'stackTrace': stackTrace?.toString(),
-      'userId': userId,
-      'context': context,
-      'severity': severity.name,
-      'timestamp': timestamp.toIso8601String(),
-      'environment': environment,
-      'buildNumber': buildNumber,
-      'deviceInfo': deviceInfo,
-    };
-  }
-
-  /// Convert from JSON
-  factory ErrorReport.fromJson(Map<String, dynamic> json) {
-    return ErrorReport(
-      failure: NetworkFailure(
-        json['failure']['message'] as String,
-        json['failure']['code'] as String?,
-      ),
-      operation: json['operation'] as String,
-      stackTrace: json['stackTrace'] != null
-          ? StackTrace.fromString(json['stackTrace'] as String)
-          : null,
-      userId: json['userId'] as String?,
-      context: Map<String, dynamic>.from(json['context'] as Map),
-      severity: ErrorSeverity.values.firstWhere(
-        (e) => e.name == json['severity'],
-        orElse: () => ErrorSeverity.error,
-      ),
-      timestamp: DateTime.parse(json['timestamp'] as String),
-      environment: json['environment'] as String,
-      buildNumber: json['buildNumber'] as String,
-      deviceInfo: Map<String, dynamic>.from(json['deviceInfo'] as Map),
-    );
-  }
+  Map<String, dynamic> toJson() => {
+    'failure': {
+      'type': failure.runtimeType.toString(),
+      'message': failure.message,
+      'code': failure.code,
+    },
+    'operation': operation,
+    'stackTrace': stackTrace?.toString(),
+    'userId': userId,
+    'context': context,
+    'severity': severity.name,
+    'timestamp': timestamp.toIso8601String(),
+    'environment': environment,
+    'buildNumber': buildNumber,
+    'deviceInfo': deviceInfo,
+  };
 }
 
 /// Error severity levels
-enum ErrorSeverity {
-  debug,
-  info,
-  warning,
-  error,
-  critical,
-}
+enum ErrorSeverity { debug, info, warning, error, critical }
 
 /// Extension for convenient error reporting
 extension FailureReporting on Failure {

@@ -5,6 +5,7 @@ import '../controllers/auth_controller.dart';
 
 /// Login page for user authentication
 class LoginPage extends ConsumerStatefulWidget {
+  /// Constructs a [LoginPage]
   const LoginPage({super.key});
 
   @override

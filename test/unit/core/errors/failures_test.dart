@@ -1,6 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:clubland/core/errors/failures.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Failure Classes', () {
@@ -10,7 +9,10 @@ void main() {
         expect(failure.message, 'No internet connection available');
         expect(failure.code, 'NO_CONNECTION');
         expect(failure.toString(), contains('Failure'));
-        expect(failure.toString(), contains('No internet connection available'));
+        expect(
+          failure.toString(),
+          contains('No internet connection available'),
+        );
       });
 
       test('should create timeout failure', () {
@@ -20,7 +22,10 @@ void main() {
       });
 
       test('should create server error failure', () {
-        final failure = NetworkFailure.serverError(500, 'Internal Server Error');
+        final failure = NetworkFailure.serverError(
+          500,
+          'Internal Server Error',
+        );
         expect(failure.message, 'Server error: Internal Server Error');
         expect(failure.code, 'SERVER_ERROR_500');
       });
@@ -59,7 +64,10 @@ void main() {
 
       test('should create unexpected error failure', () {
         final failure = AuthFailure.unexpected('Custom error');
-        expect(failure.message, 'Unexpected authentication error: Custom error');
+        expect(
+          failure.message,
+          'Unexpected authentication error: Custom error',
+        );
         expect(failure.code, 'UNEXPECTED_ERROR');
       });
 
@@ -97,7 +105,10 @@ void main() {
 
       test('should create deletion failed failure', () {
         final failure = CacheFailure.deletionFailed('Permission denied');
-        expect(failure.message, 'Failed to delete from cache: Permission denied');
+        expect(
+          failure.message,
+          'Failed to delete from cache: Permission denied',
+        );
         expect(failure.code, 'CACHE_DELETION_FAILED');
       });
 

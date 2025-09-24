@@ -20,16 +20,13 @@ abstract class LocalStorage {
 
 /// Hive implementation of local storage
 class HiveLocalStorage implements LocalStorage {
+  HiveLocalStorage({String boxName = 'app_storage', Logger? logger})
+    : _boxName = boxName,
+      _logger = logger ?? Logger();
   late Box _box;
   final Logger _logger;
   final String _boxName;
   bool _isInitialized = false;
-
-  HiveLocalStorage({
-    String boxName = 'app_storage',
-    Logger? logger,
-  })  : _boxName = boxName,
-        _logger = logger ?? Logger();
 
   @override
   Future<void> init() async {
@@ -41,7 +38,7 @@ class HiveLocalStorage implements LocalStorage {
       _isInitialized = true;
 
       _logger.i('Hive local storage initialized with box: $_boxName');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to initialize Hive storage: $e');
       throw const StorageException('Failed to initialize local storage');
     }
@@ -49,7 +46,9 @@ class HiveLocalStorage implements LocalStorage {
 
   void _ensureInitialized() {
     if (!_isInitialized) {
-      throw const StorageException('Local storage not initialized. Call init() first.');
+      throw const StorageException(
+        'Local storage not initialized. Call init() first.',
+      );
     }
   }
 
@@ -59,7 +58,7 @@ class HiveLocalStorage implements LocalStorage {
       _ensureInitialized();
       await _box.put(key, value);
       _logger.d('Local storage write successful for key: $key');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to write to local storage: $e');
       throw StorageException.writeError();
     }
@@ -70,9 +69,11 @@ class HiveLocalStorage implements LocalStorage {
     try {
       _ensureInitialized();
       final value = _box.get(key) as T?;
-      _logger.d('Local storage read for key: $key ${value != null ? 'found' : 'not found'}');
+      _logger.d(
+        'Local storage read for key: $key ${value != null ? 'found' : 'not found'}',
+      );
       return value;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to read from local storage: $e');
       throw StorageException.readError();
     }
@@ -84,7 +85,7 @@ class HiveLocalStorage implements LocalStorage {
       _ensureInitialized();
       await _box.delete(key);
       _logger.d('Local storage delete successful for key: $key');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to delete from local storage: $e');
       throw StorageException.writeError();
     }
@@ -96,7 +97,7 @@ class HiveLocalStorage implements LocalStorage {
       _ensureInitialized();
       await _box.clear();
       _logger.i('Local storage cleared');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to clear local storage: $e');
       throw StorageException.writeError();
     }
@@ -107,7 +108,7 @@ class HiveLocalStorage implements LocalStorage {
     try {
       _ensureInitialized();
       return _box.containsKey(key);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to check local storage key: $e');
       return false;
     }
@@ -118,7 +119,7 @@ class HiveLocalStorage implements LocalStorage {
     try {
       _ensureInitialized();
       return _box.keys.cast<String>().toList();
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to get local storage keys: $e');
       return [];
     }
@@ -132,7 +133,7 @@ class HiveLocalStorage implements LocalStorage {
         _isInitialized = false;
         _logger.i('Local storage disposed');
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to dispose local storage: $e');
     }
   }
@@ -149,7 +150,7 @@ class HiveLocalStorage implements LocalStorage {
       }
 
       return totalSize;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to calculate storage size: $e');
       return 0;
     }
@@ -168,10 +169,7 @@ class HiveLocalStorage implements LocalStorage {
 
 /// Enhanced local storage with typed operations
 class TypedLocalStorage extends HiveLocalStorage {
-  TypedLocalStorage({
-    super.boxName,
-    super.logger,
-  });
+  TypedLocalStorage({super.boxName, super.logger});
 
   /// Write JSON object
   Future<void> writeJson(String key, Map<String, dynamic> value) async {
@@ -185,7 +183,7 @@ class TypedLocalStorage extends HiveLocalStorage {
 
     try {
       return jsonDecode(jsonString) as Map<String, dynamic>;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to decode JSON for key $key: $e');
       return null;
     }
@@ -208,9 +206,7 @@ class TypedLocalStorage extends HiveLocalStorage {
   }
 
   /// Read boolean
-  Future<bool?> readBool(String key) async {
-    return await read<bool>(key);
-  }
+  Future<bool?> readBool(String key) async => read<bool>(key);
 
   /// Write integer
   Future<void> writeInt(String key, int value) async {
@@ -218,9 +214,7 @@ class TypedLocalStorage extends HiveLocalStorage {
   }
 
   /// Read integer
-  Future<int?> readInt(String key) async {
-    return await read<int>(key);
-  }
+  Future<int?> readInt(String key) async => read<int>(key);
 
   /// Write double
   Future<void> writeDouble(String key, double value) async {
@@ -228,9 +222,7 @@ class TypedLocalStorage extends HiveLocalStorage {
   }
 
   /// Read double
-  Future<double?> readDouble(String key) async {
-    return await read<double>(key);
-  }
+  Future<double?> readDouble(String key) async => read<double>(key);
 
   /// Write DateTime
   Future<void> writeDateTime(String key, DateTime value) async {
@@ -240,17 +232,18 @@ class TypedLocalStorage extends HiveLocalStorage {
   /// Read DateTime
   Future<DateTime?> readDateTime(String key) async {
     final timestamp = await read<int>(key);
-    return timestamp != null ? DateTime.fromMillisecondsSinceEpoch(timestamp) : null;
+    return timestamp != null
+        ? DateTime.fromMillisecondsSinceEpoch(timestamp)
+        : null;
   }
 }
 
 /// Multi-box storage manager
 class StorageManager {
+  StorageManager({Logger? logger}) : _logger = logger ?? Logger();
   final Map<String, TypedLocalStorage> _boxes = {};
   final Logger _logger;
   bool _isInitialized = false;
-
-  StorageManager({Logger? logger}) : _logger = logger ?? Logger();
 
   /// Initialize all storage boxes
   Future<void> init() async {
@@ -269,7 +262,7 @@ class StorageManager {
 
       _isInitialized = true;
       _logger.i('Storage manager initialized with ${_boxes.length} boxes');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to initialize storage manager: $e');
       throw const StorageException('Failed to initialize storage manager');
     }

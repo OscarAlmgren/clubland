@@ -82,44 +82,36 @@ class AppRoutes {
   static const String tokenParam = 'token';
 
   /// Generate club details route
-  static String clubDetailsRoute(String clubId) {
-    return clubDetails.replaceAll(':$clubIdParam', clubId);
-  }
+  static String clubDetailsRoute(String clubId) =>
+      clubDetails.replaceAll(':$clubIdParam', clubId);
 
   /// Generate booking details route
-  static String bookingDetailsRoute(String bookingId) {
-    return bookingDetails.replaceAll(':$bookingIdParam', bookingId);
-  }
+  static String bookingDetailsRoute(String bookingId) =>
+      bookingDetails.replaceAll(':$bookingIdParam', bookingId);
 
   /// Generate create booking route
-  static String createBookingRoute(String clubId) {
-    return createBooking.replaceAll(':$clubIdParam', clubId);
-  }
+  static String createBookingRoute(String clubId) =>
+      createBooking.replaceAll(':$clubIdParam', clubId);
 
   /// Generate edit booking route
-  static String editBookingRoute(String bookingId) {
-    return editBooking.replaceAll(':$bookingIdParam', bookingId);
-  }
+  static String editBookingRoute(String bookingId) =>
+      editBooking.replaceAll(':$bookingIdParam', bookingId);
 
   /// Generate club invite route
-  static String clubInviteRoute(String inviteCode) {
-    return clubInvite.replaceAll(':$inviteCodeParam', inviteCode);
-  }
+  static String clubInviteRoute(String inviteCode) =>
+      clubInvite.replaceAll(':$inviteCodeParam', inviteCode);
 
   /// Generate event invite route
-  static String eventInviteRoute(String eventId) {
-    return eventInvite.replaceAll(':$eventIdParam', eventId);
-  }
+  static String eventInviteRoute(String eventId) =>
+      eventInvite.replaceAll(':$eventIdParam', eventId);
 
   /// Generate share club route
-  static String shareClubRoute(String clubId) {
-    return shareClub.replaceAll(':$clubIdParam', clubId);
-  }
+  static String shareClubRoute(String clubId) =>
+      shareClub.replaceAll(':$clubIdParam', clubId);
 
   /// Generate share booking route
-  static String shareBookingRoute(String bookingId) {
-    return shareBooking.replaceAll(':$bookingIdParam', bookingId);
-  }
+  static String shareBookingRoute(String bookingId) =>
+      shareBooking.replaceAll(':$bookingIdParam', bookingId);
 
   /// Check if route requires authentication
   static bool requiresAuth(String route) {
@@ -136,18 +128,13 @@ class AppRoutes {
     ];
 
     return !unauthenticatedRoutes.contains(route) &&
-           !route.startsWith('/invite/') &&
-           !route.startsWith('/share/');
+        !route.startsWith('/invite/') &&
+        !route.startsWith('/share/');
   }
 
   /// Check if route is part of main navigation
   static bool isMainNavRoute(String route) {
-    const mainNavRoutes = [
-      home,
-      clubs,
-      bookings,
-      profile,
-    ];
+    const mainNavRoutes = [home, clubs, bookings, profile];
 
     return mainNavRoutes.contains(route);
   }

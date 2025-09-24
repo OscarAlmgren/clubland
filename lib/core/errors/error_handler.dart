@@ -386,7 +386,7 @@ class ErrorHandler {
         error: error,
         stackTrace: stack,
       );
-      // TODO(team): Implement crash reporting service integration
+      // TODO(oscaralmgren): Implement crash reporting service integration
     } on Exception catch (e) {
       developer.log(
         'Failed to report crash to analytics: $e',

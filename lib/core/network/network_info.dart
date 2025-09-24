@@ -69,7 +69,7 @@ class EnhancedNetworkInfo extends NetworkInfoImpl {
       final socket = await Socket.connect(host, port, timeout: timeout);
       socket.destroy();
       return true;
-    } catch (e) {
+    } on Exception {
       return false;
     }
   }

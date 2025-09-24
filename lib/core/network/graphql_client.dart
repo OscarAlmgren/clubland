@@ -85,7 +85,7 @@ class GraphQLClientConfig {
     try {
       final token = await _secureStorage.read(key: StorageKeys.accessToken);
       return token != null ? 'Bearer $token' : null;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.w('Failed to read auth token: $e');
       return null;
     }
@@ -103,7 +103,7 @@ class GraphQLClientConfig {
 
   /// Handle GraphQL errors
   static void _handleGraphQLError(OperationException error) {
-    _logger.e('GraphQL Error: ${error.toString()}');
+    _logger.e('GraphQL Error: $error');
 
     // Handle specific error types
     if (error.graphqlErrors.isNotEmpty) {
@@ -128,7 +128,7 @@ class GraphQLClientConfig {
     try {
       await _secureStorage.delete(key: StorageKeys.accessToken);
       await _secureStorage.delete(key: StorageKeys.refreshToken);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to clear auth tokens: $e');
     }
   }
@@ -162,12 +162,12 @@ class GraphQLClientConfig {
         return false;
       }
 
-      // TODO: Implement token refresh mutation
+      // TODO(oscaralmgren): Implement token refresh mutation
       // This would be implemented with the actual GraphQL mutation
       // For now, return false to indicate refresh failed
       _logger.w('Token refresh not implemented yet');
       return false;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to refresh token: $e');
       return false;
     }
@@ -178,7 +178,7 @@ class GraphQLClientConfig {
     try {
       _client.cache.store.reset();
       _logger.i('GraphQL cache cleared');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to clear GraphQL cache: $e');
     }
   }
@@ -189,9 +189,9 @@ class GraphQLClientConfig {
     required Map<String, dynamic> data,
   }) {
     try {
-      // TODO: Implement cache updates based on operation type
+      // TODO(oscaralmgren): Implement cache updates based on operation type
       _logger.d('Cache update for $operationName: $data');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to update cache: $e');
     }
   }
@@ -201,7 +201,7 @@ class GraphQLClientConfig {
     try {
       _client.cache.store.reset();
       _logger.i('GraphQL client disposed');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to dispose GraphQL client: $e');
     }
   }
@@ -225,7 +225,7 @@ class GraphQLHelpers {
       }
 
       return result;
-    } catch (e) {
+    } on Exception catch (e) {
       if (showErrorToUser) {
         final failure = app_error.ErrorHandler.handleException(e);
         app_error.ErrorHandler.showErrorToUser(failure);
@@ -250,7 +250,7 @@ class GraphQLHelpers {
       }
 
       return result;
-    } catch (e) {
+    } on Exception catch (e) {
       if (showErrorToUser) {
         final failure = app_error.ErrorHandler.handleException(e);
         app_error.ErrorHandler.showErrorToUser(failure);
@@ -273,7 +273,7 @@ class GraphQLHelpers {
           app_error.ErrorHandler.showErrorToUser(failure);
         }
       });
-    } catch (e) {
+    } on Exception catch (e) {
       if (showErrorToUser) {
         final failure = app_error.ErrorHandler.handleException(e);
         app_error.ErrorHandler.showErrorToUser(failure);

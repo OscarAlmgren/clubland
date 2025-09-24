@@ -1,11 +1,10 @@
+import 'package:clubland/core/design_system/design_system.dart';
+import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
+import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
-
-import 'package:clubland/core/design_system/design_system.dart';
-import 'package:clubland/features/auth/domain/entities/user_entity.dart';
-import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
 
@@ -15,56 +14,37 @@ Widget createTestApp({
   required Widget child,
   List<Override>? overrides,
   GoRouter? router,
-}) {
-  return ProviderScope(
-    overrides: overrides ?? [],
-    child: MaterialApp(
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      home: router != null
-          ? Router.withConfig(config: router)
-          : Scaffold(body: child),
-    ),
-  );
-}
+}) => ProviderScope(
+  overrides: overrides ?? [],
+  child: MaterialApp(
+    theme: AppTheme.lightTheme,
+    darkTheme: AppTheme.darkTheme,
+    home: router != null
+        ? Router.withConfig(config: router)
+        : Scaffold(body: child),
+  ),
+);
 
-Widget createTestWidget({
-  required Widget child,
-  List<Override>? overrides,
-}) {
-  return ProviderScope(
-    overrides: overrides ?? [],
-    child: MaterialApp(
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      home: Scaffold(body: child),
-    ),
-  );
-}
-
-extension WidgetTesterExtensions on WidgetTester {
-  Future<void> pumpApp(
-    Widget widget, {
-    List<Override>? overrides,
-  }) async {
-    await pumpWidget(
-      createTestApp(
-        child: widget,
-        overrides: overrides,
+Widget createTestWidget({required Widget child, List<Override>? overrides}) =>
+    ProviderScope(
+      overrides: overrides ?? [],
+      child: MaterialApp(
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        home: Scaffold(body: child),
       ),
     );
+
+extension WidgetTesterExtensions on WidgetTester {
+  Future<void> pumpApp(Widget widget, {List<Override>? overrides}) async {
+    await pumpWidget(createTestApp(child: widget, overrides: overrides));
   }
 
   Future<void> pumpAndSettleApp(
     Widget widget, {
     List<Override>? overrides,
   }) async {
-    await pumpWidget(
-      createTestApp(
-        child: widget,
-        overrides: overrides,
-      ),
-    );
+    await pumpWidget(createTestApp(child: widget, overrides: overrides));
     await pumpAndSettle();
   }
 }
@@ -102,10 +82,7 @@ class TestHelpers {
       ),
     );
     registerFallbackValue(
-      const HankoAuthResponse(
-        sessionId: 'test-session-id',
-        status: 'pending',
-      ),
+      const HankoAuthResponse(sessionId: 'test-session-id', status: 'pending'),
     );
   }
 

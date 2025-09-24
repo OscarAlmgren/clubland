@@ -6,7 +6,7 @@
 /// This library exports all design system components, themes, and utilities
 /// for easy access throughout the application.
 
-library design_system;
+library;
 
 // Re-export commonly used Flutter widgets for convenience
 export 'package:flutter/material.dart';

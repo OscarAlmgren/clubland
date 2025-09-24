@@ -16,7 +16,7 @@ Future<void> main() async {
   // Validate configuration for production
   try {
     EnvironmentConfig.validateConfig();
-  } catch (e) {
+  } on Exception catch (e) {
     if (kDebugMode) {
       Logger().w('Configuration validation warning: $e');
     } else {
@@ -29,7 +29,7 @@ Future<void> main() async {
   // Initialize encryption service
   try {
     EncryptionService.instance;
-  } catch (e) {
+  } on Exception catch (e) {
     Logger().e('Failed to initialize encryption service: $e');
     rethrow;
   }
@@ -48,7 +48,9 @@ Future<void> main() async {
   runApp(const ProviderScope(child: ClublandApp()));
 }
 
+/// Initialize the ClublandApp
 class ClublandApp extends StatelessWidget {
+  /// Constructs a [ClublandApp]
   const ClublandApp({super.key});
 
   @override
@@ -61,7 +63,9 @@ class ClublandApp extends StatelessWidget {
   );
 }
 
+/// Initialize the WelcomeScreen
 class WelcomeScreen extends StatelessWidget {
+  /// Constructs a [WelcomeScreen]
   const WelcomeScreen({super.key});
 
   @override

@@ -6,7 +6,6 @@ class AppTextStyles {
   AppTextStyles._();
 
   // Base font family
-  static String get _fontFamily => GoogleFonts.roboto().fontFamily!;
 
   // Display Styles
   static TextStyle get displayLarge => GoogleFonts.roboto(
@@ -259,19 +258,16 @@ class AppTextStyles {
   // Text Style Utilities
 
   /// Create a text style with custom color
-  static TextStyle withColor(TextStyle style, Color color) {
-    return style.copyWith(color: color);
-  }
+  static TextStyle withColor(TextStyle style, Color color) =>
+      style.copyWith(color: color);
 
   /// Create a text style with custom weight
-  static TextStyle withWeight(TextStyle style, FontWeight weight) {
-    return style.copyWith(fontWeight: weight);
-  }
+  static TextStyle withWeight(TextStyle style, FontWeight weight) =>
+      style.copyWith(fontWeight: weight);
 
   /// Create a text style with custom size
-  static TextStyle withSize(TextStyle style, double size) {
-    return style.copyWith(fontSize: size);
-  }
+  static TextStyle withSize(TextStyle style, double size) =>
+      style.copyWith(fontSize: size);
 
   /// Create a text style with decoration
   static TextStyle withDecoration(
@@ -279,49 +275,31 @@ class AppTextStyles {
     TextDecoration decoration, {
     Color? decorationColor,
     TextDecorationStyle? decorationStyle,
-  }) {
-    return style.copyWith(
-      decoration: decoration,
-      decorationColor: decorationColor,
-      decorationStyle: decorationStyle,
-    );
-  }
+  }) => style.copyWith(
+    decoration: decoration,
+    decorationColor: decorationColor,
+    decorationStyle: decorationStyle,
+  );
 
   /// Create an underlined text style
-  static TextStyle underlined(TextStyle style, {Color? color}) {
-    return withDecoration(
-      style,
-      TextDecoration.underline,
-      decorationColor: color,
-    );
-  }
+  static TextStyle underlined(TextStyle style, {Color? color}) =>
+      withDecoration(style, TextDecoration.underline, decorationColor: color);
 
   /// Create a strikethrough text style
-  static TextStyle strikethrough(TextStyle style, {Color? color}) {
-    return withDecoration(
-      style,
-      TextDecoration.lineThrough,
-      decorationColor: color,
-    );
-  }
+  static TextStyle strikethrough(TextStyle style, {Color? color}) =>
+      withDecoration(style, TextDecoration.lineThrough, decorationColor: color);
 
   /// Create an italic text style
-  static TextStyle italic(TextStyle style) {
-    return style.copyWith(fontStyle: FontStyle.italic);
-  }
+  static TextStyle italic(TextStyle style) =>
+      style.copyWith(fontStyle: FontStyle.italic);
 
   /// Create a bold text style
-  static TextStyle bold(TextStyle style) {
-    return withWeight(style, FontWeight.bold);
-  }
+  static TextStyle bold(TextStyle style) => withWeight(style, FontWeight.bold);
 
   /// Create a medium weight text style
-  static TextStyle medium(TextStyle style) {
-    return withWeight(style, FontWeight.w500);
-  }
+  static TextStyle medium(TextStyle style) =>
+      withWeight(style, FontWeight.w500);
 
   /// Create a light weight text style
-  static TextStyle light(TextStyle style) {
-    return withWeight(style, FontWeight.w300);
-  }
+  static TextStyle light(TextStyle style) => withWeight(style, FontWeight.w300);
 }

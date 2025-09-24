@@ -68,10 +68,7 @@ class AppConstants {
   static const Duration authLockoutDuration = Duration(minutes: 15);
 
   // Notification settings
-  static const String fcmVapidKey = String.fromEnvironment(
-    'FCM_VAPID_KEY',
-    defaultValue: '',
-  );
+  static const String fcmVapidKey = String.fromEnvironment('FCM_VAPID_KEY');
 
   // Feature flags
   static const bool enableSocialFeatures = bool.fromEnvironment(
@@ -100,18 +97,13 @@ class AppConstants {
   );
 
   // Debug settings
-  static const bool isDebugMode = bool.fromEnvironment(
-    'DEBUG_MODE',
-    defaultValue: false,
-  );
+  static const bool isDebugMode = bool.fromEnvironment('DEBUG_MODE');
 
   static const bool enableNetworkLogging = bool.fromEnvironment(
     'ENABLE_NETWORK_LOGGING',
-    defaultValue: false,
   );
 
   static const bool enablePerformanceLogging = bool.fromEnvironment(
     'ENABLE_PERFORMANCE_LOGGING',
-    defaultValue: false,
   );
 }

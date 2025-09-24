@@ -33,9 +33,7 @@ abstract class AuthRemoteDataSource {
     required String refreshToken,
   });
 
-  Future<Either<Failure, bool>> checkEmailAvailability({
-    required String email,
-  });
+  Future<Either<Failure, bool>> checkEmailAvailability({required String email});
 
   Future<Either<Failure, List<String>>> getUserPermissions();
 
@@ -43,9 +41,7 @@ abstract class AuthRemoteDataSource {
 
   Future<Either<Failure, bool>> authenticateWithBiometrics();
 
-  Future<Either<Failure, bool>> setBiometricAuth({
-    required bool enabled,
-  });
+  Future<Either<Failure, bool>> setBiometricAuth({required bool enabled});
 
   /// Profile management
   Future<Either<Failure, UserEntity>> updateProfile({
@@ -59,9 +55,7 @@ abstract class AuthRemoteDataSource {
     required String newPassword,
   });
 
-  Future<Either<Failure, bool>> requestPasswordReset({
-    required String email,
-  });
+  Future<Either<Failure, bool>> requestPasswordReset({required String email});
 
   Future<Either<Failure, bool>> resetPassword({
     required String token,
@@ -69,14 +63,10 @@ abstract class AuthRemoteDataSource {
   });
 
   /// Account management
-  Future<Either<Failure, bool>> deleteAccount({
-    required String password,
-  });
+  Future<Either<Failure, bool>> deleteAccount({required String password});
 
   /// Email verification
-  Future<Either<Failure, bool>> verifyEmail({
-    required String token,
-  });
+  Future<Either<Failure, bool>> verifyEmail({required String token});
 
   Future<Either<Failure, bool>> resendEmailVerification();
 
@@ -86,33 +76,31 @@ abstract class AuthRemoteDataSource {
     required String token,
   });
 
-  Future<Either<Failure, bool>> unlinkSocialAccount({
-    required String provider,
-  });
+  Future<Either<Failure, bool>> unlinkSocialAccount({required String provider});
 
   Future<Either<Failure, List<SocialAccount>>> getLinkedAccounts();
 
   /// Session management
   Future<Either<Failure, List<AuthSession>>> getSessionHistory();
 
-  Future<Either<Failure, bool>> revokeSession({
-    required String sessionId,
-  });
+  Future<Either<Failure, bool>> revokeSession({required String sessionId});
 
   Future<Either<Failure, List<AuthSession>>> getActiveSessions();
 }
 
 /// Implementation of AuthRemoteDataSource
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  // TODO: Inject GraphQL client or HTTP client
+  // TODO(oscaralmgren): Inject GraphQL client or HTTP client
 
   @override
   Future<Either<Failure, AuthSessionEntity>> login({
     required String email,
     required String password,
   }) async {
-    // TODO: Implement actual API call
-    await Future<void>.delayed(const Duration(seconds: 1)); // Simulate network delay
+    // TODO(oscaralmgren): Implement actual API call
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+    ); // Simulate network delay
 
     // Mock successful login
     if (email == 'test@example.com' && password == 'password123') {
@@ -121,7 +109,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         firstName: 'Test',
         lastName: 'User',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
 
@@ -142,7 +129,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, AuthSessionEntity>> loginWithHanko({
     required String email,
   }) async {
-    // TODO: Implement Hanko login
+    // TODO(oscaralmgren): Implement Hanko login
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final user = UserEntity(
@@ -150,7 +137,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       email: email,
       firstName: 'Hanko',
       lastName: 'User',
-      status: UserStatus.active,
       createdAt: DateTime.now(),
     );
 
@@ -170,7 +156,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String sessionId,
     required String credential,
   }) async {
-    // TODO: Implement Hanko auth completion
+    // TODO(oscaralmgren): Implement Hanko auth completion
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final user = UserEntity(
@@ -178,7 +164,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       email: 'hanko@example.com',
       firstName: 'Hanko',
       lastName: 'Complete',
-      status: UserStatus.active,
       createdAt: DateTime.now(),
     );
 
@@ -201,7 +186,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String lastName,
     String? clubId,
   }) async {
-    // TODO: Implement actual registration
+    // TODO(oscaralmgren): Implement actual registration
     await Future<void>.delayed(const Duration(seconds: 2));
 
     final user = UserEntity(
@@ -210,7 +195,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       firstName: firstName,
       lastName: lastName,
       clubId: clubId,
-      status: UserStatus.active,
       createdAt: DateTime.now(),
     );
 
@@ -226,7 +210,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Either<Failure, bool>> logout() async {
-    // TODO: Implement actual logout
+    // TODO(oscaralmgren): Implement actual logout
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return const Right(true);
   }
@@ -235,7 +219,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, AuthSessionEntity>> refreshToken({
     required String refreshToken,
   }) async {
-    // TODO: Implement actual token refresh
+    // TODO(oscaralmgren): Implement actual token refresh
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (refreshToken.isEmpty) {
@@ -247,7 +231,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       email: 'refreshed@example.com',
       firstName: 'Refreshed',
       lastName: 'User',
-      status: UserStatus.active,
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
     );
 
@@ -265,7 +248,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, bool>> checkEmailAvailability({
     required String email,
   }) async {
-    // TODO: Implement actual email availability check
+    // TODO(oscaralmgren): Implement actual email availability check
     await Future<void>.delayed(const Duration(milliseconds: 500));
 
     // Mock: test@example.com is taken
@@ -278,7 +261,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Either<Failure, List<String>>> getUserPermissions() async {
-    // TODO: Implement actual permissions fetch
+    // TODO(oscaralmgren): Implement actual permissions fetch
     await Future<void>.delayed(const Duration(milliseconds: 300));
 
     return const Right([
@@ -291,14 +274,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<bool> isBiometricAvailable() async {
-    // TODO: Implement actual biometric availability check
+    // TODO(oscaralmgren): Implement actual biometric availability check
     await Future<void>.delayed(const Duration(milliseconds: 200));
     return true; // Mock: always available
   }
 
   @override
   Future<Either<Failure, bool>> authenticateWithBiometrics() async {
-    // TODO: Implement actual biometric authentication
+    // TODO(oscaralmgren): Implement actual biometric authentication
     await Future<void>.delayed(const Duration(seconds: 2));
     return const Right(true); // Mock: always successful
   }
@@ -307,7 +290,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, bool>> setBiometricAuth({
     required bool enabled,
   }) async {
-    // TODO: Implement actual biometric setting
+    // TODO(oscaralmgren): Implement actual biometric setting
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return const Right(true);
   }
@@ -317,15 +300,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String userId,
     required UserProfile profile,
   }) async {
-    // TODO: Implement actual profile update
+    // TODO(oscaralmgren): Implement actual profile update
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final updatedUser = UserEntity(
       id: userId,
       email: 'updated@example.com',
       firstName: profile.fullName.split(' ').first,
-      lastName: profile.fullName.split(' ').length > 1 ? profile.fullName.split(' ').last : '',
-      status: UserStatus.active,
+      lastName: profile.fullName.split(' ').length > 1
+          ? profile.fullName.split(' ').last
+          : '',
       profile: profile,
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
     );
@@ -338,7 +322,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String currentPassword,
     required String newPassword,
   }) async {
-    // TODO: Implement actual password change
+    // TODO(oscaralmgren): Implement actual password change
     await Future<void>.delayed(const Duration(seconds: 1));
 
     // Mock validation
@@ -353,7 +337,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, bool>> requestPasswordReset({
     required String email,
   }) async {
-    // TODO: Implement actual password reset request
+    // TODO(oscaralmgren): Implement actual password reset request
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (email.isEmpty) {
@@ -368,7 +352,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String token,
     required String newPassword,
   }) async {
-    // TODO: Implement actual password reset
+    // TODO(oscaralmgren): Implement actual password reset
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (token.isEmpty || newPassword.isEmpty) {
@@ -382,7 +366,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, bool>> deleteAccount({
     required String password,
   }) async {
-    // TODO: Implement actual account deletion
+    // TODO(oscaralmgren): Implement actual account deletion
     await Future<void>.delayed(const Duration(seconds: 2));
 
     if (password.isEmpty) {
@@ -393,10 +377,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, bool>> verifyEmail({
-    required String token,
-  }) async {
-    // TODO: Implement actual email verification
+  Future<Either<Failure, bool>> verifyEmail({required String token}) async {
+    // TODO(oscaralmgren): Implement actual email verification
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (token.isEmpty) {
@@ -408,7 +390,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Either<Failure, bool>> resendEmailVerification() async {
-    // TODO: Implement actual email verification resend
+    // TODO(oscaralmgren): Implement actual email verification resend
     await Future<void>.delayed(const Duration(seconds: 1));
     return const Right(true);
   }
@@ -418,7 +400,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String provider,
     required String token,
   }) async {
-    // TODO: Implement actual social account linking
+    // TODO(oscaralmgren): Implement actual social account linking
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (provider.isEmpty || token.isEmpty) {
@@ -432,7 +414,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, bool>> unlinkSocialAccount({
     required String provider,
   }) async {
-    // TODO: Implement actual social account unlinking
+    // TODO(oscaralmgren): Implement actual social account unlinking
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (provider.isEmpty) {
@@ -444,7 +426,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Either<Failure, List<SocialAccount>>> getLinkedAccounts() async {
-    // TODO: Implement actual linked accounts fetch
+    // TODO(oscaralmgren): Implement actual linked accounts fetch
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final accounts = [
@@ -469,7 +451,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Either<Failure, List<AuthSession>>> getSessionHistory() async {
-    // TODO: Implement actual session history fetch
+    // TODO(oscaralmgren): Implement actual session history fetch
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final sessions = [
@@ -500,7 +482,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Either<Failure, bool>> revokeSession({
     required String sessionId,
   }) async {
-    // TODO: Implement actual session revocation
+    // TODO(oscaralmgren): Implement actual session revocation
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (sessionId.isEmpty) {
@@ -512,7 +494,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Either<Failure, List<AuthSession>>> getActiveSessions() async {
-    // TODO: Implement actual active sessions fetch
+    // TODO(oscaralmgren): Implement actual active sessions fetch
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final sessions = [

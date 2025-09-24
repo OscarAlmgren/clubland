@@ -6,9 +6,9 @@ import '../repositories/auth_repository.dart';
 
 /// Login use case
 class LoginUsecase {
-  final AuthRepository _repository;
-
+  /// Constructs a [LoginUsecase]
   LoginUsecase(this._repository);
+  final AuthRepository _repository;
 
   /// Execute login with email and password
   Future<Either<Failure, AuthSessionEntity>> call({
@@ -27,7 +27,7 @@ class LoginUsecase {
     }
 
     // Execute login
-    return await _repository.login(
+    return _repository.login(
       email: email.trim().toLowerCase(),
       password: password,
     );
@@ -37,7 +37,9 @@ class LoginUsecase {
   String? _validateEmail(String email) {
     if (email.isEmpty) return 'Email is required';
 
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     if (!emailRegex.hasMatch(email)) {
       return 'Invalid email format';
     }
@@ -61,9 +63,9 @@ class LoginUsecase {
 
 /// Hanko login use case
 class HankoLoginUsecase {
-  final AuthRepository _repository;
-
+  /// Constructs a [HankoLoginUsecase]
   HankoLoginUsecase(this._repository);
+  final AuthRepository _repository;
 
   /// Initiate Hanko login
   Future<Either<Failure, AuthSessionEntity>> call({
@@ -76,9 +78,7 @@ class HankoLoginUsecase {
     }
 
     // Execute Hanko login
-    return await _repository.loginWithHanko(
-      email: email.trim().toLowerCase(),
-    );
+    return _repository.loginWithHanko(email: email.trim().toLowerCase());
   }
 
   /// Complete Hanko authentication
@@ -94,7 +94,7 @@ class HankoLoginUsecase {
       return Left(ValidationFailure.fieldRequired('Credential'));
     }
 
-    return await _repository.completeHankoAuth(
+    return _repository.completeHankoAuth(
       sessionId: sessionId,
       credential: credential,
     );
@@ -103,7 +103,9 @@ class HankoLoginUsecase {
   String? _validateEmail(String email) {
     if (email.isEmpty) return 'Email is required';
 
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     if (!emailRegex.hasMatch(email)) {
       return 'Invalid email format';
     }
@@ -114,9 +116,8 @@ class HankoLoginUsecase {
 
 /// Register use case
 class RegisterUsecase {
-  final AuthRepository _repository;
-
   RegisterUsecase(this._repository);
+  final AuthRepository _repository;
 
   /// Execute user registration
   Future<Either<Failure, AuthSessionEntity>> call({
@@ -141,18 +142,22 @@ class RegisterUsecase {
     }
 
     // Check email availability
-    final emailCheck = await _repository.checkEmailAvailability(email: email.trim().toLowerCase());
+    final emailCheck = await _repository.checkEmailAvailability(
+      email: email.trim().toLowerCase(),
+    );
     final isEmailAvailable = emailCheck.fold(
       (failure) => false,
       (available) => available,
     );
 
     if (!isEmailAvailable) {
-      return Left(ValidationFailure.invalidInput('email', 'Email is already taken'));
+      return Left(
+        ValidationFailure.invalidInput('email', 'Email is already taken'),
+      );
     }
 
     // Execute registration
-    return await _repository.register(
+    return _repository.register(
       email: email.trim().toLowerCase(),
       password: password,
       firstName: firstName.trim(),
@@ -173,7 +178,9 @@ class RegisterUsecase {
       return ValidationFailure.fieldRequired('Email');
     }
 
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     if (!emailRegex.hasMatch(email)) {
       return ValidationFailure.invalidEmail();
     }
@@ -187,15 +194,15 @@ class RegisterUsecase {
       return ValidationFailure.passwordTooWeak();
     }
 
-    if (!RegExp(r'[A-Z]').hasMatch(password)) {
+    if (!RegExp('[A-Z]').hasMatch(password)) {
       return ValidationFailure.passwordTooWeak();
     }
 
-    if (!RegExp(r'[a-z]').hasMatch(password)) {
+    if (!RegExp('[a-z]').hasMatch(password)) {
       return ValidationFailure.passwordTooWeak();
     }
 
-    if (!RegExp(r'[0-9]').hasMatch(password)) {
+    if (!RegExp('[0-9]').hasMatch(password)) {
       return ValidationFailure.passwordTooWeak();
     }
 
@@ -205,7 +212,10 @@ class RegisterUsecase {
 
     // Confirm password validation
     if (confirmPassword != password) {
-      return ValidationFailure.invalidInput('confirmPassword', 'Passwords do not match');
+      return ValidationFailure.invalidInput(
+        'confirmPassword',
+        'Passwords do not match',
+      );
     }
 
     // Name validation
@@ -218,11 +228,17 @@ class RegisterUsecase {
     }
 
     if (firstName.trim().length < 2) {
-      return ValidationFailure.invalidInput('firstName', 'First name must be at least 2 characters');
+      return ValidationFailure.invalidInput(
+        'firstName',
+        'First name must be at least 2 characters',
+      );
     }
 
     if (lastName.trim().length < 2) {
-      return ValidationFailure.invalidInput('lastName', 'Last name must be at least 2 characters');
+      return ValidationFailure.invalidInput(
+        'lastName',
+        'Last name must be at least 2 characters',
+      );
     }
 
     return null;
@@ -231,21 +247,17 @@ class RegisterUsecase {
 
 /// Logout use case
 class LogoutUsecase {
+  LogoutUsecase(this._repository);
   final AuthRepository _repository;
 
-  LogoutUsecase(this._repository);
-
   /// Execute logout
-  Future<Either<Failure, bool>> call() async {
-    return await _repository.logout();
-  }
+  Future<Either<Failure, bool>> call() async => _repository.logout();
 }
 
 /// Refresh token use case
 class RefreshTokenUsecase {
-  final AuthRepository _repository;
-
   RefreshTokenUsecase(this._repository);
+  final AuthRepository _repository;
 
   /// Execute token refresh
   Future<Either<Failure, AuthSessionEntity>> call({
@@ -255,44 +267,36 @@ class RefreshTokenUsecase {
       return Left(ValidationFailure.fieldRequired('Refresh token'));
     }
 
-    return await _repository.refreshToken(refreshToken: refreshToken);
+    return _repository.refreshToken(refreshToken: refreshToken);
   }
 }
 
 /// Get current user use case
 class GetCurrentUserUsecase {
+  GetCurrentUserUsecase(this._repository);
   final AuthRepository _repository;
 
-  GetCurrentUserUsecase(this._repository);
-
   /// Get current authenticated user
-  Future<Either<Failure, UserEntity?>> call() async {
-    return await _repository.getCurrentUser();
-  }
+  Future<Either<Failure, UserEntity?>> call() async =>
+      _repository.getCurrentUser();
 }
 
 /// Check authentication status use case
 class CheckAuthStatusUsecase {
+  CheckAuthStatusUsecase(this._repository);
   final AuthRepository _repository;
 
-  CheckAuthStatusUsecase(this._repository);
-
   /// Check if user is authenticated
-  Future<bool> call() async {
-    return await _repository.isAuthenticated();
-  }
+  Future<bool> call() async => _repository.isAuthenticated();
 }
 
 /// Biometric authentication use case
 class BiometricAuthUsecase {
+  BiometricAuthUsecase(this._repository);
   final AuthRepository _repository;
 
-  BiometricAuthUsecase(this._repository);
-
   /// Check if biometric authentication is available
-  Future<bool> isAvailable() async {
-    return await _repository.isBiometricAvailable();
-  }
+  Future<bool> isAvailable() async => _repository.isBiometricAvailable();
 
   /// Authenticate with biometrics
   Future<Either<Failure, bool>> authenticate() async {
@@ -301,7 +305,7 @@ class BiometricAuthUsecase {
       return Left(AuthFailure.biometricNotAvailable());
     }
 
-    return await _repository.authenticateWithBiometrics();
+    return _repository.authenticateWithBiometrics();
   }
 
   /// Enable/disable biometric authentication
@@ -315,6 +319,6 @@ class BiometricAuthUsecase {
       }
     }
 
-    return await _repository.setBiometricAuth(enabled: enabled);
+    return _repository.setBiometricAuth(enabled: enabled);
   }
 }

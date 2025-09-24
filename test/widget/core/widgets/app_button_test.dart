@@ -1,13 +1,13 @@
+import 'package:clubland/core/design_system/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:clubland/core/design_system/widgets/app_button.dart';
 import '../../../helpers/test_helpers.dart';
 
 void main() {
   group('AppButton', () {
     testWidgets('should render primary button with text', (tester) async {
-      bool wasPressed = false;
+      var wasPressed = false;
 
       await tester.pumpApp(
         AppButton.primary(
@@ -25,10 +25,7 @@ void main() {
 
     testWidgets('should render secondary button', (tester) async {
       await tester.pumpApp(
-        AppButton.secondary(
-          text: 'Secondary Button',
-          onPressed: () {},
-        ),
+        AppButton.secondary(text: 'Secondary Button', onPressed: () {}),
       );
 
       expect(find.text('Secondary Button'), findsOneWidget);
@@ -37,10 +34,7 @@ void main() {
 
     testWidgets('should render outline button', (tester) async {
       await tester.pumpApp(
-        AppButton.outline(
-          text: 'Outline Button',
-          onPressed: () {},
-        ),
+        AppButton.outline(text: 'Outline Button', onPressed: () {}),
       );
 
       expect(find.text('Outline Button'), findsOneWidget);
@@ -49,17 +43,16 @@ void main() {
 
     testWidgets('should render ghost button', (tester) async {
       await tester.pumpApp(
-        AppButton.ghost(
-          text: 'Ghost Button',
-          onPressed: () {},
-        ),
+        AppButton.ghost(text: 'Ghost Button', onPressed: () {}),
       );
 
       expect(find.text('Ghost Button'), findsOneWidget);
       expect(find.byType(TextButton), findsOneWidget);
     });
 
-    testWidgets('should show loading indicator when isLoading is true', (tester) async {
+    testWidgets('should show loading indicator when isLoading is true', (
+      tester,
+    ) async {
       await tester.pumpApp(
         AppButton.primary(
           text: 'Loading Button',
@@ -73,12 +66,7 @@ void main() {
     });
 
     testWidgets('should be disabled when onPressed is null', (tester) async {
-      await tester.pumpApp(
-        const AppButton.primary(
-          text: 'Disabled Button',
-          onPressed: null,
-        ),
-      );
+      await tester.pumpApp(const AppButton.primary(text: 'Disabled Button'));
 
       final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
       expect(button.onPressed, null);
@@ -124,7 +112,9 @@ void main() {
       expect(find.text('Button with Icon'), findsOneWidget);
     });
 
-    testWidgets('should not expand to full width when isFullWidth is false', (tester) async {
+    testWidgets('should not expand to full width when isFullWidth is false', (
+      tester,
+    ) async {
       await tester.pumpApp(
         AppButton.primary(
           text: 'Custom Width',
@@ -144,10 +134,7 @@ void main() {
 
     testWidgets('should expand to full width by default', (tester) async {
       await tester.pumpApp(
-        AppButton.primary(
-          text: 'Full Width',
-          onPressed: () {},
-        ),
+        AppButton.primary(text: 'Full Width', onPressed: () {}),
       );
 
       final container = tester.widget<SizedBox>(
@@ -162,16 +149,15 @@ void main() {
     group('destructive button', () {
       testWidgets('should render with error styling', (tester) async {
         await tester.pumpApp(
-          AppButton.destructive(
-            text: 'Delete',
-            onPressed: () {},
-          ),
+          AppButton.destructive(text: 'Delete', onPressed: () {}),
         );
 
         expect(find.text('Delete'), findsOneWidget);
         expect(find.byType(ElevatedButton), findsOneWidget);
 
-        final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+        final button = tester.widget<ElevatedButton>(
+          find.byType(ElevatedButton),
+        );
         final buttonStyle = button.style!;
         expect(buttonStyle, isNotNull);
       });
@@ -180,10 +166,7 @@ void main() {
     group('accessibility', () {
       testWidgets('should be accessible with semantic labels', (tester) async {
         await tester.pumpApp(
-          AppButton.primary(
-            text: 'Accessible Button',
-            onPressed: () {},
-          ),
+          AppButton.primary(text: 'Accessible Button', onPressed: () {}),
         );
 
         expect(

@@ -46,11 +46,15 @@ class AuthFailure extends Failure {
     'TOKEN_REFRESH_FAILED',
   );
 
-  factory AuthFailure.unexpected(String message) =>
-      AuthFailure('Unexpected authentication error: $message', 'UNEXPECTED_ERROR');
+  factory AuthFailure.unexpected(String message) => AuthFailure(
+    'Unexpected authentication error: $message',
+    'UNEXPECTED_ERROR',
+  );
 
-  factory AuthFailure.notImplemented() =>
-      const AuthFailure('Authentication feature not implemented', 'NOT_IMPLEMENTED');
+  factory AuthFailure.notImplemented() => const AuthFailure(
+    'Authentication feature not implemented',
+    'NOT_IMPLEMENTED',
+  );
 }
 
 /// Network related failures
@@ -81,10 +85,6 @@ class NetworkFailure extends Failure {
 
 /// GraphQL specific failures
 class GraphQLFailure extends Failure {
-  const GraphQLFailure(super.message, [super.code, this.extensions]);
-
-  final Map<String, dynamic>? extensions;
-
   factory GraphQLFailure.validationError(
     String message, [
     Map<String, dynamic>? extensions,
@@ -107,6 +107,9 @@ class GraphQLFailure extends Failure {
 
   factory GraphQLFailure.mutationFailed(String mutation) =>
       GraphQLFailure('GraphQL mutation failed: $mutation', 'MUTATION_FAILED');
+  const GraphQLFailure(super.message, [super.code, this.extensions]);
+
+  final Map<String, dynamic>? extensions;
 
   @override
   List<Object?> get props => [message, code, extensions];
@@ -168,14 +171,18 @@ class CacheFailure extends Failure {
     'CACHE_INVALIDATION_FAILED',
   );
 
-  factory CacheFailure.retrievalFailed(String error) =>
-      CacheFailure('Failed to retrieve from cache: $error', 'CACHE_RETRIEVAL_FAILED');
+  factory CacheFailure.retrievalFailed(String error) => CacheFailure(
+    'Failed to retrieve from cache: $error',
+    'CACHE_RETRIEVAL_FAILED',
+  );
 
   factory CacheFailure.storageFailed(String error) =>
       CacheFailure('Failed to store in cache: $error', 'CACHE_STORAGE_FAILED');
 
-  factory CacheFailure.deletionFailed(String error) =>
-      CacheFailure('Failed to delete from cache: $error', 'CACHE_DELETION_FAILED');
+  factory CacheFailure.deletionFailed(String error) => CacheFailure(
+    'Failed to delete from cache: $error',
+    'CACHE_DELETION_FAILED',
+  );
 }
 
 /// Location and maps failures
@@ -203,10 +210,6 @@ class LocationFailure extends Failure {
 
 /// Validation failures
 class ValidationFailure extends Failure {
-  const ValidationFailure(super.message, [super.code, this.errors]);
-
-  final Map<String, List<String>>? errors;
-
   factory ValidationFailure.invalidEmail() =>
       const ValidationFailure('Invalid email format', 'INVALID_EMAIL');
 
@@ -230,6 +233,9 @@ class ValidationFailure extends Failure {
 
   factory ValidationFailure.invalidInput(String field, String value) =>
       ValidationFailure('Invalid input for $field: $value', 'INVALID_INPUT');
+  const ValidationFailure(super.message, [super.code, this.errors]);
+
+  final Map<String, List<String>>? errors;
 
   @override
   List<Object?> get props => [message, code, errors];
@@ -239,7 +245,7 @@ class ValidationFailure extends Failure {
     var result =
         'ValidationFailure: $message${code != null ? ' (Code: $code)' : ''}';
     if (errors != null && errors!.isNotEmpty) {
-      result += '\nErrors: ${errors.toString()}';
+      result += '\nErrors: ${errors}';
     }
     return result;
   }

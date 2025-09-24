@@ -8,13 +8,12 @@ import '../config/environment_config.dart';
 
 /// Encryption service for sensitive data protection
 class EncryptionService {
-  static EncryptionService? _instance;
-  late final Encrypter _encrypter;
-  late final IV _defaultIV;
-
   EncryptionService._() {
     _initializeEncryption();
   }
+  static EncryptionService? _instance;
+  late final Encrypter _encrypter;
+  late final IV _defaultIV;
 
   static EncryptionService get instance {
     _instance ??= EncryptionService._();
@@ -51,13 +50,10 @@ class EncryptionService {
       final encrypted = _encrypter.encrypt(plaintext, iv: iv);
 
       // Combine IV and encrypted data for storage
-      final combined = base64Encode([
-        ...iv.bytes,
-        ...encrypted.bytes,
-      ]);
+      final combined = base64Encode([...iv.bytes, ...encrypted.bytes]);
 
       return combined;
-    } catch (e) {
+    } on Exception catch (e) {
       throw EncryptionException('Failed to encrypt data: $e');
     }
   }
@@ -68,7 +64,7 @@ class EncryptionService {
       final combined = base64Decode(encryptedData);
 
       if (combined.length < 16) {
-        throw EncryptionException('Invalid encrypted data format');
+        throw const EncryptionException('Invalid encrypted data format');
       }
 
       // Extract IV and encrypted data
@@ -77,7 +73,7 @@ class EncryptionService {
       final encrypted = Encrypted(Uint8List.fromList(encryptedBytes));
 
       return _encrypter.decrypt(encrypted, iv: iv);
-    } catch (e) {
+    } on Exception catch (e) {
       throw EncryptionException('Failed to decrypt data: $e');
     }
   }
@@ -135,13 +131,18 @@ class EncryptionService {
   }
 
   /// Secure key derivation using PBKDF2
-  Uint8List deriveKey(String password, String salt, int iterations, int keyLength) {
+  Uint8List deriveKey(
+    String password,
+    String salt,
+    int iterations,
+    int keyLength,
+  ) {
     final saltBytes = base64Decode(salt);
     final passwordBytes = utf8.encode(password);
 
     // Using a simple PBKDF2 implementation
     var result = passwordBytes;
-    for (int i = 0; i < iterations; i++) {
+    for (var i = 0; i < iterations; i++) {
       final hmac = Hmac(sha256, result);
       result = Uint8List.fromList(hmac.convert(saltBytes).bytes);
     }
@@ -152,9 +153,8 @@ class EncryptionService {
 
 /// Custom exception for encryption operations
 class EncryptionException implements Exception {
-  final String message;
-
   const EncryptionException(this.message);
+  final String message;
 
   @override
   String toString() => 'EncryptionException: $message';

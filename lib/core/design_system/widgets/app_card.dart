@@ -4,30 +4,14 @@ import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 
 /// Card variants for different use cases
-enum AppCardVariant {
-  elevated,
-  outlined,
-  filled,
-  transparent,
-}
+enum AppCardVariant { elevated, outlined, filled, transparent }
 
 /// Custom app card widget with consistent styling
 class AppCard extends StatelessWidget {
-  final Widget child;
-  final AppCardVariant variant;
-  final VoidCallback? onTap;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
-  final Color? backgroundColor;
-  final Color? borderColor;
-  final double? borderWidth;
-  final BorderRadius? borderRadius;
-  final double? elevation;
-  final Clip clipBehavior;
-
+  /// Constructs a [AppCard]
   const AppCard({
-    super.key,
     required this.child,
+    super.key,
     this.variant = AppCardVariant.elevated,
     this.onTap,
     this.padding,
@@ -42,8 +26,8 @@ class AppCard extends StatelessWidget {
 
   /// Elevated card (default)
   const AppCard.elevated({
-    super.key,
     required this.child,
+    super.key,
     this.onTap,
     this.padding,
     this.margin,
@@ -51,14 +35,14 @@ class AppCard extends StatelessWidget {
     this.borderRadius,
     this.elevation,
     this.clipBehavior = Clip.antiAlias,
-  })  : variant = AppCardVariant.elevated,
-        borderColor = null,
-        borderWidth = null;
+  }) : variant = AppCardVariant.elevated,
+       borderColor = null,
+       borderWidth = null;
 
   /// Outlined card
   const AppCard.outlined({
-    super.key,
     required this.child,
+    super.key,
     this.onTap,
     this.padding,
     this.margin,
@@ -67,38 +51,49 @@ class AppCard extends StatelessWidget {
     this.borderWidth,
     this.borderRadius,
     this.clipBehavior = Clip.antiAlias,
-  })  : variant = AppCardVariant.outlined,
-        elevation = null;
+  }) : variant = AppCardVariant.outlined,
+       elevation = null;
 
   /// Filled card
   const AppCard.filled({
-    super.key,
     required this.child,
+    super.key,
     this.onTap,
     this.padding,
     this.margin,
     this.backgroundColor,
     this.borderRadius,
     this.clipBehavior = Clip.antiAlias,
-  })  : variant = AppCardVariant.filled,
-        borderColor = null,
-        borderWidth = null,
-        elevation = null;
+  }) : variant = AppCardVariant.filled,
+       borderColor = null,
+       borderWidth = null,
+       elevation = null;
 
   /// Transparent card (no background)
   const AppCard.transparent({
-    super.key,
     required this.child,
+    super.key,
     this.onTap,
     this.padding,
     this.margin,
     this.borderRadius,
     this.clipBehavior = Clip.antiAlias,
-  })  : variant = AppCardVariant.transparent,
-        backgroundColor = Colors.transparent,
-        borderColor = null,
-        borderWidth = null,
-        elevation = null;
+  }) : variant = AppCardVariant.transparent,
+       backgroundColor = Colors.transparent,
+       borderColor = null,
+       borderWidth = null,
+       elevation = null;
+  final Widget child;
+  final AppCardVariant variant;
+  final VoidCallback? onTap;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final double? borderWidth;
+  final BorderRadius? borderRadius;
+  final double? elevation;
+  final Clip clipBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +128,7 @@ class AppCard extends StatelessWidget {
       case AppCardVariant.outlined:
         return colorScheme.surface;
       case AppCardVariant.filled:
-        return colorScheme.surfaceVariant;
+        return colorScheme.surfaceContainerHighest;
       case AppCardVariant.transparent:
         return Colors.transparent;
     }
@@ -152,13 +147,9 @@ class AppCard extends StatelessWidget {
     }
   }
 
-  BorderRadius _getBorderRadius() {
-    return borderRadius ?? AppSizing.borderRadiusLG;
-  }
+  BorderRadius _getBorderRadius() => borderRadius ?? AppSizing.borderRadiusLG;
 
-  EdgeInsetsGeometry _getPadding() {
-    return padding ?? AppSpacing.cardPaddingAll;
-  }
+  EdgeInsetsGeometry _getPadding() => padding ?? AppSpacing.cardPaddingAll;
 
   Decoration? _getDecoration(ColorScheme colorScheme) {
     switch (variant) {
@@ -180,22 +171,22 @@ class AppCard extends StatelessWidget {
 
 /// Specialized card for club information
 class ClubCard extends StatelessWidget {
+  /// Constructs a [ClubCard]
+  const ClubCard({
+    required this.clubName,
+    required this.location,
+    super.key,
+    this.imageUrl,
+    this.amenities = const [],
+    this.onTap,
+    this.trailing,
+  });
   final String clubName;
   final String location;
   final String? imageUrl;
   final List<String> amenities;
   final VoidCallback? onTap;
   final Widget? trailing;
-
-  const ClubCard({
-    super.key,
-    required this.clubName,
-    required this.location,
-    this.imageUrl,
-    this.amenities = const [],
-    this.onTap,
-    this.trailing,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -216,16 +207,14 @@ class ClubCard extends StatelessWidget {
                 child: Image.network(
                   imageUrl!,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: colorScheme.surfaceVariant,
-                      child: Icon(
-                        Icons.image_not_supported,
-                        color: colorScheme.onSurfaceVariant,
-                        size: AppSizing.iconXL,
-                      ),
-                    );
-                  },
+                  errorBuilder: (context, error, stackTrace) => ColoredBox(
+                    color: colorScheme.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.image_not_supported,
+                      color: colorScheme.onSurfaceVariant,
+                      size: AppSizing.iconXL,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -258,9 +247,8 @@ class ClubCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             location,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: colorScheme.onSurfaceVariant),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -272,24 +260,30 @@ class ClubCard extends StatelessWidget {
                       Wrap(
                         spacing: AppSpacing.xs,
                         runSpacing: AppSpacing.xs,
-                        children: amenities.take(3).map((amenity) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.sm,
-                              vertical: AppSpacing.xs,
-                            ),
-                            decoration: BoxDecoration(
-                              color: colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(AppSizing.radiusSM),
-                            ),
-                            child: Text(
-                              amenity,
-                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: colorScheme.onPrimaryContainer,
+                        children: amenities
+                            .take(3)
+                            .map(
+                              (amenity) => Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.sm,
+                                  vertical: AppSpacing.xs,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primaryContainer,
+                                  borderRadius: BorderRadius.circular(
+                                    AppSizing.radiusSM,
+                                  ),
+                                ),
+                                child: Text(
+                                  amenity,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: colorScheme.onPrimaryContainer,
+                                      ),
+                                ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            )
+                            .toList(),
                       ),
                     ],
                   ],
@@ -309,6 +303,17 @@ class ClubCard extends StatelessWidget {
 
 /// Specialized card for booking information
 class BookingCard extends StatelessWidget {
+  /// Constructs a [BookingCard]
+  const BookingCard({
+    required this.clubName,
+    required this.bookingDate,
+    required this.bookingTime,
+    required this.status,
+    required this.guestCount,
+    super.key,
+    this.onTap,
+    this.actions,
+  });
   final String clubName;
   final DateTime bookingDate;
   final String bookingTime;
@@ -316,17 +321,6 @@ class BookingCard extends StatelessWidget {
   final int guestCount;
   final VoidCallback? onTap;
   final List<Widget>? actions;
-
-  const BookingCard({
-    super.key,
-    required this.clubName,
-    required this.bookingDate,
-    required this.bookingTime,
-    required this.status,
-    required this.guestCount,
-    this.onTap,
-    this.actions,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -356,7 +350,7 @@ class BookingCard extends StatelessWidget {
                   vertical: AppSpacing.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
+                  color: statusColor.withValues(alpha: .1),
                   borderRadius: BorderRadius.circular(AppSizing.radiusSM),
                 ),
                 child: Text(
@@ -389,10 +383,7 @@ class BookingCard extends StatelessWidget {
                 color: colorScheme.onSurfaceVariant,
               ),
               AppSpacing.horizontalSpaceXS,
-              Text(
-                bookingTime,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Text(bookingTime, style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
           AppSpacing.verticalSpaceXS,
@@ -412,10 +403,7 @@ class BookingCard extends StatelessWidget {
           ),
           if (actions != null && actions!.isNotEmpty) ...[
             AppSpacing.verticalSpaceMD,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: actions!,
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: actions!),
           ],
         ],
       ),

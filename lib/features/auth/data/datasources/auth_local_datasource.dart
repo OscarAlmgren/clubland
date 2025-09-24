@@ -19,7 +19,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   static const String _userKey = 'current_user';
   static const String _sessionKey = 'current_session';
 
-  // TODO: Inject storage manager
+  // TODO(oscaralmgren): Inject storage manager
   StorageManager? _storageManager;
 
   Future<StorageManager> get _storage async {
@@ -39,7 +39,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       if (await userStorage.containsKey(_userKey)) {
         final userData = await userStorage.readJson(_userKey);
         if (userData != null) {
-          // TODO: Implement proper serialization/deserialization
+          // TODO(oscaralmgren): Implement proper serialization/deserialization
           // For now, return mock data
           final user = UserEntity(
             id: userData['id'] as String? ?? 'mock-id',
@@ -47,7 +47,6 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
             firstName: userData['firstName'] as String?,
             lastName: userData['lastName'] as String?,
             clubId: userData['clubId'] as String?,
-            status: UserStatus.active,
             createdAt: DateTime.now(),
           );
           return Right(user);
@@ -69,12 +68,11 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       if (await userStorage.containsKey(_sessionKey)) {
         final sessionData = await userStorage.readJson(_sessionKey);
         if (sessionData != null) {
-          // TODO: Implement proper serialization/deserialization
+          // TODO(oscaralmgren): Implement proper serialization/deserialization
           // For now, return mock session
           final user = UserEntity(
             id: sessionData['userId'] as String? ?? 'mock-id',
             email: sessionData['userEmail'] as String? ?? 'mock@example.com',
-            status: UserStatus.active,
             createdAt: DateTime.now(),
           );
 
@@ -82,7 +80,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
             accessToken: sessionData['accessToken'] as String? ?? '',
             refreshToken: sessionData['refreshToken'] as String? ?? '',
             expiresAt: DateTime.parse(
-              sessionData['expiresAt'] as String? ?? DateTime.now().toIso8601String(),
+              sessionData['expiresAt'] as String? ??
+                  DateTime.now().toIso8601String(),
             ),
             user: user,
             hankoSessionId: sessionData['hankoSessionId'] as String?,

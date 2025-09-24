@@ -8,14 +8,7 @@ import 'local_storage.dart';
 
 /// Cache entry metadata
 class CacheEntry<T> {
-  factory CacheEntry.fromJson(Map<String, dynamic> json) => CacheEntry(
-    data: json['data'] as T,
-    createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
-    expiresAt: DateTime.fromMillisecondsSinceEpoch(json['expiresAt'] as int),
-    etag: json['etag'] as String? ?? '',
-    metadata: Map<String, dynamic>.from(json['metadata'] as Map? ?? {}),
-  );
-
+  /// Constructs a [CacheEntry]
   CacheEntry({
     required this.data,
     required this.createdAt,
@@ -23,6 +16,13 @@ class CacheEntry<T> {
     required this.etag,
     this.metadata = const {},
   });
+  factory CacheEntry.fromJson(Map<String, dynamic> json) => CacheEntry(
+    data: json['data'] as T,
+    createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
+    expiresAt: DateTime.fromMillisecondsSinceEpoch(json['expiresAt'] as int),
+    etag: json['etag'] as String? ?? '',
+    metadata: Map<String, dynamic>.from(json['metadata'] as Map? ?? {}),
+  );
   final T data;
   final DateTime createdAt;
   final DateTime expiresAt;
@@ -42,6 +42,7 @@ class CacheEntry<T> {
 
 /// Cache policy configuration
 class CachePolicy {
+  /// Constructs a [CachePolicy]
   const CachePolicy({
     this.maxAge = ApiConstants.defaultCacheMaxAge,
     this.staleWhileRevalidate = const Duration(minutes: 5),
@@ -58,10 +59,7 @@ class CachePolicy {
     maxSize: 500,
   );
 
-  static const medium = CachePolicy(
-    maxAge: ApiConstants.defaultCacheMaxAge,
-    maxSize: 1000,
-  );
+  static const medium = CachePolicy(maxSize: 1000);
 
   static const long = CachePolicy(
     maxAge: ApiConstants.longCacheMaxAge,
@@ -71,6 +69,7 @@ class CachePolicy {
 
 /// Advanced cache manager with TTL, LRU eviction, and persistence
 class CacheManager {
+  /// Constructs a [CacheManager]
   CacheManager({required TypedLocalStorage storage, Logger? logger})
     : _storage = storage,
       _logger = logger ?? Logger();
@@ -130,7 +129,7 @@ class CacheManager {
 
       // Check if we need to evict old entries
       await _enforceMaxSize(policy);
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to store cache entry: $e');
       throw CacheException.writeFailed();
     }
@@ -160,7 +159,7 @@ class CacheManager {
       }
 
       return entry.data;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to retrieve cache entry: $e');
       throw CacheException.readFailed();
     }
@@ -176,7 +175,7 @@ class CacheManager {
       _accessTimes[key] = DateTime.now();
 
       return entry;
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to retrieve cache entry with metadata: $e');
       return null;
     }
@@ -196,7 +195,7 @@ class CacheManager {
       await _storage.delete(key);
       _accessTimes.remove(key);
       _logger.d('Cache entry removed: $key');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to remove cache entry: $e');
       throw CacheException.writeFailed();
     }
@@ -208,7 +207,7 @@ class CacheManager {
       await _storage.clear();
       _accessTimes.clear();
       _logger.i('Cache cleared');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to clear cache: $e');
       throw CacheException.writeFailed();
     }
@@ -227,7 +226,7 @@ class CacheManager {
       _logger.i(
         'Invalidated ${matchingKeys.length} cache entries matching: $pattern',
       );
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to invalidate cache pattern: $e');
     }
   }
@@ -238,7 +237,7 @@ class CacheManager {
       final keys = await _storage.getKeys();
       var validEntries = 0;
       var expiredEntries = 0;
-      var totalSize = await _storage.getSize();
+      final totalSize = await _storage.getSize();
 
       for (final key in keys) {
         final entry = await getEntry<dynamic>(key);
@@ -258,7 +257,7 @@ class CacheManager {
         totalSizeBytes: totalSize,
         hitRate: 0.0, // Would need to track hits/misses over time
       );
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to get cache stats: $e');
       return CacheStats.empty();
     }
@@ -281,7 +280,7 @@ class CacheManager {
       if (cleanedCount > 0) {
         _logger.i('Cleaned $cleanedCount expired cache entries');
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to clean expired entries: $e');
     }
   }
@@ -309,7 +308,7 @@ class CacheManager {
       }
 
       _logger.i('Evicted $toRemove cache entries (LRU)');
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.e('Failed to enforce cache size limit: $e');
     }
   }
@@ -329,6 +328,7 @@ class CacheManager {
 
 /// Cache statistics
 class CacheStats {
+  /// Constructs a [CacheStats]
   const CacheStats({
     required this.totalEntries,
     required this.validEntries,
@@ -364,6 +364,7 @@ CacheStats(
 
 /// Specialized cache managers for different data types
 class AppCacheManager {
+  /// Constructs a [AppCacheManager]
   AppCacheManager(this._cacheManager) {
     _setupPolicies();
   }

@@ -22,49 +22,63 @@ class AppFormatters {
   static TextInputFormatter get lowercase => LowerCaseTextFormatter();
 
   /// No spaces formatter
-  static TextInputFormatter get noSpaces => FilteringTextInputFormatter.deny(RegExp(r'\s'));
+  static TextInputFormatter get noSpaces =>
+      FilteringTextInputFormatter.deny(RegExp(r'\s'));
 
   /// Only letters formatter
-  static TextInputFormatter get lettersOnly => FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]'));
+  static TextInputFormatter get lettersOnly =>
+      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'));
 
   /// Only digits formatter
-  static TextInputFormatter get digitsOnly => FilteringTextInputFormatter.digitsOnly;
+  static TextInputFormatter get digitsOnly =>
+      FilteringTextInputFormatter.digitsOnly;
 
   /// Letters and spaces only
-  static TextInputFormatter get lettersAndSpaces => FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'));
+  static TextInputFormatter get lettersAndSpaces =>
+      FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]'));
 
   /// Alphanumeric only
-  static TextInputFormatter get alphanumeric => FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'));
+  static TextInputFormatter get alphanumeric =>
+      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'));
 
   /// Email formatter (basic)
-  static TextInputFormatter get email => FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@._-]'));
+  static TextInputFormatter get email =>
+      FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9@._-]'));
 
   /// Decimal number formatter
   static TextInputFormatter decimalNumber({int decimalPlaces = 2}) =>
       _DecimalFormatter(decimalPlaces: decimalPlaces);
 
   /// Length limiter
-  static TextInputFormatter lengthLimit(int maxLength) => LengthLimitingTextInputFormatter(maxLength);
+  static TextInputFormatter lengthLimit(int maxLength) =>
+      LengthLimitingTextInputFormatter(maxLength);
 }
 
 /// Phone number formatter implementation
 class _PhoneNumberFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text.replaceAll(RegExp(r'\D'), ''); // Remove non-digits
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text.replaceAll(
+      RegExp(r'\D'),
+      '',
+    ); // Remove non-digits
 
     if (text.length > 10) {
       return oldValue; // Don't allow more than 10 digits
     }
 
-    String formatted = '';
+    var formatted = '';
     if (text.isNotEmpty) {
       if (text.length <= 3) {
         formatted = text;
       } else if (text.length <= 6) {
         formatted = '(${text.substring(0, 3)}) ${text.substring(3)}';
       } else {
-        formatted = '(${text.substring(0, 3)}) ${text.substring(3, 6)}-${text.substring(6)}';
+        formatted =
+            '(${text.substring(0, 3)}) ${text.substring(3, 6)}-${text.substring(6)}';
       }
     }
 
@@ -78,20 +92,27 @@ class _PhoneNumberFormatter extends TextInputFormatter {
 /// Credit card formatter implementation
 class _CreditCardFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text.replaceAll(RegExp(r'\D'), ''); // Remove non-digits
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text.replaceAll(
+      RegExp(r'\D'),
+      '',
+    ); // Remove non-digits
 
     if (text.length > 16) {
       return oldValue; // Don't allow more than 16 digits
     }
 
-    String formatted = '';
-    for (int i = 0; i < text.length; i++) {
+    final buffer = StringBuffer();
+    for (var i = 0; i < text.length; i++) {
       if (i > 0 && i % 4 == 0) {
-        formatted += ' ';
+        buffer.write(' ');
       }
-      formatted += text[i];
+      buffer.write(text[i]);
     }
+    final formatted = buffer.toString();
 
     return TextEditingValue(
       text: formatted,
@@ -103,14 +124,20 @@ class _CreditCardFormatter extends TextInputFormatter {
 /// Expiry date formatter implementation (MM/YY)
 class _ExpiryDateFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text.replaceAll(RegExp(r'\D'), ''); // Remove non-digits
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text.replaceAll(
+      RegExp(r'\D'),
+      '',
+    ); // Remove non-digits
 
     if (text.length > 4) {
       return oldValue; // Don't allow more than 4 digits
     }
 
-    String formatted = '';
+    var formatted = '';
     if (text.isNotEmpty) {
       if (text.length == 1) {
         final month = int.tryParse(text);
@@ -143,12 +170,17 @@ class _ExpiryDateFormatter extends TextInputFormatter {
 /// Currency formatter implementation
 class _CurrencyFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text.replaceAll(RegExp(r'[^\d.]'), ''); // Keep only digits and decimal
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final text = newValue.text.replaceAll(
+      RegExp(r'[^\d.]'),
+      '',
+    ); // Keep only digits and decimal
 
     if (text.isEmpty) {
       return const TextEditingValue(
-        text: '',
         selection: TextSelection.collapsed(offset: 0),
       );
     }
@@ -164,13 +196,15 @@ class _CurrencyFormatter extends TextInputFormatter {
       return oldValue;
     }
 
-    final double? amount = double.tryParse(text);
+    final amount = double.tryParse(text);
     if (amount == null) {
       return oldValue;
     }
 
-    final formatted = NumberFormat.currency(symbol: '\$', decimalDigits: text.contains('.') ? null : 0)
-        .format(amount);
+    final formatted = NumberFormat.currency(
+      symbol: r'$',
+      decimalDigits: text.contains('.') ? null : 0,
+    ).format(amount);
 
     return TextEditingValue(
       text: formatted,
@@ -181,12 +215,14 @@ class _CurrencyFormatter extends TextInputFormatter {
 
 /// Decimal number formatter
 class _DecimalFormatter extends TextInputFormatter {
+  _DecimalFormatter({required this.decimalPlaces});
   final int decimalPlaces;
 
-  _DecimalFormatter({required this.decimalPlaces});
-
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final text = newValue.text;
 
     // Allow empty text
@@ -214,53 +250,58 @@ class _DecimalFormatter extends TextInputFormatter {
 /// Uppercase text formatter
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    return TextEditingValue(
-      text: newValue.text.toUpperCase(),
-      selection: newValue.selection,
-    );
-  }
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) => TextEditingValue(
+    text: newValue.text.toUpperCase(),
+    selection: newValue.selection,
+  );
 }
 
 /// Lowercase text formatter
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    return TextEditingValue(
-      text: newValue.text.toLowerCase(),
-      selection: newValue.selection,
-    );
-  }
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) => TextEditingValue(
+    text: newValue.text.toLowerCase(),
+    selection: newValue.selection,
+  );
 }
 
 /// Title case text formatter
 class TitleCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final words = newValue.text.split(' ');
-    final titleCased = words.map((word) {
-      if (word.isEmpty) return word;
-      return word[0].toUpperCase() + word.substring(1).toLowerCase();
-    }).join(' ');
+    final titleCased = words
+        .map((word) {
+          if (word.isEmpty) return word;
+          return word[0].toUpperCase() + word.substring(1).toLowerCase();
+        })
+        .join(' ');
 
-    return TextEditingValue(
-      text: titleCased,
-      selection: newValue.selection,
-    );
+    return TextEditingValue(text: titleCased, selection: newValue.selection);
   }
 }
 
 /// Data formatting utilities
 class DataFormatters {
   /// Format currency
-  static String formatCurrency(double amount, {String locale = 'en_US', String symbol = '\$'}) {
-    return NumberFormat.currency(locale: locale, symbol: symbol).format(amount);
-  }
+  static String formatCurrency(
+    double amount, {
+    String locale = 'en_US',
+    String symbol = r'$',
+  }) => NumberFormat.currency(locale: locale, symbol: symbol).format(amount);
 
   /// Format percentage
-  static String formatPercentage(double value, {int decimalPlaces = 1}) {
-    return NumberFormat.percentPattern().format(value);
-  }
+  static String formatPercentage(double value, {int decimalPlaces = 1}) =>
+      NumberFormat.percentPattern().format(value);
 
   /// Format file size
   static String formatFileSize(int bytes) {
@@ -300,7 +341,10 @@ class DataFormatters {
   }
 
   /// Format phone number for display
-  static String formatPhoneNumber(String phoneNumber, {String countryCode = 'US'}) {
+  static String formatPhoneNumber(
+    String phoneNumber, {
+    String countryCode = 'US',
+  }) {
     final digits = phoneNumber.replaceAll(RegExp(r'\D'), '');
 
     if (countryCode == 'US' && digits.length == 10) {

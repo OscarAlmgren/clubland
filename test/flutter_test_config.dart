@@ -2,19 +2,18 @@ import 'dart:async';
 
 import 'package:golden_toolkit/golden_toolkit.dart';
 
-Future<void> testExecutable(FutureOr<void> Function() testMain) async {
-  return GoldenToolkit.runWithConfiguration(
-    () async {
-      await loadAppFonts();
-      await testMain();
-    },
-    config: GoldenToolkitConfiguration(
-      skipGoldenAssertion: () => false,
-      defaultDevices: const [
-        Device.phone,
-        Device.iphone11,
-        Device.tabletPortrait,
-      ],
-    ),
-  );
-}
+Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
+    GoldenToolkit.runWithConfiguration(
+      () async {
+        await loadAppFonts();
+        await testMain();
+      },
+      config: GoldenToolkitConfiguration(
+        skipGoldenAssertion: () => false,
+        defaultDevices: const [
+          Device.phone,
+          Device.iphone11,
+          Device.tabletPortrait,
+        ],
+      ),
+    );

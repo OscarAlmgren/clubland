@@ -2,6 +2,7 @@ import '../../../../core/design_system/design_system.dart';
 
 /// Clubs page - browse and search clubs
 class ClubsPage extends StatelessWidget {
+  /// Constructs a [ClubsPage]
   const ClubsPage({super.key});
 
   @override

@@ -24,6 +24,7 @@ abstract class HankoDataSource {
 
 /// Hanko authentication response
 class HankoAuthResponse {
+  /// Constructs a [HankoAuthResponse]
   const HankoAuthResponse({
     required this.sessionId,
     required this.status,
@@ -46,6 +47,7 @@ class HankoAuthResponse {
 
 /// Implementation of Hanko data source
 class HankoDataSourceImpl implements HankoDataSource {
+  /// Constructs a [HankoDataSourceImpl]
   HankoDataSourceImpl({
     required Dio dio,
     required Logger logger,
@@ -82,7 +84,7 @@ class HankoDataSourceImpl implements HankoDataSource {
       );
 
       if (response.statusCode == 200) {
-        final hankoResponse = HankoAuthResponse.fromJson(response.data as Map<String, dynamic>);
+        final hankoResponse = HankoAuthResponse.fromJson(response.data!);
         _logger.i('Hanko login initiated successfully');
         return Right(hankoResponse);
       } else {
@@ -124,8 +126,10 @@ class HankoDataSourceImpl implements HankoDataSource {
           email: userData['email'] as String? ?? '',
           firstName: userData['firstName'] as String?,
           lastName: userData['lastName'] as String?,
-          status: UserStatus.active,
-          createdAt: DateTime.parse(userData['createdAt'] as String? ?? DateTime.now().toIso8601String()),
+          createdAt: DateTime.parse(
+            userData['createdAt'] as String? ??
+                DateTime.now().toIso8601String(),
+          ),
           updatedAt: userData['updatedAt'] != null
               ? DateTime.parse(userData['updatedAt'] as String)
               : null,
@@ -135,7 +139,10 @@ class HankoDataSourceImpl implements HankoDataSource {
         final session = AuthSessionEntity(
           accessToken: sessionData?['accessToken'] as String? ?? '',
           refreshToken: sessionData?['refreshToken'] as String? ?? '',
-          expiresAt: DateTime.parse(sessionData?['expiresAt'] as String? ?? DateTime.now().add(const Duration(hours: 1)).toIso8601String()),
+          expiresAt: DateTime.parse(
+            sessionData?['expiresAt'] as String? ??
+                DateTime.now().add(const Duration(hours: 1)).toIso8601String(),
+          ),
           user: user,
           hankoSessionId: sessionId,
         );
@@ -171,7 +178,7 @@ class HankoDataSourceImpl implements HankoDataSource {
       );
 
       if (response.statusCode == 200) {
-        final hankoResponse = HankoAuthResponse.fromJson(response.data as Map<String, dynamic>);
+        final hankoResponse = HankoAuthResponse.fromJson(response.data!);
         _logger.i('Hanko registration initiated successfully');
         return Right(hankoResponse);
       } else {
@@ -219,7 +226,6 @@ class HankoDataSourceImpl implements HankoDataSource {
           email: userData['email'] as String,
           firstName: firstName,
           lastName: lastName,
-          status: UserStatus.active,
           createdAt: DateTime.now(),
         );
 
@@ -227,7 +233,10 @@ class HankoDataSourceImpl implements HankoDataSource {
         final session = AuthSessionEntity(
           accessToken: sessionData?['accessToken'] as String? ?? '',
           refreshToken: sessionData?['refreshToken'] as String? ?? '',
-          expiresAt: DateTime.parse(sessionData?['expiresAt'] as String? ?? DateTime.now().add(const Duration(hours: 1)).toIso8601String()),
+          expiresAt: DateTime.parse(
+            sessionData?['expiresAt'] as String? ??
+                DateTime.now().add(const Duration(hours: 1)).toIso8601String(),
+          ),
           user: user,
           hankoSessionId: sessionId,
         );
@@ -290,7 +299,8 @@ class HankoDataSourceImpl implements HankoDataSource {
         return NetworkFailure.noConnection();
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode ?? 0;
-        final message = error.response?.data?['message'] as String? ?? 'Unknown error';
+        final message =
+            error.response?.data?['message'] as String? ?? 'Unknown error';
 
         if (statusCode == 401) {
           return AuthFailure.invalidCredentials();

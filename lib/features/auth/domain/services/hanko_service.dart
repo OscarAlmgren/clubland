@@ -39,13 +39,6 @@ abstract class HankoService {
 
 /// Hanko authentication session
 class HankoAuthSession {
-  final String sessionId;
-  final String status;
-  final DateTime expiresAt;
-  final String? message;
-  final HankoAuthMethod method;
-  final Map<String, dynamic>? metadata;
-
   const HankoAuthSession({
     required this.sessionId,
     required this.status,
@@ -54,6 +47,12 @@ class HankoAuthSession {
     this.method = HankoAuthMethod.passkey,
     this.metadata,
   });
+  final String sessionId;
+  final String status;
+  final DateTime expiresAt;
+  final String? message;
+  final HankoAuthMethod method;
+  final Map<String, dynamic>? metadata;
 
   /// Check if session is expired
   bool get isExpired => DateTime.now().isAfter(expiresAt);
@@ -66,23 +65,10 @@ class HankoAuthSession {
 }
 
 /// Hanko authentication methods
-enum HankoAuthMethod {
-  passkey,
-  webauthn,
-  magicLink,
-  sms,
-  email,
-}
+enum HankoAuthMethod { passkey, webauthn, magicLink, sms, email }
 
 /// Hanko authentication states
-enum HankoAuthStatus {
-  pending,
-  active,
-  completed,
-  expired,
-  cancelled,
-  failed,
-}
+enum HankoAuthStatus { pending, active, completed, expired, cancelled, failed }
 
 /// Implementation of Hanko service
 class HankoServiceImpl implements HankoService {
@@ -101,7 +87,6 @@ class HankoServiceImpl implements HankoService {
         status: 'active',
         expiresAt: DateTime.now().add(const Duration(minutes: 5)),
         message: 'Please complete authentication using your preferred method',
-        method: HankoAuthMethod.passkey,
         metadata: {
           'email': email,
           'allowedMethods': ['passkey', 'webauthn'],
@@ -109,7 +94,7 @@ class HankoServiceImpl implements HankoService {
       );
 
       return Right(session);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure.hankoError(e.toString()));
     }
   }
@@ -129,20 +114,21 @@ class HankoServiceImpl implements HankoService {
         email: 'user@example.com', // Would come from session
         firstName: 'Hanko',
         lastName: 'User',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
 
       final authSession = AuthSessionEntity(
-        accessToken: 'hanko_access_token_${DateTime.now().millisecondsSinceEpoch}',
-        refreshToken: 'hanko_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
+        accessToken:
+            'hanko_access_token_${DateTime.now().millisecondsSinceEpoch}',
+        refreshToken:
+            'hanko_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
         expiresAt: DateTime.now().add(const Duration(hours: 1)),
         user: user,
         hankoSessionId: sessionId,
       );
 
       return Right(authSession);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure.hankoError(e.toString()));
     }
   }
@@ -163,7 +149,6 @@ class HankoServiceImpl implements HankoService {
         status: 'active',
         expiresAt: DateTime.now().add(const Duration(minutes: 10)),
         message: 'Please create your passkey to complete registration',
-        method: HankoAuthMethod.passkey,
         metadata: {
           'email': email,
           'firstName': firstName,
@@ -173,7 +158,7 @@ class HankoServiceImpl implements HankoService {
       );
 
       return Right(session);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure.hankoError(e.toString()));
     }
   }
@@ -193,20 +178,21 @@ class HankoServiceImpl implements HankoService {
         email: 'newuser@example.com', // Would come from session
         firstName: 'New',
         lastName: 'User',
-        status: UserStatus.active,
         createdAt: DateTime.now(),
       );
 
       final authSession = AuthSessionEntity(
-        accessToken: 'hanko_new_access_token_${DateTime.now().millisecondsSinceEpoch}',
-        refreshToken: 'hanko_new_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
+        accessToken:
+            'hanko_new_access_token_${DateTime.now().millisecondsSinceEpoch}',
+        refreshToken:
+            'hanko_new_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
         expiresAt: DateTime.now().add(const Duration(hours: 1)),
         user: user,
         hankoSessionId: sessionId,
       );
 
       return Right(authSession);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure.hankoError(e.toString()));
     }
   }
@@ -218,12 +204,13 @@ class HankoServiceImpl implements HankoService {
       await Future<void>.delayed(const Duration(milliseconds: 300));
 
       // Mock email check (test@example.com is registered)
-      final isRegistered = email == 'test@example.com' ||
-                          email == 'user@example.com' ||
-                          email.endsWith('@clubland.app');
+      final isRegistered =
+          email == 'test@example.com' ||
+          email == 'user@example.com' ||
+          email.endsWith('@clubland.app');
 
       return Right(isRegistered);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure.hankoError(e.toString()));
     }
   }
@@ -236,7 +223,7 @@ class HankoServiceImpl implements HankoService {
 
       // Mock session verification (always valid for demo)
       return const Right(true);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure.hankoError(e.toString()));
     }
   }
@@ -249,7 +236,7 @@ class HankoServiceImpl implements HankoService {
 
       // Mock session cancellation (always successful for demo)
       return const Right(true);
-    } catch (e) {
+    } on Exception catch (e) {
       return Left(AuthFailure.hankoError(e.toString()));
     }
   }

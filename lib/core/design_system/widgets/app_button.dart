@@ -5,36 +5,16 @@ import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 
 /// Button variants for the app
-enum AppButtonVariant {
-  primary,
-  secondary,
-  outline,
-  ghost,
-  destructive,
-}
+enum AppButtonVariant { primary, secondary, outline, ghost, destructive }
 
 /// Button sizes for the app
-enum AppButtonSize {
-  small,
-  medium,
-  large,
-}
+enum AppButtonSize { small, medium, large }
 
 /// Custom app button widget with consistent styling
 class AppButton extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  final AppButtonVariant variant;
-  final AppButtonSize size;
-  final bool isLoading;
-  final bool isFullWidth;
-  final Widget? leading;
-  final Widget? trailing;
-  final bool enabled;
-
   const AppButton({
-    super.key,
     required this.text,
+    super.key,
     this.onPressed,
     this.variant = AppButtonVariant.primary,
     this.size = AppButtonSize.medium,
@@ -47,8 +27,8 @@ class AppButton extends StatelessWidget {
 
   /// Primary button
   const AppButton.primary({
-    super.key,
     required this.text,
+    super.key,
     this.onPressed,
     this.size = AppButtonSize.medium,
     this.isLoading = false,
@@ -60,8 +40,8 @@ class AppButton extends StatelessWidget {
 
   /// Secondary button
   const AppButton.secondary({
-    super.key,
     required this.text,
+    super.key,
     this.onPressed,
     this.size = AppButtonSize.medium,
     this.isLoading = false,
@@ -73,8 +53,8 @@ class AppButton extends StatelessWidget {
 
   /// Outline button
   const AppButton.outline({
-    super.key,
     required this.text,
+    super.key,
     this.onPressed,
     this.size = AppButtonSize.medium,
     this.isLoading = false,
@@ -86,8 +66,8 @@ class AppButton extends StatelessWidget {
 
   /// Ghost button
   const AppButton.ghost({
-    super.key,
     required this.text,
+    super.key,
     this.onPressed,
     this.size = AppButtonSize.medium,
     this.isLoading = false,
@@ -99,8 +79,8 @@ class AppButton extends StatelessWidget {
 
   /// Destructive button
   const AppButton.destructive({
-    super.key,
     required this.text,
+    super.key,
     this.onPressed,
     this.size = AppButtonSize.medium,
     this.isLoading = false,
@@ -109,6 +89,15 @@ class AppButton extends StatelessWidget {
     this.trailing,
     this.enabled = true,
   }) : variant = AppButtonVariant.destructive;
+  final String text;
+  final VoidCallback? onPressed;
+  final AppButtonVariant variant;
+  final AppButtonSize size;
+  final bool isLoading;
+  final bool isFullWidth;
+  final Widget? leading;
+  final Widget? trailing;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +158,8 @@ class AppButton extends StatelessWidget {
         child: CircularProgressIndicator(
           strokeWidth: 2,
           valueColor: AlwaysStoppedAnimation<Color>(
-            variant == AppButtonVariant.outline || variant == AppButtonVariant.ghost
+            variant == AppButtonVariant.outline ||
+                    variant == AppButtonVariant.ghost
                 ? AppColors.brandPrimary
                 : Colors.white,
           ),
@@ -185,11 +175,7 @@ class AppButton extends StatelessWidget {
     }
 
     children.add(
-      Text(
-        text,
-        style: _getTextStyle(),
-        textAlign: TextAlign.center,
-      ),
+      Text(text, style: _getTextStyle(), textAlign: TextAlign.center),
     );
 
     if (trailing != null) {
@@ -243,83 +229,86 @@ class AppButton extends StatelessWidget {
     }
   }
 
-  ButtonStyle _getElevatedButtonStyle(ColorScheme colorScheme, bool isDisabled) {
-    return ElevatedButton.styleFrom(
-      backgroundColor: isDisabled
-          ? colorScheme.surfaceVariant
-          : colorScheme.primary,
-      foregroundColor: isDisabled
-          ? colorScheme.onSurfaceVariant
-          : colorScheme.onPrimary,
-      elevation: isDisabled ? 0 : 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-      ),
-      padding: _getPadding(),
-    );
-  }
+  ButtonStyle _getElevatedButtonStyle(
+    ColorScheme colorScheme,
+    bool isDisabled,
+  ) => ElevatedButton.styleFrom(
+    backgroundColor: isDisabled
+        ? colorScheme.surfaceVariant
+        : colorScheme.primary,
+    foregroundColor: isDisabled
+        ? colorScheme.onSurfaceVariant
+        : colorScheme.onPrimary,
+    elevation: isDisabled ? 0 : 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizing.radiusLG),
+    ),
+    padding: _getPadding(),
+  );
 
-  ButtonStyle _getSecondaryButtonStyle(ColorScheme colorScheme, bool isDisabled) {
-    return ElevatedButton.styleFrom(
-      backgroundColor: isDisabled
-          ? colorScheme.surfaceVariant
-          : colorScheme.secondary,
-      foregroundColor: isDisabled
-          ? colorScheme.onSurfaceVariant
-          : colorScheme.onSecondary,
-      elevation: isDisabled ? 0 : 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-      ),
-      padding: _getPadding(),
-    );
-  }
+  ButtonStyle _getSecondaryButtonStyle(
+    ColorScheme colorScheme,
+    bool isDisabled,
+  ) => ElevatedButton.styleFrom(
+    backgroundColor: isDisabled
+        ? colorScheme.surfaceContainerHighest
+        : colorScheme.secondary,
+    foregroundColor: isDisabled
+        ? colorScheme.onSurfaceVariant
+        : colorScheme.onSecondary,
+    elevation: isDisabled ? 0 : 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizing.radiusLG),
+    ),
+    padding: _getPadding(),
+  );
 
-  ButtonStyle _getOutlinedButtonStyle(ColorScheme colorScheme, bool isDisabled) {
-    return OutlinedButton.styleFrom(
-      foregroundColor: isDisabled
-          ? colorScheme.onSurfaceVariant
-          : colorScheme.primary,
-      side: BorderSide(
-        color: isDisabled
-            ? colorScheme.outline.withOpacity(0.3)
-            : colorScheme.outline,
-        width: 1.5,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-      ),
-      padding: _getPadding(),
-    );
-  }
+  ButtonStyle _getOutlinedButtonStyle(
+    ColorScheme colorScheme,
+    bool isDisabled,
+  ) => OutlinedButton.styleFrom(
+    foregroundColor: isDisabled
+        ? colorScheme.onSurfaceVariant
+        : colorScheme.primary,
+    side: BorderSide(
+      color: isDisabled
+          ? colorScheme.outline.withValues(alpha: 0.3)
+          : colorScheme.outline,
+      width: 1.5,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizing.radiusLG),
+    ),
+    padding: _getPadding(),
+  );
 
-  ButtonStyle _getTextButtonStyle(ColorScheme colorScheme, bool isDisabled) {
-    return TextButton.styleFrom(
-      foregroundColor: isDisabled
-          ? colorScheme.onSurfaceVariant
-          : colorScheme.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-      ),
-      padding: _getPadding(),
-    );
-  }
+  ButtonStyle _getTextButtonStyle(ColorScheme colorScheme, bool isDisabled) =>
+      TextButton.styleFrom(
+        foregroundColor: isDisabled
+            ? colorScheme.onSurfaceVariant
+            : colorScheme.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizing.radiusLG),
+        ),
+        padding: _getPadding(),
+      );
 
-  ButtonStyle _getDestructiveButtonStyle(ColorScheme colorScheme, bool isDisabled) {
-    return ElevatedButton.styleFrom(
-      backgroundColor: isDisabled
-          ? colorScheme.surfaceVariant
-          : colorScheme.error,
-      foregroundColor: isDisabled
-          ? colorScheme.onSurfaceVariant
-          : colorScheme.onError,
-      elevation: isDisabled ? 0 : 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-      ),
-      padding: _getPadding(),
-    );
-  }
+  ButtonStyle _getDestructiveButtonStyle(
+    ColorScheme colorScheme,
+    bool isDisabled,
+  ) => ElevatedButton.styleFrom(
+    backgroundColor: isDisabled
+        ? colorScheme.surfaceContainerHighest
+        : colorScheme.error,
+    foregroundColor: isDisabled
+        ? colorScheme.onSurfaceVariant
+        : colorScheme.onError,
+    elevation: isDisabled ? 0 : 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizing.radiusLG),
+    ),
+    padding: _getPadding(),
+  );
 
   EdgeInsets _getPadding() {
     switch (size) {

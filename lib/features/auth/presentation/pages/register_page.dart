@@ -5,6 +5,7 @@ import '../controllers/auth_controller.dart';
 
 /// Registration page for new users
 class RegisterPage extends ConsumerStatefulWidget {
+  /// Constructs a [RegisterPage]
   const RegisterPage({super.key});
 
   @override
@@ -122,7 +123,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            if (!RegExp(
+                              r'^[^@]+@[^@]+\.[^@]+',
+                            ).hasMatch(value)) {
                               return 'Please enter a valid email';
                             }
                             return null;
@@ -134,7 +137,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         // Password Field
                         AppInputField.password(
                           controller: _passwordController,
-                          helperText: 'Must be at least 8 characters with uppercase, lowercase, number, and special character',
+                          helperText:
+                              'Must be at least 8 characters with uppercase, lowercase, number, and special character',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
@@ -142,16 +146,18 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             if (value.length < 8) {
                               return 'Password must be at least 8 characters';
                             }
-                            if (!RegExp(r'(?=.*[a-z])').hasMatch(value)) {
+                            if (!RegExp('(?=.*[a-z])').hasMatch(value)) {
                               return 'Password must contain lowercase letters';
                             }
-                            if (!RegExp(r'(?=.*[A-Z])').hasMatch(value)) {
+                            if (!RegExp('(?=.*[A-Z])').hasMatch(value)) {
                               return 'Password must contain uppercase letters';
                             }
                             if (!RegExp(r'(?=.*\d)').hasMatch(value)) {
                               return 'Password must contain numbers';
                             }
-                            if (!RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>])').hasMatch(value)) {
+                            if (!RegExp(
+                              r'(?=.*[!@#$%^&*(),.?":{}|<>])',
+                            ).hasMatch(value)) {
                               return 'Password must contain special characters';
                             }
                             return null;
@@ -197,7 +203,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                   ),
                                   children: [
                                     const TextSpan(
-                                      text: 'By creating an account, you agree to our ',
+                                      text:
+                                          'By creating an account, you agree to our ',
                                     ),
                                     TextSpan(
                                       text: 'Terms of Service',
@@ -228,7 +235,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         AppButton.primary(
                           text: 'Create Account',
                           isLoading: authState.isLoading,
-                          onPressed: authState.isLoading ? null : _handleRegister,
+                          onPressed: authState.isLoading
+                              ? null
+                              : _handleRegister,
                         ),
                       ],
                     ),
@@ -267,15 +276,17 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     );
   }
 
-  void _handleRegister() async {
+  Future<void> _handleRegister() async {
     if (_formKey.currentState!.validate()) {
-      await ref.read(authControllerProvider.notifier).register(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-        confirmPassword: _confirmPasswordController.text,
-        firstName: _firstNameController.text.trim(),
-        lastName: _lastNameController.text.trim(),
-      );
+      await ref
+          .read(authControllerProvider.notifier)
+          .register(
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+            confirmPassword: _confirmPasswordController.text,
+            firstName: _firstNameController.text.trim(),
+            lastName: _lastNameController.text.trim(),
+          );
     }
   }
 }
