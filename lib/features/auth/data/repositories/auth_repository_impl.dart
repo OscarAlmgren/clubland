@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -30,7 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
   })  : _remoteDataSource = remoteDataSource ?? AuthRemoteDataSourceImpl(),
         _localDataSource = localDataSource ?? AuthLocalDataSourceImpl(),
         _hankoDataSource = hankoDataSource ?? HankoDataSourceImpl(
-          dio: Dio(), // TODO: Inject configured Dio instance
+          dio: _createConfiguredDio(),
           logger: logger,
         ),
         _secureStorage = secureStorage,
@@ -349,13 +350,44 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  // TODO: Implement remaining methods
   @override
   Future<Either<Failure, UserEntity>> updateProfile({
     required String userId,
     required UserProfile profile,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Updating profile for user: $userId');
+
+      final result = await _remoteDataSource.updateProfile(
+        userId: userId,
+        profile: profile,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (user) async {
+          // Update local user data
+          await _localDataSource.storeUser(user);
+
+          // Update the current session with new user data if it's the current user
+          final sessionResult = await getCurrentSession();
+          if (sessionResult.isRight()) {
+            final session = sessionResult.getOrElse(() => null);
+            if (session != null && session.user.id == userId) {
+              final updatedSession = session.copyWith(user: user);
+              await _storeSession(updatedSession);
+              _authStateController.add(updatedSession);
+            }
+          }
+
+          _logger.i('Profile updated successfully for user: $userId');
+          return Right(user);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Profile update failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
@@ -363,14 +395,53 @@ class AuthRepositoryImpl implements AuthRepository {
     required String currentPassword,
     required String newPassword,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Attempting password change');
+
+      final result = await _remoteDataSource.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) {
+          if (success) {
+            _logger.i('Password changed successfully');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Password change failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, bool>> requestPasswordReset({
     required String email,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Requesting password reset for email: $email');
+
+      final result = await _remoteDataSource.requestPasswordReset(
+        email: email,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) {
+          if (success) {
+            _logger.i('Password reset requested for: $email');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Password reset request failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
@@ -378,26 +449,127 @@ class AuthRepositoryImpl implements AuthRepository {
     required String token,
     required String newPassword,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Attempting password reset with token');
+
+      final result = await _remoteDataSource.resetPassword(
+        token: token,
+        newPassword: newPassword,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) {
+          if (success) {
+            _logger.i('Password reset completed successfully');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Password reset failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, bool>> deleteAccount({
     required String password,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Attempting account deletion');
+
+      final result = await _remoteDataSource.deleteAccount(
+        password: password,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) async {
+          if (success) {
+            // Clear all local data on successful account deletion
+            await _clearSession();
+            await _localDataSource.clearUser();
+            _authStateController.add(null);
+
+            _logger.i('Account deleted successfully');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Account deletion failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, bool>> verifyEmail({
     required String token,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Verifying email with token');
+
+      final result = await _remoteDataSource.verifyEmail(
+        token: token,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) async {
+          if (success) {
+            // Refresh user data to get updated verification status
+            final userResult = await getCurrentUser();
+            if (userResult.isRight()) {
+              final user = userResult.getOrElse(() => null);
+              if (user != null) {
+                final updatedUser = user.copyWith(emailVerified: true);
+                await _localDataSource.storeUser(updatedUser);
+
+                // Update session with verified user
+                final sessionResult = await getCurrentSession();
+                if (sessionResult.isRight()) {
+                  final session = sessionResult.getOrElse(() => null);
+                  if (session != null) {
+                    final updatedSession = session.copyWith(user: updatedUser);
+                    await _storeSession(updatedSession);
+                    _authStateController.add(updatedSession);
+                  }
+                }
+              }
+            }
+
+            _logger.i('Email verified successfully');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Email verification failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, bool>> resendEmailVerification() async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Resending email verification');
+
+      final result = await _remoteDataSource.resendEmailVerification();
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) {
+          if (success) {
+            _logger.i('Email verification resent successfully');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Resend email verification failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
@@ -405,36 +577,139 @@ class AuthRepositoryImpl implements AuthRepository {
     required String provider,
     required String token,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Linking social account: $provider');
+
+      final result = await _remoteDataSource.linkSocialAccount(
+        provider: provider,
+        token: token,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) {
+          if (success) {
+            _logger.i('Social account linked successfully: $provider');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Link social account failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, bool>> unlinkSocialAccount({
     required String provider,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Unlinking social account: $provider');
+
+      final result = await _remoteDataSource.unlinkSocialAccount(
+        provider: provider,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) {
+          if (success) {
+            _logger.i('Social account unlinked successfully: $provider');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Unlink social account failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, List<SocialAccount>>> getLinkedAccounts() async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Getting linked social accounts');
+
+      final result = await _remoteDataSource.getLinkedAccounts();
+
+      return result.fold(
+        (failure) => Left(failure),
+        (accounts) {
+          _logger.d('Retrieved ${accounts.length} linked accounts');
+          return Right(accounts);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Get linked accounts failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, List<AuthSession>>> getSessionHistory() async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Getting session history');
+
+      final result = await _remoteDataSource.getSessionHistory();
+
+      return result.fold(
+        (failure) => Left(failure),
+        (sessions) {
+          _logger.d('Retrieved ${sessions.length} session history entries');
+          return Right(sessions);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Get session history failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, bool>> revokeSession({
     required String sessionId,
   }) async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Revoking session: $sessionId');
+
+      final result = await _remoteDataSource.revokeSession(
+        sessionId: sessionId,
+      );
+
+      return result.fold(
+        (failure) => Left(failure),
+        (success) {
+          if (success) {
+            _logger.i('Session revoked successfully: $sessionId');
+          }
+          return Right(success);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Revoke session failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, List<AuthSession>>> getActiveSessions() async {
-    return Left(AuthFailure.notImplemented());
+    try {
+      _logger.d('Getting active sessions');
+
+      final result = await _remoteDataSource.getActiveSessions();
+
+      return result.fold(
+        (failure) => Left(failure),
+        (sessions) {
+          _logger.d('Retrieved ${sessions.length} active sessions');
+          return Right(sessions);
+        },
+      );
+    } catch (e, stackTrace) {
+      _logger.e('Get active sessions failed', error: e, stackTrace: stackTrace);
+      return Left(AuthFailure.unexpected(e.toString()));
+    }
   }
 
   /// Store session locally
@@ -449,6 +724,29 @@ class AuthRepositoryImpl implements AuthRepository {
     await _localDataSource.clearSession();
     await _secureStorage.deleteAccessToken();
     await _secureStorage.deleteRefreshToken();
+  }
+
+  /// Create configured Dio instance for Hanko
+  static Dio _createConfiguredDio() {
+    final dio = Dio(BaseOptions(
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(seconds: 30),
+    ));
+
+    // Add interceptors for logging and error handling
+    dio.interceptors.add(LogInterceptor(
+      requestBody: true,
+      responseBody: true,
+      error: true,
+      logPrint: (object) {
+        // Only log in debug mode for security
+        // ignore: avoid_print
+        if (kDebugMode) print(object);
+      },
+    ));
+
+    return dio;
   }
 
   /// Dispose resources
