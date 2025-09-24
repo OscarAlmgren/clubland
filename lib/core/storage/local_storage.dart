@@ -43,13 +43,13 @@ class HiveLocalStorage implements LocalStorage {
       _logger.i('Hive local storage initialized with box: $_boxName');
     } catch (e) {
       _logger.e('Failed to initialize Hive storage: $e');
-      throw StorageException('Failed to initialize local storage');
+      throw const StorageException('Failed to initialize local storage');
     }
   }
 
   void _ensureInitialized() {
     if (!_isInitialized) {
-      throw StorageException('Local storage not initialized. Call init() first.');
+      throw const StorageException('Local storage not initialized. Call init() first.');
     }
   }
 
@@ -271,7 +271,7 @@ class StorageManager {
       _logger.i('Storage manager initialized with ${_boxes.length} boxes');
     } catch (e) {
       _logger.e('Failed to initialize storage manager: $e');
-      throw StorageException('Failed to initialize storage manager');
+      throw const StorageException('Failed to initialize storage manager');
     }
   }
 
@@ -284,7 +284,7 @@ class StorageManager {
   /// Get storage box by name
   TypedLocalStorage getBox(String boxName) {
     if (!_isInitialized) {
-      throw StorageException('Storage manager not initialized');
+      throw const StorageException('Storage manager not initialized');
     }
 
     final box = _boxes[boxName];

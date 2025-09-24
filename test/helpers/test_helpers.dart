@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../lib/core/design_system/design_system.dart';
-import '../../lib/features/auth/domain/entities/user_entity.dart';
-import '../../lib/features/auth/data/datasources/hanko_datasource.dart';
+import 'package:clubland/core/design_system/design_system.dart';
+import 'package:clubland/features/auth/domain/entities/user_entity.dart';
+import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 
 class MockGoRouter extends Mock implements GoRouter {}
 
@@ -111,6 +110,6 @@ class TestHelpers {
   }
 
   static Future<void> delay([Duration? duration]) async {
-    await Future.delayed(duration ?? const Duration(milliseconds: 100));
+    await Future<void>.delayed(duration ?? const Duration(milliseconds: 100));
   }
 }

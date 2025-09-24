@@ -214,30 +214,26 @@ class AppColors {
   );
 
   // Helper methods
-  static Color getClubCategoryColor(String category) {
-    return clubCategoryColors[category.toLowerCase()] ?? neutral500;
-  }
+  static Color getClubCategoryColor(String category) =>
+      clubCategoryColors[category.toLowerCase()] ?? neutral500;
 
-  static Color getStatusColor(String status) {
-    return statusColors[status.toLowerCase()] ?? neutral500;
-  }
+  static Color getStatusColor(String status) =>
+      statusColors[status.toLowerCase()] ?? neutral500;
 
-  static Color getBookingStatusColor(String status) {
-    return bookingStatusColors[status.toLowerCase()] ?? neutral500;
-  }
+  static Color getBookingStatusColor(String status) =>
+      bookingStatusColors[status.toLowerCase()] ?? neutral500;
 
   static Color getMembershipTierColor(String tier) {
     return membershipTierColors[tier.toLowerCase()] ?? neutral500;
   }
 
   /// Get color with opacity
-  static Color withOpacity(Color color, double opacity) {
-    return color.withOpacity(opacity);
-  }
+  static Color withOpacity(Color color, double opacity) =>
+      color.withValues(alpha: opacity);
 
   /// Lighten a color by a percentage
   static Color lighten(Color color, [double amount = 0.1]) {
-    assert(amount >= 0 && amount <= 1);
+    assert(amount >= 0 && amount <= 1, 'Amount must be between 0 and 1');
     final hsl = HSLColor.fromColor(color);
     final lightness = (hsl.lightness + amount).clamp(0.0, 1.0);
     return hsl.withLightness(lightness).toColor();
@@ -245,7 +241,7 @@ class AppColors {
 
   /// Darken a color by a percentage
   static Color darken(Color color, [double amount = 0.1]) {
-    assert(amount >= 0 && amount <= 1);
+    assert(amount >= 0 && amount <= 1, 'Amount must be between 0 and 1');
     final hsl = HSLColor.fromColor(color);
     final lightness = (hsl.lightness - amount).clamp(0.0, 1.0);
     return hsl.withLightness(lightness).toColor();

@@ -70,7 +70,7 @@ class RetryLink extends Link {
         'Request failed, retrying in ${delay.inMilliseconds}ms (attempt ${attempt + 1}/$maxRetries)',
       );
 
-      await Future.delayed(delay);
+      await Future<void>.delayed(delay);
       return _executeWithRetry(request, forward, attempt + 1);
     } else {
       throw Exception('Error after maximum retries: $error');

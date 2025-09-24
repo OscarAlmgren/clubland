@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/design_system/design_system.dart';
@@ -36,10 +35,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: const Text('Create Account'),
-        backgroundColor: colorScheme.background,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
       ),
       body: SafeArea(
@@ -61,7 +60,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         Text(
                           'Join Clubland',
                           style: AppTextStyles.headlineMedium.copyWith(
-                            color: colorScheme.onBackground,
+                            color: colorScheme.onSurface,
                           ),
                           textAlign: TextAlign.center,
                         ),

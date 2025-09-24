@@ -113,6 +113,7 @@ enum UserStatus {
 class UserProfile extends Equatable {
   final String? avatar;
   final String? phoneNumber;
+  final String fullName;
   final DateTime? dateOfBirth;
   final UserAddress? address;
   final UserPreferences preferences;
@@ -395,6 +396,120 @@ class AuthSessionEntity extends Equatable {
       expiresAt: expiresAt ?? this.expiresAt,
       user: user ?? this.user,
       hankoSessionId: hankoSessionId ?? this.hankoSessionId,
+    );
+  }
+}
+
+/// Social account entity for linked accounts
+class SocialAccount extends Equatable {
+  final String id;
+  final String provider; // 'google', 'apple', 'facebook', etc.
+  final String providerUserId;
+  final String email;
+  final DateTime linkedAt;
+  final bool isVerified;
+
+  const SocialAccount({
+    required this.id,
+    required this.provider,
+    required this.providerUserId,
+    required this.email,
+    required this.linkedAt,
+    this.isVerified = true,
+  });
+
+  @override
+  List<Object> get props => [
+        id,
+        provider,
+        providerUserId,
+        email,
+        linkedAt,
+        isVerified,
+      ];
+
+  SocialAccount copyWith({
+    String? id,
+    String? provider,
+    String? providerUserId,
+    String? email,
+    DateTime? linkedAt,
+    bool? isVerified,
+  }) {
+    return SocialAccount(
+      id: id ?? this.id,
+      provider: provider ?? this.provider,
+      providerUserId: providerUserId ?? this.providerUserId,
+      email: email ?? this.email,
+      linkedAt: linkedAt ?? this.linkedAt,
+      isVerified: isVerified ?? this.isVerified,
+    );
+  }
+}
+
+/// Authentication session for session management
+class AuthSession extends Equatable {
+  final String id;
+  final String deviceName;
+  final String location;
+  final String ipAddress;
+  final DateTime createdAt;
+  final DateTime lastActiveAt;
+  final bool isActive;
+  final String? userAgent;
+
+  const AuthSession({
+    required this.id,
+    required this.deviceName,
+    required this.location,
+    required this.ipAddress,
+    required this.createdAt,
+    required this.lastActiveAt,
+    required this.isActive,
+    this.userAgent,
+  });
+
+  /// Check if session is current session (active within 5 minutes)
+  bool get isCurrent => isActive &&
+      DateTime.now().difference(lastActiveAt).inMinutes <= 5;
+
+  /// Get time since last activity
+  Duration get timeSinceLastActive => DateTime.now().difference(lastActiveAt);
+
+  /// Get session duration
+  Duration get sessionDuration => lastActiveAt.difference(createdAt);
+
+  @override
+  List<Object?> get props => [
+        id,
+        deviceName,
+        location,
+        ipAddress,
+        createdAt,
+        lastActiveAt,
+        isActive,
+        userAgent,
+      ];
+
+  AuthSession copyWith({
+    String? id,
+    String? deviceName,
+    String? location,
+    String? ipAddress,
+    DateTime? createdAt,
+    DateTime? lastActiveAt,
+    bool? isActive,
+    String? userAgent,
+  }) {
+    return AuthSession(
+      id: id ?? this.id,
+      deviceName: deviceName ?? this.deviceName,
+      location: location ?? this.location,
+      ipAddress: ipAddress ?? this.ipAddress,
+      createdAt: createdAt ?? this.createdAt,
+      lastActiveAt: lastActiveAt ?? this.lastActiveAt,
+      isActive: isActive ?? this.isActive,
+      userAgent: userAgent ?? this.userAgent,
     );
   }
 }

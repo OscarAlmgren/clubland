@@ -2,6 +2,7 @@ import '../../../../core/design_system/design_system.dart';
 
 /// Home page - main dashboard for the app
 class HomePage extends StatelessWidget {
+  /// Constructs a [HomePage].
   const HomePage({super.key});
 
   @override

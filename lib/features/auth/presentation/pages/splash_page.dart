@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/design_system/design_system.dart';
@@ -62,7 +61,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
     return Scaffold(
       backgroundColor: colorScheme.background,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: AppColors.primaryGradient,
         ),
         child: Center(
@@ -91,7 +90,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
                             ),
                           ],
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.location_city,
                           size: 60,
                           color: AppColors.brandPrimary,

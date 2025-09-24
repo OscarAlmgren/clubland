@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../../../core/design_system/design_system.dart';
 
 /// Bookings page - view and manage bookings

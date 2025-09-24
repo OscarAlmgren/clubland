@@ -323,9 +323,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final updatedUser = UserEntity(
       id: userId,
       email: 'updated@example.com',
-      firstName: profile.firstName,
-      lastName: profile.lastName,
+      firstName: profile.fullName.split(' ').first,
+      lastName: profile.fullName.split(' ').length > 1 ? profile.fullName.split(' ').last : '',
       status: UserStatus.active,
+      profile: profile,
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
     );
 

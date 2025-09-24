@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -42,7 +40,8 @@ class GoldenTestHelpers {
     await tester.pumpDeviceBuilder(
       DeviceBuilder()
         ..overrideDevicesForAllScenarios(
-          devices: devices ?? [Device.phone, Device.iphone11, Device.tabletPortrait],
+          devices:
+              devices ?? [Device.phone, Device.iphone11, Device.tabletPortrait],
         )
         ..addScenario(
           widget: createTestWidget(child: widget),
@@ -74,14 +73,8 @@ class GoldenTestHelpers {
       tester,
       goldenFileName,
       devices: [
-        const Device(
-          name: 'light_theme',
-          size: Size(400, 600),
-        ),
-        const Device(
-          name: 'dark_theme',
-          size: Size(400, 600),
-        ),
+        const Device(name: 'light_theme', size: Size(400, 600)),
+        const Device(name: 'dark_theme', size: Size(400, 600)),
       ],
     );
   }
@@ -103,16 +96,8 @@ class GoldenTestHelpers {
       tester,
       goldenFileName,
       devices: [
-        const Device(
-          name: 'normal_text',
-          size: Size(400, 600),
-          textScale: 1.0,
-        ),
-        const Device(
-          name: 'large_text',
-          size: Size(400, 600),
-          textScale: 1.5,
-        ),
+        const Device(name: 'normal_text', size: Size(400, 600)),
+        const Device(name: 'large_text', size: Size(400, 600), textScale: 1.5),
         const Device(
           name: 'extra_large_text',
           size: Size(400, 600),

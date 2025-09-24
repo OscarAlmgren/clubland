@@ -28,11 +28,8 @@ class RouteGuards {
         state: state,
       ),
       loading: () => _handleLoadingState(path, isAuthRoute),
-      error: (error, stackTrace) => _handleErrorState(
-        error: error,
-        path: path,
-        isAuthRoute: isAuthRoute,
-      ),
+      error: (error, stackTrace) =>
+          _handleErrorState(error: error, path: path, isAuthRoute: isAuthRoute),
     );
   }
 
@@ -112,17 +109,14 @@ class RouteGuards {
   /// Build login redirect URL with return path
   static String _buildLoginRedirect(String originalPath) {
     final uri = Uri.parse(AppRoutes.login);
-    final queryParams = <String, String>{
-      AppRoutes.redirectParam: originalPath,
-    };
+    final queryParams = <String, String>{AppRoutes.redirectParam: originalPath};
 
     return uri.replace(queryParameters: queryParams).toString();
   }
 
   /// Get redirect path after successful login
-  static String? _getRedirectAfterLogin(GoRouterState state) {
-    return state.uri.queryParameters[AppRoutes.redirectParam];
-  }
+  static String? _getRedirectAfterLogin(GoRouterState state) =>
+      state.uri.queryParameters[AppRoutes.redirectParam];
 
   /// Check user permissions for specific routes
   static String? _checkUserPermissions(UserEntity user, String path) {
@@ -151,17 +145,13 @@ class RouteGuards {
   static bool _needsProfileCompletion(UserEntity user) {
     // Check if essential profile information is missing
     return user.firstName == null ||
-           user.lastName == null ||
-           user.status == UserStatus.pending;
+        user.lastName == null ||
+        user.status == UserStatus.pending;
   }
 
   /// Check if route requires admin access
   static bool _isAdminRoute(String path) {
-    const adminRoutes = [
-      '/admin',
-      '/dashboard/admin',
-      '/users/manage',
-    ];
+    const adminRoutes = ['/admin', '/dashboard/admin', '/users/manage'];
 
     return adminRoutes.any((route) => path.startsWith(route));
   }
@@ -178,9 +168,8 @@ class RouteGuards {
   }
 
   /// Check if route is club-specific
-  static bool _isClubSpecificRoute(String path) {
-    return path.contains('/clubs/') && path.contains(':clubId');
-  }
+  static bool _isClubSpecificRoute(String path) =>
+      path.contains('/clubs/') && path.contains(':clubId');
 
   /// Extract club ID from path
   static String? _extractClubIdFromPath(String path) {
@@ -199,8 +188,8 @@ class RouteGuards {
   static bool _hasClubAccess(UserEntity user, String clubId) {
     // Check if user is a member of the club or has general access
     return user.clubId == clubId ||
-           user.hasPermission('access_all_clubs') ||
-           user.hasRole('admin');
+        user.hasPermission('access_all_clubs') ||
+        user.hasRole('admin');
   }
 
   /// Check if route requires specific membership tier
@@ -233,15 +222,11 @@ class RouteGuards {
   }
 
   /// Check if user's email is verified
-  static bool _isEmailVerified(UserEntity user) {
-    return user.status == UserStatus.verified ||
-           user.status == UserStatus.active;
-  }
+  static bool _isEmailVerified(UserEntity user) =>
+      user.status == UserStatus.verified || user.status == UserStatus.active;
 
   /// Get appropriate redirect for unverified users
-  static String _getEmailVerificationRedirect() {
-    return '/verify-email';
-  }
+  static String _getEmailVerificationRedirect() => '/verify-email';
 
   /// Check for app maintenance mode
   static String? _checkMaintenanceMode(String path) {
@@ -290,7 +275,8 @@ class RouteGuards {
 
     // Check maintenance mode
     final maintenanceRedirect = _checkMaintenanceMode(path);
-    if (maintenanceRedirect != null && !_canAccessDuringMaintenance(user, path)) {
+    if (maintenanceRedirect != null &&
+        !_canAccessDuringMaintenance(user, path)) {
       return maintenanceRedirect;
     }
 
@@ -301,42 +287,32 @@ class RouteGuards {
 /// Extension methods for user permissions
 extension UserPermissionsExtension on UserEntity {
   /// Check if user has any of the specified roles
-  bool hasAnyRole(List<String> roles) {
-    return roles.any((role) => hasRole(role));
-  }
+  bool hasAnyRole(List<String> roles) => roles.any((role) => hasRole(role));
 
   /// Check if user has all of the specified roles
-  bool hasAllRoles(List<String> roles) {
-    return roles.every((role) => hasRole(role));
-  }
+  bool hasAllRoles(List<String> roles) => roles.every((role) => hasRole(role));
 
   /// Check if user has any of the specified permissions
-  bool hasAnyPermission(List<String> permissions) {
-    return permissions.any((permission) => hasPermission(permission));
-  }
+  bool hasAnyPermission(List<String> permissions) =>
+      permissions.any((permission) => hasPermission(permission));
 
   /// Check if user has all of the specified permissions
-  bool hasAllPermissions(List<String> permissions) {
-    return permissions.every((permission) => hasPermission(permission));
-  }
+  bool hasAllPermissions(List<String> permissions) =>
+      permissions.every((permission) => hasPermission(permission));
 
   /// Check if user is a premium member
-  bool get isPremiumMember {
-    return hasAnyRole(['premium', 'gold', 'platinum', 'diamond']);
-  }
+  bool get isPremiumMember =>
+      hasAnyRole(['premium', 'gold', 'platinum', 'diamond']);
 
   /// Check if user is an admin
-  bool get isAdmin {
-    return hasAnyRole(['admin', 'super_admin']);
-  }
+  bool get isAdmin => hasAnyRole(['admin', 'super_admin']);
 
   /// Check if user profile is complete
-  bool get isProfileComplete {
-    return firstName != null &&
-           lastName != null &&
-           profile?.phoneNumber != null &&
-           status != UserStatus.pending;
-  }
+  bool get isProfileComplete =>
+      firstName != null &&
+      lastName != null &&
+      profile?.phoneNumber != null &&
+      status != UserStatus.pending;
 
   /// Get user's highest membership tier
   String get membershipTier {

@@ -75,7 +75,7 @@ class HankoDataSourceImpl implements HankoDataSource {
     try {
       _logger.d('Initiating Hanko login for email: $email');
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '$_baseUrl/v1/projects/$_projectId/auth/login/init',
         data: {'email': email},
         options: Options(headers: {'Content-Type': 'application/json'}),
@@ -108,7 +108,7 @@ class HankoDataSourceImpl implements HankoDataSource {
     try {
       _logger.d('Completing Hanko login for session: $sessionId');
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '$_baseUrl/v1/projects/$_projectId/auth/login/complete',
         data: {'sessionId': sessionId, 'credential': credential},
         options: Options(headers: {'Content-Type': 'application/json'}),
@@ -164,7 +164,7 @@ class HankoDataSourceImpl implements HankoDataSource {
     try {
       _logger.d('Initiating Hanko registration for email: $email');
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '$_baseUrl/v1/projects/$_projectId/auth/register/init',
         data: {'email': email},
         options: Options(headers: {'Content-Type': 'application/json'}),
@@ -199,7 +199,7 @@ class HankoDataSourceImpl implements HankoDataSource {
     try {
       _logger.d('Completing Hanko registration for session: $sessionId');
 
-      final response = await _dio.post(
+      final response = await _dio.post<Map<String, dynamic>>(
         '$_baseUrl/v1/projects/$_projectId/auth/register/complete',
         data: {
           'sessionId': sessionId,
@@ -254,7 +254,7 @@ class HankoDataSourceImpl implements HankoDataSource {
     try {
       _logger.d('Checking if email is registered with Hanko: $email');
 
-      final response = await _dio.get(
+      final response = await _dio.get<Map<String, dynamic>>(
         '$_baseUrl/v1/projects/$_projectId/users/check',
         queryParameters: {'email': email},
         options: Options(headers: {'Content-Type': 'application/json'}),

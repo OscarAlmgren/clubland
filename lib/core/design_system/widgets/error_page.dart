@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 import 'app_button.dart';
@@ -74,7 +73,7 @@ class ErrorPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: AppSpacing.pagePadding,
@@ -92,7 +91,7 @@ class ErrorPage extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: colorScheme.errorContainer.withOpacity(0.1),
+                      color: colorScheme.errorContainer.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -108,7 +107,7 @@ class ErrorPage extends StatelessWidget {
                   Text(
                     title ?? 'Oops! Something went wrong',
                     style: AppTextStyles.headlineMedium.copyWith(
-                      color: colorScheme.onBackground,
+                      color: colorScheme.onSurface,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -180,7 +179,7 @@ class ErrorPage extends StatelessWidget {
             width: double.infinity,
             padding: AppSpacing.paddingLG,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Column(

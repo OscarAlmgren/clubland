@@ -5,6 +5,7 @@ import 'package:clubland/features/auth/data/datasources/auth_remote_datasource.d
 import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 import 'package:clubland/features/auth/domain/repositories/auth_repository.dart';
 import 'package:clubland/features/auth/domain/usecases/login_usecase.dart';
+import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLocalStorage extends Mock implements LocalStorage {}
@@ -23,6 +24,14 @@ class MockHankoDataSource extends Mock implements HankoDataSource {}
 
 class MockLoginUsecase extends Mock implements LoginUsecase {}
 
+class MockLogoutUsecase extends Mock implements LogoutUsecase {}
+
+class MockRegisterUsecase extends Mock implements RegisterUsecase {}
+
+class MockRefreshTokenUsecase extends Mock implements RefreshTokenUsecase {}
+
+class MockLogger extends Mock implements Logger {}
+
 
 class MockProviders {
   static final localStorage = MockLocalStorage();
@@ -32,6 +41,10 @@ class MockProviders {
   static final authRemoteDataSource = MockAuthRemoteDataSource();
   static final hankoDataSource = MockHankoDataSource();
   static final loginUsecase = MockLoginUsecase();
+  static final logoutUsecase = MockLogoutUsecase();
+  static final registerUsecase = MockRegisterUsecase();
+  static final refreshTokenUsecase = MockRefreshTokenUsecase();
+  static final logger = MockLogger();
 
   static void resetAll() {
     reset(localStorage);
@@ -41,5 +54,9 @@ class MockProviders {
     reset(authRemoteDataSource);
     reset(hankoDataSource);
     reset(loginUsecase);
+    reset(logoutUsecase);
+    reset(registerUsecase);
+    reset(refreshTokenUsecase);
+    reset(logger);
   }
 }

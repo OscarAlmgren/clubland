@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../lib/core/design_system/widgets/app_button.dart';
+import 'package:clubland/core/design_system/widgets/app_button.dart';
 import '../../../helpers/test_helpers.dart';
 
 void main() {
@@ -74,7 +74,7 @@ void main() {
 
     testWidgets('should be disabled when onPressed is null', (tester) async {
       await tester.pumpApp(
-        AppButton.primary(
+        const AppButton.primary(
           text: 'Disabled Button',
           onPressed: null,
         ),

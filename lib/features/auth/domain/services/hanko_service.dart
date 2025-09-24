@@ -93,7 +93,7 @@ class HankoServiceImpl implements HankoService {
   Future<Either<Failure, HankoAuthSession>> startLogin(String email) async {
     try {
       // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future<void>.delayed(const Duration(milliseconds: 500));
 
       // Mock successful session creation
       final session = HankoAuthSession(
@@ -121,7 +121,7 @@ class HankoServiceImpl implements HankoService {
   }) async {
     try {
       // Simulate network delay
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
 
       // Mock successful authentication
       final user = UserEntity(
@@ -155,7 +155,7 @@ class HankoServiceImpl implements HankoService {
   }) async {
     try {
       // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future<void>.delayed(const Duration(milliseconds: 500));
 
       // Mock successful registration session creation
       final session = HankoAuthSession(
@@ -185,7 +185,7 @@ class HankoServiceImpl implements HankoService {
   }) async {
     try {
       // Simulate network delay
-      await Future.delayed(const Duration(seconds: 2));
+      await Future<void>.delayed(const Duration(seconds: 2));
 
       // Mock successful registration completion
       final user = UserEntity(
@@ -215,7 +215,7 @@ class HankoServiceImpl implements HankoService {
   Future<Either<Failure, bool>> isEmailRegistered(String email) async {
     try {
       // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 300));
+      await Future<void>.delayed(const Duration(milliseconds: 300));
 
       // Mock email check (test@example.com is registered)
       final isRegistered = email == 'test@example.com' ||
@@ -232,7 +232,7 @@ class HankoServiceImpl implements HankoService {
   Future<Either<Failure, bool>> verifySession(String sessionId) async {
     try {
       // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 200));
+      await Future<void>.delayed(const Duration(milliseconds: 200));
 
       // Mock session verification (always valid for demo)
       return const Right(true);
@@ -245,7 +245,7 @@ class HankoServiceImpl implements HankoService {
   Future<Either<Failure, bool>> cancelSession(String sessionId) async {
     try {
       // Simulate network delay
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future<void>.delayed(const Duration(milliseconds: 100));
 
       // Mock session cancellation (always successful for demo)
       return const Right(true);

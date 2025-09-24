@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../lib/core/errors/failures.dart';
+import 'package:clubland/core/errors/failures.dart';
 
 void main() {
   group('Failure Classes', () {

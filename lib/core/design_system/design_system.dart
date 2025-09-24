@@ -8,6 +8,9 @@
 
 library design_system;
 
+// Re-export commonly used Flutter widgets for convenience
+export 'package:flutter/material.dart';
+
 // Theme exports
 export 'theme/app_colors.dart';
 export 'theme/app_spacing.dart';
@@ -18,6 +21,3 @@ export 'theme/app_theme.dart';
 export 'widgets/app_button.dart';
 export 'widgets/app_card.dart';
 export 'widgets/app_input_field.dart';
-
-// Re-export commonly used Flutter widgets for convenience
-export 'package:flutter/material.dart';
