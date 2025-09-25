@@ -9,9 +9,8 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 ## Development Commands
 
 ### Essential Commands
-- **Run the app (development)**: `flutter run --target lib/main_dev.dart`
-- **Run for staging**: `flutter run --target lib/main_staging.dart`
-- **Run for production**: `flutter run --target lib/main_prod.dart`
+- **Run the app (production)**: `flutter run`
+- **Run with simple main**: `flutter run --target lib/simple_main.dart`
 - **Hot reload**: Press `r` in the terminal while app is running
 - **Hot restart**: Press `R` in the terminal while app is running
 - **Run on specific platform**: `flutter run -d <device_id>`
@@ -23,10 +22,10 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 - **Generate GraphQL code only**: `flutter packages pub run graphql_codegen`
 
 ### Building
-- **Build Android (Dev)**: `flutter build apk --flavor dev --target lib/main_dev.dart`
-- **Build Android (Prod)**: `flutter build appbundle --flavor prod --target lib/main_prod.dart`
-- **Build iOS (Dev)**: `flutter build ios --flavor dev --target lib/main_dev.dart`
-- **Build web**: `flutter build web --target lib/main_prod.dart`
+- **Build Android APK**: `flutter build apk`
+- **Build Android Bundle**: `flutter build appbundle`
+- **Build iOS**: `flutter build ios`
+- **Build web**: `flutter build web`
 
 ### Testing and Quality
 - **Run all tests**: `flutter test`
@@ -67,9 +66,8 @@ This project follows Clean Architecture principles with feature-based organizati
 
 ```
 lib/
-├── main.dart                           # Production entry point
-├── main_dev.dart                       # Development entry point
-├── main_staging.dart                   # Staging entry point
+├── main.dart                           # Main entry point
+├── simple_main.dart                    # Simplified entry point
 ├── app/
 │   ├── app.dart                        # Main app configuration
 │   ├── router/
@@ -119,7 +117,8 @@ lib/
 │   ├── visits/                         # Visit tracking & history
 │   ├── social/                         # Social features & feed
 │   ├── travel/                         # Trip planning
-│   └── profile/                        # User profile & settings
+│   ├── profile/                        # User profile & settings
+│   └── home/                           # Home screen & dashboard
 ├── shared/
 │   ├── widgets/                        # Reusable UI components
 │   │   ├── buttons/                    # Button variants
@@ -144,33 +143,33 @@ lib/
 - **State Management**: flutter_riverpod, riverpod_annotation
 - **Navigation**: go_router
 - **HTTP/GraphQL**: dio, graphql_flutter, gql
-- **Authentication**: hanko_flutter, local_auth, flutter_secure_storage
+- **Authentication**: local_auth, flutter_secure_storage, crypto, encrypt
 - **Local Storage**: hive, hive_flutter
 - **UI/UX**: cached_network_image, lottie, shimmer
 - **Maps**: google_maps_flutter, geolocator
 - **Utils**: equatable, freezed_annotation, json_annotation
 
 ### Development Dependencies
-- **Code Generation**: build_runner, freezed, json_serializable
+- **Code Generation**: build_runner, freezed, json_serializable, hive_generator
 - **GraphQL**: graphql_codegen
 - **State Management**: riverpod_generator, riverpod_lint
-- **Testing**: mocktail, integration_test
+- **Testing**: mocktail, integration_test, golden_toolkit, alchemist
 - **Code Quality**: flutter_lints, very_good_analysis
 
 ## Authentication Architecture
 
-### Hanko Integration
-- **Primary**: Passwordless authentication with WebAuthn/passkeys
-- **Fallback**: Biometric authentication on mobile devices
-- **Session Management**: JWT tokens with automatic refresh
-- **Multi-factor**: Optional SMS/email verification for sensitive operations
+### Security Architecture
+- **Primary**: Local biometric authentication on mobile devices
+- **Encryption**: Custom encryption service for sensitive data
+- **Storage**: FlutterSecureStorage for tokens and credentials
+- **Session Management**: Secure session management with encrypted storage
 
 ### Authentication Flow
-1. User initiates login with email
-2. Hanko generates WebAuthn challenge
-3. User completes biometric/passkey authentication
-4. Hanko validates and returns JWT tokens
-5. App stores tokens securely and maintains session
+1. User initiates authentication
+2. Biometric/PIN verification required
+3. Encrypted credentials retrieved from secure storage
+4. Session established with encrypted local data
+5. App maintains secure session state
 
 ## GraphQL Integration
 
@@ -235,15 +234,11 @@ The project uses GraphQL code generation to create type-safe Dart classes:
 ## Build Configuration
 
 ### Environment Configuration
-- **Development**: Local APIs, debug logging, test data
-- **Staging**: Staging APIs, limited logging, real data
-- **Production**: Production APIs, minimal logging, live data
-
-### Build Flavors
-Each environment has its own configuration:
-- Different API endpoints
-- Separate analytics tracking
-- Different app icons/names for easy identification
+The app uses environment configuration to manage different settings:
+- **Environment Detection**: Automatic environment detection and validation
+- **Configuration Management**: Centralized configuration with validation
+- **Logging**: Environment-specific logging levels
+- **Encryption**: Built-in encryption service initialization
 
 ## Performance Optimization
 
@@ -291,8 +286,8 @@ Each environment has its own configuration:
 # Full development setup
 flutter clean && flutter pub get && dart run build_runner build
 
-# Run with hot reload (development)
-flutter run --target lib/main_dev.dart
+# Run with hot reload (production)
+flutter run
 
 # Run tests with coverage
 flutter test --coverage && genhtml coverage/lcov.info -o coverage/html
@@ -301,7 +296,7 @@ flutter test --coverage && genhtml coverage/lcov.info -o coverage/html
 dart format . && flutter analyze
 
 # Build for production
-flutter build appbundle --flavor prod --target lib/main_prod.dart
+flutter build appbundle
 ```
 
 ## Troubleshooting
@@ -309,7 +304,7 @@ flutter build appbundle --flavor prod --target lib/main_prod.dart
 ### Common Issues
 - **Build failures**: Run `flutter clean` and regenerate code
 - **GraphQL errors**: Check schema files and regenerate
-- **Authentication issues**: Verify Hanko configuration
+- **Authentication issues**: Verify encryption service and secure storage configuration
 - **Performance issues**: Use Flutter Inspector and profiling tools
 
 ### Debug Tools

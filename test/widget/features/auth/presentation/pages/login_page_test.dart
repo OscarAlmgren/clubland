@@ -262,7 +262,12 @@ void main() {
         );
         expect(
           tester.getSemantics(emailTextField),
-          matchesSemantics(isTextField: true, isFocusable: true, hasEnabledState: true, isEnabled: true),
+          matchesSemantics(
+            isTextField: true,
+            hasEnabledState: true,
+            isEnabled: true,
+            label: 'Enter your email',
+          ),
         );
       });
 

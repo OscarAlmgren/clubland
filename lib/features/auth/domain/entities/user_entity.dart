@@ -475,3 +475,29 @@ class AuthSession extends Equatable {
     userAgent: userAgent ?? this.userAgent,
   );
 }
+
+/// Two-factor authentication setup response
+class TwoFactorSetupResponse extends Equatable {
+  const TwoFactorSetupResponse({
+    required this.qrCode,
+    required this.backupCodes,
+    required this.secret,
+  });
+
+  final String qrCode;
+  final List<String> backupCodes;
+  final String secret;
+
+  @override
+  List<Object> get props => [qrCode, backupCodes, secret];
+
+  TwoFactorSetupResponse copyWith({
+    String? qrCode,
+    List<String>? backupCodes,
+    String? secret,
+  }) => TwoFactorSetupResponse(
+    qrCode: qrCode ?? this.qrCode,
+    backupCodes: backupCodes ?? this.backupCodes,
+    secret: secret ?? this.secret,
+  );
+}

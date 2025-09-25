@@ -311,5 +311,187 @@ void main() {
         verify(() => mockLocalDataSource.getCurrentSession()).called(1);
       });
     });
+
+    group('refreshToken', () {
+      test('should return new session when refresh is successful', () async {
+        final newSession = AuthSessionEntity(
+          accessToken: 'new-access-token',
+          refreshToken: 'new-refresh-token',
+          expiresAt: DateTime.now().add(const Duration(hours: 1)),
+          user: testUser,
+        );
+
+        when(() => mockSecureStorageService.getRefreshToken())
+            .thenAnswer((_) async => 'current-refresh-token');
+        when(
+          () => mockRemoteDataSource.refreshToken(
+            refreshToken: any(named: 'refreshToken'),
+          ),
+        ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(newSession));
+
+        when(() => mockLocalDataSource.storeSession(any())).thenAnswer((_) async {});
+        when(() => mockSecureStorageService.storeAccessToken(any())).thenAnswer((_) async {});
+        when(() => mockSecureStorageService.storeRefreshToken(any())).thenAnswer((_) async {});
+
+        final result = await repository.refreshToken(refreshToken: 'current-refresh-token');
+
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Expected success but got failure: $failure'),
+          (session) {
+            expect(session.accessToken, 'new-access-token');
+            expect(session.refreshToken, 'new-refresh-token');
+          },
+        );
+
+        verify(() => mockRemoteDataSource.refreshToken(
+              refreshToken: 'current-refresh-token',
+            )).called(1);
+      });
+
+      test('should return failure when refresh fails', () async {
+        when(
+          () => mockRemoteDataSource.refreshToken(
+            refreshToken: any(named: 'refreshToken'),
+          ),
+        ).thenAnswer((_) async => Left<Failure, AuthSessionEntity>(
+          AuthFailure.tokenRefreshFailed(),
+        ));
+
+        final result = await repository.refreshToken(refreshToken: 'invalid-token');
+
+        expect(result.isLeft(), true);
+        result.fold(
+          (failure) => expect(failure, isA<AuthFailure>()),
+          (session) => fail('Expected failure but got success: $session'),
+        );
+      });
+    });
+
+    group('updateProfile', () {
+      test('should update user profile successfully', () async {
+        const profile = UserProfile(
+          fullName: 'John Doe',
+          phoneNumber: '+1234567890',
+        );
+
+        final updatedUser = testUser.copyWith(
+          firstName: 'John',
+          lastName: 'Doe',
+          profile: profile,
+        );
+
+        when(
+          () => mockRemoteDataSource.updateProfile(
+            userId: any(named: 'userId'),
+            profile: any(named: 'profile'),
+          ),
+        ).thenAnswer((_) async => Right<Failure, UserEntity>(updatedUser));
+
+        when(() => mockLocalDataSource.storeUser(any())).thenAnswer((_) async {});
+
+        final result = await repository.updateProfile(
+          userId: '123',
+          profile: profile,
+        );
+
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Expected success but got failure: $failure'),
+          (user) {
+            expect(user.firstName, 'John');
+            expect(user.lastName, 'Doe');
+            expect(user.profile?.fullName, 'John Doe');
+            expect(user.profile?.phoneNumber, '+1234567890');
+          },
+        );
+
+        verify(() => mockRemoteDataSource.updateProfile(
+              userId: '123',
+              profile: profile,
+            )).called(1);
+        verify(() => mockLocalDataSource.storeUser(updatedUser)).called(1);
+      });
+    });
+
+    group('changePassword', () {
+      test('should change password successfully', () async {
+        when(
+          () => mockRemoteDataSource.changePassword(
+            currentPassword: any(named: 'currentPassword'),
+            newPassword: any(named: 'newPassword'),
+          ),
+        ).thenAnswer((_) async => const Right<Failure, bool>(true));
+
+        final result = await repository.changePassword(
+          currentPassword: 'oldPassword',
+          newPassword: 'newPassword123',
+        );
+
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Expected success but got failure: $failure'),
+          (success) => expect(success, true),
+        );
+
+        verify(() => mockRemoteDataSource.changePassword(
+              currentPassword: 'oldPassword',
+              newPassword: 'newPassword123',
+            )).called(1);
+      });
+
+      test('should return failure when password change fails', () async {
+        when(
+          () => mockRemoteDataSource.changePassword(
+            currentPassword: any(named: 'currentPassword'),
+            newPassword: any(named: 'newPassword'),
+          ),
+        ).thenAnswer((_) async => Left<Failure, bool>(
+          AuthFailure.invalidCredentials(),
+        ));
+
+        final result = await repository.changePassword(
+          currentPassword: 'wrongPassword',
+          newPassword: 'newPassword123',
+        );
+
+        expect(result.isLeft(), true);
+        result.fold(
+          (failure) => expect(failure, isA<AuthFailure>()),
+          (success) => fail('Expected failure but got success: $success'),
+        );
+      });
+    });
+
+    group('deleteAccount', () {
+      test('should delete account successfully', () async {
+        when(
+          () => mockRemoteDataSource.deleteAccount(
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => const Right<Failure, bool>(true));
+
+        when(() => mockLocalDataSource.clearSession()).thenAnswer((_) async {});
+        when(() => mockLocalDataSource.clearUser()).thenAnswer((_) async {});
+        when(() => mockSecureStorageService.deleteAccessToken()).thenAnswer((_) async {});
+        when(() => mockSecureStorageService.deleteRefreshToken()).thenAnswer((_) async {});
+
+        final result = await repository.deleteAccount(password: 'password123');
+
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Expected success but got failure: $failure'),
+          (success) => expect(success, true),
+        );
+
+        verify(() => mockRemoteDataSource.deleteAccount(password: 'password123')).called(1);
+        verify(() => mockLocalDataSource.clearSession()).called(1);
+        verify(() => mockLocalDataSource.clearUser()).called(1);
+      });
+    });
+
+    // Note: Only testing methods that actually exist in the implementation
+    // Other methods like linkSocialAccount, enableTwoFactorAuth, etc. would need
+    // to be implemented first before adding their tests
   });
 }
