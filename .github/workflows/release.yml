@@ -1,0 +1,352 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  FLUTTER_VERSION: "3.19.0"
+
+jobs:
+  validate_release:
+    runs-on: ubuntu-latest
+    name: Validate Release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Run all tests
+        run: flutter test --coverage
+
+      - name: Validate version consistency
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          PUBSPEC_VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //' | sed 's/+.*//')
+          if [ "$TAG_VERSION" != "$PUBSPEC_VERSION" ]; then
+            echo "Version mismatch: tag=$TAG_VERSION, pubspec=$PUBSPEC_VERSION"
+            exit 1
+          fi
+
+  build_production:
+    runs-on: ubuntu-latest
+    name: Build Production Artifacts
+    needs: validate_release
+    strategy:
+      matrix:
+        target: [web, android]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java (for Android)
+        if: matrix.target == 'android'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Build Web
+        if: matrix.target == 'web'
+        run: |
+          flutter build web --release \
+            --dart-define=ENVIRONMENT=production \
+            --dart-define=API_URL=${{ secrets.PROD_API_URL }} \
+            --dart-define=ENCRYPTION_KEY=${{ secrets.PROD_ENCRYPTION_KEY }}
+
+      - name: Build Android
+        if: matrix.target == 'android'
+        run: |
+          flutter build appbundle --release \
+            --dart-define=ENVIRONMENT=production \
+            --dart-define=API_URL=${{ secrets.PROD_API_URL }} \
+            --dart-define=ENCRYPTION_KEY=${{ secrets.PROD_ENCRYPTION_KEY }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.target }}-production
+          path: |
+            build/web
+            build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
+  build_ios_production:
+    runs-on: macos-latest
+    name: Build iOS Production
+    needs: validate_release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Setup certificates
+        env:
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          echo "${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}" | base64 --decode > certificate.p12
+          echo "${{ secrets.PROVISIONING_PROFILE_DATA }}" | base64 --decode > profile.mobileprovision
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security import certificate.p12 -k build.keychain -P "$P12_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      - name: Build iOS
+        run: |
+          flutter build ipa --release \
+            --dart-define=ENVIRONMENT=production \
+            --dart-define=API_URL=${{ secrets.PROD_API_URL }} \
+            --dart-define=ENCRYPTION_KEY=${{ secrets.PROD_ENCRYPTION_KEY }}
+
+      - name: Upload iOS artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-production
+          path: build/ios/ipa/clubland.ipa
+          retention-days: 30
+
+  deploy_web_production:
+    runs-on: ubuntu-latest
+    name: Deploy Web to Production
+    needs: build_production
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download web artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: web-production
+          path: build/web
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PRODUCTION }}'
+          channelId: live
+          projectId: clubland-production
+
+      - name: Deploy to CDN
+        run: |
+          aws s3 sync build/web s3://${{ secrets.S3_BUCKET }} --delete
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+
+  deploy_android_production:
+    runs-on: ubuntu-latest
+    name: Deploy Android to Production
+    needs: build_production
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Android artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: android-production
+          path: build/app/outputs
+
+      - name: Setup Google Play credentials
+        run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}' > google-play-key.json
+
+      - name: Deploy to Google Play
+        uses: r0adkll/upload-google-play@v1.1.1
+        with:
+          serviceAccountJson: google-play-key.json
+          packageName: com.clubland.app
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: production
+          status: completed
+          inAppUpdatePriority: 2
+          whatsNewDirectory: fastlane/metadata/android
+
+  deploy_ios_production:
+    runs-on: macos-latest
+    name: Deploy iOS to Production
+    needs: build_ios_production
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download iOS artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ios-production
+          path: build/ios/ipa
+
+      - name: Setup App Store Connect API key
+        run: |
+          mkdir -p ~/.appstoreconnect
+          echo '${{ secrets.APP_STORE_CONNECT_API_KEY }}' > ~/.appstoreconnect/AuthKey.p8
+          echo '${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}' > ~/.appstoreconnect/key_id
+          echo '${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}' > ~/.appstoreconnect/issuer_id
+
+      - name: Upload to App Store
+        run: |
+          xcrun altool --upload-app \
+            --type ios \
+            --file build/ios/ipa/clubland.ipa \
+            --username ${{ secrets.APPLE_ID_EMAIL }} \
+            --password ${{ secrets.APP_SPECIFIC_PASSWORD }}
+
+  create_github_release:
+    runs-on: ubuntu-latest
+    name: Create GitHub Release
+    needs: [deploy_web_production, deploy_android_production, deploy_ios_production]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          if [ -z "$PREVIOUS_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --since="1 month ago")
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" $PREVIOUS_TAG..HEAD)
+          fi
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Clubland ${{ github.ref_name }}
+          body: |
+            ## What's Changed
+
+            ${{ steps.changelog.outputs.CHANGELOG }}
+
+            ## Downloads
+
+            - **Web App**: Available at [clubland.app](https://clubland.app)
+            - **Android**: Download from [Google Play Store](https://play.google.com/store/apps/details?id=com.clubland.app)
+            - **iOS**: Download from [App Store](https://apps.apple.com/app/clubland/idXXXXXXXXXX)
+
+            ## Technical Details
+
+            - Built with Flutter ${{ env.FLUTTER_VERSION }}
+            - Deployment timestamp: ${{ github.event.head_commit.timestamp }}
+            - Commit SHA: ${{ github.sha }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Web Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: web-production.zip
+          asset_name: clubland-web-${{ github.ref_name }}.zip
+          asset_content_type: application/zip
+
+  notify_deployment:
+    runs-on: ubuntu-latest
+    name: Notify Deployment Complete
+    needs: [create_github_release]
+    if: always()
+    steps:
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.create_github_release.result }}
+          channel: '#releases'
+          title: 'Clubland ${{ github.ref_name }} Released!'
+          message: |
+            🚀 Clubland ${{ github.ref_name }} has been deployed to production!
+
+            ✅ Web: https://clubland.app
+            ✅ Android: Google Play Store
+            ✅ iOS: App Store
+
+            📋 Release Notes: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: 'Clubland ${{ github.ref_name }} Released Successfully'
+          to: ${{ secrets.NOTIFICATION_EMAIL }}
+          from: 'Clubland CI/CD <${{ secrets.EMAIL_USERNAME }}>'
+          body: |
+            Clubland version ${{ github.ref_name }} has been successfully deployed to production.
+
+            All platforms are now live:
+            - Web: https://clubland.app
+            - Android: Google Play Store
+            - iOS: App Store
+
+            View the full release notes at:
+            ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}

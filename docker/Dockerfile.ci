@@ -1,0 +1,71 @@
+# Multi-stage Docker image for CI/CD pipeline
+FROM cirrusci/flutter:3.19.0 AS flutter-base
+
+# Install additional dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    lcov \
+    bc \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up working directory
+WORKDIR /app
+
+# Copy pubspec files for dependency caching
+COPY pubspec.yaml pubspec.lock ./
+
+# Get dependencies
+RUN flutter pub get
+
+# Build stage for running tests and analysis
+FROM flutter-base AS ci-runner
+
+# Copy source code
+COPY . .
+
+# Generate code
+RUN flutter packages pub run build_runner build --delete-conflicting-outputs
+RUN dart run intl_utils:generate
+
+# Run analysis and tests
+RUN dart format --output=none --set-exit-if-changed .
+RUN flutter analyze --fatal-infos --fatal-warnings
+RUN flutter test --coverage --reporter github
+
+# Generate coverage report
+RUN genhtml coverage/lcov.info -o coverage/html
+
+# Production build stage
+FROM flutter-base AS web-builder
+
+# Copy source code
+COPY . .
+
+# Generate code
+RUN flutter packages pub run build_runner build --delete-conflicting-outputs
+RUN dart run intl_utils:generate
+
+# Build for web production
+RUN flutter build web --release \
+    --dart-define=ENVIRONMENT=production \
+    --tree-shake-icons
+
+# Production web server
+FROM nginx:alpine AS web-production
+
+# Copy built web app
+COPY --from=web-builder /app/build/web /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
+# Expose port
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]

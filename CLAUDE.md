@@ -14,18 +14,19 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 - **Hot reload**: Press `r` in the terminal while app is running
 - **Hot restart**: Press `R` in the terminal while app is running
 - **Run on specific platform**: `flutter run -d <device_id>`
+- **Run with environment**: `flutter run --dart-define=ENVIRONMENT=development`
 
 ### Code Generation
 - **Generate all code**: `dart run build_runner build --delete-conflicting-outputs`
 - **Watch for changes**: `dart run build_runner watch --delete-conflicting-outputs`
 - **Clean generated files**: `dart run build_runner clean`
-- **Generate GraphQL code only**: `flutter packages pub run graphql_codegen`
+- **Generate internationalization**: `dart run intl_utils:generate`
 
 ### Building
-- **Build Android APK**: `flutter build apk`
-- **Build Android Bundle**: `flutter build appbundle`
-- **Build iOS**: `flutter build ios`
-- **Build web**: `flutter build web`
+- **Build Android APK**: `flutter build apk --release --dart-define=ENVIRONMENT=production`
+- **Build Android Bundle**: `flutter build appbundle --release --dart-define=ENVIRONMENT=production`
+- **Build iOS**: `flutter build ios --release --dart-define=ENVIRONMENT=production`
+- **Build web**: `flutter build web --release --dart-define=ENVIRONMENT=production`
 
 ### Testing and Quality
 - **Run all tests**: `flutter test`
@@ -33,14 +34,22 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 - **Run widget tests**: `flutter test test/widget/`
 - **Run integration tests**: `flutter test integration_test/`
 - **Test with coverage**: `flutter test --coverage`
-- **Analyze code**: `flutter analyze`
+- **Generate coverage report**: `genhtml coverage/lcov.info -o coverage/html`
+- **Analyze code**: `flutter analyze --fatal-infos --fatal-warnings`
 - **Format code**: `dart format .`
+- **Run custom lints**: `dart run custom_lint`
 - **Check dependencies**: `flutter pub outdated`
 
 ### Package Management
 - **Install dependencies**: `flutter pub get`
 - **Upgrade dependencies**: `flutter pub upgrade`
 - **Clean build cache**: `flutter clean`
+
+### Deployment
+- **Deploy web to staging**: `./scripts/deploy.sh web staging`
+- **Deploy web to production**: `./scripts/deploy.sh web production`
+- **Build all platforms**: `./scripts/deploy.sh all production`
+- **Setup GitHub secrets**: `./scripts/setup-secrets.sh`
 
 ## Project Architecture
 

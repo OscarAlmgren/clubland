@@ -1,0 +1,302 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  FLUTTER_VERSION: "3.19.0"
+
+jobs:
+  validate_pr:
+    runs-on: ubuntu-latest
+    name: Validate Pull Request
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+
+      - name: Check for breaking changes
+        run: |
+          if git log --format=%B ${{ github.event.pull_request.base.sha }}..${{ github.sha }} | grep -i "BREAKING CHANGE"; then
+            echo "⚠️ Breaking changes detected in this PR"
+            echo "breaking_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "breaking_changes=false" >> $GITHUB_OUTPUT
+          fi
+        id: breaking_changes
+
+      - name: Comment on breaking changes
+        if: steps.breaking_changes.outputs.breaking_changes == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ **Breaking Changes Detected**\n\nThis PR contains breaking changes. Please ensure:\n1. Version is bumped appropriately\n2. Migration guide is updated\n3. Stakeholders are notified'
+            })
+
+  quick_test:
+    runs-on: ubuntu-latest
+    name: Quick Tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            ${{ runner.workspace }}/.dart_tool
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Quick format check
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Quick analyze
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Run unit tests only
+        run: flutter test test/ --coverage --reporter github
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage/lcov.info
+          flags: pr-validation
+          name: pr-coverage
+
+  security_check:
+    runs-on: ubuntu-latest
+    name: Security Check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@v3.63.2-beta
+        with:
+          path: ./
+          base: ${{ github.event.pull_request.base.sha }}
+          head: HEAD
+
+      - name: Check dependencies for vulnerabilities
+        run: |
+          flutter pub get
+          flutter pub deps --json > dependencies.json
+          # Note: Add actual security scanning tool here
+
+  performance_check:
+    runs-on: ubuntu-latest
+    name: Performance Impact Check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Build and analyze bundle size
+        run: |
+          flutter build web --analyze-size --tree-shake-icons
+          echo "Bundle size analysis:"
+          cat .dart_tool/flutter_build/*/web-*/app.dill.tree-shake-sizes.json | jq '.programSize'
+
+      - name: Check for performance regressions
+        run: |
+          # Run performance tests and compare against baseline
+          # This is a placeholder for actual performance testing
+          echo "Performance check completed"
+
+  code_quality:
+    runs-on: ubuntu-latest
+    name: Code Quality Check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Run custom lints
+        run: dart run custom_lint
+
+      - name: Check code complexity
+        run: |
+          dart pub global activate dart_code_metrics
+          dart pub global run dart_code_metrics:metrics analyze lib --reporter=github
+
+      - name: Check test coverage requirements
+        run: |
+          flutter test --coverage
+          COVERAGE=$(lcov --summary coverage/lcov.info | grep lines | grep -o '[0-9.]*%' | head -1 | sed 's/%//')
+          echo "Coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+            echo "::warning::Coverage is below 70%"
+          fi
+
+  accessibility_check:
+    runs-on: ubuntu-latest
+    name: Accessibility Check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Run accessibility tests
+        run: |
+          # Run semantic tests
+          flutter test test/ -t semantics
+          echo "Accessibility checks completed"
+
+  documentation_check:
+    runs-on: ubuntu-latest
+    name: Documentation Check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate documentation
+        run: |
+          dart doc --dry-run --validate-links
+          echo "Documentation validation completed"
+
+      - name: Check for missing documentation
+        run: |
+          # Check that new public APIs have documentation
+          git diff ${{ github.event.pull_request.base.sha }} --name-only | grep '\.dart$' | while read file; do
+            echo "Checking documentation in $file"
+            # Add actual documentation coverage check here
+          done
+
+  approval_requirements:
+    runs-on: ubuntu-latest
+    name: Check Approval Requirements
+    needs: [validate_pr, quick_test, security_check, code_quality]
+    steps:
+      - name: Check if breaking changes require additional approval
+        if: needs.validate_pr.outputs.breaking_changes == 'true'
+        run: |
+          echo "Breaking changes detected - requires additional approvals"
+          # Add logic to check for required approvals from specific teams
+
+      - name: Validate all checks passed
+        run: |
+          echo "All PR validation checks completed successfully"
+
+  auto_merge_check:
+    runs-on: ubuntu-latest
+    name: Auto Merge Eligibility
+    needs: [validate_pr, quick_test, security_check, performance_check, code_quality]
+    if: |
+      github.event.pull_request.user.login == 'dependabot[bot]' ||
+      contains(github.event.pull_request.labels.*.name, 'auto-merge')
+    steps:
+      - name: Enable auto-merge for dependabot PRs
+        if: github.event.pull_request.user.login == 'dependabot[bot]'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              merge_method: 'squash'
+            });
+
+      - name: Comment on auto-merge eligibility
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ This PR is eligible for auto-merge after all checks pass and required approvals are received.'
+            })

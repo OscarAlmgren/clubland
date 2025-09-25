@@ -1,0 +1,311 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  FLUTTER_VERSION: "3.19.0"
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    name: Code Analysis
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze code
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Run custom lints
+        run: dart run custom_lint
+
+  test:
+    runs-on: ubuntu-latest
+    name: Unit Tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Run tests with coverage
+        run: flutter test --coverage --reporter github
+
+      - name: Generate coverage report
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+          genhtml coverage/lcov.info -o coverage/html
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage/lcov.info
+          fail_ci_if_error: true
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(lcov --summary coverage/lcov.info | grep lines | grep -o '[0-9.]*%' | head -1 | sed 's/%//')
+          echo "Coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "Coverage is below 80%"
+            exit 1
+          fi
+
+  integration_test:
+    runs-on: ubuntu-latest
+    name: Integration Tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Run integration tests
+        run: flutter test integration_test/
+
+  build_web:
+    runs-on: ubuntu-latest
+    name: Build Web
+    needs: [analyze, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Build for web
+        run: flutter build web --release --dart-define=ENVIRONMENT=production
+
+      - name: Upload web artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: build/web
+
+  build_android:
+    runs-on: ubuntu-latest
+    name: Build Android
+    needs: [analyze, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Build APK
+        run: flutter build apk --release --dart-define=ENVIRONMENT=production
+
+      - name: Build App Bundle
+        run: flutter build appbundle --release --dart-define=ENVIRONMENT=production
+
+      - name: Upload Android artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-build
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+
+  build_ios:
+    runs-on: macos-latest
+    name: Build iOS
+    needs: [analyze, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: |
+          flutter packages pub run build_runner build --delete-conflicting-outputs
+          dart run intl_utils:generate
+
+      - name: Build iOS (no codesign)
+        run: flutter build ios --release --no-codesign --dart-define=ENVIRONMENT=production
+
+      - name: Upload iOS artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-build
+          path: build/ios/iphoneos/Runner.app
+
+  security_scan:
+    runs-on: ubuntu-latest
+    name: Security Scan
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run dependency vulnerability scan
+        run: |
+          flutter pub deps --json > dependencies.json
+          dart pub global activate security_analysis
+          dart pub global run security_analysis:main dependencies.json
+
+      - name: Check for hardcoded secrets
+        uses: trufflesecurity/trufflehog@v3.63.2-beta
+        with:
+          path: ./
+          base: main
+          head: HEAD
+
+  deploy_staging:
+    runs-on: ubuntu-latest
+    name: Deploy to Staging
+    needs: [build_web, build_android, security_scan]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    steps:
+      - name: Download web artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: build/web
+
+      - name: Deploy to Firebase Hosting (Staging)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_STAGING }}'
+          channelId: staging
+          projectId: clubland-staging
+
+  deploy_production:
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    needs: [build_web, build_android, integration_test, security_scan]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Download web artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: build/web
+
+      - name: Deploy to Firebase Hosting (Production)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PRODUCTION }}'
+          channelId: live
+          projectId: clubland-production
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+  notify:
+    runs-on: ubuntu-latest
+    name: Notify Team
+    needs: [deploy_production]
+    if: always()
+    steps:
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
