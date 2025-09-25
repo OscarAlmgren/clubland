@@ -23,22 +23,26 @@
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/your-org/clubland.git
    cd clubland
    ```
 
 2. **Install dependencies**:
+
    ```bash
    flutter pub get
    ```
 
 3. **Generate code**:
+
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```
 
 4. **Run the application**:
+
    ```bash
    # Production mode
    flutter run
@@ -106,6 +110,7 @@ flutter build web           # Web
 ### Technology Stack
 
 **Frontend (Flutter)**:
+
 - **Framework**: Flutter 3.x with Dart 3.x
 - **State Management**: Riverpod with AsyncNotifier pattern
 - **Routing**: Go Router for declarative navigation
@@ -115,6 +120,7 @@ flutter build web           # Web
 - **Real-time**: WebSocket subscriptions with auto-reconnection
 
 **Backend Services**:
+
 - **Language**: Go 1.25+ with modern concurrency patterns
 - **API Gateway**: GraphQL with gqlgen schema-first development
 - **Database**: PostgreSQL 15+ with multi-tenant row-level security
@@ -185,6 +191,7 @@ dev_dependencies:
 ```
 
 **Key Operations**:
+
 ```graphql
 # Authentication
 query Me {
@@ -213,12 +220,14 @@ subscription VisitUpdates {
 ### Authentication Architecture
 
 **Security Features**:
+
 - **Primary**: Local biometric authentication (Face ID, Touch ID, Windows Hello)
 - **Encryption**: Custom encryption service for sensitive data
 - **Storage**: FlutterSecureStorage for tokens and credentials
 - **Session**: Secure session management with encrypted local data
 
 **Authentication Flow**:
+
 1. User initiates authentication
 2. Biometric/PIN verification required
 3. Encrypted credentials retrieved from secure storage
@@ -228,30 +237,35 @@ subscription VisitUpdates {
 ## Key Features
 
 ### 1. Member Authentication
+
 - Biometric authentication (Face ID, Touch ID, Windows Hello)
 - Secure credential storage with encryption
 - Session management with automatic renewal
 - Multi-factor authentication support
 
 ### 2. Club Discovery & Booking
+
 - Location-based club search with GPS integration
 - Reciprocal access verification and privileges
 - Real-time availability checking
 - Seamless reservation management with QR codes
 
 ### 3. Self-Service Check-in
+
 - GPS geofencing for automatic club detection
 - QR code scanning for instant access
 - Digital access badges with permissions
 - Blockchain-verified visit records
 
 ### 4. Social Features
+
 - Visit reviews and photo sharing
 - Social activity feed with friend connections
 - Achievement system with points and badges
 - Recommendation engine for clubs and activities
 
 ### 5. Travel Planning
+
 - AI-powered destination recommendations
 - Compatible companion matching
 - Multi-club itinerary planning
@@ -263,9 +277,11 @@ subscription VisitUpdates {
 
 1. **Update GraphQL schemas** in `lib/schema/`
 2. **Run code generation**:
+
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```
+
 3. **Update data models** if schema changes affect types
 4. **Update tests** to reflect changes
 
@@ -295,6 +311,7 @@ genhtml coverage/lcov.info -o coverage/html
 ```
 
 **Test Coverage Goals**:
+
 - **Unit Tests**: 80%+ coverage for business logic
 - **Widget Tests**: 70%+ coverage for critical components
 - **Integration Tests**: 100% coverage of core user journeys
@@ -317,6 +334,7 @@ class EnvironmentConfig {
 ```
 
 **Environment Variables**:
+
 - `ENVIRONMENT`: Current environment (development/staging/production)
 - `API_URL`: Backend GraphQL endpoint
 - `WS_URL`: WebSocket endpoint for real-time features
@@ -324,12 +342,14 @@ class EnvironmentConfig {
 ## Security Considerations
 
 ### Data Protection
+
 - **Encryption**: All sensitive data encrypted at rest using AES-256
 - **Secure Storage**: FlutterSecureStorage for tokens and credentials
 - **Biometric Auth**: Required for sensitive operations
 - **Network Security**: Certificate pinning and TLS 1.3
 
 ### Privacy Controls
+
 - **Location**: Granular location sharing settings
 - **Activity**: User-controlled visibility settings
 - **Data Export**: GDPR-compliant data export/deletion
@@ -338,12 +358,14 @@ class EnvironmentConfig {
 ## Performance Optimization
 
 ### Target Metrics
+
 - **App Launch Time**: < 2 seconds
 - **Search Results**: < 1.5 seconds
 - **Image Loading**: Progressive with multi-layer caching
 - **Battery Usage**: Optimized background processing
 
 ### Optimization Strategies
+
 - **Lazy Loading**: Data loaded on demand
 - **Image Caching**: Multi-layer cache with CDN integration
 - **Code Splitting**: Dynamic imports for large features
@@ -352,11 +374,13 @@ class EnvironmentConfig {
 ## Monitoring & Analytics
 
 ### Error Tracking
+
 - **Crashes**: Comprehensive crash reporting
 - **Performance**: Real-time performance monitoring
 - **User Analytics**: Privacy-respecting usage analytics
 
 ### Logging Strategy
+
 - **Development**: Verbose logging for debugging
 - **Production**: Error and warning logs only
 - **Sensitive Data**: Never log tokens, passwords, or PII
