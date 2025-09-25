@@ -9,6 +9,7 @@ The Clubland platform implements a comprehensive security architecture combining
 ### Hanko WebAuthn Integration
 
 **Passwordless Authentication System**:
+
 - **Primary Method**: WebAuthn passkeys with FIDO2/CTAP2
 - **Fallback**: Biometric authentication on mobile devices
 - **Session Management**: JWT tokens with automatic refresh
@@ -23,40 +24,41 @@ The Clubland platform implements a comprehensive security architecture combining
 │  │  Clubland App   │    │ Administrator   │    │   Web Portal    │  │
 │  │   (Flutter)     │    │  App (Flutter)  │    │   (Flutter)     │  │
 │  └─────────────────┘    └─────────────────┘    └─────────────────┘  │
-└─────────────────┬───────────────┬───────────────┬─────────────────────┘
+└─────────────────┬───────────────┬───────────────┬───────────────────┘
                   │               │               │
               WebAuthn API    Admin API       Public API
                   │               │               │
 ┌─────────────────▼───────────────▼───────────────▼─────────────────────┐
-│                        Hanko Services                                │
+│                        Hanko Services                                 │
 │  ┌─────────────────────────────────────────────────────────────────┐  │
-│  │  Hanko Public API (Port 8000) - Client Authentication          │  │
-│  │  • WebAuthn registration/authentication                        │  │
-│  │  • Passkey management                                          │  │
-│  │  • Session creation                                            │  │
+│  │  Hanko Public API (Port 8000) - Client Authentication           │  │
+│  │  • WebAuthn registration/authentication                         │  │
+│  │  • Passkey management                                           │  │
+│  │  • Session creation                                             │  │
 │  └─────────────────────────────────────────────────────────────────┘  │
 │  ┌─────────────────────────────────────────────────────────────────┐  │
-│  │  Hanko Admin API (Port 8001) - Administrative Operations       │  │
-│  │  • User management                                             │  │
-│  │  • Configuration management                                    │  │
-│  │  • Analytics and reporting                                     │  │
+│  │  Hanko Admin API (Port 8001) - Administrative Operations        │  │
+│  │  • User management                                              │  │
+│  │  • Configuration management                                     │  │
+│  │  • Analytics and reporting                                      │  │
 │  └─────────────────────────────────────────────────────────────────┘  │
-└─────────────────┬───────────────────────────────────────────────────────┘
+└─────────────────┬─────────────────────────────────────────────────────┘
                   │ Webhook Events
-┌─────────────────▼───────────────────────────────────────────────────────┐
-│                    Clubland Auth Service                               │
+┌─────────────────▼─────────────────────────────────────────────────────┐
+│                    Clubland Auth Service                              │
 │  ┌─────────────────────────────────────────────────────────────────┐  │
-│  │  • JWT token generation and validation                         │  │
-│  │  • User session management                                     │  │
-│  │  • RBAC and permissions                                        │  │
-│  │  • Multi-tenant authorization                                  │  │
+│  │  • JWT token generation and validation                          │  │
+│  │  • User session management                                      │  │
+│  │  • RBAC and permissions                                         │  │
+│  │  • Multi-tenant authorization                                   │  │
 │  └─────────────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────────────┘
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Deployment Configuration
 
 **Hanko Integration Points**:
+
 ```yaml
 Services:
   hanko-public:
@@ -133,6 +135,7 @@ sequenceDiagram
 ### 3. JWT Token Management
 
 **Token Structure**:
+
 ```json
 {
   "header": {
@@ -159,6 +162,7 @@ sequenceDiagram
 ```
 
 **Token Refresh Flow**:
+
 ```graphql
 # Automatic token refresh
 mutation RefreshToken($refreshToken: String!) {
@@ -210,6 +214,7 @@ Roles and Permissions:
 ### Authorization Implementation
 
 **GraphQL Directive-Based Authorization**:
+
 ```graphql
 type Member {
   id: ID!
@@ -237,6 +242,7 @@ type Query {
 ```
 
 **Middleware Authorization**:
+
 ```go
 func AuthorizationMiddleware(permissions []string, allowSelf bool) gin.HandlerFunc {
     return func(c *gin.Context) {
@@ -268,6 +274,7 @@ func AuthorizationMiddleware(permissions []string, allowSelf bool) gin.HandlerFu
 ### MFA Configuration
 
 **Available Methods**:
+
 ```yaml
 MFA Methods:
   primary:
@@ -288,6 +295,7 @@ Enforcement Rules:
 ```
 
 **MFA Flow Implementation**:
+
 ```graphql
 # Enable MFA
 mutation EnableMFA($method: MFAMethod!, $phone: String, $email: String) {
@@ -315,6 +323,7 @@ mutation PerformSensitiveOperation($input: SensitiveOperationInput!, $mfaCode: S
 ### Encryption Strategy
 
 **Multi-Layer Encryption**:
+
 ```yaml
 Transport Layer:
   - TLS 1.3 for all external communications
@@ -372,6 +381,7 @@ CREATE TABLE members (
 ### Security Event Logging
 
 **Audit Trail Implementation**:
+
 ```go
 type SecurityEvent struct {
     ID            string                 `json:"id"`
@@ -405,6 +415,7 @@ const (
 ### Threat Detection
 
 **Anomaly Detection Rules**:
+
 ```yaml
 Risk Detection:
   suspicious_activity:
@@ -431,6 +442,7 @@ Risk Detection:
 ### Rate Limiting
 
 **Multi-Tier Rate Limiting**:
+
 ```yaml
 Rate Limits:
   anonymous_users:

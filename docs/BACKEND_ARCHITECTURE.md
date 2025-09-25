@@ -87,6 +87,7 @@ The Clubland Backend is a comprehensive microservices-based system built for man
 ### Protocol Stack
 
 **Communication Protocols**:
+
 - **Client ↔ API Gateway**: GraphQL over HTTP/HTTPS + WebSocket subscriptions
 - **Gateway ↔ Services**: gRPC (Protocol Buffers)
 - **Services ↔ Database**: PostgreSQL native protocol
@@ -94,6 +95,7 @@ The Clubland Backend is a comprehensive microservices-based system built for man
 - **Blockchain Integration**: Hyperledger Fabric SDK
 
 **Key Integration Patterns**:
+
 1. **Synchronous**: gRPC for real-time operations (member lookup, authentication)
 2. **Asynchronous**: NATS for event broadcasting and saga orchestration
 3. **Real-time**: WebSocket subscriptions for live updates (notifications, visit status)
@@ -101,6 +103,7 @@ The Clubland Backend is a comprehensive microservices-based system built for man
 ### Event-Driven Architecture
 
 **NATS Message Bus Configuration**:
+
 ```yaml
 Event Categories:
   - Domain Events: Business logic changes (member.created, visit.recorded)
@@ -116,6 +119,7 @@ Message Patterns:
 ## Technology Stack
 
 ### Backend Services
+
 - **Language**: Go 1.21+ with modern concurrency patterns
 - **API Gateway**: GraphQL with gqlgen schema-first development
 - **Authentication**: Hanko WebAuthn service + JWT tokens
@@ -125,6 +129,7 @@ Message Patterns:
 - **Blockchain**: Hyperledger Fabric for immutable audit trails
 
 ### Infrastructure
+
 - **Containers**: Docker/Podman with distroless base images
 - **Orchestration**: Kubernetes with horizontal pod autoscaling
 - **Monitoring**: Prometheus, Grafana, Jaeger for observability
@@ -135,11 +140,13 @@ Message Patterns:
 ### Multi-Tenant Database Design
 
 **Data Partitioning Strategy**:
+
 - Club-based data isolation with tenant ID in all entities
 - Row-level security policies for data separation
 - Shared reference data (countries, currencies)
 
 **Consistency Models**:
+
 - **Strong Consistency**: Within service boundaries via ACID transactions
 - **Eventual Consistency**: Cross-service via event sourcing
 - **Immutable Audit Trail**: Blockchain integration for critical operations
@@ -180,6 +187,7 @@ USING (club_id = current_setting('app.current_tenant_id'));
 ### Scaling Strategies
 
 **Horizontal Scaling**:
+
 - Kubernetes HPA with custom metrics
 - Database read replicas and connection pooling
 - Redis clustering for sessions and cache
@@ -187,6 +195,7 @@ USING (club_id = current_setting('app.current_tenant_id'));
 - Message bus clustering with NATS
 
 **Resource Management**:
+
 ```yaml
 Resource Limits (per service):
   Memory: 512Mi - 2Gi
@@ -204,6 +213,7 @@ Health Checks:
 ### Metrics Collection
 
 **Prometheus Metrics (25+ per service)**:
+
 - Request rates, latencies, and error rates
 - Business metrics (registrations, visits, transactions)
 - Infrastructure metrics (memory, CPU, connections)
@@ -212,6 +222,7 @@ Health Checks:
 ### Logging Strategy
 
 **Structured Logging**:
+
 ```json
 {
   "timestamp": "2024-09-25T10:00:00Z",
@@ -228,6 +239,7 @@ Health Checks:
 ### Distributed Tracing
 
 **Jaeger Integration**:
+
 - Request correlation across services
 - Performance bottleneck identification
 - Error propagation tracking
@@ -248,16 +260,19 @@ Internet → CDN → WAF → Load Balancer → API Gateway → Services
 ### Security Controls
 
 **Network Security**:
+
 - TLS 1.3 for external communication
 - mTLS for inter-service communication
 - Network policies and service mesh
 
 **Data Protection**:
+
 - PostgreSQL TDE (Transparent Data Encryption)
 - Field-level encryption for PII
 - Secure key management with HashiCorp Vault
 
 **Access Control**:
+
 - JWT tokens with RS256 signing
 - Role-based access control (RBAC)
 - Tenant-aware authorization
@@ -268,6 +283,7 @@ Internet → CDN → WAF → Load Balancer → API Gateway → Services
 ### Container Strategy
 
 **Multi-environment Deployment**:
+
 ```yaml
 # Production Configuration Example
 services:
@@ -291,6 +307,7 @@ services:
 ### Environment Management
 
 **Configuration Management**:
+
 ```go
 type Config struct {
     Environment   string `env:"ENVIRONMENT" envDefault:"development"`
@@ -307,18 +324,21 @@ type Config struct {
 ### Planned Enhancements
 
 **Short-term (3-6 months)**:
+
 - Complete Auth Service advanced features (MFA, password recovery)
 - Enhanced analytics with real-time ML predictions
 - Advanced monitoring with custom dashboards
 - API Gateway optimization and caching improvements
 
 **Medium-term (6-12 months)**:
+
 - Service mesh migration (Istio/Linkerd)
 - Event sourcing implementation
 - Advanced blockchain features (private data collections)
 - Multi-region deployment strategy
 
 **Long-term (12+ months)**:
+
 - Microservice decomposition (if needed based on scale)
 - Event streaming with Apache Kafka
 - Advanced AI/ML integration
