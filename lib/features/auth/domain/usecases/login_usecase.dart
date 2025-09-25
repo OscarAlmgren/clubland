@@ -116,6 +116,7 @@ class HankoLoginUsecase {
 
 /// Register use case
 class RegisterUsecase {
+  /// Constructs a [RegisterUsecase]
   RegisterUsecase(this._repository);
   final AuthRepository _repository;
 
@@ -247,6 +248,7 @@ class RegisterUsecase {
 
 /// Logout use case
 class LogoutUsecase {
+  /// Constructs a [LogoutUsecase]
   LogoutUsecase(this._repository);
   final AuthRepository _repository;
 
@@ -256,6 +258,7 @@ class LogoutUsecase {
 
 /// Refresh token use case
 class RefreshTokenUsecase {
+  /// Constructs a [RefreshTokenUsecase]
   RefreshTokenUsecase(this._repository);
   final AuthRepository _repository;
 
@@ -273,6 +276,7 @@ class RefreshTokenUsecase {
 
 /// Get current user use case
 class GetCurrentUserUsecase {
+  /// Constructs a [GetCurrentUserUsecase]
   GetCurrentUserUsecase(this._repository);
   final AuthRepository _repository;
 
@@ -283,6 +287,7 @@ class GetCurrentUserUsecase {
 
 /// Check authentication status use case
 class CheckAuthStatusUsecase {
+  /// Constructs a [CheckAuthStatusUsecase]
   CheckAuthStatusUsecase(this._repository);
   final AuthRepository _repository;
 
@@ -292,6 +297,7 @@ class CheckAuthStatusUsecase {
 
 /// Biometric authentication use case
 class BiometricAuthUsecase {
+  /// Constructs a [BiometricAuthUsecase]
   BiometricAuthUsecase(this._repository);
   final AuthRepository _repository;
 

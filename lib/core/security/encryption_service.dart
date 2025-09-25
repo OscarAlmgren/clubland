@@ -13,7 +13,6 @@ class EncryptionService {
   }
   static EncryptionService? _instance;
   late final Encrypter _encrypter;
-  late final IV _defaultIV;
 
   static EncryptionService get instance {
     _instance ??= EncryptionService._();
@@ -28,7 +27,6 @@ class EncryptionService {
     final key = Key.fromBase64(base64Encode(normalizedKey.codeUnits));
 
     _encrypter = Encrypter(AES(key));
-    _defaultIV = IV.fromSecureRandom(16);
   }
 
   String _normalizeKey(String key) {

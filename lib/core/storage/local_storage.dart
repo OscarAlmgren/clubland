@@ -23,7 +23,7 @@ class HiveLocalStorage implements LocalStorage {
   HiveLocalStorage({String boxName = 'app_storage', Logger? logger})
     : _boxName = boxName,
       _logger = logger ?? Logger();
-  late Box _box;
+  late Box<dynamic> _box;
   final Logger _logger;
   final String _boxName;
   bool _isInitialized = false;
@@ -196,7 +196,7 @@ class TypedLocalStorage extends HiveLocalStorage {
 
   /// Read list
   Future<List<T>?> readList<T>(String key) async {
-    final value = await read<List>(key);
+    final value = await read<List<dynamic>>(key);
     return value?.cast<T>();
   }
 

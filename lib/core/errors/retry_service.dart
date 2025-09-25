@@ -9,19 +9,26 @@ import 'failures.dart';
 
 /// Service for implementing retry logic with exponential backoff
 class RetryService {
+  /// Gets the singleton instance of the [RetryService].
+  factory RetryService() {
+    _instance ??= RetryService._();
+    return _instance!;
+  }
   RetryService._() : _logger = Logger();
   static RetryService? _instance;
   final Logger _logger;
 
-  static RetryService get instance {
-    _instance ??= RetryService._();
-    return _instance!;
-  }
-
-  /// Execute operation with retry logic
+  /// Execute operation with retry logic.
+  ///
+  /// This method is designed for operations that return an [Either] and handles
+  /// exponential backoff based on retryable failures.
   Future<Either<Failure, T>> executeWithRetry<T>(
     Future<Either<Failure, T>> Function() operation, {
+
+    /// Optional configuration to override the default retry behavior.
     RetryConfig? config,
+
+    /// A name used for logging to identify the operation.
     String? operationName,
   }) async {
     final retryConfig = config ?? RetryConfig.defaultConfig;
@@ -85,10 +92,16 @@ class RetryService {
     );
   }
 
-  /// Execute operation with simple retry (non-Either pattern)
+  /// Execute operation with simple retry (non-Either pattern).
+  ///
+  /// This method is designed for operations that throw exceptions.
   Future<T> executeWithSimpleRetry<T>(
     Future<T> Function() operation, {
+
+    /// Optional configuration to override the default retry behavior.
     RetryConfig? config,
+
+    /// A name used for logging to identify the operation.
     String? operationName,
   }) async {
     final retryConfig = config ?? RetryConfig.defaultConfig;
@@ -134,7 +147,7 @@ class RetryService {
     throw lastException ?? Exception('$opName failed after all retry attempts');
   }
 
-  /// Calculate delay with exponential backoff and jitter
+  /// Calculate delay with exponential backoff and jitter.
   Duration _calculateDelay(int attempt, RetryConfig config) {
     final exponentialDelay =
         config.initialDelay.inMilliseconds *
@@ -151,7 +164,7 @@ class RetryService {
     return Duration(milliseconds: finalDelayMs);
   }
 
-  /// Check if failure should be retried
+  /// Check if failure should be retried based on configuration and failure type.
   bool _shouldRetry(Failure failure, RetryConfig config) {
     // Check if failure type is in retryable list
     if (!config.retryableFailures.any((type) => failure.runtimeType == type)) {
@@ -198,7 +211,7 @@ class RetryService {
     return false;
   }
 
-  /// Create retry configuration for different scenarios
+  /// Create retry configuration tailored for authentication operations.
   static RetryConfig authRetryConfig() => const RetryConfig(
     maxRetries: 2,
     backoffMultiplier: 1.5,
@@ -207,6 +220,7 @@ class RetryService {
     retryableFailures: [AuthFailure, NetworkFailure],
   );
 
+  /// Create retry configuration tailored for general network operations.
   static RetryConfig networkRetryConfig() => const RetryConfig(
     initialDelay: Duration(milliseconds: 500),
     maxDelay: Duration(seconds: 10),
@@ -214,6 +228,7 @@ class RetryService {
     retryableFailures: [NetworkFailure, GraphQLFailure],
   );
 
+  /// Create retry configuration for critical operations that require high resilience.
   static RetryConfig criticalRetryConfig() => const RetryConfig(
     maxRetries: 5,
     initialDelay: Duration(milliseconds: 100),
@@ -223,6 +238,7 @@ class RetryService {
     retryableFailures: [NetworkFailure, AuthFailure, GraphQLFailure],
   );
 
+  /// Create a quick retry configuration for minimal latency delay.
   static RetryConfig quickRetryConfig() => const RetryConfig(
     maxRetries: 1,
     initialDelay: Duration(milliseconds: 200),
@@ -231,8 +247,11 @@ class RetryService {
   );
 }
 
+// -----------------------------------------------------------------------------
+
 /// Configuration for retry behavior
 class RetryConfig {
+  /// Creates a configuration for retry behavior.
   const RetryConfig({
     this.maxRetries = 3,
     this.initialDelay = const Duration(seconds: 1),
@@ -243,15 +262,32 @@ class RetryConfig {
     this.retryAuth = false,
     this.retryableFailures = const [NetworkFailure],
   });
+
+  /// The maximum number of times the operation will be retried.
   final int maxRetries;
+
+  /// The delay duration before the first retry attempt.
   final Duration initialDelay;
+
+  /// The factor by which the delay increases with each subsequent retry.
   final double backoffMultiplier;
+
+  /// The maximum duration for any calculated delay.
   final Duration maxDelay;
+
+  /// Whether to add random "jitter" to the delay to prevent burst retries.
   final bool enableJitter;
+
+  /// The percentage (as a fraction of 1.0) of the calculated delay to use for jitter.
   final double jitterFactor;
+
+  /// Whether to attempt retry on authentication-related failures.
   final bool retryAuth;
+
+  /// A list of [Failure] types that should trigger a retry.
   final List<Type> retryableFailures;
 
+  /// Gets the default configuration based on the current environment.
   static RetryConfig get defaultConfig {
     if (EnvironmentConfig.isDevelopment) {
       return const RetryConfig(
@@ -262,7 +298,6 @@ class RetryConfig {
     }
 
     return const RetryConfig(
-      initialDelay: Duration(seconds: 1),
       maxDelay: Duration(seconds: 15),
       enableJitter: true,
       retryableFailures: [NetworkFailure, GraphQLFailure],
@@ -270,25 +305,38 @@ class RetryConfig {
   }
 }
 
+// -----------------------------------------------------------------------------
+
 /// Extension methods for convenient retry usage
 extension RetryExtension<T> on Future<Either<Failure, T>> {
-  /// Add retry logic to any Either-returning Future
+  /// Add retry logic to any Either-returning Future.
   Future<Either<Failure, T>> withRetry({
+    /// Optional configuration to override the default retry behavior.
     RetryConfig? config,
+
+    /// A name used for logging to identify the operation.
     String? operationName,
-  }) => RetryService.instance.executeWithRetry(
+  }) => RetryService().executeWithRetry(
+    // <--- CHANGED HERE
     () => this,
     config: config,
     operationName: operationName,
   );
 }
 
+/// Extension methods for convenient simple retry usage
 extension SimpleRetryExtension<T> on Future<T> {
-  /// Add retry logic to any Future
-  Future<T> withSimpleRetry({RetryConfig? config, String? operationName}) =>
-      RetryService.instance.executeWithSimpleRetry(
-        () => this,
-        config: config,
-        operationName: operationName,
-      );
+  /// Add retry logic to any Future that throws exceptions.
+  Future<T> withSimpleRetry({
+    /// Optional configuration to override the default retry behavior.
+    RetryConfig? config,
+
+    /// A name used for logging to identify the operation.
+    String? operationName,
+  }) => RetryService().executeWithSimpleRetry(
+    // <--- CHANGED HERE
+    () => this,
+    config: config,
+    operationName: operationName,
+  );
 }

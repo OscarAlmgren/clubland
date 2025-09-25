@@ -22,7 +22,7 @@ void main() {
 
         final result = await retryService.executeWithRetry(
           operation,
-          config: const RetryConfig(maxRetries: 3),
+          config: const RetryConfig(),
           operationName: 'testOperation',
         );
 
@@ -47,11 +47,7 @@ void main() {
 
         final result = await retryService.executeWithRetry(
           operation,
-          config: const RetryConfig(
-            maxRetries: 3,
-            initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
-          ),
+          config: const RetryConfig(initialDelay: Duration(milliseconds: 10)),
           operationName: 'testOperation',
         );
 
@@ -76,7 +72,6 @@ void main() {
           config: const RetryConfig(
             maxRetries: 2,
             initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
           ),
           operationName: 'testOperation',
         );
@@ -99,11 +94,7 @@ void main() {
 
         final result = await retryService.executeWithRetry(
           operation,
-          config: const RetryConfig(
-            maxRetries: 3,
-            initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure], // AuthFailure not in list
-          ),
+          config: const RetryConfig(initialDelay: Duration(milliseconds: 10)),
           operationName: 'testOperation',
         );
 
@@ -152,7 +143,7 @@ void main() {
 
         final result = await retryService.executeWithSimpleRetry(
           operation,
-          config: const RetryConfig(maxRetries: 3),
+          config: const RetryConfig(),
           operationName: 'testOperation',
         );
 
@@ -173,10 +164,7 @@ void main() {
 
         final result = await retryService.executeWithSimpleRetry(
           operation,
-          config: const RetryConfig(
-            maxRetries: 3,
-            initialDelay: Duration(milliseconds: 10),
-          ),
+          config: const RetryConfig(initialDelay: Duration(milliseconds: 10)),
           operationName: 'testOperation',
         );
 
@@ -185,10 +173,7 @@ void main() {
       });
 
       test('should exhaust retries and throw exception', () async {
-        var callCount = 0;
-
         Future<String> operation() async {
-          callCount++;
           throw Exception('Persistent error');
         }
 
@@ -223,7 +208,6 @@ void main() {
           config: const RetryConfig(
             maxRetries: 1,
             initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
           ),
         );
 
@@ -247,7 +231,6 @@ void main() {
           config: const RetryConfig(
             maxRetries: 1,
             initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
           ),
         );
 
@@ -261,7 +244,9 @@ void main() {
         Future<Either<Failure, String>> operation() async {
           callCount++;
           if (callCount == 1) {
-            return Left(NetworkFailure.serverError(500, 'Internal server error'));
+            return Left(
+              NetworkFailure.serverError(500, 'Internal server error'),
+            );
           }
           return const Right('success');
         }
@@ -271,7 +256,6 @@ void main() {
           config: const RetryConfig(
             maxRetries: 1,
             initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
           ),
         );
 
@@ -295,7 +279,6 @@ void main() {
           config: const RetryConfig(
             maxRetries: 1,
             initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
           ),
         );
 
@@ -313,11 +296,7 @@ void main() {
 
         final result = await retryService.executeWithRetry(
           operation,
-          config: const RetryConfig(
-            maxRetries: 3,
-            initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
-          ),
+          config: const RetryConfig(initialDelay: Duration(milliseconds: 10)),
         );
 
         expect(result.isLeft(), isTrue);
@@ -349,27 +328,28 @@ void main() {
         expect(callCount, equals(2));
       });
 
-      test('should not retry auth failures when retryAuth is disabled', () async {
-        var callCount = 0;
+      test(
+        'should not retry auth failures when retryAuth is disabled',
+        () async {
+          var callCount = 0;
 
-        Future<Either<Failure, String>> operation() async {
-          callCount++;
-          return Left(AuthFailure.tokenRefreshFailed());
-        }
+          Future<Either<Failure, String>> operation() async {
+            callCount++;
+            return Left(AuthFailure.tokenRefreshFailed());
+          }
 
-        final result = await retryService.executeWithRetry(
-          operation,
-          config: const RetryConfig(
-            maxRetries: 3,
-            initialDelay: Duration(milliseconds: 10),
-            retryAuth: false,
-            retryableFailures: [AuthFailure],
-          ),
-        );
+          final result = await retryService.executeWithRetry(
+            operation,
+            config: const RetryConfig(
+              initialDelay: Duration(milliseconds: 10),
+              retryableFailures: [AuthFailure],
+            ),
+          );
 
-        expect(result.isLeft(), isTrue);
-        expect(callCount, equals(1)); // Should not retry
-      });
+          expect(result.isLeft(), isTrue);
+          expect(callCount, equals(1)); // Should not retry
+        },
+      );
     });
 
     group('retry configurations', () {
@@ -420,13 +400,10 @@ void main() {
       test('should calculate exponential backoff', () async {
         const config = RetryConfig(
           initialDelay: Duration(milliseconds: 100),
-          backoffMultiplier: 2.0,
           maxDelay: Duration(seconds: 10),
-          enableJitter: false,
         );
 
         // Test delay calculation through actual retry execution
-        final delays = <Duration>[];
         var callCount = 0;
 
         Future<Either<Failure, String>> operation() async {
@@ -437,10 +414,7 @@ void main() {
           return const Right('success');
         }
 
-        await retryService.executeWithRetry(
-          operation,
-          config: config,
-        );
+        await retryService.executeWithRetry(operation, config: config);
 
         // Should have made 4 calls (1 initial + 3 retries)
         expect(callCount, equals(4));
@@ -451,7 +425,6 @@ void main() {
           initialDelay: Duration(seconds: 5),
           backoffMultiplier: 10.0,
           maxDelay: Duration(seconds: 2), // Much smaller than calculated delay
-          enableJitter: false,
         );
 
         var callCount = 0;
@@ -467,10 +440,7 @@ void main() {
         // This should complete quickly due to maxDelay limit
         final stopwatch = Stopwatch()..start();
 
-        await retryService.executeWithRetry(
-          operation,
-          config: config,
-        );
+        await retryService.executeWithRetry(operation, config: config);
 
         stopwatch.stop();
 
@@ -507,7 +477,6 @@ void main() {
           config: const RetryConfig(
             maxRetries: 1,
             initialDelay: Duration(milliseconds: 10),
-            retryableFailures: [NetworkFailure],
           ),
           operationName: 'testOperation',
         );
@@ -517,24 +486,27 @@ void main() {
         expect(result.isLeft(), isTrue); // First call fails with timeout
       });
 
-      test('withSimpleRetry extension should add retry functionality', () async {
-        // Test that extension method calls the retry service
-        Future<String> createOperation() {
-          throw Exception('Always fails');
-        }
+      test(
+        'withSimpleRetry extension should add retry functionality',
+        () async {
+          // Test that extension method calls the retry service
+          Future<String> createOperation() {
+            throw Exception('Always fails');
+          }
 
-        // The extension method wraps the operation and applies retry logic
-        expect(
-          () => createOperation().withSimpleRetry(
-            config: const RetryConfig(
-              maxRetries: 1,
-              initialDelay: Duration(milliseconds: 10),
+          // The extension method wraps the operation and applies retry logic
+          expect(
+            () => createOperation().withSimpleRetry(
+              config: const RetryConfig(
+                maxRetries: 1,
+                initialDelay: Duration(milliseconds: 10),
+              ),
+              operationName: 'testOperation',
             ),
-            operationName: 'testOperation',
-          ),
-          throwsException,
-        );
-      });
+            throwsException,
+          );
+        },
+      );
     });
   });
 }

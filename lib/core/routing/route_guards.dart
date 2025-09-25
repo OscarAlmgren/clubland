@@ -142,12 +142,10 @@ class RouteGuards {
   }
 
   /// Check if user needs to complete their profile
-  static bool _needsProfileCompletion(UserEntity user) {
-    // Check if essential profile information is missing
-    return user.firstName == null ||
-        user.lastName == null ||
-        user.status == UserStatus.pending;
-  }
+  static bool _needsProfileCompletion(UserEntity user) =>
+      user.firstName == null ||
+      user.lastName == null ||
+      user.status == UserStatus.pending;
 
   /// Check if route requires admin access
   static bool _isAdminRoute(String path) {
@@ -185,12 +183,10 @@ class RouteGuards {
   }
 
   /// Check if user has access to specific club
-  static bool _hasClubAccess(UserEntity user, String clubId) {
-    // Check if user is a member of the club or has general access
-    return user.clubId == clubId ||
-        user.hasPermission('access_all_clubs') ||
-        user.hasRole('admin');
-  }
+  static bool _hasClubAccess(UserEntity user, String clubId) =>
+      user.clubId == clubId ||
+      user.hasPermission('access_all_clubs') ||
+      user.hasRole('admin');
 
   /// Check if route requires specific membership tier
   static bool _requiresMembershipTier(String path, String tier) {
@@ -205,10 +201,8 @@ class RouteGuards {
   }
 
   /// Check if user can access route during maintenance
-  static bool _canAccessDuringMaintenance(UserEntity user, String path) {
-    // Only admins can access the app during maintenance
-    return user.hasRole('admin') || user.hasPermission('maintenance_access');
-  }
+  static bool _canAccessDuringMaintenance(UserEntity user, String path) =>
+      user.hasRole('admin') || user.hasPermission('maintenance_access');
 
   /// Check if route requires email verification
   static bool _requiresEmailVerification(String path) {
@@ -234,9 +228,13 @@ class RouteGuards {
     const isMaintenanceMode =
         false; // TODO(oscaralmgren): Implement actual check
 
-    if (isMaintenanceMode && path != AppRoutes.maintenance) {
-      return AppRoutes.maintenance;
-    }
+    // TODO(oscaralmgren): Remove this early return once maintenance mode is implemented
+    if (!isMaintenanceMode) return null;
+
+    // TODO(oscaralmgren): Uncomment when maintenance mode is implemented
+    // if (path != AppRoutes.maintenance) {
+    //   return AppRoutes.maintenance;
+    // }
 
     return null;
   }

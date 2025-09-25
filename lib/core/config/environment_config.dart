@@ -1,7 +1,15 @@
 import 'package:flutter/foundation.dart';
 
 /// Environment types
-enum Environment { development, staging, production }
+/// Environment types for different deployment stages
+enum Environment {
+  /// Development environment for local development
+  development,
+  /// Staging environment for testing
+  staging,
+  /// Production environment for live deployment
+  production
+}
 
 /// Comprehensive environment configuration for the Clubland app
 class EnvironmentConfig {
@@ -49,6 +57,7 @@ class EnvironmentConfig {
     defaultValue: 'http://localhost:8080',
   );
 
+  /// GraphQL endpoint URL
   static String get graphqlEndpoint => const String.fromEnvironment(
     'GRAPHQL_ENDPOINT',
     defaultValue: 'http://localhost:8080/graphql',
@@ -60,8 +69,9 @@ class EnvironmentConfig {
     defaultValue: 'http://localhost:8000',
   );
 
+  /// Hanko authentication API key
   static String get hankoApiKey =>
-      const String.fromEnvironment('HANKO_API_KEY', defaultValue: '');
+      const String.fromEnvironment('HANKO_API_KEY');
 
   /// Security Configuration
   static String get encryptionKey {
@@ -72,6 +82,7 @@ class EnvironmentConfig {
     return key.isEmpty ? _generateDevEncryptionKey() : key;
   }
 
+  /// JWT secret key for token signing and verification
   static String get jwtSecret {
     const secret = String.fromEnvironment('JWT_SECRET');
     if (secret.isEmpty && isProduction) {
@@ -93,27 +104,32 @@ class EnvironmentConfig {
   );
 
   /// Blockchain Configuration
+  /// Hyperledger Fabric Certificate Authority URL
   static String get fabricCaUrl => const String.fromEnvironment(
     'FABRIC_CA_URL',
     defaultValue: 'http://localhost:7054',
   );
 
+  /// Hyperledger Fabric Peer URL
   static String get fabricPeerUrl => const String.fromEnvironment(
     'FABRIC_PEER_URL',
     defaultValue: 'grpc://localhost:7051',
   );
 
+  /// Hyperledger Fabric Orderer URL
   static String get fabricOrdererUrl => const String.fromEnvironment(
     'FABRIC_ORDERER_URL',
     defaultValue: 'grpc://localhost:7050',
   );
 
   /// Monitoring Configuration
+  /// Sentry DSN for error reporting
   static String get sentryDsn =>
-      const String.fromEnvironment('SENTRY_DSN', defaultValue: '');
+      const String.fromEnvironment('SENTRY_DSN');
 
+  /// Amplitude API key for analytics
   static String get amplitudeApiKey =>
-      const String.fromEnvironment('AMPLITUDE_API_KEY', defaultValue: '');
+      const String.fromEnvironment('AMPLITUDE_API_KEY');
 
   /// Feature Flags
   static bool get enableLogging {
@@ -124,6 +140,7 @@ class EnvironmentConfig {
     return enabled.toLowerCase() == 'true' || isDevelopment;
   }
 
+  /// Whether analytics tracking is enabled
   static bool get enableAnalytics {
     const enabled = String.fromEnvironment(
       'ENABLE_ANALYTICS',
@@ -132,6 +149,7 @@ class EnvironmentConfig {
     return enabled.toLowerCase() == 'true';
   }
 
+  /// Whether crash reporting is enabled
   static bool get enableCrashReporting {
     const enabled = String.fromEnvironment(
       'ENABLE_CRASH_REPORTING',
@@ -149,6 +167,7 @@ class EnvironmentConfig {
     return int.tryParse(timeout) ?? 10000;
   }
 
+  /// HTTP receive timeout in milliseconds
   static int get receiveTimeout {
     const timeout = String.fromEnvironment(
       'RECEIVE_TIMEOUT',
@@ -157,6 +176,7 @@ class EnvironmentConfig {
     return int.tryParse(timeout) ?? 30000;
   }
 
+  /// HTTP send timeout in milliseconds
   static int get sendTimeout {
     const timeout = String.fromEnvironment(
       'SEND_TIMEOUT',
@@ -178,10 +198,12 @@ class EnvironmentConfig {
     final errors = <String>[];
 
     if (isProduction) {
-      if (hankoApiKey.isEmpty)
+      if (hankoApiKey.isEmpty) {
         errors.add('HANKO_API_KEY is required in production');
-      if (sentryDsn.isEmpty)
+      }
+      if (sentryDsn.isEmpty) {
         errors.add('SENTRY_DSN is recommended in production');
+      }
       if (const String.fromEnvironment('ENCRYPTION_KEY').isEmpty) {
         errors.add('ENCRYPTION_KEY is required in production');
       }

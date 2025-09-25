@@ -39,6 +39,7 @@ abstract class HankoService {
 
 /// Hanko authentication session
 class HankoAuthSession {
+  /// Construcs a [HankoAuthSession]
   const HankoAuthSession({
     required this.sessionId,
     required this.status,
@@ -47,11 +48,23 @@ class HankoAuthSession {
     this.method = HankoAuthMethod.passkey,
     this.metadata,
   });
+
+  /// A unique identifier for the authentication session.
   final String sessionId;
+
+  /// The current state of the authentication session (e.g., "active", "completed").
   final String status;
+
+  /// The date and time when the session will expire.
   final DateTime expiresAt;
+
+  /// An optional message providing more detail about the session status.
   final String? message;
+
+  /// The method used for authentication (e.g., passkey, magicLink).
   final HankoAuthMethod method;
+
+  /// Optional metadata associated with the session.
   final Map<String, dynamic>? metadata;
 
   /// Check if session is expired
@@ -65,10 +78,43 @@ class HankoAuthSession {
 }
 
 /// Hanko authentication methods
-enum HankoAuthMethod { passkey, webauthn, magicLink, sms, email }
+enum HankoAuthMethod {
+  /// Authentication using a WebAuthn passkey.
+  passkey,
+
+  /// Authentication using a general WebAuthn credential (used interchangeably with passkey).
+  webauthn,
+
+  /// Authentication via a one-time link sent to the user's email.
+  magicLink,
+
+  /// Authentication via a one-time code sent through SMS.
+  sms,
+
+  /// Standard email/password authentication method.
+  email,
+}
 
 /// Hanko authentication states
-enum HankoAuthStatus { pending, active, completed, expired, cancelled, failed }
+enum HankoAuthStatus {
+  /// The authentication process is waiting to start.
+  pending,
+
+  /// The authentication is currently in progress.
+  active,
+
+  /// The authentication process was successfully finished.
+  completed,
+
+  /// The authentication has passed its valid time window.
+  expired,
+
+  /// The authentication process was explicitly stopped by the user or system.
+  cancelled,
+
+  /// The authentication process failed for a technical or operational reason.
+  failed,
+}
 
 /// Implementation of Hanko service
 class HankoServiceImpl implements HankoService {
