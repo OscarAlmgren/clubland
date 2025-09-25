@@ -66,7 +66,7 @@ class RetryService {
             return Right(success);
           },
         );
-      } catch (error, stackTrace) {
+      } on Exception catch (error, stackTrace) {
         _logger.e(
           '$opName: Unexpected error on attempt ${attempt + 1}',
           error: error,
@@ -75,7 +75,7 @@ class RetryService {
 
         if (attempt == retryConfig.maxRetries) {
           return Left(
-            NetworkFailure.serverError(0, 'Unexpected error: ${error}'),
+            NetworkFailure.serverError(0, 'Unexpected error: $error'),
           );
         }
       }
@@ -137,7 +137,7 @@ class RetryService {
 
         final delay = _calculateDelay(attempt, retryConfig);
         _logger.w(
-          '$opName: Retrying after ${delay.inMilliseconds}ms due to: ${error}',
+          '$opName: Retrying after ${delay.inMilliseconds}ms due to: $error',
         );
 
         await Future<void>.delayed(delay);

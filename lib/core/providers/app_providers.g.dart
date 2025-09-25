@@ -94,7 +94,7 @@ final appPermissionsNotifierProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$AppPermissionsNotifier = AutoDisposeAsyncNotifier<AppPermissions>;
-String _$globalAppStateHash() => r'8a247e8ab6bae55ab99384b55e9a5be1207bcc93';
+String _$globalAppStateHash() => r'edee35af20ac7842890c23c8b63a923e55fe0cbb';
 
 /// Global app state provider
 ///

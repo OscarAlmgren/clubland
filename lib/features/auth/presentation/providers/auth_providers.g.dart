@@ -6,7 +6,7 @@ part of 'auth_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authRepositoryHash() => r'f6aa8e70b040aa3810fc45113708a7be39be2935';
+String _$authRepositoryHash() => r'982e74bc133f0a19c0941f929cc7d649751acdb6';
 
 /// Auth Repository provider
 ///
@@ -23,7 +23,7 @@ final authRepositoryProvider = Provider<AuthRepository>.internal(
 );
 
 typedef AuthRepositoryRef = ProviderRef<AuthRepository>;
-String _$loginUsecaseHash() => r'6efa34135b112f73e463eb771c231012604b93cc';
+String _$loginUsecaseHash() => r'c3641e73d4bce674ce71707936b27698d7759ded';
 
 /// Login usecase provider
 ///
@@ -39,7 +39,7 @@ final loginUsecaseProvider = AutoDisposeProvider<LoginUsecase>.internal(
 );
 
 typedef LoginUsecaseRef = AutoDisposeProviderRef<LoginUsecase>;
-String _$hankoLoginUsecaseHash() => r'aa7ef6efc0bcbe9eb2191d3fd44533608885b57b';
+String _$hankoLoginUsecaseHash() => r'5b5ce198f8c7f9d2fa8cc900929a7f36ef5c1c94';
 
 /// Hanko login usecase provider
 ///
@@ -57,7 +57,7 @@ final hankoLoginUsecaseProvider =
 );
 
 typedef HankoLoginUsecaseRef = AutoDisposeProviderRef<HankoLoginUsecase>;
-String _$registerUsecaseHash() => r'9c534c68d1c4c5c7e5d8c9c234b4cefb7dd5395f';
+String _$registerUsecaseHash() => r'5ac68d932d7a87bfcd2c11b45992defd5c69a8f2';
 
 /// Register usecase provider
 ///
@@ -74,7 +74,7 @@ final registerUsecaseProvider = AutoDisposeProvider<RegisterUsecase>.internal(
 );
 
 typedef RegisterUsecaseRef = AutoDisposeProviderRef<RegisterUsecase>;
-String _$logoutUsecaseHash() => r'95e7156a2705f6cb390e8e1d850c8788d05896d7';
+String _$logoutUsecaseHash() => r'958538269ffab77eb10cdeff614a7b7bb5e39714';
 
 /// Logout usecase provider
 ///
@@ -92,7 +92,7 @@ final logoutUsecaseProvider = AutoDisposeProvider<LogoutUsecase>.internal(
 
 typedef LogoutUsecaseRef = AutoDisposeProviderRef<LogoutUsecase>;
 String _$refreshTokenUsecaseHash() =>
-    r'3b8ca04d0cfaaf1461aebcda40d089b6f044c961';
+    r'dbc1c2e43662c9584f37e04c834e62f7c28653c7';
 
 /// Refresh token usecase provider
 ///
@@ -111,7 +111,7 @@ final refreshTokenUsecaseProvider =
 
 typedef RefreshTokenUsecaseRef = AutoDisposeProviderRef<RefreshTokenUsecase>;
 String _$getCurrentUserUsecaseHash() =>
-    r'b00a70ca1c90db01ba2760039d3fc117f5b7d16f';
+    r'bf52b531cfb9c1b7c35ea44c199a6ab0165e86ba';
 
 /// Get current user usecase provider
 ///
@@ -131,7 +131,7 @@ final getCurrentUserUsecaseProvider =
 typedef GetCurrentUserUsecaseRef
     = AutoDisposeProviderRef<GetCurrentUserUsecase>;
 String _$checkAuthStatusUsecaseHash() =>
-    r'c989a9806fe7b14105ab3d497e7ae307ef0ef864';
+    r'35356d7df1004e8778c63e510cdd35a1b270ddfd';
 
 /// Check auth status usecase provider
 ///
@@ -151,7 +151,7 @@ final checkAuthStatusUsecaseProvider =
 typedef CheckAuthStatusUsecaseRef
     = AutoDisposeProviderRef<CheckAuthStatusUsecase>;
 String _$biometricAuthUsecaseHash() =>
-    r'b303f512f36fda63cf848f2fc866073eb8f9e119';
+    r'7323ce1a60b31d19e44a6dfd39668d05675010fa';
 
 /// Biometric auth usecase provider
 ///
@@ -169,7 +169,7 @@ final biometricAuthUsecaseProvider =
 );
 
 typedef BiometricAuthUsecaseRef = AutoDisposeProviderRef<BiometricAuthUsecase>;
-String _$hankoServiceHash() => r'e0aee16476286cb9e5587270f53eb73900262af4';
+String _$hankoServiceHash() => r'9587ca4190b1add6188d2f3d04d51c7536780d91';
 
 /// Hanko service provider
 ///

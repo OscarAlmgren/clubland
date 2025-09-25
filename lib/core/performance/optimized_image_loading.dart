@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:math' as math;
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -22,12 +22,17 @@ class OptimizedImageLoading {
     bool useMemoryCache = true,
     BoxFit fit = BoxFit.cover,
   }) async {
-    final cacheKey = '${imageUrl}_${targetWidth ?? 0}_${targetHeight ?? 0}_$fit';
+    final cacheKey =
+        '${imageUrl}_${targetWidth ?? 0}_${targetHeight ?? 0}_$fit';
 
     if (useMemoryCache && _imageCache.containsKey(cacheKey)) {
       _updateCacheAccess(cacheKey);
-      return MemoryImage(_imageCache[cacheKey]!.image.toByteData().then((data) =>
-          data!.buffer.asUint8List()) as Uint8List);
+      return MemoryImage(
+        _imageCache[cacheKey]!.image.toByteData().then(
+              (data) => data!.buffer.asUint8List(),
+            )
+            as Uint8List,
+      );
     }
 
     try {
@@ -103,14 +108,12 @@ class OptimizedImageLoading {
   }
 
   /// Get cache statistics
-  static Map<String, dynamic> getCacheStats() {
-    return {
-      'cachedImages': _imageCache.length,
-      'estimatedMemoryUsage': _currentCacheSize,
-      'maxCacheSize': _maxCacheSize,
-      'maxMemorySize': _maxMemoryCacheSize,
-    };
-  }
+  static Map<String, dynamic> getCacheStats() => {
+    'cachedImages': _imageCache.length,
+    'estimatedMemoryUsage': _currentCacheSize,
+    'maxCacheSize': _maxCacheSize,
+    'maxMemorySize': _maxMemoryCacheSize,
+  };
 }
 
 class _ResizedImageProvider extends ImageProvider<_ResizedImageProvider> {
@@ -129,20 +132,17 @@ class _ResizedImageProvider extends ImageProvider<_ResizedImageProvider> {
   final String? cacheKey;
 
   @override
-  Future<_ResizedImageProvider> obtainKey(ImageConfiguration configuration) {
-    return SynchronousFuture<_ResizedImageProvider>(this);
-  }
+  Future<_ResizedImageProvider> obtainKey(ImageConfiguration configuration) =>
+      SynchronousFuture<_ResizedImageProvider>(this);
 
   @override
   ImageStreamCompleter loadImage(
     _ResizedImageProvider key,
     ImageDecoderCallback decode,
-  ) {
-    return MultiFrameImageStreamCompleter(
-      codec: _loadAsync(key, decode),
-      scale: 1.0,
-    );
-  }
+  ) => MultiFrameImageStreamCompleter(
+    codec: _loadAsync(key, decode),
+    scale: 1.0,
+  );
 
   Future<ui.Codec> _loadAsync(
     _ResizedImageProvider key,
@@ -151,39 +151,46 @@ class _ResizedImageProvider extends ImageProvider<_ResizedImageProvider> {
     try {
       final completer = Completer<ui.Codec>();
 
-      imageProvider.resolve(const ImageConfiguration()).addListener(
-        ImageStreamListener((ImageInfo info, bool _) async {
-          try {
-            final resizedImage = await _resizeImage(
-              info.image,
-              targetWidth,
-              targetHeight,
-              fit,
-            );
+      imageProvider
+          .resolve(ImageConfiguration.empty)
+          .addListener(
+            ImageStreamListener((ImageInfo info, bool _) async {
+              try {
+                final resizedImage = await _resizeImage(
+                  info.image,
+                  targetWidth,
+                  targetHeight,
+                  fit,
+                );
 
-            if (cacheKey != null) {
-              OptimizedImageLoading._addToCache(
-                cacheKey!,
-                ImageInfo(image: resizedImage),
-              );
-            }
+                if (cacheKey != null) {
+                  OptimizedImageLoading._addToCache(
+                    cacheKey!,
+                    ImageInfo(image: resizedImage),
+                  );
+                }
 
-            final bytes = await resizedImage.toByteData(format: ui.ImageByteFormat.png);
-            if (bytes != null) {
-              final codec = await decode(bytes.buffer.asUint8List());
-              completer.complete(codec);
-            } else {
-              throw Exception('Failed to encode resized image');
-            }
-          } catch (e) {
-            completer.completeError(e);
-          }
-        }),
-      );
+                final bytes = await resizedImage.toByteData(
+                  format: ui.ImageByteFormat.png,
+                );
+                if (bytes != null) {
+                  final codec = await decode(
+                    bytes.buffer.asUint8List() as ui.ImmutableBuffer,
+                  );
+                  completer.complete(codec);
+                } else {
+                  throw Exception('Failed to encode resized image');
+                }
+              } catch (e) {
+                completer.completeError(e);
+              }
+            }),
+          );
 
       return completer.future;
-    } catch (e) {
-      throw ImageCodecException('Failed to load and resize image: $e');
+    } on Exception catch (e) {
+      // FIX: Throw a guaranteed Error class (FlutterError)
+      throw FlutterError('Failed to load and resize image: $e');
     }
   }
 
@@ -272,9 +279,8 @@ class _ResizedImageProvider extends ImageProvider<_ResizedImageProvider> {
   }
 
   @override
-  int get hashCode {
-    return Object.hash(imageProvider, targetWidth, targetHeight, fit);
-  }
+  int get hashCode =>
+      Object.hash(imageProvider, targetWidth, targetHeight, fit);
 }
 
 /// Optimized image widget with lazy loading and automatic sizing
@@ -400,9 +406,7 @@ class _OptimizedImageState extends State<OptimizedImage>
             width: widget.width,
             height: widget.height,
             color: Colors.grey[200],
-            child: const Center(
-              child: CircularProgressIndicator.adaptive(),
-            ),
+            child: const Center(child: CircularProgressIndicator.adaptive()),
           );
     }
 
@@ -424,15 +428,14 @@ class _OptimizedImageState extends State<OptimizedImage>
                 color: Colors.grey[200],
               );
         },
-        errorBuilder: (context, error, stackTrace) {
-          return widget.errorWidget ??
-              Container(
-                width: widget.width,
-                height: widget.height,
-                color: Colors.grey[300],
-                child: const Icon(Icons.broken_image, color: Colors.grey),
-              );
-        },
+        errorBuilder: (context, error, stackTrace) =>
+            widget.errorWidget ??
+            Container(
+              width: widget.width,
+              height: widget.height,
+              color: Colors.grey[300],
+              child: const Icon(Icons.broken_image, color: Colors.grey),
+            ),
       ),
     );
   }

@@ -75,7 +75,7 @@ final userPermissionsProvider =
 
 typedef UserPermissionsRef = AutoDisposeFutureProviderRef<List<String>>;
 String _$biometricAvailableHash() =>
-    r'bece5dabaa3c46cc0c7a24c6651013ce3d3ef38e';
+    r'50699d187b190d5c6e78cc77442518fde9039698';
 
 /// Biometric availability provider
 ///
@@ -92,7 +92,7 @@ final biometricAvailableProvider = AutoDisposeFutureProvider<bool>.internal(
 );
 
 typedef BiometricAvailableRef = AutoDisposeFutureProviderRef<bool>;
-String _$authControllerHash() => r'dd3c3f0caf39a2b2f88bce99e897266bd73fd04c';
+String _$authControllerHash() => r'02e41c83e7cf8c1197f3a93ef03d70e7aa813c38';
 
 /// Authentication controller managing user auth state
 ///
