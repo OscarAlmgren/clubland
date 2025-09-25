@@ -162,7 +162,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download web artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: web-production
           path: build/web
@@ -194,7 +194,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download Android artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: android-production
           path: build/app/outputs
@@ -223,7 +223,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download iOS artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: ios-production
           path: build/ios/ipa
@@ -267,7 +267,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
