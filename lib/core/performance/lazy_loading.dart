@@ -1,15 +1,17 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+
+import '../design_system/design_system.dart';
 
 /// A utility for implementing lazy loading patterns in the app
 class LazyLoadingManager {
   LazyLoadingManager._() : _logger = Logger();
 
   static LazyLoadingManager? _instance;
-  static LazyLoadingManager get instance => _instance ??= LazyLoadingManager._();
+  static LazyLoadingManager get instance =>
+      _instance ??= LazyLoadingManager._();
 
   final Logger _logger;
   final Map<String, dynamic> _cache = {};
@@ -81,11 +83,7 @@ class LazyLoadingManager {
       return; // Already cached and not expired
     }
 
-    unawaited(lazyLoad(
-      key: key,
-      loader: loader,
-      cacheDuration: cacheDuration,
-    ));
+    unawaited(lazyLoad(key: key, loader: loader, cacheDuration: cacheDuration));
   }
 
   /// Check if a cached item is expired
@@ -118,7 +116,9 @@ class LazyLoadingManager {
     for (final key in keysToRemove) {
       _invalidateKey(key);
     }
-    _logger.d('Invalidated ${keysToRemove.length} cache entries matching pattern');
+    _logger.d(
+      'Invalidated ${keysToRemove.length} cache entries matching pattern',
+    );
   }
 
   /// Clear all cached data
@@ -130,23 +130,26 @@ class LazyLoadingManager {
   }
 
   /// Get cache statistics
-  Map<String, dynamic> getCacheStats() {
-    return {
-      'totalEntries': _cache.length,
-      'activeLoads': _loadingOperations.length,
-      'keys': _cache.keys.toList(),
-      'oldestEntry': _cacheTimestamps.values.isEmpty
-          ? null
-          : _cacheTimestamps.values.reduce((a, b) => a.isBefore(b) ? a : b).toIso8601String(),
-      'newestEntry': _cacheTimestamps.values.isEmpty
-          ? null
-          : _cacheTimestamps.values.reduce((a, b) => a.isAfter(b) ? a : b).toIso8601String(),
-    };
-  }
+  Map<String, dynamic> getCacheStats() => {
+    'totalEntries': _cache.length,
+    'activeLoads': _loadingOperations.length,
+    'keys': _cache.keys.toList(),
+    'oldestEntry': _cacheTimestamps.values.isEmpty
+        ? null
+        : _cacheTimestamps.values
+              .reduce((a, b) => a.isBefore(b) ? a : b)
+              .toIso8601String(),
+    'newestEntry': _cacheTimestamps.values.isEmpty
+        ? null
+        : _cacheTimestamps.values
+              .reduce((a, b) => a.isAfter(b) ? a : b)
+              .toIso8601String(),
+  };
 }
 
 /// A widget that implements lazy loading with error handling and loading states
 class LazyLoadingWidget<T> extends StatefulWidget {
+  /// Constructs a [LazyLoadingWidget]
   const LazyLoadingWidget({
     required this.cacheKey,
     required this.loader,
@@ -198,34 +201,31 @@ class _LazyLoadingWidgetState<T> extends State<LazyLoadingWidget<T>> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<T>(
-      future: _future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return widget.loadingBuilder?.call(context) ??
-              const Center(child: CircularProgressIndicator.adaptive());
-        }
+  Widget build(BuildContext context) => FutureBuilder<T>(
+    future: _future,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return widget.loadingBuilder?.call(context) ??
+            const Center(child: CircularProgressIndicator.adaptive());
+      }
 
-        if (snapshot.hasError) {
-          return widget.errorBuilder?.call(context, snapshot.error) ??
-              Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-        }
+      if (snapshot.hasError) {
+        return widget.errorBuilder?.call(context, snapshot.error) ??
+            Center(child: Text('Error: ${snapshot.error}'));
+      }
 
-        if (snapshot.hasData) {
-          return widget.builder(context, snapshot.data as T);
-        }
+      if (snapshot.hasData) {
+        return widget.builder(context, snapshot.data as T);
+      }
 
-        return const SizedBox.shrink();
-      },
-    );
-  }
+      return const SizedBox.shrink();
+    },
+  );
 }
 
 /// Riverpod provider for lazy loading data
 class LazyLoadProvider<T> extends FamilyAsyncNotifier<T, String> {
+  /// Constructs a [LazyLoadProvider]
   LazyLoadProvider({
     required this.loader,
     this.cacheDuration = const Duration(minutes: 10),
@@ -238,18 +238,16 @@ class LazyLoadProvider<T> extends FamilyAsyncNotifier<T, String> {
   final Duration cacheDuration;
 
   @override
-  Future<T> build(String key) async {
-    return await LazyLoadingManager.instance.lazyLoad<T>(
-      key: key,
-      loader: () => loader(key),
-      cacheDuration: cacheDuration,
-    );
-  }
+  Future<T> build(String key) async => LazyLoadingManager.instance.lazyLoad<T>(
+    key: key,
+    loader: () => loader(key),
+    cacheDuration: cacheDuration,
+  );
 
   /// Refresh the data for a specific key
   void refresh(String key) {
     LazyLoadingManager.instance.invalidate(key);
-    ref.invalidate(this);
+    ref.invalidate(this as ProviderOrFamily);
   }
 }
 
@@ -263,16 +261,14 @@ extension LazyLoadingExtension on Widget {
     Duration? cacheDuration = const Duration(minutes: 10),
     Widget Function(BuildContext context)? loadingBuilder,
     Widget Function(BuildContext context, dynamic error)? errorBuilder,
-  }) {
-    return LazyLoadingWidget<T>(
-      cacheKey: cacheKey,
-      loader: loader,
-      builder: builder,
-      cacheDuration: cacheDuration,
-      loadingBuilder: loadingBuilder,
-      errorBuilder: errorBuilder,
-    );
-  }
+  }) => LazyLoadingWidget<T>(
+    cacheKey: cacheKey,
+    loader: loader,
+    builder: builder,
+    cacheDuration: cacheDuration,
+    loadingBuilder: loadingBuilder,
+    errorBuilder: errorBuilder,
+  );
 }
 
 /// Utility for batch loading operations
@@ -286,7 +282,7 @@ class BatchLoader {
     int batchSize = _defaultBatchSize,
     Duration delay = _defaultDelay,
   }) async* {
-    for (int i = 0; i < items.length; i += batchSize) {
+    for (var i = 0; i < items.length; i += batchSize) {
       final end = (i + batchSize < items.length) ? i + batchSize : items.length;
       yield items.sublist(i, end);
       if (end < items.length) {
@@ -302,7 +298,11 @@ class BatchLoader {
     int batchSize = _defaultBatchSize,
     Duration delay = _defaultDelay,
   }) async* {
-    await for (final batch in loadInBatches(items, batchSize: batchSize, delay: delay)) {
+    await for (final batch in loadInBatches(
+      items,
+      batchSize: batchSize,
+      delay: delay,
+    )) {
       final results = await Future.wait(batch.map(processor));
       yield results;
     }
