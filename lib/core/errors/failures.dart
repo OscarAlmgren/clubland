@@ -107,6 +107,9 @@ class NetworkFailure extends Failure {
 
 /// GraphQL specific failures
 class GraphQLFailure extends Failure {
+  /// Creates a GraphQL failure with an optional extensions map.
+  const GraphQLFailure(super.message, [super.code, this.extensions]);
+
   /// Factory constructor for GraphQL validation errors.
   factory GraphQLFailure.validationError(
     String message, [
@@ -134,9 +137,6 @@ class GraphQLFailure extends Failure {
   /// Factory constructor for a failed GraphQL mutation.
   factory GraphQLFailure.mutationFailed(String mutation) =>
       GraphQLFailure('GraphQL mutation failed: $mutation', 'MUTATION_FAILED');
-
-  /// Creates a GraphQL failure with an optional extensions map.
-  const GraphQLFailure(super.message, [super.code, this.extensions]);
 
   /// Additional data provided by the GraphQL server regarding the error.
   final Map<String, dynamic>? extensions;
@@ -265,6 +265,9 @@ class LocationFailure extends Failure {
 
 /// Validation failures
 class ValidationFailure extends Failure {
+  /// Creates a validation failure with an optional map of field errors.
+  const ValidationFailure(super.message, [super.code, this.errors]);
+
   /// Factory constructor for invalid email format error.
   factory ValidationFailure.invalidEmail() =>
       const ValidationFailure('Invalid email format', 'INVALID_EMAIL');
@@ -295,9 +298,6 @@ class ValidationFailure extends Failure {
   factory ValidationFailure.invalidInput(String field, String value) =>
       ValidationFailure('Invalid input for $field: $value', 'INVALID_INPUT');
 
-  /// Creates a validation failure with an optional map of field errors.
-  const ValidationFailure(super.message, [super.code, this.errors]);
-
   /// A map containing specific errors for individual form fields.
   final Map<String, List<String>>? errors;
 
@@ -309,7 +309,7 @@ class ValidationFailure extends Failure {
     var result =
         'ValidationFailure: $message${code != null ? ' (Code: $code)' : ''}';
     if (errors != null && errors!.isNotEmpty) {
-      result += '\nErrors: ${errors}';
+      result += '\nErrors: $errors';
     }
     return result;
   }
