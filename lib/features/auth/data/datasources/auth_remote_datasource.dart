@@ -1,6 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/network/graphql_client.dart';
 import '../../domain/entities/user_entity.dart';
 
 /// Remote data source for authentication
@@ -90,39 +93,72 @@ abstract class AuthRemoteDataSource {
 
 /// Implementation of AuthRemoteDataSource
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  // TODO(oscaralmgren): Inject GraphQL client or HTTP client
+  AuthRemoteDataSourceImpl({
+    required GraphQLClient graphqlClient,
+    required Logger logger,
+  }) : _graphqlClient = graphqlClient,
+       _logger = logger;
+
+  final GraphQLClient _graphqlClient;
+  final Logger _logger;
 
   @override
   Future<Either<Failure, AuthSessionEntity>> login({
     required String email,
     required String password,
   }) async {
-    // TODO(oscaralmgren): Implement actual API call
-    await Future<void>.delayed(
-      const Duration(seconds: 1),
-    ); // Simulate network delay
+    try {
+      _logger.d('Attempting login for email: $email');
 
-    // Mock successful login
-    if (email == 'test@example.com' && password == 'password123') {
-      final user = UserEntity(
-        id: 'user-123',
-        email: email,
-        firstName: 'Test',
-        lastName: 'User',
-        createdAt: DateTime.now(),
+      const loginMutation = r'''
+        mutation Login($email: String!, $password: String!) {
+          login(email: $email, password: $password) {
+            user {
+              id
+              email
+              firstName
+              lastName
+              profileImageUrl
+              isEmailVerified
+              createdAt
+              lastLoginAt
+            }
+            accessToken
+            refreshToken
+            expiresAt
+          }
+        }
+      ''';
+
+      final MutationOptions options = MutationOptions(
+        document: gql(loginMutation),
+        variables: {
+          'email': email,
+          'password': password,
+        },
       );
 
-      final session = AuthSessionEntity(
-        accessToken: 'mock-access-token',
-        refreshToken: 'mock-refresh-token',
-        expiresAt: DateTime.now().add(const Duration(hours: 1)),
-        user: user,
-      );
+      final QueryResult result = await _graphqlClient.mutate(options);
 
+      if (result.hasException) {
+        _logger.e('Login failed: ${result.exception}');
+        return Left(_handleGraphQLException(result.exception!));
+      }
+
+      if (result.data == null || result.data!['login'] == null) {
+        _logger.e('Login failed: No data received');
+        return Left(const AuthFailure.invalidCredentials());
+      }
+
+      final loginData = result.data!['login'];
+      final session = _parseAuthSession(loginData);
+
+      _logger.d('Login successful for user: ${session.user.email}');
       return Right(session);
+    } catch (e, stackTrace) {
+      _logger.e('Login error: $e', error: e, stackTrace: stackTrace);
+      return Left(NetworkFailure.serverError(500, e.toString()));
     }
-
-    return Left(AuthFailure.invalidCredentials());
   }
 
   @override
@@ -186,11 +222,73 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String lastName,
     String? clubId,
   }) async {
-    // TODO(oscaralmgren): Implement actual registration
-    await Future<void>.delayed(const Duration(seconds: 2));
+    try {
+      _logger.d('Attempting registration for email: $email');
 
-    final user = UserEntity(
-      id: 'user-new-123',
+      const registerMutation = r'''
+        mutation Register(
+          $email: String!
+          $password: String!
+          $firstName: String!
+          $lastName: String!
+          $clubId: String
+        ) {
+          register(
+            email: $email
+            password: $password
+            firstName: $firstName
+            lastName: $lastName
+            clubId: $clubId
+          ) {
+            user {
+              id
+              email
+              firstName
+              lastName
+              profileImageUrl
+              isEmailVerified
+              createdAt
+              lastLoginAt
+            }
+            accessToken
+            refreshToken
+            expiresAt
+          }
+        }
+      ''';
+
+      final MutationOptions options = MutationOptions(
+        document: gql(registerMutation),
+        variables: {
+          'email': email,
+          'password': password,
+          'firstName': firstName,
+          'lastName': lastName,
+          if (clubId != null) 'clubId': clubId,
+        },
+      );
+
+      final QueryResult result = await _graphqlClient.mutate(options);
+
+      if (result.hasException) {
+        _logger.e('Registration failed: ${result.exception}');
+        return Left(_handleGraphQLException(result.exception!));
+      }
+
+      if (result.data == null || result.data!['register'] == null) {
+        _logger.e('Registration failed: No data received');
+        return Left(const AuthFailure.registrationFailed());
+      }
+
+      final registerData = result.data!['register'];
+      final session = _parseAuthSession(registerData);
+
+      _logger.d('Registration successful for user: ${session.user.email}');
+      return Right(session);
+    } catch (e, stackTrace) {
+      _logger.e('Registration error: $e', error: e, stackTrace: stackTrace);
+      return Left(NetworkFailure.serverError(500, e.toString()));
+    }
       email: email,
       firstName: firstName,
       lastName: lastName,
@@ -519,5 +617,79 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     ];
 
     return Right(sessions);
+  }
+
+  /// Helper method to parse AuthSession from GraphQL response
+  AuthSessionEntity _parseAuthSession(Map<String, dynamic> data) {
+    final userData = data['user'] as Map<String, dynamic>;
+
+    final user = UserEntity(
+      id: userData['id'] as String,
+      email: userData['email'] as String,
+      firstName: userData['firstName'] as String,
+      lastName: userData['lastName'] as String,
+      profileImageUrl: userData['profileImageUrl'] as String?,
+      isEmailVerified: userData['isEmailVerified'] as bool? ?? false,
+      createdAt: DateTime.parse(userData['createdAt'] as String),
+      lastLoginAt: userData['lastLoginAt'] != null
+          ? DateTime.parse(userData['lastLoginAt'] as String)
+          : null,
+    );
+
+    return AuthSessionEntity(
+      user: user,
+      accessToken: data['accessToken'] as String,
+      refreshToken: data['refreshToken'] as String,
+      expiresAt: DateTime.parse(data['expiresAt'] as String),
+    );
+  }
+
+  /// Helper method to handle GraphQL exceptions and convert to domain failures
+  Failure _handleGraphQLException(OperationException exception) {
+    if (exception.graphqlErrors.isNotEmpty) {
+      final graphqlError = exception.graphqlErrors.first;
+      final extensions = graphqlError.extensions;
+
+      if (extensions != null && extensions['code'] != null) {
+        switch (extensions['code'] as String) {
+          case 'INVALID_CREDENTIALS':
+            return const AuthFailure.invalidCredentials();
+          case 'EMAIL_NOT_VERIFIED':
+            return const AuthFailure.emailNotVerified();
+          case 'ACCOUNT_LOCKED':
+            return const AuthFailure.accountLocked();
+          case 'PASSWORD_EXPIRED':
+            return const AuthFailure.passwordExpired();
+          case 'HANKO_INIT_FAILED':
+            return const AuthFailure.hankoInitFailed();
+          case 'HANKO_COMPLETION_FAILED':
+            return const AuthFailure.hankoCompletionFailed();
+          case 'BIOMETRIC_NOT_AVAILABLE':
+            return const AuthFailure.biometricNotAvailable();
+          case 'BIOMETRIC_AUTH_FAILED':
+            return const AuthFailure.biometricAuthFailed();
+          default:
+            return NetworkFailure.serverError(
+              500,
+              graphqlError.message,
+            );
+        }
+      }
+
+      return NetworkFailure.serverError(500, graphqlError.message);
+    }
+
+    if (exception.linkException != null) {
+      if (exception.linkException is NetworkException) {
+        return const NetworkFailure.noConnection();
+      }
+
+      return NetworkFailure.serverError(
+        500,
+        exception.linkException.toString(),
+      );
+    }
+
+    return NetworkFailure.serverError(500, 'Unknown GraphQL error');
   }
 }
