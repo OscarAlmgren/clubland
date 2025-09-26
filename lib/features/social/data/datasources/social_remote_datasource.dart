@@ -1,4 +1,4 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart';
@@ -96,15 +96,15 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to fetch activity',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch activity',
         );
       }
 
       final data = result.data?['userActivity'];
       if (data == null) {
-        throw const ServerException(message: 'No activity data received');
+        throw const NetworkException('No activity data received', 'NO_DATA');
       }
 
       final nodes = data['nodes'] as List<dynamic>?;
@@ -117,10 +117,10 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
           .toList();
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching activity', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error fetching activity', error: e);
-      throw ServerException(message: 'Failed to fetch activity: $e');
+      throw NetworkException('Failed to fetch activity: $e');
     }
   }
 
@@ -150,15 +150,15 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to fetch reviews',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch reviews',
         );
       }
 
       final data = result.data?['clubReviews'];
       if (data == null) {
-        throw const ServerException(message: 'No reviews data received');
+        throw const NetworkException('No reviews data received', 'NO_DATA');
       }
 
       final nodes = data['nodes'] as List<dynamic>?;
@@ -171,10 +171,10 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
           .toList();
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching reviews', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error fetching reviews', error: e);
-      throw ServerException(message: 'Failed to fetch reviews: $e');
+      throw NetworkException('Failed to fetch reviews: $e');
     }
   }
 
@@ -205,32 +205,33 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to create review',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to create review',
         );
       }
 
       final data = result.data?['createReview'];
       if (data == null || data['success'] != true) {
-        throw ServerException(
-          message: data?['message'] ?? 'Failed to create review',
+        throw NetworkException(
+          data?['message']?.toString() ?? 'Failed to create review',
+          'CREATE_REVIEW_FAILED',
         );
       }
 
       final reviewData = data['review'];
       if (reviewData == null) {
-        throw const ServerException(message: 'No review data received');
+        throw const NetworkException('No review data received', 'NO_DATA');
       }
 
       _logger.i('Successfully created review for club: $clubId');
       return ClubReviewModel.fromJson(reviewData as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error creating review', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error creating review', error: e);
-      throw ServerException(message: 'Failed to create review: $e');
+      throw NetworkException('Failed to create review: $e');
     }
   }
 
@@ -247,29 +248,29 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to like activity',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to like activity',
         );
       }
 
       final data = result.data?['likeActivity'];
       if (data == null || data['success'] != true) {
-        throw ServerException(message: 'Failed to like activity');
+        throw const NetworkException('Failed to like activity', 'LIKE_FAILED');
       }
 
       final activityData = data['activity'];
       if (activityData == null) {
-        throw const ServerException(message: 'No activity data received');
+        throw const NetworkException('No activity data received', 'NO_DATA');
       }
 
       return ActivityModel.fromJson(activityData as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error liking activity', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error liking activity', error: e);
-      throw ServerException(message: 'Failed to like activity: $e');
+      throw NetworkException('Failed to like activity: $e');
     }
   }
 
@@ -292,29 +293,29 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to add comment',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to add comment',
         );
       }
 
       final data = result.data?['addComment'];
       if (data == null || data['success'] != true) {
-        throw ServerException(message: 'Failed to add comment');
+        throw const NetworkException('Failed to add comment', 'COMMENT_FAILED');
       }
 
       final commentData = data['comment'];
       if (commentData == null) {
-        throw const ServerException(message: 'No comment data received');
+        throw const NetworkException('No comment data received', 'NO_DATA');
       }
 
       return ActivityCommentModel.fromJson(commentData as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error adding comment', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error adding comment', error: e);
-      throw ServerException(message: 'Failed to add comment: $e');
+      throw NetworkException('Failed to add comment: $e');
     }
   }
 
@@ -341,26 +342,27 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to share activity',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to share activity',
         );
       }
 
       final data = result.data?['shareActivity'];
       if (data == null || data['success'] != true) {
-        throw ServerException(
-          message: data?['message'] ?? 'Failed to share activity',
+        throw NetworkException(
+          data?['message']?.toString() ?? 'Failed to share activity',
+          'SHARE_FAILED',
         );
       }
 
       _logger.i('Successfully shared activity: $activityId');
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error sharing activity', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error sharing activity', error: e);
-      throw ServerException(message: 'Failed to share activity: $e');
+      throw NetworkException('Failed to share activity: $e');
     }
   }
 
@@ -417,15 +419,15 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to fetch notifications',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch notifications',
         );
       }
 
       final data = result.data?['notifications'];
       if (data == null) {
-        throw const ServerException(message: 'No notifications data received');
+        throw const NetworkException('No notifications data received', 'NO_DATA');
       }
 
       final nodes = data['nodes'] as List<dynamic>?;
@@ -438,10 +440,10 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
           .toList();
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching notifications', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error fetching notifications', error: e);
-      throw ServerException(message: 'Failed to fetch notifications: $e');
+      throw NetworkException('Failed to fetch notifications: $e');
     }
   }
 
@@ -501,9 +503,9 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to mark notifications as read',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to mark notifications as read',
         );
       }
 
@@ -514,10 +516,10 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       }
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error marking all notifications as read', error: e);
-      throw ServerException(message: e.toString());
+      throw GraphQLException(e.toString());
     } on Exception catch (e) {
       _logger.e('Error marking all notifications as read', error: e);
-      throw ServerException(message: 'Failed to mark notifications as read: $e');
+      throw NetworkException('Failed to mark notifications as read: $e');
     }
   }
 
@@ -535,16 +537,16 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       ).map((result) {
         final data = result.data?['notifications'];
         if (data == null) {
-          throw const ServerException(message: 'No notification data received');
+          throw const NetworkException('No notification data received', 'NO_DATA');
         }
         return NotificationModel.fromJson(data as Map<String, dynamic>);
       }).handleError((Object error) {
         _logger.e('Error in notifications subscription', error: error);
-        throw ServerException(message: 'Notifications subscription error: $error');
+        throw NetworkException('Notifications subscription error: $error');
       });
     } on Exception catch (e) {
       _logger.e('Error setting up notifications subscription', error: e);
-      throw ServerException(message: 'Failed to subscribe to notifications: $e');
+      throw NetworkException('Failed to subscribe to notifications: $e');
     }
   }
 
@@ -562,21 +564,20 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       ).map((result) {
         final data = result.data?['clubActivity'];
         if (data == null || data['activity'] == null) {
-          throw const ServerException(message: 'No activity data received');
+          throw const NetworkException('No activity data received', 'NO_DATA');
         }
         return ActivityModel.fromJson(data['activity'] as Map<String, dynamic>);
       }).handleError((Object error) {
         _logger.e('Error in club activity subscription', error: error);
-        throw ServerException(message: 'Club activity subscription error: $error');
+        throw NetworkException('Club activity subscription error: $error');
       });
     } on Exception catch (e) {
       _logger.e('Error setting up club activity subscription', error: e);
-      throw ServerException(message: 'Failed to subscribe to club activity: $e');
+      throw NetworkException('Failed to subscribe to club activity: $e');
     }
   }
 }
 
-// Supporting enums and classes
 enum ActivityType {
   checkedIn,
   booked,
@@ -586,52 +587,4 @@ enum ActivityType {
   liked,
   commented,
   achieved,
-}
-
-class ActivityCommentModel {
-  final String id;
-  final String text;
-  final DateTime createdAt;
-  final UserSummary user;
-
-  const ActivityCommentModel({
-    required this.id,
-    required this.text,
-    required this.createdAt,
-    required this.user,
-  });
-
-  factory ActivityCommentModel.fromJson(Map<String, dynamic> json) {
-    return ActivityCommentModel(
-      id: json['id'] as String,
-      text: json['text'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      user: UserSummary.fromJson(json['user'] as Map<String, dynamic>),
-    );
-  }
-}
-
-class UserSummary {
-  final String id;
-  final String firstName;
-  final String lastName;
-  final String? avatar;
-
-  const UserSummary({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    this.avatar,
-  });
-
-  factory UserSummary.fromJson(Map<String, dynamic> json) {
-    return UserSummary(
-      id: json['id'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      avatar: json['avatar'] as String?,
-    );
-  }
-
-  String get fullName => '$firstName $lastName';
 }
