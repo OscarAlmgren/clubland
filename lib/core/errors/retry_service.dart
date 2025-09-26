@@ -18,6 +18,9 @@ class RetryService {
   static RetryService? _instance;
   final Logger _logger;
 
+  /// Gets the singleton instance of the [RetryService].
+  static RetryService get instance => RetryService();
+
   /// Execute operation with retry logic.
   ///
   /// This method is designed for operations that return an [Either] and handles
@@ -33,6 +36,7 @@ class RetryService {
   }) async {
     final retryConfig = config ?? RetryConfig.defaultConfig;
     final opName = operationName ?? 'Operation';
+    Either<Failure, T>? lastResult;
 
     for (var attempt = 0; attempt <= retryConfig.maxRetries; attempt++) {
       try {
@@ -41,8 +45,9 @@ class RetryService {
         );
 
         final result = await operation();
+        lastResult = result;
 
-        return result.fold(
+        final shouldReturn = result.fold(
           (failure) {
             if (attempt == retryConfig.maxRetries ||
                 !_shouldRetry(failure, retryConfig)) {
@@ -50,22 +55,25 @@ class RetryService {
                 '$opName: Failed after ${attempt + 1} attempts',
                 error: failure,
               );
-              return Left(failure);
+              return true; // Stop retrying
             }
 
-            final delay = _calculateDelay(attempt, retryConfig);
             _logger.w(
-              '$opName: Retrying after ${delay.inMilliseconds}ms due to: ${failure.message}',
+              '$opName: Retrying after delay due to: ${failure.message}',
             );
-            return Left(failure); // Will be handled by retry logic below
+            return false; // Continue retrying
           },
           (success) {
             if (attempt > 0) {
               _logger.i('$opName: Succeeded on attempt ${attempt + 1}');
             }
-            return Right(success);
+            return true; // Stop retrying
           },
         );
+
+        if (shouldReturn) {
+          return result;
+        }
       } on Exception catch (error, stackTrace) {
         _logger.e(
           '$opName: Unexpected error on attempt ${attempt + 1}',
@@ -87,7 +95,7 @@ class RetryService {
       }
     }
 
-    return Left(
+    return lastResult ?? Left(
       NetworkFailure.serverError(0, '$opName failed after all retry attempts'),
     );
   }
