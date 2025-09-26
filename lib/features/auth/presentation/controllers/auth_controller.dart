@@ -288,7 +288,7 @@ class AuthController extends _$AuthController {
     // Invalidate other providers that depend on auth state
     ref.invalidate(currentUserProvider);
 
-    // TODO(oscaralmgren): Navigate to main app
+    // Navigation is handled automatically by GoRouter auth guards
   }
 
   /// Handle successful logout
@@ -300,7 +300,7 @@ class AuthController extends _$AuthController {
     ref.invalidate(currentUserProvider);
     ref.invalidate(authSessionProvider);
 
-    // TODO(oscaralmgren): Navigate to login screen
+    // Navigation is handled automatically by GoRouter auth guards
   }
 
   /// Handle successful token refresh

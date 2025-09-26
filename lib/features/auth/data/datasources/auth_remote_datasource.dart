@@ -308,38 +308,103 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<Either<Failure, bool>> logout() async {
-    // TODO(oscaralmgren): Implement actual logout
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    return const Right(true);
+    try {
+      _logger.d('Attempting logout');
+
+      const logoutMutation = r'''
+        mutation Logout {
+          logout {
+            success
+          }
+        }
+      ''';
+
+      final MutationOptions options = MutationOptions(
+        document: gql(logoutMutation),
+      );
+
+      final QueryResult result = await _graphqlClient.mutate(options);
+
+      if (result.hasException) {
+        _logger.e('Logout failed: ${result.exception}');
+        return Left(_handleGraphQLException(result.exception!));
+      }
+
+      if (result.data == null || result.data!['logout'] == null) {
+        _logger.e('Logout failed: No data received');
+        return Left(const AuthFailure.logoutFailed());
+      }
+
+      final success = result.data!['logout']['success'] as bool? ?? false;
+
+      if (success) {
+        _logger.d('Logout successful');
+        return const Right(true);
+      } else {
+        _logger.e('Logout failed: Server returned false');
+        return Left(const AuthFailure.logoutFailed());
+      }
+    } catch (e, stackTrace) {
+      _logger.e('Logout error: $e', error: e, stackTrace: stackTrace);
+      return Left(NetworkFailure.serverError(500, e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, AuthSessionEntity>> refreshToken({
     required String refreshToken,
   }) async {
-    // TODO(oscaralmgren): Implement actual token refresh
-    await Future<void>.delayed(const Duration(seconds: 1));
+    try {
+      _logger.d('Attempting token refresh');
 
-    if (refreshToken.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
+      const refreshMutation = r'''
+        mutation RefreshToken($refreshToken: String!) {
+          refreshToken(refreshToken: $refreshToken) {
+            user {
+              id
+              email
+              firstName
+              lastName
+              profileImageUrl
+              isEmailVerified
+              createdAt
+              lastLoginAt
+            }
+            accessToken
+            refreshToken
+            expiresAt
+          }
+        }
+      ''';
+
+      final MutationOptions options = MutationOptions(
+        document: gql(refreshMutation),
+        variables: {
+          'refreshToken': refreshToken,
+        },
+      );
+
+      final QueryResult result = await _graphqlClient.mutate(options);
+
+      if (result.hasException) {
+        _logger.e('Token refresh failed: ${result.exception}');
+        return Left(_handleGraphQLException(result.exception!));
+      }
+
+      if (result.data == null || result.data!['refreshToken'] == null) {
+        _logger.e('Token refresh failed: No data received');
+        return Left(const AuthFailure.tokenRefreshFailed());
+      }
+
+      final refreshData = result.data!['refreshToken'];
+      final session = _parseAuthSession(refreshData);
+
+      _logger.d('Token refresh successful for user: ${session.user.email}');
+      return Right(session);
+    } catch (e, stackTrace) {
+      _logger.e('Token refresh error: $e', error: e, stackTrace: stackTrace);
+      return Left(NetworkFailure.serverError(500, e.toString()));
     }
-
-    final user = UserEntity(
-      id: 'user-refresh-123',
-      email: 'refreshed@example.com',
-      firstName: 'Refreshed',
-      lastName: 'User',
-      createdAt: DateTime.now().subtract(const Duration(days: 30)),
-    );
-
-    final session = AuthSessionEntity(
-      accessToken: 'mock-refreshed-access-token',
-      refreshToken: 'mock-refreshed-refresh-token',
-      expiresAt: DateTime.now().add(const Duration(hours: 1)),
-      user: user,
-    );
-
-    return Right(session);
   }
 
   @override
