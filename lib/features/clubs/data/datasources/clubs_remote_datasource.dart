@@ -48,15 +48,15 @@ abstract class ClubsRemoteDataSource {
   });
 }
 
+class ClubReviewModel {}
+
 class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
   final GraphQLClient _client;
   final Logger _logger;
 
-  ClubsRemoteDataSourceImpl({
-    GraphQLClient? client,
-    Logger? logger,
-  })  : _client = client ?? GraphQLClientConfig.client,
-        _logger = logger ?? Logger();
+  ClubsRemoteDataSourceImpl({GraphQLClient? client, Logger? logger})
+    : _client = client ?? GraphQLClientConfig.client,
+      _logger = logger ?? Logger();
 
   @override
   Future<List<ClubModel>> getClubs({
@@ -87,8 +87,8 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       if (!GraphQLHelpers.isSuccess(result)) {
         throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to fetch clubs',
+          message:
+              GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch clubs',
         );
       }
 
@@ -129,7 +129,8 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       if (!GraphQLHelpers.isSuccess(result)) {
         throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
+          message:
+              GraphQLHelpers.getErrorMessage(result) ??
               'Failed to fetch club details',
         );
       }
@@ -182,7 +183,8 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       if (!GraphQLHelpers.isSuccess(result)) {
         throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
+          message:
+              GraphQLHelpers.getErrorMessage(result) ??
               'Failed to search clubs',
         );
       }
@@ -198,8 +200,10 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
       }
 
       return nodes
-          .map((node) => ClubSearchResultModel.fromJson(
-              node as Map<String, dynamic>))
+          .map(
+            (node) =>
+                ClubSearchResultModel.fromJson(node as Map<String, dynamic>),
+          )
           .toList();
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error searching clubs', error: e);
@@ -220,10 +224,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Fetching nearby clubs at ($latitude, $longitude)');
 
-      final location = LocationInput(
-        latitude: latitude,
-        longitude: longitude,
-      );
+      final location = LocationInput(latitude: latitude, longitude: longitude);
 
       final filter = ClubFilter(
         location: location,
@@ -252,11 +253,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         direction: SortDirection.desc,
       );
 
-      return getClubs(
-        filter: filter,
-        sort: sort,
-        limit: 10,
-      );
+      return getClubs(filter: filter, sort: sort, limit: 10);
     } on Exception catch (e) {
       _logger.e('Error fetching featured clubs', error: e);
       throw ServerException(message: 'Failed to fetch featured clubs: $e');
@@ -270,10 +267,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       final filter = ClubFilter(favorited: true);
 
-      return getClubs(
-        filter: filter,
-        limit: 50,
-      );
+      return getClubs(filter: filter, limit: 50);
     } on Exception catch (e) {
       _logger.e('Error fetching favorite clubs', error: e);
       throw ServerException(message: 'Failed to fetch favorite clubs: $e');
@@ -304,15 +298,13 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
       ''';
 
       final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(mutation),
-          variables: {'clubId': clubId},
-        ),
+        MutationOptions(document: gql(mutation), variables: {'clubId': clubId}),
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
         throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
+          message:
+              GraphQLHelpers.getErrorMessage(result) ??
               'Failed to toggle favorite',
         );
       }
@@ -363,16 +355,13 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
       ''';
 
       final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(mutation),
-          variables: {'clubId': clubId},
-        ),
+        MutationOptions(document: gql(mutation), variables: {'clubId': clubId}),
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
         throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to check in',
+          message:
+              GraphQLHelpers.getErrorMessage(result) ?? 'Failed to check in',
         );
       }
 
@@ -420,7 +409,8 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       if (!GraphQLHelpers.isSuccess(result)) {
         throw ServerException(
-          message: GraphQLHelpers.getErrorMessage(result) ??
+          message:
+              GraphQLHelpers.getErrorMessage(result) ??
               'Failed to fetch reviews',
         );
       }
@@ -436,8 +426,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
       }
 
       return nodes
-          .map((node) => ClubReviewModel.fromJson(
-              node as Map<String, dynamic>))
+          .map((node) => ClubReviewModel.fromJson(node as Map<String, dynamic>))
           .toList();
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching reviews', error: e);
@@ -486,27 +475,15 @@ class ClubFilter {
   };
 }
 
-enum ClubSortField {
-  name,
-  rating,
-  distance,
-  memberCount,
-  createdAt,
-}
+enum ClubSortField { name, rating, distance, memberCount, createdAt }
 
-enum SortDirection {
-  asc,
-  desc,
-}
+enum SortDirection { asc, desc }
 
 class ClubSort {
   final ClubSortField field;
   final SortDirection direction;
 
-  const ClubSort({
-    required this.field,
-    this.direction = SortDirection.asc,
-  });
+  const ClubSort({required this.field, this.direction = SortDirection.asc});
 
   Map<String, dynamic> toJson() => {
     'field': field.name.toUpperCase(),
@@ -518,10 +495,7 @@ class LocationInput {
   final double latitude;
   final double longitude;
 
-  const LocationInput({
-    required this.latitude,
-    required this.longitude,
-  });
+  const LocationInput({required this.latitude, required this.longitude});
 
   Map<String, dynamic> toJson() => {
     'latitude': latitude,

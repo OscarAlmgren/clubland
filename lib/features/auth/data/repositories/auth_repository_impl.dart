@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/network/graphql_client.dart';
 import '../../../../core/storage/secure_storage.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
@@ -25,7 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
     HankoDataSource? hankoDataSource,
   }) : _remoteDataSource =
            remoteDataSource ??
-           AuthRemoteDataSourceImpl(graphqlClient: null, logger: null),
+           AuthRemoteDataSourceImpl(graphqlClient: GraphQLClientConfig.client, logger: logger),
        _localDataSource = localDataSource ?? AuthLocalDataSourceImpl(),
        _hankoDataSource =
            hankoDataSource ??

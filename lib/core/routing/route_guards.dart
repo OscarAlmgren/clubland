@@ -235,8 +235,6 @@ class RouteGuards {
     // if (path != AppRoutes.maintenance) {
     //   return AppRoutes.maintenance;
     // }
-
-    return null;
   }
 
   /// Check if route requires phone verification

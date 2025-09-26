@@ -17,14 +17,15 @@ part 'app_router.g.dart';
 /// App router provider that handles navigation and auth guards
 @riverpod
 GoRouter appRouter(AppRouterRef ref) {
-  final authController = ref.watch(authControllerProvider.notifier);
+  ref.watch(authControllerProvider.notifier);
 
   return GoRouter(
     initialLocation: RoutePaths.login,
     redirect: (BuildContext context, GoRouterState state) {
       final authState = ref.read(authControllerProvider);
       final isAuthenticated = authState.value != null;
-      final isLoginRoute = state.matchedLocation == RoutePaths.login ||
+      final isLoginRoute =
+          state.matchedLocation == RoutePaths.login ||
           state.matchedLocation == RoutePaths.register;
 
       // If user is not authenticated and trying to access protected routes

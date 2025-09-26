@@ -121,9 +121,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     try {
       _logger.d('Fetching booking details for ID: $bookingId');
 
-      const query = '''
-        query BookingDetails(\$id: ID!) {
-          booking(id: \$id) {
+      const query = r'''
+        query BookingDetails($id: ID!) {
+          booking(id: $id) {
             id
             startTime
             endTime

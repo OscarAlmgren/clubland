@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -76,8 +77,7 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('My Bookings'),
         centerTitle: true,
@@ -118,28 +118,23 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
         tooltip: 'Create new booking',
       ),
     );
-  }
 
-  Widget _buildUpcomingTab() {
-    return RefreshIndicator(
+  Widget _buildUpcomingTab() => RefreshIndicator(
       onRefresh: () => ref.refresh(upcomingBookingsProvider.future),
       child: const UpcomingBookingsSection(),
     );
-  }
 
-  Widget _buildPastTab() {
-    return RefreshIndicator(
-      onRefresh: () => ref.refresh(pastBookingsProvider.future),
+  Widget _buildPastTab() => RefreshIndicator(
+      onRefresh: (dynamic pastBookingsProvider) => ref.refresh(pastBookingsProvider.future),
       child: const PastBookingsSection(),
     );
-  }
 
   Widget _buildAllBookingsTab() {
     final bookingsState = ref.watch(allBookingsProvider);
 
     return bookingsState.when(
       data: (bookings) => RefreshIndicator(
-        onRefresh: () => ref.refresh(allBookingsProvider.future),
+        onRefresh: (dynamic allBookingsProvider) => ref.refresh(allBookingsProvider.future),
         child: bookings.isEmpty
             ? const _EmptyBookingsView()
             : ListView.separated(
@@ -208,7 +203,7 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
       ),
     );
 
-    if (shouldCancel == true) {
+    if (shouldCancel ?? false) {
       // Show reason dialog
       String? reason;
       await showDialog<void>(
@@ -217,7 +212,7 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
           title: const Text('Cancellation Reason'),
           content: TextField(
             decoration: const InputDecoration(
-              hintText: 'Optional: Tell us why you\'re cancelling',
+              hintText: "Optional: Tell us why you're cancelling",
               border: OutlineInputBorder(),
             ),
             maxLines: 3,
@@ -229,7 +224,7 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
               child: const Text('Skip'),
             ),
             FilledButton(
-              onPressed: () {
+              onPressed: (dynamic bookingsControllerProvider) {
                 Navigator.of(context).pop();
                 ref.read(bookingsControllerProvider.notifier)
                     .cancelBooking(bookingId, reason: reason);
@@ -243,12 +238,14 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
   }
 }
 
+class BookingUpdate {
+}
+
 class _EmptyBookingsView extends StatelessWidget {
   const _EmptyBookingsView();
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -279,5 +276,4 @@ class _EmptyBookingsView extends StatelessWidget {
         ],
       ),
     );
-  }
 }

@@ -3,7 +3,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
 
@@ -133,10 +132,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       final MutationOptions options = MutationOptions(
         document: gql(loginMutation),
-        variables: {
-          'email': email,
-          'password': password,
-        },
+        variables: {'email': email, 'password': password},
       );
 
       final QueryResult result = await _graphqlClient.mutate(options);
@@ -365,9 +361,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       final MutationOptions options = MutationOptions(
         document: gql(refreshMutation),
-        variables: {
-          'refreshToken': refreshToken,
-        },
+        variables: {'refreshToken': refreshToken},
       );
 
       final QueryResult result = await _graphqlClient.mutate(options);
@@ -685,12 +679,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       updatedAt: userData['updatedAt'] != null
           ? DateTime.parse(userData['updatedAt'] as String)
           : null,
-      roles: (userData['roles'] as List<dynamic>?)
-          ?.map((role) => role as String)
-          .toList() ?? [],
-      permissions: (userData['permissions'] as List<dynamic>?)
-          ?.map((permission) => permission as String)
-          .toList() ?? [],
+      roles:
+          (userData['roles'] as List<dynamic>?)
+              ?.map((role) => role as String)
+              .toList() ??
+          [],
+      permissions:
+          (userData['permissions'] as List<dynamic>?)
+              ?.map((permission) => permission as String)
+              .toList() ??
+          [],
     );
 
     return AuthSessionEntity(
@@ -726,10 +724,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           case 'BIOMETRIC_AUTH_FAILED':
             return AuthFailure.unexpected('Biometric authentication failed');
           default:
-            return NetworkFailure.serverError(
-              500,
-              graphqlError.message,
-            );
+            return NetworkFailure.serverError(500, graphqlError.message);
         }
       }
 
