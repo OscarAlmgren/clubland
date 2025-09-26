@@ -1,4 +1,4 @@
-import 'package:clubland/main.dart';
+import 'package:clubland/app/app.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

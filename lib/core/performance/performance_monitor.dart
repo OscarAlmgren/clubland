@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 
 /// Performance monitoring service for tracking app performance metrics
@@ -10,7 +11,8 @@ class PerformanceMonitor {
   PerformanceMonitor._() : _logger = Logger();
 
   static PerformanceMonitor? _instance;
-  static PerformanceMonitor get instance => _instance ??= PerformanceMonitor._();
+  static PerformanceMonitor get instance =>
+      _instance ??= PerformanceMonitor._();
 
   final Logger _logger;
   final Map<String, DateTime> _operationStartTimes = {};
@@ -30,14 +32,20 @@ class PerformanceMonitor {
       return;
     }
 
-    final duration = DateTime.now().difference(startTime).inMilliseconds.toDouble();
+    final duration = DateTime.now()
+        .difference(startTime)
+        .inMilliseconds
+        .toDouble();
 
     // Update statistics
-    _operationCounts[operationName] = (_operationCounts[operationName] ?? 0) + 1;
+    _operationCounts[operationName] =
+        (_operationCounts[operationName] ?? 0) + 1;
     _operationDurations[operationName] =
-        ((_operationDurations[operationName] ?? 0.0) + duration) / _operationCounts[operationName]!;
+        ((_operationDurations[operationName] ?? 0.0) + duration) /
+        _operationCounts[operationName]!;
 
-    if (duration > 100) { // Log operations taking more than 100ms
+    if (duration > 100) {
+      // Log operations taking more than 100ms
       _logger.w('Slow operation "$operationName": ${duration}ms');
     } else if (kDebugMode) {
       _logger.d('Operation "$operationName": ${duration}ms');
@@ -45,7 +53,10 @@ class PerformanceMonitor {
   }
 
   /// Time a Future operation and return its result
-  Future<T> timeOperation<T>(String operationName, Future<T> Function() operation) async {
+  Future<T> timeOperation<T>(
+    String operationName,
+    Future<T> Function() operation,
+  ) async {
     startOperation(operationName);
     try {
       final result = await operation();
@@ -73,14 +84,12 @@ class PerformanceMonitor {
   }
 
   /// Get performance statistics for debugging
-  Map<String, dynamic> getPerformanceStats() {
-    return {
-      'operationCounts': Map.from(_operationCounts),
-      'averageDurations': Map.from(_operationDurations),
-      'memoryUsage': _getMemoryUsage(),
-      'activeOperations': _operationStartTimes.keys.toList(),
-    };
-  }
+  Map<String, dynamic> getPerformanceStats() => {
+    'operationCounts': Map<String, int>.from(_operationCounts),
+    'averageDurations': Map<String, double>.from(_operationDurations),
+    'memoryUsage': _getMemoryUsage(),
+    'activeOperations': _operationStartTimes.keys.toList(),
+  };
 
   /// Log current performance statistics
   void logPerformanceStats() {
@@ -107,7 +116,7 @@ class PerformanceMonitor {
           'timestamp': DateTime.now().toIso8601String(),
         };
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _logger.w('Could not get memory usage: $e');
     }
     return {'available': false};
@@ -121,8 +130,11 @@ class PerformanceMonitor {
           final buildDuration = timing.buildDuration.inMicroseconds / 1000.0;
           final rasterDuration = timing.rasterDuration.inMicroseconds / 1000.0;
 
-          if (buildDuration > 16.0 || rasterDuration > 16.0) { // 60fps = 16ms per frame
-            _logger.w('Slow frame - Build: ${buildDuration}ms, Raster: ${rasterDuration}ms');
+          if (buildDuration > 16.0 || rasterDuration > 16.0) {
+            // 60fps = 16ms per frame
+            _logger.w(
+              'Slow frame - Build: ${buildDuration}ms, Raster: ${rasterDuration}ms',
+            );
           }
         }
       });
@@ -130,20 +142,18 @@ class PerformanceMonitor {
   }
 
   /// Create a performance-aware StreamController
-  StreamController<T> createPerformantStreamController<T>(String name) {
-    return StreamController<T>.broadcast(
-      onListen: () => _logger.d('Stream "$name" listener added'),
-      onCancel: () => _logger.d('Stream "$name" listener removed'),
-    );
-  }
+  StreamController<T> createPerformantStreamController<T>(String name) =>
+      StreamController<T>.broadcast(
+        onListen: () => _logger.d('Stream "$name" listener added'),
+        onCancel: () => _logger.d('Stream "$name" listener removed'),
+      );
 }
 
 /// Extension to add performance monitoring to Futures
 extension FuturePerformance<T> on Future<T> {
   /// Add performance monitoring to a Future
-  Future<T> withPerformanceMonitoring(String operationName) {
-    return PerformanceMonitor.instance.timeOperation(operationName, () => this);
-  }
+  Future<T> withPerformanceMonitoring(String operationName) =>
+      PerformanceMonitor.instance.timeOperation(operationName, () => this);
 }
 
 /// Mixin to add performance monitoring capabilities to any class
@@ -152,12 +162,10 @@ mixin PerformanceMonitoring {
   PerformanceMonitor get performanceMonitor => PerformanceMonitor.instance;
 
   /// Time a method execution
-  Future<T> timeMethod<T>(String methodName, Future<T> Function() method) {
-    return performanceMonitor.timeOperation('${runtimeType}.$methodName', method);
-  }
+  Future<T> timeMethod<T>(String methodName, Future<T> Function() method) =>
+      performanceMonitor.timeOperation('$runtimeType.$methodName', method);
 
   /// Time a synchronous method execution
-  T timeMethodSync<T>(String methodName, T Function() method) {
-    return performanceMonitor.timeSync('${runtimeType}.$methodName', method);
-  }
+  T timeMethodSync<T>(String methodName, T Function() method) =>
+      performanceMonitor.timeSync('$runtimeType.$methodName', method);
 }

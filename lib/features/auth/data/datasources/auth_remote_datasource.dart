@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/network/graphql_client.dart';
+import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
 
 /// Remote data source for authentication
@@ -147,11 +148,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       if (result.data == null || result.data!['login'] == null) {
         _logger.e('Login failed: No data received');
-        return Left(const AuthFailure.invalidCredentials());
+        return Left(AuthFailure.invalidCredentials());
       }
 
       final loginData = result.data!['login'];
-      final session = _parseAuthSession(loginData);
+      final session = _parseAuthSession(loginData as Map<String, dynamic>);
 
       _logger.d('Login successful for user: ${session.user.email}');
       return Right(session);
@@ -277,11 +278,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       if (result.data == null || result.data!['register'] == null) {
         _logger.e('Registration failed: No data received');
-        return Left(const AuthFailure.registrationFailed());
+        return Left(AuthFailure.unexpected('Registration failed'));
       }
 
       final registerData = result.data!['register'];
-      final session = _parseAuthSession(registerData);
+      final session = _parseAuthSession(registerData as Map<String, dynamic>);
 
       _logger.d('Registration successful for user: ${session.user.email}');
       return Right(session);
@@ -289,21 +290,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       _logger.e('Registration error: $e', error: e, stackTrace: stackTrace);
       return Left(NetworkFailure.serverError(500, e.toString()));
     }
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      clubId: clubId,
-      createdAt: DateTime.now(),
-    );
-
-    final session = AuthSessionEntity(
-      accessToken: 'mock-new-user-access-token',
-      refreshToken: 'mock-new-user-refresh-token',
-      expiresAt: DateTime.now().add(const Duration(hours: 1)),
-      user: user,
-    );
-
-    return Right(session);
   }
 
   @override
@@ -332,7 +318,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       if (result.data == null || result.data!['logout'] == null) {
         _logger.e('Logout failed: No data received');
-        return Left(const AuthFailure.logoutFailed());
+        return Left(AuthFailure.unexpected('Logout failed'));
       }
 
       final success = result.data!['logout']['success'] as bool? ?? false;
@@ -342,7 +328,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return const Right(true);
       } else {
         _logger.e('Logout failed: Server returned false');
-        return Left(const AuthFailure.logoutFailed());
+        return Left(AuthFailure.unexpected('Logout failed'));
       }
     } catch (e, stackTrace) {
       _logger.e('Logout error: $e', error: e, stackTrace: stackTrace);
@@ -393,11 +379,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       if (result.data == null || result.data!['refreshToken'] == null) {
         _logger.e('Token refresh failed: No data received');
-        return Left(const AuthFailure.tokenRefreshFailed());
+        return Left(AuthFailure.tokenRefreshFailed());
       }
 
       final refreshData = result.data!['refreshToken'];
-      final session = _parseAuthSession(refreshData);
+      final session = _parseAuthSession(refreshData as Map<String, dynamic>);
 
       _logger.d('Token refresh successful for user: ${session.user.email}');
       return Right(session);
@@ -691,14 +677,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final user = UserEntity(
       id: userData['id'] as String,
       email: userData['email'] as String,
-      firstName: userData['firstName'] as String,
-      lastName: userData['lastName'] as String,
-      profileImageUrl: userData['profileImageUrl'] as String?,
-      isEmailVerified: userData['isEmailVerified'] as bool? ?? false,
+      firstName: userData['firstName'] as String?,
+      lastName: userData['lastName'] as String?,
+      username: userData['username'] as String?,
+      clubId: userData['clubId'] as String?,
       createdAt: DateTime.parse(userData['createdAt'] as String),
-      lastLoginAt: userData['lastLoginAt'] != null
-          ? DateTime.parse(userData['lastLoginAt'] as String)
+      updatedAt: userData['updatedAt'] != null
+          ? DateTime.parse(userData['updatedAt'] as String)
           : null,
+      roles: (userData['roles'] as List<dynamic>?)
+          ?.map((role) => role as String)
+          .toList() ?? [],
+      permissions: (userData['permissions'] as List<dynamic>?)
+          ?.map((permission) => permission as String)
+          .toList() ?? [],
     );
 
     return AuthSessionEntity(
@@ -718,21 +710,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (extensions != null && extensions['code'] != null) {
         switch (extensions['code'] as String) {
           case 'INVALID_CREDENTIALS':
-            return const AuthFailure.invalidCredentials();
+            return AuthFailure.invalidCredentials();
           case 'EMAIL_NOT_VERIFIED':
-            return const AuthFailure.emailNotVerified();
+            return AuthFailure.unexpected('Email not verified');
           case 'ACCOUNT_LOCKED':
-            return const AuthFailure.accountLocked();
+            return AuthFailure.unauthorized();
           case 'PASSWORD_EXPIRED':
-            return const AuthFailure.passwordExpired();
+            return AuthFailure.unexpected('Password expired');
           case 'HANKO_INIT_FAILED':
-            return const AuthFailure.hankoInitFailed();
+            return AuthFailure.hankoError('Initialization failed');
           case 'HANKO_COMPLETION_FAILED':
-            return const AuthFailure.hankoCompletionFailed();
+            return AuthFailure.hankoError('Completion failed');
           case 'BIOMETRIC_NOT_AVAILABLE':
-            return const AuthFailure.biometricNotAvailable();
+            return AuthFailure.biometricNotAvailable();
           case 'BIOMETRIC_AUTH_FAILED':
-            return const AuthFailure.biometricAuthFailed();
+            return AuthFailure.unexpected('Biometric authentication failed');
           default:
             return NetworkFailure.serverError(
               500,
@@ -746,7 +738,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     if (exception.linkException != null) {
       if (exception.linkException is NetworkException) {
-        return const NetworkFailure.noConnection();
+        return NetworkFailure.noConnection();
       }
 
       return NetworkFailure.serverError(

@@ -1,59 +1,283 @@
-import '../../../../core/design_system/design_system.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-/// Bookings page - view and manage bookings
-class BookingsPage extends StatelessWidget {
+import '../../../../core/design_system/design_system.dart';
+import '../../../../shared/widgets/app_error_widget.dart';
+import '../../../../shared/widgets/app_loading_widget.dart';
+import '../controllers/bookings_controller.dart';
+import '../widgets/booking_card_widget.dart';
+import '../widgets/booking_filters_widget.dart';
+import '../widgets/upcoming_bookings_section.dart';
+import '../widgets/past_bookings_section.dart';
+
+/// Bookings page - comprehensive booking management and history
+class BookingsPage extends ConsumerStatefulWidget {
   /// Constructs a [BookingsPage]
   const BookingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('My Bookings'),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.history),
-          onPressed: () {
-            // Navigate to booking history
-          },
-        ),
-      ],
-    ),
-    body: ListView.separated(
-      padding: AppSpacing.pagePadding,
-      itemCount: 3,
-      separatorBuilder: (context, index) => AppSpacing.verticalSpaceMD,
-      itemBuilder: (context, index) => BookingCard(
-        clubName: 'Premium Club ${index + 1}',
-        bookingDate: DateTime.now().add(Duration(days: index + 1)),
-        bookingTime: '7:00 PM',
-        status: index == 0 ? 'confirmed' : 'pending',
-        guestCount: 2 + index,
-        onTap: () {
-          // Navigate to booking details
+  ConsumerState<BookingsPage> createState() => _BookingsPageState();
+}
+
+class _BookingsPageState extends ConsumerState<BookingsPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  BookingStatus? _currentFilter;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+
+    // Listen for real-time booking updates
+    ref.listenManual(bookingUpdatesProvider, (previous, next) {
+      next.when(
+        data: (updates) {
+          // Handle real-time booking updates
+          for (final update in updates) {
+            _handleBookingUpdate(update);
+          }
         },
+        loading: () {},
+        error: (error, stack) {},
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleBookingUpdate(BookingUpdate update) {
+    final message = switch (update.type) {
+      BookingUpdateType.confirmed => 'Booking confirmed: ${update.booking.club.name}',
+      BookingUpdateType.cancelled => 'Booking cancelled: ${update.booking.club.name}',
+      BookingUpdateType.reminder => 'Reminder: ${update.booking.club.name} booking in 1 hour',
+      BookingUpdateType.modified => 'Booking modified: ${update.booking.club.name}',
+    };
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          action: SnackBarAction(
+            label: 'View',
+            onPressed: () => context.push('/bookings/${update.booking.id}'),
+          ),
+        ),
+      );
+
+      // Refresh bookings to show latest updates
+      ref.invalidate(upcomingBookingsProvider);
+      ref.invalidate(pastBookingsProvider);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Bookings'),
+        centerTitle: true,
+        elevation: 0,
         actions: [
-          if (index > 0)
-            TextButton(
-              onPressed: () {
-                // Cancel booking
-              },
-              child: const Text('Cancel'),
-            ),
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: () => _showFilters(context),
+            tooltip: 'Filter bookings',
+          ),
+          IconButton(
+            icon: const Icon(Icons.notifications_outlined),
+            onPressed: () => context.push('/notifications'),
+            tooltip: 'Notifications',
+          ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(icon: Icon(Icons.schedule), text: 'Upcoming'),
+            Tab(icon: Icon(Icons.history), text: 'Past'),
+            Tab(icon: Icon(Icons.all_inbox), text: 'All'),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildUpcomingTab(),
+          _buildPastTab(),
+          _buildAllBookingsTab(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.push('/clubs'),
+        icon: const Icon(Icons.add),
+        label: const Text('New Booking'),
+        tooltip: 'Create new booking',
+      ),
+    );
+  }
+
+  Widget _buildUpcomingTab() {
+    return RefreshIndicator(
+      onRefresh: () => ref.refresh(upcomingBookingsProvider.future),
+      child: const UpcomingBookingsSection(),
+    );
+  }
+
+  Widget _buildPastTab() {
+    return RefreshIndicator(
+      onRefresh: () => ref.refresh(pastBookingsProvider.future),
+      child: const PastBookingsSection(),
+    );
+  }
+
+  Widget _buildAllBookingsTab() {
+    final bookingsState = ref.watch(allBookingsProvider);
+
+    return bookingsState.when(
+      data: (bookings) => RefreshIndicator(
+        onRefresh: () => ref.refresh(allBookingsProvider.future),
+        child: bookings.isEmpty
+            ? const _EmptyBookingsView()
+            : ListView.separated(
+                padding: AppSpacing.pagePadding,
+                itemCount: bookings.length,
+                separatorBuilder: (context, index) => AppSpacing.verticalSpaceMD,
+                itemBuilder: (context, index) {
+                  final booking = bookings[index];
+                  return BookingCardWidget(
+                    booking: booking,
+                    onTap: () => context.push('/bookings/${booking.id}'),
+                    onCancel: booking.canBeCancelled
+                        ? () => _cancelBooking(booking.id)
+                        : null,
+                    onModify: booking.canBeModified
+                        ? () => context.push('/bookings/${booking.id}/edit')
+                        : null,
+                  );
+                },
+              ),
+      ),
+      loading: () => const AppLoadingWidget(message: 'Loading bookings...'),
+      error: (error, stack) => AppErrorWidget(
+        error: error,
+        onRetry: () => ref.refresh(allBookingsProvider.future),
+      ),
+    );
+  }
+
+  void _showFilters(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BookingFiltersWidget(
+        currentFilter: _currentFilter,
+        onFilterChanged: (filter) {
+          setState(() => _currentFilter = filter);
+          ref.read(bookingsControllerProvider.notifier)
+              .applyFilter(filter);
+        },
+      ),
+    );
+  }
+
+  Future<void> _cancelBooking(String bookingId) async {
+    // Show confirmation dialog
+    final shouldCancel = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Cancel Booking'),
+        content: const Text(
+          'Are you sure you want to cancel this booking? '
+          'This action cannot be undone.',
+        ),
+        actions: [
           TextButton(
-            onPressed: () {
-              // View details
-            },
-            child: const Text('Details'),
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Keep Booking'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Cancel Booking'),
           ),
         ],
       ),
-    ),
-    floatingActionButton: FloatingActionButton.extended(
-      onPressed: () {
-        // Navigate to clubs to make new booking
-      },
-      icon: const Icon(Icons.add),
-      label: const Text('New Booking'),
-    ),
-  );
+    );
+
+    if (shouldCancel == true) {
+      // Show reason dialog
+      String? reason;
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Cancellation Reason'),
+          content: TextField(
+            decoration: const InputDecoration(
+              hintText: 'Optional: Tell us why you\'re cancelling',
+              border: OutlineInputBorder(),
+            ),
+            maxLines: 3,
+            onChanged: (value) => reason = value,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Skip'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                ref.read(bookingsControllerProvider.notifier)
+                    .cancelBooking(bookingId, reason: reason);
+              },
+              child: const Text('Cancel Booking'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+}
+
+class _EmptyBookingsView extends StatelessWidget {
+  const _EmptyBookingsView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.event_busy_outlined,
+            size: 80,
+            color: Theme.of(context).colorScheme.outline,
+          ),
+          AppSpacing.verticalSpaceLG,
+          Text(
+            'No Bookings Yet',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          AppSpacing.verticalSpaceMD,
+          Text(
+            'Discover amazing clubs and make your first booking!',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          AppSpacing.verticalSpaceLG,
+          FilledButton.icon(
+            onPressed: () => context.push('/clubs'),
+            icon: const Icon(Icons.explore),
+            label: const Text('Explore Clubs'),
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/storage/local_storage.dart';
+import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
 
 /// Local data source for authentication
@@ -77,13 +78,14 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
           );
 
           final session = AuthSessionEntity(
+            user: user,
             accessToken: sessionData['accessToken'] as String? ?? '',
             refreshToken: sessionData['refreshToken'] as String? ?? '',
             expiresAt: DateTime.parse(
               sessionData['expiresAt'] as String? ??
                   DateTime.now().toIso8601String(),
             ),
-            user: user,
+            id: sessionData['id'] as String?,
             hankoSessionId: sessionData['hankoSessionId'] as String?,
           );
 
@@ -104,6 +106,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       final userStorage = storage.userStorage;
 
       final sessionData = {
+        'id': session.id,
         'accessToken': session.accessToken,
         'refreshToken': session.refreshToken,
         'expiresAt': session.expiresAt.toIso8601String(),
