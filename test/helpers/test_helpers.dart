@@ -1,5 +1,6 @@
 import 'package:clubland/core/design_system/design_system.dart';
 import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
+import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

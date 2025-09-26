@@ -2,6 +2,7 @@ import 'package:clubland/core/design_system/widgets/app_button.dart';
 import 'package:clubland/core/design_system/widgets/app_input_field.dart';
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/core/providers/core_providers.dart';
+import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:clubland/features/auth/presentation/pages/login_page.dart';
 import 'package:clubland/features/auth/presentation/providers/auth_providers.dart';
@@ -30,8 +31,9 @@ void main() {
     mockRefreshTokenUseCase = MockRefreshTokenUsecase();
     mockAuthRepository = MockAuthRepository();
     // Mock auth repository stream
-    when(() => mockAuthRepository.authStateChanges)
-        .thenAnswer((_) => Stream.value(null));
+    when(
+      () => mockAuthRepository.authStateChanges,
+    ).thenAnswer((_) => Stream.value(null));
   });
 
   tearDown(MockProviders.resetAll);

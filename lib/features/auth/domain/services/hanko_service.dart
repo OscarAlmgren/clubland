@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../entities/auth_session_entity.dart';
 import '../entities/user_entity.dart';
 
 /// Hanko authentication service interface

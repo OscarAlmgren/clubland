@@ -1,6 +1,7 @@
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 import 'package:clubland/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -169,12 +170,11 @@ void main() {
         ).thenAnswer((_) async => const Right<Failure, bool>(true));
 
         // Mock Hanko login initiation
-        when(
-          () => mockHankoDataSource.initiateLogin(any()),
-        ).thenAnswer((_) async => const Right(HankoAuthResponse(
-          sessionId: 'test-session-id',
-          status: 'pending',
-        )));
+        when(() => mockHankoDataSource.initiateLogin(any())).thenAnswer(
+          (_) async => const Right(
+            HankoAuthResponse(sessionId: 'test-session-id', status: 'pending'),
+          ),
+        );
 
         // Mock Hanko login success
         when(
@@ -217,9 +217,15 @@ void main() {
           },
         );
 
-        verify(() => mockHankoDataSource.isEmailRegistered('test@example.com')).called(1);
-        verify(() => mockHankoDataSource.initiateLogin('test@example.com')).called(1);
-        verify(() => mockSecureStorageService.saveHankoSessionId('test-session-id')).called(1);
+        verify(
+          () => mockHankoDataSource.isEmailRegistered('test@example.com'),
+        ).called(1);
+        verify(
+          () => mockHankoDataSource.initiateLogin('test@example.com'),
+        ).called(1);
+        verify(
+          () => mockSecureStorageService.saveHankoSessionId('test-session-id'),
+        ).called(1);
       });
     });
 
@@ -235,8 +241,12 @@ void main() {
         when(() => mockLocalDataSource.clearUser()).thenAnswer((_) async {});
 
         // Mock secure storage operations
-        when(() => mockSecureStorageService.deleteAccessToken()).thenAnswer((_) async {});
-        when(() => mockSecureStorageService.deleteRefreshToken()).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.deleteAccessToken(),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.deleteRefreshToken(),
+        ).thenAnswer((_) async {});
 
         final result = await repository.logout();
 
@@ -321,19 +331,30 @@ void main() {
           user: testUser,
         );
 
-        when(() => mockSecureStorageService.getRefreshToken())
-            .thenAnswer((_) async => 'current-refresh-token');
+        when(
+          () => mockSecureStorageService.getRefreshToken(),
+        ).thenAnswer((_) async => 'current-refresh-token');
         when(
           () => mockRemoteDataSource.refreshToken(
             refreshToken: any(named: 'refreshToken'),
           ),
-        ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(newSession));
+        ).thenAnswer(
+          (_) async => Right<Failure, AuthSessionEntity>(newSession),
+        );
 
-        when(() => mockLocalDataSource.storeSession(any())).thenAnswer((_) async {});
-        when(() => mockSecureStorageService.storeAccessToken(any())).thenAnswer((_) async {});
-        when(() => mockSecureStorageService.storeRefreshToken(any())).thenAnswer((_) async {});
+        when(
+          () => mockLocalDataSource.storeSession(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.storeAccessToken(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.storeRefreshToken(any()),
+        ).thenAnswer((_) async {});
 
-        final result = await repository.refreshToken(refreshToken: 'current-refresh-token');
+        final result = await repository.refreshToken(
+          refreshToken: 'current-refresh-token',
+        );
 
         expect(result.isRight(), true);
         result.fold(
@@ -344,9 +365,11 @@ void main() {
           },
         );
 
-        verify(() => mockRemoteDataSource.refreshToken(
-              refreshToken: 'current-refresh-token',
-            )).called(1);
+        verify(
+          () => mockRemoteDataSource.refreshToken(
+            refreshToken: 'current-refresh-token',
+          ),
+        ).called(1);
       });
 
       test('should return failure when refresh fails', () async {
@@ -354,11 +377,15 @@ void main() {
           () => mockRemoteDataSource.refreshToken(
             refreshToken: any(named: 'refreshToken'),
           ),
-        ).thenAnswer((_) async => Left<Failure, AuthSessionEntity>(
-          AuthFailure.tokenRefreshFailed(),
-        ));
+        ).thenAnswer(
+          (_) async => Left<Failure, AuthSessionEntity>(
+            AuthFailure.tokenRefreshFailed(),
+          ),
+        );
 
-        final result = await repository.refreshToken(refreshToken: 'invalid-token');
+        final result = await repository.refreshToken(
+          refreshToken: 'invalid-token',
+        );
 
         expect(result.isLeft(), true);
         result.fold(
@@ -388,7 +415,9 @@ void main() {
           ),
         ).thenAnswer((_) async => Right<Failure, UserEntity>(updatedUser));
 
-        when(() => mockLocalDataSource.storeUser(any())).thenAnswer((_) async {});
+        when(
+          () => mockLocalDataSource.storeUser(any()),
+        ).thenAnswer((_) async {});
 
         final result = await repository.updateProfile(
           userId: '123',
@@ -406,10 +435,12 @@ void main() {
           },
         );
 
-        verify(() => mockRemoteDataSource.updateProfile(
-              userId: '123',
-              profile: profile,
-            )).called(1);
+        verify(
+          () => mockRemoteDataSource.updateProfile(
+            userId: '123',
+            profile: profile,
+          ),
+        ).called(1);
         verify(() => mockLocalDataSource.storeUser(updatedUser)).called(1);
       });
     });
@@ -434,10 +465,12 @@ void main() {
           (success) => expect(success, true),
         );
 
-        verify(() => mockRemoteDataSource.changePassword(
-              currentPassword: 'oldPassword',
-              newPassword: 'newPassword123',
-            )).called(1);
+        verify(
+          () => mockRemoteDataSource.changePassword(
+            currentPassword: 'oldPassword',
+            newPassword: 'newPassword123',
+          ),
+        ).called(1);
       });
 
       test('should return failure when password change fails', () async {
@@ -446,9 +479,9 @@ void main() {
             currentPassword: any(named: 'currentPassword'),
             newPassword: any(named: 'newPassword'),
           ),
-        ).thenAnswer((_) async => Left<Failure, bool>(
-          AuthFailure.invalidCredentials(),
-        ));
+        ).thenAnswer(
+          (_) async => Left<Failure, bool>(AuthFailure.invalidCredentials()),
+        );
 
         final result = await repository.changePassword(
           currentPassword: 'wrongPassword',
@@ -473,8 +506,12 @@ void main() {
 
         when(() => mockLocalDataSource.clearSession()).thenAnswer((_) async {});
         when(() => mockLocalDataSource.clearUser()).thenAnswer((_) async {});
-        when(() => mockSecureStorageService.deleteAccessToken()).thenAnswer((_) async {});
-        when(() => mockSecureStorageService.deleteRefreshToken()).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.deleteAccessToken(),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.deleteRefreshToken(),
+        ).thenAnswer((_) async {});
 
         final result = await repository.deleteAccount(password: 'password123');
 
@@ -484,7 +521,9 @@ void main() {
           (success) => expect(success, true),
         );
 
-        verify(() => mockRemoteDataSource.deleteAccount(password: 'password123')).called(1);
+        verify(
+          () => mockRemoteDataSource.deleteAccount(password: 'password123'),
+        ).called(1);
         verify(() => mockLocalDataSource.clearSession()).called(1);
         verify(() => mockLocalDataSource.clearUser()).called(1);
       });

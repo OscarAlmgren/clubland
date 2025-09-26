@@ -1,4 +1,5 @@
 import 'package:clubland/core/errors/failures.dart';
+import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:clubland/features/auth/domain/usecases/login_usecase.dart';
 import 'package:dartz/dartz.dart';
@@ -218,10 +219,8 @@ void main() {
 
       // This test should expect the exception to bubble up since the usecase doesn't handle exceptions
       expect(
-        () => useCase.call(
-          email: 'test@example.com',
-          password: 'password12345',
-        ),
+        () =>
+            useCase.call(email: 'test@example.com', password: 'password12345'),
         throwsA(isA<Exception>()),
       );
     });

@@ -5,7 +5,6 @@ import 'package:logger/logger.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
-import '../models/hanko_auth_response.dart';
 
 /// Hanko data source for passwordless authentication
 abstract class HankoDataSource {
