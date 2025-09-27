@@ -77,7 +77,7 @@ final bookingUpdatesProvider =
 
 typedef BookingUpdatesRef = AutoDisposeStreamProviderRef<List<BookingUpdate>>;
 String _$bookingsControllerHash() =>
-    r'426cb2fa7017ebf31029d26695f7443150673ab8';
+    r'2ee6788f61a0d19f08d4b46bbdb4996a202f18c7';
 
 /// Main bookings controller for managing booking state and actions
 ///

@@ -34,12 +34,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   @override
   Widget build(BuildContext context) {
     // For now, use mock user data
-    final currentUser = SimpleUser(
+    const currentUser = SimpleUser(
       id: '1',
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
-      bio: 'Passionate about exploring exclusive clubs and connecting with fellow members.',
+      bio:
+          'Passionate about exploring exclusive clubs and connecting with fellow members.',
       visitCount: 24,
       reviewCount: 12,
       clubCount: 8,
@@ -75,14 +76,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         ),
       ),
       body: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildOverviewTab(currentUser),
-                _buildActivityTab(),
-                _buildAchievementsTab(),
-                _buildMoreTab(),
-              ],
-            ),
+        controller: _tabController,
+        children: [
+          _buildOverviewTab(currentUser),
+          _buildActivityTab(),
+          _buildAchievementsTab(),
+          _buildMoreTab(),
+        ],
+      ),
     );
   }
 
@@ -126,9 +127,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                             const SizedBox(height: 4),
                             Text(
                               user.email,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
                             ),
                             if (user.bio != null) ...[
                               const SizedBox(height: 4),
@@ -228,7 +232,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         type: 'visit',
                         title: 'Visited Elite Country Club',
                         description: 'Enjoyed an excellent dinner',
-                        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+                        timestamp: DateTime.now().subtract(
+                          const Duration(hours: 2),
+                        ),
                       ),
                       compact: true,
                     ),
@@ -238,7 +244,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         type: 'review',
                         title: 'Reviewed Metropolitan Club',
                         description: 'Great service and atmosphere',
-                        timestamp: DateTime.now().subtract(const Duration(days: 1)),
+                        timestamp: DateTime.now().subtract(
+                          const Duration(days: 1),
+                        ),
                       ),
                       compact: true,
                     ),
@@ -248,7 +256,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         type: 'favorite',
                         title: 'Added Yacht Club to favorites',
                         description: 'Planning a visit next weekend',
-                        timestamp: DateTime.now().subtract(const Duration(days: 3)),
+                        timestamp: DateTime.now().subtract(
+                          const Duration(days: 3),
+                        ),
                       ),
                       compact: true,
                     ),
@@ -481,11 +491,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                   subtitle: item.subtitle != null
                       ? Text(
                           item.subtitle!,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.onSurfaceVariant,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
                         )
                       : null,
                   trailing: const Icon(Icons.chevron_right),
