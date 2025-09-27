@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/exceptions.dart' as app_exceptions;
 import '../../../../core/graphql/graphql_operations.dart';
 import '../../../../core/network/graphql_client.dart';
 import '../models/booking_model.dart';
@@ -87,16 +87,15 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message:
-              GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to fetch bookings',
+        throw app_exceptions.NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch bookings',
         );
       }
 
       final data = result.data?['myBookings'];
       if (data == null) {
-        throw const ServerException(message: 'No bookings data received');
+        throw const app_exceptions.NetworkException('No bookings data received', 'NO_DATA');
       }
 
       final nodes = data['nodes'] as List<dynamic>?;
@@ -109,10 +108,10 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           .toList();
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching bookings', error: e);
-      throw ServerException(message: e.toString());
+      throw app_exceptions.NetworkException.serverError(500, e.toString());
     } on Exception catch (e) {
       _logger.e('Error fetching bookings', error: e);
-      throw ServerException(message: 'Failed to fetch bookings: $e');
+      throw app_exceptions.NetworkException.serverError(500, 'Failed to fetch bookings: $e');
     }
   }
 
@@ -190,25 +189,24 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message:
-              GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to fetch booking details',
+        throw NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch booking details',
         );
       }
 
       final bookingData = result.data?['booking'];
       if (bookingData == null) {
-        throw const ServerException(message: 'Booking not found');
+        throw const NetworkException('Booking not found', 'NOT_FOUND');
       }
 
       return BookingModel.fromJson(bookingData as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching booking details', error: e);
-      throw ServerException(message: e.toString());
+      throw app_exceptions.NetworkException.serverError(500, e.toString());
     } on Exception catch (e) {
       _logger.e('Error fetching booking details', error: e);
-      throw ServerException(message: 'Failed to fetch booking details: $e');
+      throw app_exceptions.NetworkException.serverError(500, 'Failed to fetch booking details: $e');
     }
   }
 
@@ -236,25 +234,24 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message:
-              GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to fetch availability',
+        throw app_exceptions.NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch availability',
         );
       }
 
       final data = result.data?['facilityAvailability'];
       if (data == null) {
-        throw const ServerException(message: 'No availability data received');
+        throw const app_exceptions.NetworkException('No availability data received', 'NO_DATA');
       }
 
       return FacilityAvailabilityModel.fromJson(data as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching availability', error: e);
-      throw ServerException(message: e.toString());
+      throw app_exceptions.NetworkException.serverError(500, e.toString());
     } on Exception catch (e) {
       _logger.e('Error fetching availability', error: e);
-      throw ServerException(message: 'Failed to fetch availability: $e');
+      throw app_exceptions.NetworkException.serverError(500, 'Failed to fetch availability: $e');
     }
   }
 
@@ -288,30 +285,30 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       );
 
       if (!GraphQLHelpers.isSuccess(result)) {
-        throw ServerException(
-          message:
-              GraphQLHelpers.getErrorMessage(result) ??
-              'Failed to create booking',
+        throw app_exceptions.NetworkException.serverError(
+          500,
+          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to create booking',
         );
       }
 
       final data = result.data?['createBooking'];
       if (data == null || data['success'] != true) {
-        throw ServerException(
-          message: data?['message'] ?? 'Failed to create booking',
+        throw app_exceptions.NetworkException(
+          data?['message'] ?? 'Failed to create booking',
+          'CREATE_FAILED',
         );
       }
 
       final bookingData = data['booking'];
       if (bookingData == null) {
-        throw const ServerException(message: 'No booking data received');
+        throw const app_exceptions.NetworkException('No booking data received', 'NO_DATA');
       }
 
       _logger.i('Successfully created booking: ${bookingData['id']}');
       return BookingModel.fromJson(bookingData as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error creating booking', error: e);
-      throw ServerException(message: e.toString());
+      throw app_exceptions.NetworkException.serverError(500, e.toString());
     } on Exception catch (e) {
       _logger.e('Error creating booking', error: e);
       throw ServerException(message: 'Failed to create booking: $e');
@@ -370,7 +367,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       return BookingModel.fromJson(bookingData as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error updating booking', error: e);
-      throw ServerException(message: e.toString());
+      throw app_exceptions.NetworkException.serverError(500, e.toString());
     } on Exception catch (e) {
       _logger.e('Error updating booking', error: e);
       throw ServerException(message: 'Failed to update booking: $e');
@@ -421,7 +418,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       return BookingModel.fromJson(bookingData as Map<String, dynamic>);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error cancelling booking', error: e);
-      throw ServerException(message: e.toString());
+      throw app_exceptions.NetworkException.serverError(500, e.toString());
     } on Exception catch (e) {
       _logger.e('Error cancelling booking', error: e);
       throw ServerException(message: 'Failed to cancel booking: $e');

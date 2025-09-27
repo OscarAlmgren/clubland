@@ -5,11 +5,15 @@ class BookingCardWidget extends StatelessWidget {
   const BookingCardWidget({
     required this.booking,
     this.onTap,
+    this.onCancel,
+    this.onModify,
     super.key,
   });
 
   final BookingModel booking;
   final VoidCallback? onTap;
+  final VoidCallback? onCancel;
+  final VoidCallback? onModify;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +65,31 @@ class BookingCardWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodySmall,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                ),
+              ],
+              if (onCancel != null || onModify != null) ...[
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (onModify != null)
+                      TextButton.icon(
+                        onPressed: onModify,
+                        icon: const Icon(Icons.edit, size: 16),
+                        label: const Text('Modify'),
+                      ),
+                    if (onCancel != null && onModify != null)
+                      const SizedBox(width: 8),
+                    if (onCancel != null)
+                      TextButton.icon(
+                        onPressed: onCancel,
+                        icon: const Icon(Icons.cancel, size: 16),
+                        label: const Text('Cancel'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ],

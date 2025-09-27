@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/design_system/design_system.dart';
 import '../../../../shared/widgets/app_error_widget.dart';
 import '../../../../shared/widgets/app_loading_widget.dart';
+import '../../data/models/booking_model.dart';
 import '../controllers/bookings_controller.dart';
 import '../widgets/booking_card_widget.dart';
 import '../widgets/booking_filters_widget.dart';
-import '../widgets/upcoming_bookings_section.dart';
 import '../widgets/past_bookings_section.dart';
+import '../widgets/upcoming_bookings_section.dart';
 
 /// Bookings page - comprehensive booking management and history
 class BookingsPage extends ConsumerStatefulWidget {
@@ -53,10 +53,14 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
 
   void _handleBookingUpdate(BookingUpdate update) {
     final message = switch (update.type) {
-      BookingUpdateType.confirmed => 'Booking confirmed: ${update.booking.club.name}',
-      BookingUpdateType.cancelled => 'Booking cancelled: ${update.booking.club.name}',
-      BookingUpdateType.reminder => 'Reminder: ${update.booking.club.name} booking in 1 hour',
-      BookingUpdateType.modified => 'Booking modified: ${update.booking.club.name}',
+      BookingUpdateType.confirmed =>
+        'Booking confirmed: ${update.booking.club.name}',
+      BookingUpdateType.cancelled =>
+        'Booking cancelled: ${update.booking.club.name}',
+      BookingUpdateType.reminder =>
+        'Reminder: ${update.booking.club.name} booking in 1 hour',
+      BookingUpdateType.modified =>
+        'Booking modified: ${update.booking.club.name}',
     };
 
     if (mounted) {
@@ -78,69 +82,72 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('My Bookings'),
-        centerTitle: true,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: () => _showFilters(context),
-            tooltip: 'Filter bookings',
-          ),
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () => context.push('/notifications'),
-            tooltip: 'Notifications',
-          ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.schedule), text: 'Upcoming'),
-            Tab(icon: Icon(Icons.history), text: 'Past'),
-            Tab(icon: Icon(Icons.all_inbox), text: 'All'),
-          ],
+    appBar: AppBar(
+      title: const Text('My Bookings'),
+      centerTitle: true,
+      elevation: 0,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.filter_list),
+          onPressed: () => _showFilters(context),
+          tooltip: 'Filter bookings',
         ),
-      ),
-      body: TabBarView(
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined),
+          onPressed: () => context.push('/notifications'),
+          tooltip: 'Notifications',
+        ),
+      ],
+      bottom: TabBar(
         controller: _tabController,
-        children: [
-          _buildUpcomingTab(),
-          _buildPastTab(),
-          _buildAllBookingsTab(),
+        tabs: const [
+          Tab(icon: Icon(Icons.schedule), text: 'Upcoming'),
+          Tab(icon: Icon(Icons.history), text: 'Past'),
+          Tab(icon: Icon(Icons.all_inbox), text: 'All'),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/clubs'),
-        icon: const Icon(Icons.add),
-        label: const Text('New Booking'),
-        tooltip: 'Create new booking',
-      ),
-    );
+    ),
+    body: TabBarView(
+      controller: _tabController,
+      children: [_buildUpcomingTab(), _buildPastTab(), _buildAllBookingsTab()],
+    ),
+    floatingActionButton: FloatingActionButton.extended(
+      onPressed: () => context.push('/clubs'),
+      icon: const Icon(Icons.add),
+      label: const Text('New Booking'),
+      tooltip: 'Create new booking',
+    ),
+  );
 
   Widget _buildUpcomingTab() => RefreshIndicator(
-      onRefresh: () => ref.refresh(upcomingBookingsProvider.future),
-      child: const UpcomingBookingsSection(),
-    );
+    onRefresh: () async {
+      ref.invalidate(upcomingBookingsProvider);
+    },
+    child: const UpcomingBookingsSection(),
+  );
 
   Widget _buildPastTab() => RefreshIndicator(
-      onRefresh: (dynamic pastBookingsProvider) => ref.refresh(pastBookingsProvider.future),
-      child: const PastBookingsSection(),
-    );
+    onRefresh: () async {
+      ref.invalidate(pastBookingsProvider);
+    },
+    child: const PastBookingsSection(),
+  );
 
   Widget _buildAllBookingsTab() {
     final bookingsState = ref.watch(allBookingsProvider);
 
     return bookingsState.when(
-      data: (bookings) => RefreshIndicator(
-        onRefresh: (dynamic allBookingsProvider) => ref.refresh(allBookingsProvider.future),
+      data: (List<BookingModel> bookings) => RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(allBookingsProvider);
+        },
         child: bookings.isEmpty
             ? const _EmptyBookingsView()
             : ListView.separated(
                 padding: AppSpacing.pagePadding,
                 itemCount: bookings.length,
-                separatorBuilder: (context, index) => AppSpacing.verticalSpaceMD,
+                separatorBuilder: (context, index) =>
+                    AppSpacing.verticalSpaceMD,
                 itemBuilder: (context, index) {
                   final booking = bookings[index];
                   return BookingCardWidget(
@@ -157,9 +164,9 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
               ),
       ),
       loading: () => const AppLoadingWidget(message: 'Loading bookings...'),
-      error: (error, stack) => AppErrorWidget(
-        error: error,
-        onRetry: () => ref.refresh(allBookingsProvider.future),
+      error: (Object error, StackTrace stack) => AppErrorWidget(
+        error: error.toString(),
+        onRetry: () => ref.invalidate(allBookingsProvider),
       ),
     );
   }
@@ -171,10 +178,9 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
       backgroundColor: Colors.transparent,
       builder: (context) => BookingFiltersWidget(
         currentFilter: _currentFilter,
-        onFilterChanged: (filter) {
+        onFilterChanged: (BookingStatus? filter) {
           setState(() => _currentFilter = filter);
-          ref.read(bookingsControllerProvider.notifier)
-              .applyFilter(filter);
+          ref.read(bookingsControllerProvider.notifier).applyFilter(filter);
         },
       ),
     );
@@ -206,9 +212,10 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
     if (shouldCancel ?? false) {
       // Show reason dialog
       String? reason;
-      await showDialog<void>(
-        context: context,
-        builder: (context) => AlertDialog(
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
           title: const Text('Cancellation Reason'),
           content: TextField(
             decoration: const InputDecoration(
@@ -224,9 +231,10 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
               child: const Text('Skip'),
             ),
             FilledButton(
-              onPressed: (dynamic bookingsControllerProvider) {
+              onPressed: () {
                 Navigator.of(context).pop();
-                ref.read(bookingsControllerProvider.notifier)
+                ref
+                    .read(bookingsControllerProvider.notifier)
                     .cancelBooking(bookingId, reason: reason);
               },
               child: const Text('Cancel Booking'),
@@ -234,46 +242,45 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
           ],
         ),
       );
+      }
     }
   }
 }
 
-class BookingUpdate {
-}
 
 class _EmptyBookingsView extends StatelessWidget {
   const _EmptyBookingsView();
 
   @override
   Widget build(BuildContext context) => Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.event_busy_outlined,
-            size: 80,
-            color: Theme.of(context).colorScheme.outline,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.event_busy_outlined,
+          size: 80,
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        AppSpacing.verticalSpaceLG,
+        Text(
+          'No Bookings Yet',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        AppSpacing.verticalSpaceMD,
+        Text(
+          'Discover amazing clubs and make your first booking!',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          AppSpacing.verticalSpaceLG,
-          Text(
-            'No Bookings Yet',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          AppSpacing.verticalSpaceMD,
-          Text(
-            'Discover amazing clubs and make your first booking!',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          AppSpacing.verticalSpaceLG,
-          FilledButton.icon(
-            onPressed: () => context.push('/clubs'),
-            icon: const Icon(Icons.explore),
-            label: const Text('Explore Clubs'),
-          ),
-        ],
-      ),
-    );
+          textAlign: TextAlign.center,
+        ),
+        AppSpacing.verticalSpaceLG,
+        FilledButton.icon(
+          onPressed: () => context.push('/clubs'),
+          icon: const Icon(Icons.explore),
+          label: const Text('Explore Clubs'),
+        ),
+      ],
+    ),
+  );
 }

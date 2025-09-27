@@ -98,6 +98,12 @@ class BookingModel extends Equatable {
   bool get isPast => DateTime.now().isAfter(endTime);
   bool get isActive => DateTime.now().isAfter(startTime) && DateTime.now().isBefore(endTime);
 
+  /// Whether this booking can be cancelled
+  bool get canBeCancelled => status == BookingStatus.confirmed || status == BookingStatus.pending;
+
+  /// Whether this booking can be modified
+  bool get canBeModified => status == BookingStatus.confirmed || status == BookingStatus.pending;
+
   @override
   List<Object?> get props => [
         id,
