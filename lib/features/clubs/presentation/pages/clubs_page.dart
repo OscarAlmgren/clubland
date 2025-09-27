@@ -50,7 +50,6 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
 
   @override
   Widget build(BuildContext context) {
-    final clubsState = ref.watch(clubsControllerProvider);
     final hasLocationPermission = ref.watch(locationPermissionProvider);
 
     return Scaffold(
@@ -105,14 +104,16 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
 
     return clubsState.when(
       data: (clubs) => RefreshIndicator(
-        onRefresh: () => ref.refresh(clubsControllerProvider.future),
+        onRefresh: () async {
+          ref.invalidate(clubsControllerProvider);
+        },
         child: clubs.isEmpty
             ? const _EmptyClubsView()
             : ListView.separated(
                 controller: _scrollController,
-                padding: AppSpacing.pagePadding,
+                padding: const EdgeInsets.all(16),
                 itemCount: clubs.length + 1,
-                separatorBuilder: (context, index) => AppSpacing.verticalSpaceMD,
+                separatorBuilder: (context, index) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   if (index == clubs.length) {
                     return const _LoadMoreIndicator();
@@ -129,8 +130,8 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
       ),
       loading: () => const AppLoadingWidget(message: 'Loading clubs...'),
       error: (error, stack) => AppErrorWidget(
-        error: error,
-        onRetry: () => ref.refresh(clubsControllerProvider.future),
+        error: error.toString(),
+        onRetry: () => ref.invalidate(clubsControllerProvider),
       ),
     );
   }
@@ -220,12 +221,12 @@ class _LoadMoreIndicator extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoadingMore = ref.watch(clubsControllerProvider.notifier)
-        .select((controller) => controller.isLoadingMore);
+    final controller = ref.read(clubsControllerProvider.notifier);
+    final isLoadingMore = controller.isLoadingMore;
 
     if (isLoadingMore) {
       return const Padding(
-        padding: AppSpacing.symmetricVerticalMD,
+        padding: EdgeInsets.symmetric(vertical: 16),
         child: Center(
           child: CircularProgressIndicator(),
         ),

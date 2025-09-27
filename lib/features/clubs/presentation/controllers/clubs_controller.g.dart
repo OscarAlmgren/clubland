@@ -6,14 +6,30 @@ part of 'clubs_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$featuredClubsHash() => r'eaccd970b4d03f67ad14449c9d49e7ed5eead2ea';
+String _$allClubsHash() => r'87ec568600bda400c4ba1da38f68789e1c207100';
 
-/// Featured clubs provider
+/// Provider for all clubs
+///
+/// Copied from [allClubs].
+@ProviderFor(allClubs)
+final allClubsProvider = AutoDisposeFutureProvider<List<SimpleClub>>.internal(
+  allClubs,
+  name: r'allClubsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$allClubsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef AllClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
+String _$featuredClubsHash() => r'45710ccc742906c7583f9057090ede4652980b88';
+
+/// Provider for featured clubs
 ///
 /// Copied from [featuredClubs].
 @ProviderFor(featuredClubs)
 final featuredClubsProvider =
-    AutoDisposeFutureProvider<List<ClubEntity>>.internal(
+    AutoDisposeFutureProvider<List<SimpleClub>>.internal(
   featuredClubs,
   name: r'featuredClubsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,15 +39,15 @@ final featuredClubsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef FeaturedClubsRef = AutoDisposeFutureProviderRef<List<ClubEntity>>;
-String _$nearbyClubsHash() => r'ec36b78e6a9e418e7ef6d7dee00f6f8c7f78b66d';
+typedef FeaturedClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
+String _$nearbyClubsHash() => r'1059c3fb9c0f1fdb4c6a25a3a4dc0e596bb532c2';
 
-/// Nearby clubs provider
+/// Provider for nearby clubs
 ///
 /// Copied from [nearbyClubs].
 @ProviderFor(nearbyClubs)
 final nearbyClubsProvider =
-    AutoDisposeFutureProvider<List<ClubEntity>>.internal(
+    AutoDisposeFutureProvider<List<SimpleClub>>.internal(
   nearbyClubs,
   name: r'nearbyClubsProvider',
   debugGetCreateSourceHash:
@@ -40,15 +56,15 @@ final nearbyClubsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef NearbyClubsRef = AutoDisposeFutureProviderRef<List<ClubEntity>>;
-String _$favoriteClubsHash() => r'58d7f851ad16de36b8337fd90caf28b3222f7c7f';
+typedef NearbyClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
+String _$favoriteClubsHash() => r'f98e722f2b97b16da3e673870ac131f460303901';
 
-/// Favorite clubs provider
+/// Provider for user favorite clubs
 ///
 /// Copied from [favoriteClubs].
 @ProviderFor(favoriteClubs)
 final favoriteClubsProvider =
-    AutoDisposeFutureProvider<List<ClubEntity>>.internal(
+    AutoDisposeFutureProvider<List<SimpleClub>>.internal(
   favoriteClubs,
   name: r'favoriteClubsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -58,9 +74,9 @@ final favoriteClubsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef FavoriteClubsRef = AutoDisposeFutureProviderRef<List<ClubEntity>>;
+typedef FavoriteClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
 String _$locationPermissionHash() =>
-    r'3f3e2830c8ec8fd6da04964655209594a8fbc7e9';
+    r'b66a9085abf655fe3228256060223e9728a4d9e2';
 
 /// Location permission provider
 ///
@@ -77,12 +93,14 @@ final locationPermissionProvider = AutoDisposeFutureProvider<bool>.internal(
 );
 
 typedef LocationPermissionRef = AutoDisposeFutureProviderRef<bool>;
-String _$clubsControllerHash() => r'51b3e120f3b172783952cd20cc56072c77488a89';
+String _$clubsControllerHash() => r'9f154e2c29259327821f87e18b20cecaa45b0874';
 
-/// See also [ClubsController].
+/// Main clubs controller for managing club state and actions
+///
+/// Copied from [ClubsController].
 @ProviderFor(ClubsController)
 final clubsControllerProvider = AutoDisposeAsyncNotifierProvider<
-    ClubsController, List<ClubEntity>>.internal(
+    ClubsController, List<SimpleClub>>.internal(
   ClubsController.new,
   name: r'clubsControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -92,6 +110,6 @@ final clubsControllerProvider = AutoDisposeAsyncNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$ClubsController = AutoDisposeAsyncNotifier<List<ClubEntity>>;
+typedef _$ClubsController = AutoDisposeAsyncNotifier<List<SimpleClub>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class LocationPermissionWidget extends StatelessWidget {
   const LocationPermissionWidget({
+    required this.title,
+    required this.description,
     this.onPermissionRequested,
     super.key,
   });
 
+  final String title;
+  final String description;
   final VoidCallback? onPermissionRequested;
 
   @override
@@ -23,13 +27,13 @@ class LocationPermissionWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Location Permission Required',
+              title,
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
-              'We need access to your location to show nearby clubs and enhance your experience.',
+              description,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
