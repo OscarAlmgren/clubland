@@ -18,13 +18,13 @@ The Clubland platform implements a comprehensive security architecture combining
 ### Hanko Service Architecture
 
 ```text
-┌─────────────────────────────────────────────────────────────────────┐
-│                        Client Applications                          │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐  │
-│  │  Clubland App   │    │ Administrator   │    │   Web Portal    │  │
-│  │   (Flutter)     │    │  App (Flutter)  │    │   (Flutter)     │  │
-│  └─────────────────┘    └─────────────────┘    └─────────────────┘  │
-└─────────────────┬───────────────┬───────────────┬───────────────────┘
+┌───────────────────────────────────────────────────────────────────────┐
+│                        Client Applications                            │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    │
+│  │  Clubland App   │    │ Administrator   │    │   Web Portal    │    │
+│  │   (Flutter)     │    │  App (Flutter)  │    │   (Flutter)     │    │
+│  └─────────────────┘    └─────────────────┘    └─────────────────┘    │
+└─────────────────┬───────────────┬───────────────┬─────────────────────┘
                   │               │               │
               WebAuthn API    Admin API       Public API
                   │               │               │
@@ -355,7 +355,9 @@ type EncryptedField struct {
     Algorithm string `json:"algorithm"`
     KeyID     string `json:"key_id"`
 }
+```
 
+```sql
 // Database schema with encrypted fields
 CREATE TABLE members (
     id SERIAL PRIMARY KEY,
@@ -541,6 +543,7 @@ Operational Security:
 ### Compliance & Regulations
 
 **Regulatory Compliance**:
+
 - **GDPR**: Data protection and privacy rights
 - **CCPA**: California Consumer Privacy Act compliance
 - **SOC 2**: Security and availability controls

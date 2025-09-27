@@ -11,7 +11,8 @@ class DatabaseOptimizations with PerformanceMonitoring {
   DatabaseOptimizations._() : _logger = Logger();
 
   static DatabaseOptimizations? _instance;
-  static DatabaseOptimizations get instance => _instance ??= DatabaseOptimizations._();
+  static DatabaseOptimizations get instance =>
+      _instance ??= DatabaseOptimizations._();
 
   final Logger _logger;
   final Map<String, dynamic> _queryCache = {};
@@ -50,9 +51,9 @@ class DatabaseOptimizations with PerformanceMonitoring {
     }
 
     if (trackPerformance) {
-      return await timeMethod('executeQuery', () => executeQuery());
+      return timeMethod('executeQuery', executeQuery);
     } else {
-      return await executeQuery();
+      return executeQuery();
     }
   }
 
@@ -69,7 +70,9 @@ class DatabaseOptimizations with PerformanceMonitoring {
       _invalidateQuery(queryKey);
     });
 
-    _logger.d('Cached query result: $queryKey (expires in ${cacheDuration.inMinutes}m)');
+    _logger.d(
+      'Cached query result: $queryKey (expires in ${cacheDuration.inMinutes}m)',
+    );
   }
 
   /// Invalidate cached query
@@ -112,16 +115,16 @@ class DatabaseOptimizations with PerformanceMonitoring {
   }
 
   /// Get cache statistics
-  Map<String, dynamic> getCacheStats() {
-    return {
-      'cachedQueries': _queryCache.length,
-      'activeTimers': _cacheExpirationTimers.length,
-      'queries': _queryCache.keys.toList(),
-      'oldestCache': _cacheTimestamps.values.isEmpty
-          ? null
-          : _cacheTimestamps.values.reduce((a, b) => a.isBefore(b) ? a : b).toIso8601String(),
-    };
-  }
+  Map<String, dynamic> getCacheStats() => {
+    'cachedQueries': _queryCache.length,
+    'activeTimers': _cacheExpirationTimers.length,
+    'queries': _queryCache.keys.toList(),
+    'oldestCache': _cacheTimestamps.values.isEmpty
+        ? null
+        : _cacheTimestamps.values
+              .reduce((a, b) => a.isBefore(b) ? a : b)
+              .toIso8601String(),
+  };
 }
 
 /// Batch query executor for efficient bulk operations
@@ -139,20 +142,20 @@ class BatchQueryExecutor with PerformanceMonitoring {
     Future<List<Either<Failure, T>>> execute() async {
       final results = <Either<Failure, T>>[];
 
-      for (int i = 0; i < queries.length; i += batchSize) {
-        final end = (i + batchSize < queries.length) ? i + batchSize : queries.length;
+      for (var i = 0; i < queries.length; i += batchSize) {
+        final end = (i + batchSize < queries.length)
+            ? i + batchSize
+            : queries.length;
         final batch = queries.sublist(i, end);
 
         // Execute batch concurrently
-        final batchResults = await Future.wait(
-          batch.map((query) => query()),
-        );
+        final batchResults = await Future.wait(batch.map((query) => query()));
 
         results.addAll(batchResults);
 
         // Add delay between batches to prevent overwhelming the system
         if (end < queries.length) {
-          await Future.delayed(batchDelay);
+          await Future<List<Either<Failure, T>>>.delayed(batchDelay);
         }
       }
 
@@ -160,9 +163,9 @@ class BatchQueryExecutor with PerformanceMonitoring {
     }
 
     if (trackPerformance) {
-      return await timeMethod('executeBatch_${queries.length}', () => execute());
+      return timeMethod('executeBatch_${queries.length}', execute);
     } else {
-      return await execute();
+      return execute();
     }
   }
 
@@ -176,15 +179,17 @@ class BatchQueryExecutor with PerformanceMonitoring {
   }) async {
     final results = <Either<Failure, T>>[];
 
-    for (int i = 0; i < queries.length; i += batchSize) {
-      final end = (i + batchSize < queries.length) ? i + batchSize : queries.length;
+    for (var i = 0; i < queries.length; i += batchSize) {
+      final end = (i + batchSize < queries.length)
+          ? i + batchSize
+          : queries.length;
       final batch = queries.sublist(i, end);
 
       final batchResults = <Either<Failure, T>>[];
 
       for (final query in batch) {
         Either<Failure, T>? result;
-        int attempts = 0;
+        var attempts = 0;
 
         while (result == null && attempts <= maxRetries) {
           try {
@@ -192,15 +197,15 @@ class BatchQueryExecutor with PerformanceMonitoring {
 
             // If it failed, retry
             if (result.isLeft() && attempts < maxRetries) {
-              await Future.delayed(retryDelay);
+              await Future<void>.delayed(retryDelay); // <-- FIX 1
               result = null;
               attempts++;
             }
-          } catch (e) {
+          } on Exception catch (e) {
             if (attempts >= maxRetries) {
               result = Left(UnknownFailure.unexpected(e.toString()));
             } else {
-              await Future.delayed(retryDelay);
+              await Future<void>.delayed(retryDelay); // <-- FIX 2
               attempts++;
             }
           }
@@ -213,7 +218,7 @@ class BatchQueryExecutor with PerformanceMonitoring {
 
       // Add delay between batches
       if (end < queries.length) {
-        await Future.delayed(batchDelay);
+        await Future<void>.delayed(batchDelay); // <-- FIX 3
       }
     }
 
@@ -225,13 +230,13 @@ class BatchQueryExecutor with PerformanceMonitoring {
 class OptimizedQueryBuilder {
   String? _table;
   List<String> _select = [];
-  Map<String, dynamic> _where = {};
-  List<String> _orderBy = [];
+  final Map<String, dynamic> _where = {};
+  final List<String> _orderBy = [];
   int? _limit;
   int? _offset;
-  List<String> _joins = [];
-  List<String> _groupBy = [];
-  Map<String, dynamic> _having = {};
+  final List<String> _joins = [];
+  final List<String> _groupBy = [];
+  final Map<String, dynamic> _having = {};
 
   /// Select specific fields (optimizes data transfer)
   OptimizedQueryBuilder select(List<String> fields) {
@@ -370,9 +375,7 @@ class OptimizedQueryBuilder {
   }
 
   /// Create a cache key for this query
-  String getCacheKey() {
-    return '${buildSql()}_${getParameters().join('_')}';
-  }
+  String getCacheKey() => '${buildSql()}_${getParameters().join('_')}';
 }
 
 /// Extension to add database optimization to repository classes
@@ -386,14 +389,12 @@ mixin DatabaseOptimizationMixin {
     required Future<Either<Failure, T>> Function() query,
     Duration cacheDuration = const Duration(minutes: 5),
     bool useCache = true,
-  }) {
-    return dbOptimizations.executeOptimizedQuery<T>(
-      queryKey: queryKey,
-      query: query,
-      cacheDuration: cacheDuration,
-      useCache: useCache,
-    );
-  }
+  }) => dbOptimizations.executeOptimizedQuery<T>(
+    queryKey: queryKey,
+    query: query,
+    cacheDuration: cacheDuration,
+    useCache: useCache,
+  );
 
   /// Create an optimized query builder
   OptimizedQueryBuilder queryBuilder() => OptimizedQueryBuilder();

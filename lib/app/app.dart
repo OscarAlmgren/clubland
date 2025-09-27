@@ -46,11 +46,11 @@ class ClublandApp extends ConsumerWidget {
 
 /// App wrapper for global functionality like splash screen, error handling, etc.
 class AppWrapper extends ConsumerStatefulWidget {
-  /// The child widget to wrap
-  final Widget child;
-
   /// Constructs an [AppWrapper]
   const AppWrapper({required this.child, super.key});
+
+  /// The child widget to wrap
+  final Widget child;
 
   @override
   ConsumerState<AppWrapper> createState() => _AppWrapperState();
@@ -70,7 +70,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
     await ref.read(authControllerProvider.future);
 
     // Add a small delay to show splash screen
-    await Future.delayed(const Duration(milliseconds: 1500));
+    await Future<void>.delayed(const Duration(milliseconds: 1500));
 
     if (mounted) {
       setState(() {

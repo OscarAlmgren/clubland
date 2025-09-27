@@ -286,7 +286,7 @@ class BatchLoader {
       final end = (i + batchSize < items.length) ? i + batchSize : items.length;
       yield items.sublist(i, end);
       if (end < items.length) {
-        await Future.delayed(delay);
+        await Future<void>.delayed(delay);
       }
     }
   }

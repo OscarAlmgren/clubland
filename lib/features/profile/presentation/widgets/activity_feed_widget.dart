@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../generated/l10n/l10n.dart';
-import '../../../../shared/widgets/app_error_widget.dart';
-import '../../../../shared/widgets/app_loading_widget.dart';
 
 class ActivityFeedWidget extends ConsumerWidget {
   const ActivityFeedWidget({super.key});
@@ -15,26 +13,16 @@ class ActivityFeedWidget extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.timeline,
-            size: 64,
-            color: Colors.grey,
-          ),
+          const Icon(Icons.timeline, size: 64, color: Colors.grey),
           const SizedBox(height: 16),
           Text(
             S.of(context).activityFeed,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           Text(
             S.of(context).activityHistoryPlaceholder,
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 14,
-            ),
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ],
@@ -45,11 +33,7 @@ class ActivityFeedWidget extends ConsumerWidget {
 
 // Simple activity tile widget
 class ActivityTile extends StatelessWidget {
-  const ActivityTile({
-    required this.activity,
-    this.compact = false,
-    super.key,
-  });
+  const ActivityTile({required this.activity, this.compact = false, super.key});
 
   final SimpleActivity activity;
   final bool compact;
@@ -68,8 +52,8 @@ class ActivityTile extends StatelessWidget {
           : Text(
               _formatDate(activity.timestamp),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
     );
   }
