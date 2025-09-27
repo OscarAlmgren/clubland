@@ -1,11 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/design_system/design_system.dart';
-import '../../../../shared/widgets/app_error_widget.dart';
-import '../../../../shared/widgets/app_loading_widget.dart';
-import '../../../auth/presentation/controllers/auth_controller.dart';
-import '../../../social/presentation/controllers/activity_controller.dart';
 import '../widgets/activity_feed_widget.dart';
 import '../widgets/profile_stats_widget.dart';
 import '../widgets/user_achievements_widget.dart';
@@ -37,8 +33,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = ref.watch(currentUserProvider);
-    final userActivity = ref.watch(userActivityProvider);
+    // For now, use mock user data
+    final currentUser = SimpleUser(
+      id: '1',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      bio: 'Passionate about exploring exclusive clubs and connecting with fellow members.',
+      visitCount: 24,
+      reviewCount: 12,
+      clubCount: 8,
+      points: 4520,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -68,9 +74,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
           ],
         ),
       ),
-      body: currentUser == null
-          ? const AppLoadingWidget(message: 'Loading profile...')
-          : TabBarView(
+      body: TabBarView(
               controller: _tabController,
               children: [
                 _buildOverviewTab(currentUser),
@@ -82,15 +86,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     );
   }
 
-  Widget _buildOverviewTab(UserEntity user) {
+  Widget _buildOverviewTab(SimpleUser user) {
     return SingleChildScrollView(
-      padding: AppSpacing.pagePadding,
+      padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           // Profile Header Card
-          AppCard(
+          Card(
             child: Padding(
-              padding: AppSpacing.allMD,
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   // Avatar and Basic Info
@@ -110,27 +114,27 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               )
                             : null,
                       ),
-                      AppSpacing.horizontalSpaceMD,
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${user.firstName} ${user.lastName}',
-                              style: AppTextStyles.titleLarge,
+                              user.fullName,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
-                            AppSpacing.verticalSpaceXS,
+                            const SizedBox(height: 4),
                             Text(
                               user.email,
-                              style: AppTextStyles.bodyMedium.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
                             ),
-                            if (user.profile?.bio != null) ...[
-                              AppSpacing.verticalSpaceXS,
+                            if (user.bio != null) ...[
+                              const SizedBox(height: 4),
                               Text(
-                                user.profile!.bio!,
-                                style: AppTextStyles.bodySmall,
+                                user.bio!,
+                                style: Theme.of(context).textTheme.bodySmall,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -141,7 +145,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                     ],
                   ),
 
-                  AppSpacing.verticalSpaceLG,
+                  const SizedBox(height: 24),
 
                   // Profile Stats
                   ProfileStatsWidget(user: user),
@@ -150,18 +154,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             ),
           ),
 
-          AppSpacing.verticalSpaceLG,
+          const SizedBox(height: 24),
 
           // Quick Actions
-          AppCard(
+          Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: AppSpacing.allMD,
+                  padding: const EdgeInsets.all(16),
                   child: Text(
                     'Quick Actions',
-                    style: AppTextStyles.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
                 _buildQuickAction(
@@ -192,21 +196,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             ),
           ),
 
-          AppSpacing.verticalSpaceLG,
+          const SizedBox(height: 24),
 
           // Recent Activity Preview
-          AppCard(
+          Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: AppSpacing.allMD,
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Recent Activity',
-                        style: AppTextStyles.titleMedium,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       TextButton(
                         onPressed: () => _tabController.animateTo(1),
@@ -215,39 +219,40 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                     ],
                   ),
                 ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final recentActivity = ref.watch(
-                      userActivityProvider.select((state) =>
-                        state.when(
-                          data: (activities) => activities.take(3).toList(),
-                          loading: () => <ActivityEntity>[],
-                          error: (_, __) => <ActivityEntity>[],
-                        ),
+                // Mock recent activities
+                Column(
+                  children: [
+                    ActivityTile(
+                      activity: SimpleActivity(
+                        id: '1',
+                        type: 'visit',
+                        title: 'Visited Elite Country Club',
+                        description: 'Enjoyed an excellent dinner',
+                        timestamp: DateTime.now().subtract(const Duration(hours: 2)),
                       ),
-                    );
-
-                    if (recentActivity.isEmpty) {
-                      return Padding(
-                        padding: AppSpacing.allMD,
-                        child: Text(
-                          'No recent activity',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      );
-                    }
-
-                    return Column(
-                      children: recentActivity.map((activity) {
-                        return ActivityTile(
-                          activity: activity,
-                          compact: true,
-                        );
-                      }).toList(),
-                    );
-                  },
+                      compact: true,
+                    ),
+                    ActivityTile(
+                      activity: SimpleActivity(
+                        id: '2',
+                        type: 'review',
+                        title: 'Reviewed Metropolitan Club',
+                        description: 'Great service and atmosphere',
+                        timestamp: DateTime.now().subtract(const Duration(days: 1)),
+                      ),
+                      compact: true,
+                    ),
+                    ActivityTile(
+                      activity: SimpleActivity(
+                        id: '3',
+                        type: 'favorite',
+                        title: 'Added Yacht Club to favorites',
+                        description: 'Planning a visit next weekend',
+                        timestamp: DateTime.now().subtract(const Duration(days: 3)),
+                      ),
+                      compact: true,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -267,7 +272,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
   Widget _buildMoreTab() {
     return SingleChildScrollView(
-      padding: AppSpacing.pagePadding,
+      padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           _buildMenuSection(context, 'Account', [
@@ -294,7 +299,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             ),
           ]),
 
-          AppSpacing.verticalSpaceXL,
+          const SizedBox(height: 32),
 
           _buildMenuSection(context, 'Social', [
             _MenuItem(
@@ -316,7 +321,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             ),
           ]),
 
-          AppSpacing.verticalSpaceXL,
+          const SizedBox(height: 32),
 
           _buildMenuSection(context, 'Support', [
             _MenuItem(
@@ -355,11 +360,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: AppSpacing.symmetricHorizontalMD + AppSpacing.symmetricVerticalSM,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
             Container(
-              padding: AppSpacing.allSM,
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(8),
@@ -370,16 +375,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 size: 20,
               ),
             ),
-            AppSpacing.horizontalSpaceMD,
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: AppTextStyles.bodyMedium),
-                  AppSpacing.verticalSpaceXS,
+                  Text(title, style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: AppTextStyles.bodySmall.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -423,7 +428,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     );
 
     if (shouldSignOut == true) {
-      await ref.read(authControllerProvider.notifier).logout();
+      // TODO(profile): Implement logout functionality
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Logout functionality coming soon!')),
+        );
+      }
     }
   }
 
@@ -438,13 +448,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Text(
           title,
-          style: AppTextStyles.titleSmall.copyWith(
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
       ),
-      AppSpacing.verticalSpaceSM,
-      AppCard(
+      const SizedBox(height: 8),
+      Card(
         child: Column(
           children: items.asMap().entries.map((entry) {
             final index = entry.key;
@@ -462,7 +472,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                   ),
                   title: Text(
                     item.title,
-                    style: AppTextStyles.bodyMedium.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: item.isDestructive
                           ? Theme.of(context).colorScheme.error
                           : Theme.of(context).colorScheme.onSurface,
@@ -471,7 +481,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                   subtitle: item.subtitle != null
                       ? Text(
                           item.subtitle!,
-                          style: AppTextStyles.bodySmall.copyWith(
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(
                               context,
                             ).colorScheme.onSurfaceVariant,
