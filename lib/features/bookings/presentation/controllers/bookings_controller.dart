@@ -39,22 +39,23 @@ Stream<List<BookingUpdate>> bookingUpdates(Ref ref) async* {
 @riverpod
 class BookingsController extends _$BookingsController {
   @override
-  Future<List<BookingModel>> build() async {
-    return await ref.read(allBookingsProvider.future);
-  }
+  Future<List<BookingModel>> build() async =>
+      await ref.read(allBookingsProvider.future);
 
   /// Apply filter to bookings
   Future<void> applyFilter(BookingStatus? status) async {
     if (status == null) {
       // Show all bookings
-      state = await AsyncValue.guard(() async {
-        return await ref.read(allBookingsProvider.future);
-      });
+      state = await AsyncValue.guard(
+        () async => await ref.read(allBookingsProvider.future),
+      );
     } else {
       // Filter by status
       state = await AsyncValue.guard(() async {
         final allBookings = await ref.read(allBookingsProvider.future);
-        return allBookings.where((booking) => booking.status == status).toList();
+        return allBookings
+            .where((booking) => booking.status == status)
+            .toList();
       });
     }
   }
@@ -92,7 +93,10 @@ class BookingsController extends _$BookingsController {
   }
 
   /// Modify an existing booking
-  Future<void> modifyBooking(String bookingId, ModifyBookingRequest request) async {
+  Future<void> modifyBooking(
+    String bookingId,
+    ModifyBookingRequest request,
+  ) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final datasource = ref.read(bookingsRemoteDataSourceProvider);
@@ -113,9 +117,9 @@ class BookingsController extends _$BookingsController {
   /// Refresh all bookings
   Future<void> refresh() async {
     ref.invalidate(allBookingsProvider);
-    state = await AsyncValue.guard(() async {
-      return await ref.read(allBookingsProvider.future);
-    });
+    state = await AsyncValue.guard(
+      () async => await ref.read(allBookingsProvider.future),
+    );
   }
 }
 
@@ -153,6 +157,6 @@ class ModifyBookingRequest {
 }
 
 /// Provider for the remote datasource
-final bookingsRemoteDataSourceProvider = Provider<BookingsRemoteDataSource>((ref) {
-  return BookingsRemoteDataSourceImpl();
-});
+final bookingsRemoteDataSourceProvider = Provider<BookingsRemoteDataSource>(
+  (ref) => BookingsRemoteDataSourceImpl(),
+);
