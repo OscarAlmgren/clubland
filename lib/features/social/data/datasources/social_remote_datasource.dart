@@ -58,11 +58,9 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
   final GraphQLClient _client;
   final Logger _logger;
 
-  SocialRemoteDataSourceImpl({
-    GraphQLClient? client,
-    Logger? logger,
-  })  : _client = client ?? GraphQLClientConfig.client,
-        _logger = logger ?? Logger();
+  SocialRemoteDataSourceImpl({GraphQLClient? client, Logger? logger})
+    : _client = client ?? GraphQLClientConfig.client,
+      _logger = logger ?? Logger();
 
   @override
   Future<List<ActivityModel>> getUserActivity({
@@ -87,7 +85,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      final result = await _client.query(
         QueryOptions(
           document: gql(GraphQLOperations.userActivityQuery),
           variables: variables,
@@ -95,10 +93,10 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch activity',
+          result.exception?.toString() ?? 'Failed to fetch activity',
         );
       }
 
@@ -141,7 +139,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      final result = await _client.query(
         QueryOptions(
           document: gql(GraphQLOperations.clubReviewsQuery),
           variables: variables,
@@ -149,10 +147,10 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch reviews',
+          result.exception?.toString() ?? 'Failed to fetch reviews',
         );
       }
 
@@ -197,17 +195,17 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeMutation(
+      final result = await _client.mutate(
         MutationOptions(
           document: gql(GraphQLOperations.createReviewMutation),
           variables: variables,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to create review',
+          result.exception?.toString() ?? 'Failed to create review',
         );
       }
 
@@ -240,17 +238,17 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Liking activity: $activityId');
 
-      final result = await GraphQLHelpers.executeMutation(
+      final result = await _client.mutate(
         MutationOptions(
           document: gql(GraphQLOperations.likeActivityMutation),
           variables: {'activityId': activityId},
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to like activity',
+          result.exception?.toString() ?? 'Failed to like activity',
         );
       }
 
@@ -282,20 +280,17 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Adding comment to activity: $activityId');
 
-      final result = await GraphQLHelpers.executeMutation(
+      final result = await _client.mutate(
         MutationOptions(
           document: gql(GraphQLOperations.addCommentMutation),
-          variables: {
-            'activityId': activityId,
-            'text': text,
-          },
+          variables: {'activityId': activityId, 'text': text},
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to add comment',
+          result.exception?.toString() ?? 'Failed to add comment',
         );
       }
 
@@ -324,9 +319,9 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Sharing activity: $activityId');
 
-      const mutation = '''
-        mutation ShareActivity(\$activityId: ID!) {
-          shareActivity(activityId: \$activityId) {
+      const mutation = r'''
+        mutation ShareActivity($activityId: ID!) {
+          shareActivity(activityId: $activityId) {
             success
             message
             shareUrl
@@ -334,17 +329,17 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      final result = await GraphQLHelpers.executeMutation(
+      final result = await _client.mutate(
         MutationOptions(
           document: gql(mutation),
           variables: {'activityId': activityId},
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to share activity',
+          result.exception?.toString() ?? 'Failed to share activity',
         );
       }
 
@@ -375,12 +370,12 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Fetching notifications, unreadOnly: $unreadOnly');
 
-      const query = '''
+      const query = r'''
         query Notifications(
-          \$filter: NotificationFilterInput
-          \$pagination: PaginationInput
+          $filter: NotificationFilterInput
+          $pagination: PaginationInput
         ) {
-          notifications(filter: \$filter, pagination: \$pagination) {
+          notifications(filter: $filter, pagination: $pagination) {
             nodes {
               id
               type
@@ -401,16 +396,14 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       ''';
 
       final variables = <String, dynamic>{
-        'filter': {
-          if (unreadOnly == true) 'read': false,
-        },
+        'filter': {if (unreadOnly ?? false) 'read': false},
         'pagination': {
           if (limit != null) 'first': limit,
           if (cursor != null) 'after': cursor,
         },
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      final result = await _client.query(
         QueryOptions(
           document: gql(query),
           variables: variables,
@@ -418,16 +411,19 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch notifications',
+          result.exception?.toString() ?? 'Failed to fetch notifications',
         );
       }
 
       final data = result.data?['notifications'];
       if (data == null) {
-        throw const NetworkException('No notifications data received', 'NO_DATA');
+        throw const NetworkException(
+          'No notifications data received',
+          'NO_DATA',
+        );
       }
 
       final nodes = data['nodes'] as List<dynamic>?;
@@ -436,7 +432,9 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       }
 
       return nodes
-          .map((node) => NotificationModel.fromJson(node as Map<String, dynamic>))
+          .map(
+            (node) => NotificationModel.fromJson(node as Map<String, dynamic>),
+          )
           .toList();
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error fetching notifications', error: e);
@@ -452,24 +450,23 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Marking notification as read: $notificationId');
 
-      const mutation = '''
-        mutation MarkNotificationRead(\$notificationId: ID!) {
-          markNotificationRead(notificationId: \$notificationId) {
+      const mutation = r'''
+        mutation MarkNotificationRead($notificationId: ID!) {
+          markNotificationRead(notificationId: $notificationId) {
             success
             message
           }
         }
       ''';
 
-      final result = await GraphQLHelpers.executeMutation(
+      final result = await _client.mutate(
         MutationOptions(
           document: gql(mutation),
           variables: {'notificationId': notificationId},
         ),
-        showErrorToUser: false, // Handle silently for UX
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         _logger.w('Failed to mark notification as read: $notificationId');
         return;
       }
@@ -496,16 +493,14 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(mutation),
-        ),
+      final result = await _client.mutate(
+        MutationOptions(document: gql(mutation)),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to mark notifications as read',
+          result.exception?.toString() ?? 'Failed to mark notifications as read',
         );
       }
 
@@ -528,22 +523,30 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Subscribing to notifications for user: $userId');
 
-      return GraphQLHelpers.executeSubscription<Map<String, dynamic>>(
-        SubscriptionOptions(
-          document: gql(GraphQLOperations.notificationsSubscription),
-          variables: {'userId': userId},
-        ),
-        showErrorToUser: false,
-      ).map((result) {
-        final data = result.data?['notifications'];
-        if (data == null) {
-          throw const NetworkException('No notification data received', 'NO_DATA');
-        }
-        return NotificationModel.fromJson(data as Map<String, dynamic>);
-      }).handleError((Object error) {
-        _logger.e('Error in notifications subscription', error: error);
-        throw NetworkException('Notifications subscription error: $error');
-      });
+      return _client
+          .subscribe(
+            SubscriptionOptions(
+              document: gql(GraphQLOperations.notificationsSubscription),
+              variables: {'userId': userId},
+            ),
+          )
+          .map((result) {
+            if (result.hasException) {
+              throw NetworkException('Subscription error: ${result.exception}');
+            }
+            final data = result.data?['notifications'];
+            if (data == null) {
+              throw const NetworkException(
+                'No notification data received',
+                'NO_DATA',
+              );
+            }
+            return NotificationModel.fromJson(data as Map<String, dynamic>);
+          })
+          .handleError((Object error) {
+            _logger.e('Error in notifications subscription', error: error);
+            throw NetworkException('Notifications subscription error: $error');
+          });
     } on Exception catch (e) {
       _logger.e('Error setting up notifications subscription', error: e);
       throw NetworkException('Failed to subscribe to notifications: $e');
@@ -555,22 +558,32 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Subscribing to club activity: $clubId');
 
-      return GraphQLHelpers.executeSubscription<Map<String, dynamic>>(
-        SubscriptionOptions(
-          document: gql(GraphQLOperations.clubActivitySubscription),
-          variables: {'clubId': clubId},
-        ),
-        showErrorToUser: false,
-      ).map((result) {
-        final data = result.data?['clubActivity'];
-        if (data == null || data['activity'] == null) {
-          throw const NetworkException('No activity data received', 'NO_DATA');
-        }
-        return ActivityModel.fromJson(data['activity'] as Map<String, dynamic>);
-      }).handleError((Object error) {
-        _logger.e('Error in club activity subscription', error: error);
-        throw NetworkException('Club activity subscription error: $error');
-      });
+      return _client
+          .subscribe(
+            SubscriptionOptions(
+              document: gql(GraphQLOperations.clubActivitySubscription),
+              variables: {'clubId': clubId},
+            ),
+          )
+          .map((result) {
+            if (result.hasException) {
+              throw NetworkException('Subscription error: ${result.exception}');
+            }
+            final data = result.data?['clubActivity'];
+            if (data == null || data['activity'] == null) {
+              throw const NetworkException(
+                'No activity data received',
+                'NO_DATA',
+              );
+            }
+            return ActivityModel.fromJson(
+              data['activity'] as Map<String, dynamic>,
+            );
+          })
+          .handleError((Object error) {
+            _logger.e('Error in club activity subscription', error: error);
+            throw NetworkException('Club activity subscription error: $error');
+          });
     } on Exception catch (e) {
       _logger.e('Error setting up club activity subscription', error: e);
       throw NetworkException('Failed to subscribe to club activity: $e');
