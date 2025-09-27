@@ -1,315 +1,315 @@
 {
-  "@@locale": "sv",
-  "@@last_modified": "2025-01-27T12:00:00.000Z",
+  "@@locale": "sv",
+  "@@last_modified": "2025-01-27T12:00:00.000Z",
 
-  "appTitle": "Clubland",
-  "@appTitle": {
-    "description": "The main title of the application"
-  },
+  "appTitle": "Clubland",
+  "@appTitle": {
+    "description": "Huvudtiteln för applikationen"
+  },
 
-  "profile": "Profil",
-  "@profile": {
-    "description": "Profile page title"
-  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "Titel för profilsidan"
+  },
 
-  "overview": "Översikt",
-  "@overview": {
-    "description": "Overview tab title"
-  },
+  "overview": "Översikt",
+  "@overview": {
+    "description": "Titel för fliken Översikt"
+  },
 
-  "activity": "Aktivitet",
-  "@activity": {
-    "description": "Activity tab title"
-  },
+  "activity": "Aktivitet",
+  "@activity": {
+    "description": "Titel för fliken Aktivitet"
+  },
 
-  "achievements": "Prestationer",
-  "@achievements": {
-    "description": "Achievements tab title"
-  },
+  "achievements": "Prestationer",
+  "@achievements": {
+    "description": "Titel för fliken Prestationer"
+  },
 
-  "more": "Mer",
-  "@more": {
-    "description": "More tab title"
-  },
+  "more": "Mer",
+  "@more": {
+    "description": "Titel för fliken Mer"
+  },
 
-  "quickActions": "Snabbåtgärder",
-  "@quickActions": {
-    "description": "Quick actions section title"
-  },
+  "quickActions": "Snabbåtgärder",
+  "@quickActions": {
+    "description": "Titel för avsnittet Snabbåtgärder"
+  },
 
-  "favoriteClubs": "Favoritklubbar",
-  "@favoriteClubs": {
-    "description": "Favorite clubs action title"
-  },
+  "favoriteClubs": "Favoritklubbar",
+  "@favoriteClubs": {
+    "description": "Titel för åtgärden Favoritklubbar"
+  },
 
-  "favoriteClubsSubtitle": "Visa dina sparade klubbar",
-  "@favoriteClubsSubtitle": {
-    "description": "Favorite clubs action subtitle"
-  },
+  "favoriteClubsSubtitle": "Visa dina sparade klubbar",
+  "@favoriteClubsSubtitle": {
+    "description": "Undertitel för åtgärden Favoritklubbar"
+  },
 
-  "visitHistory": "Besökshistorik",
-  "@visitHistory": {
-    "description": "Visit history action title"
-  },
+  "visitHistory": "Besökshistorik",
+  "@visitHistory": {
+    "description": "Titel för åtgärden Besökshistorik"
+  },
 
-  "visitHistorySubtitle": "Se var du har varit",
-  "@visitHistorySubtitle": {
-    "description": "Visit history action subtitle"
-  },
+  "visitHistorySubtitle": "Se var du har varit",
+  "@visitHistorySubtitle": {
+    "description": "Undertitel för åtgärden Besökshistorik"
+  },
 
-  "myReviews": "Mina Recensioner",
-  "@myReviews": {
-    "description": "My reviews action title"
-  },
+  "myReviews": "Mina Recensioner",
+  "@myReviews": {
+    "description": "Titel för åtgärden Mina Recensioner"
+  },
 
-  "myReviewsSubtitle": "Hantera dina klubbrecensioner",
-  "@myReviewsSubtitle": {
-    "description": "My reviews action subtitle"
-  },
+  "myReviewsSubtitle": "Hantera dina klubbrecensioner",
+  "@myReviewsSubtitle": {
+    "description": "Undertitel för åtgärden Mina Recensioner"
+  },
 
-  "shareProfile": "Dela Profil",
-  "@shareProfile": {
-    "description": "Share profile action title"
-  },
+  "shareProfile": "Dela Profil",
+  "@shareProfile": {
+    "description": "Titel för åtgärden Dela Profil"
+  },
 
-  "shareProfileSubtitle": "Dela med andra medlemmar",
-  "@shareProfileSubtitle": {
-    "description": "Share profile action subtitle"
-  },
+  "shareProfileSubtitle": "Dela med andra medlemmar",
+  "@shareProfileSubtitle": {
+    "description": "Undertitel för åtgärden Dela Profil"
+  },
 
-  "recentActivity": "Senaste Aktivitet",
-  "@recentActivity": {
-    "description": "Recent activity section title"
-  },
+  "recentActivity": "Senaste Aktivitet",
+  "@recentActivity": {
+    "description": "Titel för avsnittet Senaste Aktivitet"
+  },
 
-  "viewAll": "Visa Alla",
-  "@viewAll": {
-    "description": "View all button text"
-  },
+  "viewAll": "Visa Alla",
+  "@viewAll": {
+    "description": "Text för knappen Visa Alla"
+  },
 
-  "noRecentActivity": "Ingen senaste aktivitet",
-  "@noRecentActivity": {
-    "description": "Message when no recent activity"
-  },
+  "noRecentActivity": "Ingen senaste aktivitet",
+  "@noRecentActivity": {
+    "description": "Meddelande när det inte finns någon senaste aktivitet"
+  },
 
-  "account": "Konto",
-  "@account": {
-    "description": "Account section title"
-  },
+  "account": "Konto",
+  "@account": {
+    "description": "Titel för avsnittet Konto"
+  },
 
-  "editProfile": "Redigera Profil",
-  "@editProfile": {
-    "description": "Edit profile menu item"
-  },
+  "editProfile": "Redigera Profil",
+  "@editProfile": {
+    "description": "Menyalternativ för Redigera Profil"
+  },
 
-  "membership": "Medlemskap",
-  "@membership": {
-    "description": "Membership menu item"
-  },
+  "membership": "Medlemskap",
+  "@membership": {
+    "description": "Menyalternativ för Medlemskap"
+  },
 
-  "membershipSubtitle": "Hantera dina medlemskap",
-  "@membershipSubtitle": {
-    "description": "Membership menu item subtitle"
-  },
+  "membershipSubtitle": "Hantera dina medlemskap",
+  "@membershipSubtitle": {
+    "description": "Undertitel för menyalternativet Medlemskap"
+  },
 
-  "paymentMethods": "Betalningsmetoder",
-  "@paymentMethods": {
-    "description": "Payment methods menu item"
-  },
+  "paymentMethods": "Betalningsmetoder",
+  "@paymentMethods": {
+    "description": "Menyalternativ för Betalningsmetoder"
+  },
 
-  "privacySecurity": "Integritet & Säkerhet",
-  "@privacySecurity": {
-    "description": "Privacy and security menu item"
-  },
+  "privacySecurity": "Integritet & Säkerhet",
+  "@privacySecurity": {
+    "description": "Menyalternativ för Integritet och Säkerhet"
+  },
 
-  "social": "Socialt",
-  "@social": {
-    "description": "Social section title"
-  },
+  "social": "Socialt",
+  "@social": {
+    "description": "Titel för avsnittet Socialt"
+  },
 
-  "friends": "Vänner",
-  "@friends": {
-    "description": "Friends menu item"
-  },
+  "friends": "Vänner",
+  "@friends": {
+    "description": "Menyalternativ för Vänner"
+  },
 
-  "friendsSubtitle": "Anslut med andra medlemmar",
-  "@friendsSubtitle": {
-    "description": "Friends menu item subtitle"
-  },
+  "friendsSubtitle": "Anslut med andra medlemmar",
+  "@friendsSubtitle": {
+    "description": "Undertitel för menyalternativet Vänner"
+  },
 
-  "groups": "Grupper",
-  "@groups": {
-    "description": "Groups menu item"
-  },
+  "groups": "Grupper",
+  "@groups": {
+    "description": "Menyalternativ för Grupper"
+  },
 
-  "groupsSubtitle": "Gå med i intressegrupper",
-  "@groupsSubtitle": {
-    "description": "Groups menu item subtitle"
-  },
+  "groupsSubtitle": "Gå med i intressegrupper",
+  "@groupsSubtitle": {
+    "description": "Undertitel för menyalternativet Grupper"
+  },
 
-  "notifications": "Notifikationer",
-  "@notifications": {
-    "description": "Notifications menu item"
-  },
+  "notifications": "Notifikationer",
+  "@notifications": {
+    "description": "Menyalternativ för Notifikationer"
+  },
 
-  "support": "Support",
-  "@support": {
-    "description": "Support section title"
-  },
+  "support": "Support",
+  "@support": {
+    "description": "Titel för avsnittet Support"
+  },
 
-  "helpSupport": "Hjälp & Support",
-  "@helpSupport": {
-    "description": "Help and support menu item"
-  },
+  "helpSupport": "Hjälp & Support",
+  "@helpSupport": {
+    "description": "Menyalternativ för Hjälp och Support"
+  },
 
-  "sendFeedback": "Skicka Feedback",
-  "@sendFeedback": {
-    "description": "Send feedback menu item"
-  },
+  "sendFeedback": "Skicka Feedback",
+  "@sendFeedback": {
+    "description": "Menyalternativ för Skicka Feedback"
+  },
 
-  "about": "Om",
-  "@about": {
-    "description": "About menu item"
-  },
+  "about": "Om",
+  "@about": {
+    "description": "Menyalternativ för Om"
+  },
 
-  "signOut": "Logga Ut",
-  "@signOut": {
-    "description": "Sign out menu item"
-  },
+  "signOut": "Logga Ut",
+  "@signOut": {
+    "description": "Menyalternativ för Logga Ut"
+  },
 
-  "signOutConfirmTitle": "Logga Ut",
-  "@signOutConfirmTitle": {
-    "description": "Sign out confirmation dialog title"
-  },
+  "signOutConfirmTitle": "Logga Ut",
+  "@signOutConfirmTitle": {
+    "description": "Titel för bekräftelsedialogen för utloggning"
+  },
 
-  "signOutConfirmMessage": "Är du säker på att du vill logga ut?",
-  "@signOutConfirmMessage": {
-    "description": "Sign out confirmation dialog message"
-  },
+  "signOutConfirmMessage": "Är du säker på att du vill logga ut?",
+  "@signOutConfirmMessage": {
+    "description": "Meddelande i bekräftelsedialogen för utloggning"
+  },
 
-  "cancel": "Avbryt",
-  "@cancel": {
-    "description": "Cancel button text"
-  },
+  "cancel": "Avbryt",
+  "@cancel": {
+    "description": "Text för knappen Avbryt"
+  },
 
-  "visits": "Besök",
-  "@visits": {
-    "description": "Visits stat label"
-  },
+  "visits": "Besök",
+  "@visits": {
+    "description": "Etikett för statistik över Besök"
+  },
 
-  "reviews": "Recensioner",
-  "@reviews": {
-    "description": "Reviews stat label"
-  },
+  "reviews": "Recensioner",
+  "@reviews": {
+    "description": "Etikett för statistik över Recensioner"
+  },
 
-  "clubs": "Klubbar",
-  "@clubs": {
-    "description": "Clubs stat label"
-  },
+  "clubs": "Klubbar",
+  "@clubs": {
+    "description": "Etikett för statistik över Klubbar"
+  },
 
-  "points": "Poäng",
-  "@points": {
-    "description": "Points stat label"
-  },
+  "points": "Poäng",
+  "@points": {
+    "description": "Etikett för statistik över Poäng"
+  },
 
-  "profileSharingComingSoon": "Profildelning kommer snart!",
-  "@profileSharingComingSoon": {
-    "description": "Message for profile sharing feature"
-  },
+  "profileSharingComingSoon": "Profildelning kommer snart!",
+  "@profileSharingComingSoon": {
+    "description": "Meddelande för funktionen Profildelning"
+  },
 
-  "logoutFunctionalityComingSoon": "Utloggningsfunktion kommer snart!",
-  "@logoutFunctionalityComingSoon": {
-    "description": "Message for logout functionality"
-  },
+  "logoutFunctionalityComingSoon": "Utloggningsfunktion kommer snart!",
+  "@logoutFunctionalityComingSoon": {
+    "description": "Meddelande för funktionen Utloggning"
+  },
 
-  "activityFeed": "Aktivitetsflöde",
-  "@activityFeed": {
-    "description": "Activity feed title"
-  },
+  "activityFeed": "Aktivitetsflöde",
+  "@activityFeed": {
+    "description": "Titel för Aktivitetsflöde"
+  },
 
-  "activityHistoryPlaceholder": "Din aktivitetshistorik kommer att visas här",
-  "@activityHistoryPlaceholder": {
-    "description": "Placeholder text for empty activity feed"
-  },
+  "activityHistoryPlaceholder": "Din aktivitetshistorik kommer att visas här",
+  "@activityHistoryPlaceholder": {
+    "description": "Platshållartext för tomt aktivitetsflöde"
+  },
 
-  "firstVisit": "Första Besök",
-  "@firstVisit": {
-    "description": "First visit achievement title"
-  },
+  "firstVisit": "Första Besök",
+  "@firstVisit": {
+    "description": "Titel för prestationen Första Besök"
+  },
 
-  "firstVisitDescription": "Gjorde ditt första klubbesök",
-  "@firstVisitDescription": {
-    "description": "First visit achievement description"
-  },
+  "firstVisitDescription": "Gjorde ditt första klubbesök",
+  "@firstVisitDescription": {
+    "description": "Beskrivning för prestationen Första Besök"
+  },
 
-  "socialButterfly": "Social Fjäril",
-  "@socialButterfly": {
-    "description": "Social butterfly achievement title"
-  },
+  "socialButterfly": "Social Fjäril",
+  "@socialButterfly": {
+    "description": "Titel för prestationen Social Fjäril"
+  },
 
-  "socialButterflyDescription": "Anslut med 10 medlemmar",
-  "@socialButterflyDescription": {
-    "description": "Social butterfly achievement description"
-  },
+  "socialButterflyDescription": "Anslut med 10 medlemmar",
+  "@socialButterflyDescription": {
+    "description": "Beskrivning för prestationen Social Fjäril"
+  },
 
-  "explorer": "Utforskare",
-  "@explorer": {
-    "description": "Explorer achievement title"
-  },
+  "explorer": "Utforskare",
+  "@explorer": {
+    "description": "Titel för prestationen Utforskare"
+  },
 
-  "explorerDescription": "Besök 5 olika klubbar",
-  "@explorerDescription": {
-    "description": "Explorer achievement description"
-  },
+  "explorerDescription": "Besök 5 olika klubbar",
+  "@explorerDescription": {
+    "description": "Beskrivning för prestationen Utforskare"
+  },
 
-  "reviewer": "Recensent",
-  "@reviewer": {
-    "description": "Reviewer achievement title"
-  },
+  "reviewer": "Recensent",
+  "@reviewer": {
+    "description": "Titel för prestationen Recensent"
+  },
 
-  "reviewerDescription": "Skriv 10 klubbrecensioner",
-  "@reviewerDescription": {
-    "description": "Reviewer achievement description"
-  },
+  "reviewerDescription": "Skriv 10 klubbrecensioner",
+  "@reviewerDescription": {
+    "description": "Beskrivning för prestationen Recensent"
+  },
 
-  "earnedAgo": "Tjänade {timeAgo}",
-  "@earnedAgo": {
-    "description": "Achievement earned message with time",
-    "placeholders": {
-      "timeAgo": {
-        "type": "String",
-        "example": "2 veckor sedan"
-      }
-    }
-  },
+  "earnedAgo": "Tjänade {timeAgo}",
+  "@earnedAgo": {
+    "description": "Meddelande om när en prestation uppnåddes, inklusive tid",
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "2 veckor sedan"
+      }
+    }
+  },
 
-  "settings": "Inställningar",
-  "@settings": {
-    "description": "Settings page title"
-  },
+  "settings": "Inställningar",
+  "@settings": {
+    "description": "Titel för inställningssidan"
+  },
 
-  "language": "Språk",
-  "@language": {
-    "description": "Language setting title"
-  },
+  "language": "Språk",
+  "@language": {
+    "description": "Titel för språkinställningen"
+  },
 
-  "languageSubtitle": "Välj ditt föredragna språk",
-  "@languageSubtitle": {
-    "description": "Language setting subtitle"
-  },
+  "languageSubtitle": "Välj ditt föredragna språk",
+  "@languageSubtitle": {
+    "description": "Undertitel för språkinställningen"
+  },
 
-  "english": "Engelska",
-  "@english": {
-    "description": "English language option"
-  },
+  "english": "Engelska",
+  "@english": {
+    "description": "Alternativ för språket Engelska"
+  },
 
-  "swedish": "Svenska",
-  "@swedish": {
-    "description": "Swedish language option"
-  },
+  "swedish": "Svenska",
+  "@swedish": {
+    "description": "Alternativ för språket Svenska"
+  },
 
-  "selectLanguage": "Välj Språk",
-  "@selectLanguage": {
-    "description": "Language selection dialog title"
-  }
+  "selectLanguage": "Välj Språk",
+  "@selectLanguage": {
+    "description": "Titel för dialogrutan för språkval"
+  }
 }

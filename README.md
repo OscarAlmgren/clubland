@@ -117,6 +117,7 @@ flutter build web           # Web
 - **HTTP Client**: GraphQL Flutter with type-safe code generation
 - **Local Storage**: Hive for offline-first architecture
 - **Authentication**: Local biometric authentication with secure storage
+- **Internationalization**: Multi-language support (English/Swedish) with ARB files
 - **Real-time**: WebSocket subscriptions with auto-reconnection
 
 **Backend Services**:
@@ -162,8 +163,11 @@ lib/
 │   ├── widgets/                        # Reusable UI components
 │   ├── models/                         # Shared data models
 │   └── services/                       # Shared services
-├── generated/                          # Generated code (GraphQL, etc.)
-└── l10n/                              # Internationalization
+├── generated/                          # Generated code (GraphQL, l10n)
+│   └── l10n/                          # Generated localization code
+└── l10n/                              # Internationalization (ARB files)
+    ├── intl_en.arb                    # English translations
+    └── intl_sv.arb                    # Swedish translations
 ```
 
 ## Backend Integration
@@ -270,6 +274,14 @@ subscription VisitUpdates {
 - Compatible companion matching
 - Multi-club itinerary planning
 - Integrated booking and confirmation management
+
+### 6. Internationalization
+
+- **Multi-language Support**: English and Swedish with 80+ translation keys
+- **Real-time Language Switching**: Instant language changes without app restart
+- **System Locale Detection**: Automatic fallback to device language if supported
+- **Persistent Preferences**: Language selection saved across app sessions
+- **Type-safe Translations**: Generated S.dart class for compile-time safety
 
 ## Development Workflow
 

@@ -60,16 +60,122 @@ This project follows Clean Architecture principles with feature-based organizati
 - **Domain Layer**: Business logic, entities, and use cases
 - **Data Layer**: Repositories, data sources (remote/local), and models
 
-### State Management
-- **Primary**: Riverpod with AsyncNotifier pattern
-- **Code Generation**: riverpod_generator for type-safe providers
-- **Global State**: App configuration, authentication, connectivity
+### Architecture Flow Diagram
+
+```mermaid
+graph TB
+    subgraph "Presentation Layer"
+        UI[UI Widgets]
+        Controllers[Riverpod Controllers]
+        Pages[Feature Pages]
+        Widgets[Shared Widgets]
+    end
+
+    subgraph "Domain Layer"
+        Entities[Business Entities]
+        UseCases[Use Cases]
+        Repositories[Repository Interfaces]
+    end
+
+    subgraph "Data Layer"
+        RepoImpl[Repository Implementations]
+        RemoteDS[Remote Data Sources]
+        LocalDS[Local Data Sources]
+        Models[Data Models]
+    end
+
+    subgraph "Core Services"
+        Router[App Router]
+        Auth[Authentication]
+        Storage[Local Storage]
+        Network[Network Client]
+        I18n[Internationalization]
+    end
+
+    subgraph "External Services"
+        GraphQL[GraphQL API]
+        Firebase[Firebase Services]
+        SecureStorage[Secure Storage]
+        SharedPrefs[Shared Preferences]
+    end
+
+    UI --> Controllers
+    Controllers --> UseCases
+    UseCases --> Repositories
+    Repositories --> RepoImpl
+    RepoImpl --> RemoteDS
+    RepoImpl --> LocalDS
+    RemoteDS --> GraphQL
+    LocalDS --> Storage
+    Auth --> SecureStorage
+    I18n --> SharedPrefs
+    Router --> Pages
+    Pages --> Widgets
+
+    style UI fill:#e1f5fe
+    style Controllers fill:#f3e5f5
+    style UseCases fill:#e8f5e8
+    style RepoImpl fill:#fff3e0
+    style Auth fill:#ffebee
+```
+
+### State Management Architecture
+
+```mermaid
+graph LR
+    subgraph "Riverpod Providers"
+        AP[AsyncNotifierProvider]
+        NP[NotifierProvider]
+        FP[FutureProvider]
+        SP[StreamProvider]
+    end
+
+    subgraph "Controllers"
+        AC[AuthController]
+        LC[LanguageController]
+        PC[ProfileController]
+        BC[BookingsController]
+    end
+
+    subgraph "Repositories"
+        AR[AuthRepository]
+        LR[LanguageRepository]
+        PR[ProfileRepository]
+        BR[BookingsRepository]
+    end
+
+    subgraph "Data Sources"
+        RDS[Remote Data Source]
+        LDS[Local Data Source]
+    end
+
+    AP --> AC
+    NP --> LC
+    FP --> PC
+    SP --> BC
+
+    AC --> AR
+    LC --> LR
+    PC --> PR
+    BC --> BR
+
+    AR --> RDS
+    LR --> LDS
+    PR --> RDS
+    BR --> RDS
+
+    style AP fill:#e1f5fe
+    style AC fill:#f3e5f5
+    style AR fill:#e8f5e8
+    style RDS fill:#fff3e0
+```
 
 ### Data Architecture
 - **API**: GraphQL with type-safe code generation
 - **Authentication**: Hanko passwordless + JWT tokens
 - **Local Storage**: Hive for offline-first architecture
 - **Cache Strategy**: Multi-layer caching with TTL and invalidation
+- **Internationalization**: ARB files with generated type-safe translations
 
 ## Project Structure
 
@@ -251,6 +357,269 @@ Text(S.of(context).signOut)
 - **Navigation**: quickActions, recentActivity, account, social, support
 - **Messages**: logoutFunctionalityComingSoon, profileSharingComingSoon
 - **Placeholders**: activityHistoryPlaceholder, noRecentActivity
+
+## Application Flow Diagrams
+
+### Authentication Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as UI Layer
+    participant AC as AuthController
+    participant AR as AuthRepository
+    participant RDS as RemoteDataSource
+    participant SS as SecureStorage
+    participant API as GraphQL API
+
+    U->>UI: Open App
+    UI->>AC: checkAuthStatus()
+    AC->>AR: getCurrentUser()
+    AR->>SS: getStoredToken()
+
+    alt Token exists
+        SS-->>AR: return token
+        AR->>RDS: validateToken(token)
+        RDS->>API: validateTokenQuery
+        API-->>RDS: tokenValid: true
+        RDS-->>AR: User entity
+        AR-->>AC: User
+        AC-->>UI: Authenticated state
+        UI-->>U: Show main app
+    else No token
+        SS-->>AR: null
+        AR-->>AC: null
+        AC-->>UI: Unauthenticated state
+        UI-->>U: Show login screen
+    end
+
+    Note over U,API: Login Flow
+    U->>UI: Enter credentials
+    UI->>AC: login(email, password)
+    AC->>AR: authenticate(credentials)
+    AR->>RDS: login(credentials)
+    RDS->>API: loginMutation
+    API-->>RDS: token + user data
+    RDS-->>AR: AuthResult
+    AR->>SS: storeToken(token)
+    AR-->>AC: User
+    AC-->>UI: Authenticated state
+    UI-->>U: Navigate to home
+```
+
+### Language Switching Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as Settings UI
+    participant LC as LanguageController
+    participant LR as LanguageRepository
+    participant SP as SharedPreferences
+    participant App as MaterialApp
+
+    U->>UI: Open language settings
+    UI->>LC: watch currentLanguage
+    LC->>LR: getSavedLanguage()
+    LR->>SP: getString('app_language')
+    SP-->>LR: language code
+    LR-->>LC: AppLanguage
+    LC-->>UI: Display current language
+
+    U->>UI: Select new language
+    UI->>LC: setLanguage(AppLanguage.swedish)
+    LC->>LR: saveLanguage(language)
+    LR->>SP: setString('app_language', 'sv')
+    SP-->>LR: success
+    LC->>LC: update state
+    LC-->>App: locale changed
+    App->>App: rebuild with new locale
+    App-->>U: UI updates immediately
+```
+
+### Profile Data Loading Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant PPage as ProfilePage
+    participant PC as ProfileController (Mock)
+    participant PR as ProfileRepository
+    participant Cache as Local Cache
+    participant RDS as RemoteDataSource
+    participant API as GraphQL API
+
+    U->>PPage: Navigate to profile
+    PPage->>PC: watch userProfile
+    PC->>PR: getUserProfile()
+
+    alt Cache hit
+        PR->>Cache: getCachedProfile()
+        Cache-->>PR: ProfileEntity
+        PR-->>PC: Cached profile
+        PC-->>PPage: Display profile data
+    else Cache miss
+        PR->>RDS: fetchUserProfile()
+        RDS->>API: userProfileQuery
+        API-->>RDS: profile data
+        RDS-->>PR: ProfileEntity
+        PR->>Cache: cacheProfile(profile)
+        PR-->>PC: Fresh profile
+        PC-->>PPage: Display updated data
+    end
+
+    Note over U,API: Current Implementation (Mock)
+    PPage->>PPage: Create SimpleUser mock
+    PPage->>PPage: Display mock data immediately
+```
+
+## API Integration Patterns
+
+### GraphQL Client Configuration
+
+```mermaid
+graph TB
+    subgraph "GraphQL Client Setup"
+        Client[GraphQL Client]
+        AuthLink[Auth Link]
+        HttpLink[HTTP Link]
+        CacheLink[Cache Link]
+        ErrorLink[Error Link]
+    end
+
+    subgraph "Request Flow"
+        Request[GraphQL Request]
+        Auth[Add JWT Token]
+        Cache[Check Cache]
+        Network[Network Request]
+        Response[Response]
+    end
+
+    subgraph "Code Generation"
+        Schema[GraphQL Schema]
+        Generator[graphql_codegen]
+        Types[Generated Types]
+        Operations[Generated Operations]
+    end
+
+    Client --> AuthLink
+    AuthLink --> HttpLink
+    HttpLink --> CacheLink
+    CacheLink --> ErrorLink
+
+    Request --> Auth
+    Auth --> Cache
+    Cache --> Network
+    Network --> Response
+
+    Schema --> Generator
+    Generator --> Types
+    Generator --> Operations
+
+    style Client fill:#e1f5fe
+    style Request fill:#f3e5f5
+    style Schema fill:#e8f5e8
+```
+
+### Function Call Patterns
+
+#### Language Provider Functions
+
+```dart
+// Language switching with persistence
+Future<void> setLanguage(AppLanguage language) async {
+  // Parameters:
+  // - language: AppLanguage enum (english, swedish)
+
+  state = AsyncData(language);
+  await ref.read(languageRepositoryProvider).saveLanguage(language);
+}
+
+// Get saved language with fallback
+Future<AppLanguage?> getSavedLanguage() async {
+  // Returns: AppLanguage? (null if not set)
+
+  final prefs = await SharedPreferences.getInstance();
+  final languageCode = prefs.getString(_languageKey);
+  return AppLanguage.fromCode(languageCode);
+}
+
+// System locale detection
+AppLanguage? detectSystemLanguage() {
+  // Returns: AppLanguage? (null if not supported)
+
+  final systemLocale = PlatformDispatcher.instance.locale;
+  return AppLanguage.fromCode(systemLocale.languageCode);
+}
+```
+
+#### Authentication Controller Functions
+
+```dart
+// Login with credentials
+Future<void> login(String email, String password) async {
+  // Parameters:
+  // - email: String - User email address
+  // - password: String - User password
+  // Throws: AuthException on failure
+
+  state = const AsyncLoading();
+  try {
+    final user = await _authRepository.login(email, password);
+    state = AsyncData(user);
+  } catch (error, stackTrace) {
+    state = AsyncError(error, stackTrace);
+  }
+}
+
+// Check authentication status
+Future<User?> checkAuthStatus() async {
+  // Returns: User? (null if not authenticated)
+
+  return await _authRepository.getCurrentUser();
+}
+
+// Logout user
+Future<void> logout() async {
+  // Side effects: Clears secure storage, navigates to login
+
+  await _authRepository.logout();
+  state = const AsyncData(null);
+}
+```
+
+#### Profile Repository Functions
+
+```dart
+// Get user profile (simplified implementation)
+SimpleUser createMockUser() {
+  // Returns: SimpleUser with predefined data
+  // Used for: Profile display, statistics
+
+  return SimpleUser(
+    id: '1',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    bio: 'Passionate about exploring exclusive clubs...',
+    visitCount: 24,
+    reviewCount: 12,
+    clubCount: 8,
+    points: 4520,
+  );
+}
+
+// Future: Real profile fetching
+Future<ProfileEntity> fetchUserProfile(String userId) async {
+  // Parameters:
+  // - userId: String - Unique user identifier
+  // Returns: ProfileEntity with full user data
+  // Throws: NetworkException, AuthException
+
+  final response = await _remoteDataSource.getUserProfile(userId);
+  return ProfileEntity.fromJson(response.data);
+}
+```
 
 ## Testing Strategy
 
