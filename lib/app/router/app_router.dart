@@ -9,6 +9,7 @@ import '../../features/bookings/presentation/pages/bookings_page.dart';
 import '../../features/clubs/presentation/pages/clubs_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/profile/presentation/pages/profile_settings_page.dart';
 import '../../shared/widgets/main_scaffold.dart';
 import 'route_paths.dart';
 
@@ -81,6 +82,13 @@ GoRouter appRouter(AppRouterRef ref) {
             builder: (context, state) => const ProfilePage(),
           ),
         ],
+      ),
+
+      // Settings route (outside main navigation)
+      GoRoute(
+        path: RoutePaths.settings,
+        name: 'settings',
+        builder: (context, state) => const ProfileSettingsPage(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

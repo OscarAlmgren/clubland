@@ -1,0 +1,315 @@
+{
+  "@@locale": "sv",
+  "@@last_modified": "2025-01-27T12:00:00.000Z",
+
+  "appTitle": "Clubland",
+  "@appTitle": {
+    "description": "The main title of the application"
+  },
+
+  "profile": "Profil",
+  "@profile": {
+    "description": "Profile page title"
+  },
+
+  "overview": "Översikt",
+  "@overview": {
+    "description": "Overview tab title"
+  },
+
+  "activity": "Aktivitet",
+  "@activity": {
+    "description": "Activity tab title"
+  },
+
+  "achievements": "Prestationer",
+  "@achievements": {
+    "description": "Achievements tab title"
+  },
+
+  "more": "Mer",
+  "@more": {
+    "description": "More tab title"
+  },
+
+  "quickActions": "Snabbåtgärder",
+  "@quickActions": {
+    "description": "Quick actions section title"
+  },
+
+  "favoriteClubs": "Favoritklubbar",
+  "@favoriteClubs": {
+    "description": "Favorite clubs action title"
+  },
+
+  "favoriteClubsSubtitle": "Visa dina sparade klubbar",
+  "@favoriteClubsSubtitle": {
+    "description": "Favorite clubs action subtitle"
+  },
+
+  "visitHistory": "Besökshistorik",
+  "@visitHistory": {
+    "description": "Visit history action title"
+  },
+
+  "visitHistorySubtitle": "Se var du har varit",
+  "@visitHistorySubtitle": {
+    "description": "Visit history action subtitle"
+  },
+
+  "myReviews": "Mina Recensioner",
+  "@myReviews": {
+    "description": "My reviews action title"
+  },
+
+  "myReviewsSubtitle": "Hantera dina klubbrecensioner",
+  "@myReviewsSubtitle": {
+    "description": "My reviews action subtitle"
+  },
+
+  "shareProfile": "Dela Profil",
+  "@shareProfile": {
+    "description": "Share profile action title"
+  },
+
+  "shareProfileSubtitle": "Dela med andra medlemmar",
+  "@shareProfileSubtitle": {
+    "description": "Share profile action subtitle"
+  },
+
+  "recentActivity": "Senaste Aktivitet",
+  "@recentActivity": {
+    "description": "Recent activity section title"
+  },
+
+  "viewAll": "Visa Alla",
+  "@viewAll": {
+    "description": "View all button text"
+  },
+
+  "noRecentActivity": "Ingen senaste aktivitet",
+  "@noRecentActivity": {
+    "description": "Message when no recent activity"
+  },
+
+  "account": "Konto",
+  "@account": {
+    "description": "Account section title"
+  },
+
+  "editProfile": "Redigera Profil",
+  "@editProfile": {
+    "description": "Edit profile menu item"
+  },
+
+  "membership": "Medlemskap",
+  "@membership": {
+    "description": "Membership menu item"
+  },
+
+  "membershipSubtitle": "Hantera dina medlemskap",
+  "@membershipSubtitle": {
+    "description": "Membership menu item subtitle"
+  },
+
+  "paymentMethods": "Betalningsmetoder",
+  "@paymentMethods": {
+    "description": "Payment methods menu item"
+  },
+
+  "privacySecurity": "Integritet & Säkerhet",
+  "@privacySecurity": {
+    "description": "Privacy and security menu item"
+  },
+
+  "social": "Socialt",
+  "@social": {
+    "description": "Social section title"
+  },
+
+  "friends": "Vänner",
+  "@friends": {
+    "description": "Friends menu item"
+  },
+
+  "friendsSubtitle": "Anslut med andra medlemmar",
+  "@friendsSubtitle": {
+    "description": "Friends menu item subtitle"
+  },
+
+  "groups": "Grupper",
+  "@groups": {
+    "description": "Groups menu item"
+  },
+
+  "groupsSubtitle": "Gå med i intressegrupper",
+  "@groupsSubtitle": {
+    "description": "Groups menu item subtitle"
+  },
+
+  "notifications": "Notifikationer",
+  "@notifications": {
+    "description": "Notifications menu item"
+  },
+
+  "support": "Support",
+  "@support": {
+    "description": "Support section title"
+  },
+
+  "helpSupport": "Hjälp & Support",
+  "@helpSupport": {
+    "description": "Help and support menu item"
+  },
+
+  "sendFeedback": "Skicka Feedback",
+  "@sendFeedback": {
+    "description": "Send feedback menu item"
+  },
+
+  "about": "Om",
+  "@about": {
+    "description": "About menu item"
+  },
+
+  "signOut": "Logga Ut",
+  "@signOut": {
+    "description": "Sign out menu item"
+  },
+
+  "signOutConfirmTitle": "Logga Ut",
+  "@signOutConfirmTitle": {
+    "description": "Sign out confirmation dialog title"
+  },
+
+  "signOutConfirmMessage": "Är du säker på att du vill logga ut?",
+  "@signOutConfirmMessage": {
+    "description": "Sign out confirmation dialog message"
+  },
+
+  "cancel": "Avbryt",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+
+  "visits": "Besök",
+  "@visits": {
+    "description": "Visits stat label"
+  },
+
+  "reviews": "Recensioner",
+  "@reviews": {
+    "description": "Reviews stat label"
+  },
+
+  "clubs": "Klubbar",
+  "@clubs": {
+    "description": "Clubs stat label"
+  },
+
+  "points": "Poäng",
+  "@points": {
+    "description": "Points stat label"
+  },
+
+  "profileSharingComingSoon": "Profildelning kommer snart!",
+  "@profileSharingComingSoon": {
+    "description": "Message for profile sharing feature"
+  },
+
+  "logoutFunctionalityComingSoon": "Utloggningsfunktion kommer snart!",
+  "@logoutFunctionalityComingSoon": {
+    "description": "Message for logout functionality"
+  },
+
+  "activityFeed": "Aktivitetsflöde",
+  "@activityFeed": {
+    "description": "Activity feed title"
+  },
+
+  "activityHistoryPlaceholder": "Din aktivitetshistorik kommer att visas här",
+  "@activityHistoryPlaceholder": {
+    "description": "Placeholder text for empty activity feed"
+  },
+
+  "firstVisit": "Första Besök",
+  "@firstVisit": {
+    "description": "First visit achievement title"
+  },
+
+  "firstVisitDescription": "Gjorde ditt första klubbesök",
+  "@firstVisitDescription": {
+    "description": "First visit achievement description"
+  },
+
+  "socialButterfly": "Social Fjäril",
+  "@socialButterfly": {
+    "description": "Social butterfly achievement title"
+  },
+
+  "socialButterflyDescription": "Anslut med 10 medlemmar",
+  "@socialButterflyDescription": {
+    "description": "Social butterfly achievement description"
+  },
+
+  "explorer": "Utforskare",
+  "@explorer": {
+    "description": "Explorer achievement title"
+  },
+
+  "explorerDescription": "Besök 5 olika klubbar",
+  "@explorerDescription": {
+    "description": "Explorer achievement description"
+  },
+
+  "reviewer": "Recensent",
+  "@reviewer": {
+    "description": "Reviewer achievement title"
+  },
+
+  "reviewerDescription": "Skriv 10 klubbrecensioner",
+  "@reviewerDescription": {
+    "description": "Reviewer achievement description"
+  },
+
+  "earnedAgo": "Tjänade {timeAgo}",
+  "@earnedAgo": {
+    "description": "Achievement earned message with time",
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "2 veckor sedan"
+      }
+    }
+  },
+
+  "settings": "Inställningar",
+  "@settings": {
+    "description": "Settings page title"
+  },
+
+  "language": "Språk",
+  "@language": {
+    "description": "Language setting title"
+  },
+
+  "languageSubtitle": "Välj ditt föredragna språk",
+  "@languageSubtitle": {
+    "description": "Language setting subtitle"
+  },
+
+  "english": "Engelska",
+  "@english": {
+    "description": "English language option"
+  },
+
+  "swedish": "Svenska",
+  "@swedish": {
+    "description": "Swedish language option"
+  },
+
+  "selectLanguage": "Välj Språk",
+  "@selectLanguage": {
+    "description": "Language selection dialog title"
+  }
+}

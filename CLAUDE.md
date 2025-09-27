@@ -156,12 +156,14 @@ lib/
 - **Local Storage**: hive, hive_flutter
 - **UI/UX**: cached_network_image, lottie, shimmer
 - **Maps**: google_maps_flutter, geolocator
+- **Internationalization**: flutter_localizations, intl
 - **Utils**: equatable, freezed_annotation, json_annotation
 
 ### Development Dependencies
 - **Code Generation**: build_runner, freezed, json_serializable, hive_generator
 - **GraphQL**: graphql_codegen
 - **State Management**: riverpod_generator, riverpod_lint
+- **Internationalization**: intl_utils
 - **Testing**: mocktail, integration_test, golden_toolkit, alchemist
 - **Code Quality**: flutter_lints, very_good_analysis
 
@@ -200,6 +202,55 @@ The project uses GraphQL code generation to create type-safe Dart classes:
 - **Caching**: Optimistic updates with cache-first strategy
 - **Subscriptions**: WebSocket for real-time features
 - **Error Handling**: Comprehensive error categorization
+
+## Internationalization (i18n)
+
+### Supported Languages
+- **English** (en): Default language, comprehensive translations
+- **Swedish** (sv): Full translation support for Swedish users
+
+### Implementation Architecture
+- **Translation Files**: ARB format in `lib/l10n/` (intl_en.arb, intl_sv.arb)
+- **Code Generation**: Uses `intl_utils` package for type-safe translation access
+- **Generated Code**: Located in `lib/generated/l10n/` with S.dart localization class
+- **State Management**: Language selection managed by Riverpod providers
+- **Persistence**: User language preference saved to SharedPreferences
+
+### Language Management
+- **Language Provider**: `lib/core/providers/language_provider.dart`
+  - Manages current app language state
+  - Handles language switching and persistence
+  - Provides system locale fallback
+  - Supports AppLanguage enum for type safety
+
+### Usage in Code
+```dart
+// Import localization
+import '../../../../generated/l10n/l10n.dart';
+
+// Use in widgets
+Text(S.of(context).profile)
+Text(S.of(context).signOut)
+```
+
+### Language Selection
+- **Settings Page**: Profile settings include language selector
+- **Real-time Switching**: Changes apply immediately without app restart
+- **System Default**: Falls back to device language if supported
+
+### Adding New Languages
+1. Create new ARB file: `lib/l10n/intl_[locale].arb`
+2. Add translations for all existing keys
+3. Update AppLanguage enum in language_provider.dart
+4. Run `dart run intl_utils:generate`
+5. Test language switching functionality
+
+### Translation Keys Organization
+- **UI Elements**: profile, settings, overview, activity, achievements
+- **Actions**: signOut, editProfile, shareProfile, viewAll
+- **Navigation**: quickActions, recentActivity, account, social, support
+- **Messages**: logoutFunctionalityComingSoon, profileSharingComingSoon
+- **Placeholders**: activityHistoryPlaceholder, noRecentActivity
 
 ## Testing Strategy
 

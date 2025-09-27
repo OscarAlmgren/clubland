@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../generated/l10n/l10n.dart';
+
 class ProfileStatsWidget extends StatelessWidget {
   const ProfileStatsWidget({
     required this.user,
@@ -15,25 +17,25 @@ class ProfileStatsWidget extends StatelessWidget {
       children: [
         _buildStatItem(
           context,
-          'Visits',
+          S.of(context).visits,
           user.visitCount.toString(),
           Icons.location_on,
         ),
         _buildStatItem(
           context,
-          'Reviews',
+          S.of(context).reviews,
           user.reviewCount.toString(),
           Icons.rate_review,
         ),
         _buildStatItem(
           context,
-          'Clubs',
+          S.of(context).clubs,
           user.clubCount.toString(),
           Icons.business,
         ),
         _buildStatItem(
           context,
-          'Points',
+          S.of(context).points,
           user.points.toString(),
           Icons.star,
         ),

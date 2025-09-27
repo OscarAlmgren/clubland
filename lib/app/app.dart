@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/design_system/design_system.dart';
+import '../core/providers/language_provider.dart';
 import '../features/auth/presentation/controllers/auth_controller.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
+import '../generated/l10n/l10n.dart';
 import 'router/app_router.dart';
 
 /// Main Clubland application widget with routing and authentication
@@ -13,6 +16,9 @@ class ClublandApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentLocale = ref.watch(currentLocaleProvider);
+    final supportedLocales = ref.watch(supportedLocalesProvider);
+
     return MaterialApp.router(
       title: 'Clubland',
       theme: AppTheme.lightTheme,
@@ -20,6 +26,17 @@ class ClublandApp extends ConsumerWidget {
       themeMode: ThemeMode.system,
       routerConfig: ref.watch(appRouterProvider),
       debugShowCheckedModeBanner: false,
+
+      // Localization configuration
+      locale: currentLocale,
+      supportedLocales: supportedLocales,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+
       builder: (context, child) {
         return AppWrapper(child: child!);
       },
