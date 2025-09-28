@@ -41,6 +41,11 @@ void main() {
         createdAt: DateTime.now(),
       ),
     );
+    registerFallbackValue(
+      const UserProfile(
+        fullName: 'Fallback User',
+      ),
+    );
   });
 
   setUp(() {
@@ -417,6 +422,22 @@ void main() {
 
         when(
           () => mockLocalDataSource.storeUser(any()),
+        ).thenAnswer((_) async {});
+
+        // Mock getCurrentSession since updateProfile calls it internally
+        when(
+          () => mockLocalDataSource.getCurrentSession(),
+        ).thenAnswer((_) async => Right<Failure, AuthSessionEntity?>(testSession));
+
+        // Mock session storage methods called by _storeSession
+        when(
+          () => mockLocalDataSource.storeSession(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.storeAccessToken(any()),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockSecureStorageService.storeRefreshToken(any()),
         ).thenAnswer((_) async {});
 
         final result = await repository.updateProfile(
