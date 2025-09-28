@@ -6,6 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Clubland is a premium End User Flutter application for the Reciprocal Clubs platform. It provides passwordless authentication, club discovery, booking management, social features, and real-time visit tracking across mobile, web, and desktop platforms.
 
+## Requirements
+- **Flutter**: 3.37.0+ (beta channel for latest packages)
+- **Dart**: 3.10.0+ (required for macro support)
+- **SDK**: ^3.9.2 (minimum supported version)
+
 ## Development Commands
 
 ### Essential Commands
@@ -44,6 +49,11 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 - **Install dependencies**: `flutter pub get`
 - **Upgrade dependencies**: `flutter pub upgrade`
 - **Clean build cache**: `flutter clean`
+
+### Database Generation (Drift)
+- **Generate database code**: `dart run build_runner build --delete-conflicting-outputs`
+- **Watch database changes**: `dart run build_runner watch --delete-conflicting-outputs`
+- **Clean database files**: `dart run build_runner clean`
 
 ### Deployment
 - **Deploy web to staging**: `./scripts/deploy.sh web staging`
@@ -259,18 +269,18 @@ lib/
 - **Navigation**: go_router
 - **HTTP/GraphQL**: dio, graphql_flutter, gql
 - **Authentication**: local_auth, flutter_secure_storage, crypto, encrypt
-- **Local Storage**: hive, hive_flutter
+- **Local Storage**: drift (modern, type-safe SQL database)
 - **UI/UX**: cached_network_image, lottie, shimmer
 - **Maps**: google_maps_flutter, geolocator
 - **Internationalization**: flutter_localizations, intl
 - **Utils**: equatable, freezed_annotation, json_annotation
 
 ### Development Dependencies
-- **Code Generation**: build_runner, freezed, json_serializable, hive_generator
+- **Code Generation**: build_runner, freezed, json_serializable, drift_dev
 - **GraphQL**: graphql_codegen
 - **State Management**: riverpod_generator, riverpod_lint
 - **Internationalization**: intl_utils
-- **Testing**: mocktail, integration_test, golden_toolkit, alchemist
+- **Testing**: mocktail, integration_test, alchemist (visual regression testing)
 - **Code Quality**: flutter_lints, very_good_analysis
 
 ## Authentication Architecture
@@ -632,7 +642,7 @@ Future<ProfileEntity> fetchUserProfile(String userId) async {
 - **Repository Testing**: Mock data sources, test business logic
 - **Controller Testing**: Mock repositories, test state management
 - **Widget Testing**: Test UI interactions and state changes
-- **Golden Tests**: Visual regression testing for components
+- **Visual Regression Tests**: Alchemist-based golden testing for UI components
 
 ### Coverage Goals
 - Unit tests: 80%+ coverage
