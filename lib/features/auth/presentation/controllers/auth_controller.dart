@@ -191,10 +191,19 @@ class AuthController extends _$AuthController {
       final logoutUsecase = ref.read(logoutUsecaseProvider);
       final result = await logoutUsecase();
 
-      result.fold(ErrorHandler.showErrorToUser, (_) => _onLogoutSuccess());
+      result.fold(
+        (failure) {
+          ErrorHandler.showErrorToUser(failure);
+          // Clear local state even if server logout fails
+          _onLogoutSuccess();
+        },
+        (_) => _onLogoutSuccess(),
+      );
     } on Exception catch (e) {
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
+      // Clear local state even if logout throws exception
+      _onLogoutSuccess();
     }
   }
 
@@ -212,12 +221,12 @@ class AuthController extends _$AuthController {
       final refreshTokenUsecase = ref.read(refreshTokenUsecaseProvider);
       final result = await refreshTokenUsecase(refreshToken: refreshToken);
 
-      result.fold(
-        (failure) {
+      await result.fold(
+        (failure) async {
           ErrorHandler.logWarning('Token refresh failed: ${failure.message}');
-          logout(); // Force logout on refresh failure
+          await logout(); // Force logout on refresh failure
         },
-        (session) {
+        (session) async {
           state = AsyncData(session.user);
           _onTokenRefreshSuccess(session);
         },

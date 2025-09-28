@@ -1,3 +1,4 @@
+import 'package:clubland/core/errors/error_handler.dart';
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/core/providers/core_providers.dart';
 import 'package:clubland/core/storage/secure_storage.dart';
@@ -11,6 +12,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../helpers/test_helpers.dart';
@@ -45,9 +47,19 @@ void main() {
   late MockRefreshTokenUsecase mockRefreshTokenUsecase;
   late MockGetCurrentUserUsecase mockGetCurrentUserUsecase;
   late MockSecureStorageService mockSecureStorageService;
+  late MockHankoLoginUsecase mockHankoLoginUsecase;
+  late MockBiometricAuthUsecase mockBiometricAuthUsecase;
 
   setUp(() {
     TestHelpers.setupFallbackValues();
+
+    // Initialize ErrorHandler for tests
+    ErrorHandler.initialize(
+      navigatorKey: GlobalKey<NavigatorState>(),
+      scaffoldMessengerKey: GlobalKey<ScaffoldMessengerState>(),
+      logger: Logger(level: Level.off), // Silent logger for tests
+    );
+
     mockAuthRepository = MockAuthRepository();
     mockLoginUsecase = MockLoginUsecase();
     mockLogoutUsecase = MockLogoutUsecase();
@@ -55,6 +67,8 @@ void main() {
     mockRefreshTokenUsecase = MockRefreshTokenUsecase();
     mockGetCurrentUserUsecase = MockGetCurrentUserUsecase();
     mockSecureStorageService = MockSecureStorageService();
+    mockHankoLoginUsecase = MockHankoLoginUsecase();
+    mockBiometricAuthUsecase = MockBiometricAuthUsecase();
 
     // Mock auth repository stream
     when(
@@ -70,6 +84,12 @@ void main() {
     refreshTokenUsecaseProvider.overrideWithValue(mockRefreshTokenUsecase),
     getCurrentUserUsecaseProvider.overrideWithValue(mockGetCurrentUserUsecase),
     secureStorageServiceProvider.overrideWithValue(mockSecureStorageService),
+    // Add missing providers
+    hankoLoginUsecaseProvider.overrideWithValue(mockHankoLoginUsecase),
+    biometricAuthUsecaseProvider.overrideWithValue(mockBiometricAuthUsecase),
+    loggerProvider.overrideWithValue(Logger(level: Level.off)),
+    // Override currentUserProvider to avoid circular dependency
+    currentUserProvider.overrideWith((ref) => null),
   ];
 
   group('AuthController', () {
@@ -193,9 +213,11 @@ void main() {
         );
 
         final state = container.read(authControllerProvider);
-        expect(state.value, null);
         expect(state.hasError, true);
         expect(state.error, failure);
+
+        // When state has error, valueOrNull should be null
+        expect(state.valueOrNull, null);
       });
     });
 
