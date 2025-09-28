@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_sizing.dart';
 import '../theme/app_spacing.dart';
 
-/// Card variants for different use cases
-enum AppCardVariant { elevated, outlined, filled, transparent }
+/// Card variants for different use cases, controlling background, elevation, and border.
+enum AppCardVariant {
+  /// Card with a noticeable shadow/elevation.
+  elevated,
 
-/// Custom app card widget with consistent styling
+  /// Card with a distinct outline/border.
+  outlined,
+
+  /// Card with a filled background, but no shadow.
+  filled,
+
+  /// Card with no background color or shadow, used primarily for inkwell effects.
+  transparent,
+}
+
+/// Custom app card widget with consistent styling, acting as a wrapper around Material.
+///
+/// This provides consistent theming for elevation, borders, rounding, and ink well effects.
 class AppCard extends StatelessWidget {
-  /// Constructs a [AppCard]
+  /// Constructs a general [AppCard].
   const AppCard({
     required this.child,
     super.key,
@@ -24,7 +39,7 @@ class AppCard extends StatelessWidget {
     this.clipBehavior = Clip.antiAlias,
   });
 
-  /// Elevated card (default)
+  /// Constructs an **elevated** card (default Material style).
   const AppCard.elevated({
     required this.child,
     super.key,
@@ -39,7 +54,7 @@ class AppCard extends StatelessWidget {
        borderColor = null,
        borderWidth = null;
 
-  /// Outlined card
+  /// Constructs an **outlined** card.
   const AppCard.outlined({
     required this.child,
     super.key,
@@ -54,7 +69,7 @@ class AppCard extends StatelessWidget {
   }) : variant = AppCardVariant.outlined,
        elevation = null;
 
-  /// Filled card
+  /// Constructs a **filled** card.
   const AppCard.filled({
     required this.child,
     super.key,
@@ -69,7 +84,7 @@ class AppCard extends StatelessWidget {
        borderWidth = null,
        elevation = null;
 
-  /// Transparent card (no background)
+  /// Constructs a **transparent** card (used mainly for click effects on custom backgrounds).
   const AppCard.transparent({
     required this.child,
     super.key,
@@ -83,16 +98,38 @@ class AppCard extends StatelessWidget {
        borderColor = null,
        borderWidth = null,
        elevation = null;
+
+  /// The widget contained within the card.
   final Widget child;
+
+  /// The style of the card, affecting background color, border, and elevation.
   final AppCardVariant variant;
+
+  /// An optional callback when the card is tapped, enabling the inkwell effect.
   final VoidCallback? onTap;
+
+  /// Padding applied inside the card content. Defaults to [AppSpacing.cardPaddingAll].
   final EdgeInsetsGeometry? padding;
+
+  /// Margin applied to the container wrapping the card.
   final EdgeInsetsGeometry? margin;
+
+  /// Overrides the card's background color based on the selected [variant].
   final Color? backgroundColor;
+
+  /// Custom border color, primarily used for the [AppCardVariant.outlined] variant.
   final Color? borderColor;
+
+  /// Custom border width, primarily used for the [AppCardVariant.outlined] variant.
   final double? borderWidth;
+
+  /// Custom border radius. Defaults to [AppSizing.borderRadiusLG].
   final BorderRadius? borderRadius;
+
+  /// Custom elevation. Defaults are based on the [variant].
   final double? elevation;
+
+  /// Determines how content is clipped to the card's boundaries. Defaults to [Clip.antiAlias].
   final Clip clipBehavior;
 
   @override
@@ -169,9 +206,9 @@ class AppCard extends StatelessWidget {
   }
 }
 
-/// Specialized card for club information
+/// Specialized card for displaying club summary information.
 class ClubCard extends StatelessWidget {
-  /// Constructs a [ClubCard]
+  /// Constructs a [ClubCard].
   const ClubCard({
     required this.clubName,
     required this.location,
@@ -181,11 +218,23 @@ class ClubCard extends StatelessWidget {
     this.onTap,
     this.trailing,
   });
+
+  /// The full name of the club.
   final String clubName;
+
+  /// The location or address of the club.
   final String location;
+
+  /// Optional URL for the club's cover image.
   final String? imageUrl;
+
+  /// A list of key amenities or features offered by the club.
   final List<String> amenities;
+
+  /// Callback executed when the card is tapped.
   final VoidCallback? onTap;
+
+  /// An optional widget to display on the trailing side (e.g., a favorite button).
   final Widget? trailing;
 
   @override
@@ -301,9 +350,9 @@ class ClubCard extends StatelessWidget {
   }
 }
 
-/// Specialized card for booking information
+/// Specialized card for displaying booking summary information.
 class BookingCard extends StatelessWidget {
-  /// Constructs a [BookingCard]
+  /// Constructs a [BookingCard].
   const BookingCard({
     required this.clubName,
     required this.bookingDate,
@@ -314,12 +363,26 @@ class BookingCard extends StatelessWidget {
     this.onTap,
     this.actions,
   });
+
+  /// The name of the club the booking is for.
   final String clubName;
+
+  /// The date of the booking.
   final DateTime bookingDate;
+
+  /// The time of the booking (e.g., "7:00 PM").
   final String bookingTime;
+
+  /// The current status of the booking (e.g., 'confirmed', 'pending', 'cancelled').
   final String status;
+
+  /// The number of guests included in the booking.
   final int guestCount;
+
+  /// Callback executed when the card is tapped.
   final VoidCallback? onTap;
+
+  /// Optional list of action buttons to display at the bottom right of the card.
   final List<Widget>? actions;
 
   @override

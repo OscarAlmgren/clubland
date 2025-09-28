@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/design_system/theme/app_sizing.dart';
 
 /// Splash screen shown during app initialization
 class SplashPage extends ConsumerStatefulWidget {

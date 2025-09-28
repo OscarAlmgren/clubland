@@ -57,9 +57,7 @@ GoRouter appRouter(AppRouterRef ref) {
 
       // Main app routes with bottom navigation
       ShellRoute(
-        builder: (context, state, child) {
-          return MainScaffold(child: child);
-        },
+        builder: (context, state, child) => MainScaffold(child: child),
         routes: [
           GoRoute(
             path: RoutePaths.home,

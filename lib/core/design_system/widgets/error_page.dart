@@ -4,8 +4,12 @@ import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 import 'app_button.dart';
 
-/// Error page widget for displaying errors in the app
+/// Full-screen widget for displaying major application errors.
+///
+/// This provides a consistent layout for presenting an error icon, title,
+/// message, and optional action buttons (retry, go home).
 class ErrorPage extends StatelessWidget {
+  /// Creates a general [ErrorPage] instance.
   const ErrorPage({
     required this.error,
     super.key,
@@ -16,7 +20,7 @@ class ErrorPage extends StatelessWidget {
     this.icon,
   });
 
-  /// Network error page
+  /// Creates an [ErrorPage] specifically for **Network Connection** issues.
   const ErrorPage.network({
     super.key,
     this.error =
@@ -28,7 +32,7 @@ class ErrorPage extends StatelessWidget {
     this.icon = Icons.wifi_off,
   });
 
-  /// Server error page
+  /// Creates an [ErrorPage] specifically for **Server** issues (e.g., 500 errors).
   const ErrorPage.server({
     super.key,
     this.error = 'Something went wrong on our end. Please try again later.',
@@ -39,7 +43,7 @@ class ErrorPage extends StatelessWidget {
     this.icon = Icons.error_outline,
   });
 
-  /// Not found error page
+  /// Creates an [ErrorPage] specifically for **Not Found** issues (e.g., 404 errors).
   const ErrorPage.notFound({
     super.key,
     this.error = 'The page you are looking for could not be found.',
@@ -50,7 +54,7 @@ class ErrorPage extends StatelessWidget {
     this.icon = Icons.search_off,
   });
 
-  /// Permission denied error page
+  /// Creates an [ErrorPage] specifically for **Permission Denied** issues (e.g., 403 errors).
   const ErrorPage.permissionDenied({
     super.key,
     this.error = 'You do not have permission to access this page.',
@@ -60,11 +64,23 @@ class ErrorPage extends StatelessWidget {
     this.title = 'Access Denied',
     this.icon = Icons.lock_outline,
   });
+
+  /// The main error message displayed to the user.
   final String error;
+
+  /// Optional stack trace for debugging purposes. This is typically hidden in production.
   final StackTrace? stackTrace;
+
+  /// Optional callback for the primary action button (e.g., Retry, Go Back).
   final VoidCallback? onRetry;
+
+  /// The text to display on the primary action button.
   final String? retryText;
+
+  /// The headline title of the error page.
   final String? title;
+
+  /// The icon displayed prominently on the page.
   final IconData? icon;
 
   @override
@@ -162,6 +178,7 @@ class ErrorPage extends StatelessWidget {
     );
   }
 
+  /// Builds the collapsible section containing the error stack trace and debug details.
   Widget _buildDebugInfo(BuildContext context) => Theme(
     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
     child: ExpansionTile(
@@ -229,15 +246,19 @@ class ErrorPage extends StatelessWidget {
     ),
   );
 
+  /// Navigates the user to the root path and removes all previous routes.
   void _goHome(BuildContext context) {
     // This would use the router to navigate home
     Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
   }
 }
 
-/// Specialized error widgets for common scenarios
+/// A smaller, focused widget for displaying network error status in lists or sections.
 class NetworkErrorWidget extends StatelessWidget {
+  /// Constructs a [NetworkErrorWidget].
   const NetworkErrorWidget({super.key, this.onRetry});
+
+  /// Optional callback to execute when the user taps the retry button.
   final VoidCallback? onRetry;
 
   @override
@@ -277,8 +298,9 @@ class NetworkErrorWidget extends StatelessWidget {
   );
 }
 
-/// Empty state widget
+/// A generic widget for displaying empty states (e.g., no items in a list).
 class EmptyStateWidget extends StatelessWidget {
+  /// Constructs an [EmptyStateWidget].
   const EmptyStateWidget({
     required this.title,
     required this.message,
@@ -287,10 +309,20 @@ class EmptyStateWidget extends StatelessWidget {
     this.actionText,
     this.onAction,
   });
+
+  /// The main title of the empty state (e.g., "No Bookings Yet").
   final String title;
+
+  /// A detailed message explaining the state and what the user can do next.
   final String message;
+
+  /// The icon representing the empty state. Defaults to [Icons.inbox_outlined].
   final IconData icon;
+
+  /// Optional text for the primary action button (e.g., "Start Booking").
   final String? actionText;
+
+  /// The callback function executed when the action button is pressed.
   final VoidCallback? onAction;
 
   @override
@@ -333,10 +365,15 @@ class EmptyStateWidget extends StatelessWidget {
   );
 }
 
-/// Loading error widget for async operations
+/// A compact widget for displaying errors that occur during loading specific data sections.
 class LoadingErrorWidget extends StatelessWidget {
+  /// Constructs a [LoadingErrorWidget].
   const LoadingErrorWidget({required this.error, super.key, this.onRetry});
+
+  /// The error message detailing what went wrong during the data load.
   final String error;
+
+  /// Optional callback to execute when the user taps the retry button.
   final VoidCallback? onRetry;
 
   @override

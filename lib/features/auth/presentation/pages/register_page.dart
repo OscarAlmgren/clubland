@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/design_system/theme/app_sizing.dart';
 import '../controllers/auth_controller.dart';
 
 /// Registration page for new users

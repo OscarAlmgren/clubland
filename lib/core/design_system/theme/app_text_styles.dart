@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Text styles for Clubland app
+/// Text styles for Clubland app, primarily following the Material 3 design system,
+/// with custom app-specific styles and utility methods.
 class AppTextStyles {
+  /// Private constructor to prevent instantiation of this utility class.
   AppTextStyles._();
 
   // Base font family
 
   // Display Styles
+  /// Largest display style (fontSize: 57, fontWeight: w400).
   static TextStyle get displayLarge => GoogleFonts.roboto(
     fontSize: 57,
     fontWeight: FontWeight.w400,
@@ -15,6 +18,7 @@ class AppTextStyles {
     height: 1.12,
   );
 
+  /// Medium display style (fontSize: 45, fontWeight: w400).
   static TextStyle get displayMedium => GoogleFonts.roboto(
     fontSize: 45,
     fontWeight: FontWeight.w400,
@@ -22,6 +26,7 @@ class AppTextStyles {
     height: 1.16,
   );
 
+  /// Smallest display style (fontSize: 36, fontWeight: w400).
   static TextStyle get displaySmall => GoogleFonts.roboto(
     fontSize: 36,
     fontWeight: FontWeight.w400,
@@ -30,6 +35,7 @@ class AppTextStyles {
   );
 
   // Headline Styles
+  /// Largest headline style (fontSize: 32, fontWeight: w600).
   static TextStyle get headlineLarge => GoogleFonts.roboto(
     fontSize: 32,
     fontWeight: FontWeight.w600,
@@ -37,6 +43,7 @@ class AppTextStyles {
     height: 1.25,
   );
 
+  /// Medium headline style (fontSize: 28, fontWeight: w600).
   static TextStyle get headlineMedium => GoogleFonts.roboto(
     fontSize: 28,
     fontWeight: FontWeight.w600,
@@ -44,6 +51,7 @@ class AppTextStyles {
     height: 1.29,
   );
 
+  /// Smallest headline style (fontSize: 24, fontWeight: w600).
   static TextStyle get headlineSmall => GoogleFonts.roboto(
     fontSize: 24,
     fontWeight: FontWeight.w600,
@@ -52,6 +60,7 @@ class AppTextStyles {
   );
 
   // Title Styles
+  /// Largest title style (fontSize: 22, fontWeight: w600).
   static TextStyle get titleLarge => GoogleFonts.roboto(
     fontSize: 22,
     fontWeight: FontWeight.w600,
@@ -59,6 +68,7 @@ class AppTextStyles {
     height: 1.27,
   );
 
+  /// Medium title style (fontSize: 16, fontWeight: w600). Often used for subtitles or list titles.
   static TextStyle get titleMedium => GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: FontWeight.w600,
@@ -66,6 +76,7 @@ class AppTextStyles {
     height: 1.50,
   );
 
+  /// Smallest title style (fontSize: 14, fontWeight: w600).
   static TextStyle get titleSmall => GoogleFonts.roboto(
     fontSize: 14,
     fontWeight: FontWeight.w600,
@@ -74,6 +85,7 @@ class AppTextStyles {
   );
 
   // Label Styles
+  /// Largest label style (fontSize: 14, fontWeight: w500). Often used for button text.
   static TextStyle get labelLarge => GoogleFonts.roboto(
     fontSize: 14,
     fontWeight: FontWeight.w500,
@@ -81,6 +93,7 @@ class AppTextStyles {
     height: 1.43,
   );
 
+  /// Medium label style (fontSize: 12, fontWeight: w500).
   static TextStyle get labelMedium => GoogleFonts.roboto(
     fontSize: 12,
     fontWeight: FontWeight.w500,
@@ -88,6 +101,7 @@ class AppTextStyles {
     height: 1.33,
   );
 
+  /// Smallest label style (fontSize: 11, fontWeight: w500).
   static TextStyle get labelSmall => GoogleFonts.roboto(
     fontSize: 11,
     fontWeight: FontWeight.w500,
@@ -96,6 +110,7 @@ class AppTextStyles {
   );
 
   // Body Styles
+  /// Largest body style (fontSize: 16, fontWeight: w400). Standard paragraph text.
   static TextStyle get bodyLarge => GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: FontWeight.w400,
@@ -103,6 +118,7 @@ class AppTextStyles {
     height: 1.50,
   );
 
+  /// Medium body style (fontSize: 14, fontWeight: w400).
   static TextStyle get bodyMedium => GoogleFonts.roboto(
     fontSize: 14,
     fontWeight: FontWeight.w400,
@@ -110,6 +126,7 @@ class AppTextStyles {
     height: 1.43,
   );
 
+  /// Smallest body style (fontSize: 12, fontWeight: w400).
   static TextStyle get bodySmall => GoogleFonts.roboto(
     fontSize: 12,
     fontWeight: FontWeight.w400,
@@ -119,7 +136,7 @@ class AppTextStyles {
 
   // Custom App-Specific Styles
 
-  /// Style for app logo text
+  /// Style for app logo text (fontSize: 28, fontWeight: w700).
   static TextStyle get logo => GoogleFonts.roboto(
     fontSize: 28,
     fontWeight: FontWeight.w700,
@@ -127,7 +144,7 @@ class AppTextStyles {
     height: 1.0,
   );
 
-  /// Style for club names
+  /// Style for club names (fontSize: 18, fontWeight: w600).
   static TextStyle get clubName => GoogleFonts.roboto(
     fontSize: 18,
     fontWeight: FontWeight.w600,
@@ -135,7 +152,7 @@ class AppTextStyles {
     height: 1.33,
   );
 
-  /// Style for member names
+  /// Style for member names (fontSize: 16, fontWeight: w500).
   static TextStyle get memberName => GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: FontWeight.w500,
@@ -143,7 +160,7 @@ class AppTextStyles {
     height: 1.5,
   );
 
-  /// Style for addresses
+  /// Style for addresses (fontSize: 13, fontWeight: w400).
   static TextStyle get address => GoogleFonts.roboto(
     fontSize: 13,
     fontWeight: FontWeight.w400,
@@ -151,7 +168,7 @@ class AppTextStyles {
     height: 1.38,
   );
 
-  /// Style for prices and monetary values
+  /// Style for prominent prices and monetary values (fontSize: 18, fontWeight: w700).
   static TextStyle get price => GoogleFonts.roboto(
     fontSize: 18,
     fontWeight: FontWeight.w700,
@@ -159,7 +176,7 @@ class AppTextStyles {
     height: 1.33,
   );
 
-  /// Style for small prices
+  /// Style for small prices (fontSize: 14, fontWeight: w600).
   static TextStyle get priceSmall => GoogleFonts.roboto(
     fontSize: 14,
     fontWeight: FontWeight.w600,
@@ -167,7 +184,7 @@ class AppTextStyles {
     height: 1.43,
   );
 
-  /// Style for navigation items
+  /// Style for navigation items (fontSize: 12, fontWeight: w500).
   static TextStyle get navigation => GoogleFonts.roboto(
     fontSize: 12,
     fontWeight: FontWeight.w500,
@@ -175,7 +192,7 @@ class AppTextStyles {
     height: 1.33,
   );
 
-  /// Style for tab labels
+  /// Style for tab labels (fontSize: 14, fontWeight: w600).
   static TextStyle get tab => GoogleFonts.roboto(
     fontSize: 14,
     fontWeight: FontWeight.w600,
@@ -183,7 +200,7 @@ class AppTextStyles {
     height: 1.43,
   );
 
-  /// Style for chip labels
+  /// Style for chip labels (fontSize: 12, fontWeight: w500).
   static TextStyle get chip => GoogleFonts.roboto(
     fontSize: 12,
     fontWeight: FontWeight.w500,
@@ -191,7 +208,7 @@ class AppTextStyles {
     height: 1.33,
   );
 
-  /// Style for status badges
+  /// Style for status badges (fontSize: 10, fontWeight: w600).
   static TextStyle get status => GoogleFonts.roboto(
     fontSize: 10,
     fontWeight: FontWeight.w600,
@@ -199,7 +216,7 @@ class AppTextStyles {
     height: 1.4,
   );
 
-  /// Style for timestamps
+  /// Style for timestamps (fontSize: 11, fontWeight: w400).
   static TextStyle get timestamp => GoogleFonts.roboto(
     fontSize: 11,
     fontWeight: FontWeight.w400,
@@ -207,7 +224,7 @@ class AppTextStyles {
     height: 1.45,
   );
 
-  /// Style for form field labels
+  /// Style for form field labels (fontSize: 12, fontWeight: w500).
   static TextStyle get fieldLabel => GoogleFonts.roboto(
     fontSize: 12,
     fontWeight: FontWeight.w500,
@@ -215,7 +232,7 @@ class AppTextStyles {
     height: 1.33,
   );
 
-  /// Style for helper text
+  /// Style for helper text (fontSize: 11, fontWeight: w400).
   static TextStyle get helper => GoogleFonts.roboto(
     fontSize: 11,
     fontWeight: FontWeight.w400,
@@ -223,7 +240,7 @@ class AppTextStyles {
     height: 1.45,
   );
 
-  /// Style for error messages
+  /// Style for error messages (fontSize: 11, fontWeight: w400).
   static TextStyle get error => GoogleFonts.roboto(
     fontSize: 11,
     fontWeight: FontWeight.w400,
@@ -231,7 +248,7 @@ class AppTextStyles {
     height: 1.45,
   );
 
-  /// Style for success messages
+  /// Style for success messages (fontSize: 11, fontWeight: w400).
   static TextStyle get success => GoogleFonts.roboto(
     fontSize: 11,
     fontWeight: FontWeight.w400,
@@ -239,7 +256,7 @@ class AppTextStyles {
     height: 1.45,
   );
 
-  /// Style for captions
+  /// Style for captions (fontSize: 10, fontWeight: w400).
   static TextStyle get caption => GoogleFonts.roboto(
     fontSize: 10,
     fontWeight: FontWeight.w400,
@@ -247,7 +264,7 @@ class AppTextStyles {
     height: 1.4,
   );
 
-  /// Style for overlines
+  /// Style for overlines (fontSize: 10, fontWeight: w500).
   static TextStyle get overline => GoogleFonts.roboto(
     fontSize: 10,
     fontWeight: FontWeight.w500,
@@ -257,19 +274,19 @@ class AppTextStyles {
 
   // Text Style Utilities
 
-  /// Create a text style with custom color
+  /// Returns the given [style] with a new [color].
   static TextStyle withColor(TextStyle style, Color color) =>
       style.copyWith(color: color);
 
-  /// Create a text style with custom weight
+  /// Returns the given [style] with a new [weight].
   static TextStyle withWeight(TextStyle style, FontWeight weight) =>
       style.copyWith(fontWeight: weight);
 
-  /// Create a text style with custom size
+  /// Returns the given [style] with a new [size].
   static TextStyle withSize(TextStyle style, double size) =>
       style.copyWith(fontSize: size);
 
-  /// Create a text style with decoration
+  /// Returns the given [style] with a text [decoration].
   static TextStyle withDecoration(
     TextStyle style,
     TextDecoration decoration, {
@@ -281,25 +298,25 @@ class AppTextStyles {
     decorationStyle: decorationStyle,
   );
 
-  /// Create an underlined text style
+  /// Returns the given [style] with an underline decoration.
   static TextStyle underlined(TextStyle style, {Color? color}) =>
       withDecoration(style, TextDecoration.underline, decorationColor: color);
 
-  /// Create a strikethrough text style
+  /// Returns the given [style] with a strikethrough decoration.
   static TextStyle strikethrough(TextStyle style, {Color? color}) =>
       withDecoration(style, TextDecoration.lineThrough, decorationColor: color);
 
-  /// Create an italic text style
+  /// Returns the given [style] with italic font style.
   static TextStyle italic(TextStyle style) =>
       style.copyWith(fontStyle: FontStyle.italic);
 
-  /// Create a bold text style
+  /// Returns the given [style] with bold font weight ([FontWeight.bold]).
   static TextStyle bold(TextStyle style) => withWeight(style, FontWeight.bold);
 
-  /// Create a medium weight text style
+  /// Returns the given [style] with medium font weight ([FontWeight.w500]).
   static TextStyle medium(TextStyle style) =>
       withWeight(style, FontWeight.w500);
 
-  /// Create a light weight text style
+  /// Returns the given [style] with light font weight ([FontWeight.w300]).
   static TextStyle light(TextStyle style) => withWeight(style, FontWeight.w300);
 }

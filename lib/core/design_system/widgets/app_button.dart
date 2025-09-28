@@ -1,17 +1,45 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_sizing.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 
-/// Button variants for the app
-enum AppButtonVariant { primary, secondary, outline, ghost, destructive }
+/// Button variants for the app, determining color and style.
+enum AppButtonVariant {
+  /// Solid background, high emphasis. Uses primary color.
+  primary,
 
-/// Button sizes for the app
-enum AppButtonSize { small, medium, large }
+  /// Solid background, medium emphasis. Uses secondary color.
+  secondary,
 
-/// Custom app button widget with consistent styling
+  /// Transparent background with a border. Uses outline style.
+  outline,
+
+  /// Flat, minimal button (TextButton style). Low emphasis.
+  ghost,
+
+  /// Solid background, high emphasis for destructive actions. Uses error color.
+  destructive,
+}
+
+/// Button sizes for the app, controlling height, padding, and text style.
+enum AppButtonSize {
+  /// Small button size.
+  small,
+
+  /// Medium (default) button size.
+  medium,
+
+  /// Large button size.
+  large,
+}
+
+/// Custom app button widget with consistent styling across the application.
+///
+/// It supports various sizes, variants, loading states, and optional leading/trailing icons.
 class AppButton extends StatelessWidget {
+  /// Creates a custom app button.
   const AppButton({
     required this.text,
     super.key,
@@ -25,7 +53,7 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
   });
 
-  /// Primary button
+  /// Creates a primary (high-emphasis) button.
   const AppButton.primary({
     required this.text,
     super.key,
@@ -38,7 +66,7 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
   }) : variant = AppButtonVariant.primary;
 
-  /// Secondary button
+  /// Creates a secondary (medium-emphasis) button.
   const AppButton.secondary({
     required this.text,
     super.key,
@@ -51,7 +79,7 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
   }) : variant = AppButtonVariant.secondary;
 
-  /// Outline button
+  /// Creates an outline button.
   const AppButton.outline({
     required this.text,
     super.key,
@@ -64,7 +92,7 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
   }) : variant = AppButtonVariant.outline;
 
-  /// Ghost button
+  /// Creates a ghost (TextButton-style, low-emphasis) button.
   const AppButton.ghost({
     required this.text,
     super.key,
@@ -77,7 +105,7 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
   }) : variant = AppButtonVariant.ghost;
 
-  /// Destructive button
+  /// Creates a destructive (error-colored) button for irreversible actions.
   const AppButton.destructive({
     required this.text,
     super.key,
@@ -89,14 +117,32 @@ class AppButton extends StatelessWidget {
     this.trailing,
     this.enabled = true,
   }) : variant = AppButtonVariant.destructive;
+
+  /// The text displayed inside the button.
   final String text;
+
+  /// The callback function executed when the button is pressed. If null, the button is disabled.
   final VoidCallback? onPressed;
+
+  /// The visual style of the button (e.g., primary, outline, destructive). Defaults to [AppButtonVariant.primary].
   final AppButtonVariant variant;
+
+  /// The size of the button (small, medium, or large). Defaults to [AppButtonSize.medium].
   final AppButtonSize size;
+
+  /// If true, a loading indicator is shown instead of the content, and [onPressed] is ignored.
   final bool isLoading;
+
+  /// If true, the button takes up the full width of its parent container. Defaults to true.
   final bool isFullWidth;
+
+  /// Optional widget displayed to the left of the button text.
   final Widget? leading;
+
+  /// Optional widget displayed to the right of the button text.
   final Widget? trailing;
+
+  /// Controls whether the button is interactive. If false, it appears disabled. Defaults to true.
   final bool enabled;
 
   @override
@@ -234,7 +280,7 @@ class AppButton extends StatelessWidget {
     bool isDisabled,
   ) => ElevatedButton.styleFrom(
     backgroundColor: isDisabled
-        ? colorScheme.surfaceVariant
+        ? colorScheme.surfaceContainerHighest
         : colorScheme.primary,
     foregroundColor: isDisabled
         ? colorScheme.onSurfaceVariant
@@ -272,7 +318,7 @@ class AppButton extends StatelessWidget {
         : colorScheme.primary,
     side: BorderSide(
       color: isDisabled
-          ? colorScheme.outline.withValues(alpha: 0.3)
+          ? colorScheme.outline.withValues(alpha: .3)
           : colorScheme.outline,
       width: 1.5,
     ),

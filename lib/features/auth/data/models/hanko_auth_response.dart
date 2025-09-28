@@ -10,6 +10,15 @@ class HankoAuthResponse extends Equatable {
     this.message,
   });
 
+  /// Create from JSON
+  factory HankoAuthResponse.fromJson(Map<String, dynamic> json) =>
+      HankoAuthResponse(
+        sessionId: json['sessionId'] as String,
+        status: json['status'] as String,
+        challenge: json['challenge'] as String?,
+        message: json['message'] as String?,
+      );
+
   /// Session ID for the authentication flow
   final String sessionId;
 
@@ -22,31 +31,20 @@ class HankoAuthResponse extends Equatable {
   /// Optional message from the server
   final String? message;
 
-  /// Create from JSON
-  factory HankoAuthResponse.fromJson(Map<String, dynamic> json) {
-    return HankoAuthResponse(
-      sessionId: json['sessionId'] as String,
-      status: json['status'] as String,
-      challenge: json['challenge'] as String?,
-      message: json['message'] as String?,
-    );
-  }
-
   /// Convert to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'sessionId': sessionId,
-      'status': status,
-      if (challenge != null) 'challenge': challenge,
-      if (message != null) 'message': message,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'sessionId': sessionId,
+    'status': status,
+    if (challenge != null) 'challenge': challenge,
+    if (message != null) 'message': message,
+  };
 
   @override
   List<Object?> get props => [sessionId, status, challenge, message];
 
   @override
-  String toString() => 'HankoAuthResponse('
+  String toString() =>
+      'HankoAuthResponse('
       'sessionId: $sessionId, '
       'status: $status, '
       'challenge: $challenge, '

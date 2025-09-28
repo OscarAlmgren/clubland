@@ -58,7 +58,8 @@ class AuthSessionEntity extends Equatable {
   ];
 
   @override
-  String toString() => 'AuthSessionEntity('
+  String toString() =>
+      'AuthSessionEntity('
       'id: $id, '
       'user: ${user.email}, '
       'expiresAt: $expiresAt, '
@@ -75,15 +76,13 @@ class AuthSessionEntity extends Equatable {
     DateTime? expiresAt,
     String? hankoSessionId,
     DateTime? createdAt,
-  }) {
-    return AuthSessionEntity(
-      id: id ?? this.id,
-      user: user ?? this.user,
-      accessToken: accessToken ?? this.accessToken,
-      refreshToken: refreshToken ?? this.refreshToken,
-      expiresAt: expiresAt ?? this.expiresAt,
-      hankoSessionId: hankoSessionId ?? this.hankoSessionId,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  }) => AuthSessionEntity(
+    id: id ?? this.id,
+    user: user ?? this.user,
+    accessToken: accessToken ?? this.accessToken,
+    refreshToken: refreshToken ?? this.refreshToken,
+    expiresAt: expiresAt ?? this.expiresAt,
+    hankoSessionId: hankoSessionId ?? this.hankoSessionId,
+    createdAt: createdAt ?? this.createdAt,
+  );
 }
