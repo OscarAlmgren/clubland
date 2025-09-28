@@ -4,11 +4,21 @@ import 'package:flutter/services.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 
-/// Input field variants
-enum AppInputVariant { filled, outlined, underlined }
+/// Defines the visual styles or variants for an application input field.
+enum AppInputVariant {
+  /// A field with a colored background, typically representing the filled style in Material Design.
+  filled,
+
+  /// A field surrounded by a continuous border stroke.
+  outlined,
+
+  /// A field indicated only by a line underneath the input area.
+  underlined,
+}
 
 /// Custom app input field widget with consistent styling
 class AppInputField extends StatefulWidget {
+  /// Creates a [AppInputField]
   const AppInputField({
     super.key,
     this.label,
@@ -140,7 +150,7 @@ class AppInputField extends StatefulWidget {
     this.hint,
     this.helperText,
     this.errorText,
-    String? initialValue,
+    this.initialValue,
     this.controller,
     this.onChanged,
     this.onTap,
@@ -162,34 +172,87 @@ class AppInputField extends StatefulWidget {
        textCapitalization = TextCapitalization.sentences,
        inputFormatters = null,
        prefixText = null,
-       suffixText = null,
-       initialValue = initialValue;
+       suffixText = null;
+
+  /// The label text displayed above the input field.
   final String? label;
+
+  /// Text displayed when the input field is empty.
   final String? hint;
+
+  /// Text displayed below the input field to give the user information.
   final String? helperText;
+
+  /// Text displayed below the input field to indicate an error. Overrides [helperText].
   final String? errorText;
+
+  /// The initial value to populate the input field with.
   final String? initialValue;
+
+  /// Controls the text being edited. Required for clearing or dynamically setting text.
   final TextEditingController? controller;
+
+  /// Called when the text being edited changes.
   final ValueChanged<String>? onChanged;
+
+  /// Called when the user taps the text input field.
   final VoidCallback? onTap;
+
+  /// Called when the user submits the text via the keyboard action button.
   final ValueChanged<String>? onSubmitted;
+
+  /// An optional method that validates the text input.
   final FormFieldValidator<String>? validator;
+
+  /// Whether to hide the text being edited (e.g., for passwords).
   final bool obscureText;
+
+  /// Whether the user can interact with the input field.
   final bool enabled;
+
+  /// Whether the field is read-only (user can select text but not edit it).
   final bool readOnly;
+
+  /// Whether the field should automatically gain focus when the widget is built.
   final bool autofocus;
+
+  /// The maximum number of lines for the text to span. Defaults to 1.
   final int? maxLines;
+
+  /// The minimum number of lines to reserve for the field's height.
   final int? minLines;
+
+  /// The maximum length of the text input.
   final int? maxLength;
+
+  /// The type of keyboard to display (e.g., [TextInputType.number], [TextInputType.emailAddress]).
   final TextInputType? keyboardType;
+
+  /// The action button displayed on the keyboard (e.g., [TextInputAction.done], [TextInputAction.next]).
   final TextInputAction? textInputAction;
+
+  /// Configures how the text input is capitalized.
   final TextCapitalization textCapitalization;
+
+  /// A list of formatters to constrain and format the input text.
   final List<TextInputFormatter>? inputFormatters;
+
+  /// An icon or widget to display at the beginning of the input field.
   final Widget? prefixIcon;
+
+  /// An icon or widget to display at the end of the input field.
   final Widget? suffixIcon;
+
+  /// Text to display before the input value.
   final String? prefixText;
+
+  /// Text to display after the input value.
   final String? suffixText;
+
+  /// The visual style variant of the input field.
   final AppInputVariant variant;
+
+  /// An optional focus node to control and track the focus state of the field.
   final FocusNode? focusNode;
 
   @override

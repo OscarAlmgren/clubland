@@ -7,6 +7,7 @@ part 'clubs_controller.g.dart';
 
 /// Simple club data class for the controller
 class SimpleClub {
+  /// Creates a [SimpleClub] data model.
   const SimpleClub({
     required this.id,
     required this.name,
@@ -16,11 +17,22 @@ class SimpleClub {
     this.coverImage,
   });
 
+  /// The unique identifier for the club.
   final String id;
+
+  /// The public, displayable name of the club.
   final String name;
+
+  /// The URL-friendly identifier for the club (used in paths/links).
   final String slug;
+
+  /// A brief description of the club. Defaults to an empty string.
   final String description;
+
+  /// The URL for the club's main logo or avatar.
   final String? logo;
+
+  /// The URL for the club's cover or banner image.
   final String? coverImage;
 }
 
@@ -29,14 +41,18 @@ class SimpleClub {
 Future<List<SimpleClub>> allClubs(Ref ref) async {
   final datasource = ref.read(clubsRemoteDataSourceProvider);
   final clubs = await datasource.getClubs();
-  return clubs.map((club) => SimpleClub(
-    id: club.id,
-    name: club.name,
-    slug: club.slug,
-    description: club.description,
-    logo: club.logo,
-    coverImage: club.coverImage,
-  )).toList();
+  return clubs
+      .map(
+        (club) => SimpleClub(
+          id: club.id,
+          name: club.name,
+          slug: club.slug,
+          description: club.description,
+          logo: club.logo,
+          coverImage: club.coverImage,
+        ),
+      )
+      .toList();
 }
 
 /// Provider for featured clubs
@@ -44,14 +60,18 @@ Future<List<SimpleClub>> allClubs(Ref ref) async {
 Future<List<SimpleClub>> featuredClubs(Ref ref) async {
   final datasource = ref.read(clubsRemoteDataSourceProvider);
   final clubs = await datasource.getFeaturedClubs();
-  return clubs.map((club) => SimpleClub(
-    id: club.id,
-    name: club.name,
-    slug: club.slug,
-    description: club.description,
-    logo: club.logo,
-    coverImage: club.coverImage,
-  )).toList();
+  return clubs
+      .map(
+        (club) => SimpleClub(
+          id: club.id,
+          name: club.name,
+          slug: club.slug,
+          description: club.description,
+          logo: club.logo,
+          coverImage: club.coverImage,
+        ),
+      )
+      .toList();
 }
 
 /// Provider for nearby clubs
@@ -62,14 +82,18 @@ Future<List<SimpleClub>> nearbyClubs(Ref ref) async {
     latitude: 37.7749, // Default coordinates
     longitude: -122.4194,
   );
-  return clubs.map((club) => SimpleClub(
-    id: club.id,
-    name: club.name,
-    slug: club.slug,
-    description: club.description,
-    logo: club.logo,
-    coverImage: club.coverImage,
-  )).toList();
+  return clubs
+      .map(
+        (club) => SimpleClub(
+          id: club.id,
+          name: club.name,
+          slug: club.slug,
+          description: club.description,
+          logo: club.logo,
+          coverImage: club.coverImage,
+        ),
+      )
+      .toList();
 }
 
 /// Provider for user favorite clubs
@@ -77,14 +101,18 @@ Future<List<SimpleClub>> nearbyClubs(Ref ref) async {
 Future<List<SimpleClub>> favoriteClubs(Ref ref) async {
   final datasource = ref.read(clubsRemoteDataSourceProvider);
   final clubs = await datasource.getUserFavoriteClubs();
-  return clubs.map((club) => SimpleClub(
-    id: club.id,
-    name: club.name,
-    slug: club.slug,
-    description: club.description,
-    logo: club.logo,
-    coverImage: club.coverImage,
-  )).toList();
+  return clubs
+      .map(
+        (club) => SimpleClub(
+          id: club.id,
+          name: club.name,
+          slug: club.slug,
+          description: club.description,
+          logo: club.logo,
+          coverImage: club.coverImage,
+        ),
+      )
+      .toList();
 }
 
 /// Main clubs controller for managing club state and actions
@@ -102,15 +130,18 @@ class ClubsController extends _$ClubsController {
   Future<List<SimpleClub>> build() async {
     final datasource = ref.read(clubsRemoteDataSourceProvider);
     final clubs = await datasource.getClubs();
-    _allClubs = clubs.map((club) => SimpleClub(
-      id: club.id,
-      name: club.name,
-      slug: club.slug,
-      description: club.description,
-      logo: club.logo,
-      coverImage: club.coverImage,
-    )).toList();
-    return _allClubs;
+    return _allClubs = clubs
+        .map(
+          (club) => SimpleClub(
+            id: club.id,
+            name: club.name,
+            slug: club.slug,
+            description: club.description,
+            logo: club.logo,
+            coverImage: club.coverImage,
+          ),
+        )
+        .toList();
   }
 
   /// Load more clubs (pagination)
@@ -128,14 +159,18 @@ class ClubsController extends _$ClubsController {
         cursor: _currentCursor,
       );
 
-      final simpleClubs = newClubs.map((club) => SimpleClub(
-        id: club.id,
-        name: club.name,
-        slug: club.slug,
-        description: club.description,
-        logo: club.logo,
-        coverImage: club.coverImage,
-      )).toList();
+      final simpleClubs = newClubs
+          .map(
+            (club) => SimpleClub(
+              id: club.id,
+              name: club.name,
+              slug: club.slug,
+              description: club.description,
+              logo: club.logo,
+              coverImage: club.coverImage,
+            ),
+          )
+          .toList();
 
       _allClubs.addAll(simpleClubs);
       _hasMoreData = newClubs.length == _pageSize;
@@ -167,14 +202,18 @@ class ClubsController extends _$ClubsController {
         limit: _pageSize,
       );
 
-      _allClubs = clubs.map((club) => SimpleClub(
-        id: club.id,
-        name: club.name,
-        slug: club.slug,
-        description: club.description,
-        logo: club.logo,
-        coverImage: club.coverImage,
-      )).toList();
+      _allClubs = clubs
+          .map(
+            (club) => SimpleClub(
+              id: club.id,
+              name: club.name,
+              slug: club.slug,
+              description: club.description,
+              logo: club.logo,
+              coverImage: club.coverImage,
+            ),
+          )
+          .toList();
 
       _hasMoreData = clubs.length == _pageSize;
       state = AsyncData(_allClubs);
@@ -203,14 +242,18 @@ class ClubsController extends _$ClubsController {
         limit: _pageSize,
       );
 
-      _allClubs = clubs.map((club) => SimpleClub(
-        id: club.id,
-        name: club.name,
-        slug: club.slug,
-        description: club.description,
-        logo: club.logo,
-        coverImage: club.coverImage,
-      )).toList();
+      _allClubs = clubs
+          .map(
+            (club) => SimpleClub(
+              id: club.id,
+              name: club.name,
+              slug: club.slug,
+              description: club.description,
+              logo: club.logo,
+              coverImage: club.coverImage,
+            ),
+          )
+          .toList();
 
       _currentCursor = null;
       _hasMoreData = false; // Nearby results typically don't paginate
@@ -254,14 +297,18 @@ class ClubsController extends _$ClubsController {
         limit: 50,
       );
 
-      return searchResults.map((result) => SimpleClub(
-        id: result.id,
-        name: result.name,
-        slug: result.slug,
-        description: result.description ?? '',
-        logo: result.logo,
-        coverImage: result.coverImage,
-      )).toList();
+      return searchResults
+          .map(
+            (result) => SimpleClub(
+              id: result.id,
+              name: result.name,
+              slug: result.slug,
+              description: result.description ?? '',
+              logo: result.logo,
+              coverImage: result.coverImage,
+            ),
+          )
+          .toList();
     } on Exception {
       return [];
     }

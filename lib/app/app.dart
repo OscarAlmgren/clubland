@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +22,6 @@ class ClublandApp extends ConsumerWidget {
       title: 'Clubland',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
       routerConfig: ref.watch(appRouterProvider),
       debugShowCheckedModeBanner: false,
 
@@ -37,9 +35,7 @@ class ClublandApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
 
-      builder: (context, child) {
-        return AppWrapper(child: child!);
-      },
+      builder: (context, child) => AppWrapper(child: child!),
     );
   }
 }

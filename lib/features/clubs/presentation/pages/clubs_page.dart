@@ -92,7 +92,7 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _findNearbyClubs(),
+        onPressed: _findNearbyClubs,
         icon: const Icon(Icons.my_location),
         label: const Text('Find Nearby'),
       ),
@@ -113,7 +113,8 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
                 controller: _scrollController,
                 padding: const EdgeInsets.all(16),
                 itemCount: clubs.length + 1,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   if (index == clubs.length) {
                     return const _LoadMoreIndicator();
@@ -147,15 +148,10 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
     return const NearbyClubsSection();
   }
 
-  Widget _buildFeaturedTab() {
-    return const FeaturedClubsSection();
-  }
+  Widget _buildFeaturedTab() => const FeaturedClubsSection();
 
   void _showSearch(BuildContext context) {
-    showSearch(
-      context: context,
-      delegate: ClubSearchDelegate(),
-    );
+    showSearch(context: context, delegate: ClubSearchDelegate());
   }
 
   void _showFilters(BuildContext context) {
@@ -181,39 +177,37 @@ class _EmptyClubsView extends StatelessWidget {
   const _EmptyClubsView();
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.location_city_outlined,
-            size: 80,
-            color: Theme.of(context).colorScheme.outline,
+  Widget build(BuildContext context) => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.location_city_outlined,
+          size: 80,
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        AppSpacing.verticalSpaceLG,
+        Text(
+          'No Clubs Found',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        AppSpacing.verticalSpaceMD,
+        Text(
+          'Try adjusting your filters or search in a different area.',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          AppSpacing.verticalSpaceLG,
-          Text(
-            'No Clubs Found',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          AppSpacing.verticalSpaceMD,
-          Text(
-            'Try adjusting your filters or search in a different area.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          AppSpacing.verticalSpaceLG,
-          FilledButton.icon(
-            onPressed: () => context.go('/clubs'),
-            icon: const Icon(Icons.refresh),
-            label: const Text('Refresh'),
-          ),
-        ],
-      ),
-    );
-  }
+          textAlign: TextAlign.center,
+        ),
+        AppSpacing.verticalSpaceLG,
+        FilledButton.icon(
+          onPressed: () => context.go('/clubs'),
+          icon: const Icon(Icons.refresh),
+          label: const Text('Refresh'),
+        ),
+      ],
+    ),
+  );
 }
 
 class _LoadMoreIndicator extends ConsumerWidget {
@@ -227,9 +221,7 @@ class _LoadMoreIndicator extends ConsumerWidget {
     if (isLoadingMore) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+        child: Center(child: CircularProgressIndicator()),
       );
     }
 

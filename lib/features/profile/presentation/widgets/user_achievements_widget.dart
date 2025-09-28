@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// A widget that displays a user's list of achievements.
+///
+/// It uses a ListView.separated to render a list of [AchievementCard] widgets.
 class UserAchievementsWidget extends ConsumerWidget {
+  /// Constructs a [UserAchievementsWidget].
   const UserAchievementsWidget({super.key});
 
   @override
@@ -24,7 +28,7 @@ class UserAchievementsWidget extends ConsumerWidget {
         earned: true,
         earnedDate: DateTime.now().subtract(const Duration(days: 15)),
       ),
-      SimpleAchievement(
+      const SimpleAchievement(
         id: '3',
         title: 'Explorer',
         description: 'Visit 5 different clubs',
@@ -33,7 +37,7 @@ class UserAchievementsWidget extends ConsumerWidget {
         progress: 3,
         maxProgress: 5,
       ),
-      SimpleAchievement(
+      const SimpleAchievement(
         id: '4',
         title: 'Reviewer',
         description: 'Write 10 club reviews',
@@ -56,95 +60,96 @@ class UserAchievementsWidget extends ConsumerWidget {
   }
 }
 
+/// A card widget used to display the details of a single [SimpleAchievement].
 class AchievementCard extends StatelessWidget {
-  const AchievementCard({
-    required this.achievement,
-    super.key,
-  });
+  /// Constructs an [AchievementCard].
+  const AchievementCard({required this.achievement, super.key});
 
+  /// The achievement data to be displayed in the card.
   final SimpleAchievement achievement;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: achievement.earned
-                    ? Theme.of(context).colorScheme.primaryContainer
-                    : Theme.of(context).colorScheme.surfaceVariant,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Icon(
-                achievement.icon,
-                size: 30,
-                color: achievement.earned
-                    ? Theme.of(context).colorScheme.onPrimaryContainer
-                    : Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+  Widget build(BuildContext context) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: achievement.earned
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(context).colorScheme.surfaceVariant,
+              borderRadius: BorderRadius.circular(30),
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    achievement.title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+            child: Icon(
+              achievement.icon,
+              size: 30,
+              color: achievement.earned
+                  ? Theme.of(context).colorScheme.onPrimaryContainer
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  achievement.title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  achievement.description,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                if (!achievement.earned && achievement.progress != null) ...[
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: achievement.progress! / achievement.maxProgress!,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceVariant,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    achievement.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
+                    '${achievement.progress}/${achievement.maxProgress}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                  if (!achievement.earned && achievement.progress != null) ...[
-                    const SizedBox(height: 8),
-                    LinearProgressIndicator(
-                      value: achievement.progress! / achievement.maxProgress!,
-                      backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${achievement.progress}/${achievement.maxProgress}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                    ),
-                  ],
-                  if (achievement.earned && achievement.earnedDate != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      'Earned ${_formatDate(achievement.earnedDate!)}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ],
                 ],
-              ),
+                if (achievement.earned && achievement.earnedDate != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    'Earned ${_formatDate(achievement.earnedDate!)}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ],
             ),
-            if (achievement.earned)
-              Icon(
-                Icons.check_circle,
-                color: Theme.of(context).colorScheme.primary,
-                size: 24,
-              ),
-          ],
-        ),
+          ),
+          if (achievement.earned)
+            Icon(
+              Icons.check_circle,
+              color: Theme.of(context).colorScheme.primary,
+              size: 24,
+            ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 
+  // Private method: documentation not required for private members
   String _formatDate(DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
@@ -160,7 +165,9 @@ class AchievementCard extends StatelessWidget {
   }
 }
 
+/// A simple data model representing a user achievement.
 class SimpleAchievement {
+  /// Constructs a [SimpleAchievement].
   const SimpleAchievement({
     required this.id,
     required this.title,
@@ -172,12 +179,27 @@ class SimpleAchievement {
     this.maxProgress,
   });
 
+  /// The unique identifier for the achievement.
   final String id;
+
+  /// The public title of the achievement.
   final String title;
+
+  /// A brief explanation of how the achievement was earned.
   final String description;
+
+  /// The icon representing the achievement.
   final IconData icon;
+
+  /// Flag indicating if the user has earned the achievement.
   final bool earned;
+
+  /// The date and time the achievement was earned.
   final DateTime? earnedDate;
+
+  /// The user's current progress toward the achievement (for unearned items).
   final int? progress;
+
+  /// The total progress required to earn the achievement.
   final int? maxProgress;
 }

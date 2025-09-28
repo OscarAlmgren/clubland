@@ -8,7 +8,13 @@ import '../models/activity_model.dart';
 import '../models/club_review_model.dart';
 import '../models/notification_model.dart';
 
+/// Abstract class defining the remote interface for all social features
+/// including activity, reviews, and notifications.
 abstract class SocialRemoteDataSource {
+  /// Fetches a list of activity items based on optional filters.
+  ///
+  /// Filters allow limiting by [userId], [type], and [clubId].
+  /// Supports pagination via [limit] and [cursor].
   Future<List<ActivityModel>> getUserActivity({
     String? userId,
     ActivityType? type,
@@ -17,12 +23,19 @@ abstract class SocialRemoteDataSource {
     String? cursor,
   });
 
+  /// Fetches a list of [ClubReviewModel]s for a specific club.
+  ///
+  /// Supports pagination via [limit] and [cursor].
   Future<List<ClubReviewModel>> getClubReviews({
     required String clubId,
     int? limit,
     String? cursor,
   });
 
+  /// Creates a new club review.
+  ///
+  /// [rating] is required. Optional fields include [comment] and detailed
+  /// [aspects] ratings.
   Future<ClubReviewModel> createReview({
     required String clubId,
     required int rating,
@@ -30,37 +43,55 @@ abstract class SocialRemoteDataSource {
     Map<String, int>? aspects,
   });
 
+  /// Sends a like action to a specific activity.
+  ///
+  /// Returns the updated [ActivityModel].
   Future<ActivityModel> likeActivity(String activityId);
 
+  /// Adds a comment to a specific activity.
+  ///
+  /// Returns the created [ActivityCommentModel].
   Future<ActivityCommentModel> addComment({
     required String activityId,
     required String text,
   });
 
+  /// Shares a specific activity, typically creating a share link or log.
   Future<void> shareActivity(String activityId);
 
+  /// Fetches a list of user notifications.
+  ///
+  /// Supports filtering by [unreadOnly] and pagination via [limit] and [cursor].
   Future<List<NotificationModel>> getNotifications({
     bool? unreadOnly,
     int? limit,
     String? cursor,
   });
 
+  /// Marks a specific notification as read.
   Future<void> markNotificationAsRead(String notificationId);
 
+  /// Marks all current user notifications as read.
   Future<void> markAllNotificationsAsRead();
 
+  /// Establishes a real-time subscription for a user's notifications.
   Stream<NotificationModel> subscribeToNotifications(String userId);
 
+  /// Establishes a real-time subscription for activities related to a specific club.
   Stream<ActivityModel> subscribeToClubActivity(String clubId);
 }
 
+/// Implementation of [SocialRemoteDataSource] using GraphQL.
 class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
-  final GraphQLClient _client;
-  final Logger _logger;
-
+  /// Creates an instance of [SocialRemoteDataSourceImpl].
+  ///
+  /// If [client] or [logger] are not provided, it falls back to default
+  /// client configuration and a default logger instance.
   SocialRemoteDataSourceImpl({GraphQLClient? client, Logger? logger})
     : _client = client ?? GraphQLClientConfig.client,
       _logger = logger ?? Logger();
+  final GraphQLClient _client;
+  final Logger _logger;
 
   @override
   Future<List<ActivityModel>> getUserActivity({
@@ -100,11 +131,16 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['userActivity'];
-      if (data == null) {
+      final rawData = result.data?['userActivity'];
+      if (rawData == null) {
         throw const NetworkException('No activity data received', 'NO_DATA');
       }
 
+      // 💡 FIX 1: Cast the raw GraphQL result data to a Map<String, dynamic>
+      final data = rawData as Map<String, dynamic>;
+
+      // FIX 2: Now that 'data' is correctly typed, accessing 'nodes' is safe.
+      // The inner type cast (as List<dynamic>?) is also explicitly handled.
       final nodes = data['nodes'] as List<dynamic>?;
       if (nodes == null) {
         return [];
@@ -319,6 +355,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Sharing activity: $activityId');
 
+      /// GraphQL mutation to share a specific activity.
+      /// The full query is embedded here as it was missing from GraphQLOperations.
       const mutation = r'''
         mutation ShareActivity($activityId: ID!) {
           shareActivity(activityId: $activityId) {
@@ -370,6 +408,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Fetching notifications, unreadOnly: $unreadOnly');
 
+      /// GraphQL query to fetch a list of user notifications.
+      /// The full query is embedded here as it was missing from GraphQLOperations.
       const query = r'''
         query Notifications(
           $filter: NotificationFilterInput
@@ -450,6 +490,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Marking notification as read: $notificationId');
 
+      /// GraphQL mutation to mark a single notification as read.
+      /// The full query is embedded here as it was missing from GraphQLOperations.
       const mutation = r'''
         mutation MarkNotificationRead($notificationId: ID!) {
           markNotificationRead(notificationId: $notificationId) {
@@ -483,6 +525,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Marking all notifications as read');
 
+      /// GraphQL mutation to mark all unread notifications as read.
+      /// The full query is embedded here as it was missing from GraphQLOperations.
       const mutation = '''
         mutation MarkAllNotificationsRead {
           markAllNotificationsRead {
@@ -500,7 +544,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       if (result.hasException) {
         throw NetworkException.serverError(
           500,
-          result.exception?.toString() ?? 'Failed to mark notifications as read',
+          result.exception?.toString() ??
+              'Failed to mark notifications as read',
         );
       }
 
@@ -591,13 +636,29 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
   }
 }
 
+/// Defines the possible types of social activity events.
 enum ActivityType {
+  /// User checked into a club.
   checkedIn,
+
+  /// User booked an event or service.
   booked,
+
+  /// User published a review.
   reviewed,
+
+  /// User joined a group or club.
   joined,
+
+  /// User shared content.
   shared,
+
+  /// User liked an activity.
   liked,
+
+  /// User commented on an activity.
   commented,
+
+  /// User earned an achievement or badge.
   achieved,
 }

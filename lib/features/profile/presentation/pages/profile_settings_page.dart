@@ -75,7 +75,7 @@ class ProfileSettingsPage extends ConsumerWidget {
         height: 16,
         child: CircularProgressIndicator(strokeWidth: 2),
       ),
-      error: (_, __) => const Icon(Icons.error_outline),
+      error: (_, _) => const Icon(Icons.error_outline),
     ),
     onTap: () => _showLanguageSelector(context, ref, currentLanguageAsync),
   );
@@ -87,46 +87,47 @@ class ProfileSettingsPage extends ConsumerWidget {
   ) {
     showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(S.of(context).selectLanguage),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: AppLanguage.values.map((language) {
-            final isSelected = currentLanguageAsync.value == language;
-            final currentLang =
-                currentLanguageAsync.value ?? AppLanguage.english;
+      builder: (context) {
+        // We retrieve the selected language here
+        final selectedLanguage = currentLanguageAsync.value;
 
-            return ListTile(
-              leading: Radio<AppLanguage>(
-                value: language,
-                groupValue: currentLanguageAsync.value,
-                onChanged: (AppLanguage? value) {
-                  if (value != null) {
-                    ref
-                        .read(languageNotifierProvider.notifier)
-                        .setLanguage(value);
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-              title: Text(language.getDisplayName(currentLang)),
-              selected: isSelected,
-              onTap: () {
-                ref
-                    .read(languageNotifierProvider.notifier)
-                    .setLanguage(language);
+        return AlertDialog(
+          title: Text(S.of(context).selectLanguage),
+
+          // The RadioGroup handles the value change for the entire group
+          content: RadioGroup<AppLanguage>(
+            groupValue: selectedLanguage,
+
+            // This is the single place where the state is updated and the dialog is closed
+            onChanged: (AppLanguage? value) {
+              if (value != null) {
+                // Update Riverpod state
+                ref.read(languageNotifierProvider.notifier).setLanguage(value);
+                // Close the dialog immediately after selection
                 Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(S.of(context).cancel),
+              }
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: AppLanguage.values.map((language) {
+                final currentLang = selectedLanguage ?? AppLanguage.english;
+
+                return RadioListTile<AppLanguage>(
+                  value: language,
+                  title: Text(language.getDisplayName(currentLang)),
+                  selected: language == selectedLanguage,
+                );
+              }).toList(),
+            ),
           ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).cancel),
+            ),
+          ],
+        );
+      },
     );
   }
 }

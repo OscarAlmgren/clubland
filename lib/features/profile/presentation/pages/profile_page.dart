@@ -69,9 +69,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
           controller: _tabController,
           isScrollable: true,
           tabs: [
-            Tab(icon: const Icon(Icons.person_outline), text: S.of(context).overview),
+            Tab(
+              icon: const Icon(Icons.person_outline),
+              text: S.of(context).overview,
+            ),
             Tab(icon: const Icon(Icons.timeline), text: S.of(context).activity),
-            Tab(icon: const Icon(Icons.emoji_events), text: S.of(context).achievements),
+            Tab(
+              icon: const Icon(Icons.emoji_events),
+              text: S.of(context).achievements,
+            ),
             Tab(icon: const Icon(Icons.menu), text: S.of(context).more),
           ],
         ),
@@ -194,7 +200,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 icon: Icons.share,
                 title: S.of(context).shareProfile,
                 subtitle: S.of(context).shareProfileSubtitle,
-                onTap: () => _shareProfile(),
+                onTap: _shareProfile,
               ),
             ],
           ),
@@ -346,7 +352,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
           _MenuItem(
             icon: Icons.logout,
             title: S.of(context).signOut,
-            onTap: () => _signOut(),
+            onTap: _signOut,
             isDestructive: true,
           ),
         ]),
@@ -428,13 +434,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       ),
     );
 
+    // 💡 Check the State's mounted property immediately and exit if false.
+    if (!mounted) return;
+
     if (shouldSignOut ?? false) {
       // TODO(oscaralmgren): Implement logout functionality
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context).logoutFunctionalityComingSoon)),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(S.of(context).logoutFunctionalityComingSoon)),
+      );
     }
   }
 
