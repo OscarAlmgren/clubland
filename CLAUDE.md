@@ -50,10 +50,15 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 - **Upgrade dependencies**: `flutter pub upgrade`
 - **Clean build cache**: `flutter clean`
 
-### Database Generation (Drift)
-- **Generate database code**: `dart run build_runner build --delete-conflicting-outputs`
-- **Watch database changes**: `dart run build_runner watch --delete-conflicting-outputs`
-- **Clean database files**: `dart run build_runner clean`
+### Code Generation (Riverpod & Drift)
+- **Generate all code**: `dart run build_runner build --delete-conflicting-outputs`
+- **Watch for changes**: `dart run build_runner watch --delete-conflicting-outputs`
+- **Clean generated files**: `dart run build_runner clean`
+
+### Storage Architecture
+- **Simple Data**: SharedPreferences-based multi-box storage system
+- **Structured Data**: Drift SQL database for complex queries
+- **Secure Data**: Flutter Secure Storage for sensitive information
 
 ### Deployment
 - **Deploy web to staging**: `./scripts/deploy.sh web staging`
@@ -269,7 +274,7 @@ lib/
 - **Navigation**: go_router
 - **HTTP/GraphQL**: dio, graphql_flutter, gql
 - **Authentication**: local_auth, flutter_secure_storage, crypto, encrypt
-- **Local Storage**: drift (modern, type-safe SQL database)
+- **Local Storage**: SharedPreferences (simple key-value storage), drift (structured data)
 - **UI/UX**: cached_network_image, lottie, shimmer
 - **Maps**: google_maps_flutter, geolocator
 - **Internationalization**: flutter_localizations, intl
@@ -751,3 +756,19 @@ flutter build appbundle
 - **DevTools**: Memory, network, and performance profiling
 - **GraphQL Playground**: Test API queries directly
 - **Redux DevTools**: State management debugging (via Riverpod)
+
+## Recent Major Updates
+
+### Package Upgrade & Migration (September 2024)
+- **Flutter SDK**: Upgraded to 3.37.0-0.1.pre (beta) with Dart 3.10.0 for macro support
+- **Riverpod**: Migrated from 2.x to 3.x ecosystem with breaking changes resolved
+- **Database**: Migrated from Hive to Drift for modern SQL capabilities
+- **Storage**: Replaced Hive with SharedPreferences for simple key-value storage
+- **Testing**: Migrated from discontinued golden_toolkit to alchemist
+- **Dependencies**: Upgraded 50+ packages, reduced incompatible packages by 62%
+
+### Breaking Changes Resolved
+- Updated provider naming conventions (`languageNotifierProvider` → `languageProvider`)
+- Fixed type inference issues with explicit type annotations
+- Updated `Ref` parameter types throughout codebase
+- Regenerated all providers with Riverpod 3.x code generation

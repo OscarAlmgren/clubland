@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/storage_keys.dart';
 import '../errors/exceptions.dart';
@@ -18,12 +18,13 @@ abstract class LocalStorage {
   Future<void> dispose();
 }
 
-/// Hive implementation of local storage
-class HiveLocalStorage implements LocalStorage {
-  HiveLocalStorage({String boxName = 'app_storage', Logger? logger})
-    : _boxName = boxName,
-      _logger = logger ?? Logger();
-  late Box<dynamic> _box;
+/// SharedPreferences implementation of local storage
+class SharedPreferencesLocalStorage implements LocalStorage {
+  SharedPreferencesLocalStorage({String boxName = 'app_storage', Logger? logger})
+      : _boxName = boxName,
+        _logger = logger ?? Logger();
+
+  late SharedPreferences _prefs;
   final Logger _logger;
   final String _boxName;
   bool _isInitialized = false;
@@ -33,13 +34,12 @@ class HiveLocalStorage implements LocalStorage {
     try {
       if (_isInitialized) return;
 
-      await Hive.initFlutter();
-      _box = await Hive.openBox(_boxName);
+      _prefs = await SharedPreferences.getInstance();
       _isInitialized = true;
 
-      _logger.i('Hive local storage initialized with box: $_boxName');
+      _logger.i('SharedPreferences local storage initialized');
     } on Exception catch (e) {
-      _logger.e('Failed to initialize Hive storage: $e');
+      _logger.e('Failed to initialize SharedPreferences storage: $e');
       throw const StorageException('Failed to initialize local storage');
     }
   }
@@ -52,11 +52,29 @@ class HiveLocalStorage implements LocalStorage {
     }
   }
 
+  String _getKey(String key) => '${_boxName}_$key';
+
   @override
   Future<void> write<T>(String key, T value) async {
     try {
       _ensureInitialized();
-      await _box.put(key, value);
+      final prefKey = _getKey(key);
+
+      if (value is String) {
+        await _prefs.setString(prefKey, value);
+      } else if (value is int) {
+        await _prefs.setInt(prefKey, value);
+      } else if (value is double) {
+        await _prefs.setDouble(prefKey, value);
+      } else if (value is bool) {
+        await _prefs.setBool(prefKey, value);
+      } else if (value is List<String>) {
+        await _prefs.setStringList(prefKey, value);
+      } else {
+        // Serialize other types as JSON
+        await _prefs.setString(prefKey, jsonEncode(value));
+      }
+
       _logger.d('Local storage write successful for key: $key');
     } on Exception catch (e) {
       _logger.e('Failed to write to local storage: $e');
@@ -68,11 +86,24 @@ class HiveLocalStorage implements LocalStorage {
   Future<T?> read<T>(String key) async {
     try {
       _ensureInitialized();
-      final value = _box.get(key) as T?;
-      _logger.d(
-        'Local storage read for key: $key ${value != null ? 'found' : 'not found'}',
-      );
-      return value;
+      final prefKey = _getKey(key);
+
+      if (T == String) {
+        return _prefs.getString(prefKey) as T?;
+      } else if (T == int) {
+        return _prefs.getInt(prefKey) as T?;
+      } else if (T == double) {
+        return _prefs.getDouble(prefKey) as T?;
+      } else if (T == bool) {
+        return _prefs.getBool(prefKey) as T?;
+      } else if (T == List<String>) {
+        return _prefs.getStringList(prefKey) as T?;
+      } else {
+        // Try to deserialize from JSON
+        final jsonString = _prefs.getString(prefKey);
+        if (jsonString == null) return null;
+        return jsonDecode(jsonString) as T?;
+      }
     } on Exception catch (e) {
       _logger.e('Failed to read from local storage: $e');
       throw StorageException.readError();
@@ -83,7 +114,8 @@ class HiveLocalStorage implements LocalStorage {
   Future<void> delete(String key) async {
     try {
       _ensureInitialized();
-      await _box.delete(key);
+      final prefKey = _getKey(key);
+      await _prefs.remove(prefKey);
       _logger.d('Local storage delete successful for key: $key');
     } on Exception catch (e) {
       _logger.e('Failed to delete from local storage: $e');
@@ -95,7 +127,11 @@ class HiveLocalStorage implements LocalStorage {
   Future<void> clear() async {
     try {
       _ensureInitialized();
-      await _box.clear();
+      // Only clear keys with our box prefix
+      final keys = _prefs.getKeys().where((key) => key.startsWith('${_boxName}_')).toList();
+      for (final key in keys) {
+        await _prefs.remove(key);
+      }
       _logger.i('Local storage cleared');
     } on Exception catch (e) {
       _logger.e('Failed to clear local storage: $e');
@@ -107,7 +143,8 @@ class HiveLocalStorage implements LocalStorage {
   Future<bool> containsKey(String key) async {
     try {
       _ensureInitialized();
-      return _box.containsKey(key);
+      final prefKey = _getKey(key);
+      return _prefs.containsKey(prefKey);
     } on Exception catch (e) {
       _logger.e('Failed to check local storage key: $e');
       return false;
@@ -118,7 +155,10 @@ class HiveLocalStorage implements LocalStorage {
   Future<List<String>> getKeys() async {
     try {
       _ensureInitialized();
-      return _box.keys.cast<String>().toList();
+      return _prefs.getKeys()
+          .where((key) => key.startsWith('${_boxName}_'))
+          .map((key) => key.substring('${_boxName}_'.length))
+          .toList();
     } on Exception catch (e) {
       _logger.e('Failed to get local storage keys: $e');
       return [];
@@ -129,7 +169,6 @@ class HiveLocalStorage implements LocalStorage {
   Future<void> dispose() async {
     try {
       if (_isInitialized) {
-        await _box.close();
         _isInitialized = false;
         _logger.i('Local storage disposed');
       }
@@ -144,8 +183,9 @@ class HiveLocalStorage implements LocalStorage {
       _ensureInitialized();
       var totalSize = 0;
 
-      for (final key in _box.keys) {
-        final value = _box.get(key);
+      final keys = await getKeys();
+      for (final key in keys) {
+        final value = await read<dynamic>(key);
         totalSize += _estimateObjectSize(key) + _estimateObjectSize(value);
       }
 
@@ -168,7 +208,7 @@ class HiveLocalStorage implements LocalStorage {
 }
 
 /// Enhanced local storage with typed operations
-class TypedLocalStorage extends HiveLocalStorage {
+class TypedLocalStorage extends SharedPreferencesLocalStorage {
   TypedLocalStorage({super.boxName, super.logger});
 
   /// Write JSON object
