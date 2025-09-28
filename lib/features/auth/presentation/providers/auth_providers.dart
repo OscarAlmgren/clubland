@@ -10,10 +10,15 @@ part 'auth_providers.g.dart';
 
 /// Auth Repository provider
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(Ref ref) => AuthRepositoryImpl(
-  secureStorage: ref.watch(secureStorageServiceProvider),
-  logger: ref.watch(loggerProvider),
-);
+AuthRepository authRepository(Ref ref) {
+  // Ensure GraphQL client is initialized first
+  ref.watch(graphqlClientProvider);
+
+  return AuthRepositoryImpl(
+    secureStorage: ref.watch(secureStorageServiceProvider),
+    logger: ref.watch(loggerProvider),
+  );
+}
 
 /// Login usecase provider
 @riverpod
