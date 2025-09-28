@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:clubland/core/security/encryption_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -260,7 +262,8 @@ void main() {
 
       test('should produce same key for same parameters', () {
         const password = 'myPassword';
-        const salt = 'fixedSalt';
+        // Use base64-encoded salt as expected by deriveKey method
+        final salt = base64Encode(utf8.encode('fixedSalt'));
         const iterations = 1000;
         const keyLength = 32;
 
@@ -283,7 +286,8 @@ void main() {
       test('should produce different key for different password', () {
         const password1 = 'password1';
         const password2 = 'password2';
-        const salt = 'fixedSalt';
+        // Use base64-encoded salt as expected by deriveKey method
+        final salt = base64Encode(utf8.encode('fixedSalt'));
         const iterations = 1000;
         const keyLength = 32;
 
