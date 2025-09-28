@@ -995,6 +995,26 @@ The project has been migrated to Riverpod 3.x with the following key changes:
 - **Testing**: Migrated from deprecated golden_toolkit to alchemist
 - **Compatibility**: Resolved 62% reduction in incompatible packages
 
+### Critical Runtime Fixes (September 2024)
+
+#### App Initialization Sequence
+- **Issue Resolved**: Fixed `LateInitializationError` in GraphQL client that caused login spinner to hang indefinitely
+- **Root Cause**: Authentication controller was initializing before core services (GraphQL client, error handler)
+- **Solution**: Implemented proper dependency chain through `AppInitialization` provider:
+  ```
+  Core Services (GraphQL, Error Handler, Storage) → Authentication → UI
+  ```
+
+#### Service Dependencies
+- **Error Handler**: Added global navigator and scaffold messenger keys for proper error display
+- **GraphQL Client**: Ensured initialization via `GraphQLClientConfig.initialize()` before any API calls
+- **Provider Chain**: Updated `AppWrapper` to use `appInitializationProvider` for coordinated startup
+
+#### Test Infrastructure
+- **AsyncValue Migration**: Updated test files from `valueOrNull` to `value` property for Riverpod 3.x
+- **Override Types**: Fixed test provider overrides with proper `Override` type imports
+- **Compilation**: All tests now compile and run successfully with Riverpod 3.x
+
 ---
 
 This API documentation provides comprehensive coverage of the Clubland Flutter app's architecture, state management, and key services. Each section includes detailed function signatures, parameters, return types, and usage examples to facilitate development and integration.

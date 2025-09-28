@@ -87,6 +87,18 @@ flutter build web           # Web
 - ✅ Fixed compatibility issues across authentication, routing, and core modules
 - ✅ Improved type safety and code generation reliability
 
+### Critical App Initialization Fixes
+- ✅ **Fixed GraphQL Client Initialization**: Resolved `LateInitializationError` in GraphQL client
+- ✅ **Error Handler Setup**: Proper initialization of global error handling with navigator keys
+- ✅ **Service Dependencies**: Corrected initialization order (core services → auth → UI)
+- ✅ **App Startup Sequence**: Fixed login spinner hanging issue caused by uninitialized services
+
+### Test Infrastructure Improvements
+- ✅ **Riverpod 3.x Test Compatibility**: Updated test files for new AsyncValue API
+- ✅ **Test Helper Fixes**: Proper Override type imports and provider overrides
+- ✅ **Widget Test Cleanup**: Improved test structure and documentation
+- ✅ **Compilation Success**: All tests now compile and run with Riverpod 3.x
+
 ### Storage Architecture Update
 - **Simple Data**: SharedPreferences-based multi-box storage system
 - **Structured Data**: Drift SQL database for complex queries and relationships

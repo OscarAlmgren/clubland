@@ -825,3 +825,25 @@ flutter build appbundle
 - **App Router**: Updated both `lib/core/routing/app_router.dart` and `lib/app/router/app_router.dart` with proper Ref types
 - **App Providers**: Migrated `StateProvider` to `@riverpod` annotations and fixed `DeviceInfoRef` issues
 - **Code Generation**: All modules now fully compatible with Riverpod 3.x code generation system
+
+### Critical Runtime Fixes (September 2024)
+
+- **App Initialization Sequence**: Fixed GraphQL client and error handler initialization order
+  - Resolved `LateInitializationError` in GraphQL client causing login spinner to hang
+  - Implemented proper service dependency chain: core services → auth → UI
+  - Added global navigator and scaffold messenger keys for error handling
+  - Integrated `AppInitialization` provider for coordinated startup sequence
+
+- **Test Infrastructure Overhaul**: Complete Riverpod 3.x test compatibility
+  - Fixed `AsyncValue.valueOrNull` → `AsyncValue.value` migration
+  - Added proper `Override` type imports from riverpod framework
+  - Updated test helper functions with correct type annotations
+  - Cleaned up widget test structure and documentation
+
+### Development Status (Current)
+
+- **Compilation**: ✅ All source files compile successfully
+- **Code Generation**: ✅ Riverpod 3.x providers generate without errors
+- **Test Suite**: ✅ Unit and widget tests compile and run
+- **App Startup**: ✅ Runtime initialization sequence fixed
+- **Provider System**: ✅ Full compatibility with Riverpod 3.x ecosystem
