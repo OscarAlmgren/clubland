@@ -13,11 +13,11 @@ part 'core_providers.g.dart';
 
 /// Logger provider
 @Riverpod(keepAlive: true)
-Logger logger(LoggerRef ref) => Logger(printer: PrettyPrinter());
+Logger logger(Ref ref) => Logger(printer: PrettyPrinter());
 
 /// Flutter Secure Storage provider
 @Riverpod(keepAlive: true)
-FlutterSecureStorage flutterSecureStorage(FlutterSecureStorageRef ref) =>
+FlutterSecureStorage flutterSecureStorage(Ref ref) =>
     const FlutterSecureStorage(
       iOptions: IOSOptions(
         accessibility: KeychainAccessibility.first_unlock_this_device,
@@ -26,7 +26,7 @@ FlutterSecureStorage flutterSecureStorage(FlutterSecureStorageRef ref) =>
 
 /// Enhanced Secure Storage provider
 @Riverpod(keepAlive: true)
-EnhancedSecureStorage secureStorage(SecureStorageRef ref) =>
+EnhancedSecureStorage secureStorage(Ref ref) =>
     EnhancedSecureStorage(
       storage: ref.watch(flutterSecureStorageProvider),
       logger: ref.watch(loggerProvider),
@@ -34,21 +34,21 @@ EnhancedSecureStorage secureStorage(SecureStorageRef ref) =>
 
 /// Secure Storage Service provider
 @Riverpod(keepAlive: true)
-SecureStorageService secureStorageService(SecureStorageServiceRef ref) =>
+SecureStorageService secureStorageService(Ref ref) =>
     SecureStorageService(ref.watch(secureStorageProvider));
 
 /// Connectivity provider
 @Riverpod(keepAlive: true)
-Connectivity connectivity(ConnectivityRef ref) => Connectivity();
+Connectivity connectivity(Ref ref) => Connectivity();
 
 /// Network Info provider
 @Riverpod(keepAlive: true)
-NetworkInfo networkInfo(NetworkInfoRef ref) =>
+NetworkInfo networkInfo(Ref ref) =>
     EnhancedNetworkInfo(ref.watch(connectivityProvider));
 
 /// Storage Manager provider
 @Riverpod(keepAlive: true)
-Future<StorageManager> storageManager(StorageManagerRef ref) async {
+Future<StorageManager> storageManager(Ref ref) async {
   final manager = StorageManager(logger: ref.watch(loggerProvider));
   await manager.init();
   return manager;
@@ -56,7 +56,7 @@ Future<StorageManager> storageManager(StorageManagerRef ref) async {
 
 /// Cache Manager provider
 @Riverpod(keepAlive: true)
-Future<AppCacheManager> cacheManager(CacheManagerRef ref) async {
+Future<AppCacheManager> cacheManager(Ref ref) async {
   final storageManager = await ref.watch(storageManagerProvider.future);
   final cacheStorage = storageManager.cacheStorage;
 
@@ -71,7 +71,7 @@ Future<AppCacheManager> cacheManager(CacheManagerRef ref) async {
 
 /// GraphQL Client provider
 @Riverpod(keepAlive: true)
-Future<void> graphqlClient(GraphqlClientRef ref) async {
+Future<void> graphqlClient(Ref ref) async {
   const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
     defaultValue: 'http://localhost:8080',
@@ -86,7 +86,7 @@ Future<void> graphqlClient(GraphqlClientRef ref) async {
 
 /// Connectivity Stream provider
 @riverpod
-Stream<List<ConnectivityResult>> connectivityStream(ConnectivityStreamRef ref) {
+Stream<List<ConnectivityResult>> connectivityStream(Ref ref) {
   final connectivity = ref.watch(connectivityProvider);
   return connectivity.onConnectivityChanged;
 }
