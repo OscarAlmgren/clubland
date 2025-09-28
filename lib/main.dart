@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:drift/drift.dart';
 import 'package:logger/logger.dart';
 
 import 'app/app.dart';
@@ -35,8 +34,7 @@ Future<void> main() async {
     rethrow;
   }
 
-  // Initialize Hive for local storage
-  await Hive.initFlutter();
+  // Storage initialization is now handled by the StorageManager in app providers
 
   // Log environment info in debug mode
   if (kDebugMode) {
