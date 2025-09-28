@@ -1,17 +1,20 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 import '../design_system/design_system.dart';
 
 /// A utility for implementing lazy loading patterns in the app
 class LazyLoadingManager {
+  /// Gets the singleton instance of the LazyLoadingManager
+  factory LazyLoadingManager() => _instance ??= LazyLoadingManager._();
+
   LazyLoadingManager._() : _logger = Logger();
 
   static LazyLoadingManager? _instance;
-  static LazyLoadingManager get instance =>
-      _instance ??= LazyLoadingManager._();
+
+  /// Gets the singleton instance of the LazyLoadingManager
+  static LazyLoadingManager get instance => LazyLoadingManager();
 
   final Logger _logger;
   final Map<String, dynamic> _cache = {};
@@ -83,7 +86,8 @@ class LazyLoadingManager {
       return; // Already cached and not expired
     }
 
-    unawaited(lazyLoad(key: key, loader: loader, cacheDuration: cacheDuration));
+    // Fire and forget - don't await the preload operation
+    lazyLoad(key: key, loader: loader, cacheDuration: cacheDuration);
   }
 
   /// Check if a cached item is expired
@@ -223,33 +227,23 @@ class _LazyLoadingWidgetState<T> extends State<LazyLoadingWidget<T>> {
   );
 }
 
-/// Riverpod provider for lazy loading data
-class LazyLoadProvider<T> extends FamilyAsyncNotifier<T, String> {
-  /// Constructs a [LazyLoadProvider]
-  LazyLoadProvider({
-    required this.loader,
-    this.cacheDuration = const Duration(minutes: 10),
-  });
-
-  /// Function to load the data
-  final Future<T> Function(String key) loader;
-
-  /// Cache duration
-  final Duration cacheDuration;
-
-  @override
-  Future<T> build(String key) async => LazyLoadingManager.instance.lazyLoad<T>(
-    key: key,
-    loader: () => loader(key),
-    cacheDuration: cacheDuration,
-  );
-
-  /// Refresh the data for a specific key
-  void refresh(String key) {
-    LazyLoadingManager.instance.invalidate(key);
-    ref.invalidate(this as ProviderOrFamily);
-  }
-}
+/// Creates a lazy load provider using the LazyLoadingManager
+///
+/// Example usage:
+/// ```dart
+/// @riverpod
+/// Future<User> lazyUser(Ref ref, String userId) async {
+///   return LazyLoadingManager.instance.lazyLoad<User>(
+///     key: 'user_$userId',
+///     loader: () => userRepository.getUser(userId),
+///     cacheDuration: Duration(minutes: 15),
+///   );
+/// }
+/// ```
+///
+/// This pattern leverages Riverpod's built-in caching and state management
+/// while adding the LazyLoadingManager's advanced caching features like
+/// expiration, invalidation patterns, and batch loading protection.
 
 /// Extension to add lazy loading capabilities to any widget
 extension LazyLoadingExtension on Widget {
