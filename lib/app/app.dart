@@ -73,18 +73,28 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
         throw Exception('Core services initialization failed');
       }
 
-      // Then initialize auth controller (which handles auth state restoration)
-      await ref.read(authControllerProvider.future);
+      // Auth initialization is optional for basic app functionality
+      // The auth state will be managed by the router's redirect logic
+      try {
+        // Don't await - let auth initialize in background
+        ref.read(authControllerProvider.future).then((_) {
+          // Auth controller initialized successfully
+        }).catchError((Object e) {
+          // Auth controller initialization failed (non-fatal)
+        });
+      } catch (e) {
+        // Auth controller initialization error (non-fatal)
+      }
 
-      // Add a small delay to show splash screen
-      await Future<void>.delayed(const Duration(milliseconds: 1500));
+      // Add a delay to show splash screen
+      await Future<void>.delayed(const Duration(milliseconds: 2000));
 
       if (mounted) {
         setState(() {
           _isInitialized = true;
         });
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       // If initialization fails, show error and retry
       if (mounted) {
         setState(() {

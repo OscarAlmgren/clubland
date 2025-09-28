@@ -26,24 +26,40 @@ GoRouter appRouter(Ref ref) {
     navigatorKey: navigatorKey,
     initialLocation: RoutePaths.login,
     redirect: (BuildContext context, GoRouterState state) {
-      final authState = ref.read(authControllerProvider);
-      final isAuthenticated = authState.value != null;
-      final isLoginRoute =
-          state.matchedLocation == RoutePaths.login ||
-          state.matchedLocation == RoutePaths.register;
+      try {
+        final authState = ref.read(authControllerProvider);
 
-      // If user is not authenticated and trying to access protected routes
-      if (!isAuthenticated && !isLoginRoute) {
+        // Handle loading state - stay on current route
+        if (authState.isLoading) {
+          return null;
+        }
+
+        // Handle error state - redirect to login
+        if (authState.hasError) {
+          return RoutePaths.login;
+        }
+
+        final isAuthenticated = authState.value != null;
+        final isLoginRoute =
+            state.matchedLocation == RoutePaths.login ||
+            state.matchedLocation == RoutePaths.register;
+
+        // If user is not authenticated and trying to access protected routes
+        if (!isAuthenticated && !isLoginRoute) {
+          return RoutePaths.login;
+        }
+
+        // If user is authenticated and trying to access login/register
+        if (isAuthenticated && isLoginRoute) {
+          return RoutePaths.home;
+        }
+
+        // No redirect needed
+        return null;
+      } catch (e) {
+        // If auth controller is not initialized, default to login
         return RoutePaths.login;
       }
-
-      // If user is authenticated and trying to access login/register
-      if (isAuthenticated && isLoginRoute) {
-        return RoutePaths.home;
-      }
-
-      // No redirect needed
-      return null;
     },
     routes: [
       // Authentication routes

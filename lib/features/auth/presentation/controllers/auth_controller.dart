@@ -24,19 +24,28 @@ class AuthController extends _$AuthController {
       final logger = ref.read(loggerProvider);
       logger.d('Initializing authentication...');
 
-      // Listen to auth state changes from repository
-      ref.read(authRepositoryProvider);
-      ref.listen(authRepositoryProvider, (_, repository) {
-        repository.authStateChanges.listen((session) {
-          if (session != null) {
-            state = AsyncData(session.user);
-          } else {
-            state = const AsyncData(null);
-          }
-        });
-      });
+      // Try to initialize repository - may fail if GraphQL client not ready
+      try {
+        final repository = ref.read(authRepositoryProvider);
 
-      logger.d('Authentication initialized');
+        // Listen to auth state changes from repository
+        ref.listen(authRepositoryProvider, (_, repository) {
+          repository.authStateChanges.listen((session) {
+            if (session != null) {
+              state = AsyncData(session.user);
+            } else {
+              state = const AsyncData(null);
+            }
+          });
+        });
+
+        logger.d('Authentication repository initialized');
+      } catch (repositoryError) {
+        logger.w('Auth repository not ready yet: $repositoryError');
+        // Continue without auth repository - it will be initialized later
+      }
+
+      logger.d('Authentication initialization completed');
     } on Exception catch (e, stackTrace) {
       final logger = ref.read(loggerProvider);
       logger.e(
