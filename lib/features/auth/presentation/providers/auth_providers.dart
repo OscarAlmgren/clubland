@@ -10,51 +10,51 @@ part 'auth_providers.g.dart';
 
 /// Auth Repository provider
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(AuthRepositoryRef ref) => AuthRepositoryImpl(
+AuthRepository authRepository(Ref ref) => AuthRepositoryImpl(
   secureStorage: ref.watch(secureStorageServiceProvider),
   logger: ref.watch(loggerProvider),
 );
 
 /// Login usecase provider
 @riverpod
-LoginUsecase loginUsecase(LoginUsecaseRef ref) =>
+LoginUsecase loginUsecase(Ref ref) =>
     LoginUsecase(ref.watch(authRepositoryProvider));
 
 /// Hanko login usecase provider
 @riverpod
-HankoLoginUsecase hankoLoginUsecase(HankoLoginUsecaseRef ref) =>
+HankoLoginUsecase hankoLoginUsecase(Ref ref) =>
     HankoLoginUsecase(ref.watch(authRepositoryProvider));
 
 /// Register usecase provider
 @riverpod
-RegisterUsecase registerUsecase(RegisterUsecaseRef ref) =>
+RegisterUsecase registerUsecase(Ref ref) =>
     RegisterUsecase(ref.watch(authRepositoryProvider));
 
 /// Logout usecase provider
 @riverpod
-LogoutUsecase logoutUsecase(LogoutUsecaseRef ref) =>
+LogoutUsecase logoutUsecase(Ref ref) =>
     LogoutUsecase(ref.watch(authRepositoryProvider));
 
 /// Refresh token usecase provider
 @riverpod
-RefreshTokenUsecase refreshTokenUsecase(RefreshTokenUsecaseRef ref) =>
+RefreshTokenUsecase refreshTokenUsecase(Ref ref) =>
     RefreshTokenUsecase(ref.watch(authRepositoryProvider));
 
 /// Get current user usecase provider
 @riverpod
-GetCurrentUserUsecase getCurrentUserUsecase(GetCurrentUserUsecaseRef ref) =>
+GetCurrentUserUsecase getCurrentUserUsecase(Ref ref) =>
     GetCurrentUserUsecase(ref.watch(authRepositoryProvider));
 
 /// Check auth status usecase provider
 @riverpod
-CheckAuthStatusUsecase checkAuthStatusUsecase(CheckAuthStatusUsecaseRef ref) =>
+CheckAuthStatusUsecase checkAuthStatusUsecase(Ref ref) =>
     CheckAuthStatusUsecase(ref.watch(authRepositoryProvider));
 
 /// Biometric auth usecase provider
 @riverpod
-BiometricAuthUsecase biometricAuthUsecase(BiometricAuthUsecaseRef ref) =>
+BiometricAuthUsecase biometricAuthUsecase(Ref ref) =>
     BiometricAuthUsecase(ref.watch(authRepositoryProvider));
 
 /// Hanko service provider
 @riverpod
-HankoService hankoService(HankoServiceRef ref) => HankoServiceImpl();
+HankoService hankoService(Ref ref) => HankoServiceImpl();

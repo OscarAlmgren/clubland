@@ -349,30 +349,30 @@ class AuthController extends _$AuthController {
 
 /// Current user provider (derived from auth controller)
 @riverpod
-UserEntity? currentUser(CurrentUserRef ref) {
+UserEntity? currentUser(Ref ref) {
   final authState = ref.watch(authControllerProvider);
   return authState.value;
 }
 
 /// Authentication status provider
 @riverpod
-bool isAuthenticated(IsAuthenticatedRef ref) {
+bool isAuthenticated(Ref ref) {
   final user = ref.watch(currentUserProvider);
   return user != null;
 }
 
 /// Current auth session provider
 @riverpod
-Future<AuthSessionEntity?> authSession(AuthSessionRef ref) async {
+Future<AuthSessionEntity?> authSession(Ref ref) async {
   final authRepository = ref.read(authRepositoryProvider);
   final result = await authRepository.getCurrentSession();
 
-  return result.fold((failure) => null, (AuthSessionEntity session) => session);
+  return result.fold((failure) => null, (session) => session);
 }
 
 /// User permissions provider
 @riverpod
-Future<List<String>> userPermissions(UserPermissionsRef ref) async {
+Future<List<String>> userPermissions(Ref ref) async {
   final user = ref.watch(currentUserProvider);
   if (user == null) return [];
 
@@ -384,7 +384,7 @@ Future<List<String>> userPermissions(UserPermissionsRef ref) async {
 
 /// Biometric availability provider
 @riverpod
-Future<bool> biometricAvailable(BiometricAvailableRef ref) async {
+Future<bool> biometricAvailable(Ref ref) async {
   final authRepository = ref.read(authRepositoryProvider);
   return authRepository.isBiometricAvailable();
 }
