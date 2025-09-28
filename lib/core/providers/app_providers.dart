@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../constants/app_constants.dart';
@@ -286,9 +285,8 @@ class AppSettingsNotifier extends _$AppSettingsNotifier {
 // --- PROVIDERS: LIFECYCLE & DEVICE INFO ---
 
 /// Provides the current [AppLifecycleState] of the application.
-final appLifecycleStateProvider = StateProvider<AppLifecycleState>(
-  (ref) => AppLifecycleState.resumed,
-);
+@riverpod
+AppLifecycleState appLifecycleState(Ref ref) => AppLifecycleState.resumed;
 
 /// Device info model containing hardware and screen specifics.
 @immutable
@@ -379,7 +377,7 @@ class DeviceInfo {
 /// **MOCK Implementation:** In a real application, this would use a package
 /// like `device_info_plus` to gather specific device properties.
 @riverpod
-Future<DeviceInfo> deviceInfo(DeviceInfoRef ref) async {
+Future<DeviceInfo> deviceInfo(Ref ref) async {
   // MOCK: Simulate actual device info gathering delay
   await Future<void>.delayed(const Duration(milliseconds: 200));
 
