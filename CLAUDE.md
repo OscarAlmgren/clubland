@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Clubland is a premium End User Flutter application for the Reciprocal Clubs platform. It provides passwordless authentication, club discovery, booking management, social features, and real-time visit tracking across mobile, web, and desktop platforms.
 
 ## Requirements
+
 - **Flutter**: 3.37.0+ (beta channel for latest packages)
 - **Dart**: 3.10.0+ (required for macro support)
 - **SDK**: ^3.9.2 (minimum supported version)
@@ -14,6 +15,7 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 ## Development Commands
 
 ### Essential Commands
+
 - **Run the app (production)**: `flutter run`
 - **Run with simple main**: `flutter run --target lib/simple_main.dart`
 - **Hot reload**: Press `r` in the terminal while app is running
@@ -22,18 +24,21 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 - **Run with environment**: `flutter run --dart-define=ENVIRONMENT=development`
 
 ### Code Generation
+
 - **Generate all code**: `dart run build_runner build --delete-conflicting-outputs`
 - **Watch for changes**: `dart run build_runner watch --delete-conflicting-outputs`
 - **Clean generated files**: `dart run build_runner clean`
 - **Generate internationalization**: `dart run intl_utils:generate`
 
 ### Building
+
 - **Build Android APK**: `flutter build apk --release --dart-define=ENVIRONMENT=production`
 - **Build Android Bundle**: `flutter build appbundle --release --dart-define=ENVIRONMENT=production`
 - **Build iOS**: `flutter build ios --release --dart-define=ENVIRONMENT=production`
 - **Build web**: `flutter build web --release --dart-define=ENVIRONMENT=production`
 
 ### Testing and Quality
+
 - **Run all tests**: `flutter test`
 - **Run unit tests**: `flutter test test/unit/`
 - **Run widget tests**: `flutter test test/widget/`
@@ -46,21 +51,25 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 - **Check dependencies**: `flutter pub outdated`
 
 ### Package Management
+
 - **Install dependencies**: `flutter pub get`
 - **Upgrade dependencies**: `flutter pub upgrade`
 - **Clean build cache**: `flutter clean`
 
 ### Code Generation (Riverpod & Drift)
+
 - **Generate all code**: `dart run build_runner build --delete-conflicting-outputs`
 - **Watch for changes**: `dart run build_runner watch --delete-conflicting-outputs`
 - **Clean generated files**: `dart run build_runner clean`
 
 ### Storage Architecture
+
 - **Simple Data**: SharedPreferences-based multi-box storage system
 - **Structured Data**: Drift SQL database for complex queries
 - **Secure Data**: Flutter Secure Storage for sensitive information
 
 ### Deployment
+
 - **Deploy web to staging**: `./scripts/deploy.sh web staging`
 - **Deploy web to production**: `./scripts/deploy.sh web production`
 - **Build all platforms**: `./scripts/deploy.sh all production`
@@ -71,6 +80,7 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 This project follows Clean Architecture principles with feature-based organization:
 
 ### Core Architecture Layers
+
 - **Presentation Layer**: UI widgets, controllers (Riverpod), and state management
 - **Domain Layer**: Business logic, entities, and use cases
 - **Data Layer**: Repositories, data sources (remote/local), and models
@@ -186,6 +196,7 @@ graph LR
 ```
 
 ### Data Architecture
+
 - **API**: GraphQL with type-safe code generation
 - **Authentication**: Hanko passwordless + JWT tokens
 - **Local Storage**: Hive for offline-first architecture
@@ -194,7 +205,7 @@ graph LR
 
 ## Project Structure
 
-```
+```text
 lib/
 ├── main.dart                           # Main entry point
 ├── simple_main.dart                    # Simplified entry point
@@ -270,6 +281,7 @@ lib/
 ## Key Dependencies
 
 ### Production Dependencies
+
 - **State Management**: flutter_riverpod, riverpod_annotation
 - **Navigation**: go_router
 - **HTTP/GraphQL**: dio, graphql_flutter, gql
@@ -281,6 +293,7 @@ lib/
 - **Utils**: equatable, freezed_annotation, json_annotation
 
 ### Development Dependencies
+
 - **Code Generation**: build_runner, freezed, json_serializable, drift_dev
 - **GraphQL**: graphql_codegen
 - **State Management**: riverpod_generator, riverpod_lint
@@ -291,12 +304,14 @@ lib/
 ## Authentication Architecture
 
 ### Security Architecture
+
 - **Primary**: Local biometric authentication on mobile devices
 - **Encryption**: Custom encryption service for sensitive data
 - **Storage**: FlutterSecureStorage for tokens and credentials
 - **Session Management**: Secure session management with encrypted storage
 
 ### Authentication Flow
+
 1. User initiates authentication
 2. Biometric/PIN verification required
 3. Encrypted credentials retrieved from secure storage
@@ -306,19 +321,23 @@ lib/
 ## GraphQL Integration
 
 ### Schema Organization
+
 - **auth.graphql**: Authentication mutations and queries
 - **clubs.graphql**: Club discovery, details, and search
 - **bookings.graphql**: Reservation management
 - **visits.graphql**: Check-in/out and visit tracking
 - **subscriptions.graphql**: Real-time updates
 
-### Code Generation
+### GraphQL Code Generation
+
 The project uses GraphQL code generation to create type-safe Dart classes:
+
 - Run `dart run build_runner build` after schema changes
 - Generated files are in `lib/generated/`
 - Never edit generated files manually
 
 ### Client Configuration
+
 - **Authentication**: Automatic JWT token injection
 - **Caching**: Optimistic updates with cache-first strategy
 - **Subscriptions**: WebSocket for real-time features
@@ -327,10 +346,12 @@ The project uses GraphQL code generation to create type-safe Dart classes:
 ## Internationalization (i18n)
 
 ### Supported Languages
+
 - **English** (en): Default language, comprehensive translations
 - **Swedish** (sv): Full translation support for Swedish users
 
 ### Implementation Architecture
+
 - **Translation Files**: ARB format in `lib/l10n/` (intl_en.arb, intl_sv.arb)
 - **Code Generation**: Uses `intl_utils` package for type-safe translation access
 - **Generated Code**: Located in `lib/generated/l10n/` with S.dart localization class
@@ -338,6 +359,7 @@ The project uses GraphQL code generation to create type-safe Dart classes:
 - **Persistence**: User language preference saved to SharedPreferences
 
 ### Language Management
+
 - **Language Provider**: `lib/core/providers/language_provider.dart`
   - Manages current app language state
   - Handles language switching and persistence
@@ -345,6 +367,7 @@ The project uses GraphQL code generation to create type-safe Dart classes:
   - Supports AppLanguage enum for type safety
 
 ### Usage in Code
+
 ```dart
 // Import localization
 import '../../../../generated/l10n/l10n.dart';
@@ -355,11 +378,13 @@ Text(S.of(context).signOut)
 ```
 
 ### Language Selection
+
 - **Settings Page**: Profile settings include language selector
 - **Real-time Switching**: Changes apply immediately without app restart
 - **System Default**: Falls back to device language if supported
 
 ### Adding New Languages
+
 1. Create new ARB file: `lib/l10n/intl_[locale].arb`
 2. Add translations for all existing keys
 3. Update AppLanguage enum in language_provider.dart
@@ -367,6 +392,7 @@ Text(S.of(context).signOut)
 5. Test language switching functionality
 
 ### Translation Keys Organization
+
 - **UI Elements**: profile, settings, overview, activity, achievements
 - **Actions**: signOut, editProfile, shareProfile, viewAll
 - **Navigation**: quickActions, recentActivity, account, social, support
@@ -375,7 +401,7 @@ Text(S.of(context).signOut)
 
 ## Application Flow Diagrams
 
-### Authentication Flow
+### User Authentication Flow
 
 ```mermaid
 sequenceDiagram
@@ -639,17 +665,20 @@ Future<ProfileEntity> fetchUserProfile(String userId) async {
 ## Testing Strategy
 
 ### Test Types
+
 - **Unit Tests** (`test/unit/`): Business logic, repositories, use cases
 - **Widget Tests** (`test/widget/`): UI components and interactions
 - **Integration Tests** (`integration_test/`): End-to-end user flows
 
 ### Testing Patterns
+
 - **Repository Testing**: Mock data sources, test business logic
 - **Controller Testing**: Mock repositories, test state management
 - **Widget Testing**: Test UI interactions and state changes
 - **Visual Regression Tests**: Alchemist-based golden testing for UI components
 
 ### Coverage Goals
+
 - Unit tests: 80%+ coverage
 - Widget tests: 70%+ coverage for critical components
 - Integration tests: 100% coverage of core user journeys
@@ -657,12 +686,14 @@ Future<ProfileEntity> fetchUserProfile(String userId) async {
 ## Development Workflow
 
 ### Code Generation Workflow
+
 1. Update GraphQL schema files in `lib/schema/`
 2. Run `dart run build_runner build --delete-conflicting-outputs`
 3. Update data models if schema changes affect types
 4. Update tests to reflect changes
 
 ### Feature Development
+
 1. Create feature branch from main
 2. Implement following Clean Architecture layers: Domain → Data → Presentation
 3. Write tests for each layer
@@ -671,6 +702,7 @@ Future<ProfileEntity> fetchUserProfile(String userId) async {
 6. Submit PR with comprehensive tests
 
 ### Quality Checks
+
 - **Pre-commit**: Format code, run fast tests
 - **PR**: Full test suite, code coverage check
 - **Deploy**: Integration tests, build verification
@@ -678,7 +710,9 @@ Future<ProfileEntity> fetchUserProfile(String userId) async {
 ## Build Configuration
 
 ### Environment Configuration
+
 The app uses environment configuration to manage different settings:
+
 - **Environment Detection**: Automatic environment detection and validation
 - **Configuration Management**: Centralized configuration with validation
 - **Logging**: Environment-specific logging levels
@@ -687,12 +721,14 @@ The app uses environment configuration to manage different settings:
 ## Performance Optimization
 
 ### Critical Performance Targets
+
 - App launch time: < 2 seconds
 - Search results: < 1.5 seconds
 - Image loading: Progressive with caching
 - Battery usage: Optimized background processing
 
 ### Optimization Strategies
+
 - **Lazy Loading**: Load data on demand
 - **Image Caching**: Multi-layer image cache
 - **Code Splitting**: Dynamic imports for large features
@@ -701,12 +737,14 @@ The app uses environment configuration to manage different settings:
 ## Security Considerations
 
 ### Data Protection
+
 - **Encryption**: All sensitive data encrypted at rest
 - **Secure Storage**: Use FlutterSecureStorage for tokens
 - **Biometric Auth**: Required for sensitive operations
 - **Network Security**: Certificate pinning, TLS 1.3
 
 ### Privacy Controls
+
 - **Location**: Granular location sharing settings
 - **Activity**: User-controlled visibility settings
 - **Data Export**: GDPR-compliant data export/deletion
@@ -715,11 +753,13 @@ The app uses environment configuration to manage different settings:
 ## Monitoring and Analytics
 
 ### Error Tracking
+
 - **Crashes**: Firebase Crashlytics integration
 - **Performance**: Firebase Performance monitoring
 - **User Analytics**: Privacy-respecting usage analytics
 
 ### Logging Strategy
+
 - **Development**: Verbose logging for debugging
 - **Production**: Error and warning logs only
 - **Sensitive Data**: Never log tokens, passwords, or PII
@@ -746,12 +786,14 @@ flutter build appbundle
 ## Troubleshooting
 
 ### Common Issues
+
 - **Build failures**: Run `flutter clean` and regenerate code
 - **GraphQL errors**: Check schema files and regenerate
 - **Authentication issues**: Verify encryption service and secure storage configuration
 - **Performance issues**: Use Flutter Inspector and profiling tools
 
 ### Debug Tools
+
 - **Flutter Inspector**: Widget tree and performance analysis
 - **DevTools**: Memory, network, and performance profiling
 - **GraphQL Playground**: Test API queries directly
@@ -760,6 +802,7 @@ flutter build appbundle
 ## Recent Major Updates
 
 ### Package Upgrade & Migration (September 2024)
+
 - **Flutter SDK**: Upgraded to 3.37.0-0.1.pre (beta) with Dart 3.10.0 for macro support
 - **Riverpod**: Migrated from 2.x to 3.x ecosystem with breaking changes resolved
 - **Database**: Migrated from Hive to Drift for modern SQL capabilities
@@ -768,12 +811,14 @@ flutter build appbundle
 - **Dependencies**: Upgraded 50+ packages, reduced incompatible packages by 62%
 
 ### Breaking Changes Resolved
+
 - Updated provider naming conventions (`languageNotifierProvider` → `languageProvider`)
 - Fixed type inference issues with explicit type annotations
 - Updated `Ref` parameter types throughout codebase
 - Regenerated all providers with Riverpod 3.x code generation
 
 ### Latest Riverpod 3.x Compatibility Fixes (September 2024)
+
 - **Core Performance**: Fixed `LazyLoadingManager` compatibility issues and improved singleton pattern
 - **Authentication Module**: Resolved undefined `AuthControllerRef`, `CurrentUserRef`, and other custom Ref types
 - **Core Providers**: Fixed `LoggerRef`, `FlutterSecureStorageRef`, and 8 other undefined provider references
