@@ -17,7 +17,7 @@ part 'app_router.g.dart';
 
 /// App router provider that handles navigation and auth guards
 @riverpod
-GoRouter appRouter(AppRouterRef ref) {
+GoRouter appRouter(Ref ref) {
   ref.watch(authControllerProvider.notifier);
 
   return GoRouter(
