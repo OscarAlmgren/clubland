@@ -10,6 +10,12 @@ void main() {
     retryService = RetryService.instance;
   });
 
+  tearDown(() {
+    // Reset any potential state between tests
+    // Note: RetryService is a singleton but doesn't maintain persistent state
+    // This is here for completeness and future-proofing
+  });
+
   group('RetryService', () {
     group('executeWithRetry', () {
       test('should return success on first attempt', () async {
@@ -422,9 +428,9 @@ void main() {
 
       test('should respect max delay', () async {
         const config = RetryConfig(
-          initialDelay: Duration(seconds: 5),
+          initialDelay: Duration(milliseconds: 500),
           backoffMultiplier: 10.0,
-          maxDelay: Duration(seconds: 2), // Much smaller than calculated delay
+          maxDelay: Duration(milliseconds: 100), // Much smaller than calculated delay
         );
 
         var callCount = 0;
@@ -444,8 +450,9 @@ void main() {
 
         stopwatch.stop();
 
-        // Should complete in less than 10 seconds (would be much longer without maxDelay)
-        expect(stopwatch.elapsedMilliseconds, lessThan(10000));
+        // Should complete in less than 1 second (would be much longer without maxDelay)
+        // Using more generous timing to account for test environment variability
+        expect(stopwatch.elapsedMilliseconds, lessThan(1000));
         expect(callCount, equals(3));
       });
     });
@@ -459,17 +466,18 @@ void main() {
       });
     });
 
-    group('extension methods', () {
-      test('withRetry extension should add retry functionality', () async {
-        // Test that extension method calls the retry service
-        // Note: Extension methods work on already-created Futures, so they can't
-        // retry by re-executing the operation. They wrap the single Future result.
+    group('direct retry service usage', () {
+      test('should use executeWithRetry directly', () async {
+        // Test direct usage of RetryService without extension methods
+        var callCount = 0;
 
-        final successFuture = Future<Either<Failure, String>>.value(
-          const Right('success'),
-        );
+        Future<Either<Failure, String>> operation() async {
+          callCount++;
+          return const Right('success');
+        }
 
-        final result = await successFuture.withRetry(
+        final result = await retryService.executeWithRetry(
+          operation,
           config: const RetryConfig(
             maxRetries: 1,
             initialDelay: Duration(milliseconds: 10),
@@ -482,29 +490,33 @@ void main() {
           (failure) => fail('Expected success but got failure: $failure'),
           (value) => expect(value, equals('success')),
         );
+        expect(callCount, equals(1));
       });
 
-      test(
-        'withSimpleRetry extension should add retry functionality',
-        () async {
-          // Test that extension method calls the retry service
-          Future<String> createOperation() {
-            throw Exception('Always fails');
-          }
+      test('should use executeWithSimpleRetry directly', () async {
+        // Test direct usage of RetryService for simple operations
+        var callCount = 0;
 
-          // The extension method wraps the operation and applies retry logic
-          expect(
-            () => createOperation().withSimpleRetry(
-              config: const RetryConfig(
-                maxRetries: 1,
-                initialDelay: Duration(milliseconds: 10),
-              ),
-              operationName: 'testOperation',
-            ),
-            throwsException,
-          );
-        },
-      );
+        Future<String> operation() async {
+          callCount++;
+          if (callCount == 1) {
+            throw Exception('First attempt fails');
+          }
+          return 'success';
+        }
+
+        final result = await retryService.executeWithSimpleRetry(
+          operation,
+          config: const RetryConfig(
+            maxRetries: 1,
+            initialDelay: Duration(milliseconds: 10),
+          ),
+          operationName: 'testOperation',
+        );
+
+        expect(result, equals('success'));
+        expect(callCount, equals(2));
+      });
     });
   });
 }

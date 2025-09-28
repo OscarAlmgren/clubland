@@ -313,38 +313,9 @@ class RetryConfig {
   }
 }
 
-// -----------------------------------------------------------------------------
-
-/// Extension methods for convenient retry usage
-extension RetryExtension<T> on Future<Either<Failure, T>> {
-  /// Add retry logic to any Either-returning Future.
-  Future<Either<Failure, T>> withRetry({
-    /// Optional configuration to override the default retry behavior.
-    RetryConfig? config,
-
-    /// A name used for logging to identify the operation.
-    String? operationName,
-  }) => RetryService().executeWithRetry(
-    // <--- CHANGED HERE
-    () => this,
-    config: config,
-    operationName: operationName,
-  );
-}
-
-/// Extension methods for convenient simple retry usage
-extension SimpleRetryExtension<T> on Future<T> {
-  /// Add retry logic to any Future that throws exceptions.
-  Future<T> withSimpleRetry({
-    /// Optional configuration to override the default retry behavior.
-    RetryConfig? config,
-
-    /// A name used for logging to identify the operation.
-    String? operationName,
-  }) => RetryService().executeWithSimpleRetry(
-    // <--- CHANGED HERE
-    () => this,
-    config: config,
-    operationName: operationName,
-  );
-}
+// Note: Extension methods for retry functionality have been removed because
+// they cannot properly implement retry logic. Retry requires re-executing
+// the original operation, which is not possible with an already-created Future.
+//
+// Use RetryService.instance.executeWithRetry() or executeWithSimpleRetry() directly
+// by passing a function that creates the Future, not the Future itself.
