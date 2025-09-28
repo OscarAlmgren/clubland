@@ -16,9 +16,10 @@
 
 ### Prerequisites
 
-- **Flutter SDK**: 3.16.0+
-- **Dart SDK**: 3.9.2+
+- **Flutter SDK**: 3.37.0+ (beta channel for latest packages)
+- **Dart SDK**: 3.10.0+ (required for macro support)
 - **Development Tools**: Android Studio, Xcode (for iOS), VS Code
+- **Minimum SDK Support**: ^3.9.2
 
 ### Installation
 
@@ -70,6 +71,26 @@ flutter build appbundle      # Android Bundle
 flutter build ios           # iOS
 flutter build web           # Web
 ```
+
+## Recent Updates (September 2024)
+
+### Major Package Upgrades
+- ✅ **Flutter SDK**: Upgraded to 3.37.0-0.1.pre (beta) for macro support
+- ✅ **Riverpod**: Migrated from 2.x to 3.x with full compatibility
+- ✅ **Storage**: Migrated from Hive to Drift for structured data + SharedPreferences for simple storage
+- ✅ **Testing**: Migrated from deprecated golden_toolkit to alchemist
+- ✅ **Dependencies**: Updated 50+ packages, resolved breaking changes
+
+### Riverpod 3.x Migration Complete
+- ✅ All providers now use `@riverpod` annotations with code generation
+- ✅ Updated provider parameter types from custom `*Ref` to generic `Ref`
+- ✅ Fixed compatibility issues across authentication, routing, and core modules
+- ✅ Improved type safety and code generation reliability
+
+### Storage Architecture Update
+- **Simple Data**: SharedPreferences-based multi-box storage system
+- **Structured Data**: Drift SQL database for complex queries and relationships
+- **Secure Data**: Flutter Secure Storage for sensitive information
 
 ## System Architecture
 

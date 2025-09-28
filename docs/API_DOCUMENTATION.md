@@ -58,7 +58,9 @@ graph TB
 
 ## State Management
 
-### Riverpod Providers
+### Riverpod 3.x Providers
+
+**Note**: This project uses Riverpod 3.x with `@riverpod` annotations and code generation. All providers use the generic `Ref` type parameter for compatibility with the new annotation system.
 
 #### Authentication Controller
 
@@ -158,7 +160,7 @@ class LanguageNotifier extends _$LanguageNotifier {
 
 /// Current locale provider
 @riverpod
-Locale? currentLocale(CurrentLocaleRef ref) {
+Locale? currentLocale(Ref ref) {
   final languageAsync = ref.watch(languageNotifierProvider);
   return languageAsync.when(
     data: (language) => language?.locale,
@@ -169,7 +171,7 @@ Locale? currentLocale(CurrentLocaleRef ref) {
 
 /// Supported locales provider
 @riverpod
-List<Locale> supportedLocales(SupportedLocalesRef ref) {
+List<Locale> supportedLocales(Ref ref) {
   return AppLanguage.values.map((lang) => lang.locale).toList();
 }
 ```
@@ -572,7 +574,7 @@ class ExampleWidget extends ConsumerWidget {
 
 ```dart
 @riverpod
-GoRouter appRouter(AppRouterRef ref) {
+GoRouter appRouter(Ref ref) {
   ref.watch(authControllerProvider.notifier);
 
   return GoRouter(
@@ -914,12 +916,12 @@ class TestUtils {
     return ProviderContainer(
       overrides: [
         ...overrides,
-        // Mock authentication
+        // Mock authentication (Riverpod 3.x syntax)
         authControllerProvider.overrideWith(
           () => MockAuthController(),
         ),
-        // Mock language
-        languageNotifierProvider.overrideWith(
+        // Mock language (Riverpod 3.x syntax)
+        languageProvider.overrideWith(
           () => MockLanguageNotifier(),
         ),
       ],
@@ -963,6 +965,35 @@ class MockAuthController extends AuthController {
   }
 }
 ```
+
+---
+
+## Recent Updates (September 2024)
+
+### Riverpod 3.x Migration
+
+The project has been migrated to Riverpod 3.x with the following key changes:
+
+- **Provider Syntax**: All providers now use `@riverpod` annotations with code generation
+- **Ref Parameter**: All provider functions use the generic `Ref` type instead of custom typed refs (e.g., `AuthControllerRef` → `Ref`)
+- **Code Generation**: Providers use `.g.dart` files for generated code
+- **Breaking Changes**: Provider naming conventions updated for consistency
+
+### Storage Migration
+
+- **Hive to Drift**: Migrated from Hive to Drift for structured data storage
+- **SharedPreferences**: Simple key-value storage now uses SharedPreferences
+- **Storage Architecture**: Implemented multi-layer storage system:
+  - **Simple Data**: SharedPreferences for basic settings
+  - **Structured Data**: Drift SQL database for complex queries
+  - **Secure Data**: Flutter Secure Storage for sensitive information
+
+### Package Upgrades
+
+- **Flutter SDK**: Upgraded to 3.37.0-0.1.pre (beta) for macro support
+- **Dependencies**: Updated 50+ packages with breaking changes resolved
+- **Testing**: Migrated from deprecated golden_toolkit to alchemist
+- **Compatibility**: Resolved 62% reduction in incompatible packages
 
 ---
 
