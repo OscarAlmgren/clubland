@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,7 +76,9 @@ class LanguageNotifier extends _$LanguageNotifier {
   @override
   Future<AppLanguage?> build() async {
     // Try to get saved language first
-    final savedLanguage = await ref.read(languageRepositoryProvider).getSavedLanguage();
+    final savedLanguage = await ref
+        .read(languageRepositoryProvider)
+        .getSavedLanguage();
     if (savedLanguage != null) {
       return savedLanguage;
     }

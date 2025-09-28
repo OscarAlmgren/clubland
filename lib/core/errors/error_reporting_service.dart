@@ -24,6 +24,7 @@ class ErrorReportingService {
   /// The singleton instance of the [ErrorReportingService].
   ///
   /// Accessing this getter lazily initializes the service if it hasn't been created yet.
+  // ignore: prefer_constructors_over_static_methods
   static ErrorReportingService get instance {
     _instance ??= ErrorReportingService._();
     return _instance!;

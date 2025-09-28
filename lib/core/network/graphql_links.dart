@@ -8,9 +8,15 @@ import '../constants/api_constants.dart';
 import '../errors/error_handler.dart' as app_error;
 import 'network_info.dart';
 
-/// Custom error handling link
+/// Custom link responsible for handling errors returned from the GraphQL layer.
+///
+/// It intercepts errors, logs them, and delegates handling to the [ErrorHandler]
+/// to show messages to the user and handle specific authentication failures.
 class ErrorHandlingLink extends Link {
+  /// Constructs an [ErrorHandlingLink].
   ErrorHandlingLink({this.logger});
+
+  /// Optional logger instance for logging intercepted errors.
   final Logger? logger;
 
   @override
@@ -28,6 +34,7 @@ class ErrorHandlingLink extends Link {
         }
       });
 
+  /// Handles [OperationException] errors, checking for specific GraphQL error codes.
   void _handleGraphQLError(OperationException error) {
     final failure = app_error.ErrorHandler.handleException(error);
 
@@ -42,23 +49,33 @@ class ErrorHandlingLink extends Link {
   }
 }
 
-/// Retry link with exponential backoff
+/// Link that automatically retries failed requests using an exponential backoff strategy.
 class RetryLink extends Link {
+  /// Constructs a [RetryLink].
   RetryLink({
     this.maxRetries = ApiConstants.maxRetries,
     this.initialDelay = ApiConstants.retryDelay,
     this.backoffMultiplier = 2.0,
     this.logger,
   });
+
+  /// The maximum number of times to retry a failed request.
   final int maxRetries;
+
+  /// The initial delay before the first retry attempt.
   final Duration initialDelay;
+
+  /// The multiplier applied to the delay for each subsequent retry (e.g., 2.0 means delay doubles).
   final double backoffMultiplier;
+
+  /// Optional logger instance for logging retry attempts.
   final Logger? logger;
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) =>
       _executeWithRetry(request, forward, 0);
 
+  /// Executes the request, recursively retrying on failure until [maxRetries] is reached.
   Stream<Response> _executeWithRetry(
     Request request,
     NextLink? forward,
@@ -77,6 +94,9 @@ class RetryLink extends Link {
     }
   });
 
+  /// Determines if the given error is retryable.
+  ///
+  /// Requests are not retried for authentication or validation errors.
   bool _shouldRetry(dynamic error) {
     if (error is OperationException) {
       // Don't retry on authentication or validation errors
@@ -96,17 +116,26 @@ class RetryLink extends Link {
     return false;
   }
 
+  /// Calculates the next delay duration using exponential backoff.
   Duration _calculateDelay(int attempt) {
     final delayMs = initialDelay.inMilliseconds * (backoffMultiplier * attempt);
     return Duration(milliseconds: delayMs.round());
   }
 }
 
-/// Network-aware link that handles offline scenarios
+/// Link that checks network connectivity before executing a request.
+///
+/// It prevents requests from being sent when the device is offline and
+/// handles policies for metered/mobile connections for subscriptions.
 class NetworkAwareLink extends Link {
+  /// Constructs a [NetworkAwareLink].
   NetworkAwareLink({required this.networkInfo, this.logger});
-  late final NetworkInfo networkInfo;
-  late final Logger? logger;
+
+  /// The utility class used to check network status.
+  final NetworkInfo networkInfo;
+
+  /// Optional logger instance for logging network status.
+  final Logger? logger;
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) async* {
@@ -116,6 +145,7 @@ class NetworkAwareLink extends Link {
       logger?.w(
         'No network connection, failing request: ${request.operation.operationName}',
       );
+      // Throws a NetworkException wrapped in an OperationException for downstream handling
       throw OperationException(
         linkException: NetworkException(
           message: 'No internet connection',
@@ -139,15 +169,25 @@ class NetworkAwareLink extends Link {
   }
 }
 
-/// Caching link with custom cache policies
+/// Link that implements custom cache policies for GraphQL queries.
+///
+/// It currently applies a maximum age to queries but does not implement
+/// the full caching mechanism, leaving that to the GraphQL client.
 class CachingLink extends Link {
+  /// Constructs a [CachingLink].
   CachingLink({
     this.defaultMaxAge = ApiConstants.defaultCacheMaxAge,
     this.operationMaxAge = const {},
     this.logger,
   });
+
+  /// The default maximum age for cacheable queries.
   final Duration defaultMaxAge;
+
+  /// A map to override the max age for specific operation names.
   final Map<String, Duration> operationMaxAge;
+
+  /// Optional logger instance for logging cache status.
   final Logger? logger;
 
   @override
@@ -170,10 +210,18 @@ class CachingLink extends Link {
   }
 }
 
-/// Request deduplication link
+/// Link responsible for preventing identical requests from being executed simultaneously.
+///
+/// If a request for the same operation and variables is pending, it subscribes
+/// to the existing request's stream instead of creating a new one.
 class DeduplicationLink extends Link {
+  /// Constructs a [DeduplicationLink].
   DeduplicationLink({this.logger});
+
+  /// The map of pending requests, keyed by the request hash.
   final Map<String, StreamController<Response>> _pendingRequests = {};
+
+  /// Optional logger instance for logging deduplication events.
   final Logger? logger;
 
   @override
@@ -204,13 +252,17 @@ class DeduplicationLink extends Link {
     return controller.stream;
   }
 
+  /// Generates a unique key for the request based on operation name and variables.
   String _generateRequestKey(Request request) =>
       '${request.operation.operationName}_${request.variables.hashCode}';
 }
 
-/// Performance monitoring link
+/// Link that measures and logs the time taken for each GraphQL operation.
 class PerformanceLink extends Link {
+  /// Constructs a [PerformanceLink].
   PerformanceLink({this.logger});
+
+  /// Optional logger instance for logging performance metrics.
   final Logger? logger;
 
   @override
@@ -249,8 +301,11 @@ class PerformanceLink extends Link {
   }
 }
 
-/// Link factory for creating configured link chains
+/// Factory class to construct pre-configured GraphQL link chains.
 class LinkFactory {
+  /// Creates a comprehensive link chain suitable for **Development** environments.
+  ///
+  /// This chain includes performance monitoring and strict error handling.
   static Link createDevelopmentLink({
     required String httpUrl,
     required String wsUrl,
@@ -274,6 +329,9 @@ class LinkFactory {
     ]);
   }
 
+  /// Creates an optimized link chain suitable for **Production** environments.
+  ///
+  /// This chain omits performance monitoring for reduced overhead.
   static Link createProductionLink({
     required String httpUrl,
     required String wsUrl,

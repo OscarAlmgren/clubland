@@ -49,7 +49,7 @@ class OptimizedImageLoading {
       }
 
       return imageProvider;
-    } catch (e) {
+    } on Exception catch (e) {
       debugPrint('Failed to load image $imageUrl: $e');
       return const AssetImage('assets/images/placeholder.png'); // Fallback
     }
@@ -212,24 +212,51 @@ class _ResizedImageProvider extends ImageProvider<_ResizedImageProvider> {
         case BoxFit.cover:
           final scaleX = targetWidth / originalWidth;
           final scaleY = targetHeight / originalHeight;
+          // Take the larger scale factor to cover the target area
           final scale = math.max(scaleX, scaleY);
           finalWidth = (originalWidth * scale).round();
           finalHeight = (originalHeight * scale).round();
           break;
+
         case BoxFit.contain:
           final scaleX = targetWidth / originalWidth;
           final scaleY = targetHeight / originalHeight;
+          // Take the smaller scale factor to contain the image within the target area
           final scale = math.min(scaleX, scaleY);
           finalWidth = (originalWidth * scale).round();
           finalHeight = (originalHeight * scale).round();
           break;
+
         case BoxFit.fill:
+          // Stretch to fill both dimensions, ignoring aspect ratio
           finalWidth = targetWidth;
           finalHeight = targetHeight;
           break;
-        default:
+
+        // FIX: Enumerating all remaining BoxFit values instead of 'default'
+        case BoxFit.fitWidth:
+          // Scale to fit the target width, calculating proportional height
+          final scale = targetWidth / originalWidth;
+          finalWidth = targetWidth;
+          finalHeight = (originalHeight * scale).round();
+          break;
+
+        case BoxFit.fitHeight:
+          // Scale to fit the target height, calculating proportional width
+          final scale = targetHeight / originalHeight;
+          finalWidth = (originalWidth * scale).round();
+          finalHeight = targetHeight;
+          break;
+
+        case BoxFit.scaleDown:
+        case BoxFit.none:
+          // For scaleDown and none, when both target dimensions are present,
+          // the standard approach is often to apply BoxFit.contain or do nothing,
+          // but matching your original 'default' intention (setting to target size)
+          // or simply deferring to the 'Don't upscale' logic is best here.
           finalWidth = targetWidth;
           finalHeight = targetHeight;
+          break;
       }
     } else if (targetWidth != null) {
       // Only width specified
@@ -285,6 +312,7 @@ class _ResizedImageProvider extends ImageProvider<_ResizedImageProvider> {
 
 /// Optimized image widget with lazy loading and automatic sizing
 class OptimizedImage extends StatefulWidget {
+  /// Construcs a [OptimizedImage]
   const OptimizedImage({
     required this.imageUrl,
     super.key,
