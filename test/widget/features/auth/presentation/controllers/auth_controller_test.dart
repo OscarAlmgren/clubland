@@ -1,3 +1,4 @@
+// Placeholder imports (adjust as needed for your project structure)
 import 'package:clubland/core/errors/error_handler.dart';
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/core/providers/core_providers.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../helpers/test_helpers.dart';
 
@@ -212,12 +214,15 @@ void main() {
           password: TestConstants.testPassword,
         );
 
+        // Wait for the login operation future to resolve and update state
+        await tester.pump();
+
         final state = container.read(authControllerProvider);
         expect(state.hasError, true);
         expect(state.error, failure);
 
-        // When state has error, valueOrNull should be null
-        expect(state.valueOrNull, null);
+        // When state has error, value should be null
+        expect(state.value, null);
       });
     });
 

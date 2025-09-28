@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:clubland/core/design_system/design_system.dart';
 import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/src/framework.dart' show Override;
 
 class MockGoRouter extends Mock implements GoRouter {}
 
