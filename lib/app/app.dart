@@ -2,6 +2,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/design_system/design_system.dart';
+import '../core/providers/core_providers.dart';
 import '../core/providers/language_provider.dart';
 import '../features/auth/presentation/controllers/auth_controller.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
@@ -15,8 +16,9 @@ class ClublandApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLocale = ref.watch<Locale?>(currentLocaleProvider);
-    final supportedLocales = ref.watch<List<Locale>>(supportedLocalesProvider);
+    final currentLocale = ref.watch(currentLocaleProvider);
+    final supportedLocales = ref.watch(supportedLocalesProvider);
+    final scaffoldMessengerKey = ref.watch(scaffoldMessengerKeyProvider);
 
     return MaterialApp.router(
       title: 'Clubland',
@@ -24,6 +26,7 @@ class ClublandApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       routerConfig: ref.watch(appRouterProvider),
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: scaffoldMessengerKey,
 
       // Localization configuration
       locale: currentLocale,
@@ -62,16 +65,34 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
   }
 
   Future<void> _initializeApp() async {
-    // Initialize auth controller (which handles auth state restoration)
-    await ref.read(authControllerProvider.future);
+    try {
+      // Initialize core services first (GraphQL, storage, error handler, etc.)
+      final isInitialized = await ref.read(appInitializationProvider.future);
 
-    // Add a small delay to show splash screen
-    await Future<void>.delayed(const Duration(milliseconds: 1500));
+      if (!isInitialized) {
+        throw Exception('Core services initialization failed');
+      }
 
-    if (mounted) {
-      setState(() {
-        _isInitialized = true;
-      });
+      // Then initialize auth controller (which handles auth state restoration)
+      await ref.read(authControllerProvider.future);
+
+      // Add a small delay to show splash screen
+      await Future<void>.delayed(const Duration(milliseconds: 1500));
+
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+        });
+      }
+    } catch (e) {
+      // If initialization fails, show error and retry
+      if (mounted) {
+        setState(() {
+          _isInitialized = false;
+        });
+      }
+      // Could add retry logic here
+      rethrow;
     }
   }
 

@@ -51,7 +51,7 @@ final class LoggerProvider extends $FunctionalProvider<Logger, Logger, Logger>
   }
 }
 
-String _$loggerHash() => r'b7ba73120c1546e652fcce65783a94907481969d';
+String _$loggerHash() => r'c340b6e69d941caf475e8aa9a9a605118ad998e5';
 
 /// Flutter Secure Storage provider
 
@@ -104,7 +104,7 @@ final class FlutterSecureStorageProvider
 }
 
 String _$flutterSecureStorageHash() =>
-    r'eccec398e3b6173411085c9fca88fb0100aa6282';
+    r'8ad32ed5e475854f58f49f0b9a9588071dbe3fdb';
 
 /// Enhanced Secure Storage provider
 
@@ -156,7 +156,7 @@ final class SecureStorageProvider
   }
 }
 
-String _$secureStorageHash() => r'5e925588e2dc3fe0e73ef3ca4ac0feb898f1585d';
+String _$secureStorageHash() => r'41024fd5110e3c4b0a060752e59b5e46455292a4';
 
 /// Secure Storage Service provider
 
@@ -209,7 +209,7 @@ final class SecureStorageServiceProvider
 }
 
 String _$secureStorageServiceHash() =>
-    r'84a72a9551c06e6ca6ae0d8379bc858864569f98';
+    r'6b643ed72f15a6284347c9386abe10393d07faa5';
 
 /// Connectivity provider
 
@@ -255,7 +255,7 @@ final class ConnectivityProvider
   }
 }
 
-String _$connectivityHash() => r'fd33e159c65466f0bf8ec37b98d05eba415da792';
+String _$connectivityHash() => r'e66720f09edf1a8b09e450e1eaedd51da9443f0e';
 
 /// Network Info provider
 
@@ -301,7 +301,7 @@ final class NetworkInfoProvider
   }
 }
 
-String _$networkInfoHash() => r'10064a21e9417a84dce3c58ddf29421eeefda9bf';
+String _$networkInfoHash() => r'34bdf06abd83c5f0b0df927045d180949ce3ffca';
 
 /// Storage Manager provider
 
@@ -345,7 +345,7 @@ final class StorageManagerProvider
   }
 }
 
-String _$storageManagerHash() => r'9bb2167674767631a5835d85041dd0f68a48bdbc';
+String _$storageManagerHash() => r'e8a6c3f3065b60410f9601787deaeeba04190105';
 
 /// Cache Manager provider
 
@@ -389,7 +389,7 @@ final class CacheManagerProvider
   }
 }
 
-String _$cacheManagerHash() => r'15e771813acf6b619cc2340b3b2b5da1af49fe81';
+String _$cacheManagerHash() => r'707ae21ffa49764701a09ba9c68ce257eafcc598';
 
 /// GraphQL Client provider
 
@@ -427,7 +427,7 @@ final class GraphqlClientProvider
   }
 }
 
-String _$graphqlClientHash() => r'0f12b30a3c07a925cb383a046006151d75df7255';
+String _$graphqlClientHash() => r'7e12e71f7bbaf11572baeac97f681c701007c2b1';
 
 /// Connectivity Stream provider
 
@@ -474,7 +474,7 @@ final class ConnectivityStreamProvider
 }
 
 String _$connectivityStreamHash() =>
-    r'24437ac151a73b1470b9509029f9475bd787b2ba';
+    r'be8295cec56de59bedb540224e1afd408853faec';
 
 /// Network Status provider
 
@@ -527,6 +527,151 @@ abstract class _$NetworkStatus extends $AsyncNotifier<NetworkDetails> {
   }
 }
 
+/// Global navigator keys provider
+
+@ProviderFor(navigatorKey)
+const navigatorKeyProvider = NavigatorKeyProvider._();
+
+/// Global navigator keys provider
+
+final class NavigatorKeyProvider
+    extends
+        $FunctionalProvider<
+          GlobalKey<NavigatorState>,
+          GlobalKey<NavigatorState>,
+          GlobalKey<NavigatorState>
+        >
+    with $Provider<GlobalKey<NavigatorState>> {
+  /// Global navigator keys provider
+  const NavigatorKeyProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'navigatorKeyProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$navigatorKeyHash();
+
+  @$internal
+  @override
+  $ProviderElement<GlobalKey<NavigatorState>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GlobalKey<NavigatorState> create(Ref ref) {
+    return navigatorKey(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GlobalKey<NavigatorState> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GlobalKey<NavigatorState>>(value),
+    );
+  }
+}
+
+String _$navigatorKeyHash() => r'a2c30a72f4d2942af27189331bdf6ca8a9fb9340';
+
+/// Global scaffold messenger key provider
+
+@ProviderFor(scaffoldMessengerKey)
+const scaffoldMessengerKeyProvider = ScaffoldMessengerKeyProvider._();
+
+/// Global scaffold messenger key provider
+
+final class ScaffoldMessengerKeyProvider
+    extends
+        $FunctionalProvider<
+          GlobalKey<ScaffoldMessengerState>,
+          GlobalKey<ScaffoldMessengerState>,
+          GlobalKey<ScaffoldMessengerState>
+        >
+    with $Provider<GlobalKey<ScaffoldMessengerState>> {
+  /// Global scaffold messenger key provider
+  const ScaffoldMessengerKeyProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'scaffoldMessengerKeyProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$scaffoldMessengerKeyHash();
+
+  @$internal
+  @override
+  $ProviderElement<GlobalKey<ScaffoldMessengerState>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GlobalKey<ScaffoldMessengerState> create(Ref ref) {
+    return scaffoldMessengerKey(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GlobalKey<ScaffoldMessengerState> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GlobalKey<ScaffoldMessengerState>>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$scaffoldMessengerKeyHash() =>
+    r'6fdcaf2dd3359a74fa6f6d7fbd0c67c54a8e600d';
+
+/// Error Handler provider
+
+@ProviderFor(errorHandlerInit)
+const errorHandlerInitProvider = ErrorHandlerInitProvider._();
+
+/// Error Handler provider
+
+final class ErrorHandlerInitProvider
+    extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
+    with $FutureModifier<void>, $FutureProvider<void> {
+  /// Error Handler provider
+  const ErrorHandlerInitProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'errorHandlerInitProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$errorHandlerInitHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<void> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<void> create(Ref ref) {
+    return errorHandlerInit(ref);
+  }
+}
+
+String _$errorHandlerInitHash() => r'6927b7fb40d901e4588e67642f1f345c1c5f5716';
+
 /// App Initialization provider
 
 @ProviderFor(AppInitialization)
@@ -555,7 +700,7 @@ final class AppInitializationProvider
   AppInitialization create() => AppInitialization();
 }
 
-String _$appInitializationHash() => r'5b98ac4d64de6d92b6df3239f10d942450d7ab5b';
+String _$appInitializationHash() => r'1cdb403f6e1d90d3ea1aef16aa11036fa281cdb6';
 
 /// App Initialization provider
 

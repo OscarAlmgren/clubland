@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../core/providers/core_providers.dart';
 import '../../features/auth/presentation/controllers/auth_controller.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
@@ -19,8 +20,10 @@ part 'app_router.g.dart';
 @riverpod
 GoRouter appRouter(Ref ref) {
   ref.watch(authControllerProvider.notifier);
+  final navigatorKey = ref.watch(navigatorKeyProvider);
 
   return GoRouter(
+    navigatorKey: navigatorKey,
     initialLocation: RoutePaths.login,
     redirect: (BuildContext context, GoRouterState state) {
       final authState = ref.read(authControllerProvider);

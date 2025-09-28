@@ -52,7 +52,7 @@ final class AuthRepositoryProvider
   }
 }
 
-String _$authRepositoryHash() => r'982e74bc133f0a19c0941f929cc7d649751acdb6';
+String _$authRepositoryHash() => r'934c4625e747febd9f35cf6c1582c22756d81e8b';
 
 /// Login usecase provider
 
@@ -98,7 +98,7 @@ final class LoginUsecaseProvider
   }
 }
 
-String _$loginUsecaseHash() => r'c3641e73d4bce674ce71707936b27698d7759ded';
+String _$loginUsecaseHash() => r'7dce456fff3b850e937ddccfe144763c4dd378b0';
 
 /// Hanko login usecase provider
 
@@ -150,7 +150,7 @@ final class HankoLoginUsecaseProvider
   }
 }
 
-String _$hankoLoginUsecaseHash() => r'5b5ce198f8c7f9d2fa8cc900929a7f36ef5c1c94';
+String _$hankoLoginUsecaseHash() => r'b5b1f8a2d5ed797967d1477d655b879858873a28';
 
 /// Register usecase provider
 
@@ -197,7 +197,7 @@ final class RegisterUsecaseProvider
   }
 }
 
-String _$registerUsecaseHash() => r'5ac68d932d7a87bfcd2c11b45992defd5c69a8f2';
+String _$registerUsecaseHash() => r'5955b218a9dd1f434f4724383544b3705bb9b677';
 
 /// Logout usecase provider
 
@@ -243,7 +243,7 @@ final class LogoutUsecaseProvider
   }
 }
 
-String _$logoutUsecaseHash() => r'958538269ffab77eb10cdeff614a7b7bb5e39714';
+String _$logoutUsecaseHash() => r'4bd6031b99a415628e71e91c038e3305fdcc32f2';
 
 /// Refresh token usecase provider
 
@@ -296,7 +296,7 @@ final class RefreshTokenUsecaseProvider
 }
 
 String _$refreshTokenUsecaseHash() =>
-    r'dbc1c2e43662c9584f37e04c834e62f7c28653c7';
+    r'82a6a026c6e554eb8bf97de0f543362647b4acea';
 
 /// Get current user usecase provider
 
@@ -349,7 +349,7 @@ final class GetCurrentUserUsecaseProvider
 }
 
 String _$getCurrentUserUsecaseHash() =>
-    r'bf52b531cfb9c1b7c35ea44c199a6ab0165e86ba';
+    r'0f9ef20fab7d14372e52192b9053ad010f7182c8';
 
 /// Check auth status usecase provider
 
@@ -402,7 +402,7 @@ final class CheckAuthStatusUsecaseProvider
 }
 
 String _$checkAuthStatusUsecaseHash() =>
-    r'35356d7df1004e8778c63e510cdd35a1b270ddfd';
+    r'776c2eeb89b00129344d611263f77fc9735eb2a3';
 
 /// Biometric auth usecase provider
 
@@ -455,7 +455,7 @@ final class BiometricAuthUsecaseProvider
 }
 
 String _$biometricAuthUsecaseHash() =>
-    r'7323ce1a60b31d19e44a6dfd39668d05675010fa';
+    r'8a008fea5af55d6061ce301c84643dafdf4e7743';
 
 /// Hanko service provider
 
@@ -501,4 +501,4 @@ final class HankoServiceProvider
   }
 }
 
-String _$hankoServiceHash() => r'9587ca4190b1add6188d2f3d04d51c7536780d91';
+String _$hankoServiceHash() => r'3e174369dc8022babe4634eb1bf56a87fad0619b';

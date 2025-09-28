@@ -103,7 +103,7 @@ final class CurrentUserProvider
   }
 }
 
-String _$currentUserHash() => r'f9ee8547baacb1299177402e18e6d493b82128bd';
+String _$currentUserHash() => r'1c383ccfd2793f55b39091f4c166c986c7829d13';
 
 /// Authentication status provider
 
@@ -149,7 +149,7 @@ final class IsAuthenticatedProvider
   }
 }
 
-String _$isAuthenticatedHash() => r'fe6f954f2d7938a820a402d3f97973c87930d8b5';
+String _$isAuthenticatedHash() => r'ec341d95b490bda54e8278477e26f7b345844931';
 
 /// Current auth session provider
 
@@ -195,7 +195,7 @@ final class AuthSessionProvider
   }
 }
 
-String _$authSessionHash() => r'e32c2d9b112c99dcd6adc561b972028348aad8d8';
+String _$authSessionHash() => r'723ce0bf8cc1e229fdd22a35dec714b5dc5ab795';
 
 /// User permissions provider
 
@@ -239,7 +239,7 @@ final class UserPermissionsProvider
   }
 }
 
-String _$userPermissionsHash() => r'f9157f3923c154875ff2e78dcc9a74b337656073';
+String _$userPermissionsHash() => r'cb977bc2eb71c7e8844687e2763239baa4445714';
 
 /// Biometric availability provider
 
@@ -278,4 +278,4 @@ final class BiometricAvailableProvider
 }
 
 String _$biometricAvailableHash() =>
-    r'50699d187b190d5c6e78cc77442518fde9039698';
+    r'd973acc1dce327fbb677f640e08e95449f5e58c4';

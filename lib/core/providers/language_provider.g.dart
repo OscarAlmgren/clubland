@@ -156,7 +156,7 @@ final class CurrentLocaleProvider
   }
 }
 
-String _$currentLocaleHash() => r'db0bf5768bf5764737858d0c682805474655f6c6';
+String _$currentLocaleHash() => r'82b9ee433abab4d0173d5003ff8d53e983f42fbe';
 
 /// Supported locales provider
 

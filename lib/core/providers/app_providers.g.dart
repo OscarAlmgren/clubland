@@ -201,6 +201,58 @@ abstract class _$AppSettingsNotifier extends $AsyncNotifier<AppSettings> {
   }
 }
 
+/// Provides the current [AppLifecycleState] of the application.
+
+@ProviderFor(appLifecycleState)
+const appLifecycleStateProvider = AppLifecycleStateProvider._();
+
+/// Provides the current [AppLifecycleState] of the application.
+
+final class AppLifecycleStateProvider
+    extends
+        $FunctionalProvider<
+          AppLifecycleState,
+          AppLifecycleState,
+          AppLifecycleState
+        >
+    with $Provider<AppLifecycleState> {
+  /// Provides the current [AppLifecycleState] of the application.
+  const AppLifecycleStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appLifecycleStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appLifecycleStateHash();
+
+  @$internal
+  @override
+  $ProviderElement<AppLifecycleState> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AppLifecycleState create(Ref ref) {
+    return appLifecycleState(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AppLifecycleState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AppLifecycleState>(value),
+    );
+  }
+}
+
+String _$appLifecycleStateHash() => r'55890eac77f4eaf547cb087321e5c3d19948f54e';
+
 /// Provides detailed information about the device.
 ///
 /// **MOCK Implementation:** In a real application, this would use a package
@@ -251,7 +303,7 @@ final class DeviceInfoProvider
   }
 }
 
-String _$deviceInfoHash() => r'86a50fc2d1c47b4047e0fef15eef9a6a58632077';
+String _$deviceInfoHash() => r'f26dd84037640c88de389e23032a0ffdc9074687';
 
 /// App permissions provider.
 ///

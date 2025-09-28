@@ -1,8 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../errors/error_handler.dart';
 import '../network/graphql_client.dart';
 import '../network/network_info.dart';
 import '../storage/cache_manager.dart';
@@ -123,6 +125,29 @@ class NetworkStatus extends _$NetworkStatus {
   bool get isMetered => state.value?.isMetered ?? false;
 }
 
+/// Global navigator keys provider
+@Riverpod(keepAlive: true)
+GlobalKey<NavigatorState> navigatorKey(Ref ref) => GlobalKey<NavigatorState>();
+
+/// Global scaffold messenger key provider
+@Riverpod(keepAlive: true)
+GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey(Ref ref) =>
+    GlobalKey<ScaffoldMessengerState>();
+
+/// Error Handler provider
+@Riverpod(keepAlive: true)
+Future<void> errorHandlerInit(Ref ref) async {
+  final logger = ref.watch(loggerProvider);
+  final navigatorKey = ref.watch(navigatorKeyProvider);
+  final scaffoldMessengerKey = ref.watch(scaffoldMessengerKeyProvider);
+
+  ErrorHandler.initialize(
+    navigatorKey: navigatorKey,
+    scaffoldMessengerKey: scaffoldMessengerKey,
+    logger: logger,
+  );
+}
+
 /// App Initialization provider
 @riverpod
 class AppInitialization extends _$AppInitialization {
@@ -131,6 +156,10 @@ class AppInitialization extends _$AppInitialization {
     try {
       final logger = ref.read(loggerProvider);
       logger.i('Starting app initialization...');
+
+      // Initialize error handler first
+      await ref.read(errorHandlerInitProvider.future);
+      logger.d('Error handler initialized');
 
       // Initialize storage
       await ref.read(storageManagerProvider.future);
