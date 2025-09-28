@@ -1,19 +1,11 @@
 import 'dart:async';
 
-import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:alchemist/alchemist.dart';
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async =>
-    GoldenToolkit.runWithConfiguration(
-      () async {
-        await loadAppFonts();
-        await testMain();
-      },
-      config: GoldenToolkitConfiguration(
-        skipGoldenAssertion: () => false,
-        defaultDevices: const [
-          Device.phone,
-          Device.iphone11,
-          Device.tabletPortrait,
-        ],
+    AlchemistConfig.runWithConfig(
+      config: const AlchemistConfig(
+        platformGoldensConfig: PlatformGoldensConfig(),
       ),
+      run: testMain,
     );

@@ -68,15 +68,15 @@ dependencies:
   qr_flutter: ^4.1.0
 
   # State Management
-  flutter_riverpod: ^2.4.9
-  riverpod_annotation: ^2.3.3
+  flutter_riverpod: ^2.4.10
+  riverpod_annotation: ^2.3.5
 
   # Utils
   connectivity_plus: ^6.1.5
   dartz: ^0.10.1
   device_info_plus: ^12.1.0
   equatable: ^2.0.5
-  freezed_annotation: ^2.4.1
+  freezed_annotation: ^2.4.4
   intl: ^0.20.2
   json_annotation: ^4.8.1
   package_info_plus: ^8.3.1
@@ -95,10 +95,9 @@ dev_dependencies:
   alchemist: ^0.12.1
   flutter_test:
     sdk: flutter
-  golden_toolkit: ^0.15.0
   integration_test:
     sdk: flutter
-  mocktail: ^1.0.2
+  mocktail: ^1.0.4
 
   # Code Generation
   build_runner: ^2.4.7
