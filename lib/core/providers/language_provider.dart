@@ -66,7 +66,7 @@ class LanguageRepository {
 
 /// Language repository provider
 @riverpod
-LanguageRepository languageRepository(LanguageRepositoryRef ref) {
+LanguageRepository languageRepository(Ref ref) {
   return LanguageRepository();
 }
 
@@ -112,10 +112,10 @@ class LanguageNotifier extends _$LanguageNotifier {
 
 /// Current locale provider for the app
 @riverpod
-Locale? currentLocale(CurrentLocaleRef ref) {
-  final languageAsync = ref.watch(languageNotifierProvider);
+Locale? currentLocale(Ref ref) {
+  final languageAsync = ref.watch(languageProvider);
   return languageAsync.when(
-    data: (language) => language?.locale,
+    data: (AppLanguage? language) => language?.locale,
     loading: () => null,
     error: (_, __) => AppLanguage.english.locale,
   );
@@ -123,6 +123,6 @@ Locale? currentLocale(CurrentLocaleRef ref) {
 
 /// Supported locales provider
 @riverpod
-List<Locale> supportedLocales(SupportedLocalesRef ref) {
+List<Locale> supportedLocales(Ref ref) {
   return AppLanguage.values.map((lang) => lang.locale).toList();
 }

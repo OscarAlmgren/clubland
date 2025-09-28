@@ -11,7 +11,7 @@ class ProfileSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLanguage = ref.watch(languageNotifierProvider);
+    final currentLanguage = ref.watch<AsyncValue<AppLanguage?>>(languageProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -102,7 +102,7 @@ class ProfileSettingsPage extends ConsumerWidget {
             onChanged: (AppLanguage? value) {
               if (value != null) {
                 // Update Riverpod state
-                ref.read(languageNotifierProvider.notifier).setLanguage(value);
+                ref.read<LanguageNotifier>(languageProvider.notifier).setLanguage(value);
                 // Close the dialog immediately after selection
                 Navigator.of(context).pop();
               }

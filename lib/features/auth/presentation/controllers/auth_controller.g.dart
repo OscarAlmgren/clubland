@@ -6,109 +6,276 @@ part of 'auth_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentUserHash() => r'f9ee8547baacb1299177402e18e6d493b82128bd';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Authentication controller managing user auth state
 
-/// Current user provider (derived from auth controller)
-///
-/// Copied from [currentUser].
-@ProviderFor(currentUser)
-final currentUserProvider = AutoDisposeProvider<UserEntity?>.internal(
-  currentUser,
-  name: r'currentUserProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$currentUserHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef CurrentUserRef = AutoDisposeProviderRef<UserEntity?>;
-String _$isAuthenticatedHash() => r'fe6f954f2d7938a820a402d3f97973c87930d8b5';
-
-/// Authentication status provider
-///
-/// Copied from [isAuthenticated].
-@ProviderFor(isAuthenticated)
-final isAuthenticatedProvider = AutoDisposeProvider<bool>.internal(
-  isAuthenticated,
-  name: r'isAuthenticatedProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$isAuthenticatedHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef IsAuthenticatedRef = AutoDisposeProviderRef<bool>;
-String _$authSessionHash() => r'7202f02699abd446c27cc47e1b2de74a822658a0';
-
-/// Current auth session provider
-///
-/// Copied from [authSession].
-@ProviderFor(authSession)
-final authSessionProvider =
-    AutoDisposeFutureProvider<AuthSessionEntity?>.internal(
-  authSession,
-  name: r'authSessionProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$authSessionHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef AuthSessionRef = AutoDisposeFutureProviderRef<AuthSessionEntity?>;
-String _$userPermissionsHash() => r'ccf64a314ad14e0a387dc600fd3aeb8f933d861a';
-
-/// User permissions provider
-///
-/// Copied from [userPermissions].
-@ProviderFor(userPermissions)
-final userPermissionsProvider =
-    AutoDisposeFutureProvider<List<String>>.internal(
-  userPermissions,
-  name: r'userPermissionsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userPermissionsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef UserPermissionsRef = AutoDisposeFutureProviderRef<List<String>>;
-String _$biometricAvailableHash() =>
-    r'50699d187b190d5c6e78cc77442518fde9039698';
-
-/// Biometric availability provider
-///
-/// Copied from [biometricAvailable].
-@ProviderFor(biometricAvailable)
-final biometricAvailableProvider = AutoDisposeFutureProvider<bool>.internal(
-  biometricAvailable,
-  name: r'biometricAvailableProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$biometricAvailableHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef BiometricAvailableRef = AutoDisposeFutureProviderRef<bool>;
-String _$authControllerHash() => r'02e41c83e7cf8c1197f3a93ef03d70e7aa813c38';
+@ProviderFor(AuthController)
+const authControllerProvider = AuthControllerProvider._();
 
 /// Authentication controller managing user auth state
-///
-/// Copied from [AuthController].
-@ProviderFor(AuthController)
-final authControllerProvider =
-    AutoDisposeAsyncNotifierProvider<AuthController, UserEntity?>.internal(
-  AuthController.new,
-  name: r'authControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final class AuthControllerProvider
+    extends $AsyncNotifierProvider<AuthController, UserEntity?> {
+  /// Authentication controller managing user auth state
+  const AuthControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-typedef _$AuthController = AutoDisposeAsyncNotifier<UserEntity?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+  @override
+  String debugGetCreateSourceHash() => _$authControllerHash();
+
+  @$internal
+  @override
+  AuthController create() => AuthController();
+}
+
+String _$authControllerHash() => r'44f39532cd36b1e784fe43962316f25185cc2d85';
+
+/// Authentication controller managing user auth state
+
+abstract class _$AuthController extends $AsyncNotifier<UserEntity?> {
+  FutureOr<UserEntity?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<UserEntity?>, UserEntity?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<UserEntity?>, UserEntity?>,
+              AsyncValue<UserEntity?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Current user provider (derived from auth controller)
+
+@ProviderFor(currentUser)
+const currentUserProvider = CurrentUserProvider._();
+
+/// Current user provider (derived from auth controller)
+
+final class CurrentUserProvider
+    extends $FunctionalProvider<UserEntity?, UserEntity?, UserEntity?>
+    with $Provider<UserEntity?> {
+  /// Current user provider (derived from auth controller)
+  const CurrentUserProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentUserProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentUserHash();
+
+  @$internal
+  @override
+  $ProviderElement<UserEntity?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  UserEntity? create(Ref ref) {
+    return currentUser(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserEntity? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserEntity?>(value),
+    );
+  }
+}
+
+String _$currentUserHash() => r'f9ee8547baacb1299177402e18e6d493b82128bd';
+
+/// Authentication status provider
+
+@ProviderFor(isAuthenticated)
+const isAuthenticatedProvider = IsAuthenticatedProvider._();
+
+/// Authentication status provider
+
+final class IsAuthenticatedProvider
+    extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// Authentication status provider
+  const IsAuthenticatedProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'isAuthenticatedProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$isAuthenticatedHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    return isAuthenticated(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$isAuthenticatedHash() => r'fe6f954f2d7938a820a402d3f97973c87930d8b5';
+
+/// Current auth session provider
+
+@ProviderFor(authSession)
+const authSessionProvider = AuthSessionProvider._();
+
+/// Current auth session provider
+
+final class AuthSessionProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AuthSessionEntity?>,
+          AuthSessionEntity?,
+          FutureOr<AuthSessionEntity?>
+        >
+    with
+        $FutureModifier<AuthSessionEntity?>,
+        $FutureProvider<AuthSessionEntity?> {
+  /// Current auth session provider
+  const AuthSessionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'authSessionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$authSessionHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AuthSessionEntity?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AuthSessionEntity?> create(Ref ref) {
+    return authSession(ref);
+  }
+}
+
+String _$authSessionHash() => r'e32c2d9b112c99dcd6adc561b972028348aad8d8';
+
+/// User permissions provider
+
+@ProviderFor(userPermissions)
+const userPermissionsProvider = UserPermissionsProvider._();
+
+/// User permissions provider
+
+final class UserPermissionsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<String>>,
+          List<String>,
+          FutureOr<List<String>>
+        >
+    with $FutureModifier<List<String>>, $FutureProvider<List<String>> {
+  /// User permissions provider
+  const UserPermissionsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userPermissionsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userPermissionsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<String>> create(Ref ref) {
+    return userPermissions(ref);
+  }
+}
+
+String _$userPermissionsHash() => r'f9157f3923c154875ff2e78dcc9a74b337656073';
+
+/// Biometric availability provider
+
+@ProviderFor(biometricAvailable)
+const biometricAvailableProvider = BiometricAvailableProvider._();
+
+/// Biometric availability provider
+
+final class BiometricAvailableProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, FutureOr<bool>>
+    with $FutureModifier<bool>, $FutureProvider<bool> {
+  /// Biometric availability provider
+  const BiometricAvailableProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'biometricAvailableProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$biometricAvailableHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<bool> create(Ref ref) {
+    return biometricAvailable(ref);
+  }
+}
+
+String _$biometricAvailableHash() =>
+    r'50699d187b190d5c6e78cc77442518fde9039698';

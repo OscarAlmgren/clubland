@@ -6,94 +6,241 @@ part of 'bookings_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$allBookingsHash() => r'60df9b242e85b6f04d1b13eacb1e93cb82055716';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Provider for all bookings
+
+@ProviderFor(allBookings)
+const allBookingsProvider = AllBookingsProvider._();
 
 /// Provider for all bookings
-///
-/// Copied from [allBookings].
-@ProviderFor(allBookings)
-final allBookingsProvider =
-    AutoDisposeFutureProvider<List<BookingModel>>.internal(
-  allBookings,
-  name: r'allBookingsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$allBookingsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef AllBookingsRef = AutoDisposeFutureProviderRef<List<BookingModel>>;
-String _$upcomingBookingsHash() => r'56d9ec6faa2cba86a33055363bda31ec326ca4a7';
+final class AllBookingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<BookingModel>>,
+          List<BookingModel>,
+          FutureOr<List<BookingModel>>
+        >
+    with
+        $FutureModifier<List<BookingModel>>,
+        $FutureProvider<List<BookingModel>> {
+  /// Provider for all bookings
+  const AllBookingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'allBookingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$allBookingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<BookingModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<BookingModel>> create(Ref ref) {
+    return allBookings(ref);
+  }
+}
+
+String _$allBookingsHash() => r'60df9b242e85b6f04d1b13eacb1e93cb82055716';
 
 /// Provider for upcoming bookings only
-///
-/// Copied from [upcomingBookings].
-@ProviderFor(upcomingBookings)
-final upcomingBookingsProvider =
-    AutoDisposeFutureProvider<List<BookingModel>>.internal(
-  upcomingBookings,
-  name: r'upcomingBookingsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$upcomingBookingsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef UpcomingBookingsRef = AutoDisposeFutureProviderRef<List<BookingModel>>;
-String _$pastBookingsHash() => r'859047f516581d3ea081036bc0352f15ec8d1899';
+@ProviderFor(upcomingBookings)
+const upcomingBookingsProvider = UpcomingBookingsProvider._();
+
+/// Provider for upcoming bookings only
+
+final class UpcomingBookingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<BookingModel>>,
+          List<BookingModel>,
+          FutureOr<List<BookingModel>>
+        >
+    with
+        $FutureModifier<List<BookingModel>>,
+        $FutureProvider<List<BookingModel>> {
+  /// Provider for upcoming bookings only
+  const UpcomingBookingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'upcomingBookingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$upcomingBookingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<BookingModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<BookingModel>> create(Ref ref) {
+    return upcomingBookings(ref);
+  }
+}
+
+String _$upcomingBookingsHash() => r'56d9ec6faa2cba86a33055363bda31ec326ca4a7';
 
 /// Provider for past bookings only
-///
-/// Copied from [pastBookings].
-@ProviderFor(pastBookings)
-final pastBookingsProvider =
-    AutoDisposeFutureProvider<List<BookingModel>>.internal(
-  pastBookings,
-  name: r'pastBookingsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$pastBookingsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef PastBookingsRef = AutoDisposeFutureProviderRef<List<BookingModel>>;
-String _$bookingUpdatesHash() => r'5926d0c39584153d468b7a2868607a056bc1947e';
+@ProviderFor(pastBookings)
+const pastBookingsProvider = PastBookingsProvider._();
+
+/// Provider for past bookings only
+
+final class PastBookingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<BookingModel>>,
+          List<BookingModel>,
+          FutureOr<List<BookingModel>>
+        >
+    with
+        $FutureModifier<List<BookingModel>>,
+        $FutureProvider<List<BookingModel>> {
+  /// Provider for past bookings only
+  const PastBookingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pastBookingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pastBookingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<BookingModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<BookingModel>> create(Ref ref) {
+    return pastBookings(ref);
+  }
+}
+
+String _$pastBookingsHash() => r'859047f516581d3ea081036bc0352f15ec8d1899';
 
 /// Provider for real-time booking updates
-///
-/// Copied from [bookingUpdates].
-@ProviderFor(bookingUpdates)
-final bookingUpdatesProvider =
-    AutoDisposeStreamProvider<List<BookingUpdate>>.internal(
-  bookingUpdates,
-  name: r'bookingUpdatesProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$bookingUpdatesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef BookingUpdatesRef = AutoDisposeStreamProviderRef<List<BookingUpdate>>;
+@ProviderFor(bookingUpdates)
+const bookingUpdatesProvider = BookingUpdatesProvider._();
+
+/// Provider for real-time booking updates
+
+final class BookingUpdatesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<BookingUpdate>>,
+          List<BookingUpdate>,
+          Stream<List<BookingUpdate>>
+        >
+    with
+        $FutureModifier<List<BookingUpdate>>,
+        $StreamProvider<List<BookingUpdate>> {
+  /// Provider for real-time booking updates
+  const BookingUpdatesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'bookingUpdatesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$bookingUpdatesHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<BookingUpdate>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<BookingUpdate>> create(Ref ref) {
+    return bookingUpdates(ref);
+  }
+}
+
+String _$bookingUpdatesHash() => r'5926d0c39584153d468b7a2868607a056bc1947e';
+
+/// Main bookings controller for managing booking state and actions
+
+@ProviderFor(BookingsController)
+const bookingsControllerProvider = BookingsControllerProvider._();
+
+/// Main bookings controller for managing booking state and actions
+final class BookingsControllerProvider
+    extends $AsyncNotifierProvider<BookingsController, List<BookingModel>> {
+  /// Main bookings controller for managing booking state and actions
+  const BookingsControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'bookingsControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$bookingsControllerHash();
+
+  @$internal
+  @override
+  BookingsController create() => BookingsController();
+}
+
 String _$bookingsControllerHash() =>
     r'2ee6788f61a0d19f08d4b46bbdb4996a202f18c7';
 
 /// Main bookings controller for managing booking state and actions
-///
-/// Copied from [BookingsController].
-@ProviderFor(BookingsController)
-final bookingsControllerProvider = AutoDisposeAsyncNotifierProvider<
-    BookingsController, List<BookingModel>>.internal(
-  BookingsController.new,
-  name: r'bookingsControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$bookingsControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef _$BookingsController = AutoDisposeAsyncNotifier<List<BookingModel>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+abstract class _$BookingsController extends $AsyncNotifier<List<BookingModel>> {
+  FutureOr<List<BookingModel>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<List<BookingModel>>, List<BookingModel>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<BookingModel>>, List<BookingModel>>,
+              AsyncValue<List<BookingModel>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

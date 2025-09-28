@@ -6,110 +6,271 @@ part of 'clubs_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$allClubsHash() => r'87ec568600bda400c4ba1da38f68789e1c207100';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Provider for all clubs
+
+@ProviderFor(allClubs)
+const allClubsProvider = AllClubsProvider._();
 
 /// Provider for all clubs
-///
-/// Copied from [allClubs].
-@ProviderFor(allClubs)
-final allClubsProvider = AutoDisposeFutureProvider<List<SimpleClub>>.internal(
-  allClubs,
-  name: r'allClubsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$allClubsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef AllClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
-String _$featuredClubsHash() => r'45710ccc742906c7583f9057090ede4652980b88';
+final class AllClubsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<SimpleClub>>,
+          List<SimpleClub>,
+          FutureOr<List<SimpleClub>>
+        >
+    with $FutureModifier<List<SimpleClub>>, $FutureProvider<List<SimpleClub>> {
+  /// Provider for all clubs
+  const AllClubsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'allClubsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$allClubsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<SimpleClub>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<SimpleClub>> create(Ref ref) {
+    return allClubs(ref);
+  }
+}
+
+String _$allClubsHash() => r'87ec568600bda400c4ba1da38f68789e1c207100';
 
 /// Provider for featured clubs
-///
-/// Copied from [featuredClubs].
-@ProviderFor(featuredClubs)
-final featuredClubsProvider =
-    AutoDisposeFutureProvider<List<SimpleClub>>.internal(
-  featuredClubs,
-  name: r'featuredClubsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$featuredClubsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef FeaturedClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
-String _$nearbyClubsHash() => r'1059c3fb9c0f1fdb4c6a25a3a4dc0e596bb532c2';
+@ProviderFor(featuredClubs)
+const featuredClubsProvider = FeaturedClubsProvider._();
+
+/// Provider for featured clubs
+
+final class FeaturedClubsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<SimpleClub>>,
+          List<SimpleClub>,
+          FutureOr<List<SimpleClub>>
+        >
+    with $FutureModifier<List<SimpleClub>>, $FutureProvider<List<SimpleClub>> {
+  /// Provider for featured clubs
+  const FeaturedClubsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'featuredClubsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$featuredClubsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<SimpleClub>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<SimpleClub>> create(Ref ref) {
+    return featuredClubs(ref);
+  }
+}
+
+String _$featuredClubsHash() => r'45710ccc742906c7583f9057090ede4652980b88';
 
 /// Provider for nearby clubs
-///
-/// Copied from [nearbyClubs].
-@ProviderFor(nearbyClubs)
-final nearbyClubsProvider =
-    AutoDisposeFutureProvider<List<SimpleClub>>.internal(
-  nearbyClubs,
-  name: r'nearbyClubsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$nearbyClubsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef NearbyClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
-String _$favoriteClubsHash() => r'f98e722f2b97b16da3e673870ac131f460303901';
+@ProviderFor(nearbyClubs)
+const nearbyClubsProvider = NearbyClubsProvider._();
+
+/// Provider for nearby clubs
+
+final class NearbyClubsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<SimpleClub>>,
+          List<SimpleClub>,
+          FutureOr<List<SimpleClub>>
+        >
+    with $FutureModifier<List<SimpleClub>>, $FutureProvider<List<SimpleClub>> {
+  /// Provider for nearby clubs
+  const NearbyClubsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'nearbyClubsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$nearbyClubsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<SimpleClub>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<SimpleClub>> create(Ref ref) {
+    return nearbyClubs(ref);
+  }
+}
+
+String _$nearbyClubsHash() => r'1059c3fb9c0f1fdb4c6a25a3a4dc0e596bb532c2';
 
 /// Provider for user favorite clubs
-///
-/// Copied from [favoriteClubs].
+
 @ProviderFor(favoriteClubs)
-final favoriteClubsProvider =
-    AutoDisposeFutureProvider<List<SimpleClub>>.internal(
-  favoriteClubs,
-  name: r'favoriteClubsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$favoriteClubsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const favoriteClubsProvider = FavoriteClubsProvider._();
 
-typedef FavoriteClubsRef = AutoDisposeFutureProviderRef<List<SimpleClub>>;
-String _$locationPermissionHash() =>
-    r'b66a9085abf655fe3228256060223e9728a4d9e2';
+/// Provider for user favorite clubs
 
-/// Location permission provider
-///
-/// Copied from [locationPermission].
-@ProviderFor(locationPermission)
-final locationPermissionProvider = AutoDisposeFutureProvider<bool>.internal(
-  locationPermission,
-  name: r'locationPermissionProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$locationPermissionHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final class FavoriteClubsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<SimpleClub>>,
+          List<SimpleClub>,
+          FutureOr<List<SimpleClub>>
+        >
+    with $FutureModifier<List<SimpleClub>>, $FutureProvider<List<SimpleClub>> {
+  /// Provider for user favorite clubs
+  const FavoriteClubsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'favoriteClubsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-typedef LocationPermissionRef = AutoDisposeFutureProviderRef<bool>;
-String _$clubsControllerHash() => r'9f154e2c29259327821f87e18b20cecaa45b0874';
+  @override
+  String debugGetCreateSourceHash() => _$favoriteClubsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<SimpleClub>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<SimpleClub>> create(Ref ref) {
+    return favoriteClubs(ref);
+  }
+}
+
+String _$favoriteClubsHash() => r'f98e722f2b97b16da3e673870ac131f460303901';
 
 /// Main clubs controller for managing club state and actions
-///
-/// Copied from [ClubsController].
-@ProviderFor(ClubsController)
-final clubsControllerProvider = AutoDisposeAsyncNotifierProvider<
-    ClubsController, List<SimpleClub>>.internal(
-  ClubsController.new,
-  name: r'clubsControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$clubsControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef _$ClubsController = AutoDisposeAsyncNotifier<List<SimpleClub>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+@ProviderFor(ClubsController)
+const clubsControllerProvider = ClubsControllerProvider._();
+
+/// Main clubs controller for managing club state and actions
+final class ClubsControllerProvider
+    extends $AsyncNotifierProvider<ClubsController, List<SimpleClub>> {
+  /// Main clubs controller for managing club state and actions
+  const ClubsControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clubsControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clubsControllerHash();
+
+  @$internal
+  @override
+  ClubsController create() => ClubsController();
+}
+
+String _$clubsControllerHash() => r'595ab9b6c3c5c1690b2ed85cc6dfaf8d297a8ddf';
+
+/// Main clubs controller for managing club state and actions
+
+abstract class _$ClubsController extends $AsyncNotifier<List<SimpleClub>> {
+  FutureOr<List<SimpleClub>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<List<SimpleClub>>, List<SimpleClub>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<SimpleClub>>, List<SimpleClub>>,
+              AsyncValue<List<SimpleClub>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Location permission provider
+
+@ProviderFor(locationPermission)
+const locationPermissionProvider = LocationPermissionProvider._();
+
+/// Location permission provider
+
+final class LocationPermissionProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, FutureOr<bool>>
+    with $FutureModifier<bool>, $FutureProvider<bool> {
+  /// Location permission provider
+  const LocationPermissionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'locationPermissionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$locationPermissionHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<bool> create(Ref ref) {
+    return locationPermission(ref);
+  }
+}
+
+String _$locationPermissionHash() =>
+    r'b66a9085abf655fe3228256060223e9728a4d9e2';

@@ -367,7 +367,7 @@ Future<AuthSessionEntity?> authSession(AuthSessionRef ref) async {
   final authRepository = ref.read(authRepositoryProvider);
   final result = await authRepository.getCurrentSession();
 
-  return result.fold((failure) => null, (session) => session);
+  return result.fold((failure) => null, (AuthSessionEntity session) => session);
 }
 
 /// User permissions provider
@@ -379,7 +379,7 @@ Future<List<String>> userPermissions(UserPermissionsRef ref) async {
   final authRepository = ref.read(authRepositoryProvider);
   final result = await authRepository.getUserPermissions();
 
-  return result.fold((failure) => [], (permissions) => permissions);
+  return result.fold((failure) => <String>[], (List<String> permissions) => permissions);
 }
 
 /// Biometric availability provider

@@ -6,111 +6,376 @@ part of 'app_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$deviceInfoHash() => r'416350b1996f396682815f154b3c071bf1cb639c';
-
-/// Device info provider
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// App theme mode provider.
 ///
-/// Copied from [deviceInfo].
-@ProviderFor(deviceInfo)
-final deviceInfoProvider = AutoDisposeFutureProvider<DeviceInfo>.internal(
-  deviceInfo,
-  name: r'deviceInfoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$deviceInfoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// Manages the current application theme mode (light, dark, or system).
 
-typedef DeviceInfoRef = AutoDisposeFutureProviderRef<DeviceInfo>;
-String _$appThemeModeHash() => r'0258da4ba681e5505de173421d4731f68b166595';
-
-/// App theme mode provider
-///
-/// Copied from [AppThemeMode].
 @ProviderFor(AppThemeMode)
-final appThemeModeProvider =
-    AutoDisposeNotifierProvider<AppThemeMode, ThemeMode>.internal(
-  AppThemeMode.new,
-  name: r'appThemeModeProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appThemeModeHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const appThemeModeProvider = AppThemeModeProvider._();
 
-typedef _$AppThemeMode = AutoDisposeNotifier<ThemeMode>;
-String _$appLocaleHash() => r'4665ebb95249c0693dee586eadc04435dd16a7e6';
-
-/// App locale provider
+/// App theme mode provider.
 ///
-/// Copied from [AppLocale].
+/// Manages the current application theme mode (light, dark, or system).
+final class AppThemeModeProvider
+    extends $NotifierProvider<AppThemeMode, ThemeMode> {
+  /// App theme mode provider.
+  ///
+  /// Manages the current application theme mode (light, dark, or system).
+  const AppThemeModeProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appThemeModeProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appThemeModeHash();
+
+  @$internal
+  @override
+  AppThemeMode create() => AppThemeMode();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ThemeMode value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ThemeMode>(value),
+    );
+  }
+}
+
+String _$appThemeModeHash() => r'a3db36fb0316d2806369586d915f9bbb7f2838d8';
+
+/// App theme mode provider.
+///
+/// Manages the current application theme mode (light, dark, or system).
+
+abstract class _$AppThemeMode extends $Notifier<ThemeMode> {
+  ThemeMode build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ThemeMode, ThemeMode>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ThemeMode, ThemeMode>,
+              ThemeMode,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// App locale provider.
+///
+/// Manages the currently selected application locale.
+
 @ProviderFor(AppLocale)
-final appLocaleProvider =
-    AutoDisposeNotifierProvider<AppLocale, Locale>.internal(
-  AppLocale.new,
-  name: r'appLocaleProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appLocaleHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const appLocaleProvider = AppLocaleProvider._();
 
-typedef _$AppLocale = AutoDisposeNotifier<Locale>;
-String _$appSettingsNotifierHash() =>
-    r'6da75cbd83d90a63f24d8f492f21579430af47a2';
-
-/// App settings provider
+/// App locale provider.
 ///
-/// Copied from [AppSettingsNotifier].
+/// Manages the currently selected application locale.
+final class AppLocaleProvider extends $NotifierProvider<AppLocale, Locale> {
+  /// App locale provider.
+  ///
+  /// Manages the currently selected application locale.
+  const AppLocaleProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appLocaleProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appLocaleHash();
+
+  @$internal
+  @override
+  AppLocale create() => AppLocale();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Locale value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Locale>(value),
+    );
+  }
+}
+
+String _$appLocaleHash() => r'dc3e20333cb17b2fe86cb6d352c6af858bb071e2';
+
+/// App locale provider.
+///
+/// Manages the currently selected application locale.
+
+abstract class _$AppLocale extends $Notifier<Locale> {
+  Locale build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<Locale, Locale>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Locale, Locale>,
+              Locale,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// App settings provider.
+///
+/// Manages the loading, saving, and updating of all application settings.
+
 @ProviderFor(AppSettingsNotifier)
-final appSettingsNotifierProvider =
-    AutoDisposeAsyncNotifierProvider<AppSettingsNotifier, AppSettings>.internal(
-  AppSettingsNotifier.new,
-  name: r'appSettingsNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appSettingsNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const appSettingsProvider = AppSettingsNotifierProvider._();
 
-typedef _$AppSettingsNotifier = AutoDisposeAsyncNotifier<AppSettings>;
-String _$appPermissionsNotifierHash() =>
-    r'9c7ea3a699284c89628f0a2345d28bef0a677cc9';
-
-/// App permissions provider
+/// App settings provider.
 ///
-/// Copied from [AppPermissionsNotifier].
+/// Manages the loading, saving, and updating of all application settings.
+final class AppSettingsNotifierProvider
+    extends $AsyncNotifierProvider<AppSettingsNotifier, AppSettings> {
+  /// App settings provider.
+  ///
+  /// Manages the loading, saving, and updating of all application settings.
+  const AppSettingsNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appSettingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appSettingsNotifierHash();
+
+  @$internal
+  @override
+  AppSettingsNotifier create() => AppSettingsNotifier();
+}
+
+String _$appSettingsNotifierHash() =>
+    r'd0cdd1d4172dd61ac85077bbe8277124c177e13a';
+
+/// App settings provider.
+///
+/// Manages the loading, saving, and updating of all application settings.
+
+abstract class _$AppSettingsNotifier extends $AsyncNotifier<AppSettings> {
+  FutureOr<AppSettings> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<AppSettings>, AppSettings>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<AppSettings>, AppSettings>,
+              AsyncValue<AppSettings>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Provides detailed information about the device.
+///
+/// **MOCK Implementation:** In a real application, this would use a package
+/// like `device_info_plus` to gather specific device properties.
+
+@ProviderFor(deviceInfo)
+const deviceInfoProvider = DeviceInfoProvider._();
+
+/// Provides detailed information about the device.
+///
+/// **MOCK Implementation:** In a real application, this would use a package
+/// like `device_info_plus` to gather specific device properties.
+
+final class DeviceInfoProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<DeviceInfo>,
+          DeviceInfo,
+          FutureOr<DeviceInfo>
+        >
+    with $FutureModifier<DeviceInfo>, $FutureProvider<DeviceInfo> {
+  /// Provides detailed information about the device.
+  ///
+  /// **MOCK Implementation:** In a real application, this would use a package
+  /// like `device_info_plus` to gather specific device properties.
+  const DeviceInfoProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'deviceInfoProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$deviceInfoHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<DeviceInfo> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<DeviceInfo> create(Ref ref) {
+    return deviceInfo(ref);
+  }
+}
+
+String _$deviceInfoHash() => r'86a50fc2d1c47b4047e0fef15eef9a6a58632077';
+
+/// App permissions provider.
+///
+/// Manages and tracks the status of various device permissions.
+
 @ProviderFor(AppPermissionsNotifier)
-final appPermissionsNotifierProvider = AutoDisposeAsyncNotifierProvider<
-    AppPermissionsNotifier, AppPermissions>.internal(
-  AppPermissionsNotifier.new,
-  name: r'appPermissionsNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appPermissionsNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const appPermissionsProvider = AppPermissionsNotifierProvider._();
 
-typedef _$AppPermissionsNotifier = AutoDisposeAsyncNotifier<AppPermissions>;
-String _$globalAppStateHash() => r'edee35af20ac7842890c23c8b63a923e55fe0cbb';
-
-/// Global app state provider
+/// App permissions provider.
 ///
-/// Copied from [GlobalAppState].
-@ProviderFor(GlobalAppState)
-final globalAppStateProvider =
-    AutoDisposeNotifierProvider<GlobalAppState, AppState>.internal(
-  GlobalAppState.new,
-  name: r'globalAppStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$globalAppStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// Manages and tracks the status of various device permissions.
+final class AppPermissionsNotifierProvider
+    extends $AsyncNotifierProvider<AppPermissionsNotifier, AppPermissions> {
+  /// App permissions provider.
+  ///
+  /// Manages and tracks the status of various device permissions.
+  const AppPermissionsNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appPermissionsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-typedef _$GlobalAppState = AutoDisposeNotifier<AppState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+  @override
+  String debugGetCreateSourceHash() => _$appPermissionsNotifierHash();
+
+  @$internal
+  @override
+  AppPermissionsNotifier create() => AppPermissionsNotifier();
+}
+
+String _$appPermissionsNotifierHash() =>
+    r'c34d3d67e91645c7f5cded5041817f62984bc5de';
+
+/// App permissions provider.
+///
+/// Manages and tracks the status of various device permissions.
+
+abstract class _$AppPermissionsNotifier extends $AsyncNotifier<AppPermissions> {
+  FutureOr<AppPermissions> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<AppPermissions>, AppPermissions>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<AppPermissions>, AppPermissions>,
+              AsyncValue<AppPermissions>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Global app state provider.
+///
+/// Manages and tracks global flags like initialization, online status, and loading states.
+
+@ProviderFor(GlobalAppState)
+const globalAppStateProvider = GlobalAppStateProvider._();
+
+/// Global app state provider.
+///
+/// Manages and tracks global flags like initialization, online status, and loading states.
+final class GlobalAppStateProvider
+    extends $NotifierProvider<GlobalAppState, AppState> {
+  /// Global app state provider.
+  ///
+  /// Manages and tracks global flags like initialization, online status, and loading states.
+  const GlobalAppStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'globalAppStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$globalAppStateHash();
+
+  @$internal
+  @override
+  GlobalAppState create() => GlobalAppState();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AppState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AppState>(value),
+    );
+  }
+}
+
+String _$globalAppStateHash() => r'5b073677caf457f789fd1551d8a5344f643457ee';
+
+/// Global app state provider.
+///
+/// Manages and tracks global flags like initialization, online status, and loading states.
+
+abstract class _$GlobalAppState extends $Notifier<AppState> {
+  AppState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AppState, AppState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AppState, AppState>,
+              AppState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

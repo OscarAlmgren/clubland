@@ -15,8 +15,8 @@ class ClublandApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLocale = ref.watch(currentLocaleProvider);
-    final supportedLocales = ref.watch(supportedLocalesProvider);
+    final currentLocale = ref.watch<Locale?>(currentLocaleProvider);
+    final supportedLocales = ref.watch<List<Locale>>(supportedLocalesProvider);
 
     return MaterialApp.router(
       title: 'Clubland',
