@@ -6,15 +6,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/storage_keys.dart';
 import '../errors/exceptions.dart';
 
-/// Local storage interface for non-sensitive data
+/// Local storage interface for non-sensitive data.
+///
+/// Provides a type-safe abstraction over persistent key-value storage for
+/// non-sensitive application data. Uses SharedPreferences under the hood.
 abstract class LocalStorage {
+  /// Initialize the storage system. Must be called before any other operations.
   Future<void> init();
+
+  /// Write a value to storage with the given key.
+  ///
+  /// Supports primitive types (String, int, double, bool) and complex objects
+  /// that can be JSON serialized.
   Future<void> write<T>(String key, T value);
+
+  /// Read a value from storage by key.
+  ///
+  /// Returns null if the key doesn't exist. Automatically deserializes JSON
+  /// for complex types.
   Future<T?> read<T>(String key);
+
+  /// Delete a specific key from storage.
   Future<void> delete(String key);
+
+  /// Clear all data from storage. Use with caution.
   Future<void> clear();
+
+  /// Check if a key exists in storage.
   Future<bool> containsKey(String key);
+
+  /// Get all keys currently stored.
   Future<List<String>> getKeys();
+
+  /// Cleanup and dispose of storage resources.
   Future<void> dispose();
 }
 
@@ -177,7 +201,10 @@ class SharedPreferencesLocalStorage implements LocalStorage {
     }
   }
 
-  /// Get box size in bytes (approximate)
+  /// Get approximate storage size in bytes.
+  ///
+  /// Calculates the total size of all stored key-value pairs. Note that this
+  /// is an approximation and may not match the exact disk usage.
   Future<int> getSize() async {
     try {
       _ensureInitialized();
@@ -207,16 +234,27 @@ class SharedPreferencesLocalStorage implements LocalStorage {
   }
 }
 
-/// Enhanced local storage with typed operations
+/// Enhanced local storage with typed operations.
+///
+/// Extends [SharedPreferencesLocalStorage] with convenient methods for common
+/// data types including JSON, lists, primitives, and DateTime.
 class TypedLocalStorage extends SharedPreferencesLocalStorage {
+  /// Creates a typed local storage instance.
+  ///
+  /// [boxName] is used for logical organization but doesn't create separate
+  /// storage namespaces (SharedPreferences is app-wide).
   TypedLocalStorage({super.boxName, super.logger});
 
-  /// Write JSON object
+  /// Write a JSON object to storage.
+  ///
+  /// Automatically encodes the map to a JSON string before storing.
   Future<void> writeJson(String key, Map<String, dynamic> value) async {
     await write(key, jsonEncode(value));
   }
 
-  /// Read JSON object
+  /// Read a JSON object from storage.
+  ///
+  /// Returns null if the key doesn't exist or JSON parsing fails.
   Future<Map<String, dynamic>?> readJson(String key) async {
     final jsonString = await read<String>(key);
     if (jsonString == null) return null;

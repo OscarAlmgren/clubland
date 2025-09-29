@@ -14,12 +14,10 @@ class RetryService {
     _instance ??= RetryService._();
     return _instance!;
   }
+
   RetryService._() : _logger = Logger();
   static RetryService? _instance;
   final Logger _logger;
-
-  /// Gets the singleton instance of the [RetryService].
-  static RetryService get instance => RetryService();
 
   /// Execute operation with retry logic.
   ///
@@ -34,7 +32,7 @@ class RetryService {
     /// A name used for logging to identify the operation.
     String? operationName,
   }) async {
-    final retryConfig = config ?? RetryConfig.defaultConfig;
+    final retryConfig = config ?? RetryConfig.defaultConfig();
     final opName = operationName ?? 'Operation';
     Either<Failure, T>? lastResult;
 
@@ -112,7 +110,7 @@ class RetryService {
     /// A name used for logging to identify the operation.
     String? operationName,
   }) async {
-    final retryConfig = config ?? RetryConfig.defaultConfig;
+    final retryConfig = config ?? RetryConfig.defaultConfig();
     final opName = operationName ?? 'Operation';
 
     Exception? lastException;
@@ -297,7 +295,7 @@ class RetryConfig {
   final List<Type> retryableFailures;
 
   /// Gets the default configuration based on the current environment.
-  static RetryConfig get defaultConfig {
+  factory RetryConfig.defaultConfig() {
     if (EnvironmentConfig.isDevelopment) {
       return const RetryConfig(
         maxRetries: 2,

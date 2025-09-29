@@ -7,13 +7,34 @@ import '../constants/storage_keys.dart';
 import '../errors/exceptions.dart';
 import '../security/encryption_service.dart';
 
-/// Secure storage wrapper for sensitive data
+/// Secure storage wrapper for sensitive data.
+///
+/// Provides encrypted storage for sensitive information like authentication
+/// tokens, passwords, and API keys using platform-specific secure storage
+/// (Keychain on iOS, KeyStore on Android).
 abstract class SecureStorage {
+  /// Write a value securely to storage.
+  ///
+  /// The value is encrypted using platform-specific secure storage mechanisms.
   Future<void> write(String key, String value);
+
+  /// Read a value from secure storage.
+  ///
+  /// Returns null if the key doesn't exist. Automatically decrypts the value.
   Future<String?> read(String key);
+
+  /// Delete a specific key from secure storage.
   Future<void> delete(String key);
+
+  /// Delete all data from secure storage. Use with extreme caution.
   Future<void> deleteAll();
+
+  /// Check if a key exists in secure storage.
   Future<bool> containsKey(String key);
+
+  /// Read all key-value pairs from secure storage.
+  ///
+  /// Returns a map of all stored values. Use sparingly as this loads all data.
   Future<Map<String, String>> readAll();
 }
 

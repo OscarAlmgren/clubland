@@ -6,7 +6,17 @@ import 'package:encrypt/encrypt.dart';
 
 import '../config/environment_config.dart';
 
-/// Encryption service for sensitive data protection
+/// Encryption service for sensitive data protection.
+///
+/// Provides AES-256 encryption/decryption for sensitive data like tokens,
+/// passwords, and user credentials. Uses a singleton pattern for consistent
+/// encryption across the app.
+///
+/// Example:
+/// ```dart
+/// final encrypted = EncryptionService.instance.encryptText('my secret');
+/// final decrypted = EncryptionService.instance.decryptText(encrypted);
+/// ```
 class EncryptionService {
   EncryptionService._() {
     _initializeEncryption();
@@ -14,10 +24,17 @@ class EncryptionService {
   static EncryptionService? _instance;
   late final Encrypter _encrypter;
 
-  static EncryptionService get instance {
+  /// Get the singleton instance of the encryption service.
+  ///
+  /// Automatically initializes the service on first access with the encryption
+  /// key from environment configuration.
+  factory EncryptionService() {
     _instance ??= EncryptionService._();
     return _instance!;
   }
+
+  /// Get the singleton instance of the encryption service.
+  static EncryptionService get instance => EncryptionService();
 
   void _initializeEncryption() {
     final keyString = EnvironmentConfig.encryptionKey;
@@ -41,7 +58,13 @@ class EncryptionService {
     return key.padRight(32, '0');
   }
 
-  /// Encrypt sensitive text data
+  /// Encrypt sensitive text data using AES-256.
+  ///
+  /// Generates a random IV (initialization vector) for each encryption to ensure
+  /// the same plaintext produces different ciphertext. The IV is prepended to
+  /// the encrypted data.
+  ///
+  /// Returns a Base64-encoded string containing both IV and ciphertext.
   String encryptText(String plaintext) {
     try {
       final iv = IV.fromSecureRandom(16);
@@ -56,7 +79,13 @@ class EncryptionService {
     }
   }
 
-  /// Decrypt encrypted text data
+  /// Decrypt encrypted text data.
+  ///
+  /// Extracts the IV from the encrypted data and uses it to decrypt the
+  /// ciphertext. The encrypted data must be in the format produced by
+  /// [encryptText].
+  ///
+  /// Throws [EncryptionException] if decryption fails or data format is invalid.
   String decryptText(String encryptedData) {
     try {
       final combined = base64Decode(encryptedData);

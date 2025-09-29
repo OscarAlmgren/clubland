@@ -11,13 +11,12 @@ import 'performance_monitor.dart';
 /// This singleton class provides methods to execute queries with caching,
 /// performance monitoring, and cache invalidation features.
 class DatabaseOptimizations with PerformanceMonitoring {
+  /// Provides the singleton instance of [DatabaseOptimizations].
+  factory DatabaseOptimizations() => _instance ??= DatabaseOptimizations._();
+
   DatabaseOptimizations._() : _logger = Logger();
 
   static DatabaseOptimizations? _instance;
-
-  /// Provides the singleton instance of [DatabaseOptimizations].
-  static DatabaseOptimizations get instance =>
-      _instance ??= _instance ??= DatabaseOptimizations._();
 
   final Logger _logger;
   final Map<String, dynamic> _queryCache = {};

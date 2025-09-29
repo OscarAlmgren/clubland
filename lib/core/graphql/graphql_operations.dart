@@ -1,10 +1,16 @@
-/// Comprehensive GraphQL operations for Clubland app
-/// Includes queries, mutations, and subscriptions for all features
+/// Comprehensive GraphQL operations for Clubland app.
+///
+/// Contains all GraphQL queries, mutations, and subscriptions organized by
+/// feature area. Each operation is defined as a static constant string using
+/// raw strings for proper formatting.
 class GraphQLOperations {
   // =================================================================
   // AUTHENTICATION OPERATIONS
   // =================================================================
 
+  /// Login mutation - authenticate user with email and password.
+  ///
+  /// Returns session data including user profile, tokens, and permissions.
   static const String loginMutation = r'''
     mutation Login($email: String!, $password: String!) {
       login(input: {
@@ -66,6 +72,10 @@ class GraphQLOperations {
     }
   ''';
 
+  /// Register mutation - create a new user account.
+  ///
+  /// Creates a new user with email, password, and profile information.
+  /// Optionally accepts a club code for initial club membership.
   static const String registerMutation = r'''
     mutation Register(
       $email: String!
@@ -113,6 +123,9 @@ class GraphQLOperations {
     }
   ''';
 
+  /// Logout mutation - invalidate current user session.
+  ///
+  /// Terminates the user's session on the server and invalidates tokens.
   static const String logoutMutation = '''
     mutation Logout {
       logout {

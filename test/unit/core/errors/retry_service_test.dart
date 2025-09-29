@@ -7,7 +7,7 @@ void main() {
   late RetryService retryService;
 
   setUp(() {
-    retryService = RetryService.instance;
+    retryService = RetryService();
   });
 
   tearDown(() {
@@ -360,7 +360,7 @@ void main() {
 
     group('retry configurations', () {
       test('should use default config', () {
-        final config = RetryConfig.defaultConfig;
+        final config = RetryConfig.defaultConfig();
 
         expect(config.maxRetries, greaterThan(0));
         expect(config.initialDelay, greaterThan(Duration.zero));
@@ -459,8 +459,8 @@ void main() {
 
     group('singleton pattern', () {
       test('should return same instance', () {
-        final instance1 = RetryService.instance;
-        final instance2 = RetryService.instance;
+        final instance1 = RetryService();
+        final instance2 = RetryService();
 
         expect(instance1, same(instance2));
       });

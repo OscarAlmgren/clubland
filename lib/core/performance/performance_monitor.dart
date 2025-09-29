@@ -8,11 +8,12 @@ import 'package:logger/logger.dart';
 
 /// Performance monitoring service for tracking app performance metrics
 class PerformanceMonitor {
+  /// Gets the singleton instance of PerformanceMonitor
+  factory PerformanceMonitor() => _instance ??= PerformanceMonitor._();
+
   PerformanceMonitor._() : _logger = Logger();
 
   static PerformanceMonitor? _instance;
-  static PerformanceMonitor get instance =>
-      _instance ??= PerformanceMonitor._();
 
   final Logger _logger;
   final Map<String, DateTime> _operationStartTimes = {};
