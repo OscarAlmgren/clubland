@@ -175,6 +175,31 @@ PODS:
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
+  - sqlite3 (3.50.4):
+    - sqlite3/common (= 3.50.4)
+  - sqlite3/common (3.50.4)
+  - sqlite3/dbstatvtab (3.50.4):
+    - sqlite3/common
+  - sqlite3/fts5 (3.50.4):
+    - sqlite3/common
+  - sqlite3/math (3.50.4):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.50.4):
+    - sqlite3/common
+  - sqlite3/rtree (3.50.4):
+    - sqlite3/common
+  - sqlite3/session (3.50.4):
+    - sqlite3/common
+  - sqlite3_flutter_libs (0.0.1):
+    - Flutter
+    - FlutterMacOS
+    - sqlite3 (~> 3.50.4)
+    - sqlite3/dbstatvtab
+    - sqlite3/fts5
+    - sqlite3/math
+    - sqlite3/perf-threadsafe
+    - sqlite3/rtree
+    - sqlite3/session
   - url_launcher_macos (0.0.1):
     - FlutterMacOS
 
@@ -196,6 +221,7 @@ DEPENDENCIES:
   - share_plus (from `Flutter/ephemeral/.symlinks/plugins/share_plus/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `Flutter/ephemeral/.symlinks/plugins/sqflite_darwin/darwin`)
+  - sqlite3_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/sqlite3_flutter_libs/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
 
 SPEC REPOS:
@@ -216,6 +242,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - PromisesSwift
+    - sqlite3
 
 EXTERNAL SOURCES:
   connectivity_plus:
@@ -252,6 +279,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin
   sqflite_darwin:
     :path: Flutter/ephemeral/.symlinks/plugins/sqflite_darwin/darwin
+  sqlite3_flutter_libs:
+    :path: Flutter/ephemeral/.symlinks/plugins/sqlite3_flutter_libs/darwin
   url_launcher_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
@@ -289,8 +318,10 @@ SPEC CHECKSUMS:
   share_plus: 1fa619de8392a4398bfaf176d441853922614e89
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
+  sqlite3: 73513155ec6979715d3904ef53a8d68892d4032b
+  sqlite3_flutter_libs: 86f82662868ee26ff3451f73cac9c5fc2a1f57fa
   url_launcher_macos: c82c93949963e55b228a30115bd219499a6fe404
 
-PODFILE CHECKSUM: 54d867c82ac51cbd61b565781b9fada492027009
+PODFILE CHECKSUM: e94c7017ddff408f8bf4cf921eb965f296748137
 
 COCOAPODS: 1.16.2
