@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 import 'app_text_styles.dart';
+import 'font_service.dart';
 
 /// App theme configuration for Clubland
 class AppTheme {
@@ -11,7 +11,8 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: AppColors.lightColorScheme,
-    textTheme: GoogleFonts.robotoFlexTextTheme(),
+    textTheme: FontService.getTextTheme(brightness: Brightness.light),
+    fontFamily: FontService.getFontFamily(),
 
     // App Bar Theme
     appBarTheme: AppBarTheme(
@@ -217,7 +218,8 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: AppColors.darkColorScheme,
-    fontFamily: GoogleFonts.roboto().fontFamily,
+    textTheme: FontService.getTextTheme(brightness: Brightness.dark),
+    fontFamily: FontService.getFontFamily(),
 
     // App Bar Theme
     appBarTheme: AppBarTheme(

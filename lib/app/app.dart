@@ -77,11 +77,14 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
       // The auth state will be managed by the router's redirect logic
       try {
         // Don't await - let auth initialize in background
-        ref.read(authControllerProvider.future).then((_) {
-          // Auth controller initialized successfully
-        }).catchError((Object e) {
-          // Auth controller initialization failed (non-fatal)
-        });
+        ref
+            .read(authControllerProvider.future)
+            .then((_) {
+              // Auth controller initialized successfully
+            })
+            .catchError((Object e) {
+              // Auth controller initialization failed (non-fatal)
+            });
       } catch (e) {
         // Auth controller initialization error (non-fatal)
       }
@@ -94,7 +97,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
           _isInitialized = true;
         });
       }
-    } catch (e, stackTrace) {
+    } catch (e) {
       // If initialization fails, show error and retry
       if (mounted) {
         setState(() {

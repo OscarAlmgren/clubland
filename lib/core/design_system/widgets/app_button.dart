@@ -164,50 +164,79 @@ class AppButton extends StatelessWidget {
   ) {
     switch (variant) {
       case AppButtonVariant.primary:
-        return ElevatedButton(
-          onPressed: isDisabled ? null : _handlePress,
-          style: _getElevatedButtonStyle(colorScheme, isDisabled),
-          child: _buildContent(),
+        return Semantics(
+          button: true,
+          enabled: !isDisabled,
+          label: isLoading ? '$text (loading)' : text,
+          child: ElevatedButton(
+            onPressed: isDisabled ? null : _handlePress,
+            style: _getElevatedButtonStyle(colorScheme, isDisabled),
+            child: _buildContent(),
+          ),
         );
       case AppButtonVariant.secondary:
-        return ElevatedButton(
-          onPressed: isDisabled ? null : _handlePress,
-          style: _getSecondaryButtonStyle(colorScheme, isDisabled),
-          child: _buildContent(),
+        return Semantics(
+          button: true,
+          enabled: !isDisabled,
+          label: isLoading ? '$text (loading)' : text,
+          child: ElevatedButton(
+            onPressed: isDisabled ? null : _handlePress,
+            style: _getSecondaryButtonStyle(colorScheme, isDisabled),
+            child: _buildContent(),
+          ),
         );
       case AppButtonVariant.outline:
-        return OutlinedButton(
-          onPressed: isDisabled ? null : _handlePress,
-          style: _getOutlinedButtonStyle(colorScheme, isDisabled),
-          child: _buildContent(),
+        return Semantics(
+          button: true,
+          enabled: !isDisabled,
+          label: isLoading ? '$text (loading)' : text,
+          child: OutlinedButton(
+            onPressed: isDisabled ? null : _handlePress,
+            style: _getOutlinedButtonStyle(colorScheme, isDisabled),
+            child: _buildContent(),
+          ),
         );
       case AppButtonVariant.ghost:
-        return TextButton(
-          onPressed: isDisabled ? null : _handlePress,
-          style: _getTextButtonStyle(colorScheme, isDisabled),
-          child: _buildContent(),
+        return Semantics(
+          button: true,
+          enabled: !isDisabled,
+          label: isLoading ? '$text (loading)' : text,
+          child: TextButton(
+            onPressed: isDisabled ? null : _handlePress,
+            style: _getTextButtonStyle(colorScheme, isDisabled),
+            child: _buildContent(),
+          ),
         );
       case AppButtonVariant.destructive:
-        return ElevatedButton(
-          onPressed: isDisabled ? null : _handlePress,
-          style: _getDestructiveButtonStyle(colorScheme, isDisabled),
-          child: _buildContent(),
+        return Semantics(
+          button: true,
+          enabled: !isDisabled,
+          label: isLoading ? '$text (loading)' : text,
+          hint: 'This action cannot be undone',
+          child: ElevatedButton(
+            onPressed: isDisabled ? null : _handlePress,
+            style: _getDestructiveButtonStyle(colorScheme, isDisabled),
+            child: _buildContent(),
+          ),
         );
     }
   }
 
   Widget _buildContent() {
     if (isLoading) {
-      return SizedBox(
-        height: _getIconSize(),
-        width: _getIconSize(),
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            variant == AppButtonVariant.outline ||
-                    variant == AppButtonVariant.ghost
-                ? AppColors.brandPrimary
-                : Colors.white,
+      return Semantics(
+        label: 'Loading',
+        child: SizedBox(
+          height: _getIconSize(),
+          width: _getIconSize(),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              variant == AppButtonVariant.outline ||
+                      variant == AppButtonVariant.ghost
+                  ? AppColors.brandPrimary
+                  : Colors.white,
+            ),
           ),
         ),
       );
@@ -337,6 +366,9 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizing.radiusLG),
         ),
         padding: _getPadding(),
+        // Remove infinite width constraints that cause layout issues
+        minimumSize: Size.zero,
+        maximumSize: Size.infinite,
       );
 
   ButtonStyle _getDestructiveButtonStyle(
