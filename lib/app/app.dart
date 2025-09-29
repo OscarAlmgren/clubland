@@ -77,7 +77,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
       // The auth state will be managed by the router's redirect logic
       try {
         // Don't await - let auth initialize in background
-        ref
+        await ref
             .read(authControllerProvider.future)
             .then((_) {
               // Auth controller initialized successfully
@@ -85,8 +85,17 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
             .catchError((Object e) {
               // Auth controller initialization failed (non-fatal)
             });
-      } catch (e) {
+      } on Object catch (e, stackTrace) {
         // Auth controller initialization error (non-fatal)
+        final logger = ref.read(loggerProvider);
+
+        // Log the event as a warning or error, including the stack trace
+        logger.w(
+          'Auth controller background initialization failed.',
+          error: e,
+          stackTrace: stackTrace,
+        );
+        // DO NOT rethrow, as it is non-fatal. Just exit the catch block.
       }
 
       // Add a delay to show splash screen
