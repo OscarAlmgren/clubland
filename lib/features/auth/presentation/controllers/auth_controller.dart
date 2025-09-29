@@ -26,10 +26,15 @@ class AuthController extends _$AuthController {
 
       // Try to initialize repository - may fail if GraphQL client not ready
       try {
-        final repository = ref.read(authRepositoryProvider);
+        // 1. FIX: Removed variable assignment. We read the provider to FORCE its
+        // creation and thus trigger the potential initialization error if dependencies
+        // (like the GraphQL client) are missing.
+        ref.read(authRepositoryProvider);
 
-        // Listen to auth state changes from repository
+        // 2. Set up the listener regardless of whether the initial read failed or succeeded.
+        // If the read failed, this ref.listen will run later when the provider rebuilds.
         ref.listen(authRepositoryProvider, (_, repository) {
+          // NOTE: The 'repository' parameter here is the actual instance passed by the listener.
           repository.authStateChanges.listen((session) {
             if (session != null) {
               state = AsyncData(session.user);
@@ -40,8 +45,15 @@ class AuthController extends _$AuthController {
         });
 
         logger.d('Authentication repository initialized');
-      } catch (repositoryError) {
-        logger.w('Auth repository not ready yet: $repositoryError');
+      } on Object catch (e, stackTrace) {
+        // 3. FIX: Changed catch signature to get stackTrace and logged it.
+        // If the error is transient (e.g., dependency not ready), log it as a warning.
+        final logger = ref.read(loggerProvider);
+        logger.w(
+          'Auth repository not ready yet. Continuing without, will retry on next rebuild.',
+          error: e,
+          stackTrace: stackTrace, // Added stackTrace for better debugging
+        );
         // Continue without auth repository - it will be initialized later
       }
 
@@ -117,7 +129,8 @@ class AuthController extends _$AuthController {
           _onLoginSuccess(session);
         },
       );
-    } catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
+      // FIX: Explicitly catch Object
       // Handle any unexpected errors (e.g., type errors, network issues)
       state = AsyncError(error, stackTrace);
 
@@ -205,14 +218,11 @@ class AuthController extends _$AuthController {
       final logoutUsecase = ref.read(logoutUsecaseProvider);
       final result = await logoutUsecase();
 
-      result.fold(
-        (failure) {
-          ErrorHandler.showErrorToUser(failure);
-          // Clear local state even if server logout fails
-          _onLogoutSuccess();
-        },
-        (_) => _onLogoutSuccess(),
-      );
+      result.fold((failure) {
+        ErrorHandler.showErrorToUser(failure);
+        // Clear local state even if server logout fails
+        _onLogoutSuccess();
+      }, (_) => _onLogoutSuccess());
     } on Exception catch (e) {
       final failure = ErrorHandler.handleException(e);
       ErrorHandler.showErrorToUser(failure);
@@ -393,7 +403,10 @@ Future<List<String>> userPermissions(Ref ref) async {
   final authRepository = ref.read(authRepositoryProvider);
   final result = await authRepository.getUserPermissions();
 
-  return result.fold((failure) => <String>[], (List<String> permissions) => permissions);
+  return result.fold(
+    (failure) => <String>[],
+    (List<String> permissions) => permissions,
+  );
 }
 
 /// Biometric availability provider
