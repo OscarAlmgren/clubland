@@ -25,20 +25,15 @@ class FontService {
       'Helvetica Neue',
       'Helvetica',
       'Arial',
-      'sans-serif'
+      'sans-serif',
     ],
-    'windows': [
-      'Segoe UI',
-      'Tahoma',
-      'Arial',
-      'sans-serif'
-    ],
+    'windows': ['Segoe UI', 'Tahoma', 'Arial', 'sans-serif'],
     'linux': [
       'Ubuntu',
       'DejaVu Sans',
       'Liberation Sans',
       'Arial',
-      'sans-serif'
+      'sans-serif',
     ],
     'ios': [
       'SF Pro Display',
@@ -46,13 +41,9 @@ class FontService {
       'Helvetica Neue',
       'Helvetica',
       'Arial',
-      'sans-serif'
+      'sans-serif',
     ],
-    'android': [
-      'Roboto',
-      'Arial',
-      'sans-serif'
-    ]
+    'android': ['Roboto', 'Arial', 'sans-serif'],
   };
 
   /// Check if network is available for font loading
@@ -276,14 +267,12 @@ class FontService {
   }
 
   /// Get current font status for debugging
-  static Map<String, dynamic> getStatus() {
-    return {
-      'networkAvailable': _networkAvailable,
-      'googleFontsEnabled': _googleFontsEnabled,
-      'platform': Platform.operatingSystem,
-      'fallbacks': _getPlatformFallbacks(),
-    };
-  }
+  static Map<String, dynamic> getStatus() => {
+    'networkAvailable': _networkAvailable,
+    'googleFontsEnabled': _googleFontsEnabled,
+    'platform': Platform.operatingSystem,
+    'fallbacks': _getPlatformFallbacks(),
+  };
 
   /// Manually disable Google Fonts (useful for testing fallbacks)
   static void disableGoogleFonts() {

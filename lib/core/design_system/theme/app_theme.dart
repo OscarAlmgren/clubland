@@ -11,7 +11,7 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: AppColors.lightColorScheme,
-    textTheme: FontService.getTextTheme(brightness: Brightness.light),
+    textTheme: FontService.getTextTheme(),
     fontFamily: FontService.getFontFamily(),
 
     // App Bar Theme
@@ -76,13 +76,13 @@ class AppTheme {
     // Input Decoration Theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.lightColorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      fillColor: AppColors.lightColorScheme.surfaceContainerHighest.withValues(
+        alpha: 0.3,
+      ),
       contentPadding: const EdgeInsets.all(16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: AppColors.lightColorScheme.outline,
-        ),
+        borderSide: BorderSide(color: AppColors.lightColorScheme.outline),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -99,9 +99,7 @@ class AppTheme {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: AppColors.lightColorScheme.error,
-        ),
+        borderSide: BorderSide(color: AppColors.lightColorScheme.error),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -114,7 +112,9 @@ class AppTheme {
         color: AppColors.lightColorScheme.onSurfaceVariant,
       ),
       hintStyle: AppTextStyles.bodyMedium.copyWith(
-        color: AppColors.lightColorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+        color: AppColors.lightColorScheme.onSurfaceVariant.withValues(
+          alpha: 0.6,
+        ),
       ),
       errorStyle: AppTextStyles.bodySmall.copyWith(
         color: AppColors.lightColorScheme.error,
@@ -283,13 +283,13 @@ class AppTheme {
     // Input Decoration Theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.darkColorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      fillColor: AppColors.darkColorScheme.surfaceContainerHighest.withValues(
+        alpha: 0.3,
+      ),
       contentPadding: const EdgeInsets.all(16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: AppColors.darkColorScheme.outline,
-        ),
+        borderSide: BorderSide(color: AppColors.darkColorScheme.outline),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -306,9 +306,7 @@ class AppTheme {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: AppColors.darkColorScheme.error,
-        ),
+        borderSide: BorderSide(color: AppColors.darkColorScheme.error),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -321,7 +319,9 @@ class AppTheme {
         color: AppColors.darkColorScheme.onSurfaceVariant,
       ),
       hintStyle: AppTextStyles.bodyMedium.copyWith(
-        color: AppColors.darkColorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+        color: AppColors.darkColorScheme.onSurfaceVariant.withValues(
+          alpha: 0.6,
+        ),
       ),
       errorStyle: AppTextStyles.bodySmall.copyWith(
         color: AppColors.darkColorScheme.error,

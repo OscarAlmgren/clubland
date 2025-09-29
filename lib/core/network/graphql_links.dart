@@ -202,11 +202,12 @@ class CachingLink extends Link {
 
     logger?.d('Caching query: $operationName for ${maxAge.inMinutes} minutes');
 
-    return forward!(request).map((response) {
+    return forward!(request).map(
+      (response)
       // Add cache headers or metadata if needed
       // This would integrate with the GraphQL cache system
-      return response;
-    });
+      => response,
+    );
   }
 }
 

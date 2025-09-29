@@ -5,13 +5,13 @@ import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/presentation/controllers/auth_controller.dart';
+import '../design_system/theme/font_service.dart';
 import '../errors/error_handler.dart';
 import '../network/graphql_client.dart';
 import '../network/network_info.dart';
 import '../storage/cache_manager.dart';
 import '../storage/local_storage.dart';
 import '../storage/secure_storage.dart';
-import '../design_system/theme/font_service.dart';
 
 part 'core_providers.g.dart';
 

@@ -8,10 +8,13 @@ import '../theme/app_text_styles.dart';
 enum AppSnackBarType {
   /// Success message with green styling
   success,
+
   /// Error message with red styling
   error,
+
   /// Warning message with orange styling
   warning,
+
   /// Information message with blue styling
   info,
 }
@@ -146,10 +149,7 @@ class AppSnackBar {
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSizing.radiusLG),
-        side: BorderSide(
-          color: colors.border,
-          width: 1,
-        ),
+        side: BorderSide(color: colors.border),
       ),
       elevation: 4,
       action: actionLabel != null && onAction != null
@@ -180,12 +180,8 @@ class AppSnackBar {
           onBackground: isDark
               ? const Color(0xFFE8F5E8) // Light green text (contrast: 12.1:1)
               : Colors.white, // White text (contrast: 4.6:1)
-          border: isDark
-              ? const Color(0xFF388E3C)
-              : const Color(0xFF2E7D32),
-          actionText: isDark
-              ? const Color(0xFFE8F5E8)
-              : Colors.white,
+          border: isDark ? const Color(0xFF388E3C) : const Color(0xFF2E7D32),
+          actionText: isDark ? const Color(0xFFE8F5E8) : Colors.white,
           actionBackground: isDark
               ? const Color(0xFF2E7D32)
               : const Color(0xFF1B5E20),
@@ -199,12 +195,8 @@ class AppSnackBar {
           onBackground: isDark
               ? const Color(0xFFFFEBEE) // Light red text (contrast: 11.8:1)
               : colorScheme.onError, // Use theme onError color
-          border: isDark
-              ? const Color(0xFFD32F2F)
-              : const Color(0xFFB71C1C),
-          actionText: isDark
-              ? const Color(0xFFFFEBEE)
-              : colorScheme.onError,
+          border: isDark ? const Color(0xFFD32F2F) : const Color(0xFFB71C1C),
+          actionText: isDark ? const Color(0xFFFFEBEE) : colorScheme.onError,
           actionBackground: isDark
               ? const Color(0xFFD32F2F)
               : const Color(0xFF8E1717),
@@ -218,12 +210,8 @@ class AppSnackBar {
           onBackground: isDark
               ? const Color(0xFFFFF8E1) // Light orange text (contrast: 10.2:1)
               : Colors.white, // White text (contrast: 4.1:1)
-          border: isDark
-              ? const Color(0xFFFF8F00)
-              : const Color(0xFFE65100),
-          actionText: isDark
-              ? const Color(0xFFFFF8E1)
-              : Colors.white,
+          border: isDark ? const Color(0xFFFF8F00) : const Color(0xFFE65100),
+          actionText: isDark ? const Color(0xFFFFF8E1) : Colors.white,
           actionBackground: isDark
               ? const Color(0xFFFF8F00)
               : const Color(0xFFE65100),
@@ -237,12 +225,8 @@ class AppSnackBar {
           onBackground: isDark
               ? const Color(0xFFE3F2FD) // Light blue text (contrast: 12.8:1)
               : Colors.white, // White text (contrast: 4.9:1)
-          border: isDark
-              ? const Color(0xFF1976D2)
-              : const Color(0xFF0D47A1),
-          actionText: isDark
-              ? const Color(0xFFE3F2FD)
-              : Colors.white,
+          border: isDark ? const Color(0xFF1976D2) : const Color(0xFF0D47A1),
+          actionText: isDark ? const Color(0xFFE3F2FD) : Colors.white,
           actionBackground: isDark
               ? const Color(0xFF1976D2)
               : const Color(0xFF0A3D91),

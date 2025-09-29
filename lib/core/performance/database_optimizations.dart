@@ -298,9 +298,7 @@ class OptimizedQueryBuilder {
   /// Add multiple WHERE conditions.
   /// Note: This simple method only supports the default equality operator (=).
   OptimizedQueryBuilder whereMap(Map<String, dynamic> conditions) {
-    conditions.forEach((field, value) {
-      where(field, value, operator: '=');
-    });
+    conditions.forEach(where);
     return this;
   }
 
