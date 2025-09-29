@@ -11,6 +11,7 @@ import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:logger/logger.dart';
 
 import '../constants/app_constants.dart';
+import '../design_system/widgets/app_snackbar.dart';
 import 'exceptions.dart';
 import 'failures.dart';
 
@@ -269,11 +270,38 @@ class ErrorHandler {
   static void showErrorToUser(Failure failure, {bool isPersistent = false}) {
     final message = _getUserFriendlyMessage(failure);
 
+    // Get the current context from the navigator
+    final context = _navigatorKey.currentContext;
+    if (context != null) {
+      AppSnackBar.showError(
+        context,
+        message,
+        duration: isPersistent
+            ? const Duration(seconds: 10)
+            : const Duration(seconds: 5),
+        actionLabel: isPersistent ? 'Dismiss' : null,
+        onAction: isPersistent
+            ? () {
+                if (_scaffoldMessengerKey.currentState != null) {
+                  _scaffoldMessengerKey.currentState!.hideCurrentSnackBar();
+                }
+              }
+            : null,
+      );
+    }
+  }
+
+  /// Show custom message to user
+  static void showMessage(
+    String message, {
+    bool isError = false,
+    bool isPersistent = false,
+  }) {
     if (_scaffoldMessengerKey.currentState != null) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red,
+          backgroundColor: isError ? Colors.red : Colors.blue,
           duration: isPersistent
               ? const Duration(seconds: 10)
               : const Duration(seconds: 4),

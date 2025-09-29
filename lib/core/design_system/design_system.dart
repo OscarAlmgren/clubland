@@ -21,3 +21,4 @@ export 'theme/app_theme.dart';
 export 'widgets/app_button.dart';
 export 'widgets/app_card.dart';
 export 'widgets/app_input_field.dart';
+export 'widgets/app_snackbar.dart';

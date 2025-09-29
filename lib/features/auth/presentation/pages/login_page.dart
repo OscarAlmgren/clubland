@@ -121,14 +121,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         // Forgot Password
                         Align(
                           alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
+                          child: GestureDetector(
+                            onTap: () {
                               // Navigate to forgot password
                             },
-                            child: Text(
-                              'Forgot Password?',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: colorScheme.primary,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Forgot Password?',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: colorScheme.primary,
+                                ),
                               ),
                             ),
                           ),
@@ -185,17 +188,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
 
                 // Sign Up Link
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account?",
+                      "Don't have an account? ",
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
+                    GestureDetector(
+                      onTap: () {
                         // Navigate to register
                       },
                       child: Text(
@@ -229,8 +233,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _handleHankoLogin() async {
     if (_emailController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your email first')),
+      AppSnackBar.showError(
+        context,
+        'Please enter your email first',
       );
       return;
     }
