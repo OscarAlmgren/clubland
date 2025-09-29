@@ -1,277 +1,222 @@
 {
   "@@locale": "en",
   "@@last_modified": "2025-01-27T12:00:00.000Z",
-
   "appTitle": "Clubland",
   "@appTitle": {
     "description": "The main title of the application"
   },
-
   "profile": "Profile",
   "@profile": {
     "description": "Profile page title"
   },
-
   "overview": "Overview",
   "@overview": {
     "description": "Overview tab title"
   },
-
   "activity": "Activity",
   "@activity": {
     "description": "Activity tab title"
   },
-
   "achievements": "Achievements",
   "@achievements": {
     "description": "Achievements tab title"
   },
-
   "more": "More",
   "@more": {
     "description": "More tab title"
   },
-
   "quickActions": "Quick Actions",
   "@quickActions": {
     "description": "Quick actions section title"
   },
-
   "favoriteClubs": "Favorite Clubs",
   "@favoriteClubs": {
     "description": "Favorite clubs action title"
   },
-
   "favoriteClubsSubtitle": "View your saved clubs",
   "@favoriteClubsSubtitle": {
     "description": "Favorite clubs action subtitle"
   },
-
   "visitHistory": "Visit History",
   "@visitHistory": {
     "description": "Visit history action title"
   },
-
   "visitHistorySubtitle": "See where you've been",
   "@visitHistorySubtitle": {
     "description": "Visit history action subtitle"
   },
-
   "myReviews": "My Reviews",
   "@myReviews": {
     "description": "My reviews action title"
   },
-
   "myReviewsSubtitle": "Manage your club reviews",
   "@myReviewsSubtitle": {
     "description": "My reviews action subtitle"
   },
-
   "shareProfile": "Share Profile",
   "@shareProfile": {
     "description": "Share profile action title"
   },
-
   "shareProfileSubtitle": "Share with other members",
   "@shareProfileSubtitle": {
     "description": "Share profile action subtitle"
   },
-
   "recentActivity": "Recent Activity",
   "@recentActivity": {
     "description": "Recent activity section title"
   },
-
   "viewAll": "View All",
   "@viewAll": {
     "description": "View all button text"
   },
-
   "noRecentActivity": "No recent activity",
   "@noRecentActivity": {
     "description": "Message when no recent activity"
   },
-
   "account": "Account",
   "@account": {
     "description": "Account section title"
   },
-
   "editProfile": "Edit Profile",
   "@editProfile": {
     "description": "Edit profile menu item"
   },
-
   "membership": "Membership",
   "@membership": {
     "description": "Membership menu item"
   },
-
   "membershipSubtitle": "Manage your memberships",
   "@membershipSubtitle": {
     "description": "Membership menu item subtitle"
   },
-
   "paymentMethods": "Payment Methods",
   "@paymentMethods": {
     "description": "Payment methods menu item"
   },
-
   "privacySecurity": "Privacy & Security",
   "@privacySecurity": {
     "description": "Privacy and security menu item"
   },
-
   "social": "Social",
   "@social": {
     "description": "Social section title"
   },
-
   "friends": "Friends",
   "@friends": {
     "description": "Friends menu item"
   },
-
   "friendsSubtitle": "Connect with other members",
   "@friendsSubtitle": {
     "description": "Friends menu item subtitle"
   },
-
   "groups": "Groups",
   "@groups": {
     "description": "Groups menu item"
   },
-
   "groupsSubtitle": "Join interest groups",
   "@groupsSubtitle": {
     "description": "Groups menu item subtitle"
   },
-
   "notifications": "Notifications",
   "@notifications": {
     "description": "Notifications menu item"
   },
-
   "support": "Support",
   "@support": {
     "description": "Support section title"
   },
-
   "helpSupport": "Help & Support",
   "@helpSupport": {
     "description": "Help and support menu item"
   },
-
   "sendFeedback": "Send Feedback",
   "@sendFeedback": {
     "description": "Send feedback menu item"
   },
-
   "about": "About",
   "@about": {
     "description": "About menu item"
   },
-
   "signOut": "Sign Out",
   "@signOut": {
     "description": "Sign out menu item"
   },
-
   "signOutConfirmTitle": "Sign Out",
   "@signOutConfirmTitle": {
     "description": "Sign out confirmation dialog title"
   },
-
   "signOutConfirmMessage": "Are you sure you want to sign out?",
   "@signOutConfirmMessage": {
     "description": "Sign out confirmation dialog message"
   },
-
   "cancel": "Cancel",
   "@cancel": {
     "description": "Cancel button text"
   },
-
   "visits": "Visits",
   "@visits": {
     "description": "Visits stat label"
   },
-
   "reviews": "Reviews",
   "@reviews": {
     "description": "Reviews stat label"
   },
-
   "clubs": "Clubs",
   "@clubs": {
     "description": "Clubs stat label"
   },
-
   "points": "Points",
   "@points": {
     "description": "Points stat label"
   },
-
   "profileSharingComingSoon": "Profile sharing coming soon!",
   "@profileSharingComingSoon": {
     "description": "Message for profile sharing feature"
   },
-
   "logoutFunctionalityComingSoon": "Logout functionality coming soon!",
   "@logoutFunctionalityComingSoon": {
     "description": "Message for logout functionality"
   },
-
   "activityFeed": "Activity Feed",
   "@activityFeed": {
     "description": "Activity feed title"
   },
-
   "activityHistoryPlaceholder": "Your activity history will appear here",
   "@activityHistoryPlaceholder": {
     "description": "Placeholder text for empty activity feed"
   },
-
   "firstVisit": "First Visit",
   "@firstVisit": {
     "description": "First visit achievement title"
   },
-
   "firstVisitDescription": "Made your first club visit",
   "@firstVisitDescription": {
     "description": "First visit achievement description"
   },
-
   "socialButterfly": "Social Butterfly",
   "@socialButterfly": {
     "description": "Social butterfly achievement title"
   },
-
   "socialButterflyDescription": "Connect with 10 members",
   "@socialButterflyDescription": {
     "description": "Social butterfly achievement description"
   },
-
   "explorer": "Explorer",
   "@explorer": {
     "description": "Explorer achievement title"
   },
-
   "explorerDescription": "Visit 5 different clubs",
   "@explorerDescription": {
     "description": "Explorer achievement description"
   },
-
   "reviewer": "Reviewer",
   "@reviewer": {
     "description": "Reviewer achievement title"
   },
-
   "reviewerDescription": "Write 10 club reviews",
   "@reviewerDescription": {
     "description": "Reviewer achievement description"
   },
-
   "earnedAgo": "Earned {timeAgo}",
   "@earnedAgo": {
     "description": "Achievement earned message with time",
@@ -282,32 +227,26 @@
       }
     }
   },
-
   "settings": "Settings",
   "@settings": {
     "description": "Settings page title"
   },
-
   "language": "Language",
   "@language": {
     "description": "Language setting title"
   },
-
   "languageSubtitle": "Choose your preferred language",
   "@languageSubtitle": {
     "description": "Language setting subtitle"
   },
-
   "english": "English",
   "@english": {
     "description": "English language option"
   },
-
   "swedish": "Swedish",
   "@swedish": {
     "description": "Swedish language option"
   },
-
   "selectLanguage": "Select Language",
   "@selectLanguage": {
     "description": "Language selection dialog title"

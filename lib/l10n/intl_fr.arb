@@ -1,0 +1,254 @@
+{
+  "@@locale": "fr",
+  "@@last_modified": "2025-01-27T12:00:00.000Z",
+  "appTitle": "Clubland",
+  "@appTitle": {
+    "description": "Le titre principal de l'application"
+  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "Titre de la page de profil"
+  },
+  "overview": "Aperçu",
+  "@overview": {
+    "description": "Titre de l'onglet Aperçu"
+  },
+  "activity": "Activité",
+  "@activity": {
+    "description": "Titre de l'onglet Activité"
+  },
+  "achievements": "Réalisations",
+  "@achievements": {
+    "description": "Titre de l'onglet Réalisations"
+  },
+  "more": "Plus",
+  "@more": {
+    "description": "Titre de l'onglet Plus"
+  },
+  "quickActions": "Actions rapides",
+  "@quickActions": {
+    "description": "Titre de la section Actions rapides"
+  },
+  "favoriteClubs": "Clubs favoris",
+  "@favoriteClubs": {
+    "description": "Titre de l'action Clubs favoris"
+  },
+  "favoriteClubsSubtitle": "Voir vos clubs sauvegardés",
+  "@favoriteClubsSubtitle": {
+    "description": "Sous-titre de l'action Clubs favoris"
+  },
+  "visitHistory": "Historique des visites",
+  "@visitHistory": {
+    "description": "Titre de l'action Historique des visites"
+  },
+  "visitHistorySubtitle": "Voir où vous êtes allé",
+  "@visitHistorySubtitle": {
+    "description": "Sous-titre de l'action Historique des visites"
+  },
+  "myReviews": "Mes avis",
+  "@myReviews": {
+    "description": "Titre de l'action Mes avis"
+  },
+  "myReviewsSubtitle": "Gérer vos avis de club",
+  "@myReviewsSubtitle": {
+    "description": "Sous-titre de l'action Mes avis"
+  },
+  "shareProfile": "Partager le profil",
+  "@shareProfile": {
+    "description": "Titre de l'action Partager le profil"
+  },
+  "shareProfileSubtitle": "Partager avec d'autres membres",
+  "@shareProfileSubtitle": {
+    "description": "Sous-titre de l'action Partager le profil"
+  },
+  "recentActivity": "Activité récente",
+  "@recentActivity": {
+    "description": "Titre de la section Activité récente"
+  },
+  "viewAll": "Tout afficher",
+  "@viewAll": {
+    "description": "Texte du bouton Tout afficher"
+  },
+  "noRecentActivity": "Aucune activité récente",
+  "@noRecentActivity": {
+    "description": "Message lorsqu'il n'y a pas d'activité récente"
+  },
+  "account": "Compte",
+  "@account": {
+    "description": "Titre de la section Compte"
+  },
+  "editProfile": "Modifier le profil",
+  "@editProfile": {
+    "description": "Élément de menu Modifier le profil"
+  },
+  "membership": "Adhésion",
+  "@membership": {
+    "description": "Élément de menu Adhésion"
+  },
+  "membershipSubtitle": "Gérer vos adhésions",
+  "@membershipSubtitle": {
+    "description": "Sous-titre de l'élément de menu Adhésion"
+  },
+  "paymentMethods": "Méthodes de paiement",
+  "@paymentMethods": {
+    "description": "Élément de menu Méthodes de paiement"
+  },
+  "privacySecurity": "Confidentialité et sécurité",
+  "@privacySecurity": {
+    "description": "Élément de menu Confidentialité et sécurité"
+  },
+  "social": "Social",
+  "@social": {
+    "description": "Titre de la section Social"
+  },
+  "friends": "Amis",
+  "@friends": {
+    "description": "Élément de menu Amis"
+  },
+  "friendsSubtitle": "Se connecter avec d'autres membres",
+  "@friendsSubtitle": {
+    "description": "Sous-titre de l'élément de menu Amis"
+  },
+  "groups": "Groupes",
+  "@groups": {
+    "description": "Élément de menu Groupes"
+  },
+  "groupsSubtitle": "Rejoindre des groupes d'intérêt",
+  "@groupsSubtitle": {
+    "description": "Sous-titre de l'élément de menu Groupes"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Élément de menu Notifications"
+  },
+  "support": "Support",
+  "@support": {
+    "description": "Titre de la section Support"
+  },
+  "helpSupport": "Aide et support",
+  "@helpSupport": {
+    "description": "Élément de menu Aide et support"
+  },
+  "sendFeedback": "Envoyer des commentaires",
+  "@sendFeedback": {
+    "description": "Élément de menu Envoyer des commentaires"
+  },
+  "about": "À propos",
+  "@about": {
+    "description": "Élément de menu À propos"
+  },
+  "signOut": "Se déconnecter",
+  "@signOut": {
+    "description": "Élément de menu Se déconnecter"
+  },
+  "signOutConfirmTitle": "Se déconnecter",
+  "@signOutConfirmTitle": {
+    "description": "Titre du dialogue de confirmation de déconnexion"
+  },
+  "signOutConfirmMessage": "Voulez-vous vraiment vous déconnecter?",
+  "@signOutConfirmMessage": {
+    "description": "Message du dialogue de confirmation de déconnexion"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Texte du bouton Annuler"
+  },
+  "visits": "Visites",
+  "@visits": {
+    "description": "Étiquette des statistiques de visites"
+  },
+  "reviews": "Avis",
+  "@reviews": {
+    "description": "Étiquette des statistiques d'avis"
+  },
+  "clubs": "Clubs",
+  "@clubs": {
+    "description": "Étiquette des statistiques de clubs"
+  },
+  "points": "Points",
+  "@points": {
+    "description": "Étiquette des statistiques de points"
+  },
+  "profileSharingComingSoon": "Le partage de profil arrive bientôt!",
+  "@profileSharingComingSoon": {
+    "description": "Message pour la fonctionnalité de partage de profil"
+  },
+  "logoutFunctionalityComingSoon": "La fonction de déconnexion arrive bientôt!",
+  "@logoutFunctionalityComingSoon": {
+    "description": "Message pour la fonctionnalité de déconnexion"
+  },
+  "activityFeed": "Fil d'activité",
+  "@activityFeed": {
+    "description": "Titre du fil d'activité"
+  },
+  "activityHistoryPlaceholder": "Votre historique d'activité apparaîtra ici",
+  "@activityHistoryPlaceholder": {
+    "description": "Texte de l'espace réservé pour le fil d'activité vide"
+  },
+  "firstVisit": "Première visite",
+  "@firstVisit": {
+    "description": "Titre de la réalisation Première visite"
+  },
+  "firstVisitDescription": "A effectué votre première visite de club",
+  "@firstVisitDescription": {
+    "description": "Description de la réalisation Première visite"
+  },
+  "socialButterfly": "Papillon social",
+  "@socialButterfly": {
+    "description": "Titre de la réalisation Papillon social"
+  },
+  "socialButterflyDescription": "Connecté avec 10 membres",
+  "@socialButterflyDescription": {
+    "description": "Description de la réalisation Papillon social"
+  },
+  "explorer": "Explorateur",
+  "@explorer": {
+    "description": "Titre de la réalisation Explorateur"
+  },
+  "explorerDescription": "A visité 5 clubs différents",
+  "@explorerDescription": {
+    "description": "Description de la réalisation Explorateur"
+  },
+  "reviewer": "Critique",
+  "@reviewer": {
+    "description": "Titre de la réalisation Critique"
+  },
+  "reviewerDescription": "A écrit 10 avis de club",
+  "@reviewerDescription": {
+    "description": "Description de la réalisation Critique"
+  },
+  "earnedAgo": "Gagné il y a {timeAgo}",
+  "@earnedAgo": {
+    "description": "Message de réalisation gagnée avec le temps",
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "2 weeks ago"
+      }
+    }
+  },
+  "settings": "Paramètres",
+  "@settings": {
+    "description": "Titre de la page des paramètres"
+  },
+  "language": "Langue",
+  "@language": {
+    "description": "Titre du paramètre de langue"
+  },
+  "languageSubtitle": "Choisissez votre langue préférée",
+  "@languageSubtitle": {
+    "description": "Sous-titre du paramètre de langue"
+  },
+  "english": "Anglais",
+  "@english": {
+    "description": "Option de langue anglaise"
+  },
+  "swedish": "Suédois",
+  "@swedish": {
+    "description": "Option de langue suédoise"
+  },
+  "selectLanguage": "Sélectionner la langue",
+  "@selectLanguage": {
+    "description": "Titre du dialogue de sélection de la langue"
+  }
+}
