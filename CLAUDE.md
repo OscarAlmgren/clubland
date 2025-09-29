@@ -64,9 +64,13 @@ Clubland is a premium End User Flutter application for the Reciprocal Clubs plat
 
 ### Storage Architecture
 
-- **Simple Data**: SharedPreferences-based multi-box storage system
-- **Structured Data**: Drift SQL database for complex queries
+- **Simple Data**: SharedPreferences-based multi-prefix storage system using TypedLocalStorage
+- **Structured Data**: Drift SQL database for complex queries and relationships
 - **Secure Data**: Flutter Secure Storage for sensitive information
+- **Storage Manager**: Centralized StorageManager class managing multiple storage prefixes:
+  - User data, clubs, bookings, visits, social, cache, settings, offline data
+  - Automatic initialization and cleanup
+  - Size monitoring and batch operations
 
 ### Deployment
 

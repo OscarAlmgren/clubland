@@ -86,6 +86,8 @@ flutter build web           # Web
 - ✅ Updated provider parameter types from custom `*Ref` to generic `Ref`
 - ✅ Fixed compatibility issues across authentication, routing, and core modules
 - ✅ Improved type safety and code generation reliability
+- ✅ **Language Provider**: Complete migration to Riverpod 3.x with proper AsyncNotifier pattern
+- ✅ **Storage Integration**: Updated all storage providers to work with SharedPreferences architecture
 
 ### Critical App Initialization Fixes
 - ✅ **Fixed GraphQL Client Initialization**: Resolved `LateInitializationError` in GraphQL client
@@ -100,9 +102,10 @@ flutter build web           # Web
 - ✅ **Compilation Success**: All tests now compile and run with Riverpod 3.x
 
 ### Storage Architecture Update
-- **Simple Data**: SharedPreferences-based multi-box storage system
+- **Simple Data**: SharedPreferences-based multi-prefix storage system with TypedLocalStorage
 - **Structured Data**: Drift SQL database for complex queries and relationships
 - **Secure Data**: Flutter Secure Storage for sensitive information
+- **Storage Manager**: Centralized StorageManager with multiple storage prefixes for organized data access
 
 ## System Architecture
 
@@ -148,7 +151,7 @@ flutter build web           # Web
 - **State Management**: Riverpod with AsyncNotifier pattern
 - **Routing**: Go Router for declarative navigation
 - **HTTP Client**: GraphQL Flutter with type-safe code generation
-- **Local Storage**: Hive for offline-first architecture
+- **Local Storage**: SharedPreferences for simple storage + Drift for structured data
 - **Authentication**: Local biometric authentication with secure storage
 - **Internationalization**: Multi-language support (English/Swedish) with ARB files
 - **Real-time**: WebSocket subscriptions with auto-reconnection
@@ -310,11 +313,13 @@ subscription VisitUpdates {
 
 ### 6. Internationalization
 
-- **Multi-language Support**: English and Swedish with 80+ translation keys
-- **Real-time Language Switching**: Instant language changes without app restart
-- **System Locale Detection**: Automatic fallback to device language if supported
-- **Persistent Preferences**: Language selection saved across app sessions
-- **Type-safe Translations**: Generated S.dart class for compile-time safety
+- **Multi-language Support**: English and Swedish with comprehensive translation coverage
+- **Real-time Language Switching**: Instant language changes without app restart using Riverpod state management
+- **System Locale Detection**: Automatic fallback to device language if supported, with English as ultimate fallback
+- **Persistent Preferences**: Language selection persisted via SharedPreferences with LanguageRepository
+- **Type-safe Translations**: Generated S.dart class with compile-time safety and proper null handling
+- **Robust State Management**: LanguageNotifier extends AsyncNotifier for proper async state handling
+- **Fallback Handling**: Graceful degradation when language preferences cannot be loaded
 
 ## Development Workflow
 
