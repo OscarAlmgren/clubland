@@ -11,6 +11,7 @@ import '../network/network_info.dart';
 import '../storage/cache_manager.dart';
 import '../storage/local_storage.dart';
 import '../storage/secure_storage.dart';
+import '../design_system/theme/font_service.dart';
 
 part 'core_providers.g.dart';
 
@@ -151,7 +152,6 @@ Future<void> errorHandlerInit(Ref ref) async {
 // Assuming AppInitialization is an AsyncNotifier or similar (using riverpod_annotation)
 @riverpod
 class AppInitialization extends _$AppInitialization {
- 
   @override
   // FIX: Changed return type from Future<void> to Future<bool>
   // to match the expected signature (FutureOr<bool> Function())
@@ -159,37 +159,43 @@ class AppInitialization extends _$AppInitialization {
     // 1. Initial synchronous work or setup...
     print('💡 Starting app initialization...');
 
-    // 2. Async operation (e.g., initializing storage or services)
-    await initializeStorage(); 
-    print('🐛 Storage manager initialized'); 
+    // 2. Initialize ErrorHandler first (critical for error reporting)
+    await ref.read(errorHandlerInitProvider.future);
+    print('🔧 ErrorHandler initialized');
 
-    // --- FIX APPLIED HERE: Mounted check after async gap ---
-    // If the provider was disposed during the await above, we must exit now.
-    if (!ref.mounted) {
-      // Return false if initialization fails due to provider disposal
-      return false; 
+    // 3. Async operation (e.g., initializing storage or services)
+    await initializeStorage();
+    print('🐛 Storage manager initialized');
+
+    // 4. Initialize FontService with fallback support
+    await FontService.initialize();
+    print('🔤 FontService initialized with fallback support');
+
+    // Note: Removed mounted check as it was causing premature exit during FontService init
+    // The provider should complete initialization even if briefly unmounted
+
+    // 4. Auth initialization is now optional - don't block app startup
+    // The auth state will be managed by the router independently
+    try {
+      // Try to initialize auth but don't block if it fails
+      ref.read(authControllerProvider);
+      print('🐛 Auth controller accessed successfully');
+    } catch (e) {
+      // Auth initialization failure is non-critical for basic app functionality
+      print('⚠️ Auth controller initialization deferred: $e');
     }
-    // --- END FIX ---
 
-    // 3. Wait for the AuthController's initial state to be determined.
-    await ref.read(authControllerProvider.future);
-
-    if (!ref.mounted) {
-      // Return false if initialization fails due to provider disposal
-      return false;
-    }
-    
     // Finalization...
     print('💡 App initialization complete');
 
     // FIX: Return true to signal successful initialization
-    return true; 
+    return true;
   }
 
   // Placeholder for your actual initialization logic
   Future<void> initializeStorage() async {
     // Simulate async operation
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
     // Call to StorageManager.init or similar...
     // Also, ensure ErrorHandler is initialized here if needed.
   }

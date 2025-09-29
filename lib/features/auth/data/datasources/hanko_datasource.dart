@@ -60,7 +60,7 @@ class HankoDataSourceImpl implements HankoDataSource {
            baseUrl ??
            const String.fromEnvironment(
              'HANKO_BASE_URL',
-             defaultValue: 'https://api.hanko.io',
+             defaultValue: 'http://localhost:8000',
            ),
        _projectId =
            projectId ??
@@ -300,8 +300,14 @@ class HankoDataSourceImpl implements HankoDataSource {
         return NetworkFailure.noConnection();
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode ?? 0;
-        final message =
-            error.response?.data?['message'] as String? ?? 'Unknown error';
+        final data = error.response?.data;
+
+        String message = 'Unknown error';
+        if (data is Map<String, dynamic>) {
+          message = data['message'] as String? ?? 'Unknown error';
+        } else if (data is String) {
+          message = data;
+        }
 
         if (statusCode == 401) {
           return AuthFailure.invalidCredentials();

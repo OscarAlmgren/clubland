@@ -117,10 +117,15 @@ class AuthController extends _$AuthController {
           _onLoginSuccess(session);
         },
       );
-    } on Exception catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
-      final failure = ErrorHandler.handleException(e);
-      ErrorHandler.showErrorToUser(failure);
+    } catch (error, stackTrace) {
+      // Handle any unexpected errors (e.g., type errors, network issues)
+      state = AsyncError(error, stackTrace);
+
+      // Show user-friendly error message
+      ErrorHandler.showMessage(
+        'Hanko authentication is currently unavailable. Please try the standard login.',
+        isError: true,
+      );
     }
   }
 
