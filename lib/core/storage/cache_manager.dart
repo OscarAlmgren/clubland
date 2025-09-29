@@ -16,6 +16,8 @@ class CacheEntry<T> {
     required this.etag,
     this.metadata = const {},
   });
+
+  /// Creates a [CacheEntry] from a JSON map.
   factory CacheEntry.fromJson(Map<String, dynamic> json) => CacheEntry(
     data: json['data'] as T,
     createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
@@ -23,14 +25,26 @@ class CacheEntry<T> {
     etag: json['etag'] as String? ?? '',
     metadata: Map<String, dynamic>.from(json['metadata'] as Map? ?? {}),
   );
+
+  /// The actual data stored in the cache entry.
   final T data;
+
+  /// The time the cache entry was created.
   final DateTime createdAt;
+
+  /// The time the cache entry will expire.
   final DateTime expiresAt;
+
+  /// An optional entity tag (Etag) for revalidation purposes.
   final String etag;
+
+  /// Additional metadata associated with the cache entry.
   final Map<String, dynamic> metadata;
 
+  /// Returns true if the current time is after the [expiresAt] time.
   bool get isExpired => DateTime.now().isAfter(expiresAt);
 
+  /// Converts the [CacheEntry] to a JSON map for storage.
   Map<String, dynamic> toJson() => {
     'data': data,
     'createdAt': createdAt.millisecondsSinceEpoch,
@@ -49,18 +63,29 @@ class CachePolicy {
     this.allowStale = true,
     this.maxSize = 1000,
   });
+
+  /// The maximum amount of time the entry is considered fresh.
   final Duration maxAge;
+
+  /// How long the entry can be used after [maxAge] while revalidation occurs.
   final Duration staleWhileRevalidate;
+
+  /// Whether the manager is allowed to return stale data when needed.
   final bool allowStale;
+
+  /// The maximum number of entries allowed for this policy's key pattern.
   final int maxSize;
 
+  /// A policy for short-lived cache data.
   static const short = CachePolicy(
     maxAge: ApiConstants.shortCacheMaxAge,
     maxSize: 500,
   );
 
-  static const medium = CachePolicy(maxSize: 1000);
+  /// The default policy for medium-lived cache data.
+  static const medium = CachePolicy();
 
+  /// A policy for long-lived cache data.
   static const long = CachePolicy(
     maxAge: ApiConstants.longCacheMaxAge,
     maxSize: 2000,
@@ -78,13 +103,13 @@ class CacheManager {
   final Map<String, CachePolicy> _policies = {};
   final Map<String, DateTime> _accessTimes = {};
 
-  /// Initialize cache manager
+  /// Initialize cache manager by cleaning up any expired entries.
   Future<void> init() async {
     await _cleanExpiredEntries();
     _logger.i('Cache manager initialized');
   }
 
-  /// Set cache policy for a specific key pattern
+  /// Set cache policy for a specific key pattern.
   void setPolicy(String keyPattern, CachePolicy policy) {
     _policies[keyPattern] = policy;
     _logger.d('Cache policy set for pattern: $keyPattern');
@@ -100,7 +125,7 @@ class CacheManager {
     return CachePolicy.medium; // Default policy
   }
 
-  /// Store data in cache
+  /// Store data in cache.
   Future<void> put<T>(
     String key,
     T data, {
@@ -135,7 +160,9 @@ class CacheManager {
     }
   }
 
-  /// Retrieve data from cache
+  /// Retrieve data from cache.
+  ///
+  /// If [allowStale] is true, expired data may be returned.
   Future<T?> get<T>(String key, {bool allowStale = true}) async {
     try {
       final json = await _storage.readJson(key);
@@ -165,7 +192,7 @@ class CacheManager {
     }
   }
 
-  /// Get cache entry with metadata
+  /// Get cache entry with metadata.
   Future<CacheEntry<T>?> getEntry<T>(String key) async {
     try {
       final json = await _storage.readJson(key);
@@ -181,7 +208,9 @@ class CacheManager {
     }
   }
 
-  /// Check if cache contains a valid entry
+  /// Check if cache contains a valid entry.
+  ///
+  /// If [allowStale] is true, expired entries still count as containing an entry.
   Future<bool> contains(String key, {bool allowStale = true}) async {
     final entry = await getEntry<dynamic>(key);
     if (entry == null) return false;
@@ -189,7 +218,7 @@ class CacheManager {
     return allowStale || !entry.isExpired;
   }
 
-  /// Remove entry from cache
+  /// Remove entry from cache.
   Future<void> remove(String key) async {
     try {
       await _storage.delete(key);
@@ -201,7 +230,7 @@ class CacheManager {
     }
   }
 
-  /// Clear all cache entries
+  /// Clear all cache entries.
   Future<void> clear() async {
     try {
       await _storage.clear();
@@ -213,7 +242,7 @@ class CacheManager {
     }
   }
 
-  /// Invalidate entries matching a pattern
+  /// Invalidate entries matching a pattern.
   Future<void> invalidatePattern(String pattern) async {
     try {
       final keys = await _storage.getKeys();
@@ -231,7 +260,7 @@ class CacheManager {
     }
   }
 
-  /// Get cache statistics
+  /// Get cache statistics.
   Future<CacheStats> getStats() async {
     try {
       final keys = await _storage.getKeys();
@@ -263,7 +292,7 @@ class CacheManager {
     }
   }
 
-  /// Clean expired entries
+  /// Clean expired entries.
   Future<void> _cleanExpiredEntries() async {
     try {
       final keys = await _storage.getKeys();
@@ -285,7 +314,7 @@ class CacheManager {
     }
   }
 
-  /// Enforce maximum cache size using LRU eviction
+  /// Enforce maximum cache size using LRU eviction.
   Future<void> _enforceMaxSize(CachePolicy policy) async {
     try {
       final keys = await _storage.getKeys();
@@ -313,13 +342,13 @@ class CacheManager {
     }
   }
 
-  /// Generate ETag for data
+  /// Generate ETag for data.
   String _generateEtag<T>(T data) {
     final dataString = data is String ? data : jsonEncode(data);
     return dataString.hashCode.toString();
   }
 
-  /// Dispose cache manager
+  /// Dispose cache manager, cleaning expired entries before exit.
   Future<void> dispose() async {
     await _cleanExpiredEntries();
     _logger.i('Cache manager disposed');
@@ -337,6 +366,7 @@ class CacheStats {
     required this.hitRate,
   });
 
+  /// Factory constructor for an empty [CacheStats] object.
   factory CacheStats.empty() => const CacheStats(
     totalEntries: 0,
     validEntries: 0,
@@ -344,12 +374,23 @@ class CacheStats {
     totalSizeBytes: 0,
     hitRate: 0.0,
   );
+
+  /// The total number of entries in the cache (valid and expired).
   final int totalEntries;
+
+  /// The number of entries that have not yet expired.
   final int validEntries;
+
+  /// The number of entries that have expired.
   final int expiredEntries;
+
+  /// The total size of the cache data in bytes.
   final int totalSizeBytes;
+
+  /// The cache hit rate (not currently calculated, defaults to 0.0).
   final double hitRate;
 
+  /// Provides a formatted string representation of the cache statistics.
   @override
   String toString() =>
       '''
@@ -370,6 +411,7 @@ class AppCacheManager {
   }
   final CacheManager _cacheManager;
 
+  /// Sets up default cache policies for various data patterns.
   void _setupPolicies() {
     // User data - medium cache
     _cacheManager.setPolicy('user_', CachePolicy.medium);
@@ -390,49 +432,53 @@ class AppCacheManager {
     _cacheManager.setPolicy('api_', CachePolicy.medium);
   }
 
-  /// Cache user data
+  /// Caches user data under a specific user ID key.
   Future<void> cacheUser(String userId, Map<String, dynamic> userData) =>
       _cacheManager.put('user_$userId', userData);
 
+  /// Retrieves user data by ID from the cache.
   Future<Map<String, dynamic>?> getUser(String userId) =>
       _cacheManager.get<Map<String, dynamic>>('user_$userId');
 
-  /// Cache club data
+  /// Caches club data under a specific club ID key.
   Future<void> cacheClub(String clubId, Map<String, dynamic> clubData) =>
       _cacheManager.put('club_$clubId', clubData);
 
+  /// Retrieves club data by ID from the cache.
   Future<Map<String, dynamic>?> getClub(String clubId) =>
       _cacheManager.get<Map<String, dynamic>>('club_$clubId');
 
-  /// Cache search results
+  /// Caches search results, using the query's hash code as the key.
   Future<void> cacheSearchResults(
     String query,
     List<Map<String, dynamic>> results,
   ) => _cacheManager.put('search_${query.hashCode}', results);
 
+  /// Retrieves search results using the query's hash code as the key.
   Future<List<Map<String, dynamic>>?> getSearchResults(String query) =>
       _cacheManager.get<List<Map<String, dynamic>>>('search_${query.hashCode}');
 
-  /// Cache API responses
+  /// Caches an API response using the endpoint's hash code as the key.
   Future<void> cacheApiResponse(
     String endpoint,
     Map<String, dynamic> response,
   ) => _cacheManager.put('api_${endpoint.hashCode}', response);
 
+  /// Retrieves an API response using the endpoint's hash code as the key.
   Future<Map<String, dynamic>?> getApiResponse(String endpoint) =>
       _cacheManager.get<Map<String, dynamic>>('api_${endpoint.hashCode}');
 
-  /// Invalidate user cache
+  /// Invalidate all entries starting with 'user_'.
   Future<void> invalidateUserCache() =>
       _cacheManager.invalidatePattern('user_');
 
-  /// Invalidate club cache
+  /// Invalidate all entries starting with 'club_'.
   Future<void> invalidateClubCache() =>
       _cacheManager.invalidatePattern('club_');
 
-  /// Get cache statistics
+  /// Get cache statistics.
   Future<CacheStats> getStats() => _cacheManager.getStats();
 
-  /// Clear all cache
+  /// Clear all cache entries.
   Future<void> clearAll() => _cacheManager.clear();
 }
