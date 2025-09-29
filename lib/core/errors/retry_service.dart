@@ -172,6 +172,11 @@ class RetryService {
 
   /// Check if failure should be retried based on configuration and failure type.
   bool _shouldRetry(Failure failure, RetryConfig config) {
+    // Use the new isRetryable property if available
+    if (failure.isRetryable) {
+      return true;
+    }
+
     // Check if failure type is in retryable list
     if (!config.retryableFailures.any((type) => failure.runtimeType == type)) {
       return false;

@@ -1,9 +1,28 @@
 import 'package:equatable/equatable.dart';
 
+/// Severity level for failures to enable better error handling and user feedback
+enum FailureSeverity {
+  /// Low severity - informational, no user action needed
+  info,
+
+  /// Medium severity - warning, user should be aware
+  warning,
+
+  /// High severity - error, user action may be needed
+  error,
+
+  /// Critical severity - critical error, immediate user action required
+  critical,
+}
+
 /// Base failure class for error handling in the Either pattern
 abstract class Failure extends Equatable {
   /// Creates a new [Failure] instance.
-  const Failure(this.message, [this.code]);
+  const Failure(
+    this.message, [
+    this.code,
+    this.severity = FailureSeverity.error,
+  ]);
 
   /// A human-readable message describing the failure.
   final String message;
@@ -11,18 +30,35 @@ abstract class Failure extends Equatable {
   /// An optional unique code to identify the type of failure.
   final String? code;
 
+  /// The severity level of this failure
+  final FailureSeverity severity;
+
+  /// Whether this failure can be retried
+  bool get isRetryable => false;
+
+  /// Whether this failure requires user action
+  bool get requiresUserAction => severity == FailureSeverity.critical;
+
   @override
-  List<Object?> get props => [message, code];
+  List<Object?> get props => [message, code, severity];
 
   @override
   String toString() =>
-      'Failure: $message${code != null ? ' (Code: $code)' : ''}';
+      'Failure: $message${code != null ? ' (Code: $code)' : ''} [${severity.name}]';
 }
 
 /// Authentication related failures
 class AuthFailure extends Failure {
   /// Creates an authentication failure with a message and optional code.
-  const AuthFailure(super.message, [super.code]);
+  const AuthFailure(
+    super.message, [
+    super.code,
+    super.severity = FailureSeverity.error,
+  ]);
+
+  @override
+  bool get isRetryable =>
+      code == 'TOKEN_REFRESH_FAILED' || code == 'SESSION_EXPIRED';
 
   /// Factory constructor for invalid credentials error.
   factory AuthFailure.invalidCredentials() =>

@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/error_handler.dart';
+import '../../../../core/performance/performance_monitor.dart';
 import '../../../../core/providers/core_providers.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
@@ -89,10 +90,16 @@ class AuthController extends _$AuthController {
   /// Login with email and password
   Future<void> login({required String email, required String password}) async {
     state = const AsyncLoading();
+    final monitor = PerformanceMonitor();
 
     try {
-      final loginUsecase = ref.read(loginUsecaseProvider);
-      final result = await loginUsecase(email: email, password: password);
+      final result = await monitor.timeOperation(
+        'auth_login',
+        () async {
+          final loginUsecase = ref.read(loginUsecaseProvider);
+          return await loginUsecase(email: email, password: password);
+        },
+      );
 
       result.fold(
         (failure) {

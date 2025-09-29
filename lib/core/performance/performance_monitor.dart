@@ -154,13 +154,13 @@ class PerformanceMonitor {
 extension FuturePerformance<T> on Future<T> {
   /// Add performance monitoring to a Future
   Future<T> withPerformanceMonitoring(String operationName) =>
-      PerformanceMonitor.instance.timeOperation(operationName, () => this);
+      PerformanceMonitor().timeOperation(operationName, () => this);
 }
 
 /// Mixin to add performance monitoring capabilities to any class
 mixin PerformanceMonitoring {
   /// Performance monitor instance
-  PerformanceMonitor get performanceMonitor => PerformanceMonitor.instance;
+  PerformanceMonitor get performanceMonitor => PerformanceMonitor();
 
   /// Time a method execution
   Future<T> timeMethod<T>(String methodName, Future<T> Function() method) =>
