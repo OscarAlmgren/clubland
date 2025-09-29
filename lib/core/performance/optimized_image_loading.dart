@@ -401,7 +401,7 @@ class _OptimizedImageState extends State<OptimizedImage>
         });
         _animationController.forward();
       }
-    } catch (e) {
+    } on Exception catch (_) {
       if (mounted) {
         setState(() {
           _hasError = true;

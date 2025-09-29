@@ -34,10 +34,10 @@ enum AppLanguage {
     if (code == null) return null;
     try {
       return AppLanguage.values.firstWhere((lang) => lang.code == code);
-    } catch (e) {
+    } on StateError catch (_) {
+      // Language code not found in enum values
       return null;
     }
-  }
 }
 
 /// Language settings repository

@@ -156,20 +156,22 @@ class AppInitialization extends _$AppInitialization {
   // FIX: Changed return type from Future<void> to Future<bool>
   // to match the expected signature (FutureOr<bool> Function())
   Future<bool> build() async {
+    final logger = ref.read(loggerProvider);
+
     // 1. Initial synchronous work or setup...
-    print('💡 Starting app initialization...');
+    logger.i('Starting app initialization...');
 
     // 2. Initialize ErrorHandler first (critical for error reporting)
     await ref.read(errorHandlerInitProvider.future);
-    print('🔧 ErrorHandler initialized');
+    logger.d('ErrorHandler initialized');
 
     // 3. Async operation (e.g., initializing storage or services)
     await initializeStorage();
-    print('🐛 Storage manager initialized');
+    logger.d('Storage manager initialized');
 
     // 4. Initialize FontService with fallback support
     await FontService.initialize();
-    print('🔤 FontService initialized with fallback support');
+    logger.d('FontService initialized with fallback support');
 
     // Note: Removed mounted check as it was causing premature exit during FontService init
     // The provider should complete initialization even if briefly unmounted
@@ -179,14 +181,14 @@ class AppInitialization extends _$AppInitialization {
     try {
       // Try to initialize auth but don't block if it fails
       ref.read(authControllerProvider);
-      print('🐛 Auth controller accessed successfully');
-    } catch (e) {
+      logger.d('Auth controller accessed successfully');
+    } on Object catch (e) {
       // Auth initialization failure is non-critical for basic app functionality
-      print('⚠️ Auth controller initialization deferred: $e');
+      logger.w('Auth controller initialization deferred: $e');
     }
 
     // Finalization...
-    print('💡 App initialization complete');
+    logger.i('App initialization complete');
 
     // FIX: Return true to signal successful initialization
     return true;

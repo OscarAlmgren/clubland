@@ -56,8 +56,12 @@ GoRouter appRouter(Ref ref) {
 
         // No redirect needed
         return null;
-      } catch (e) {
-        // If auth controller is not initialized, default to login
+      } on StateError catch (_) {
+        // If auth controller provider is not initialized, default to login
+        return RoutePaths.login;
+      } on Object catch (e) {
+        // Catch any other errors and log them
+        ErrorHandler.logError('Router redirect error', error: e);
         return RoutePaths.login;
       }
     },

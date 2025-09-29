@@ -188,7 +188,8 @@ class RetryService {
           return true;
         case final String code when code.startsWith('SERVER_ERROR_5'):
           return true;
-        case 'SERVER_ERROR_429': // Rate limited
+        case 'SERVER_ERROR_429': // Rate limited (HTTP 429)
+        case 'RATE_LIMITED': // Rate limited (general)
           return true;
         default:
           return false;

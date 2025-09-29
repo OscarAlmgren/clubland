@@ -82,7 +82,8 @@ void main() {
       expect(find.text('Password'), findsOneWidget);
       expect(find.text('Sign In'), findsOneWidget);
       expect(find.text('Forgot Password?'), findsOneWidget);
-      expect(find.text("Don't have an account?"), findsOneWidget);
+      // Note: Text has trailing space in implementation
+      expect(find.textContaining("Don't have an account"), findsOneWidget);
       expect(find.text('Sign Up'), findsOneWidget);
     });
 

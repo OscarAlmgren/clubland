@@ -214,9 +214,6 @@ void main() {
           password: TestConstants.testPassword,
         );
 
-        // Wait for the login operation future to resolve and update state
-        await tester.pump();
-
         final state = container.read(authControllerProvider);
         expect(state.hasError, true);
         expect(state.error, failure);
