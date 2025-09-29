@@ -187,28 +187,28 @@ class StorageKeys {
   /// Flag for enabling beta features for the current user.
   static const String betaFeaturesEnabled = 'beta_features_enabled';
 
-  // Hive box names
-  /// The name of the Hive box dedicated to user data.
-  static const String userBox = 'user_box';
+  // SharedPreferences storage prefixes
+  /// The prefix for SharedPreferences keys dedicated to user data.
+  static const String userDataPrefix = 'user_data';
 
-  /// The name of the Hive box dedicated to club data.
-  static const String clubsBox = 'clubs_box';
+  /// The prefix for SharedPreferences keys dedicated to club data.
+  static const String clubsDataPrefix = 'clubs_data';
 
-  /// The name of the Hive box dedicated to booking and reservation data.
-  static const String bookingsBox = 'bookings_box';
+  /// The prefix for SharedPreferences keys dedicated to booking and reservation data.
+  static const String bookingsDataPrefix = 'bookings_data';
 
-  /// The name of the Hive box dedicated to visit history.
-  static const String visitsBox = 'visits_box';
+  /// The prefix for SharedPreferences keys dedicated to visit history.
+  static const String visitsDataPrefix = 'visits_data';
 
-  /// The name of the Hive box dedicated to social features and contacts.
-  static const String socialBox = 'social_box';
+  /// The prefix for SharedPreferences keys dedicated to social features and contacts.
+  static const String socialDataPrefix = 'social_data';
 
-  /// The name of the Hive box dedicated to general application cache.
-  static const String cacheBox = 'cache_box';
+  /// The prefix for SharedPreferences keys dedicated to general application cache.
+  static const String cacheDataPrefix = 'cache_data';
 
-  /// The name of the Hive box dedicated to application settings.
-  static const String settingsBox = 'settings_box';
+  /// The prefix for SharedPreferences keys dedicated to application settings.
+  static const String settingsDataPrefix = 'settings_data';
 
-  /// The name of the Hive box dedicated to offline data storage.
-  static const String offlineBox = 'offline_box';
+  /// The prefix for SharedPreferences keys dedicated to offline data storage.
+  static const String offlineDataPrefix = 'offline_data';
 }

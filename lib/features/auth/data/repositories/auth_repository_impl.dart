@@ -24,8 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
     AuthRemoteDataSource? remoteDataSource,
     AuthLocalDataSource? localDataSource,
     HankoDataSource? hankoDataSource,
-  }) : _remoteDataSource =
-           remoteDataSource ??
+  }) : _remoteDataSource = remoteDataSource ??
            AuthRemoteDataSourceImpl(graphqlClient: GraphQLClientConfig.client, logger: logger),
        _localDataSource = localDataSource ?? AuthLocalDataSourceImpl(),
        _hankoDataSource =

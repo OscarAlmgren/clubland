@@ -278,103 +278,103 @@ class TypedLocalStorage extends SharedPreferencesLocalStorage {
   }
 }
 
-/// Multi-box storage manager
+/// Multi-prefix storage manager
 class StorageManager {
   StorageManager({Logger? logger}) : _logger = logger ?? Logger();
-  final Map<String, TypedLocalStorage> _boxes = {};
+  final Map<String, TypedLocalStorage> _storages = {};
   final Logger _logger;
   bool _isInitialized = false;
 
-  /// Initialize all storage boxes
+  /// Initialize all storage prefixes
   Future<void> init() async {
     if (_isInitialized) return;
 
     try {
-      // Initialize core boxes
-      await _initializeBox(StorageKeys.userBox);
-      await _initializeBox(StorageKeys.clubsBox);
-      await _initializeBox(StorageKeys.bookingsBox);
-      await _initializeBox(StorageKeys.visitsBox);
-      await _initializeBox(StorageKeys.socialBox);
-      await _initializeBox(StorageKeys.cacheBox);
-      await _initializeBox(StorageKeys.settingsBox);
-      await _initializeBox(StorageKeys.offlineBox);
+      // Initialize core storage prefixes
+      await _initializeBox(StorageKeys.userDataPrefix);
+      await _initializeBox(StorageKeys.clubsDataPrefix);
+      await _initializeBox(StorageKeys.bookingsDataPrefix);
+      await _initializeBox(StorageKeys.visitsDataPrefix);
+      await _initializeBox(StorageKeys.socialDataPrefix);
+      await _initializeBox(StorageKeys.cacheDataPrefix);
+      await _initializeBox(StorageKeys.settingsDataPrefix);
+      await _initializeBox(StorageKeys.offlineDataPrefix);
 
       _isInitialized = true;
-      _logger.i('Storage manager initialized with ${_boxes.length} boxes');
+      _logger.i('Storage manager initialized with ${_storages.length} storage prefixes');
     } on Exception catch (e) {
       _logger.e('Failed to initialize storage manager: $e');
       throw const StorageException('Failed to initialize storage manager');
     }
   }
 
-  Future<void> _initializeBox(String boxName) async {
-    final storage = TypedLocalStorage(boxName: boxName, logger: _logger);
+  Future<void> _initializeBox(String prefix) async {
+    final storage = TypedLocalStorage(boxName: prefix, logger: _logger);
     await storage.init();
-    _boxes[boxName] = storage;
+    _storages[prefix] = storage;
   }
 
-  /// Get storage box by name
-  TypedLocalStorage getBox(String boxName) {
+  /// Get storage by prefix
+  TypedLocalStorage getStorage(String prefix) {
     if (!_isInitialized) {
       throw const StorageException('Storage manager not initialized');
     }
 
-    final box = _boxes[boxName];
-    if (box == null) {
-      throw StorageException('Storage box not found: $boxName');
+    final storage = _storages[prefix];
+    if (storage == null) {
+      throw StorageException('Storage prefix not found: $prefix');
     }
 
-    return box;
+    return storage;
   }
 
   /// Get user storage
-  TypedLocalStorage get userStorage => getBox(StorageKeys.userBox);
+  TypedLocalStorage get userStorage => getStorage(StorageKeys.userDataPrefix);
 
   /// Get clubs storage
-  TypedLocalStorage get clubsStorage => getBox(StorageKeys.clubsBox);
+  TypedLocalStorage get clubsStorage => getStorage(StorageKeys.clubsDataPrefix);
 
   /// Get bookings storage
-  TypedLocalStorage get bookingsStorage => getBox(StorageKeys.bookingsBox);
+  TypedLocalStorage get bookingsStorage => getStorage(StorageKeys.bookingsDataPrefix);
 
   /// Get visits storage
-  TypedLocalStorage get visitsStorage => getBox(StorageKeys.visitsBox);
+  TypedLocalStorage get visitsStorage => getStorage(StorageKeys.visitsDataPrefix);
 
   /// Get social storage
-  TypedLocalStorage get socialStorage => getBox(StorageKeys.socialBox);
+  TypedLocalStorage get socialStorage => getStorage(StorageKeys.socialDataPrefix);
 
   /// Get cache storage
-  TypedLocalStorage get cacheStorage => getBox(StorageKeys.cacheBox);
+  TypedLocalStorage get cacheStorage => getStorage(StorageKeys.cacheDataPrefix);
 
   /// Get settings storage
-  TypedLocalStorage get settingsStorage => getBox(StorageKeys.settingsBox);
+  TypedLocalStorage get settingsStorage => getStorage(StorageKeys.settingsDataPrefix);
 
   /// Get offline storage
-  TypedLocalStorage get offlineStorage => getBox(StorageKeys.offlineBox);
+  TypedLocalStorage get offlineStorage => getStorage(StorageKeys.offlineDataPrefix);
 
   /// Clear all data
   Future<void> clearAll() async {
-    for (final storage in _boxes.values) {
+    for (final storage in _storages.values) {
       await storage.clear();
     }
-    _logger.i('All storage boxes cleared');
+    _logger.i('All storage prefixes cleared');
   }
 
   /// Get total storage size
   Future<int> getTotalSize() async {
     var totalSize = 0;
-    for (final storage in _boxes.values) {
+    for (final storage in _storages.values) {
       totalSize += await storage.getSize();
     }
     return totalSize;
   }
 
-  /// Dispose all storage boxes
+  /// Dispose all storage
   Future<void> dispose() async {
-    for (final storage in _boxes.values) {
+    for (final storage in _storages.values) {
       await storage.dispose();
     }
-    _boxes.clear();
+    _storages.clear();
     _isInitialized = false;
     _logger.i('Storage manager disposed');
   }

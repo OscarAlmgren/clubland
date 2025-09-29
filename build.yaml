@@ -28,7 +28,6 @@ targets:
         options:
           # Generate riverpod providers
           line_length: 80
-      hive_generator: {}
       json_serializable:
         options:
           # JSON serialization options

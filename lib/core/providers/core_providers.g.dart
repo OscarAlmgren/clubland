@@ -672,15 +672,11 @@ final class ErrorHandlerInitProvider
 
 String _$errorHandlerInitHash() => r'6927b7fb40d901e4588e67642f1f345c1c5f5716';
 
-/// App Initialization provider
-
 @ProviderFor(AppInitialization)
 const appInitializationProvider = AppInitializationProvider._();
 
-/// App Initialization provider
 final class AppInitializationProvider
     extends $AsyncNotifierProvider<AppInitialization, bool> {
-  /// App Initialization provider
   const AppInitializationProvider._()
     : super(
         from: null,
@@ -700,9 +696,7 @@ final class AppInitializationProvider
   AppInitialization create() => AppInitialization();
 }
 
-String _$appInitializationHash() => r'1cdb403f6e1d90d3ea1aef16aa11036fa281cdb6';
-
-/// App Initialization provider
+String _$appInitializationHash() => r'a89a2b64c8a0f1c5d971cd1b67e9a91e05277f6a';
 
 abstract class _$AppInitialization extends $AsyncNotifier<bool> {
   FutureOr<bool> build();

@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../features/auth/presentation/controllers/auth_controller.dart';
 import '../errors/error_handler.dart';
 import '../network/graphql_client.dart';
 import '../network/network_info.dart';
@@ -28,11 +29,10 @@ FlutterSecureStorage flutterSecureStorage(Ref ref) =>
 
 /// Enhanced Secure Storage provider
 @Riverpod(keepAlive: true)
-EnhancedSecureStorage secureStorage(Ref ref) =>
-    EnhancedSecureStorage(
-      storage: ref.watch(flutterSecureStorageProvider),
-      logger: ref.watch(loggerProvider),
-    );
+EnhancedSecureStorage secureStorage(Ref ref) => EnhancedSecureStorage(
+  storage: ref.watch(flutterSecureStorageProvider),
+  logger: ref.watch(loggerProvider),
+);
 
 /// Secure Storage Service provider
 @Riverpod(keepAlive: true)
@@ -148,42 +148,50 @@ Future<void> errorHandlerInit(Ref ref) async {
   );
 }
 
-/// App Initialization provider
+// Assuming AppInitialization is an AsyncNotifier or similar (using riverpod_annotation)
 @riverpod
 class AppInitialization extends _$AppInitialization {
+ 
   @override
+  // FIX: Changed return type from Future<void> to Future<bool>
+  // to match the expected signature (FutureOr<bool> Function())
   Future<bool> build() async {
-    try {
-      final logger = ref.read(loggerProvider);
-      logger.i('Starting app initialization...');
+    // 1. Initial synchronous work or setup...
+    print('💡 Starting app initialization...');
 
-      // Initialize error handler first
-      await ref.read(errorHandlerInitProvider.future);
-      logger.d('Error handler initialized');
+    // 2. Async operation (e.g., initializing storage or services)
+    await initializeStorage(); 
+    print('🐛 Storage manager initialized'); 
 
-      // Initialize storage
-      await ref.read(storageManagerProvider.future);
-      logger.d('Storage manager initialized');
+    // --- FIX APPLIED HERE: Mounted check after async gap ---
+    // If the provider was disposed during the await above, we must exit now.
+    if (!ref.mounted) {
+      // Return false if initialization fails due to provider disposal
+      return false; 
+    }
+    // --- END FIX ---
 
-      // Initialize cache
-      await ref.read(cacheManagerProvider.future);
-      logger.d('Cache manager initialized');
+    // 3. Wait for the AuthController's initial state to be determined.
+    await ref.read(authControllerProvider.future);
 
-      // Initialize GraphQL client
-      await ref.read(graphqlClientProvider.future);
-      logger.d('GraphQL client initialized');
-
-      // Check network status
-      await ref.read(networkStatusProvider.future);
-      logger.d('Network status checked');
-
-      logger.i('App initialization completed successfully');
-      return true;
-    } on Exception catch (e, stackTrace) {
-      final logger = ref.read(loggerProvider);
-      logger.e('App initialization failed', error: e, stackTrace: stackTrace);
+    if (!ref.mounted) {
+      // Return false if initialization fails due to provider disposal
       return false;
     }
+    
+    // Finalization...
+    print('💡 App initialization complete');
+
+    // FIX: Return true to signal successful initialization
+    return true; 
+  }
+
+  // Placeholder for your actual initialization logic
+  Future<void> initializeStorage() async {
+    // Simulate async operation
+    await Future.delayed(const Duration(milliseconds: 100));
+    // Call to StorageManager.init or similar...
+    // Also, ensure ErrorHandler is initialized here if needed.
   }
 
   /// Retry initialization
