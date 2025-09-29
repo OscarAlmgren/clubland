@@ -306,27 +306,36 @@ class _AppInputFieldState extends State<AppInputField> {
           ),
           AppSpacing.verticalSpaceXS,
         ],
-        TextFormField(
-          controller: widget.controller,
-          focusNode: _focusNode,
-          initialValue: widget.initialValue,
-          onChanged: widget.onChanged,
-          onTap: widget.onTap,
-          onFieldSubmitted: widget.onSubmitted,
-          validator: widget.validator,
-          obscureText: _obscureText,
+        Semantics(
+          label: widget.label,
+          hint: widget.hint,
           enabled: widget.enabled,
-          readOnly: widget.readOnly,
-          autofocus: widget.autofocus,
-          maxLines: widget.maxLines,
-          minLines: widget.minLines,
-          maxLength: widget.maxLength,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.textInputAction,
-          textCapitalization: widget.textCapitalization,
-          inputFormatters: widget.inputFormatters,
-          style: AppTextStyles.bodyMedium,
-          decoration: _buildInputDecoration(context),
+          textField: true,
+          obscured: _obscureText,
+          child: TextFormField(
+            controller: widget.controller,
+            focusNode: _focusNode,
+            initialValue: widget.initialValue,
+            onChanged: widget.onChanged,
+            onTap: widget.onTap,
+            onFieldSubmitted: widget.onSubmitted,
+            validator: widget.validator,
+            obscureText: _obscureText,
+            enabled: widget.enabled,
+            readOnly: widget.readOnly,
+            autofocus: widget.autofocus,
+            maxLines: widget.maxLines,
+            minLines: widget.minLines,
+            maxLength: widget.maxLength,
+            keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
+            textCapitalization: widget.textCapitalization,
+            inputFormatters: widget.inputFormatters,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: colorScheme.onSurface,
+            ),
+            decoration: _buildInputDecoration(context),
+          ),
         ),
         if (widget.helperText != null || widget.errorText != null) ...[
           AppSpacing.verticalSpaceXS,
@@ -367,6 +376,7 @@ class _AppInputFieldState extends State<AppInputField> {
       case AppInputVariant.filled:
         return InputDecoration(
           hintText: widget.hint,
+          hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
           prefixIcon: widget.prefixIcon,
           suffixIcon: suffixIcon,
           prefixText: widget.prefixText,
@@ -391,7 +401,7 @@ class _AppInputFieldState extends State<AppInputField> {
               color: widget.errorText != null
                   ? colorScheme.error
                   : colorScheme.primary,
-              width: 2,
+              width: 3,
             ),
           ),
           errorBorder: OutlineInputBorder(
@@ -408,6 +418,7 @@ class _AppInputFieldState extends State<AppInputField> {
       case AppInputVariant.outlined:
         return InputDecoration(
           hintText: widget.hint,
+          hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
           prefixIcon: widget.prefixIcon,
           suffixIcon: suffixIcon,
           prefixText: widget.prefixText,
@@ -428,7 +439,7 @@ class _AppInputFieldState extends State<AppInputField> {
               color: widget.errorText != null
                   ? colorScheme.error
                   : colorScheme.primary,
-              width: 2,
+              width: 3,
             ),
           ),
           errorBorder: OutlineInputBorder(
@@ -445,6 +456,7 @@ class _AppInputFieldState extends State<AppInputField> {
       case AppInputVariant.underlined:
         return InputDecoration(
           hintText: widget.hint,
+          hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
           prefixIcon: widget.prefixIcon,
           suffixIcon: suffixIcon,
           prefixText: widget.prefixText,
@@ -462,7 +474,7 @@ class _AppInputFieldState extends State<AppInputField> {
               color: widget.errorText != null
                   ? colorScheme.error
                   : colorScheme.primary,
-              width: 2,
+              width: 3,
             ),
           ),
           errorBorder: UnderlineInputBorder(
