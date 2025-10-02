@@ -38,6 +38,7 @@ enum AppLanguage {
       // Language code not found in enum values
       return null;
     }
+  }
 }
 
 /// Language settings repository

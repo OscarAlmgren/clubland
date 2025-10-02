@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/bookings_remote_datasource.dart';
 import '../../data/models/booking_model.dart';
 
@@ -158,5 +159,7 @@ class ModifyBookingRequest {
 
 /// Provider for the remote datasource
 final bookingsRemoteDataSourceProvider = Provider<BookingsRemoteDataSource>(
-  (ref) => BookingsRemoteDataSourceImpl(),
+  (ref) => BookingsRemoteDataSourceImpl(
+    client: GraphQLClientConfig.client,
+  ),
 );

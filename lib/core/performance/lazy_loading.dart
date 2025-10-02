@@ -13,6 +13,9 @@ class LazyLoadingManager {
 
   static LazyLoadingManager? _instance;
 
+  /// Get the singleton instance
+  static LazyLoadingManager get instance => LazyLoadingManager();
+
   final Logger _logger;
   final Map<String, dynamic> _cache = {};
   final Map<String, DateTime> _cacheTimestamps = {};

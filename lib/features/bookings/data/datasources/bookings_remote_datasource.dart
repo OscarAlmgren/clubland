@@ -2,8 +2,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
-import '../../../../core/graphql/graphql_operations.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../models/booking_model.dart';
 import '../models/facility_availability_model.dart';
 
@@ -49,8 +47,13 @@ abstract class BookingsRemoteDataSource {
 }
 
 class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
-  BookingsRemoteDataSourceImpl({Logger? logger}) : _logger = logger ?? Logger();
+  BookingsRemoteDataSourceImpl({
+    required GraphQLClient client,
+    Logger? logger,
+  })  : _client = client,
+        _logger = logger ?? Logger();
 
+  final GraphQLClient _client;
   final Logger _logger;
 
   @override
@@ -76,18 +79,38 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      // TODO: Add userBookingsQuery to GraphQLDocuments when backend schema is available
+      const query = r'''
+        query UserBookings($filter: BookingFilterInput, $pagination: PaginationInput) {
+          myBookings(filter: $filter, pagination: $pagination) {
+            nodes {
+              id
+              startTime
+              endTime
+              status
+              notes
+              createdAt
+              club { id name logo }
+              facility { id name }
+            }
+            pageInfo { hasNextPage totalCount }
+          }
+        }
+      ''';
+
+      final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.userBookingsQuery),
+          document: gql(query),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch bookings',
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+            'Failed to fetch bookings',
         );
       }
 
@@ -124,6 +147,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     try {
       _logger.d('Fetching booking details for ID: $bookingId');
 
+      // TODO: Add bookingDetailsQuery to GraphQLDocuments when backend schema is available
       const query = r'''
         query BookingDetails($id: ID!) {
           booking(id: $id) {
@@ -184,7 +208,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      final result = await GraphQLHelpers.executeQuery(
+      final result = await _client.query(
         QueryOptions(
           document: gql(query),
           variables: {'id': bookingId},
@@ -192,10 +216,10 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ??
+          result.exception?.graphqlErrors.firstOrNull?.message ??
               'Failed to fetch booking details',
         );
       }
@@ -233,18 +257,38 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         'endDate': endDate.toIso8601String(),
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      // TODO: Add facilityAvailabilityQuery to GraphQLDocuments when backend schema is available
+      const query = r'''
+        query FacilityAvailability($facilityId: ID!, $startDate: DateTime!, $endDate: DateTime!) {
+          facilityAvailability(facilityId: $facilityId, startDate: $startDate, endDate: $endDate) {
+            facility {
+              id
+              name
+              capacity
+            }
+            availableSlots {
+              startTime
+              endTime
+              available
+              capacity
+              remainingSpots
+            }
+          }
+        }
+      ''';
+
+      final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.facilityAvailabilityQuery),
+          document: gql(query),
           variables: variables,
           fetchPolicy: FetchPolicy.networkOnly, // Always get fresh availability
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ??
+          result.exception?.graphqlErrors.firstOrNull?.message ??
               'Failed to fetch availability',
         );
       }
@@ -292,17 +336,37 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeMutation(
+      // TODO: Add createBookingMutation to GraphQLDocuments when backend schema is available
+      const mutation = r'''
+        mutation CreateBooking($input: CreateBookingInput!) {
+          createBooking(input: $input) {
+            booking {
+              id
+              startTime
+              endTime
+              status
+              notes
+              club { id name logo }
+              facility { id name }
+            }
+            success
+            message
+          }
+        }
+      ''';
+
+      final result = await _client.mutate(
         MutationOptions(
-          document: gql(GraphQLOperations.createBookingMutation),
+          document: gql(mutation),
           variables: variables,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to create booking',
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to create booking',
         );
       }
 
@@ -357,17 +421,34 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeMutation(
+      // TODO: Add updateBookingMutation to GraphQLDocuments when backend schema is available
+      const mutation = r'''
+        mutation UpdateBooking($bookingId: ID!, $input: UpdateBookingInput!) {
+          updateBooking(bookingId: $bookingId, input: $input) {
+            booking {
+              id
+              startTime
+              endTime
+              notes
+            }
+            success
+            message
+          }
+        }
+      ''';
+
+      final result = await _client.mutate(
         MutationOptions(
-          document: gql(GraphQLOperations.updateBookingMutation),
+          document: gql(mutation),
           variables: variables,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to update booking',
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to update booking',
         );
       }
 
@@ -414,17 +495,37 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         if (reason != null) 'reason': reason,
       };
 
-      final result = await GraphQLHelpers.executeMutation(
+      // TODO: Add cancelBookingMutation to GraphQLDocuments when backend schema is available
+      const mutation = r'''
+        mutation CancelBooking($bookingId: ID!, $reason: String) {
+          cancelBooking(bookingId: $bookingId, reason: $reason) {
+            booking {
+              id
+              status
+              cancellation {
+                reason
+                cancelledAt
+                refundAmount
+              }
+            }
+            success
+            message
+          }
+        }
+      ''';
+
+      final result = await _client.mutate(
         MutationOptions(
-          document: gql(GraphQLOperations.cancelBookingMutation),
+          document: gql(mutation),
           variables: variables,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to cancel booking',
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to cancel booking',
         );
       }
 
@@ -463,14 +564,41 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     try {
       _logger.d('Subscribing to booking updates for user: $userId');
 
-      return GraphQLHelpers.executeSubscription<Map<String, dynamic>>(
+      // TODO: Add bookingUpdatesSubscription to GraphQLDocuments when backend schema is available
+      const subscription = r'''
+        subscription BookingUpdates($userId: ID!) {
+          bookingUpdates(userId: $userId) {
+            type
+            booking {
+              id
+              startTime
+              endTime
+              status
+              club { id name logo }
+              facility { id name }
+            }
+            message
+            timestamp
+          }
+        }
+      ''';
+
+      return _client
+          .subscribe(
             SubscriptionOptions(
-              document: gql(GraphQLOperations.bookingUpdatesSubscription),
+              document: gql(subscription),
               variables: {'userId': userId},
             ),
-            showErrorToUser: false, // Handle errors in stream
           )
           .map((result) {
+            if (result.hasException) {
+              throw app_exceptions.NetworkException(
+                result.exception?.graphqlErrors.firstOrNull?.message ??
+                    'Subscription error',
+                'SUBSCRIPTION_ERROR',
+              );
+            }
+
             final data = result.data?['bookingUpdates'];
             if (data == null) {
               throw const app_exceptions.NetworkException(

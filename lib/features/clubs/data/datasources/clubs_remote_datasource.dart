@@ -2,8 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
-import '../../../../core/graphql/graphql_operations.dart';
-import '../../../../core/network/graphql_client.dart';
+import '../../../../core/graphql/graphql_documents.dart';
 import '../models/club_model.dart';
 import '../models/club_search_result_model.dart';
 
@@ -73,8 +72,13 @@ class ClubReviewModel {
 }
 
 class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
-  ClubsRemoteDataSourceImpl({Logger? logger}) : _logger = logger ?? Logger();
+  ClubsRemoteDataSourceImpl({
+    required GraphQLClient client,
+    Logger? logger,
+  })  : _client = client,
+        _logger = logger ?? Logger();
 
+  final GraphQLClient _client;
   final Logger _logger;
 
   @override
@@ -96,18 +100,18 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.clubsQuery),
+          document: GraphQLDocuments.clubsQuery,
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch clubs',
+          result.exception?.graphqlErrors.firstOrNull?.message ?? 'Failed to fetch clubs',
         );
       }
 
@@ -138,18 +142,18 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Fetching club details for ID: $clubId');
 
-      final result = await GraphQLHelpers.executeQuery(
+      final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.clubDetailsQuery),
+          document: GraphQLDocuments.clubQuery,
           variables: {'id': clubId},
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch club details',
+          result.exception?.graphqlErrors.firstOrNull?.message ?? 'Failed to fetch club details',
         );
       }
 
@@ -191,18 +195,50 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      // TODO: Add searchClubsQuery to GraphQLDocuments
+      const searchClubsQuery = '''
+        query SearchClubs(
+          \$query: String!
+          \$location: LocationInput
+          \$radius: Float
+          \$amenities: [String!]
+          \$pagination: PaginationInput
+        ) {
+          searchClubs(
+            query: \$query
+            location: \$location
+            radius: \$radius
+            amenities: \$amenities
+            pagination: \$pagination
+          ) {
+            nodes {
+              id
+              name
+              description
+              location
+              distance
+              relevanceScore
+            }
+            pageInfo {
+              hasNextPage
+              totalCount
+            }
+          }
+        }
+      ''';
+
+      final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.searchClubsQuery),
+          document: gql(searchClubsQuery),
           variables: variables,
           fetchPolicy: FetchPolicy.networkOnly,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to search clubs',
+          result.exception?.graphqlErrors.firstOrNull?.message ?? 'Failed to search clubs',
         );
       }
 
@@ -296,6 +332,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Toggling favorite for club: $clubId');
 
+      // TODO: Add toggleFavoriteClubMutation to GraphQLDocuments
       const mutation = '''
         mutation ToggleFavoriteClub(\$clubId: ID!) {
           toggleFavoriteClub(clubId: \$clubId) {
@@ -314,14 +351,14 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         }
       ''';
 
-      final result = await GraphQLHelpers.executeMutation(
+      final result = await _client.mutate(
         MutationOptions(document: gql(mutation), variables: {'clubId': clubId}),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to toggle favorite',
+          result.exception?.graphqlErrors.firstOrNull?.message ?? 'Failed to toggle favorite',
         );
       }
 
@@ -354,6 +391,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Checking in to club: $clubId');
 
+      // TODO: Add checkInToClubMutation to GraphQLDocuments
       const mutation = '''
         mutation CheckInToClub(\$clubId: ID!) {
           checkInToClub(clubId: \$clubId) {
@@ -371,14 +409,14 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         }
       ''';
 
-      final result = await GraphQLHelpers.executeMutation(
+      final result = await _client.mutate(
         MutationOptions(document: gql(mutation), variables: {'clubId': clubId}),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to check in',
+          result.exception?.graphqlErrors.firstOrNull?.message ?? 'Failed to check in',
         );
       }
 
@@ -417,18 +455,37 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         },
       };
 
-      final result = await GraphQLHelpers.executeQuery(
+      // TODO: Add clubReviewsQuery to GraphQLDocuments
+      const clubReviewsQuery = '''
+        query ClubReviews(\$clubId: ID!, \$pagination: PaginationInput) {
+          clubReviews(clubId: \$clubId, pagination: \$pagination) {
+            nodes {
+              id
+              rating
+              comment
+              author
+              createdAt
+            }
+            pageInfo {
+              hasNextPage
+              totalCount
+            }
+          }
+        }
+      ''';
+
+      final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.clubReviewsQuery),
+          document: gql(clubReviewsQuery),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
 
-      if (!GraphQLHelpers.isSuccess(result)) {
+      if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          GraphQLHelpers.getErrorMessage(result) ?? 'Failed to fetch reviews',
+          result.exception?.graphqlErrors.firstOrNull?.message ?? 'Failed to fetch reviews',
         );
       }
 

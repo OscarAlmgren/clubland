@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -78,11 +77,12 @@ class AccessibilityUtils {
     bool isBold = false,
   }) {
     final ratio = calculateContrastRatio(foreground, background);
-    final isLargeText = fontSize >= largeTextSize ||
-        (isBold && fontSize >= largeBoldTextSize);
+    final isLargeText =
+        fontSize >= largeTextSize || (isBold && fontSize >= largeBoldTextSize);
 
-    final minRatio =
-        isLargeText ? minContrastRatioLarge : minContrastRatioNormal;
+    final minRatio = isLargeText
+        ? minContrastRatioLarge
+        : minContrastRatioNormal;
 
     return ratio >= minRatio;
   }
@@ -95,11 +95,12 @@ class AccessibilityUtils {
     bool isBold = false,
   }) {
     final ratio = calculateContrastRatio(foreground, background);
-    final isLargeText = fontSize >= largeTextSize ||
-        (isBold && fontSize >= largeBoldTextSize);
+    final isLargeText =
+        fontSize >= largeTextSize || (isBold && fontSize >= largeBoldTextSize);
 
-    final minRatio =
-        isLargeText ? minContrastRatioLargeAAA : minContrastRatioNormalAAA;
+    final minRatio = isLargeText
+        ? minContrastRatioLargeAAA
+        : minContrastRatioNormalAAA;
 
     return ratio >= minRatio;
   }
@@ -147,4 +148,3 @@ class AccessibilityUtils {
     }());
   }
 }
-

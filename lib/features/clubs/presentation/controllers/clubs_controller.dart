@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/clubs_remote_datasource.dart';
 
 part 'clubs_controller.g.dart';
@@ -333,5 +334,7 @@ Future<bool> locationPermission(Ref ref) async => true;
 
 /// Provider for the remote datasource
 final clubsRemoteDataSourceProvider = Provider<ClubsRemoteDataSource>(
-  (ref) => ClubsRemoteDataSourceImpl(),
+  (ref) => ClubsRemoteDataSourceImpl(
+    client: GraphQLClientConfig.client,
+  ),
 );

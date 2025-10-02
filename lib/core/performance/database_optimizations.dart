@@ -18,6 +18,9 @@ class DatabaseOptimizations with PerformanceMonitoring {
 
   static DatabaseOptimizations? _instance;
 
+  /// Get the singleton instance
+  static DatabaseOptimizations get instance => DatabaseOptimizations();
+
   final Logger _logger;
   final Map<String, dynamic> _queryCache = {};
   final Map<String, DateTime> _cacheTimestamps = {};

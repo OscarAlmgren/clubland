@@ -2,8 +2,6 @@ import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart';
-import '../../../../core/graphql/graphql_operations.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../models/activity_model.dart';
 import '../models/club_review_model.dart';
 import '../models/notification_model.dart';
@@ -85,11 +83,14 @@ abstract class SocialRemoteDataSource {
 class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
   /// Creates an instance of [SocialRemoteDataSourceImpl].
   ///
-  /// If [client] or [logger] are not provided, it falls back to default
-  /// client configuration and a default logger instance.
-  SocialRemoteDataSourceImpl({GraphQLClient? client, Logger? logger})
-    : _client = client ?? GraphQLClientConfig.client,
-      _logger = logger ?? Logger();
+  /// [client] is required for GraphQL operations.
+  /// If [logger] is not provided, it falls back to a default logger instance.
+  SocialRemoteDataSourceImpl({
+    required GraphQLClient client,
+    Logger? logger,
+  })  : _client = client,
+        _logger = logger ?? Logger();
+
   final GraphQLClient _client;
   final Logger _logger;
 
@@ -116,9 +117,32 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         },
       };
 
+      // TODO: Add userActivityQuery to GraphQLDocuments
+      const userActivityQuery = '''
+        query UserActivity(\$userId: ID, \$filter: ActivityFilterInput, \$pagination: PaginationInput) {
+          userActivity(userId: \$userId, filter: \$filter, pagination: \$pagination) {
+            nodes {
+              id
+              type
+              userId
+              clubId
+              description
+              metadata
+              likes
+              comments
+              createdAt
+            }
+            pageInfo {
+              hasNextPage
+              totalCount
+            }
+          }
+        }
+      ''';
+
       final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.userActivityQuery),
+          document: gql(userActivityQuery),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
@@ -175,9 +199,31 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         },
       };
 
+      // TODO: Add clubReviewsQuery to GraphQLDocuments
+      const clubReviewsQuery = '''
+        query ClubReviews(\$clubId: ID!, \$pagination: PaginationInput) {
+          clubReviews(clubId: \$clubId, pagination: \$pagination) {
+            nodes {
+              id
+              clubId
+              userId
+              rating
+              comment
+              aspects
+              createdAt
+              updatedAt
+            }
+            pageInfo {
+              hasNextPage
+              totalCount
+            }
+          }
+        }
+      ''';
+
       final result = await _client.query(
         QueryOptions(
-          document: gql(GraphQLOperations.clubReviewsQuery),
+          document: gql(clubReviewsQuery),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
@@ -231,9 +277,29 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         },
       };
 
+      // TODO: Add createReviewMutation to GraphQLDocuments
+      const createReviewMutation = '''
+        mutation CreateReview(\$input: CreateReviewInput!) {
+          createReview(input: \$input) {
+            success
+            message
+            review {
+              id
+              clubId
+              userId
+              rating
+              comment
+              aspects
+              createdAt
+              updatedAt
+            }
+          }
+        }
+      ''';
+
       final result = await _client.mutate(
         MutationOptions(
-          document: gql(GraphQLOperations.createReviewMutation),
+          document: gql(createReviewMutation),
           variables: variables,
         ),
       );
@@ -274,9 +340,30 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Liking activity: $activityId');
 
+      // TODO: Add likeActivityMutation to GraphQLDocuments
+      const likeActivityMutation = '''
+        mutation LikeActivity(\$activityId: ID!) {
+          likeActivity(activityId: \$activityId) {
+            success
+            message
+            activity {
+              id
+              type
+              userId
+              clubId
+              description
+              metadata
+              likes
+              comments
+              createdAt
+            }
+          }
+        }
+      ''';
+
       final result = await _client.mutate(
         MutationOptions(
-          document: gql(GraphQLOperations.likeActivityMutation),
+          document: gql(likeActivityMutation),
           variables: {'activityId': activityId},
         ),
       );
@@ -316,9 +403,26 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Adding comment to activity: $activityId');
 
+      // TODO: Add addCommentMutation to GraphQLDocuments
+      const addCommentMutation = '''
+        mutation AddComment(\$activityId: ID!, \$text: String!) {
+          addComment(activityId: \$activityId, text: \$text) {
+            success
+            message
+            comment {
+              id
+              activityId
+              userId
+              text
+              createdAt
+            }
+          }
+        }
+      ''';
+
       final result = await _client.mutate(
         MutationOptions(
-          document: gql(GraphQLOperations.addCommentMutation),
+          document: gql(addCommentMutation),
           variables: {'activityId': activityId, 'text': text},
         ),
       );
@@ -568,10 +672,27 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Subscribing to notifications for user: $userId');
 
+      // TODO: Add notificationsSubscription to GraphQLDocuments
+      const notificationsSubscription = '''
+        subscription NotificationReceived(\$userId: ID!) {
+          notificationReceived(userId: \$userId) {
+            id
+            type
+            title
+            message
+            data
+            createdAt
+            read
+            readAt
+            actionUrl
+          }
+        }
+      ''';
+
       return _client
           .subscribe(
             SubscriptionOptions(
-              document: gql(GraphQLOperations.notificationsSubscription),
+              document: gql(notificationsSubscription),
               variables: {'userId': userId},
             ),
           )
@@ -603,10 +724,29 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     try {
       _logger.d('Subscribing to club activity: $clubId');
 
+      // TODO: Add clubActivitySubscription to GraphQLDocuments
+      const clubActivitySubscription = '''
+        subscription ClubActivityUpdated(\$clubId: ID!) {
+          clubActivityUpdated(clubId: \$clubId) {
+            activity {
+              id
+              type
+              userId
+              clubId
+              description
+              metadata
+              likes
+              comments
+              createdAt
+            }
+          }
+        }
+      ''';
+
       return _client
           .subscribe(
             SubscriptionOptions(
-              document: gql(GraphQLOperations.clubActivitySubscription),
+              document: gql(clubActivitySubscription),
               variables: {'clubId': clubId},
             ),
           )

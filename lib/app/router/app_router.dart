@@ -61,7 +61,7 @@ GoRouter appRouter(Ref ref) {
         return RoutePaths.login;
       } on Object catch (e) {
         // Catch any other errors and log them
-        ErrorHandler.logError('Router redirect error', error: e);
+        debugPrint('Router redirect error: $e');
         return RoutePaths.login;
       }
     },
