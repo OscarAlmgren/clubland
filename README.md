@@ -240,45 +240,52 @@ lib/
 
 ### GraphQL Integration
 
-The application uses type-safe GraphQL integration with code generation:
+The application uses **type-safe GraphQL integration** with DocumentNode AST objects:
 
 ```yaml
 # GraphQL dependencies
 dependencies:
   graphql_flutter: ^5.1.2
-  gql: ^1.0.1
-
-dev_dependencies:
-  graphql_codegen: ^1.1.1
-  build_runner: ^2.4.7
+  gql: ^1.0.1  # For parsing GraphQL into AST
 ```
 
-**Key Operations**:
+**Type-Safe Implementation**:
 
-```graphql
-# Authentication
-query Me {
-  me {
-    id email firstName lastName
-    clubMembership { club { name } memberNumber tier }
-  }
-}
+The `GraphQLDocuments` class provides type-safe GraphQL operations using the `gql` package to parse operations into AST DocumentNode objects:
 
-# Club Discovery
-query SearchClubs($location: LocationInput!, $radius: Int!) {
-  searchClubs(location: $location, radius: $radius) {
-    id name description location { address }
-    reciprocalAccess { type fees }
-  }
-}
+```dart
+import 'package:clubland/core/graphql/graphql_documents.dart';
 
-# Real-time Updates
-subscription VisitUpdates {
-  visitStatusChanged {
-    id status club { name }
-  }
-}
+// Authentication
+final loginResult = await client.mutate(
+  MutationOptions(
+    document: GraphQLDocuments.loginMutation,
+    variables: {'email': email, 'password': password},
+  ),
+);
+
+// Club Discovery
+final clubsResult = await client.query(
+  QueryOptions(
+    document: GraphQLDocuments.clubsQuery,
+  ),
+);
+
+// Real-time Updates
+final subscription = client.subscribe(
+  SubscriptionOptions(
+    document: GraphQLDocuments.visitStatusChangedSubscription,
+    variables: {'clubId': clubId},
+  ),
+);
 ```
+
+**Benefits**:
+- Type safety without code generation dependencies
+- Compile-time GraphQL syntax validation
+- No dependency conflicts (eliminated Artemis, Ferry, gql_build)
+- Operations organized by feature in `lib/graphql/` directory
+- Better IDE support with auto-completion
 
 ### Authentication Architecture
 
@@ -346,17 +353,14 @@ subscription VisitUpdates {
 
 ## Development Workflow
 
-### Code Generation
+### GraphQL Operations
 
-1. **Update GraphQL schemas** in `lib/schema/`
-2. **Run code generation**:
-
-   ```bash
-   dart run build_runner build --delete-conflicting-outputs
-   ```
-
+1. **Add or update** `.graphql` files in `lib/graphql/` (organized by feature)
+2. **Define DocumentNode** in `GraphQLDocuments` class using `gql.parseString()`
 3. **Update data models** if schema changes affect types
 4. **Update tests** to reflect changes
+
+**Note**: No code generation required for GraphQL operations - they are parsed at runtime into AST objects
 
 ### Feature Development
 

@@ -1,0 +1,15 @@
+subscription TransactionStatusChanged {
+  transactionStatusChanged {
+    id
+    type
+    chaincode
+    function
+    args
+    status
+    txId
+    blockNumber
+    timestamp
+    error
+    createdAt
+  }
+}

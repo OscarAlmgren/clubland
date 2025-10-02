@@ -1,0 +1,24 @@
+mutation UpdateMember($id: ID!, $input: MemberProfileInput!) {
+  updateMember(id: $id, input: $input) {
+    id
+    clubId
+    userId
+    memberNumber
+    membershipType
+    status
+    profile {
+      firstName
+      lastName
+      dateOfBirth
+      phoneNumber
+      address {
+        street
+        city
+        state
+        postalCode
+        country
+      }
+    }
+    updatedAt
+  }
+}

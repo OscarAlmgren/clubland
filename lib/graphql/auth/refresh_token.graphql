@@ -1,0 +1,18 @@
+mutation RefreshToken($refreshToken: String!) {
+  refreshToken(refreshToken: $refreshToken) {
+    token
+    refreshToken
+    expiresAt
+    user {
+      id
+      clubId
+      email
+      username
+      firstName
+      lastName
+      status
+      roles
+      permissions
+    }
+  }
+}

@@ -860,6 +860,305 @@ type Member {
 }
 ```
 
+## Flutter Client Implementation
+
+### Type-Safe GraphQL with DocumentNode AST
+
+The Clubland Flutter application uses a modern, type-safe approach to GraphQL integration using DocumentNode AST objects instead of traditional code generation.
+
+#### Architecture Overview
+
+```dart
+lib/
+├── core/
+│   └── graphql/
+│       ├── graphql_documents.dart    # Type-safe DocumentNode definitions
+│       ├── graphql_client.dart       # GraphQL client setup
+│       └── graphql_links.dart        # Auth, HTTP, WebSocket links
+└── graphql/                          # GraphQL operation files (.graphql)
+    ├── auth/
+    │   ├── login.graphql
+    │   ├── register.graphql
+    │   └── refresh_token.graphql
+    ├── clubs/
+    │   ├── clubs_query.graphql
+    │   ├── club_query.graphql
+    │   └── my_club_query.graphql
+    ├── bookings/
+    │   └── ... (booking operations)
+    ├── social/
+    │   └── ... (social operations)
+    └── subscriptions/
+        ├── notification_received.graphql
+        ├── visit_status_changed.graphql
+        └── transaction_status_changed.graphql
+```
+
+#### GraphQLDocuments Class
+
+The `GraphQLDocuments` class provides centralized, type-safe access to all GraphQL operations:
+
+```dart
+import 'package:gql/ast.dart';
+import 'package:gql/language.dart' as gql;
+
+/// Type-safe GraphQL operations using DocumentNode AST objects.
+class GraphQLDocuments {
+  // Authentication Operations
+  static final DocumentNode loginMutation = gql.parseString(r'''
+    mutation Login($email: String!, $password: String!) {
+      login(input: { email: $email, password: $password }) {
+        token
+        refreshToken
+        expiresAt
+        user { id email username firstName lastName }
+      }
+    }
+  ''');
+
+  static final DocumentNode registerMutation = gql.parseString(r'''
+    mutation Register($email: String!, $password: String!, ...) {
+      register(input: { ... }) {
+        token
+        user { id email }
+      }
+    }
+  ''');
+
+  // Club Operations
+  static final DocumentNode clubsQuery = gql.parseString(r'''
+    query Clubs {
+      clubs {
+        id name description location
+        settings { allowReciprocal requireApproval }
+      }
+    }
+  ''');
+
+  // Subscription Operations
+  static final DocumentNode notificationReceivedSubscription = gql.parseString(r'''
+    subscription NotificationReceived {
+      notificationReceived {
+        id type title message createdAt
+      }
+    }
+  ''');
+}
+```
+
+#### Usage Examples
+
+**Query Execution:**
+```dart
+import 'package:clubland/core/graphql/graphql_documents.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+// Execute query
+final result = await client.query(
+  QueryOptions(
+    document: GraphQLDocuments.clubsQuery,
+    fetchPolicy: FetchPolicy.networkOnly,
+  ),
+);
+
+if (result.hasException) {
+  // Handle error
+  print('Error: ${result.exception}');
+} else {
+  final clubs = result.data?['clubs'] as List;
+  // Process data
+}
+```
+
+**Mutation Execution:**
+```dart
+// Execute mutation
+final result = await client.mutate(
+  MutationOptions(
+    document: GraphQLDocuments.loginMutation,
+    variables: {
+      'email': 'user@example.com',
+      'password': 'secure_password',
+    },
+  ),
+);
+
+if (!result.hasException) {
+  final authData = result.data?['login'];
+  final token = authData['token'];
+  final user = authData['user'];
+  // Handle successful login
+}
+```
+
+**Subscription Usage:**
+```dart
+// Subscribe to real-time updates
+final stream = client.subscribe(
+  SubscriptionOptions(
+    document: GraphQLDocuments.notificationReceivedSubscription,
+  ),
+);
+
+// Listen to stream
+stream.listen((result) {
+  if (!result.hasException && result.data != null) {
+    final notification = result.data!['notificationReceived'];
+    // Handle real-time notification
+  }
+});
+```
+
+#### Benefits of DocumentNode Approach
+
+**1. Type Safety Without Code Generation:**
+- No dependency conflicts (eliminated Artemis, Ferry, gql_build)
+- Parse operations at compile-time using `gql.parseString()`
+- Type-safe AST objects instead of raw strings
+
+**2. Compile-Time Validation:**
+- GraphQL syntax errors caught during compilation
+- Invalid operations fail at build time, not runtime
+- Better developer experience with immediate feedback
+
+**3. Better IDE Support:**
+- Auto-completion for GraphQL operations
+- Jump to definition for operation usage
+- Refactoring support across codebase
+
+**4. Organized Structure:**
+- Operations organized by feature in `lib/graphql/` directory
+- Single source of truth in `GraphQLDocuments` class
+- Easy to find and update operations
+
+**5. No Build Runner Dependency:**
+- No need to run `dart run build_runner build` for GraphQL
+- Faster development workflow
+- Simpler CI/CD pipeline
+
+#### Migration Guide
+
+**From Raw Strings (Old):**
+```dart
+// Deprecated approach
+final String loginMutation = '''
+  mutation Login($email: String!, $password: String!) {
+    login(input: { email: $email, password: $password }) {
+      token
+      user { id email }
+    }
+  }
+''';
+
+// Usage (unsafe)
+final result = await client.mutate(
+  MutationOptions(
+    document: gql(loginMutation),  // Parsing at runtime
+    variables: variables,
+  ),
+);
+```
+
+**To DocumentNode (New):**
+```dart
+// Modern type-safe approach
+class GraphQLDocuments {
+  static final DocumentNode loginMutation = gql.parseString(r'''
+    mutation Login($email: String!, $password: String!) {
+      login(input: { email: $email, password: $password }) {
+        token
+        user { id email }
+      }
+    }
+  ''');
+}
+
+// Usage (type-safe)
+final result = await client.mutate(
+  MutationOptions(
+    document: GraphQLDocuments.loginMutation,  // Pre-parsed AST
+    variables: variables,
+  ),
+);
+```
+
+#### Integration with Data Layer
+
+**Repository Pattern:**
+```dart
+class AuthRepository {
+  final GraphQLClient _client;
+
+  Future<AuthResult> login(String email, String password) async {
+    final result = await _client.mutate(
+      MutationOptions(
+        document: GraphQLDocuments.loginMutation,
+        variables: {
+          'email': email,
+          'password': password,
+        },
+      ),
+    );
+
+    if (result.hasException) {
+      throw _handleException(result.exception!);
+    }
+
+    return AuthResult.fromJson(result.data!['login']);
+  }
+}
+```
+
+**With Riverpod:**
+```dart
+@riverpod
+Future<List<Club>> clubs(Ref ref) async {
+  final client = ref.watch(graphQLClientProvider);
+
+  final result = await client.query(
+    QueryOptions(
+      document: GraphQLDocuments.clubsQuery,
+    ),
+  );
+
+  if (result.hasException) {
+    throw NetworkException(result.exception.toString());
+  }
+
+  return (result.data!['clubs'] as List)
+      .map((json) => Club.fromJson(json))
+      .toList();
+}
+```
+
+#### Best Practices
+
+1. **Operation Organization:**
+   - Keep `.graphql` files organized by feature
+   - One operation per file for clarity
+   - Use descriptive names (e.g., `login.graphql`, `clubs_query.graphql`)
+
+2. **DocumentNode Definitions:**
+   - Define all operations in `GraphQLDocuments` class
+   - Use static final fields for immutability
+   - Add doc comments for operation purpose
+
+3. **Error Handling:**
+   - Always check `result.hasException`
+   - Map GraphQL errors to domain-specific exceptions
+   - Provide meaningful error messages to users
+
+4. **Performance:**
+   - Use appropriate fetch policies (`networkOnly`, `cacheFirst`, etc.)
+   - Implement pagination for large data sets
+   - Leverage subscriptions for real-time updates
+
+5. **Testing:**
+   - Mock GraphQL client in tests
+   - Test error scenarios
+   - Verify variable passing
+   - Test subscription streams
+
 ## Next Steps
 
 1. **Implement**: [Authentication & Security](./AUTHENTICATION_SECURITY.md) for JWT handling

@@ -1,0 +1,36 @@
+mutation Register(
+  $email: String!
+  $password: String!
+  $username: String!
+  $clubId: ID!
+  $firstName: String!
+  $lastName: String!
+) {
+  register(
+    input: {
+      email: $email
+      password: $password
+      username: $username
+      clubId: $clubId
+      firstName: $firstName
+      lastName: $lastName
+    }
+  ) {
+    token
+    refreshToken
+    expiresAt
+    user {
+      id
+      clubId
+      email
+      username
+      firstName
+      lastName
+      status
+      roles
+      permissions
+      createdAt
+      updatedAt
+    }
+  }
+}

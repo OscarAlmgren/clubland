@@ -32,18 +32,21 @@ Docker: 20.10+ (for containerized deployments)
 ### Platform-Specific Requirements
 
 #### iOS Deployment
+
 - macOS development machine
 - Active Apple Developer Program membership
 - iOS signing certificates and provisioning profiles
 - Xcode Command Line Tools
 
 #### Android Deployment
+
 - Android SDK 34+
 - Play Console account
 - Upload key and keystore file
 - Google Play App Signing enabled
 
 #### Web Deployment
+
 - Domain name and SSL certificate
 - CDN configuration (optional but recommended)
 - Web server (Nginx, Apache, or cloud hosting)
@@ -206,6 +209,7 @@ echo "Output: build/web/"
 #### Google Play Store Deployment
 
 1. **Prepare Release Build**
+
 ```bash
 # Build release bundle
 flutter build appbundle --release --dart-define=ENVIRONMENT=production
@@ -216,6 +220,7 @@ bundletool build-apks --bundle=build/app/outputs/bundle/release/app-release.aab 
 ```
 
 2. **Upload to Play Console**
+
 ```bash
 # Using fastlane (optional)
 fastlane supply \
@@ -225,6 +230,7 @@ fastlane supply \
 ```
 
 3. **Release Configuration**
+
 ```yaml
 # android/fastlane/Appfile
 json_key_file("path/to/play-console-service-account.json")
@@ -265,6 +271,7 @@ firebase appdistribution:distribute \
 #### App Store Connect Deployment
 
 1. **Prepare iOS Build**
+
 ```bash
 # Build for App Store
 flutter build ios --release --dart-define=ENVIRONMENT=production
@@ -278,6 +285,7 @@ xcodebuild -workspace ios/Runner.xcworkspace \
 ```
 
 2. **Upload to App Store Connect**
+
 ```bash
 # Export IPA
 xcodebuild -exportArchive \
@@ -294,6 +302,7 @@ xcrun altool --upload-app \
 ```
 
 3. **Fastlane Configuration**
+
 ```ruby
 # ios/fastlane/Fastfile
 platform :ios do

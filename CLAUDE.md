@@ -326,26 +326,55 @@ lib/
 
 ### Schema Organization
 
-- **auth.graphql**: Authentication mutations and queries
-- **clubs.graphql**: Club discovery, details, and search
-- **bookings.graphql**: Reservation management
-- **visits.graphql**: Check-in/out and visit tracking
-- **subscriptions.graphql**: Real-time updates
+GraphQL operations are organized by feature in the `lib/graphql/` directory:
 
-### GraphQL Code Generation
+- **lib/graphql/auth/**: Authentication mutations and queries
+- **lib/graphql/clubs/**: Club discovery, details, and search
+- **lib/graphql/bookings/**: Reservation management
+- **lib/graphql/social/**: Social features and activity feeds
+- **lib/graphql/subscriptions/**: Real-time WebSocket subscriptions
 
-The project uses GraphQL code generation to create type-safe Dart classes:
+### Type-Safe GraphQL Operations
 
-- Run `dart run build_runner build` after schema changes
-- Generated files are in `lib/generated/`
-- Never edit generated files manually
+The project uses **DocumentNode AST objects** for type-safe GraphQL operations:
+
+- **Implementation**: `GraphQLDocuments` class in `lib/core/graphql/graphql_documents.dart`
+- **Parser**: Uses `gql.parseString()` from the `gql` package to parse GraphQL operations
+- **Type Safety**: All operations are parsed at compile-time into AST DocumentNode objects
+- **No Code Generation**: Eliminated dependency conflicts by using direct AST parsing instead of code generators
+- **Migration**: Deprecated `lib/core/graphql/graphql_operations.dart` (raw strings approach)
+
+**Benefits:**
+- Type safety without code generation dependencies
+- Compile-time validation of GraphQL syntax
+- IDE support with auto-completion
+- Eliminates raw GraphQL strings in codebase
+- No dependency conflicts (Artemis, Ferry, gql_build removed)
+
+**Usage Example:**
+```dart
+import 'package:clubland/core/graphql/graphql_documents.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+// Execute type-safe GraphQL operation
+final result = await graphQLClient.mutate(
+  MutationOptions(
+    document: GraphQLDocuments.loginMutation,
+    variables: {
+      'email': email,
+      'password': password,
+    },
+  ),
+);
+```
 
 ### Client Configuration
 
-- **Authentication**: Automatic JWT token injection
+- **Authentication**: Automatic JWT token injection via Auth Link
 - **Caching**: Optimistic updates with cache-first strategy
 - **Subscriptions**: WebSocket for real-time features
 - **Error Handling**: Comprehensive error categorization
+- **GraphQL Client**: Configured with Link chain (Auth → HTTP → Cache → Error)
 
 ## Internationalization (i18n)
 
@@ -689,12 +718,15 @@ Future<ProfileEntity> fetchUserProfile(String userId) async {
 
 ## Development Workflow
 
-### Code Generation Workflow
+### GraphQL Operations Workflow
 
-1. Update GraphQL schema files in `lib/schema/`
-2. Run `dart run build_runner build --delete-conflicting-outputs`
-3. Update data models if schema changes affect types
-4. Update tests to reflect changes
+1. Add or update `.graphql` files in `lib/graphql/` directory (organized by feature)
+2. Add corresponding DocumentNode definitions to `GraphQLDocuments` class
+3. Use `gql.parseString()` to parse GraphQL operations into AST
+4. Update data models if schema changes affect types
+5. Update tests to reflect changes
+
+**No Code Generation Required** - Operations are parsed at runtime into AST objects
 
 ### Feature Development
 
@@ -1051,3 +1083,20 @@ flutter build appbundle
 - **Static Analysis**: 0 `avoid_print`, 0 `prefer_constructors_over_static_methods`
 - **Exception Handling**: Type-specific catches with proper error types
 - **Performance**: <100ms target for critical operations with automatic tracking
+
+### GraphQL Migration (January 2025)
+
+**Type-Safe GraphQL Implementation:**
+- Migrated from raw GraphQL strings to DocumentNode AST objects
+- Created `GraphQLDocuments` class with type-safe operation definitions
+- Eliminated code generator dependencies (Artemis, Ferry, gql_build)
+- Organized operations by feature in `lib/graphql/` directory
+- Used `gql.parseString()` for compile-time GraphQL parsing
+- Deprecated `lib/core/graphql/graphql_operations.dart`
+
+**Benefits:**
+- Type safety without dependency conflicts
+- Compile-time GraphQL syntax validation
+- Better IDE support and auto-completion
+- Cleaner codebase without raw strings
+- No build_runner required for GraphQL operations

@@ -1,0 +1,25 @@
+query Notifications($pagination: PaginationInput, $unreadOnly: Boolean = false) {
+  notifications(pagination: $pagination, unreadOnly: $unreadOnly) {
+    nodes {
+      id
+      userId
+      type
+      title
+      message
+      status
+      channels
+      scheduledAt
+      sentAt
+      readAt
+      createdAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}

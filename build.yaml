@@ -1,29 +1,6 @@
 targets:
   $default:
     builders:
-      # Temporarily disabled until GraphQL schema is properly configured
-      # graphql_codegen:
-      #   options:
-      #     # GraphQL endpoint for introspection (will be configured per environment)
-      #     schema: "https://api.reciprocal-clubs.com/graphql"
-      #     # Generate typed queries, mutations, and subscriptions
-      #     queries_glob: "lib/schema/**/*.graphql"
-      #     # Output directory
-      #     output_dir: "lib/generated/"
-      #     # Dart naming conventions
-      #     naming_convention: "pathedFields"
-      #     # Generate Freezed classes
-      #     generate_helpers: true
-      #     # Custom scalars
-      #     scalar_mapping:
-      #       Time: "DateTime"
-      #       ID: "String"
-      #       DateTime: "DateTime"
-      #       Upload: "MultipartFile"
-      #     # Additional options
-      #     schema_mapping:
-      #       - schema: lib/schema
-      #         output: lib/generated
       riverpod_generator:
         options:
           # Generate riverpod providers

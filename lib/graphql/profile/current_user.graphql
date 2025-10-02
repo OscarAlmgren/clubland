@@ -1,0 +1,15 @@
+query CurrentUser {
+  me {
+    id
+    clubId
+    email
+    username
+    firstName
+    lastName
+    status
+    roles
+    permissions
+    createdAt
+    updatedAt
+  }
+}

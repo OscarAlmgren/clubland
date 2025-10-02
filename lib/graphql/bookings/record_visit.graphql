@@ -1,0 +1,14 @@
+mutation RecordVisit($input: RecordVisitInput!) {
+  recordVisit(input: $input) {
+    id
+    memberId
+    clubId
+    visitingClubId
+    status
+    checkInTime
+    services
+    cost
+    verified
+    createdAt
+  }
+}

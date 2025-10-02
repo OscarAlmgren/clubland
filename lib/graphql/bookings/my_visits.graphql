@@ -1,0 +1,26 @@
+query MyVisits($pagination: PaginationInput) {
+  myVisits(pagination: $pagination) {
+    nodes {
+      id
+      memberId
+      clubId
+      visitingClubId
+      status
+      checkInTime
+      checkOutTime
+      services
+      cost
+      verified
+      blockchainTxId
+      createdAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}

@@ -1,0 +1,18 @@
+query Clubs {
+  clubs {
+    id
+    name
+    description
+    location
+    website
+    status
+    settings {
+      allowReciprocal
+      requireApproval
+      maxVisitsPerMonth
+      reciprocalFee
+    }
+    createdAt
+    updatedAt
+  }
+}

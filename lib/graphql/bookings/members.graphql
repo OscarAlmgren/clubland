@@ -1,0 +1,48 @@
+query Members($pagination: PaginationInput, $status: MemberStatus) {
+  members(pagination: $pagination, status: $status) {
+    nodes {
+      id
+      clubId
+      userId
+      memberNumber
+      membershipType
+      status
+      blockchainIdentity
+      profile {
+        firstName
+        lastName
+        dateOfBirth
+        phoneNumber
+        address {
+          street
+          city
+          state
+          postalCode
+          country
+        }
+        emergencyContact {
+          name
+          relationship
+          phoneNumber
+        }
+        preferences {
+          emailNotifications
+          smsNotifications
+          pushNotifications
+          marketingEmails
+        }
+      }
+      joinedAt
+      createdAt
+      updatedAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}

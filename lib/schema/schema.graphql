@@ -1,0 +1,559 @@
+scalar Time
+
+# Authentication types
+type User {
+  id: ID!
+  clubId: ID!
+  email: String!
+  username: String!
+  firstName: String
+  lastName: String
+  status: UserStatus!
+  roles: [String!]!
+  permissions: [String!]!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+type AuthPayload {
+  token: String!
+  refreshToken: String!
+  user: User!
+  expiresAt: Time!
+}
+
+# Member types
+type Member {
+  id: ID!
+  clubId: ID!
+  userId: ID!
+  memberNumber: String!
+  membershipType: MembershipType!
+  status: MemberStatus!
+  blockchainIdentity: String
+  profile: MemberProfile
+  joinedAt: Time!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum MembershipType {
+  REGULAR
+  PREMIUM
+  LIFETIME
+  CORPORATE
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
+type MemberProfile {
+  firstName: String!
+  lastName: String!
+  dateOfBirth: Time
+  phoneNumber: String
+  address: Address
+  emergencyContact: EmergencyContact
+  preferences: MemberPreferences
+}
+
+type Address {
+  street: String!
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
+}
+
+type EmergencyContact {
+  name: String!
+  relationship: String!
+  phoneNumber: String!
+}
+
+type MemberPreferences {
+  emailNotifications: Boolean!
+  smsNotifications: Boolean!
+  pushNotifications: Boolean!
+  marketingEmails: Boolean!
+}
+
+# Club types
+type Club {
+  id: ID!
+  name: String!
+  description: String
+  location: String!
+  website: String
+  status: ClubStatus!
+  settings: ClubSettings
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum ClubStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+type ClubSettings {
+  allowReciprocal: Boolean!
+  requireApproval: Boolean!
+  maxVisitsPerMonth: Int!
+  reciprocalFee: Float
+}
+
+# Reciprocal types
+type ReciprocalAgreement {
+  id: ID!
+  clubId: ID!
+  partnerClubId: ID!
+  status: AgreementStatus!
+  terms: AgreementTerms!
+  effectiveDate: Time!
+  expirationDate: Time
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum AgreementStatus {
+  PENDING
+  APPROVED
+  ACTIVE
+  SUSPENDED
+  EXPIRED
+  REJECTED
+}
+
+type AgreementTerms {
+  maxVisitsPerMonth: Int!
+  reciprocalFee: Float
+  blackoutDates: [Time!]
+  specialConditions: String
+}
+
+type Visit {
+  id: ID!
+  memberId: ID!
+  clubId: ID!
+  visitingClubId: ID!
+  status: VisitStatus!
+  checkInTime: Time!
+  checkOutTime: Time
+  services: [String!]
+  cost: Float
+  verified: Boolean!
+  blockchainTxId: String
+  createdAt: Time!
+}
+
+enum VisitStatus {
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+# Notification types
+type Notification {
+  id: ID!
+  userId: ID!
+  type: NotificationType!
+  title: String!
+  message: String!
+  status: NotificationStatus!
+  channels: [NotificationChannel!]!
+  scheduledAt: Time
+  sentAt: Time
+  readAt: Time
+  createdAt: Time!
+}
+
+enum NotificationType {
+  SYSTEM
+  MEMBERSHIP
+  RECIPROCAL
+  VISIT
+  BILLING
+  SECURITY
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+}
+
+# Blockchain types
+type Transaction {
+  id: ID!
+  type: TransactionType!
+  chaincode: String!
+  function: String!
+  args: [String!]!
+  status: TransactionStatus!
+  txId: String
+  blockNumber: Int
+  timestamp: Time
+  error: String
+  createdAt: Time!
+}
+
+enum TransactionType {
+  MEMBER_REGISTRATION
+  VISIT_RECORD
+  AGREEMENT_CREATION
+  PAYMENT_RECORD
+}
+
+enum TransactionStatus {
+  PENDING
+  SUBMITTED
+  CONFIRMED
+  FAILED
+}
+
+# Analytics types
+type Analytics {
+  visits: VisitAnalytics!
+  members: MemberAnalytics!
+  reciprocals: ReciprocalAnalytics!
+}
+
+type VisitAnalytics {
+  totalVisits: Int!
+  monthlyVisits: [MonthlyVisit!]!
+  topDestinations: [ClubVisitCount!]!
+  averageVisitDuration: Float
+}
+
+type MonthlyVisit {
+  month: String!
+  count: Int!
+}
+
+type ClubVisitCount {
+  club: Club!
+  count: Int!
+}
+
+type MemberAnalytics {
+  totalMembers: Int!
+  activeMembers: Int!
+  newMembersThisMonth: Int!
+  membershipDistribution: [MembershipTypeCount!]!
+}
+
+type MembershipTypeCount {
+  type: MembershipType!
+  count: Int!
+}
+
+type ReciprocalAnalytics {
+  totalAgreements: Int!
+  activeAgreements: Int!
+  pendingAgreements: Int!
+  monthlyReciprocalUsage: [MonthlyVisit!]!
+}
+
+# Governance types
+type Proposal {
+  id: ID!
+  title: String!
+  description: String!
+  type: ProposalType!
+  status: ProposalStatus!
+  proposer: User!
+  votes: [Vote!]!
+  votingDeadline: Time!
+  createdAt: Time!
+}
+
+enum ProposalType {
+  AGREEMENT_CHANGE
+  POLICY_UPDATE
+  FEE_ADJUSTMENT
+  SYSTEM_UPGRADE
+}
+
+enum ProposalStatus {
+  DRAFT
+  VOTING
+  PASSED
+  REJECTED
+  IMPLEMENTED
+}
+
+type Vote {
+  id: ID!
+  proposalId: ID!
+  voter: User!
+  choice: VoteChoice!
+  comment: String
+  createdAt: Time!
+}
+
+enum VoteChoice {
+  YES
+  NO
+  ABSTAIN
+}
+
+# Input types
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  username: String!
+  clubId: ID!
+  firstName: String!
+  lastName: String!
+}
+
+input CreateMemberInput {
+  userId: ID!
+  membershipType: MembershipType!
+  profile: MemberProfileInput!
+}
+
+input MemberProfileInput {
+  firstName: String!
+  lastName: String!
+  dateOfBirth: Time
+  phoneNumber: String
+  address: AddressInput
+  emergencyContact: EmergencyContactInput
+  preferences: MemberPreferencesInput
+}
+
+input AddressInput {
+  street: String!
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
+}
+
+input EmergencyContactInput {
+  name: String!
+  relationship: String!
+  phoneNumber: String!
+}
+
+input MemberPreferencesInput {
+  emailNotifications: Boolean!
+  smsNotifications: Boolean!
+  pushNotifications: Boolean!
+  marketingEmails: Boolean!
+}
+
+input CreateReciprocalAgreementInput {
+  partnerClubId: ID!
+  terms: AgreementTermsInput!
+  effectiveDate: Time!
+  expirationDate: Time
+}
+
+input AgreementTermsInput {
+  maxVisitsPerMonth: Int!
+  reciprocalFee: Float
+  blackoutDates: [Time!]
+  specialConditions: String
+}
+
+input RecordVisitInput {
+  memberId: ID!
+  visitingClubId: ID!
+  services: [String!]
+  cost: Float
+}
+
+input CheckOutVisitInput {
+  visitId: ID!
+  services: [String!]
+  cost: Float
+}
+
+input CreateNotificationInput {
+  userIds: [ID!]!
+  type: NotificationType!
+  title: String!
+  message: String!
+  channels: [NotificationChannel!]!
+  scheduledAt: Time
+}
+
+input CreateProposalInput {
+  title: String!
+  description: String!
+  type: ProposalType!
+  votingDeadline: Time!
+}
+
+input CastVoteInput {
+  proposalId: ID!
+  choice: VoteChoice!
+  comment: String
+}
+
+# Pagination
+input PaginationInput {
+  page: Int = 1
+  pageSize: Int = 10
+}
+
+type PageInfo {
+  page: Int!
+  pageSize: Int!
+  total: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
+  hasPrevPage: Boolean!
+}
+
+type MemberConnection {
+  nodes: [Member!]!
+  pageInfo: PageInfo!
+}
+
+type ReciprocalAgreementConnection {
+  nodes: [ReciprocalAgreement!]!
+  pageInfo: PageInfo!
+}
+
+type VisitConnection {
+  nodes: [Visit!]!
+  pageInfo: PageInfo!
+}
+
+type NotificationConnection {
+  nodes: [Notification!]!
+  pageInfo: PageInfo!
+}
+
+type ProposalConnection {
+  nodes: [Proposal!]!
+  pageInfo: PageInfo!
+}
+
+# Root types
+type Query {
+  # Authentication
+  me: User
+  
+  # Members
+  members(pagination: PaginationInput, status: MemberStatus): MemberConnection!
+  member(id: ID!): Member
+  memberByNumber(memberNumber: String!): Member
+  
+  # Clubs
+  clubs: [Club!]!
+  club(id: ID!): Club
+  myClub: Club
+  
+  # Reciprocal agreements
+  reciprocalAgreements(pagination: PaginationInput, status: AgreementStatus): ReciprocalAgreementConnection!
+  reciprocalAgreement(id: ID!): ReciprocalAgreement
+  
+  # Visits
+  visits(pagination: PaginationInput, status: VisitStatus): VisitConnection!
+  visit(id: ID!): Visit
+  myVisits(pagination: PaginationInput): VisitConnection!
+  
+  # Notifications
+  notifications(pagination: PaginationInput, unreadOnly: Boolean = false): NotificationConnection!
+  notification(id: ID!): Notification
+  unreadNotificationCount: Int!
+  
+  # Analytics
+  analytics(startDate: Time, endDate: Time): Analytics!
+  
+  # Governance
+  proposals(pagination: PaginationInput, status: ProposalStatus): ProposalConnection!
+  proposal(id: ID!): Proposal
+  myVotes(proposalId: ID): [Vote!]!
+  
+  # Blockchain
+  transactions(pagination: PaginationInput, status: TransactionStatus): [Transaction!]!
+  transaction(id: ID!): Transaction
+}
+
+type Mutation {
+  # Authentication
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+  refreshToken(refreshToken: String!): AuthPayload!
+  logout: Boolean!
+  
+  # Members
+  createMember(input: CreateMemberInput!): Member!
+  updateMember(id: ID!, input: MemberProfileInput!): Member!
+  suspendMember(id: ID!, reason: String): Member!
+  reactivateMember(id: ID!): Member!
+  
+  # Reciprocal agreements
+  createReciprocalAgreement(input: CreateReciprocalAgreementInput!): ReciprocalAgreement!
+  approveReciprocalAgreement(id: ID!): ReciprocalAgreement!
+  rejectReciprocalAgreement(id: ID!, reason: String): ReciprocalAgreement!
+  suspendReciprocalAgreement(id: ID!, reason: String): ReciprocalAgreement!
+  
+  # Visits
+  recordVisit(input: RecordVisitInput!): Visit!
+  checkOutVisit(input: CheckOutVisitInput!): Visit!
+  cancelVisit(id: ID!, reason: String): Visit!
+  verifyVisit(id: ID!): Visit!
+  
+  # Notifications
+  createNotification(input: CreateNotificationInput!): Notification!
+  markNotificationRead(id: ID!): Notification!
+  markAllNotificationsRead: Boolean!
+  
+  # Governance
+  createProposal(input: CreateProposalInput!): Proposal!
+  castVote(input: CastVoteInput!): Vote!
+  finalizeProposal(id: ID!): Proposal!
+  
+  # System
+  syncBlockchainData: Boolean!
+  generateAnalyticsReport(startDate: Time!, endDate: Time!): String!
+}
+
+type Subscription {
+  # Notifications
+  notificationReceived: Notification!
+  
+  # Visits
+  visitStatusChanged(clubId: ID): Visit!
+  
+  # Governance
+  proposalUpdated(proposalId: ID): Proposal!
+  voteReceived(proposalId: ID): Vote!
+  
+  # Blockchain
+  transactionStatusChanged: Transaction!
+}
