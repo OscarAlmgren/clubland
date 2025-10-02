@@ -1,6 +1,22 @@
 targets:
   $default:
     builders:
+      graphql_codegen:
+        options:
+          # Location of GraphQL schema
+          schema: lib/schema/schema.graphql
+
+          # GraphQL query files
+          queries: lib/graphql/**/*.graphql
+
+          # Scalar mappings
+          scalars:
+            Time:
+              type: DateTime
+
+          # Clients to generate
+          clients:
+            - graphql
       riverpod_generator:
         options:
           # Generate riverpod providers

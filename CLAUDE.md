@@ -336,36 +336,54 @@ GraphQL operations are organized by feature in the `lib/graphql/` directory:
 
 ### Type-Safe GraphQL Operations
 
-The project uses **DocumentNode AST objects** for type-safe GraphQL operations:
+The project uses **graphql_codegen** for fully type-safe GraphQL operations:
 
-- **Implementation**: `GraphQLDocuments` class in `lib/core/graphql/graphql_documents.dart`
-- **Parser**: Uses `gql.parseString()` from the `gql` package to parse GraphQL operations
-- **Type Safety**: All operations are parsed at compile-time into AST DocumentNode objects
-- **No Code Generation**: Eliminated dependency conflicts by using direct AST parsing instead of code generators
-- **Migration**: Deprecated `lib/core/graphql/graphql_operations.dart` (raw strings approach)
+- **Code Generation**: Generates Dart classes from GraphQL schema and operations using `graphql_codegen` package
+- **Schema**: Located in `lib/schema/schema.graphql` with all type definitions
+- **Operations**: Organized by feature in `lib/graphql/` directory (auth, clubs, bookings, social, subscriptions)
+- **Generated Code**: Each `.graphql` file generates a corresponding `.graphql.dart` file with type-safe classes
+- **Central API**: All generated operations exported via `lib/core/graphql/graphql_api.dart`
+
+**Generated Code Includes:**
+- Type-safe variable classes (e.g., `Variables$Mutation$Login`)
+- Response data classes (e.g., `Mutation$Login`, `Mutation$Login$login`)
+- DocumentNode constants (e.g., `documentNodeMutationLogin`)
+- Serialization/deserialization methods (`toJson()`, `fromJson()`)
+- CopyWith methods for immutable updates
+- Full equality and hashCode implementations
 
 **Benefits:**
-- Type safety without code generation dependencies
-- Compile-time validation of GraphQL syntax
-- IDE support with auto-completion
-- Eliminates raw GraphQL strings in codebase
-- No dependency conflicts (Artemis, Ferry, gql_build removed)
+- Complete type safety with generated Dart classes
+- Automatic serialization and deserialization
+- IDE autocomplete and compile-time validation
+- No raw GraphQL strings in codebase
+- Automatic schema validation during code generation
 
 **Usage Example:**
 ```dart
-import 'package:clubland/core/graphql/graphql_documents.dart';
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 // Execute type-safe GraphQL operation
 final result = await graphQLClient.mutate(
   MutationOptions(
-    document: GraphQLDocuments.loginMutation,
-    variables: {
-      'email': email,
-      'password': password,
-    },
+    document: documentNodeMutationLogin,
+    variables: Variables$Mutation$Login(
+      email: 'user@example.com',
+      password: 'password123',
+    ).toJson(),
   ),
 );
+
+// Parse response with type-safe classes
+final data = Mutation$Login.fromJson(result.data!);
+final token = data.login.token;
+final user = data.login.user;
+```
+
+**Code Generation Command:**
+```bash
+dart run build_runner build --delete-conflicting-outputs
 ```
 
 ### Client Configuration
@@ -720,13 +738,36 @@ Future<ProfileEntity> fetchUserProfile(String userId) async {
 
 ### GraphQL Operations Workflow
 
-1. Add or update `.graphql` files in `lib/graphql/` directory (organized by feature)
-2. Add corresponding DocumentNode definitions to `GraphQLDocuments` class
-3. Use `gql.parseString()` to parse GraphQL operations into AST
-4. Update data models if schema changes affect types
-5. Update tests to reflect changes
+1. **Define Operations**: Add or update `.graphql` files in `lib/graphql/` directory (organized by feature: auth, clubs, bookings, social, subscriptions)
+2. **Update Schema**: If needed, update `lib/schema/schema.graphql` with new types or fields
+3. **Generate Code**: Run `dart run build_runner build --delete-conflicting-outputs` to generate type-safe Dart classes
+4. **Import API**: Use `import 'package:clubland/core/graphql/graphql_api.dart';` to access all generated operations
+5. **Implement**: Use generated classes in repositories and data sources
+6. **Update Tests**: Update tests to use generated types
 
-**No Code Generation Required** - Operations are parsed at runtime into AST objects
+**Code Generation Required** - Type-safe classes are generated from GraphQL schema and operations using `graphql_codegen` package
+
+**Example New Operation:**
+```graphql
+# lib/graphql/auth/verify_email.graphql
+mutation VerifyEmail($token: String!) {
+  verifyEmail(token: $token) {
+    success
+    message
+  }
+}
+```
+
+After running `dart run build_runner build`, use it as:
+```dart
+final result = await client.mutate(
+  MutationOptions(
+    document: documentNodeMutationVerifyEmail,
+    variables: Variables$Mutation$VerifyEmail(token: token).toJson(),
+  ),
+);
+final data = Mutation$VerifyEmail.fromJson(result.data!);
+```
 
 ### Feature Development
 
@@ -1084,19 +1125,33 @@ flutter build appbundle
 - **Exception Handling**: Type-specific catches with proper error types
 - **Performance**: <100ms target for critical operations with automatic tracking
 
-### GraphQL Migration (January 2025)
+### GraphQL Migration (October 2025)
 
-**Type-Safe GraphQL Implementation:**
-- Migrated from raw GraphQL strings to DocumentNode AST objects
-- Created `GraphQLDocuments` class with type-safe operation definitions
-- Eliminated code generator dependencies (Artemis, Ferry, gql_build)
-- Organized operations by feature in `lib/graphql/` directory
-- Used `gql.parseString()` for compile-time GraphQL parsing
-- Deprecated `lib/core/graphql/graphql_operations.dart`
+**Type-Safe GraphQL Code Generation:**
+- Migrated to `graphql_codegen` package for full type-safe code generation
+- Generated Dart classes from GraphQL schema (`lib/schema/schema.graphql`)
+- Each `.graphql` operation file generates a `.graphql.dart` file with type-safe classes
+- Centralized API exports in `lib/core/graphql/graphql_api.dart`
+- Organized operations by feature in `lib/graphql/` directory (auth, clubs, bookings, social, subscriptions)
+- Removed deprecated `lib/core/graphql/graphql_documents.dart` (raw AST approach)
+
+**Generated Code Features:**
+- Type-safe variable classes with validation
+- Response data classes with nested structures
+- DocumentNode constants for GraphQL client
+- Automatic JSON serialization/deserialization
+- CopyWith methods for immutable updates
+- Full equality and hashCode implementations
 
 **Benefits:**
-- Type safety without dependency conflicts
-- Compile-time GraphQL syntax validation
-- Better IDE support and auto-completion
-- Cleaner codebase without raw strings
-- No build_runner required for GraphQL operations
+- Complete type safety with generated Dart classes
+- Automatic code validation against GraphQL schema
+- IDE autocomplete for all GraphQL types
+- Compile-time error detection for schema changes
+- Eliminates manual type definitions and parsing
+- Compatible with Riverpod 3.x ecosystem
+
+**Migration Notes:**
+- Updated `build.yaml` with graphql_codegen configuration
+- Scalar mapping: GraphQL `Time` type → Dart `DateTime`
+- Code generation command: `dart run build_runner build --delete-conflicting-outputs`

@@ -1,10 +1,11 @@
-/// @deprecated Use [GraphQLDocuments] instead for type-safe GraphQL operations.
+/// @deprecated Use generated GraphQL operations from graphql_api.dart instead.
 ///
 /// This file contains legacy raw string GraphQL operations.
-/// The new [GraphQLDocuments] class in graphql_documents.dart provides:
-/// - Type-safe DocumentNode AST instead of raw strings
+/// The new graphql_codegen approach provides:
+/// - Fully type-safe generated Dart classes
+/// - Automatic serialization/deserialization
 /// - Better IDE support and autocomplete
-/// - Compile-time validation
+/// - Compile-time validation against schema
 /// - Operations aligned with the actual backend schema
 ///
 /// Migration guide:
@@ -17,97 +18,25 @@
 /// );
 ///
 /// // New (recommended):
+/// import 'package:clubland/core/graphql/graphql_api.dart';
+///
 /// final result = await client.mutate(
 ///   MutationOptions(
-///     document: GraphQLDocuments.loginMutation,
+///     document: documentNodeMutationLogin,
+///     variables: Variables$Mutation$Login(
+///       email: 'user@example.com',
+///       password: 'password123',
+///     ).toJson(),
 ///   ),
 /// );
+///
+/// final data = Mutation$Login.fromJson(result.data!);
 /// ```
 @Deprecated(
-  'Use GraphQLDocuments from graphql_documents.dart instead. '
-  'This provides type-safe DocumentNode operations.',
+  'Use generated operations from graphql_api.dart instead. '
+  'This provides fully type-safe GraphQL operations.',
 )
 library;
 
-export 'graphql_documents.dart' show GraphQLDocuments;
-
-/// Legacy GraphQL operations class.
-///
-/// @deprecated Use [GraphQLDocuments] instead.
-@Deprecated('Use GraphQLDocuments instead')
-class GraphQLOperations {
-  /// @deprecated Use GraphQLDocuments.loginMutation instead
-  @Deprecated('Use GraphQLDocuments.loginMutation')
-  static const String loginMutation = r'''
-    mutation Login($email: String!, $password: String!) {
-      login(input: {
-        email: $email
-        password: $password
-      }) {
-        session {
-          id
-          expiresAt
-          user {
-            id
-            email
-            firstName
-            lastName
-            avatar
-          }
-        }
-        tokens {
-          accessToken
-          refreshToken
-          expiresIn
-        }
-      }
-    }
-  ''';
-
-  /// @deprecated Use GraphQLDocuments.registerMutation instead
-  @Deprecated('Use GraphQLDocuments.registerMutation')
-  static const String registerMutation = r'''
-    mutation Register(
-      $email: String!
-      $password: String!
-      $firstName: String!
-      $lastName: String!
-      $clubCode: String
-    ) {
-      register(input: {
-        email: $email
-        password: $password
-        firstName: $firstName
-        lastName: $lastName
-        clubCode: $clubCode
-      }) {
-        session {
-          id
-          expiresAt
-          user {
-            id
-            email
-            firstName
-            lastName
-          }
-        }
-        tokens {
-          accessToken
-          refreshToken
-          expiresIn
-        }
-      }
-    }
-  ''';
-
-  /// @deprecated Use GraphQLDocuments.logoutMutation instead
-  @Deprecated('Use GraphQLDocuments.logoutMutation')
-  static const String logoutMutation = '''
-    mutation Logout {
-      logout {
-        success
-        message
-      }
-    }
-  ''';
-}
+// Re-export the new generated API
+export 'graphql_api.dart';

@@ -2,7 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
-import '../../../../core/graphql/graphql_documents.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../models/club_model.dart';
 import '../models/club_search_result_model.dart';
 
@@ -102,7 +102,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       final result = await _client.query(
         QueryOptions(
-          document: GraphQLDocuments.clubsQuery,
+          document: documentNodeQueryClubs,
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
@@ -144,7 +144,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       final result = await _client.query(
         QueryOptions(
-          document: GraphQLDocuments.clubQuery,
+          document: documentNodeQueryClub,
           variables: {'id': clubId},
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),

@@ -240,52 +240,70 @@ lib/
 
 ### GraphQL Integration
 
-The application uses **type-safe GraphQL integration** with DocumentNode AST objects:
+The application uses **fully type-safe GraphQL code generation** with `graphql_codegen`:
 
 ```yaml
 # GraphQL dependencies
 dependencies:
   graphql_flutter: ^5.1.2
-  gql: ^1.0.1  # For parsing GraphQL into AST
+  gql: ^1.0.0
+
+dev_dependencies:
+  graphql_codegen: ^2.0.0  # Type-safe code generation
+  build_runner: ^2.4.7
 ```
 
 **Type-Safe Implementation**:
 
-The `GraphQLDocuments` class provides type-safe GraphQL operations using the `gql` package to parse operations into AST DocumentNode objects:
+All GraphQL operations are generated as type-safe Dart classes from schema and `.graphql` files:
 
 ```dart
-import 'package:clubland/core/graphql/graphql_documents.dart';
+import 'package:clubland/core/graphql/graphql_api.dart';
 
-// Authentication
+// Authentication - Type-safe variables and response
 final loginResult = await client.mutate(
   MutationOptions(
-    document: GraphQLDocuments.loginMutation,
-    variables: {'email': email, 'password': password},
+    document: documentNodeMutationLogin,
+    variables: Variables$Mutation$Login(
+      email: 'user@example.com',
+      password: 'password123',
+    ).toJson(),
   ),
 );
+final data = Mutation$Login.fromJson(loginResult.data!);
+final token = data.login.token;
 
-// Club Discovery
+// Club Discovery - Generated query
 final clubsResult = await client.query(
   QueryOptions(
-    document: GraphQLDocuments.clubsQuery,
+    document: documentNodeQueryClubs,
   ),
 );
+final clubs = Query$Clubs.fromJson(clubsResult.data!).clubs;
 
-// Real-time Updates
+// Real-time Updates - Type-safe subscription
 final subscription = client.subscribe(
   SubscriptionOptions(
-    document: GraphQLDocuments.visitStatusChangedSubscription,
-    variables: {'clubId': clubId},
+    document: documentNodeSubscriptionVisitStatusChanged,
+    variables: Variables$Subscription$VisitStatusChanged(
+      clubId: clubId,
+    ).toJson(),
   ),
 );
 ```
 
+**Code Generation**:
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
 **Benefits**:
-- Type safety without code generation dependencies
-- Compile-time GraphQL syntax validation
-- No dependency conflicts (eliminated Artemis, Ferry, gql_build)
+- Complete type safety with generated Dart classes
+- Automatic JSON serialization/deserialization
+- Compile-time schema validation
+- IDE autocomplete for all GraphQL types
 - Operations organized by feature in `lib/graphql/` directory
-- Better IDE support with auto-completion
+- Compatible with Riverpod 3.x ecosystem
 
 ### Authentication Architecture
 
@@ -355,12 +373,14 @@ final subscription = client.subscribe(
 
 ### GraphQL Operations
 
-1. **Add or update** `.graphql` files in `lib/graphql/` (organized by feature)
-2. **Define DocumentNode** in `GraphQLDocuments` class using `gql.parseString()`
-3. **Update data models** if schema changes affect types
-4. **Update tests** to reflect changes
+1. **Add or update** `.graphql` files in `lib/graphql/` (organized by feature: auth, clubs, bookings, social, subscriptions)
+2. **Update schema** in `lib/schema/schema.graphql` if needed
+3. **Generate code**: `dart run build_runner build --delete-conflicting-outputs`
+4. **Import API**: Use `import 'package:clubland/core/graphql/graphql_api.dart';`
+5. **Update repositories** to use generated type-safe classes
+6. **Update tests** to reflect changes
 
-**Note**: No code generation required for GraphQL operations - they are parsed at runtime into AST objects
+**Note**: Code generation is required and creates fully type-safe Dart classes from GraphQL schema and operations
 
 ### Feature Development
 

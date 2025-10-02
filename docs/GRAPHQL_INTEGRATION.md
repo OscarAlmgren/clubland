@@ -872,10 +872,14 @@ The Clubland Flutter application uses a modern, type-safe approach to GraphQL in
 lib/
 ├── core/
 │   └── graphql/
-│       ├── graphql_documents.dart    # Type-safe DocumentNode definitions
+│       ├── graphql_api.dart          # Central export of all generated operations
 │       ├── graphql_client.dart       # GraphQL client setup
 │       └── graphql_links.dart        # Auth, HTTP, WebSocket links
+├── schema/
+│   └── schema.graphql                # Complete GraphQL schema definition
 └── graphql/                          # GraphQL operation files (.graphql)
+    ├── *.graphql                     # Operation definitions
+    └── *.graphql.dart                # Generated type-safe code
     ├── auth/
     │   ├── login.graphql
     │   ├── register.graphql
@@ -894,69 +898,75 @@ lib/
         └── transaction_status_changed.graphql
 ```
 
-#### GraphQLDocuments Class
+#### Generated GraphQL API
 
-The `GraphQLDocuments` class provides centralized, type-safe access to all GraphQL operations:
+The `graphql_codegen` package generates fully type-safe Dart classes from all GraphQL operations:
+
+**Generated Code Example (from `login.graphql`):**
 
 ```dart
-import 'package:gql/ast.dart';
-import 'package:gql/language.dart' as gql;
+// Type-safe variables class
+class Variables$Mutation$Login {
+  Variables$Mutation$Login({
+    required this.email,
+    required this.password,
+  });
 
-/// Type-safe GraphQL operations using DocumentNode AST objects.
-class GraphQLDocuments {
-  // Authentication Operations
-  static final DocumentNode loginMutation = gql.parseString(r'''
-    mutation Login($email: String!, $password: String!) {
-      login(input: { email: $email, password: $password }) {
-        token
-        refreshToken
-        expiresAt
-        user { id email username firstName lastName }
-      }
-    }
-  ''');
+  final String email;
+  final String password;
 
-  static final DocumentNode registerMutation = gql.parseString(r'''
-    mutation Register($email: String!, $password: String!, ...) {
-      register(input: { ... }) {
-        token
-        user { id email }
-      }
-    }
-  ''');
-
-  // Club Operations
-  static final DocumentNode clubsQuery = gql.parseString(r'''
-    query Clubs {
-      clubs {
-        id name description location
-        settings { allowReciprocal requireApproval }
-      }
-    }
-  ''');
-
-  // Subscription Operations
-  static final DocumentNode notificationReceivedSubscription = gql.parseString(r'''
-    subscription NotificationReceived {
-      notificationReceived {
-        id type title message createdAt
-      }
-    }
-  ''');
+  Map<String, dynamic> toJson();
+  factory Variables$Mutation$Login.fromJson(Map<String, dynamic> data);
+  CopyWith$Variables$Mutation$Login get copyWith;
 }
+
+// Response data classes
+class Mutation$Login {
+  Mutation$Login({required this.login});
+
+  factory Mutation$Login.fromJson(Map<String, dynamic> json);
+  final Mutation$Login$login login;
+  Map<String, dynamic> toJson();
+}
+
+class Mutation$Login$login {
+  final String token;
+  final String refreshToken;
+  final DateTime expiresAt;
+  final Mutation$Login$login$user user;
+}
+
+// DocumentNode constant for GraphQL client
+const documentNodeMutationLogin = DocumentNode(/* parsed AST */);
+```
+
+**Central API Export (`lib/core/graphql/graphql_api.dart`):**
+```dart
+// Authentication
+export '../../graphql/auth/login.graphql.dart';
+export '../../graphql/auth/register.graphql.dart';
+export '../../graphql/auth/logout.graphql.dart';
+
+// Clubs
+export '../../graphql/clubs/clubs.graphql.dart';
+export '../../graphql/clubs/club.graphql.dart';
+
+// Subscriptions
+export '../../graphql/subscriptions/notification_received.graphql.dart';
+// ... all other generated operations
 ```
 
 #### Usage Examples
 
-**Query Execution:**
+**Query Execution (Type-Safe):**
 ```dart
-import 'package:clubland/core/graphql/graphql_documents.dart';
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-// Execute query
+// Execute query with type-safe response
 final result = await client.query(
   QueryOptions(
-    document: GraphQLDocuments.clubsQuery,
+    document: documentNodeQueryClubs,
     fetchPolicy: FetchPolicy.networkOnly,
   ),
 );
@@ -965,45 +975,63 @@ if (result.hasException) {
   // Handle error
   print('Error: ${result.exception}');
 } else {
-  final clubs = result.data?['clubs'] as List;
-  // Process data
+  // Type-safe data parsing
+  final data = Query$Clubs.fromJson(result.data!);
+  final clubs = data.clubs; // List<Query$Clubs$clubs>
+
+  for (final club in clubs) {
+    print('Club: ${club.name} (${club.id})');
+    print('Location: ${club.location}');
+    print('Allow Reciprocal: ${club.settings?.allowReciprocal}');
+  }
 }
 ```
 
-**Mutation Execution:**
+**Mutation Execution (Type-Safe):**
 ```dart
-// Execute mutation
+// Execute mutation with type-safe variables and response
 final result = await client.mutate(
   MutationOptions(
-    document: GraphQLDocuments.loginMutation,
-    variables: {
-      'email': 'user@example.com',
-      'password': 'secure_password',
-    },
+    document: documentNodeMutationLogin,
+    variables: Variables$Mutation$Login(
+      email: 'user@example.com',
+      password: 'secure_password',
+    ).toJson(),
   ),
 );
 
 if (!result.hasException) {
-  final authData = result.data?['login'];
-  final token = authData['token'];
-  final user = authData['user'];
-  // Handle successful login
+  // Type-safe response parsing
+  final data = Mutation$Login.fromJson(result.data!);
+  final token = data.login.token;              // String
+  final refreshToken = data.login.refreshToken; // String
+  final user = data.login.user;                // Mutation$Login$login$user
+
+  print('Logged in as: ${user.firstName} ${user.lastName}');
+  print('User ID: ${user.id}');
+  // Store tokens securely
 }
 ```
 
-**Subscription Usage:**
+**Subscription Usage (Type-Safe):**
 ```dart
-// Subscribe to real-time updates
+// Subscribe to real-time updates with type-safe data
 final stream = client.subscribe(
   SubscriptionOptions(
-    document: GraphQLDocuments.notificationReceivedSubscription,
+    document: documentNodeSubscriptionNotificationReceived,
   ),
 );
 
-// Listen to stream
+// Listen to stream with type-safe parsing
 stream.listen((result) {
   if (!result.hasException && result.data != null) {
-    final notification = result.data!['notificationReceived'];
+    final data = Subscription$NotificationReceived.fromJson(result.data!);
+    final notification = data.notificationReceived;
+
+    print('Notification: ${notification.title}');
+    print('Type: ${notification.type}'); // Enum$NotificationType
+    print('Message: ${notification.message}');
+    print('Created: ${notification.createdAt}'); // DateTime
     // Handle real-time notification
   }
 });
