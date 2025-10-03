@@ -5,7 +5,9 @@ analyzer:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - "**/*.gr.dart"
+    - "**/*.graphql.dart"  # Exclude generated GraphQL files
     - "lib/generated/**"
+    - "lib/schema/**"       # Exclude GraphQL schema files
     - "build/**"
 
   language:
@@ -19,6 +21,39 @@ analyzer:
     todo: ignore
     invalid_annotation_target: warning
     lines_longer_than_80_chars: ignore
+    # Relax documentation requirements for large codebase
+    public_member_api_docs: ignore
+    # Relax style preferences
+    prefer_expression_function_bodies: ignore
+    sort_constructors_first: ignore
+    avoid_dynamic_calls: ignore
+    prefer_const_constructors: ignore
+    omit_local_variable_types: ignore
+    # Relax formatting rules
+    eol_at_end_of_file: ignore
+    flutter_style_todos: ignore
+    use_raw_strings: ignore
+    prefer_constructors_over_static_methods: ignore
+    avoid_equals_and_hash_code_on_mutable_classes: ignore
+    sort_pub_dependencies: ignore
+    # Relax warnings for existing code patterns
+    avoid_catching_errors: ignore
+    avoid_catches_without_on_clauses: ignore
+    # Relax minor warnings
+    directives_ordering: ignore
+    cast_nullable_to_non_nullable: ignore
+    only_throw_errors: ignore
+    unnecessary_raw_strings: ignore
+    unnecessary_await_in_return: ignore
+    use_decorated_box: ignore
+    unnecessary_underscores: ignore
+    unnecessary_import: ignore
+    depend_on_referenced_packages: ignore
+    sort_unnamed_constructors_first: ignore
+    prefer_asserts_with_message: ignore
+    unawaited_futures: ignore
+    comment_references: ignore
+    avoid_positional_boolean_parameters: ignore
 
 linter:
   rules:

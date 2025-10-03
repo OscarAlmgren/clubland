@@ -35,9 +35,9 @@ class AccessibilityUtils {
   /// Returns a value between 0 (darkest) and 1 (lightest).
   static double _calculateLuminance(Color color) {
     // Convert RGB to relative luminance
-    final r = _linearizeColorComponent(color.red / 255.0);
-    final g = _linearizeColorComponent(color.green / 255.0);
-    final b = _linearizeColorComponent(color.blue / 255.0);
+    final r = _linearizeColorComponent(color.r);
+    final g = _linearizeColorComponent(color.g);
+    final b = _linearizeColorComponent(color.b);
 
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   }

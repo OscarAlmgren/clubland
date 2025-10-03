@@ -80,7 +80,7 @@ class AchievementCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: achievement.earned
                   ? Theme.of(context).colorScheme.primaryContainer
-                  : Theme.of(context).colorScheme.surfaceVariant,
+                  : Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(30),
             ),
             child: Icon(
@@ -115,7 +115,7 @@ class AchievementCard extends StatelessWidget {
                     value: achievement.progress! / achievement.maxProgress!,
                     backgroundColor: Theme.of(
                       context,
-                    ).colorScheme.surfaceVariant,
+                    ).colorScheme.surfaceContainerHighest,
                   ),
                   const SizedBox(height: 4),
                   Text(

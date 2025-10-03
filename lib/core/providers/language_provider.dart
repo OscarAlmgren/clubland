@@ -7,13 +7,22 @@ part 'language_provider.g.dart';
 
 /// Available languages in the app
 enum AppLanguage {
+  /// English language option
   english('en', 'English', 'Engelska'),
+
+  /// Swedish language option
   swedish('sv', 'Swedish', 'Svenska');
 
+  /// Creates an app language with the given language code and display names
   const AppLanguage(this.code, this.englishName, this.swedishName);
 
+  /// ISO 639-1 language code (e.g., 'en', 'sv')
   final String code;
+
+  /// Display name in English
   final String englishName;
+
+  /// Display name in Swedish
   final String swedishName;
 
   /// Get display name based on current language
