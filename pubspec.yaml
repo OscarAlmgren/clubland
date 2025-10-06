@@ -70,7 +70,7 @@ dependencies:
 
   # State Management
   flutter_riverpod: ^3.0.0
-  riverpod_annotation: ^3.0.0
+  riverpod_annotation: ^3.0.1
 
   # Utils
   connectivity_plus: ^6.1.5
