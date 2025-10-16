@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -96,11 +97,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({
     required GraphQLClient graphqlClient,
     required Logger logger,
-  }) : _graphqlClient = graphqlClient,
-       _logger = logger;
+    LocalAuthentication? localAuth,
+  })  : _graphqlClient = graphqlClient,
+        _logger = logger,
+        _localAuth = localAuth ?? LocalAuthentication();
 
   final GraphQLClient _graphqlClient;
   final Logger _logger;
+  final LocalAuthentication _localAuth;
 
   @override
   Future<Either<Failure, AuthSessionEntity>> login({
@@ -417,25 +421,76 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<bool> isBiometricAvailable() async {
-    // TODO(oscaralmgren): Implement actual biometric availability check
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-    return true; // Mock: always available
+    try {
+      // Check if device supports biometric authentication
+      final canCheckBiometrics = await _localAuth.canCheckBiometrics;
+      final isDeviceSupported = await _localAuth.isDeviceSupported();
+
+      if (!canCheckBiometrics || !isDeviceSupported) {
+        return false;
+      }
+
+      // Check if any biometric types are enrolled
+      final availableBiometrics = await _localAuth.getAvailableBiometrics();
+      return availableBiometrics.isNotEmpty;
+    } on Exception catch (e) {
+      _logger.e('Error checking biometric availability: $e');
+      return false;
+    }
   }
 
   @override
   Future<Either<Failure, bool>> authenticateWithBiometrics() async {
-    // TODO(oscaralmgren): Implement actual biometric authentication
-    await Future<void>.delayed(const Duration(seconds: 2));
-    return const Right(true); // Mock: always successful
+    try {
+      // Check if biometric is available first
+      final isAvailable = await isBiometricAvailable();
+      if (!isAvailable) {
+        return Left(AuthFailure.biometricNotAvailable());
+      }
+
+      // Perform biometric authentication
+      final didAuthenticate = await _localAuth.authenticate(
+        localizedReason: 'Please authenticate to access your account',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+
+      if (didAuthenticate) {
+        _logger.d('Biometric authentication successful');
+        return const Right(true);
+      } else {
+        _logger.w('Biometric authentication failed or cancelled');
+        return Left(AuthFailure.unexpected('Biometric authentication failed'));
+      }
+    } on Exception catch (e) {
+      _logger.e('Biometric authentication error: $e');
+      return Left(AuthFailure.unexpected('Biometric error: $e'));
+    }
   }
 
   @override
   Future<Either<Failure, bool>> setBiometricAuth({
     required bool enabled,
   }) async {
-    // TODO(oscaralmgren): Implement actual biometric setting
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    return const Right(true);
+    try {
+      if (enabled) {
+        // If enabling, check if biometric is available
+        final isAvailable = await isBiometricAvailable();
+        if (!isAvailable) {
+          return Left(AuthFailure.biometricNotAvailable());
+        }
+      }
+
+      // Note: Biometric setting is typically stored locally in secure storage
+      // by the repository layer. This method just validates the capability.
+      _logger.d('Biometric auth ${enabled ? 'enabled' : 'disabled'}');
+      return const Right(true);
+    } on Exception catch (e) {
+      _logger.e('Error setting biometric auth: $e');
+      return Left(AuthFailure.unexpected('Error setting biometric auth: $e'));
+    }
   }
 
   @override

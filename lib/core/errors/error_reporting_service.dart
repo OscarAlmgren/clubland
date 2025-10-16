@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -202,22 +203,27 @@ class ErrorReportingService {
   /// Send errors to remote service
   Future<void> _sendToRemoteService(List<ErrorReport> reports) async {
     try {
-      // Mock implementation - replace with actual service
-      if (kDebugMode) {
-        _logger.d(
-          'Would send ${reports.length} error reports to remote service',
+      // Send to Firebase Crashlytics
+      for (final report in reports) {
+        await FirebaseCrashlytics.instance.recordError(
+          report.failure,
+          report.stackTrace,
+          reason: report.operation,
+          information: [
+            'Message: ${report.failure.message}',
+            'Code: ${report.failure.code}',
+            'Severity: ${report.failure.severity.name}',
+            'Timestamp: ${report.timestamp}',
+          ],
+          fatal: report.failure.severity == FailureSeverity.critical,
         );
 
-        for (final report in reports) {
-          _logger.d('Report: ${report.operation} - ${report.failure.message}');
+        if (kDebugMode) {
+          _logger.d(
+            'Sent error report to Crashlytics: ${report.operation} - ${report.failure.message}',
+          );
         }
       }
-
-      // TODO(oscaralmgren): Implement actual service integration
-      // Examples:
-      // - Sentry.captureException()
-      // - Firebase Crashlytics.recordError()
-      // - Custom API endpoint
     } on Exception catch (e) {
       _logger.w('Failed to send error reports to remote service: $e');
 

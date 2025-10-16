@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/route_paths.dart';
 import '../../../../generated/l10n/l10n.dart';
+import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../widgets/activity_feed_widget.dart';
 import '../widgets/profile_stats_widget.dart';
 import '../widgets/user_achievements_widget.dart';
@@ -438,10 +440,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     if (!mounted) return;
 
     if (shouldSignOut ?? false) {
-      // TODO(oscaralmgren): Implement logout functionality
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).logoutFunctionalityComingSoon)),
-      );
+      // Perform logout
+      await ref.read(authControllerProvider.notifier).logout();
+
+      // Navigate to login page after successful logout
+      if (mounted) {
+        context.go(RoutePaths.login);
+      }
     }
   }
 

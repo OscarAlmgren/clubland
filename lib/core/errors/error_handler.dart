@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as flutter_services;
@@ -53,7 +54,7 @@ class ErrorHandler {
       FlutterError.presentError(details);
     } else {
       // In release mode, report to crash analytics
-      _reportCrashToAnalytics(details.exception, details.stack);
+      unawaited(_reportCrashToAnalytics(details.exception, details.stack));
     }
   }
 
@@ -62,7 +63,7 @@ class ErrorHandler {
     _logger.e('Platform Error', error: error, stackTrace: stack);
 
     if (!kDebugMode) {
-      _reportCrashToAnalytics(error, stack);
+      unawaited(_reportCrashToAnalytics(error, stack));
     }
 
     return true;
@@ -403,18 +404,27 @@ class ErrorHandler {
   }
 
   /// Report crash to analytics service
-  static void _reportCrashToAnalytics(Object error, StackTrace? stack) {
+  static Future<void> _reportCrashToAnalytics(
+    Object error,
+    StackTrace? stack,
+  ) async {
     if (!AppConstants.enableCrashReporting) return;
 
     try {
-      // Firebase Crashlytics or other crash reporting service
+      // Report to Firebase Crashlytics
+      await FirebaseCrashlytics.instance.recordError(
+        error,
+        stack,
+        fatal: true,
+        reason: 'Unhandled error in Flutter framework',
+      );
+
       developer.log(
-        'Reporting crash to analytics',
+        'Reported crash to Firebase Crashlytics',
         name: 'ErrorHandler',
         error: error,
         stackTrace: stack,
       );
-      // TODO(oscaralmgren): Implement crash reporting service integration
     } on Exception catch (e) {
       developer.log(
         'Failed to report crash to analytics: $e',
