@@ -208,18 +208,53 @@ echo "Output: build/web/"
 
 #### Google Play Store Deployment
 
-1. **Prepare Release Build**
+1. **Configure Release Signing** (January 2025 Update)
+
+**Application ID**: `com.reciprocalclubs.clubland`
+
+**Keystore Setup**:
 
 ```bash
-# Build release bundle
+# Generate a new keystore (first time only)
+keytool -genkey -v -keystore ~/clubland-release-key.jks \
+  -keyalg RSA -keysize 2048 -validity 10000 -alias clubland
+
+# Create key.properties file
+cat > android/key.properties <<EOF
+storeFile=/path/to/your/clubland-release-key.jks
+storePassword=your_store_password
+keyAlias=clubland
+keyPassword=your_key_password
+EOF
+```
+
+**Build Configuration** (`android/app/build.gradle.kts`):
+- Automatic keystore detection from `key.properties`
+- Fallback to debug signing if keystore not configured
+- ProGuard enabled for release builds (code shrinking)
+- Custom ProGuard rules in `android/app/proguard-rules.pro`
+
+**Security Notes**:
+- `key.properties` is gitignored (never commit)
+- Example file provided: `android/key.properties.example`
+- Store keystore password in secure password manager
+- Back up keystore file securely (Google Play App Signing recommended)
+
+2. **Prepare Release Build**
+
+```bash
+# Build release bundle (uses keystore from key.properties)
 flutter build appbundle --release --dart-define=ENVIRONMENT=production
 
 # Verify bundle
 bundletool build-apks --bundle=build/app/outputs/bundle/release/app-release.aab \
   --output=clubland.apks
+
+# Build APK for testing
+flutter build apk --release --dart-define=ENVIRONMENT=production
 ```
 
-2. **Upload to Play Console**
+3. **Upload to Play Console**
 
 ```bash
 # Using fastlane (optional)
@@ -229,7 +264,7 @@ fastlane supply \
   --release_status draft
 ```
 
-3. **Release Configuration**
+4. **Release Configuration**
 
 ```yaml
 # android/fastlane/Appfile

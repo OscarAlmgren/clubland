@@ -278,6 +278,82 @@ class AuthNetworkException extends AuthException {
 }
 ```
 
+### Biometric Authentication
+
+**Implementation**: Fully implemented using `local_auth` package (January 2025)
+
+```dart
+/// Check if biometric authentication is available
+Future<bool> isBiometricAvailable() async {
+  // Returns: true if device supports biometrics and has enrolled credentials
+  // Checks: canCheckBiometrics, isDeviceSupported, getAvailableBiometrics
+
+  final canCheckBiometrics = await _localAuth.canCheckBiometrics;
+  final isDeviceSupported = await _localAuth.isDeviceSupported();
+
+  if (!canCheckBiometrics || !isDeviceSupported) {
+    return false;
+  }
+
+  final availableBiometrics = await _localAuth.getAvailableBiometrics();
+  return availableBiometrics.isNotEmpty;
+}
+
+/// Authenticate using biometrics
+Future<Either<Failure, bool>> authenticateWithBiometrics() async {
+  // Returns: Right(true) on success, Left(AuthFailure) on failure
+  // Supports: Face ID, Touch ID, Fingerprint
+
+  final isAvailable = await isBiometricAvailable();
+  if (!isAvailable) {
+    return Left(AuthFailure.biometricNotAvailable());
+  }
+
+  final didAuthenticate = await _localAuth.authenticate(
+    localizedReason: 'Please authenticate to access your account',
+    options: const AuthenticationOptions(
+      stickyAuth: true,
+      biometricOnly: true,
+    ),
+  );
+
+  return didAuthenticate
+    ? const Right(true)
+    : Left(AuthFailure.unexpected('Biometric authentication failed'));
+}
+
+/// Enable or disable biometric authentication
+Future<Either<Failure, bool>> setBiometricAuth({
+  required bool enabled,
+}) async {
+  // Parameters:
+  // - enabled: true to enable, false to disable
+  // Returns: Right(true) on success
+  // Validates: Biometric availability when enabling
+
+  if (enabled) {
+    final isAvailable = await isBiometricAvailable();
+    if (!isAvailable) {
+      return Left(AuthFailure.biometricNotAvailable());
+    }
+  }
+
+  // Setting is stored in secure storage by repository layer
+  return const Right(true);
+}
+```
+
+**Supported Biometric Types**:
+- Face ID (iOS)
+- Touch ID (iOS)
+- Fingerprint (Android)
+- Iris scan (Android, device-dependent)
+
+**Error Handling**:
+- `AuthFailure.biometricNotAvailable()`: Device doesn't support biometrics
+- `AuthFailure.biometricNotEnrolled()`: No biometric credentials enrolled
+- `AuthFailure.unexpected()`: Authentication failed or was cancelled
+
 ## Profile Management
 
 ### Profile Data Models
