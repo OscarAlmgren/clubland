@@ -29,55 +29,12 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-
-    // Listen for real-time booking updates
-    ref.listenManual(bookingUpdatesProvider, (previous, next) {
-      next.when(
-        data: (updates) {
-          // Handle real-time booking updates
-          for (final update in updates) {
-            _handleBookingUpdate(update);
-          }
-        },
-        loading: () {},
-        error: (error, stack) {},
-      );
-    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  void _handleBookingUpdate(BookingUpdate update) {
-    final message = switch (update.type) {
-      BookingUpdateType.confirmed =>
-        'Booking confirmed: ${update.booking.club.name}',
-      BookingUpdateType.cancelled =>
-        'Booking cancelled: ${update.booking.club.name}',
-      BookingUpdateType.reminder =>
-        'Reminder: ${update.booking.club.name} booking in 1 hour',
-      BookingUpdateType.modified =>
-        'Booking modified: ${update.booking.club.name}',
-    };
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          action: SnackBarAction(
-            label: 'View',
-            onPressed: () => context.push('/bookings/${update.booking.id}'),
-          ),
-        ),
-      );
-
-      // Refresh bookings to show latest updates
-      ref.invalidate(upcomingBookingsProvider);
-      ref.invalidate(pastBookingsProvider);
-    }
   }
 
   @override
@@ -216,37 +173,36 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
         await showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
-          title: const Text('Cancellation Reason'),
-          content: TextField(
-            decoration: const InputDecoration(
-              hintText: "Optional: Tell us why you're cancelling",
-              border: OutlineInputBorder(),
+            title: const Text('Cancellation Reason'),
+            content: TextField(
+              decoration: const InputDecoration(
+                hintText: "Optional: Tell us why you're cancelling",
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+              onChanged: (value) => reason = value,
             ),
-            maxLines: 3,
-            onChanged: (value) => reason = value,
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Skip'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  ref
+                      .read(bookingsControllerProvider.notifier)
+                      .cancelBooking(bookingId, reason: reason);
+                },
+                child: const Text('Cancel Booking'),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Skip'),
-            ),
-            FilledButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                ref
-                    .read(bookingsControllerProvider.notifier)
-                    .cancelBooking(bookingId, reason: reason);
-              },
-              child: const Text('Cancel Booking'),
-            ),
-          ],
-        ),
-      );
+        );
       }
     }
   }
 }
-
 
 class _EmptyBookingsView extends StatelessWidget {
   const _EmptyBookingsView();
