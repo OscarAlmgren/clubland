@@ -16,24 +16,30 @@ import 'route_paths.dart';
 
 part 'app_router.g.dart';
 
+/// Router refresh notifier for auth state changes
+class _RouterRefreshNotifier extends ChangeNotifier {
+  _RouterRefreshNotifier(this._ref) {
+    // Listen to auth changes and notify router
+    _ref.listen(
+      authControllerProvider,
+      (_, __) => notifyListeners(),
+    );
+  }
+
+  final Ref _ref;
+}
+
 /// App router provider that handles navigation and auth guards
 @riverpod
 GoRouter appRouter(Ref ref) {
   final navigatorKey = ref.watch(navigatorKeyProvider);
+  final refreshNotifier = _RouterRefreshNotifier(ref);
 
   return GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: RoutePaths.login,
+    refreshListenable: refreshNotifier,
     redirect: (BuildContext context, GoRouterState state) {
-      // Always allow access to login and register pages
-      final isLoginRoute =
-          state.matchedLocation == RoutePaths.login ||
-          state.matchedLocation == RoutePaths.register;
-
-      if (isLoginRoute) {
-        return null;
-      }
-
       try {
         final authState = ref.read(authControllerProvider);
 
@@ -48,9 +54,17 @@ GoRouter appRouter(Ref ref) {
         }
 
         final isAuthenticated = authState.value != null;
+        final isLoginRoute =
+            state.matchedLocation == RoutePaths.login ||
+            state.matchedLocation == RoutePaths.register;
 
-        // If user is not authenticated and trying to access protected routes
-        if (!isAuthenticated) {
+        // If authenticated and on login/register, redirect to home
+        if (isAuthenticated && isLoginRoute) {
+          return RoutePaths.home;
+        }
+
+        // If not authenticated and trying to access protected routes
+        if (!isAuthenticated && !isLoginRoute) {
           return RoutePaths.login;
         }
 

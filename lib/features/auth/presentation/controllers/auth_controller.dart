@@ -37,6 +37,9 @@ class AuthController extends _$AuthController {
         ref.listen(authRepositoryProvider, (_, repository) {
           // NOTE: The 'repository' parameter here is the actual instance passed by the listener.
           repository.authStateChanges.listen((session) {
+            // Check if the provider is still mounted before updating state
+            if (!ref.mounted) return;
+
             if (session != null) {
               state = AsyncData(session.user);
             } else {

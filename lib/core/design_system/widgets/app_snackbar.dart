@@ -157,7 +157,6 @@ class AppSnackBar {
               label: actionLabel,
               onPressed: onAction,
               textColor: colors.actionText,
-              backgroundColor: colors.actionBackground,
             )
           : null,
     );
@@ -182,9 +181,6 @@ class AppSnackBar {
               : Colors.white, // White text (contrast: 4.6:1)
           border: isDark ? const Color(0xFF388E3C) : const Color(0xFF2E7D32),
           actionText: isDark ? const Color(0xFFE8F5E8) : Colors.white,
-          actionBackground: isDark
-              ? const Color(0xFF2E7D32)
-              : const Color(0xFF1B5E20),
         );
 
       case AppSnackBarType.error:
@@ -197,9 +193,6 @@ class AppSnackBar {
               : colorScheme.onError, // Use theme onError color
           border: isDark ? const Color(0xFFD32F2F) : const Color(0xFFB71C1C),
           actionText: isDark ? const Color(0xFFFFEBEE) : colorScheme.onError,
-          actionBackground: isDark
-              ? const Color(0xFFD32F2F)
-              : const Color(0xFF8E1717),
         );
 
       case AppSnackBarType.warning:
@@ -212,9 +205,6 @@ class AppSnackBar {
               : Colors.white, // White text (contrast: 4.1:1)
           border: isDark ? const Color(0xFFFF8F00) : const Color(0xFFE65100),
           actionText: isDark ? const Color(0xFFFFF8E1) : Colors.white,
-          actionBackground: isDark
-              ? const Color(0xFFFF8F00)
-              : const Color(0xFFE65100),
         );
 
       case AppSnackBarType.info:
@@ -227,9 +217,6 @@ class AppSnackBar {
               : Colors.white, // White text (contrast: 4.9:1)
           border: isDark ? const Color(0xFF1976D2) : const Color(0xFF0D47A1),
           actionText: isDark ? const Color(0xFFE3F2FD) : Colors.white,
-          actionBackground: isDark
-              ? const Color(0xFF1976D2)
-              : const Color(0xFF0A3D91),
         );
     }
   }
@@ -270,12 +257,10 @@ class _SnackBarColors {
     required this.onBackground,
     required this.border,
     required this.actionText,
-    required this.actionBackground,
   });
 
   final Color background;
   final Color onBackground;
   final Color border;
   final Color actionText;
-  final Color actionBackground;
 }
