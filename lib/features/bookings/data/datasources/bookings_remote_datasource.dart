@@ -47,11 +47,9 @@ abstract class BookingsRemoteDataSource {
 }
 
 class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
-  BookingsRemoteDataSourceImpl({
-    required GraphQLClient client,
-    Logger? logger,
-  })  : _client = client,
-        _logger = logger ?? Logger();
+  BookingsRemoteDataSourceImpl({required GraphQLClient client, Logger? logger})
+    : _client = client,
+      _logger = logger ?? Logger();
 
   final GraphQLClient _client;
   final Logger _logger;
@@ -64,9 +62,18 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     int? limit,
     String? cursor,
   }) async {
-    try {
-      _logger.d('Fetching user bookings with status: $status');
+    _logger.d('Fetching user bookings with status: $status');
 
+    // TODO: Backend bookings schema not yet implemented
+    // Return empty list until backend API is ready
+    _logger.w(
+      'Bookings API not yet implemented in backend, returning empty list',
+    );
+    return [];
+
+    /*
+    // This code will be uncommented when backend bookings schema is available
+    try {
       final variables = <String, dynamic>{
         'filter': {
           if (status != null) 'status': status.name.toUpperCase(),
@@ -79,7 +86,6 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         },
       };
 
-      // TODO: Add userBookingsQuery to GraphQLDocuments when backend schema is available
       const query = r'''
         query UserBookings($filter: BookingFilterInput, $pagination: PaginationInput) {
           myBookings(filter: $filter, pagination: $pagination) {
@@ -140,6 +146,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         'Failed to fetch bookings: $e',
       );
     }
+    */
   }
 
   @override
@@ -356,10 +363,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       ''';
 
       final result = await _client.mutate(
-        MutationOptions(
-          document: gql(mutation),
-          variables: variables,
-        ),
+        MutationOptions(document: gql(mutation), variables: variables),
       );
 
       if (result.hasException) {
@@ -438,10 +442,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       ''';
 
       final result = await _client.mutate(
-        MutationOptions(
-          document: gql(mutation),
-          variables: variables,
-        ),
+        MutationOptions(document: gql(mutation), variables: variables),
       );
 
       if (result.hasException) {
@@ -515,10 +516,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       ''';
 
       final result = await _client.mutate(
-        MutationOptions(
-          document: gql(mutation),
-          variables: variables,
-        ),
+        MutationOptions(document: gql(mutation), variables: variables),
       );
 
       if (result.hasException) {
