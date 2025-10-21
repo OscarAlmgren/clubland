@@ -163,31 +163,35 @@ class AppInitialization extends _$AppInitialization {
 
     // 2. Initialize ErrorHandler first (critical for error reporting)
     await ref.read(errorHandlerInitProvider.future);
+    if (!ref.mounted) return false;
     logger.d('ErrorHandler initialized');
 
     // 3. Async operation (e.g., initializing storage or services)
     await initializeStorage();
+    if (!ref.mounted) return false;
     logger.d('Storage manager initialized');
 
     // 4. Initialize FontService with fallback support
     await FontService.initialize();
+    if (!ref.mounted) return false;
     logger.d('FontService initialized with fallback support');
 
-    // Note: Removed mounted check as it was causing premature exit during FontService init
-    // The provider should complete initialization even if briefly unmounted
-
-    // 4. Auth initialization is now optional - don't block app startup
+    // 5. Auth initialization is now optional - don't block app startup
     // The auth state will be managed by the router independently
     try {
       // Try to initialize auth but don't block if it fails
       ref.read(authControllerProvider);
+      if (!ref.mounted) return false;
       logger.d('Auth controller accessed successfully');
     } on Object catch (e) {
       // Auth initialization failure is non-critical for basic app functionality
-      logger.w('Auth controller initialization deferred: $e');
+      if (ref.mounted) {
+        logger.w('Auth controller initialization deferred: $e');
+      }
     }
 
     // Finalization...
+    if (!ref.mounted) return false;
     logger.i('App initialization complete');
 
     // FIX: Return true to signal successful initialization
