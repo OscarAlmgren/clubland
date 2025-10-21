@@ -77,7 +77,7 @@ Future<AppCacheManager> cacheManager(Ref ref) async {
 Future<void> graphqlClient(Ref ref) async {
   const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://localhost:8080',
+    defaultValue: 'http://192.168.0.170:30080',
   );
 
   await GraphQLClientConfig.initialize(

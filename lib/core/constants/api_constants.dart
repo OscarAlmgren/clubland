@@ -14,6 +14,10 @@ class ApiConstants {
   /// GraphQL WebSocket endpoint path
   static const String graphqlWsEndpoint = '/graphql';
 
+  // Health check endpoint
+  /// Health check endpoint path for testing backend connectivity
+  static const String healthEndpoint = '/health';
+
   // Authentication endpoints
   /// Hanko authentication service base URL
   static String get hankoBaseUrl => EnvironmentConfig.hankoBaseUrl;

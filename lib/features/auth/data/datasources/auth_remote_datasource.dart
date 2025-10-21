@@ -116,20 +116,23 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       const loginMutation = r'''
         mutation Login($email: String!, $password: String!) {
-          login(email: $email, password: $password) {
-            user {
-              id
-              email
-              firstName
-              lastName
-              profileImageUrl
-              isEmailVerified
-              createdAt
-              lastLoginAt
-            }
-            accessToken
+          login(input: { email: $email, password: $password }) {
+            token
             refreshToken
             expiresAt
+            user {
+              id
+              clubId
+              email
+              username
+              firstName
+              lastName
+              status
+              roles
+              permissions
+              createdAt
+              updatedAt
+            }
           }
         }
       ''';
@@ -230,30 +233,37 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         mutation Register(
           $email: String!
           $password: String!
+          $username: String!
+          $clubId: ID!
           $firstName: String!
           $lastName: String!
-          $clubId: String
         ) {
           register(
-            email: $email
-            password: $password
-            firstName: $firstName
-            lastName: $lastName
-            clubId: $clubId
-          ) {
-            user {
-              id
-              email
-              firstName
-              lastName
-              profileImageUrl
-              isEmailVerified
-              createdAt
-              lastLoginAt
+            input: {
+              email: $email
+              password: $password
+              username: $username
+              clubId: $clubId
+              firstName: $firstName
+              lastName: $lastName
             }
-            accessToken
+          ) {
+            token
             refreshToken
             expiresAt
+            user {
+              id
+              clubId
+              email
+              username
+              firstName
+              lastName
+              status
+              roles
+              permissions
+              createdAt
+              updatedAt
+            }
           }
         }
       ''';
@@ -263,9 +273,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         variables: {
           'email': email,
           'password': password,
+          'username': email, // Use email as username by default
+          'clubId': clubId ?? 'default-club-id', // Required field
           'firstName': firstName,
           'lastName': lastName,
-          if (clubId != null) 'clubId': clubId,
         },
       );
 
@@ -346,19 +357,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       const refreshMutation = r'''
         mutation RefreshToken($refreshToken: String!) {
           refreshToken(refreshToken: $refreshToken) {
-            user {
-              id
-              email
-              firstName
-              lastName
-              profileImageUrl
-              isEmailVerified
-              createdAt
-              lastLoginAt
-            }
-            accessToken
+            token
             refreshToken
             expiresAt
+            user {
+              id
+              clubId
+              email
+              username
+              firstName
+              lastName
+              status
+              roles
+              permissions
+              createdAt
+              updatedAt
+            }
           }
         }
       ''';
@@ -748,7 +762,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     return AuthSessionEntity(
       user: user,
-      accessToken: data['accessToken'] as String,
+      accessToken: data['token'] as String,
       refreshToken: data['refreshToken'] as String,
       expiresAt: DateTime.parse(data['expiresAt'] as String),
     );

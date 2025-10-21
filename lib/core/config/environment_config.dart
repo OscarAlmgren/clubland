@@ -52,15 +52,16 @@ class EnvironmentConfig {
   static bool get isProduction => _currentEnvironment == Environment.production;
 
   /// API Configuration
+  /// Backend server base URL (henrybook server on local network)
   static String get apiBaseUrl => const String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://localhost:8080',
+    defaultValue: 'http://192.168.0.170:30080',
   );
 
   /// GraphQL endpoint URL
   static String get graphqlEndpoint => const String.fromEnvironment(
     'GRAPHQL_ENDPOINT',
-    defaultValue: 'http://localhost:8080/graphql',
+    defaultValue: 'http://192.168.0.170:30080/graphql',
   );
 
   /// Authentication Configuration
