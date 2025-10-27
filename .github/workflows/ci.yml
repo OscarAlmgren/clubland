@@ -250,7 +250,7 @@ jobs:
     environment: staging
     steps:
       - name: Download web artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: web-build
           path: build/web
@@ -271,7 +271,7 @@ jobs:
     environment: production
     steps:
       - name: Download web artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v6
         with:
           name: web-build
           path: build/web
