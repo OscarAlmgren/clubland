@@ -2,40 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/network/graphql_client.dart';
+import '../../../../core/services/location_service.dart';
 import '../../data/datasources/clubs_remote_datasource.dart';
+import '../../domain/entities/simple_club.dart';
 
 part 'clubs_controller.g.dart';
-
-/// Simple club data class for the controller
-class SimpleClub {
-  /// Creates a [SimpleClub] data model.
-  const SimpleClub({
-    required this.id,
-    required this.name,
-    required this.slug,
-    this.description = '',
-    this.logo,
-    this.coverImage,
-  });
-
-  /// The unique identifier for the club.
-  final String id;
-
-  /// The public, displayable name of the club.
-  final String name;
-
-  /// The URL-friendly identifier for the club (used in paths/links).
-  final String slug;
-
-  /// A brief description of the club. Defaults to an empty string.
-  final String description;
-
-  /// The URL for the club's main logo or avatar.
-  final String? logo;
-
-  /// The URL for the club's cover or banner image.
-  final String? coverImage;
-}
 
 /// Provider for all clubs
 @riverpod
@@ -58,9 +29,9 @@ Future<List<SimpleClub>> allClubs(Ref ref) async {
 
 /// Provider for featured clubs
 @riverpod
-Future<List<SimpleClub>> featuredClubs(Ref ref) async {
+Future<List<SimpleClub>> featuredClubs(Ref ref, {int limit = 10}) async {
   final datasource = ref.read(clubsRemoteDataSourceProvider);
-  final clubs = await datasource.getFeaturedClubs();
+  final clubs = await datasource.getFeaturedClubs(limit: limit);
   return clubs
       .map(
         (club) => SimpleClub(
@@ -77,11 +48,17 @@ Future<List<SimpleClub>> featuredClubs(Ref ref) async {
 
 /// Provider for nearby clubs
 @riverpod
-Future<List<SimpleClub>> nearbyClubs(Ref ref) async {
+Future<List<SimpleClub>> nearbyClubs(
+  Ref ref, {
+  int limit = 20,
+}) async {
+  final locationService = ref.read(locationServiceProvider);
+  final position = await locationService.getCurrentLocation();
   final datasource = ref.read(clubsRemoteDataSourceProvider);
   final clubs = await datasource.getNearbyClubs(
-    latitude: 37.7749, // Default coordinates
-    longitude: -122.4194,
+    latitude: position.latitude,
+    longitude: position.longitude,
+    limit: limit,
   );
   return clubs
       .map(
@@ -234,11 +211,13 @@ class ClubsController extends _$ClubsController {
     state = const AsyncLoading();
 
     try {
+      final locationService = ref.read(locationServiceProvider);
+      final position = await locationService.getCurrentLocation();
       final datasource = ref.read(clubsRemoteDataSourceProvider);
 
       final clubs = await datasource.getNearbyClubs(
-        latitude: 37.7749, // San Francisco coordinates as example
-        longitude: -122.4194,
+        latitude: position.latitude,
+        longitude: position.longitude,
         radius: 25.0,
         limit: _pageSize,
       );
@@ -330,7 +309,15 @@ class ClubsController extends _$ClubsController {
 
 /// Location permission provider
 @riverpod
-Future<bool> locationPermission(Ref ref) async => true;
+Future<bool> locationPermission(Ref ref) async {
+  final locationService = ref.read(locationServiceProvider);
+  try {
+    await locationService.getCurrentLocation();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 /// Provider for the remote datasource
 final clubsRemoteDataSourceProvider = Provider<ClubsRemoteDataSource>(

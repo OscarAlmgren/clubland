@@ -55,7 +55,7 @@ String _$allClubsHash() => r'87ec568600bda400c4ba1da38f68789e1c207100';
 /// Provider for featured clubs
 
 @ProviderFor(featuredClubs)
-const featuredClubsProvider = FeaturedClubsProvider._();
+const featuredClubsProvider = FeaturedClubsFamily._();
 
 /// Provider for featured clubs
 
@@ -68,19 +68,26 @@ final class FeaturedClubsProvider
         >
     with $FutureModifier<List<SimpleClub>>, $FutureProvider<List<SimpleClub>> {
   /// Provider for featured clubs
-  const FeaturedClubsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'featuredClubsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+  const FeaturedClubsProvider._({
+    required FeaturedClubsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'featuredClubsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$featuredClubsHash();
+
+  @override
+  String toString() {
+    return r'featuredClubsProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
@@ -90,16 +97,49 @@ final class FeaturedClubsProvider
 
   @override
   FutureOr<List<SimpleClub>> create(Ref ref) {
-    return featuredClubs(ref);
+    final argument = this.argument as int;
+    return featuredClubs(ref, limit: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FeaturedClubsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
   }
 }
 
-String _$featuredClubsHash() => r'45710ccc742906c7583f9057090ede4652980b88';
+String _$featuredClubsHash() => r'1bd971ba016d00bcba7d91c9f6e08236f0ca9579';
+
+/// Provider for featured clubs
+
+final class FeaturedClubsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<SimpleClub>>, int> {
+  const FeaturedClubsFamily._()
+    : super(
+        retry: null,
+        name: r'featuredClubsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider for featured clubs
+
+  FeaturedClubsProvider call({int limit = 10}) =>
+      FeaturedClubsProvider._(argument: limit, from: this);
+
+  @override
+  String toString() => r'featuredClubsProvider';
+}
 
 /// Provider for nearby clubs
 
 @ProviderFor(nearbyClubs)
-const nearbyClubsProvider = NearbyClubsProvider._();
+const nearbyClubsProvider = NearbyClubsFamily._();
 
 /// Provider for nearby clubs
 
@@ -112,19 +152,26 @@ final class NearbyClubsProvider
         >
     with $FutureModifier<List<SimpleClub>>, $FutureProvider<List<SimpleClub>> {
   /// Provider for nearby clubs
-  const NearbyClubsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'nearbyClubsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+  const NearbyClubsProvider._({
+    required NearbyClubsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'nearbyClubsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$nearbyClubsHash();
+
+  @override
+  String toString() {
+    return r'nearbyClubsProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
@@ -134,11 +181,44 @@ final class NearbyClubsProvider
 
   @override
   FutureOr<List<SimpleClub>> create(Ref ref) {
-    return nearbyClubs(ref);
+    final argument = this.argument as int;
+    return nearbyClubs(ref, limit: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is NearbyClubsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
   }
 }
 
-String _$nearbyClubsHash() => r'1059c3fb9c0f1fdb4c6a25a3a4dc0e596bb532c2';
+String _$nearbyClubsHash() => r'b647d7a426186173a6f5fe746e6e258109775bdc';
+
+/// Provider for nearby clubs
+
+final class NearbyClubsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<SimpleClub>>, int> {
+  const NearbyClubsFamily._()
+    : super(
+        retry: null,
+        name: r'nearbyClubsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider for nearby clubs
+
+  NearbyClubsProvider call({int limit = 20}) =>
+      NearbyClubsProvider._(argument: limit, from: this);
+
+  @override
+  String toString() => r'nearbyClubsProvider';
+}
 
 /// Provider for user favorite clubs
 
@@ -212,7 +292,7 @@ final class ClubsControllerProvider
   ClubsController create() => ClubsController();
 }
 
-String _$clubsControllerHash() => r'595ab9b6c3c5c1690b2ed85cc6dfaf8d297a8ddf';
+String _$clubsControllerHash() => r'3332f036c39078fc0ebe54171faf9e1655f6b98f';
 
 /// Main clubs controller for managing club state and actions
 
@@ -273,4 +353,4 @@ final class LocationPermissionProvider
 }
 
 String _$locationPermissionHash() =>
-    r'b66a9085abf655fe3228256060223e9728a4d9e2';
+    r'2f478b7867836c6628beb7e665e00074cf5a7652';
