@@ -109,7 +109,7 @@ void main() {
 
         // Assert
         expect(result, false);
-        verify(() => mockLogger.e(any())).called(1);
+        verify(() => mockLogger.e(any<String>())).called(1);
       });
     });
 
@@ -204,7 +204,7 @@ void main() {
           },
           (success) => fail('Should not return success'),
         );
-        verify(() => mockLogger.e(any())).called(1);
+        verify(() => mockLogger.e(any<String>())).called(1);
       });
     });
 
@@ -278,7 +278,7 @@ void main() {
           },
           (success) => fail('Should not return success'),
         );
-        verify(() => mockLogger.e(any())).called(1);
+        verify(() => mockLogger.e(any<String>())).called(1);
       });
     });
   });
