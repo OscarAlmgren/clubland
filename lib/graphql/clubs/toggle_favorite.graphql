@@ -1,0 +1,15 @@
+mutation ToggleFavoriteClub($clubId: ID!) {
+  toggleFavoriteClub(clubId: $clubId) {
+    club {
+      id
+      name
+      slug
+      logo
+      userRelation {
+        favorited
+      }
+    }
+    success
+    message
+  }
+}

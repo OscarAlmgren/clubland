@@ -1,0 +1,15 @@
+query ClubReviews($clubId: ID!, $pagination: PaginationInput) {
+  clubReviews(clubId: $clubId, pagination: $pagination) {
+    nodes {
+      id
+      rating
+      comment
+      author
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      totalCount
+    }
+  }
+}

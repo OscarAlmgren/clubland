@@ -1,0 +1,14 @@
+mutation CheckInToClub($clubId: ID!) {
+  checkInToClub(clubId: $clubId) {
+    success
+    message
+    visit {
+      id
+      checkedInAt
+      club {
+        id
+        name
+      }
+    }
+  }
+}

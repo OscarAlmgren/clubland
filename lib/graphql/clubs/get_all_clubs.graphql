@@ -1,0 +1,24 @@
+query Clubs($filter: ClubFilterInput, $pagination: PaginationInput) {
+  clubs(filter: $filter, pagination: $pagination) {
+    nodes {
+      id
+      name
+      description
+      location
+      address
+      contactEmail
+      contactPhone
+      website
+      status
+      createdAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}

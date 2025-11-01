@@ -57,7 +57,6 @@ export '../../graphql/bookings/visits.graphql.dart';
 // CLUB OPERATIONS
 // =================================================================
 export '../../graphql/clubs/club.graphql.dart';
-export '../../graphql/clubs/clubs.graphql.dart';
 export '../../graphql/clubs/my_club.graphql.dart';
 // =================================================================
 // USER PROFILE OPERATIONS

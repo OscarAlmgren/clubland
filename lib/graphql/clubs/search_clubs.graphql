@@ -1,0 +1,28 @@
+query SearchClubs(
+  $query: String!
+  $location: LocationInput
+  $radius: Float
+  $amenities: [String!]
+  $pagination: PaginationInput
+) {
+  searchClubs(
+    query: $query
+    location: $location
+    radius: $radius
+    amenities: $amenities
+    pagination: $pagination
+  ) {
+    nodes {
+      id
+      name
+      description
+      location
+      distance
+      relevanceScore
+    }
+    pageInfo {
+      hasNextPage
+      totalCount
+    }
+  }
+}
