@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../domain/entities/simple_club.dart';
 import '../controllers/clubs_controller.dart';
 import 'club_card_widget.dart';
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/widgets/app_error_widget.dart';
 import '../../../../shared/widgets/app_loading_widget.dart';
+import '../../domain/entities/simple_club.dart';
 import '../controllers/clubs_controller.dart';
 import 'club_card_widget.dart';
 
@@ -12,10 +13,10 @@ class FeaturedClubsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final featuredClubsState = ref.watch(featuredClubsProvider);
+    final featuredClubsState = ref.watch(featuredClubsProvider());
 
     return featuredClubsState.when(
-      data: (clubs) => RefreshIndicator(
+      data: (List<SimpleClub> clubs) => RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(featuredClubsProvider);
         },
@@ -24,7 +25,8 @@ class FeaturedClubsSection extends ConsumerWidget {
             : ListView.separated(
                 padding: const EdgeInsets.all(16),
                 itemCount: clubs.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final club = clubs[index];
                   return ClubCardWidget(
@@ -37,9 +39,10 @@ class FeaturedClubsSection extends ConsumerWidget {
                 },
               ),
       ),
-      loading: () => const AppLoadingWidget(message: 'Loading featured clubs...'),
-      error: (error, stack) => AppErrorWidget(
-        error: error.toString(),
+      loading: () =>
+          const AppLoadingWidget(message: 'Loading featured clubs...'),
+      error: (Object error, StackTrace stack) => AppErrorWidget(
+        error: error,
         onRetry: () => ref.invalidate(featuredClubsProvider),
       ),
     );

@@ -5,6 +5,7 @@ import '../../../../core/design_system/design_system.dart';
 import '../../../../shared/widgets/app_error_widget.dart';
 import '../../../../shared/widgets/app_loading_widget.dart';
 import '../../../../shared/widgets/location_permission_widget.dart';
+import '../../../../shared/widgets/pagination_loading_widget.dart';
 import '../controllers/clubs_controller.dart';
 import '../widgets/club_card_widget.dart';
 import '../widgets/club_filters_bottom_sheet.dart';
@@ -101,6 +102,7 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
 
   Widget _buildExploreTab() {
     final clubsState = ref.watch(clubsControllerProvider);
+    final clubsNotifier = ref.read(clubsControllerProvider.notifier);
 
     return clubsState.when(
       data: (clubs) => RefreshIndicator(
@@ -112,12 +114,12 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
             : ListView.separated(
                 controller: _scrollController,
                 padding: const EdgeInsets.all(16),
-                itemCount: clubs.length + 1,
+                itemCount: clubs.length + (clubsNotifier.isLoadingMore ? 1 : 0),
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   if (index == clubs.length) {
-                    return const _LoadMoreIndicator();
+                    return const PaginationLoadingWidget();
                   }
 
                   final club = clubs[index];
@@ -131,7 +133,7 @@ class _ClubsPageState extends ConsumerState<ClubsPage>
       ),
       loading: () => const AppLoadingWidget(message: 'Loading clubs...'),
       error: (error, stack) => AppErrorWidget(
-        error: error.toString(),
+        error: error,
         onRetry: () => ref.invalidate(clubsControllerProvider),
       ),
     );
@@ -178,53 +180,34 @@ class _EmptyClubsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.location_city_outlined,
-          size: 80,
-          color: Theme.of(context).colorScheme.outline,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.location_city_outlined,
+              size: 80,
+              color: Theme.of(context).colorScheme.outline,
+            ),
+            AppSpacing.verticalSpaceLG,
+            Text(
+              'No Clubs Found',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            AppSpacing.verticalSpaceMD,
+            Text(
+              'Try adjusting your filters or search in a different area.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            AppSpacing.verticalSpaceLG,
+            FilledButton.icon(
+              onPressed: () => context.go('/clubs'),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Refresh'),
+            ),
+          ],
         ),
-        AppSpacing.verticalSpaceLG,
-        Text(
-          'No Clubs Found',
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        AppSpacing.verticalSpaceMD,
-        Text(
-          'Try adjusting your filters or search in a different area.',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        AppSpacing.verticalSpaceLG,
-        FilledButton.icon(
-          onPressed: () => context.go('/clubs'),
-          icon: const Icon(Icons.refresh),
-          label: const Text('Refresh'),
-        ),
-      ],
-    ),
-  );
-}
-
-class _LoadMoreIndicator extends ConsumerWidget {
-  const _LoadMoreIndicator();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.read(clubsControllerProvider.notifier);
-    final isLoadingMore = controller.isLoadingMore;
-
-    if (isLoadingMore) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(child: CircularProgressIndicator()),
       );
-    }
-
-    return const SizedBox.shrink();
-  }
 }
