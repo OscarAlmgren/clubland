@@ -206,5 +206,57 @@ void main() {
         );
       });
     });
+
+    group('layout constraints', () {
+      testWidgets('should handle full-width button without constraint violations',
+          (tester) async {
+        // This test verifies the fix for BoxConstraints issue where full-width buttons
+        // with Row(MainAxisSize.min) caused infinite width constraints
+        await tester.pumpApp(
+          SizedBox(
+            width: 300,
+            child: AppButton.primary(
+              text: 'Full Width Button',
+              onPressed: () {},
+            ),
+          ),
+        );
+
+        expect(find.text('Full Width Button'), findsOneWidget);
+        // Verify button renders without throwing BoxConstraints errors
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('should handle compact button with proper constraints',
+          (tester) async {
+        await tester.pumpApp(
+          AppButton.primary(
+            text: 'Compact',
+            isFullWidth: false,
+            onPressed: () {},
+          ),
+        );
+
+        expect(find.text('Compact'), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('should handle button with leading and trailing icons',
+          (tester) async {
+        await tester.pumpApp(
+          AppButton.primary(
+            text: 'Button',
+            leading: const Icon(Icons.arrow_back),
+            trailing: const Icon(Icons.arrow_forward),
+            onPressed: () {},
+          ),
+        );
+
+        expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+        expect(find.text('Button'), findsOneWidget);
+        expect(find.byIcon(Icons.arrow_forward), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      });
+    });
   });
 }

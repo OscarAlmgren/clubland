@@ -258,8 +258,10 @@ class AppButton extends StatelessWidget {
       children.add(trailing!);
     }
 
+    // Use MainAxisSize.max when button is full width to prevent constraint conflicts
+    // with button padding. Use MainAxisSize.min for compact buttons.
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: isFullWidth ? MainAxisSize.max : MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: children,
     );
@@ -366,9 +368,9 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizing.radiusLG),
         ),
         padding: _getPadding(),
-        // Remove infinite width constraints that cause layout issues
+        // Let the SizedBox and Row handle sizing constraints
         minimumSize: Size.zero,
-        maximumSize: Size.infinite,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       );
 
   ButtonStyle _getDestructiveButtonStyle(

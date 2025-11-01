@@ -225,12 +225,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          S.of(context).recentActivity,
-                          style: Theme.of(context).textTheme.titleMedium,
+                        Expanded(
+                          child: Text(
+                            S.of(context).recentActivity,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
                         TextButton(
                           onPressed: () => _tabController.animateTo(1),
+                          style: TextButton.styleFrom(
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                          ),
                           child: Text(S.of(context).viewAll),
                         ),
                       ],
@@ -434,6 +444,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
+            style: TextButton.styleFrom(
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
             child: Text(S.of(context).cancel),
           ),
           FilledButton(
