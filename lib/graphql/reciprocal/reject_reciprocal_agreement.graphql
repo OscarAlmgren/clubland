@@ -1,0 +1,6 @@
+mutation RejectReciprocalAgreement($id: ID!, $reason: String) {
+  rejectReciprocalAgreement(id: $id, reason: $reason) {
+    id
+    status
+  }
+}

@@ -1,0 +1,29 @@
+query Proposals($pagination: PaginationInput, $status: ProposalStatus) {
+  proposals(pagination: $pagination, status: $status) {
+    nodes {
+      id
+      title
+      description
+      type
+      status
+      proposer {
+        username
+        firstName
+        lastName
+      }
+      votes {
+        id
+        choice
+        voter {
+          username
+        }
+      }
+      votingDeadline
+      createdAt
+    }
+    pageInfo {
+      page
+      total
+    }
+  }
+}

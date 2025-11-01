@@ -427,7 +427,7 @@ final class GraphqlClientProvider
   }
 }
 
-String _$graphqlClientHash() => r'7e12e71f7bbaf11572baeac97f681c701007c2b1';
+String _$graphqlClientHash() => r'ff60462c402a255942c54fcc208ad63aeb3b7028';
 
 /// Connectivity Stream provider
 
@@ -696,7 +696,7 @@ final class AppInitializationProvider
   AppInitialization create() => AppInitialization();
 }
 
-String _$appInitializationHash() => r'0bea0749b8f34f7dcbd789075125eb6c483be4fb';
+String _$appInitializationHash() => r'7f4aef42b687e3e65f1c07f3ac291fe979d899ed';
 
 abstract class _$AppInitialization extends $AsyncNotifier<bool> {
   FutureOr<bool> build();

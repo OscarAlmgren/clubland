@@ -2514,6 +2514,2093 @@ class _CopyWithStubImpl$Input$CastVoteInput<TRes>
   call({String? proposalId, Enum$VoteChoice? choice, String? comment}) => _res;
 }
 
+class Input$CreateFacilityInput {
+  factory Input$CreateFacilityInput({
+    required String name,
+    String? description,
+    required Enum$FacilityType type,
+    int? capacity,
+    List<String>? amenities,
+    int? minBookingDuration,
+    int? maxBookingDuration,
+    int? advanceBookingDays,
+    int? cancellationDeadline,
+    String? operatingHours,
+  }) => Input$CreateFacilityInput._({
+    r'name': name,
+    if (description != null) r'description': description,
+    r'type': type,
+    if (capacity != null) r'capacity': capacity,
+    if (amenities != null) r'amenities': amenities,
+    if (minBookingDuration != null) r'minBookingDuration': minBookingDuration,
+    if (maxBookingDuration != null) r'maxBookingDuration': maxBookingDuration,
+    if (advanceBookingDays != null) r'advanceBookingDays': advanceBookingDays,
+    if (cancellationDeadline != null)
+      r'cancellationDeadline': cancellationDeadline,
+    if (operatingHours != null) r'operatingHours': operatingHours,
+  });
+
+  Input$CreateFacilityInput._(this._$data);
+
+  factory Input$CreateFacilityInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$name = data['name'];
+    result$data['name'] = (l$name as String);
+    if (data.containsKey('description')) {
+      final l$description = data['description'];
+      result$data['description'] = (l$description as String?);
+    }
+    final l$type = data['type'];
+    result$data['type'] = fromJson$Enum$FacilityType((l$type as String));
+    if (data.containsKey('capacity')) {
+      final l$capacity = data['capacity'];
+      result$data['capacity'] = (l$capacity as int?);
+    }
+    if (data.containsKey('amenities')) {
+      final l$amenities = data['amenities'];
+      result$data['amenities'] = (l$amenities as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList();
+    }
+    if (data.containsKey('minBookingDuration')) {
+      final l$minBookingDuration = data['minBookingDuration'];
+      result$data['minBookingDuration'] = (l$minBookingDuration as int?);
+    }
+    if (data.containsKey('maxBookingDuration')) {
+      final l$maxBookingDuration = data['maxBookingDuration'];
+      result$data['maxBookingDuration'] = (l$maxBookingDuration as int?);
+    }
+    if (data.containsKey('advanceBookingDays')) {
+      final l$advanceBookingDays = data['advanceBookingDays'];
+      result$data['advanceBookingDays'] = (l$advanceBookingDays as int?);
+    }
+    if (data.containsKey('cancellationDeadline')) {
+      final l$cancellationDeadline = data['cancellationDeadline'];
+      result$data['cancellationDeadline'] = (l$cancellationDeadline as int?);
+    }
+    if (data.containsKey('operatingHours')) {
+      final l$operatingHours = data['operatingHours'];
+      result$data['operatingHours'] = (l$operatingHours as String?);
+    }
+    return Input$CreateFacilityInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get name => (_$data['name'] as String);
+
+  String? get description => (_$data['description'] as String?);
+
+  Enum$FacilityType get type => (_$data['type'] as Enum$FacilityType);
+
+  int? get capacity => (_$data['capacity'] as int?);
+
+  List<String>? get amenities => (_$data['amenities'] as List<String>?);
+
+  int? get minBookingDuration => (_$data['minBookingDuration'] as int?);
+
+  int? get maxBookingDuration => (_$data['maxBookingDuration'] as int?);
+
+  int? get advanceBookingDays => (_$data['advanceBookingDays'] as int?);
+
+  int? get cancellationDeadline => (_$data['cancellationDeadline'] as int?);
+
+  String? get operatingHours => (_$data['operatingHours'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$name = name;
+    result$data['name'] = l$name;
+    if (_$data.containsKey('description')) {
+      final l$description = description;
+      result$data['description'] = l$description;
+    }
+    final l$type = type;
+    result$data['type'] = toJson$Enum$FacilityType(l$type);
+    if (_$data.containsKey('capacity')) {
+      final l$capacity = capacity;
+      result$data['capacity'] = l$capacity;
+    }
+    if (_$data.containsKey('amenities')) {
+      final l$amenities = amenities;
+      result$data['amenities'] = l$amenities?.map((e) => e).toList();
+    }
+    if (_$data.containsKey('minBookingDuration')) {
+      final l$minBookingDuration = minBookingDuration;
+      result$data['minBookingDuration'] = l$minBookingDuration;
+    }
+    if (_$data.containsKey('maxBookingDuration')) {
+      final l$maxBookingDuration = maxBookingDuration;
+      result$data['maxBookingDuration'] = l$maxBookingDuration;
+    }
+    if (_$data.containsKey('advanceBookingDays')) {
+      final l$advanceBookingDays = advanceBookingDays;
+      result$data['advanceBookingDays'] = l$advanceBookingDays;
+    }
+    if (_$data.containsKey('cancellationDeadline')) {
+      final l$cancellationDeadline = cancellationDeadline;
+      result$data['cancellationDeadline'] = l$cancellationDeadline;
+    }
+    if (_$data.containsKey('operatingHours')) {
+      final l$operatingHours = operatingHours;
+      result$data['operatingHours'] = l$operatingHours;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$CreateFacilityInput<Input$CreateFacilityInput> get copyWith =>
+      CopyWith$Input$CreateFacilityInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$CreateFacilityInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$description = description;
+    final lOther$description = other.description;
+    if (_$data.containsKey('description') !=
+        other._$data.containsKey('description')) {
+      return false;
+    }
+    if (l$description != lOther$description) {
+      return false;
+    }
+    final l$type = type;
+    final lOther$type = other.type;
+    if (l$type != lOther$type) {
+      return false;
+    }
+    final l$capacity = capacity;
+    final lOther$capacity = other.capacity;
+    if (_$data.containsKey('capacity') !=
+        other._$data.containsKey('capacity')) {
+      return false;
+    }
+    if (l$capacity != lOther$capacity) {
+      return false;
+    }
+    final l$amenities = amenities;
+    final lOther$amenities = other.amenities;
+    if (_$data.containsKey('amenities') !=
+        other._$data.containsKey('amenities')) {
+      return false;
+    }
+    if (l$amenities != null && lOther$amenities != null) {
+      if (l$amenities.length != lOther$amenities.length) {
+        return false;
+      }
+      for (int i = 0; i < l$amenities.length; i++) {
+        final l$amenities$entry = l$amenities[i];
+        final lOther$amenities$entry = lOther$amenities[i];
+        if (l$amenities$entry != lOther$amenities$entry) {
+          return false;
+        }
+      }
+    } else if (l$amenities != lOther$amenities) {
+      return false;
+    }
+    final l$minBookingDuration = minBookingDuration;
+    final lOther$minBookingDuration = other.minBookingDuration;
+    if (_$data.containsKey('minBookingDuration') !=
+        other._$data.containsKey('minBookingDuration')) {
+      return false;
+    }
+    if (l$minBookingDuration != lOther$minBookingDuration) {
+      return false;
+    }
+    final l$maxBookingDuration = maxBookingDuration;
+    final lOther$maxBookingDuration = other.maxBookingDuration;
+    if (_$data.containsKey('maxBookingDuration') !=
+        other._$data.containsKey('maxBookingDuration')) {
+      return false;
+    }
+    if (l$maxBookingDuration != lOther$maxBookingDuration) {
+      return false;
+    }
+    final l$advanceBookingDays = advanceBookingDays;
+    final lOther$advanceBookingDays = other.advanceBookingDays;
+    if (_$data.containsKey('advanceBookingDays') !=
+        other._$data.containsKey('advanceBookingDays')) {
+      return false;
+    }
+    if (l$advanceBookingDays != lOther$advanceBookingDays) {
+      return false;
+    }
+    final l$cancellationDeadline = cancellationDeadline;
+    final lOther$cancellationDeadline = other.cancellationDeadline;
+    if (_$data.containsKey('cancellationDeadline') !=
+        other._$data.containsKey('cancellationDeadline')) {
+      return false;
+    }
+    if (l$cancellationDeadline != lOther$cancellationDeadline) {
+      return false;
+    }
+    final l$operatingHours = operatingHours;
+    final lOther$operatingHours = other.operatingHours;
+    if (_$data.containsKey('operatingHours') !=
+        other._$data.containsKey('operatingHours')) {
+      return false;
+    }
+    if (l$operatingHours != lOther$operatingHours) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$name = name;
+    final l$description = description;
+    final l$type = type;
+    final l$capacity = capacity;
+    final l$amenities = amenities;
+    final l$minBookingDuration = minBookingDuration;
+    final l$maxBookingDuration = maxBookingDuration;
+    final l$advanceBookingDays = advanceBookingDays;
+    final l$cancellationDeadline = cancellationDeadline;
+    final l$operatingHours = operatingHours;
+    return Object.hashAll([
+      l$name,
+      _$data.containsKey('description') ? l$description : const {},
+      l$type,
+      _$data.containsKey('capacity') ? l$capacity : const {},
+      _$data.containsKey('amenities')
+          ? l$amenities == null
+                ? null
+                : Object.hashAll(l$amenities.map((v) => v))
+          : const {},
+      _$data.containsKey('minBookingDuration')
+          ? l$minBookingDuration
+          : const {},
+      _$data.containsKey('maxBookingDuration')
+          ? l$maxBookingDuration
+          : const {},
+      _$data.containsKey('advanceBookingDays')
+          ? l$advanceBookingDays
+          : const {},
+      _$data.containsKey('cancellationDeadline')
+          ? l$cancellationDeadline
+          : const {},
+      _$data.containsKey('operatingHours') ? l$operatingHours : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$CreateFacilityInput<TRes> {
+  factory CopyWith$Input$CreateFacilityInput(
+    Input$CreateFacilityInput instance,
+    TRes Function(Input$CreateFacilityInput) then,
+  ) = _CopyWithImpl$Input$CreateFacilityInput;
+
+  factory CopyWith$Input$CreateFacilityInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$CreateFacilityInput;
+
+  TRes call({
+    String? name,
+    String? description,
+    Enum$FacilityType? type,
+    int? capacity,
+    List<String>? amenities,
+    int? minBookingDuration,
+    int? maxBookingDuration,
+    int? advanceBookingDays,
+    int? cancellationDeadline,
+    String? operatingHours,
+  });
+}
+
+class _CopyWithImpl$Input$CreateFacilityInput<TRes>
+    implements CopyWith$Input$CreateFacilityInput<TRes> {
+  _CopyWithImpl$Input$CreateFacilityInput(this._instance, this._then);
+
+  final Input$CreateFacilityInput _instance;
+
+  final TRes Function(Input$CreateFacilityInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? name = _undefined,
+    Object? description = _undefined,
+    Object? type = _undefined,
+    Object? capacity = _undefined,
+    Object? amenities = _undefined,
+    Object? minBookingDuration = _undefined,
+    Object? maxBookingDuration = _undefined,
+    Object? advanceBookingDays = _undefined,
+    Object? cancellationDeadline = _undefined,
+    Object? operatingHours = _undefined,
+  }) => _then(
+    Input$CreateFacilityInput._({
+      ..._instance._$data,
+      if (name != _undefined && name != null) 'name': (name as String),
+      if (description != _undefined) 'description': (description as String?),
+      if (type != _undefined && type != null)
+        'type': (type as Enum$FacilityType),
+      if (capacity != _undefined) 'capacity': (capacity as int?),
+      if (amenities != _undefined) 'amenities': (amenities as List<String>?),
+      if (minBookingDuration != _undefined)
+        'minBookingDuration': (minBookingDuration as int?),
+      if (maxBookingDuration != _undefined)
+        'maxBookingDuration': (maxBookingDuration as int?),
+      if (advanceBookingDays != _undefined)
+        'advanceBookingDays': (advanceBookingDays as int?),
+      if (cancellationDeadline != _undefined)
+        'cancellationDeadline': (cancellationDeadline as int?),
+      if (operatingHours != _undefined)
+        'operatingHours': (operatingHours as String?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$CreateFacilityInput<TRes>
+    implements CopyWith$Input$CreateFacilityInput<TRes> {
+  _CopyWithStubImpl$Input$CreateFacilityInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? name,
+    String? description,
+    Enum$FacilityType? type,
+    int? capacity,
+    List<String>? amenities,
+    int? minBookingDuration,
+    int? maxBookingDuration,
+    int? advanceBookingDays,
+    int? cancellationDeadline,
+    String? operatingHours,
+  }) => _res;
+}
+
+class Input$UpdateFacilityInput {
+  factory Input$UpdateFacilityInput({
+    String? name,
+    String? description,
+    int? capacity,
+    List<String>? amenities,
+    Enum$FacilityStatus? status,
+    int? minBookingDuration,
+    int? maxBookingDuration,
+    int? advanceBookingDays,
+    int? cancellationDeadline,
+    String? operatingHours,
+  }) => Input$UpdateFacilityInput._({
+    if (name != null) r'name': name,
+    if (description != null) r'description': description,
+    if (capacity != null) r'capacity': capacity,
+    if (amenities != null) r'amenities': amenities,
+    if (status != null) r'status': status,
+    if (minBookingDuration != null) r'minBookingDuration': minBookingDuration,
+    if (maxBookingDuration != null) r'maxBookingDuration': maxBookingDuration,
+    if (advanceBookingDays != null) r'advanceBookingDays': advanceBookingDays,
+    if (cancellationDeadline != null)
+      r'cancellationDeadline': cancellationDeadline,
+    if (operatingHours != null) r'operatingHours': operatingHours,
+  });
+
+  Input$UpdateFacilityInput._(this._$data);
+
+  factory Input$UpdateFacilityInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('name')) {
+      final l$name = data['name'];
+      result$data['name'] = (l$name as String?);
+    }
+    if (data.containsKey('description')) {
+      final l$description = data['description'];
+      result$data['description'] = (l$description as String?);
+    }
+    if (data.containsKey('capacity')) {
+      final l$capacity = data['capacity'];
+      result$data['capacity'] = (l$capacity as int?);
+    }
+    if (data.containsKey('amenities')) {
+      final l$amenities = data['amenities'];
+      result$data['amenities'] = (l$amenities as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList();
+    }
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$FacilityStatus((l$status as String));
+    }
+    if (data.containsKey('minBookingDuration')) {
+      final l$minBookingDuration = data['minBookingDuration'];
+      result$data['minBookingDuration'] = (l$minBookingDuration as int?);
+    }
+    if (data.containsKey('maxBookingDuration')) {
+      final l$maxBookingDuration = data['maxBookingDuration'];
+      result$data['maxBookingDuration'] = (l$maxBookingDuration as int?);
+    }
+    if (data.containsKey('advanceBookingDays')) {
+      final l$advanceBookingDays = data['advanceBookingDays'];
+      result$data['advanceBookingDays'] = (l$advanceBookingDays as int?);
+    }
+    if (data.containsKey('cancellationDeadline')) {
+      final l$cancellationDeadline = data['cancellationDeadline'];
+      result$data['cancellationDeadline'] = (l$cancellationDeadline as int?);
+    }
+    if (data.containsKey('operatingHours')) {
+      final l$operatingHours = data['operatingHours'];
+      result$data['operatingHours'] = (l$operatingHours as String?);
+    }
+    return Input$UpdateFacilityInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String? get name => (_$data['name'] as String?);
+
+  String? get description => (_$data['description'] as String?);
+
+  int? get capacity => (_$data['capacity'] as int?);
+
+  List<String>? get amenities => (_$data['amenities'] as List<String>?);
+
+  Enum$FacilityStatus? get status => (_$data['status'] as Enum$FacilityStatus?);
+
+  int? get minBookingDuration => (_$data['minBookingDuration'] as int?);
+
+  int? get maxBookingDuration => (_$data['maxBookingDuration'] as int?);
+
+  int? get advanceBookingDays => (_$data['advanceBookingDays'] as int?);
+
+  int? get cancellationDeadline => (_$data['cancellationDeadline'] as int?);
+
+  String? get operatingHours => (_$data['operatingHours'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('name')) {
+      final l$name = name;
+      result$data['name'] = l$name;
+    }
+    if (_$data.containsKey('description')) {
+      final l$description = description;
+      result$data['description'] = l$description;
+    }
+    if (_$data.containsKey('capacity')) {
+      final l$capacity = capacity;
+      result$data['capacity'] = l$capacity;
+    }
+    if (_$data.containsKey('amenities')) {
+      final l$amenities = amenities;
+      result$data['amenities'] = l$amenities?.map((e) => e).toList();
+    }
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$FacilityStatus(l$status);
+    }
+    if (_$data.containsKey('minBookingDuration')) {
+      final l$minBookingDuration = minBookingDuration;
+      result$data['minBookingDuration'] = l$minBookingDuration;
+    }
+    if (_$data.containsKey('maxBookingDuration')) {
+      final l$maxBookingDuration = maxBookingDuration;
+      result$data['maxBookingDuration'] = l$maxBookingDuration;
+    }
+    if (_$data.containsKey('advanceBookingDays')) {
+      final l$advanceBookingDays = advanceBookingDays;
+      result$data['advanceBookingDays'] = l$advanceBookingDays;
+    }
+    if (_$data.containsKey('cancellationDeadline')) {
+      final l$cancellationDeadline = cancellationDeadline;
+      result$data['cancellationDeadline'] = l$cancellationDeadline;
+    }
+    if (_$data.containsKey('operatingHours')) {
+      final l$operatingHours = operatingHours;
+      result$data['operatingHours'] = l$operatingHours;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$UpdateFacilityInput<Input$UpdateFacilityInput> get copyWith =>
+      CopyWith$Input$UpdateFacilityInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$UpdateFacilityInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (_$data.containsKey('name') != other._$data.containsKey('name')) {
+      return false;
+    }
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$description = description;
+    final lOther$description = other.description;
+    if (_$data.containsKey('description') !=
+        other._$data.containsKey('description')) {
+      return false;
+    }
+    if (l$description != lOther$description) {
+      return false;
+    }
+    final l$capacity = capacity;
+    final lOther$capacity = other.capacity;
+    if (_$data.containsKey('capacity') !=
+        other._$data.containsKey('capacity')) {
+      return false;
+    }
+    if (l$capacity != lOther$capacity) {
+      return false;
+    }
+    final l$amenities = amenities;
+    final lOther$amenities = other.amenities;
+    if (_$data.containsKey('amenities') !=
+        other._$data.containsKey('amenities')) {
+      return false;
+    }
+    if (l$amenities != null && lOther$amenities != null) {
+      if (l$amenities.length != lOther$amenities.length) {
+        return false;
+      }
+      for (int i = 0; i < l$amenities.length; i++) {
+        final l$amenities$entry = l$amenities[i];
+        final lOther$amenities$entry = lOther$amenities[i];
+        if (l$amenities$entry != lOther$amenities$entry) {
+          return false;
+        }
+      }
+    } else if (l$amenities != lOther$amenities) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$minBookingDuration = minBookingDuration;
+    final lOther$minBookingDuration = other.minBookingDuration;
+    if (_$data.containsKey('minBookingDuration') !=
+        other._$data.containsKey('minBookingDuration')) {
+      return false;
+    }
+    if (l$minBookingDuration != lOther$minBookingDuration) {
+      return false;
+    }
+    final l$maxBookingDuration = maxBookingDuration;
+    final lOther$maxBookingDuration = other.maxBookingDuration;
+    if (_$data.containsKey('maxBookingDuration') !=
+        other._$data.containsKey('maxBookingDuration')) {
+      return false;
+    }
+    if (l$maxBookingDuration != lOther$maxBookingDuration) {
+      return false;
+    }
+    final l$advanceBookingDays = advanceBookingDays;
+    final lOther$advanceBookingDays = other.advanceBookingDays;
+    if (_$data.containsKey('advanceBookingDays') !=
+        other._$data.containsKey('advanceBookingDays')) {
+      return false;
+    }
+    if (l$advanceBookingDays != lOther$advanceBookingDays) {
+      return false;
+    }
+    final l$cancellationDeadline = cancellationDeadline;
+    final lOther$cancellationDeadline = other.cancellationDeadline;
+    if (_$data.containsKey('cancellationDeadline') !=
+        other._$data.containsKey('cancellationDeadline')) {
+      return false;
+    }
+    if (l$cancellationDeadline != lOther$cancellationDeadline) {
+      return false;
+    }
+    final l$operatingHours = operatingHours;
+    final lOther$operatingHours = other.operatingHours;
+    if (_$data.containsKey('operatingHours') !=
+        other._$data.containsKey('operatingHours')) {
+      return false;
+    }
+    if (l$operatingHours != lOther$operatingHours) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$name = name;
+    final l$description = description;
+    final l$capacity = capacity;
+    final l$amenities = amenities;
+    final l$status = status;
+    final l$minBookingDuration = minBookingDuration;
+    final l$maxBookingDuration = maxBookingDuration;
+    final l$advanceBookingDays = advanceBookingDays;
+    final l$cancellationDeadline = cancellationDeadline;
+    final l$operatingHours = operatingHours;
+    return Object.hashAll([
+      _$data.containsKey('name') ? l$name : const {},
+      _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('capacity') ? l$capacity : const {},
+      _$data.containsKey('amenities')
+          ? l$amenities == null
+                ? null
+                : Object.hashAll(l$amenities.map((v) => v))
+          : const {},
+      _$data.containsKey('status') ? l$status : const {},
+      _$data.containsKey('minBookingDuration')
+          ? l$minBookingDuration
+          : const {},
+      _$data.containsKey('maxBookingDuration')
+          ? l$maxBookingDuration
+          : const {},
+      _$data.containsKey('advanceBookingDays')
+          ? l$advanceBookingDays
+          : const {},
+      _$data.containsKey('cancellationDeadline')
+          ? l$cancellationDeadline
+          : const {},
+      _$data.containsKey('operatingHours') ? l$operatingHours : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$UpdateFacilityInput<TRes> {
+  factory CopyWith$Input$UpdateFacilityInput(
+    Input$UpdateFacilityInput instance,
+    TRes Function(Input$UpdateFacilityInput) then,
+  ) = _CopyWithImpl$Input$UpdateFacilityInput;
+
+  factory CopyWith$Input$UpdateFacilityInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$UpdateFacilityInput;
+
+  TRes call({
+    String? name,
+    String? description,
+    int? capacity,
+    List<String>? amenities,
+    Enum$FacilityStatus? status,
+    int? minBookingDuration,
+    int? maxBookingDuration,
+    int? advanceBookingDays,
+    int? cancellationDeadline,
+    String? operatingHours,
+  });
+}
+
+class _CopyWithImpl$Input$UpdateFacilityInput<TRes>
+    implements CopyWith$Input$UpdateFacilityInput<TRes> {
+  _CopyWithImpl$Input$UpdateFacilityInput(this._instance, this._then);
+
+  final Input$UpdateFacilityInput _instance;
+
+  final TRes Function(Input$UpdateFacilityInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? name = _undefined,
+    Object? description = _undefined,
+    Object? capacity = _undefined,
+    Object? amenities = _undefined,
+    Object? status = _undefined,
+    Object? minBookingDuration = _undefined,
+    Object? maxBookingDuration = _undefined,
+    Object? advanceBookingDays = _undefined,
+    Object? cancellationDeadline = _undefined,
+    Object? operatingHours = _undefined,
+  }) => _then(
+    Input$UpdateFacilityInput._({
+      ..._instance._$data,
+      if (name != _undefined) 'name': (name as String?),
+      if (description != _undefined) 'description': (description as String?),
+      if (capacity != _undefined) 'capacity': (capacity as int?),
+      if (amenities != _undefined) 'amenities': (amenities as List<String>?),
+      if (status != _undefined) 'status': (status as Enum$FacilityStatus?),
+      if (minBookingDuration != _undefined)
+        'minBookingDuration': (minBookingDuration as int?),
+      if (maxBookingDuration != _undefined)
+        'maxBookingDuration': (maxBookingDuration as int?),
+      if (advanceBookingDays != _undefined)
+        'advanceBookingDays': (advanceBookingDays as int?),
+      if (cancellationDeadline != _undefined)
+        'cancellationDeadline': (cancellationDeadline as int?),
+      if (operatingHours != _undefined)
+        'operatingHours': (operatingHours as String?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$UpdateFacilityInput<TRes>
+    implements CopyWith$Input$UpdateFacilityInput<TRes> {
+  _CopyWithStubImpl$Input$UpdateFacilityInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? name,
+    String? description,
+    int? capacity,
+    List<String>? amenities,
+    Enum$FacilityStatus? status,
+    int? minBookingDuration,
+    int? maxBookingDuration,
+    int? advanceBookingDays,
+    int? cancellationDeadline,
+    String? operatingHours,
+  }) => _res;
+}
+
+class Input$CreateBookingInput {
+  factory Input$CreateBookingInput({
+    required String facilityId,
+    required DateTime startTime,
+    required DateTime endTime,
+    String? notes,
+    List<String>? participants,
+    int? partySize,
+    Enum$MealType? mealType,
+    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$TablePreference? tablePreference,
+    Enum$EventType? eventType,
+    int? guestCount,
+    List<Enum$ServiceAddon>? serviceAddons,
+  }) => Input$CreateBookingInput._({
+    r'facilityId': facilityId,
+    r'startTime': startTime,
+    r'endTime': endTime,
+    if (notes != null) r'notes': notes,
+    if (participants != null) r'participants': participants,
+    if (partySize != null) r'partySize': partySize,
+    if (mealType != null) r'mealType': mealType,
+    if (dietaryRestrictions != null)
+      r'dietaryRestrictions': dietaryRestrictions,
+    if (specialRequests != null) r'specialRequests': specialRequests,
+    if (tablePreference != null) r'tablePreference': tablePreference,
+    if (eventType != null) r'eventType': eventType,
+    if (guestCount != null) r'guestCount': guestCount,
+    if (serviceAddons != null) r'serviceAddons': serviceAddons,
+  });
+
+  Input$CreateBookingInput._(this._$data);
+
+  factory Input$CreateBookingInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$facilityId = data['facilityId'];
+    result$data['facilityId'] = (l$facilityId as String);
+    final l$startTime = data['startTime'];
+    result$data['startTime'] = DateTime.parse((l$startTime as String));
+    final l$endTime = data['endTime'];
+    result$data['endTime'] = DateTime.parse((l$endTime as String));
+    if (data.containsKey('notes')) {
+      final l$notes = data['notes'];
+      result$data['notes'] = (l$notes as String?);
+    }
+    if (data.containsKey('participants')) {
+      final l$participants = data['participants'];
+      result$data['participants'] = (l$participants as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList();
+    }
+    if (data.containsKey('partySize')) {
+      final l$partySize = data['partySize'];
+      result$data['partySize'] = (l$partySize as int?);
+    }
+    if (data.containsKey('mealType')) {
+      final l$mealType = data['mealType'];
+      result$data['mealType'] = l$mealType == null
+          ? null
+          : fromJson$Enum$MealType((l$mealType as String));
+    }
+    if (data.containsKey('dietaryRestrictions')) {
+      final l$dietaryRestrictions = data['dietaryRestrictions'];
+      result$data['dietaryRestrictions'] =
+          (l$dietaryRestrictions as List<dynamic>?)
+              ?.map((e) => fromJson$Enum$DietaryRestriction((e as String)))
+              .toList();
+    }
+    if (data.containsKey('specialRequests')) {
+      final l$specialRequests = data['specialRequests'];
+      result$data['specialRequests'] = (l$specialRequests as String?);
+    }
+    if (data.containsKey('tablePreference')) {
+      final l$tablePreference = data['tablePreference'];
+      result$data['tablePreference'] = l$tablePreference == null
+          ? null
+          : fromJson$Enum$TablePreference((l$tablePreference as String));
+    }
+    if (data.containsKey('eventType')) {
+      final l$eventType = data['eventType'];
+      result$data['eventType'] = l$eventType == null
+          ? null
+          : fromJson$Enum$EventType((l$eventType as String));
+    }
+    if (data.containsKey('guestCount')) {
+      final l$guestCount = data['guestCount'];
+      result$data['guestCount'] = (l$guestCount as int?);
+    }
+    if (data.containsKey('serviceAddons')) {
+      final l$serviceAddons = data['serviceAddons'];
+      result$data['serviceAddons'] = (l$serviceAddons as List<dynamic>?)
+          ?.map((e) => fromJson$Enum$ServiceAddon((e as String)))
+          .toList();
+    }
+    return Input$CreateBookingInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get facilityId => (_$data['facilityId'] as String);
+
+  DateTime get startTime => (_$data['startTime'] as DateTime);
+
+  DateTime get endTime => (_$data['endTime'] as DateTime);
+
+  String? get notes => (_$data['notes'] as String?);
+
+  List<String>? get participants => (_$data['participants'] as List<String>?);
+
+  int? get partySize => (_$data['partySize'] as int?);
+
+  Enum$MealType? get mealType => (_$data['mealType'] as Enum$MealType?);
+
+  List<Enum$DietaryRestriction>? get dietaryRestrictions =>
+      (_$data['dietaryRestrictions'] as List<Enum$DietaryRestriction>?);
+
+  String? get specialRequests => (_$data['specialRequests'] as String?);
+
+  Enum$TablePreference? get tablePreference =>
+      (_$data['tablePreference'] as Enum$TablePreference?);
+
+  Enum$EventType? get eventType => (_$data['eventType'] as Enum$EventType?);
+
+  int? get guestCount => (_$data['guestCount'] as int?);
+
+  List<Enum$ServiceAddon>? get serviceAddons =>
+      (_$data['serviceAddons'] as List<Enum$ServiceAddon>?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$facilityId = facilityId;
+    result$data['facilityId'] = l$facilityId;
+    final l$startTime = startTime;
+    result$data['startTime'] = l$startTime.toIso8601String();
+    final l$endTime = endTime;
+    result$data['endTime'] = l$endTime.toIso8601String();
+    if (_$data.containsKey('notes')) {
+      final l$notes = notes;
+      result$data['notes'] = l$notes;
+    }
+    if (_$data.containsKey('participants')) {
+      final l$participants = participants;
+      result$data['participants'] = l$participants?.map((e) => e).toList();
+    }
+    if (_$data.containsKey('partySize')) {
+      final l$partySize = partySize;
+      result$data['partySize'] = l$partySize;
+    }
+    if (_$data.containsKey('mealType')) {
+      final l$mealType = mealType;
+      result$data['mealType'] = l$mealType == null
+          ? null
+          : toJson$Enum$MealType(l$mealType);
+    }
+    if (_$data.containsKey('dietaryRestrictions')) {
+      final l$dietaryRestrictions = dietaryRestrictions;
+      result$data['dietaryRestrictions'] = l$dietaryRestrictions
+          ?.map((e) => toJson$Enum$DietaryRestriction(e))
+          .toList();
+    }
+    if (_$data.containsKey('specialRequests')) {
+      final l$specialRequests = specialRequests;
+      result$data['specialRequests'] = l$specialRequests;
+    }
+    if (_$data.containsKey('tablePreference')) {
+      final l$tablePreference = tablePreference;
+      result$data['tablePreference'] = l$tablePreference == null
+          ? null
+          : toJson$Enum$TablePreference(l$tablePreference);
+    }
+    if (_$data.containsKey('eventType')) {
+      final l$eventType = eventType;
+      result$data['eventType'] = l$eventType == null
+          ? null
+          : toJson$Enum$EventType(l$eventType);
+    }
+    if (_$data.containsKey('guestCount')) {
+      final l$guestCount = guestCount;
+      result$data['guestCount'] = l$guestCount;
+    }
+    if (_$data.containsKey('serviceAddons')) {
+      final l$serviceAddons = serviceAddons;
+      result$data['serviceAddons'] = l$serviceAddons
+          ?.map((e) => toJson$Enum$ServiceAddon(e))
+          .toList();
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$CreateBookingInput<Input$CreateBookingInput> get copyWith =>
+      CopyWith$Input$CreateBookingInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$CreateBookingInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$facilityId = facilityId;
+    final lOther$facilityId = other.facilityId;
+    if (l$facilityId != lOther$facilityId) {
+      return false;
+    }
+    final l$startTime = startTime;
+    final lOther$startTime = other.startTime;
+    if (l$startTime != lOther$startTime) {
+      return false;
+    }
+    final l$endTime = endTime;
+    final lOther$endTime = other.endTime;
+    if (l$endTime != lOther$endTime) {
+      return false;
+    }
+    final l$notes = notes;
+    final lOther$notes = other.notes;
+    if (_$data.containsKey('notes') != other._$data.containsKey('notes')) {
+      return false;
+    }
+    if (l$notes != lOther$notes) {
+      return false;
+    }
+    final l$participants = participants;
+    final lOther$participants = other.participants;
+    if (_$data.containsKey('participants') !=
+        other._$data.containsKey('participants')) {
+      return false;
+    }
+    if (l$participants != null && lOther$participants != null) {
+      if (l$participants.length != lOther$participants.length) {
+        return false;
+      }
+      for (int i = 0; i < l$participants.length; i++) {
+        final l$participants$entry = l$participants[i];
+        final lOther$participants$entry = lOther$participants[i];
+        if (l$participants$entry != lOther$participants$entry) {
+          return false;
+        }
+      }
+    } else if (l$participants != lOther$participants) {
+      return false;
+    }
+    final l$partySize = partySize;
+    final lOther$partySize = other.partySize;
+    if (_$data.containsKey('partySize') !=
+        other._$data.containsKey('partySize')) {
+      return false;
+    }
+    if (l$partySize != lOther$partySize) {
+      return false;
+    }
+    final l$mealType = mealType;
+    final lOther$mealType = other.mealType;
+    if (_$data.containsKey('mealType') !=
+        other._$data.containsKey('mealType')) {
+      return false;
+    }
+    if (l$mealType != lOther$mealType) {
+      return false;
+    }
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final lOther$dietaryRestrictions = other.dietaryRestrictions;
+    if (_$data.containsKey('dietaryRestrictions') !=
+        other._$data.containsKey('dietaryRestrictions')) {
+      return false;
+    }
+    if (l$dietaryRestrictions != null && lOther$dietaryRestrictions != null) {
+      if (l$dietaryRestrictions.length != lOther$dietaryRestrictions.length) {
+        return false;
+      }
+      for (int i = 0; i < l$dietaryRestrictions.length; i++) {
+        final l$dietaryRestrictions$entry = l$dietaryRestrictions[i];
+        final lOther$dietaryRestrictions$entry = lOther$dietaryRestrictions[i];
+        if (l$dietaryRestrictions$entry != lOther$dietaryRestrictions$entry) {
+          return false;
+        }
+      }
+    } else if (l$dietaryRestrictions != lOther$dietaryRestrictions) {
+      return false;
+    }
+    final l$specialRequests = specialRequests;
+    final lOther$specialRequests = other.specialRequests;
+    if (_$data.containsKey('specialRequests') !=
+        other._$data.containsKey('specialRequests')) {
+      return false;
+    }
+    if (l$specialRequests != lOther$specialRequests) {
+      return false;
+    }
+    final l$tablePreference = tablePreference;
+    final lOther$tablePreference = other.tablePreference;
+    if (_$data.containsKey('tablePreference') !=
+        other._$data.containsKey('tablePreference')) {
+      return false;
+    }
+    if (l$tablePreference != lOther$tablePreference) {
+      return false;
+    }
+    final l$eventType = eventType;
+    final lOther$eventType = other.eventType;
+    if (_$data.containsKey('eventType') !=
+        other._$data.containsKey('eventType')) {
+      return false;
+    }
+    if (l$eventType != lOther$eventType) {
+      return false;
+    }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (_$data.containsKey('guestCount') !=
+        other._$data.containsKey('guestCount')) {
+      return false;
+    }
+    if (l$guestCount != lOther$guestCount) {
+      return false;
+    }
+    final l$serviceAddons = serviceAddons;
+    final lOther$serviceAddons = other.serviceAddons;
+    if (_$data.containsKey('serviceAddons') !=
+        other._$data.containsKey('serviceAddons')) {
+      return false;
+    }
+    if (l$serviceAddons != null && lOther$serviceAddons != null) {
+      if (l$serviceAddons.length != lOther$serviceAddons.length) {
+        return false;
+      }
+      for (int i = 0; i < l$serviceAddons.length; i++) {
+        final l$serviceAddons$entry = l$serviceAddons[i];
+        final lOther$serviceAddons$entry = lOther$serviceAddons[i];
+        if (l$serviceAddons$entry != lOther$serviceAddons$entry) {
+          return false;
+        }
+      }
+    } else if (l$serviceAddons != lOther$serviceAddons) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$facilityId = facilityId;
+    final l$startTime = startTime;
+    final l$endTime = endTime;
+    final l$notes = notes;
+    final l$participants = participants;
+    final l$partySize = partySize;
+    final l$mealType = mealType;
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final l$specialRequests = specialRequests;
+    final l$tablePreference = tablePreference;
+    final l$eventType = eventType;
+    final l$guestCount = guestCount;
+    final l$serviceAddons = serviceAddons;
+    return Object.hashAll([
+      l$facilityId,
+      l$startTime,
+      l$endTime,
+      _$data.containsKey('notes') ? l$notes : const {},
+      _$data.containsKey('participants')
+          ? l$participants == null
+                ? null
+                : Object.hashAll(l$participants.map((v) => v))
+          : const {},
+      _$data.containsKey('partySize') ? l$partySize : const {},
+      _$data.containsKey('mealType') ? l$mealType : const {},
+      _$data.containsKey('dietaryRestrictions')
+          ? l$dietaryRestrictions == null
+                ? null
+                : Object.hashAll(l$dietaryRestrictions.map((v) => v))
+          : const {},
+      _$data.containsKey('specialRequests') ? l$specialRequests : const {},
+      _$data.containsKey('tablePreference') ? l$tablePreference : const {},
+      _$data.containsKey('eventType') ? l$eventType : const {},
+      _$data.containsKey('guestCount') ? l$guestCount : const {},
+      _$data.containsKey('serviceAddons')
+          ? l$serviceAddons == null
+                ? null
+                : Object.hashAll(l$serviceAddons.map((v) => v))
+          : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$CreateBookingInput<TRes> {
+  factory CopyWith$Input$CreateBookingInput(
+    Input$CreateBookingInput instance,
+    TRes Function(Input$CreateBookingInput) then,
+  ) = _CopyWithImpl$Input$CreateBookingInput;
+
+  factory CopyWith$Input$CreateBookingInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$CreateBookingInput;
+
+  TRes call({
+    String? facilityId,
+    DateTime? startTime,
+    DateTime? endTime,
+    String? notes,
+    List<String>? participants,
+    int? partySize,
+    Enum$MealType? mealType,
+    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$TablePreference? tablePreference,
+    Enum$EventType? eventType,
+    int? guestCount,
+    List<Enum$ServiceAddon>? serviceAddons,
+  });
+}
+
+class _CopyWithImpl$Input$CreateBookingInput<TRes>
+    implements CopyWith$Input$CreateBookingInput<TRes> {
+  _CopyWithImpl$Input$CreateBookingInput(this._instance, this._then);
+
+  final Input$CreateBookingInput _instance;
+
+  final TRes Function(Input$CreateBookingInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? facilityId = _undefined,
+    Object? startTime = _undefined,
+    Object? endTime = _undefined,
+    Object? notes = _undefined,
+    Object? participants = _undefined,
+    Object? partySize = _undefined,
+    Object? mealType = _undefined,
+    Object? dietaryRestrictions = _undefined,
+    Object? specialRequests = _undefined,
+    Object? tablePreference = _undefined,
+    Object? eventType = _undefined,
+    Object? guestCount = _undefined,
+    Object? serviceAddons = _undefined,
+  }) => _then(
+    Input$CreateBookingInput._({
+      ..._instance._$data,
+      if (facilityId != _undefined && facilityId != null)
+        'facilityId': (facilityId as String),
+      if (startTime != _undefined && startTime != null)
+        'startTime': (startTime as DateTime),
+      if (endTime != _undefined && endTime != null)
+        'endTime': (endTime as DateTime),
+      if (notes != _undefined) 'notes': (notes as String?),
+      if (participants != _undefined)
+        'participants': (participants as List<String>?),
+      if (partySize != _undefined) 'partySize': (partySize as int?),
+      if (mealType != _undefined) 'mealType': (mealType as Enum$MealType?),
+      if (dietaryRestrictions != _undefined)
+        'dietaryRestrictions':
+            (dietaryRestrictions as List<Enum$DietaryRestriction>?),
+      if (specialRequests != _undefined)
+        'specialRequests': (specialRequests as String?),
+      if (tablePreference != _undefined)
+        'tablePreference': (tablePreference as Enum$TablePreference?),
+      if (eventType != _undefined) 'eventType': (eventType as Enum$EventType?),
+      if (guestCount != _undefined) 'guestCount': (guestCount as int?),
+      if (serviceAddons != _undefined)
+        'serviceAddons': (serviceAddons as List<Enum$ServiceAddon>?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$CreateBookingInput<TRes>
+    implements CopyWith$Input$CreateBookingInput<TRes> {
+  _CopyWithStubImpl$Input$CreateBookingInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? facilityId,
+    DateTime? startTime,
+    DateTime? endTime,
+    String? notes,
+    List<String>? participants,
+    int? partySize,
+    Enum$MealType? mealType,
+    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$TablePreference? tablePreference,
+    Enum$EventType? eventType,
+    int? guestCount,
+    List<Enum$ServiceAddon>? serviceAddons,
+  }) => _res;
+}
+
+class Input$UpdateBookingInput {
+  factory Input$UpdateBookingInput({
+    DateTime? startTime,
+    DateTime? endTime,
+    String? notes,
+    List<String>? participants,
+    int? partySize,
+    Enum$MealType? mealType,
+    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$TablePreference? tablePreference,
+    int? guestCount,
+    List<Enum$ServiceAddon>? serviceAddons,
+  }) => Input$UpdateBookingInput._({
+    if (startTime != null) r'startTime': startTime,
+    if (endTime != null) r'endTime': endTime,
+    if (notes != null) r'notes': notes,
+    if (participants != null) r'participants': participants,
+    if (partySize != null) r'partySize': partySize,
+    if (mealType != null) r'mealType': mealType,
+    if (dietaryRestrictions != null)
+      r'dietaryRestrictions': dietaryRestrictions,
+    if (specialRequests != null) r'specialRequests': specialRequests,
+    if (tablePreference != null) r'tablePreference': tablePreference,
+    if (guestCount != null) r'guestCount': guestCount,
+    if (serviceAddons != null) r'serviceAddons': serviceAddons,
+  });
+
+  Input$UpdateBookingInput._(this._$data);
+
+  factory Input$UpdateBookingInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('startTime')) {
+      final l$startTime = data['startTime'];
+      result$data['startTime'] = l$startTime == null
+          ? null
+          : DateTime.parse((l$startTime as String));
+    }
+    if (data.containsKey('endTime')) {
+      final l$endTime = data['endTime'];
+      result$data['endTime'] = l$endTime == null
+          ? null
+          : DateTime.parse((l$endTime as String));
+    }
+    if (data.containsKey('notes')) {
+      final l$notes = data['notes'];
+      result$data['notes'] = (l$notes as String?);
+    }
+    if (data.containsKey('participants')) {
+      final l$participants = data['participants'];
+      result$data['participants'] = (l$participants as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList();
+    }
+    if (data.containsKey('partySize')) {
+      final l$partySize = data['partySize'];
+      result$data['partySize'] = (l$partySize as int?);
+    }
+    if (data.containsKey('mealType')) {
+      final l$mealType = data['mealType'];
+      result$data['mealType'] = l$mealType == null
+          ? null
+          : fromJson$Enum$MealType((l$mealType as String));
+    }
+    if (data.containsKey('dietaryRestrictions')) {
+      final l$dietaryRestrictions = data['dietaryRestrictions'];
+      result$data['dietaryRestrictions'] =
+          (l$dietaryRestrictions as List<dynamic>?)
+              ?.map((e) => fromJson$Enum$DietaryRestriction((e as String)))
+              .toList();
+    }
+    if (data.containsKey('specialRequests')) {
+      final l$specialRequests = data['specialRequests'];
+      result$data['specialRequests'] = (l$specialRequests as String?);
+    }
+    if (data.containsKey('tablePreference')) {
+      final l$tablePreference = data['tablePreference'];
+      result$data['tablePreference'] = l$tablePreference == null
+          ? null
+          : fromJson$Enum$TablePreference((l$tablePreference as String));
+    }
+    if (data.containsKey('guestCount')) {
+      final l$guestCount = data['guestCount'];
+      result$data['guestCount'] = (l$guestCount as int?);
+    }
+    if (data.containsKey('serviceAddons')) {
+      final l$serviceAddons = data['serviceAddons'];
+      result$data['serviceAddons'] = (l$serviceAddons as List<dynamic>?)
+          ?.map((e) => fromJson$Enum$ServiceAddon((e as String)))
+          .toList();
+    }
+    return Input$UpdateBookingInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  DateTime? get startTime => (_$data['startTime'] as DateTime?);
+
+  DateTime? get endTime => (_$data['endTime'] as DateTime?);
+
+  String? get notes => (_$data['notes'] as String?);
+
+  List<String>? get participants => (_$data['participants'] as List<String>?);
+
+  int? get partySize => (_$data['partySize'] as int?);
+
+  Enum$MealType? get mealType => (_$data['mealType'] as Enum$MealType?);
+
+  List<Enum$DietaryRestriction>? get dietaryRestrictions =>
+      (_$data['dietaryRestrictions'] as List<Enum$DietaryRestriction>?);
+
+  String? get specialRequests => (_$data['specialRequests'] as String?);
+
+  Enum$TablePreference? get tablePreference =>
+      (_$data['tablePreference'] as Enum$TablePreference?);
+
+  int? get guestCount => (_$data['guestCount'] as int?);
+
+  List<Enum$ServiceAddon>? get serviceAddons =>
+      (_$data['serviceAddons'] as List<Enum$ServiceAddon>?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('startTime')) {
+      final l$startTime = startTime;
+      result$data['startTime'] = l$startTime?.toIso8601String();
+    }
+    if (_$data.containsKey('endTime')) {
+      final l$endTime = endTime;
+      result$data['endTime'] = l$endTime?.toIso8601String();
+    }
+    if (_$data.containsKey('notes')) {
+      final l$notes = notes;
+      result$data['notes'] = l$notes;
+    }
+    if (_$data.containsKey('participants')) {
+      final l$participants = participants;
+      result$data['participants'] = l$participants?.map((e) => e).toList();
+    }
+    if (_$data.containsKey('partySize')) {
+      final l$partySize = partySize;
+      result$data['partySize'] = l$partySize;
+    }
+    if (_$data.containsKey('mealType')) {
+      final l$mealType = mealType;
+      result$data['mealType'] = l$mealType == null
+          ? null
+          : toJson$Enum$MealType(l$mealType);
+    }
+    if (_$data.containsKey('dietaryRestrictions')) {
+      final l$dietaryRestrictions = dietaryRestrictions;
+      result$data['dietaryRestrictions'] = l$dietaryRestrictions
+          ?.map((e) => toJson$Enum$DietaryRestriction(e))
+          .toList();
+    }
+    if (_$data.containsKey('specialRequests')) {
+      final l$specialRequests = specialRequests;
+      result$data['specialRequests'] = l$specialRequests;
+    }
+    if (_$data.containsKey('tablePreference')) {
+      final l$tablePreference = tablePreference;
+      result$data['tablePreference'] = l$tablePreference == null
+          ? null
+          : toJson$Enum$TablePreference(l$tablePreference);
+    }
+    if (_$data.containsKey('guestCount')) {
+      final l$guestCount = guestCount;
+      result$data['guestCount'] = l$guestCount;
+    }
+    if (_$data.containsKey('serviceAddons')) {
+      final l$serviceAddons = serviceAddons;
+      result$data['serviceAddons'] = l$serviceAddons
+          ?.map((e) => toJson$Enum$ServiceAddon(e))
+          .toList();
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$UpdateBookingInput<Input$UpdateBookingInput> get copyWith =>
+      CopyWith$Input$UpdateBookingInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$UpdateBookingInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$startTime = startTime;
+    final lOther$startTime = other.startTime;
+    if (_$data.containsKey('startTime') !=
+        other._$data.containsKey('startTime')) {
+      return false;
+    }
+    if (l$startTime != lOther$startTime) {
+      return false;
+    }
+    final l$endTime = endTime;
+    final lOther$endTime = other.endTime;
+    if (_$data.containsKey('endTime') != other._$data.containsKey('endTime')) {
+      return false;
+    }
+    if (l$endTime != lOther$endTime) {
+      return false;
+    }
+    final l$notes = notes;
+    final lOther$notes = other.notes;
+    if (_$data.containsKey('notes') != other._$data.containsKey('notes')) {
+      return false;
+    }
+    if (l$notes != lOther$notes) {
+      return false;
+    }
+    final l$participants = participants;
+    final lOther$participants = other.participants;
+    if (_$data.containsKey('participants') !=
+        other._$data.containsKey('participants')) {
+      return false;
+    }
+    if (l$participants != null && lOther$participants != null) {
+      if (l$participants.length != lOther$participants.length) {
+        return false;
+      }
+      for (int i = 0; i < l$participants.length; i++) {
+        final l$participants$entry = l$participants[i];
+        final lOther$participants$entry = lOther$participants[i];
+        if (l$participants$entry != lOther$participants$entry) {
+          return false;
+        }
+      }
+    } else if (l$participants != lOther$participants) {
+      return false;
+    }
+    final l$partySize = partySize;
+    final lOther$partySize = other.partySize;
+    if (_$data.containsKey('partySize') !=
+        other._$data.containsKey('partySize')) {
+      return false;
+    }
+    if (l$partySize != lOther$partySize) {
+      return false;
+    }
+    final l$mealType = mealType;
+    final lOther$mealType = other.mealType;
+    if (_$data.containsKey('mealType') !=
+        other._$data.containsKey('mealType')) {
+      return false;
+    }
+    if (l$mealType != lOther$mealType) {
+      return false;
+    }
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final lOther$dietaryRestrictions = other.dietaryRestrictions;
+    if (_$data.containsKey('dietaryRestrictions') !=
+        other._$data.containsKey('dietaryRestrictions')) {
+      return false;
+    }
+    if (l$dietaryRestrictions != null && lOther$dietaryRestrictions != null) {
+      if (l$dietaryRestrictions.length != lOther$dietaryRestrictions.length) {
+        return false;
+      }
+      for (int i = 0; i < l$dietaryRestrictions.length; i++) {
+        final l$dietaryRestrictions$entry = l$dietaryRestrictions[i];
+        final lOther$dietaryRestrictions$entry = lOther$dietaryRestrictions[i];
+        if (l$dietaryRestrictions$entry != lOther$dietaryRestrictions$entry) {
+          return false;
+        }
+      }
+    } else if (l$dietaryRestrictions != lOther$dietaryRestrictions) {
+      return false;
+    }
+    final l$specialRequests = specialRequests;
+    final lOther$specialRequests = other.specialRequests;
+    if (_$data.containsKey('specialRequests') !=
+        other._$data.containsKey('specialRequests')) {
+      return false;
+    }
+    if (l$specialRequests != lOther$specialRequests) {
+      return false;
+    }
+    final l$tablePreference = tablePreference;
+    final lOther$tablePreference = other.tablePreference;
+    if (_$data.containsKey('tablePreference') !=
+        other._$data.containsKey('tablePreference')) {
+      return false;
+    }
+    if (l$tablePreference != lOther$tablePreference) {
+      return false;
+    }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (_$data.containsKey('guestCount') !=
+        other._$data.containsKey('guestCount')) {
+      return false;
+    }
+    if (l$guestCount != lOther$guestCount) {
+      return false;
+    }
+    final l$serviceAddons = serviceAddons;
+    final lOther$serviceAddons = other.serviceAddons;
+    if (_$data.containsKey('serviceAddons') !=
+        other._$data.containsKey('serviceAddons')) {
+      return false;
+    }
+    if (l$serviceAddons != null && lOther$serviceAddons != null) {
+      if (l$serviceAddons.length != lOther$serviceAddons.length) {
+        return false;
+      }
+      for (int i = 0; i < l$serviceAddons.length; i++) {
+        final l$serviceAddons$entry = l$serviceAddons[i];
+        final lOther$serviceAddons$entry = lOther$serviceAddons[i];
+        if (l$serviceAddons$entry != lOther$serviceAddons$entry) {
+          return false;
+        }
+      }
+    } else if (l$serviceAddons != lOther$serviceAddons) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$startTime = startTime;
+    final l$endTime = endTime;
+    final l$notes = notes;
+    final l$participants = participants;
+    final l$partySize = partySize;
+    final l$mealType = mealType;
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final l$specialRequests = specialRequests;
+    final l$tablePreference = tablePreference;
+    final l$guestCount = guestCount;
+    final l$serviceAddons = serviceAddons;
+    return Object.hashAll([
+      _$data.containsKey('startTime') ? l$startTime : const {},
+      _$data.containsKey('endTime') ? l$endTime : const {},
+      _$data.containsKey('notes') ? l$notes : const {},
+      _$data.containsKey('participants')
+          ? l$participants == null
+                ? null
+                : Object.hashAll(l$participants.map((v) => v))
+          : const {},
+      _$data.containsKey('partySize') ? l$partySize : const {},
+      _$data.containsKey('mealType') ? l$mealType : const {},
+      _$data.containsKey('dietaryRestrictions')
+          ? l$dietaryRestrictions == null
+                ? null
+                : Object.hashAll(l$dietaryRestrictions.map((v) => v))
+          : const {},
+      _$data.containsKey('specialRequests') ? l$specialRequests : const {},
+      _$data.containsKey('tablePreference') ? l$tablePreference : const {},
+      _$data.containsKey('guestCount') ? l$guestCount : const {},
+      _$data.containsKey('serviceAddons')
+          ? l$serviceAddons == null
+                ? null
+                : Object.hashAll(l$serviceAddons.map((v) => v))
+          : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$UpdateBookingInput<TRes> {
+  factory CopyWith$Input$UpdateBookingInput(
+    Input$UpdateBookingInput instance,
+    TRes Function(Input$UpdateBookingInput) then,
+  ) = _CopyWithImpl$Input$UpdateBookingInput;
+
+  factory CopyWith$Input$UpdateBookingInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$UpdateBookingInput;
+
+  TRes call({
+    DateTime? startTime,
+    DateTime? endTime,
+    String? notes,
+    List<String>? participants,
+    int? partySize,
+    Enum$MealType? mealType,
+    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$TablePreference? tablePreference,
+    int? guestCount,
+    List<Enum$ServiceAddon>? serviceAddons,
+  });
+}
+
+class _CopyWithImpl$Input$UpdateBookingInput<TRes>
+    implements CopyWith$Input$UpdateBookingInput<TRes> {
+  _CopyWithImpl$Input$UpdateBookingInput(this._instance, this._then);
+
+  final Input$UpdateBookingInput _instance;
+
+  final TRes Function(Input$UpdateBookingInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? startTime = _undefined,
+    Object? endTime = _undefined,
+    Object? notes = _undefined,
+    Object? participants = _undefined,
+    Object? partySize = _undefined,
+    Object? mealType = _undefined,
+    Object? dietaryRestrictions = _undefined,
+    Object? specialRequests = _undefined,
+    Object? tablePreference = _undefined,
+    Object? guestCount = _undefined,
+    Object? serviceAddons = _undefined,
+  }) => _then(
+    Input$UpdateBookingInput._({
+      ..._instance._$data,
+      if (startTime != _undefined) 'startTime': (startTime as DateTime?),
+      if (endTime != _undefined) 'endTime': (endTime as DateTime?),
+      if (notes != _undefined) 'notes': (notes as String?),
+      if (participants != _undefined)
+        'participants': (participants as List<String>?),
+      if (partySize != _undefined) 'partySize': (partySize as int?),
+      if (mealType != _undefined) 'mealType': (mealType as Enum$MealType?),
+      if (dietaryRestrictions != _undefined)
+        'dietaryRestrictions':
+            (dietaryRestrictions as List<Enum$DietaryRestriction>?),
+      if (specialRequests != _undefined)
+        'specialRequests': (specialRequests as String?),
+      if (tablePreference != _undefined)
+        'tablePreference': (tablePreference as Enum$TablePreference?),
+      if (guestCount != _undefined) 'guestCount': (guestCount as int?),
+      if (serviceAddons != _undefined)
+        'serviceAddons': (serviceAddons as List<Enum$ServiceAddon>?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$UpdateBookingInput<TRes>
+    implements CopyWith$Input$UpdateBookingInput<TRes> {
+  _CopyWithStubImpl$Input$UpdateBookingInput(this._res);
+
+  TRes _res;
+
+  call({
+    DateTime? startTime,
+    DateTime? endTime,
+    String? notes,
+    List<String>? participants,
+    int? partySize,
+    Enum$MealType? mealType,
+    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$TablePreference? tablePreference,
+    int? guestCount,
+    List<Enum$ServiceAddon>? serviceAddons,
+  }) => _res;
+}
+
+class Input$FacilityFilterInput {
+  factory Input$FacilityFilterInput({
+    String? clubId,
+    Enum$FacilityType? type,
+    Enum$FacilityStatus? status,
+  }) => Input$FacilityFilterInput._({
+    if (clubId != null) r'clubId': clubId,
+    if (type != null) r'type': type,
+    if (status != null) r'status': status,
+  });
+
+  Input$FacilityFilterInput._(this._$data);
+
+  factory Input$FacilityFilterInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('clubId')) {
+      final l$clubId = data['clubId'];
+      result$data['clubId'] = (l$clubId as String?);
+    }
+    if (data.containsKey('type')) {
+      final l$type = data['type'];
+      result$data['type'] = l$type == null
+          ? null
+          : fromJson$Enum$FacilityType((l$type as String));
+    }
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$FacilityStatus((l$status as String));
+    }
+    return Input$FacilityFilterInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String? get clubId => (_$data['clubId'] as String?);
+
+  Enum$FacilityType? get type => (_$data['type'] as Enum$FacilityType?);
+
+  Enum$FacilityStatus? get status => (_$data['status'] as Enum$FacilityStatus?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('clubId')) {
+      final l$clubId = clubId;
+      result$data['clubId'] = l$clubId;
+    }
+    if (_$data.containsKey('type')) {
+      final l$type = type;
+      result$data['type'] = l$type == null
+          ? null
+          : toJson$Enum$FacilityType(l$type);
+    }
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$FacilityStatus(l$status);
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$FacilityFilterInput<Input$FacilityFilterInput> get copyWith =>
+      CopyWith$Input$FacilityFilterInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$FacilityFilterInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$clubId = clubId;
+    final lOther$clubId = other.clubId;
+    if (_$data.containsKey('clubId') != other._$data.containsKey('clubId')) {
+      return false;
+    }
+    if (l$clubId != lOther$clubId) {
+      return false;
+    }
+    final l$type = type;
+    final lOther$type = other.type;
+    if (_$data.containsKey('type') != other._$data.containsKey('type')) {
+      return false;
+    }
+    if (l$type != lOther$type) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$clubId = clubId;
+    final l$type = type;
+    final l$status = status;
+    return Object.hashAll([
+      _$data.containsKey('clubId') ? l$clubId : const {},
+      _$data.containsKey('type') ? l$type : const {},
+      _$data.containsKey('status') ? l$status : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$FacilityFilterInput<TRes> {
+  factory CopyWith$Input$FacilityFilterInput(
+    Input$FacilityFilterInput instance,
+    TRes Function(Input$FacilityFilterInput) then,
+  ) = _CopyWithImpl$Input$FacilityFilterInput;
+
+  factory CopyWith$Input$FacilityFilterInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$FacilityFilterInput;
+
+  TRes call({
+    String? clubId,
+    Enum$FacilityType? type,
+    Enum$FacilityStatus? status,
+  });
+}
+
+class _CopyWithImpl$Input$FacilityFilterInput<TRes>
+    implements CopyWith$Input$FacilityFilterInput<TRes> {
+  _CopyWithImpl$Input$FacilityFilterInput(this._instance, this._then);
+
+  final Input$FacilityFilterInput _instance;
+
+  final TRes Function(Input$FacilityFilterInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? clubId = _undefined,
+    Object? type = _undefined,
+    Object? status = _undefined,
+  }) => _then(
+    Input$FacilityFilterInput._({
+      ..._instance._$data,
+      if (clubId != _undefined) 'clubId': (clubId as String?),
+      if (type != _undefined) 'type': (type as Enum$FacilityType?),
+      if (status != _undefined) 'status': (status as Enum$FacilityStatus?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$FacilityFilterInput<TRes>
+    implements CopyWith$Input$FacilityFilterInput<TRes> {
+  _CopyWithStubImpl$Input$FacilityFilterInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? clubId,
+    Enum$FacilityType? type,
+    Enum$FacilityStatus? status,
+  }) => _res;
+}
+
+class Input$BookingFilterInput {
+  factory Input$BookingFilterInput({
+    String? facilityId,
+    String? userId,
+    Enum$BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) => Input$BookingFilterInput._({
+    if (facilityId != null) r'facilityId': facilityId,
+    if (userId != null) r'userId': userId,
+    if (status != null) r'status': status,
+    if (startDate != null) r'startDate': startDate,
+    if (endDate != null) r'endDate': endDate,
+  });
+
+  Input$BookingFilterInput._(this._$data);
+
+  factory Input$BookingFilterInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('facilityId')) {
+      final l$facilityId = data['facilityId'];
+      result$data['facilityId'] = (l$facilityId as String?);
+    }
+    if (data.containsKey('userId')) {
+      final l$userId = data['userId'];
+      result$data['userId'] = (l$userId as String?);
+    }
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$BookingStatus((l$status as String));
+    }
+    if (data.containsKey('startDate')) {
+      final l$startDate = data['startDate'];
+      result$data['startDate'] = l$startDate == null
+          ? null
+          : DateTime.parse((l$startDate as String));
+    }
+    if (data.containsKey('endDate')) {
+      final l$endDate = data['endDate'];
+      result$data['endDate'] = l$endDate == null
+          ? null
+          : DateTime.parse((l$endDate as String));
+    }
+    return Input$BookingFilterInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String? get facilityId => (_$data['facilityId'] as String?);
+
+  String? get userId => (_$data['userId'] as String?);
+
+  Enum$BookingStatus? get status => (_$data['status'] as Enum$BookingStatus?);
+
+  DateTime? get startDate => (_$data['startDate'] as DateTime?);
+
+  DateTime? get endDate => (_$data['endDate'] as DateTime?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('facilityId')) {
+      final l$facilityId = facilityId;
+      result$data['facilityId'] = l$facilityId;
+    }
+    if (_$data.containsKey('userId')) {
+      final l$userId = userId;
+      result$data['userId'] = l$userId;
+    }
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$BookingStatus(l$status);
+    }
+    if (_$data.containsKey('startDate')) {
+      final l$startDate = startDate;
+      result$data['startDate'] = l$startDate?.toIso8601String();
+    }
+    if (_$data.containsKey('endDate')) {
+      final l$endDate = endDate;
+      result$data['endDate'] = l$endDate?.toIso8601String();
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$BookingFilterInput<Input$BookingFilterInput> get copyWith =>
+      CopyWith$Input$BookingFilterInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$BookingFilterInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$facilityId = facilityId;
+    final lOther$facilityId = other.facilityId;
+    if (_$data.containsKey('facilityId') !=
+        other._$data.containsKey('facilityId')) {
+      return false;
+    }
+    if (l$facilityId != lOther$facilityId) {
+      return false;
+    }
+    final l$userId = userId;
+    final lOther$userId = other.userId;
+    if (_$data.containsKey('userId') != other._$data.containsKey('userId')) {
+      return false;
+    }
+    if (l$userId != lOther$userId) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$startDate = startDate;
+    final lOther$startDate = other.startDate;
+    if (_$data.containsKey('startDate') !=
+        other._$data.containsKey('startDate')) {
+      return false;
+    }
+    if (l$startDate != lOther$startDate) {
+      return false;
+    }
+    final l$endDate = endDate;
+    final lOther$endDate = other.endDate;
+    if (_$data.containsKey('endDate') != other._$data.containsKey('endDate')) {
+      return false;
+    }
+    if (l$endDate != lOther$endDate) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$facilityId = facilityId;
+    final l$userId = userId;
+    final l$status = status;
+    final l$startDate = startDate;
+    final l$endDate = endDate;
+    return Object.hashAll([
+      _$data.containsKey('facilityId') ? l$facilityId : const {},
+      _$data.containsKey('userId') ? l$userId : const {},
+      _$data.containsKey('status') ? l$status : const {},
+      _$data.containsKey('startDate') ? l$startDate : const {},
+      _$data.containsKey('endDate') ? l$endDate : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$BookingFilterInput<TRes> {
+  factory CopyWith$Input$BookingFilterInput(
+    Input$BookingFilterInput instance,
+    TRes Function(Input$BookingFilterInput) then,
+  ) = _CopyWithImpl$Input$BookingFilterInput;
+
+  factory CopyWith$Input$BookingFilterInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$BookingFilterInput;
+
+  TRes call({
+    String? facilityId,
+    String? userId,
+    Enum$BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
+  });
+}
+
+class _CopyWithImpl$Input$BookingFilterInput<TRes>
+    implements CopyWith$Input$BookingFilterInput<TRes> {
+  _CopyWithImpl$Input$BookingFilterInput(this._instance, this._then);
+
+  final Input$BookingFilterInput _instance;
+
+  final TRes Function(Input$BookingFilterInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? facilityId = _undefined,
+    Object? userId = _undefined,
+    Object? status = _undefined,
+    Object? startDate = _undefined,
+    Object? endDate = _undefined,
+  }) => _then(
+    Input$BookingFilterInput._({
+      ..._instance._$data,
+      if (facilityId != _undefined) 'facilityId': (facilityId as String?),
+      if (userId != _undefined) 'userId': (userId as String?),
+      if (status != _undefined) 'status': (status as Enum$BookingStatus?),
+      if (startDate != _undefined) 'startDate': (startDate as DateTime?),
+      if (endDate != _undefined) 'endDate': (endDate as DateTime?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$BookingFilterInput<TRes>
+    implements CopyWith$Input$BookingFilterInput<TRes> {
+  _CopyWithStubImpl$Input$BookingFilterInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? facilityId,
+    String? userId,
+    Enum$BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) => _res;
+}
+
 class Input$PaginationInput {
   factory Input$PaginationInput({int? page, int? pageSize}) =>
       Input$PaginationInput._({
@@ -3128,6 +5215,434 @@ Enum$TransactionStatus fromJson$Enum$TransactionStatus(String value) {
       return Enum$TransactionStatus.FAILED;
     default:
       return Enum$TransactionStatus.$unknown;
+  }
+}
+
+enum Enum$FacilityType {
+  TENNIS_COURT,
+  GOLF_COURSE,
+  SWIMMING_POOL,
+  GYM,
+  DINING_ROOM,
+  EVENT_SPACE,
+  CONFERENCE_ROOM,
+  SPA,
+  OTHER,
+  $unknown;
+
+  factory Enum$FacilityType.fromJson(String value) =>
+      fromJson$Enum$FacilityType(value);
+
+  String toJson() => toJson$Enum$FacilityType(this);
+}
+
+String toJson$Enum$FacilityType(Enum$FacilityType e) {
+  switch (e) {
+    case Enum$FacilityType.TENNIS_COURT:
+      return r'TENNIS_COURT';
+    case Enum$FacilityType.GOLF_COURSE:
+      return r'GOLF_COURSE';
+    case Enum$FacilityType.SWIMMING_POOL:
+      return r'SWIMMING_POOL';
+    case Enum$FacilityType.GYM:
+      return r'GYM';
+    case Enum$FacilityType.DINING_ROOM:
+      return r'DINING_ROOM';
+    case Enum$FacilityType.EVENT_SPACE:
+      return r'EVENT_SPACE';
+    case Enum$FacilityType.CONFERENCE_ROOM:
+      return r'CONFERENCE_ROOM';
+    case Enum$FacilityType.SPA:
+      return r'SPA';
+    case Enum$FacilityType.OTHER:
+      return r'OTHER';
+    case Enum$FacilityType.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$FacilityType fromJson$Enum$FacilityType(String value) {
+  switch (value) {
+    case r'TENNIS_COURT':
+      return Enum$FacilityType.TENNIS_COURT;
+    case r'GOLF_COURSE':
+      return Enum$FacilityType.GOLF_COURSE;
+    case r'SWIMMING_POOL':
+      return Enum$FacilityType.SWIMMING_POOL;
+    case r'GYM':
+      return Enum$FacilityType.GYM;
+    case r'DINING_ROOM':
+      return Enum$FacilityType.DINING_ROOM;
+    case r'EVENT_SPACE':
+      return Enum$FacilityType.EVENT_SPACE;
+    case r'CONFERENCE_ROOM':
+      return Enum$FacilityType.CONFERENCE_ROOM;
+    case r'SPA':
+      return Enum$FacilityType.SPA;
+    case r'OTHER':
+      return Enum$FacilityType.OTHER;
+    default:
+      return Enum$FacilityType.$unknown;
+  }
+}
+
+enum Enum$FacilityStatus {
+  ACTIVE,
+  INACTIVE,
+  MAINTENANCE,
+  CLOSED,
+  $unknown;
+
+  factory Enum$FacilityStatus.fromJson(String value) =>
+      fromJson$Enum$FacilityStatus(value);
+
+  String toJson() => toJson$Enum$FacilityStatus(this);
+}
+
+String toJson$Enum$FacilityStatus(Enum$FacilityStatus e) {
+  switch (e) {
+    case Enum$FacilityStatus.ACTIVE:
+      return r'ACTIVE';
+    case Enum$FacilityStatus.INACTIVE:
+      return r'INACTIVE';
+    case Enum$FacilityStatus.MAINTENANCE:
+      return r'MAINTENANCE';
+    case Enum$FacilityStatus.CLOSED:
+      return r'CLOSED';
+    case Enum$FacilityStatus.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$FacilityStatus fromJson$Enum$FacilityStatus(String value) {
+  switch (value) {
+    case r'ACTIVE':
+      return Enum$FacilityStatus.ACTIVE;
+    case r'INACTIVE':
+      return Enum$FacilityStatus.INACTIVE;
+    case r'MAINTENANCE':
+      return Enum$FacilityStatus.MAINTENANCE;
+    case r'CLOSED':
+      return Enum$FacilityStatus.CLOSED;
+    default:
+      return Enum$FacilityStatus.$unknown;
+  }
+}
+
+enum Enum$BookingStatus {
+  PENDING,
+  CONFIRMED,
+  CHECKED_IN,
+  COMPLETED,
+  CANCELLED,
+  NO_SHOW,
+  $unknown;
+
+  factory Enum$BookingStatus.fromJson(String value) =>
+      fromJson$Enum$BookingStatus(value);
+
+  String toJson() => toJson$Enum$BookingStatus(this);
+}
+
+String toJson$Enum$BookingStatus(Enum$BookingStatus e) {
+  switch (e) {
+    case Enum$BookingStatus.PENDING:
+      return r'PENDING';
+    case Enum$BookingStatus.CONFIRMED:
+      return r'CONFIRMED';
+    case Enum$BookingStatus.CHECKED_IN:
+      return r'CHECKED_IN';
+    case Enum$BookingStatus.COMPLETED:
+      return r'COMPLETED';
+    case Enum$BookingStatus.CANCELLED:
+      return r'CANCELLED';
+    case Enum$BookingStatus.NO_SHOW:
+      return r'NO_SHOW';
+    case Enum$BookingStatus.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$BookingStatus fromJson$Enum$BookingStatus(String value) {
+  switch (value) {
+    case r'PENDING':
+      return Enum$BookingStatus.PENDING;
+    case r'CONFIRMED':
+      return Enum$BookingStatus.CONFIRMED;
+    case r'CHECKED_IN':
+      return Enum$BookingStatus.CHECKED_IN;
+    case r'COMPLETED':
+      return Enum$BookingStatus.COMPLETED;
+    case r'CANCELLED':
+      return Enum$BookingStatus.CANCELLED;
+    case r'NO_SHOW':
+      return Enum$BookingStatus.NO_SHOW;
+    default:
+      return Enum$BookingStatus.$unknown;
+  }
+}
+
+enum Enum$MealType {
+  BREAKFAST,
+  BRUNCH,
+  LUNCH,
+  DINNER,
+  AFTERNOON_TEA,
+  $unknown;
+
+  factory Enum$MealType.fromJson(String value) => fromJson$Enum$MealType(value);
+
+  String toJson() => toJson$Enum$MealType(this);
+}
+
+String toJson$Enum$MealType(Enum$MealType e) {
+  switch (e) {
+    case Enum$MealType.BREAKFAST:
+      return r'BREAKFAST';
+    case Enum$MealType.BRUNCH:
+      return r'BRUNCH';
+    case Enum$MealType.LUNCH:
+      return r'LUNCH';
+    case Enum$MealType.DINNER:
+      return r'DINNER';
+    case Enum$MealType.AFTERNOON_TEA:
+      return r'AFTERNOON_TEA';
+    case Enum$MealType.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$MealType fromJson$Enum$MealType(String value) {
+  switch (value) {
+    case r'BREAKFAST':
+      return Enum$MealType.BREAKFAST;
+    case r'BRUNCH':
+      return Enum$MealType.BRUNCH;
+    case r'LUNCH':
+      return Enum$MealType.LUNCH;
+    case r'DINNER':
+      return Enum$MealType.DINNER;
+    case r'AFTERNOON_TEA':
+      return Enum$MealType.AFTERNOON_TEA;
+    default:
+      return Enum$MealType.$unknown;
+  }
+}
+
+enum Enum$DietaryRestriction {
+  VEGETARIAN,
+  VEGAN,
+  GLUTEN_FREE,
+  DAIRY_FREE,
+  NUT_ALLERGY,
+  SHELLFISH_ALLERGY,
+  HALAL,
+  KOSHER,
+  $unknown;
+
+  factory Enum$DietaryRestriction.fromJson(String value) =>
+      fromJson$Enum$DietaryRestriction(value);
+
+  String toJson() => toJson$Enum$DietaryRestriction(this);
+}
+
+String toJson$Enum$DietaryRestriction(Enum$DietaryRestriction e) {
+  switch (e) {
+    case Enum$DietaryRestriction.VEGETARIAN:
+      return r'VEGETARIAN';
+    case Enum$DietaryRestriction.VEGAN:
+      return r'VEGAN';
+    case Enum$DietaryRestriction.GLUTEN_FREE:
+      return r'GLUTEN_FREE';
+    case Enum$DietaryRestriction.DAIRY_FREE:
+      return r'DAIRY_FREE';
+    case Enum$DietaryRestriction.NUT_ALLERGY:
+      return r'NUT_ALLERGY';
+    case Enum$DietaryRestriction.SHELLFISH_ALLERGY:
+      return r'SHELLFISH_ALLERGY';
+    case Enum$DietaryRestriction.HALAL:
+      return r'HALAL';
+    case Enum$DietaryRestriction.KOSHER:
+      return r'KOSHER';
+    case Enum$DietaryRestriction.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$DietaryRestriction fromJson$Enum$DietaryRestriction(String value) {
+  switch (value) {
+    case r'VEGETARIAN':
+      return Enum$DietaryRestriction.VEGETARIAN;
+    case r'VEGAN':
+      return Enum$DietaryRestriction.VEGAN;
+    case r'GLUTEN_FREE':
+      return Enum$DietaryRestriction.GLUTEN_FREE;
+    case r'DAIRY_FREE':
+      return Enum$DietaryRestriction.DAIRY_FREE;
+    case r'NUT_ALLERGY':
+      return Enum$DietaryRestriction.NUT_ALLERGY;
+    case r'SHELLFISH_ALLERGY':
+      return Enum$DietaryRestriction.SHELLFISH_ALLERGY;
+    case r'HALAL':
+      return Enum$DietaryRestriction.HALAL;
+    case r'KOSHER':
+      return Enum$DietaryRestriction.KOSHER;
+    default:
+      return Enum$DietaryRestriction.$unknown;
+  }
+}
+
+enum Enum$TablePreference {
+  WINDOW,
+  OUTDOOR,
+  PRIVATE,
+  BAR,
+  NO_PREFERENCE,
+  $unknown;
+
+  factory Enum$TablePreference.fromJson(String value) =>
+      fromJson$Enum$TablePreference(value);
+
+  String toJson() => toJson$Enum$TablePreference(this);
+}
+
+String toJson$Enum$TablePreference(Enum$TablePreference e) {
+  switch (e) {
+    case Enum$TablePreference.WINDOW:
+      return r'WINDOW';
+    case Enum$TablePreference.OUTDOOR:
+      return r'OUTDOOR';
+    case Enum$TablePreference.PRIVATE:
+      return r'PRIVATE';
+    case Enum$TablePreference.BAR:
+      return r'BAR';
+    case Enum$TablePreference.NO_PREFERENCE:
+      return r'NO_PREFERENCE';
+    case Enum$TablePreference.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$TablePreference fromJson$Enum$TablePreference(String value) {
+  switch (value) {
+    case r'WINDOW':
+      return Enum$TablePreference.WINDOW;
+    case r'OUTDOOR':
+      return Enum$TablePreference.OUTDOOR;
+    case r'PRIVATE':
+      return Enum$TablePreference.PRIVATE;
+    case r'BAR':
+      return Enum$TablePreference.BAR;
+    case r'NO_PREFERENCE':
+      return Enum$TablePreference.NO_PREFERENCE;
+    default:
+      return Enum$TablePreference.$unknown;
+  }
+}
+
+enum Enum$EventType {
+  WEDDING,
+  CONFERENCE,
+  MEETING,
+  PARTY,
+  CORPORATE_EVENT,
+  OTHER,
+  $unknown;
+
+  factory Enum$EventType.fromJson(String value) =>
+      fromJson$Enum$EventType(value);
+
+  String toJson() => toJson$Enum$EventType(this);
+}
+
+String toJson$Enum$EventType(Enum$EventType e) {
+  switch (e) {
+    case Enum$EventType.WEDDING:
+      return r'WEDDING';
+    case Enum$EventType.CONFERENCE:
+      return r'CONFERENCE';
+    case Enum$EventType.MEETING:
+      return r'MEETING';
+    case Enum$EventType.PARTY:
+      return r'PARTY';
+    case Enum$EventType.CORPORATE_EVENT:
+      return r'CORPORATE_EVENT';
+    case Enum$EventType.OTHER:
+      return r'OTHER';
+    case Enum$EventType.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$EventType fromJson$Enum$EventType(String value) {
+  switch (value) {
+    case r'WEDDING':
+      return Enum$EventType.WEDDING;
+    case r'CONFERENCE':
+      return Enum$EventType.CONFERENCE;
+    case r'MEETING':
+      return Enum$EventType.MEETING;
+    case r'PARTY':
+      return Enum$EventType.PARTY;
+    case r'CORPORATE_EVENT':
+      return Enum$EventType.CORPORATE_EVENT;
+    case r'OTHER':
+      return Enum$EventType.OTHER;
+    default:
+      return Enum$EventType.$unknown;
+  }
+}
+
+enum Enum$ServiceAddon {
+  CATERING,
+  AV_EQUIPMENT,
+  DECORATIONS,
+  PHOTOGRAPHY,
+  MUSIC,
+  VALET_PARKING,
+  $unknown;
+
+  factory Enum$ServiceAddon.fromJson(String value) =>
+      fromJson$Enum$ServiceAddon(value);
+
+  String toJson() => toJson$Enum$ServiceAddon(this);
+}
+
+String toJson$Enum$ServiceAddon(Enum$ServiceAddon e) {
+  switch (e) {
+    case Enum$ServiceAddon.CATERING:
+      return r'CATERING';
+    case Enum$ServiceAddon.AV_EQUIPMENT:
+      return r'AV_EQUIPMENT';
+    case Enum$ServiceAddon.DECORATIONS:
+      return r'DECORATIONS';
+    case Enum$ServiceAddon.PHOTOGRAPHY:
+      return r'PHOTOGRAPHY';
+    case Enum$ServiceAddon.MUSIC:
+      return r'MUSIC';
+    case Enum$ServiceAddon.VALET_PARKING:
+      return r'VALET_PARKING';
+    case Enum$ServiceAddon.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$ServiceAddon fromJson$Enum$ServiceAddon(String value) {
+  switch (value) {
+    case r'CATERING':
+      return Enum$ServiceAddon.CATERING;
+    case r'AV_EQUIPMENT':
+      return Enum$ServiceAddon.AV_EQUIPMENT;
+    case r'DECORATIONS':
+      return Enum$ServiceAddon.DECORATIONS;
+    case r'PHOTOGRAPHY':
+      return Enum$ServiceAddon.PHOTOGRAPHY;
+    case r'MUSIC':
+      return Enum$ServiceAddon.MUSIC;
+    case r'VALET_PARKING':
+      return Enum$ServiceAddon.VALET_PARKING;
+    default:
+      return Enum$ServiceAddon.$unknown;
   }
 }
 

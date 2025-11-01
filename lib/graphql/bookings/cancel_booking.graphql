@@ -1,0 +1,8 @@
+mutation CancelBooking($bookingId: ID!, $reason: String) {
+  cancelBooking(bookingId: $bookingId, reason: $reason) {
+    id
+    status
+    cancellationReason
+    cancelledAt
+  }
+}

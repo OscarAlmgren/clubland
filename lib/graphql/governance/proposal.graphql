@@ -1,0 +1,29 @@
+query Proposal($id: ID!) {
+  proposal(id: $id) {
+    id
+    title
+    description
+    type
+    status
+    proposer {
+      id
+      username
+      firstName
+      lastName
+    }
+    votes {
+      id
+      choice
+      comment
+      voter {
+        id
+        username
+        firstName
+        lastName
+      }
+      createdAt
+    }
+    votingDeadline
+    createdAt
+  }
+}

@@ -1,0 +1,11 @@
+subscription VoteReceived($proposalId: ID) {
+  voteReceived(proposalId: $proposalId) {
+    id
+    proposalId
+    voter {
+      username
+    }
+    choice
+    createdAt
+  }
+}

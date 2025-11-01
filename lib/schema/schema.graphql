@@ -277,6 +277,143 @@ type ReciprocalAnalytics {
   monthlyReciprocalUsage: [MonthlyVisit!]!
 }
 
+# Booking & Facility types
+type Facility {
+  id: ID!
+  clubId: ID!
+  name: String!
+  description: String
+  type: FacilityType!
+  capacity: Int
+  amenities: [String!]
+  status: FacilityStatus!
+  minBookingDuration: Int
+  maxBookingDuration: Int
+  advanceBookingDays: Int
+  cancellationDeadline: Int
+  operatingHours: String
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum FacilityType {
+  TENNIS_COURT
+  GOLF_COURSE
+  SWIMMING_POOL
+  GYM
+  DINING_ROOM
+  EVENT_SPACE
+  CONFERENCE_ROOM
+  SPA
+  OTHER
+}
+
+enum FacilityStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+  CLOSED
+}
+
+type Booking {
+  id: ID!
+  facilityId: ID!
+  userId: ID!
+  facility: Facility!
+  user: User!
+  startTime: Time!
+  endTime: Time!
+  status: BookingStatus!
+  notes: String
+  participants: [ID!]
+  partySize: Int
+  mealType: MealType
+  dietaryRestrictions: [DietaryRestriction!]
+  specialRequests: String
+  tablePreference: TablePreference
+  eventType: EventType
+  guestCount: Int
+  serviceAddons: [ServiceAddon!]
+  cancellationReason: String
+  confirmedAt: Time
+  confirmedBy: ID
+  cancelledAt: Time
+  checkedInAt: Time
+  checkedOutAt: Time
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum MealType {
+  BREAKFAST
+  BRUNCH
+  LUNCH
+  DINNER
+  AFTERNOON_TEA
+}
+
+enum DietaryRestriction {
+  VEGETARIAN
+  VEGAN
+  GLUTEN_FREE
+  DAIRY_FREE
+  NUT_ALLERGY
+  SHELLFISH_ALLERGY
+  HALAL
+  KOSHER
+}
+
+enum TablePreference {
+  WINDOW
+  OUTDOOR
+  PRIVATE
+  BAR
+  NO_PREFERENCE
+}
+
+enum EventType {
+  WEDDING
+  CONFERENCE
+  MEETING
+  PARTY
+  CORPORATE_EVENT
+  OTHER
+}
+
+enum ServiceAddon {
+  CATERING
+  AV_EQUIPMENT
+  DECORATIONS
+  PHOTOGRAPHY
+  MUSIC
+  VALET_PARKING
+}
+
+type TimeSlot {
+  startTime: Time!
+  endTime: Time!
+  available: Boolean!
+  reason: String
+}
+
+type BookingStatistics {
+  totalBookings: Int!
+  confirmedBookings: Int!
+  cancelledBookings: Int!
+  completedBookings: Int!
+  noShowBookings: Int!
+  averageBookingDuration: Float
+}
+
 # Governance types
 type Proposal {
   id: ID!
@@ -421,6 +558,77 @@ input CastVoteInput {
   comment: String
 }
 
+# Booking input types
+input CreateFacilityInput {
+  name: String!
+  description: String
+  type: FacilityType!
+  capacity: Int
+  amenities: [String!]
+  minBookingDuration: Int
+  maxBookingDuration: Int
+  advanceBookingDays: Int
+  cancellationDeadline: Int
+  operatingHours: String
+}
+
+input UpdateFacilityInput {
+  name: String
+  description: String
+  capacity: Int
+  amenities: [String!]
+  status: FacilityStatus
+  minBookingDuration: Int
+  maxBookingDuration: Int
+  advanceBookingDays: Int
+  cancellationDeadline: Int
+  operatingHours: String
+}
+
+input CreateBookingInput {
+  facilityId: ID!
+  startTime: Time!
+  endTime: Time!
+  notes: String
+  participants: [ID!]
+  partySize: Int
+  mealType: MealType
+  dietaryRestrictions: [DietaryRestriction!]
+  specialRequests: String
+  tablePreference: TablePreference
+  eventType: EventType
+  guestCount: Int
+  serviceAddons: [ServiceAddon!]
+}
+
+input UpdateBookingInput {
+  startTime: Time
+  endTime: Time
+  notes: String
+  participants: [ID!]
+  partySize: Int
+  mealType: MealType
+  dietaryRestrictions: [DietaryRestriction!]
+  specialRequests: String
+  tablePreference: TablePreference
+  guestCount: Int
+  serviceAddons: [ServiceAddon!]
+}
+
+input FacilityFilterInput {
+  clubId: ID
+  type: FacilityType
+  status: FacilityStatus
+}
+
+input BookingFilterInput {
+  facilityId: ID
+  userId: ID
+  status: BookingStatus
+  startDate: Time
+  endDate: Time
+}
+
 # Pagination
 input PaginationInput {
   page: Int = 1
@@ -458,6 +666,16 @@ type NotificationConnection {
 
 type ProposalConnection {
   nodes: [Proposal!]!
+  pageInfo: PageInfo!
+}
+
+type FacilityConnection {
+  nodes: [Facility!]!
+  pageInfo: PageInfo!
+}
+
+type BookingConnection {
+  nodes: [Booking!]!
   pageInfo: PageInfo!
 }
 
@@ -501,6 +719,21 @@ type Query {
   # Blockchain
   transactions(pagination: PaginationInput, status: TransactionStatus): [Transaction!]!
   transaction(id: ID!): Transaction
+
+  # Facilities
+  facilities(filter: FacilityFilterInput, pagination: PaginationInput): FacilityConnection!
+  facility(id: ID!): Facility
+  facilityTypes: [FacilityType!]!
+
+  # Bookings
+  bookings(filter: BookingFilterInput, pagination: PaginationInput): BookingConnection!
+  booking(id: ID!): Booking
+  myBookings(filter: BookingFilterInput, pagination: PaginationInput): BookingConnection!
+  upcomingBookings(days: Int, pagination: PaginationInput): BookingConnection!
+  facilityBookings(facilityId: ID!, startDate: Time!, endDate: Time!): [Booking!]!
+  checkAvailability(facilityId: ID!, startTime: Time!, endTime: Time!, excludeBookingId: ID): Boolean!
+  availableSlots(facilityId: ID!, date: Time!, slotDuration: Int!): [TimeSlot!]!
+  bookingStatistics(startDate: Time!, endDate: Time!): BookingStatistics!
 }
 
 type Mutation {
@@ -538,6 +771,21 @@ type Mutation {
   castVote(input: CastVoteInput!): Vote!
   finalizeProposal(id: ID!): Proposal!
   
+  # Facilities
+  createFacility(input: CreateFacilityInput!): Facility!
+  updateFacility(id: ID!, input: UpdateFacilityInput!): Facility!
+  deleteFacility(id: ID!): Boolean!
+
+  # Bookings
+  createBooking(input: CreateBookingInput!): Booking!
+  updateBooking(id: ID!, input: UpdateBookingInput!): Booking!
+  cancelBooking(bookingId: ID!, reason: String): Booking!
+  confirmBooking(bookingId: ID!): Booking!
+  completeBooking(bookingId: ID!): Booking!
+  markBookingNoShow(bookingId: ID!): Booking!
+  checkInBooking(bookingId: ID!): Booking!
+  checkOutBooking(bookingId: ID!): Booking!
+
   # System
   syncBlockchainData: Boolean!
   generateAnalyticsReport(startDate: Time!, endDate: Time!): String!
@@ -546,14 +794,17 @@ type Mutation {
 type Subscription {
   # Notifications
   notificationReceived: Notification!
-  
+
+  # Bookings
+  bookingUpdates(userId: ID): Booking!
+
   # Visits
   visitStatusChanged(clubId: ID): Visit!
-  
+
   # Governance
   proposalUpdated(proposalId: ID): Proposal!
   voteReceived(proposalId: ID): Vote!
-  
+
   # Blockchain
   transactionStatusChanged: Transaction!
 }

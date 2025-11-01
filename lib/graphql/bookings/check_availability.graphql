@@ -1,0 +1,13 @@
+query CheckAvailability(
+  $facilityId: ID!
+  $startTime: Time!
+  $endTime: Time!
+  $excludeBookingId: ID
+) {
+  checkAvailability(
+    facilityId: $facilityId
+    startTime: $startTime
+    endTime: $endTime
+    excludeBookingId: $excludeBookingId
+  )
+}

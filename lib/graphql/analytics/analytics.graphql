@@ -1,0 +1,37 @@
+query Analytics($startDate: Time, $endDate: Time) {
+  analytics(startDate: $startDate, endDate: $endDate) {
+    visits {
+      totalVisits
+      monthlyVisits {
+        month
+        count
+      }
+      topDestinations {
+        club {
+          name
+          location
+        }
+        count
+      }
+      averageVisitDuration
+    }
+    members {
+      totalMembers
+      activeMembers
+      newMembersThisMonth
+      membershipDistribution {
+        type
+        count
+      }
+    }
+    reciprocals {
+      totalAgreements
+      activeAgreements
+      pendingAgreements
+      monthlyReciprocalUsage {
+        month
+        count
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+mutation SuspendReciprocalAgreement($id: ID!, $reason: String) {
+  suspendReciprocalAgreement(id: $id, reason: $reason) {
+    id
+    status
+  }
+}

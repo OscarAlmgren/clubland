@@ -1,0 +1,6 @@
+mutation ApproveReciprocalAgreement($id: ID!) {
+  approveReciprocalAgreement(id: $id) {
+    id
+    status
+  }
+}

@@ -1,0 +1,11 @@
+subscription BookingUpdates($userId: ID) {
+  bookingUpdates(userId: $userId) {
+    id
+    status
+    facility {
+      name
+    }
+    startTime
+    endTime
+  }
+}

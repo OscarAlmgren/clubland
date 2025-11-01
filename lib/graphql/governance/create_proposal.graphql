@@ -1,0 +1,10 @@
+mutation CreateProposal($input: CreateProposalInput!) {
+  createProposal(input: $input) {
+    id
+    title
+    description
+    type
+    status
+    votingDeadline
+  }
+}

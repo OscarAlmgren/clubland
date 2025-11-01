@@ -1,0 +1,17 @@
+mutation CreateBooking($input: CreateBookingInput!) {
+  createBooking(input: $input) {
+    id
+    facilityId
+    userId
+    startTime
+    endTime
+    status
+    notes
+    participants
+    facility {
+      name
+      type
+    }
+    createdAt
+  }
+}

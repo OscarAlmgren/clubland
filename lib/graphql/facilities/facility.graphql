@@ -1,0 +1,19 @@
+query Facility($id: ID!) {
+  facility(id: $id) {
+    id
+    clubId
+    name
+    description
+    type
+    capacity
+    amenities
+    status
+    minBookingDuration
+    maxBookingDuration
+    advanceBookingDays
+    cancellationDeadline
+    operatingHours
+    createdAt
+    updatedAt
+  }
+}

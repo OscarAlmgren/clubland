@@ -1,0 +1,10 @@
+subscription ProposalUpdated($proposalId: ID) {
+  proposalUpdated(proposalId: $proposalId) {
+    id
+    title
+    status
+    votes {
+      choice
+    }
+  }
+}

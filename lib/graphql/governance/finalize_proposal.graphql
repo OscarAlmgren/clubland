@@ -1,0 +1,6 @@
+mutation FinalizeProposal($id: ID!) {
+  finalizeProposal(id: $id) {
+    id
+    status
+  }
+}

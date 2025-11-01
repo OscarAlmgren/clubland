@@ -1,0 +1,40 @@
+query Booking($id: ID!) {
+  booking(id: $id) {
+    id
+    facilityId
+    userId
+    facility {
+      id
+      name
+      type
+      capacity
+    }
+    user {
+      id
+      firstName
+      lastName
+      email
+    }
+    startTime
+    endTime
+    status
+    notes
+    participants
+    partySize
+    mealType
+    dietaryRestrictions
+    specialRequests
+    tablePreference
+    eventType
+    guestCount
+    serviceAddons
+    cancellationReason
+    confirmedAt
+    confirmedBy
+    cancelledAt
+    checkedInAt
+    checkedOutAt
+    createdAt
+    updatedAt
+  }
+}

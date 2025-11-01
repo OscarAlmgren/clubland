@@ -116,6 +116,7 @@ dev_dependencies:
   # Internationalization
   intl_utils: ^2.8.7
 
+  riverpod: any
 flutter:
   uses-material-design: true
   generate: true

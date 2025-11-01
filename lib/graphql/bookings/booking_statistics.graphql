@@ -1,0 +1,10 @@
+query BookingStatistics($startDate: Time!, $endDate: Time!) {
+  bookingStatistics(startDate: $startDate, endDate: $endDate) {
+    totalBookings
+    confirmedBookings
+    cancelledBookings
+    completedBookings
+    noShowBookings
+    averageBookingDuration
+  }
+}

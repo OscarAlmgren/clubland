@@ -1,0 +1,28 @@
+query ReciprocalAgreements($pagination: PaginationInput, $status: AgreementStatus) {
+  reciprocalAgreements(pagination: $pagination, status: $status) {
+    nodes {
+      id
+      clubId
+      partnerClubId
+      status
+      terms {
+        maxVisitsPerMonth
+        reciprocalFee
+        blackoutDates
+        specialConditions
+      }
+      effectiveDate
+      expirationDate
+      createdAt
+      updatedAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}

@@ -1,0 +1,13 @@
+mutation CreateReciprocalAgreement($input: CreateReciprocalAgreementInput!) {
+  createReciprocalAgreement(input: $input) {
+    id
+    clubId
+    partnerClubId
+    status
+    terms {
+      maxVisitsPerMonth
+      reciprocalFee
+    }
+    effectiveDate
+  }
+}

@@ -1,0 +1,10 @@
+mutation UpdateFacility($id: ID!, $input: UpdateFacilityInput!) {
+  updateFacility(id: $id, input: $input) {
+    id
+    name
+    description
+    capacity
+    status
+    updatedAt
+  }
+}

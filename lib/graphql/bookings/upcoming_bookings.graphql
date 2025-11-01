@@ -1,0 +1,17 @@
+query UpcomingBookings($days: Int, $pagination: PaginationInput) {
+  upcomingBookings(days: $days, pagination: $pagination) {
+    nodes {
+      id
+      facility {
+        name
+        type
+      }
+      startTime
+      endTime
+      status
+    }
+    pageInfo {
+      total
+    }
+  }
+}

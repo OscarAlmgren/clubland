@@ -1,0 +1,13 @@
+mutation CastVote($input: CastVoteInput!) {
+  castVote(input: $input) {
+    id
+    proposalId
+    voter {
+      id
+      username
+    }
+    choice
+    comment
+    createdAt
+  }
+}

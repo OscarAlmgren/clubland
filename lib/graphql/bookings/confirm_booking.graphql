@@ -1,0 +1,8 @@
+mutation ConfirmBooking($bookingId: ID!) {
+  confirmBooking(bookingId: $bookingId) {
+    id
+    status
+    confirmedAt
+    confirmedBy
+  }
+}

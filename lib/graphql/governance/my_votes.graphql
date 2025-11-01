@@ -1,0 +1,9 @@
+query MyVotes($proposalId: ID) {
+  myVotes(proposalId: $proposalId) {
+    id
+    proposalId
+    choice
+    comment
+    createdAt
+  }
+}

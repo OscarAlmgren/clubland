@@ -1,0 +1,18 @@
+query ReciprocalAgreement($id: ID!) {
+  reciprocalAgreement(id: $id) {
+    id
+    clubId
+    partnerClubId
+    status
+    terms {
+      maxVisitsPerMonth
+      reciprocalFee
+      blackoutDates
+      specialConditions
+    }
+    effectiveDate
+    expirationDate
+    createdAt
+    updatedAt
+  }
+}

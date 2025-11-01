@@ -1,0 +1,16 @@
+query AvailableSlots(
+  $facilityId: ID!
+  $date: Time!
+  $slotDuration: Int!
+) {
+  availableSlots(
+    facilityId: $facilityId
+    date: $date
+    slotDuration: $slotDuration
+  ) {
+    startTime
+    endTime
+    available
+    reason
+  }
+}

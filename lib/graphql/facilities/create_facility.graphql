@@ -1,0 +1,11 @@
+mutation CreateFacility($input: CreateFacilityInput!) {
+  createFacility(input: $input) {
+    id
+    clubId
+    name
+    type
+    capacity
+    status
+    createdAt
+  }
+}

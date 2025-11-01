@@ -1,0 +1,29 @@
+query Facilities($filter: FacilityFilterInput, $pagination: PaginationInput) {
+  facilities(filter: $filter, pagination: $pagination) {
+    nodes {
+      id
+      clubId
+      name
+      description
+      type
+      capacity
+      amenities
+      status
+      minBookingDuration
+      maxBookingDuration
+      advanceBookingDays
+      cancellationDeadline
+      operatingHours
+      createdAt
+      updatedAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}

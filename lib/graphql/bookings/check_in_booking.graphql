@@ -1,0 +1,7 @@
+mutation CheckInBooking($bookingId: ID!) {
+  checkInBooking(bookingId: $bookingId) {
+    id
+    status
+    checkedInAt
+  }
+}

@@ -1,18 +1,28 @@
-query Clubs {
-  clubs {
-    id
-    name
-    description
-    location
-    website
-    status
-    settings {
-      allowReciprocal
-      requireApproval
-      maxVisitsPerMonth
-      reciprocalFee
+query Clubs($pagination: PaginationInput) {
+  clubs(pagination: $pagination) {
+    nodes {
+      id
+      name
+      description
+      location
+      website
+      status
+      settings {
+        allowReciprocal
+        requireApproval
+        maxVisitsPerMonth
+        reciprocalFee
+      }
+      createdAt
+      updatedAt
     }
-    createdAt
-    updatedAt
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
   }
 }

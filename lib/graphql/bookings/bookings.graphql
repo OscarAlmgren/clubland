@@ -1,0 +1,31 @@
+query Bookings($filter: BookingFilterInput, $pagination: PaginationInput) {
+  bookings(filter: $filter, pagination: $pagination) {
+    nodes {
+      id
+      facilityId
+      userId
+      facility {
+        name
+        type
+      }
+      user {
+        firstName
+        lastName
+      }
+      startTime
+      endTime
+      status
+      notes
+      participants
+      createdAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
+  }
+}
