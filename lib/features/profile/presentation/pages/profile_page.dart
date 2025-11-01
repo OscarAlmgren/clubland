@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/router/route_paths.dart';
 import '../../../../generated/l10n/l10n.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../../domain/entities/simple_activity.dart';
 import '../../domain/entities/simple_user.dart';
 import '../widgets/activity_feed_widget.dart';
 import '../widgets/profile_stats_widget.dart';
@@ -285,7 +286,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
   Widget _buildActivityTab() => const ActivityFeedWidget();
 
-  Widget _buildAchievementsTab() => const UserAchievementsWidget();
+  Widget _buildAchievementsTab() =>
+      SingleChildScrollView(child: const UserAchievementsWidget());
 
   Widget _buildMoreTab() => SingleChildScrollView(
         padding: const EdgeInsets.all(16),

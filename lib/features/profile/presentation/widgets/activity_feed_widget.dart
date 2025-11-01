@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../generated/l10n/l10n.dart';
+import '../../domain/entities/simple_activity.dart';
 
 class ActivityFeedWidget extends ConsumerWidget {
   const ActivityFeedWidget({super.key});
@@ -52,8 +53,8 @@ class ActivityTile extends StatelessWidget {
           : Text(
               _formatDate(activity.timestamp),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
             ),
     );
   }
@@ -87,21 +88,4 @@ class ActivityTile extends StatelessWidget {
       return 'Just now';
     }
   }
-}
-
-// Simple activity data class
-class SimpleActivity {
-  const SimpleActivity({
-    required this.id,
-    required this.type,
-    required this.title,
-    required this.description,
-    required this.timestamp,
-  });
-
-  final String id;
-  final String type;
-  final String title;
-  final String description;
-  final DateTime timestamp;
 }
