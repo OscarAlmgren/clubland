@@ -91,19 +91,22 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Fetching clubs with filter: $filter');
 
+      // Fixed: Use proper ClubConnection structure with nodes
       const clubsQuery = r'''
         query Clubs {
           clubs {
-            id
-            name
-            slug
-            description
-            location
-            address
-            website
-            status
-            createdAt
-            updatedAt
+            nodes {
+              id
+              name
+              slug
+              description
+              location
+              address
+              website
+              status
+              createdAt
+              updatedAt
+            }
           }
         }
       ''';
@@ -123,13 +126,16 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data = result.data?['clubs'] as List<dynamic>?;
-      if (data == null) {
+      // Access nodes from ClubConnection
+      final clubsData = result.data?['clubs'] as Map<String, dynamic>?;
+      final nodes = clubsData?['nodes'] as List<dynamic>?;
+
+      if (nodes == null) {
         throw const app_exceptions.NetworkException(
             'No clubs data received', 'NO_DATA');
       }
 
-      return data
+      return nodes
           .map((node) => ClubModel.fromJson(node as Map<String, dynamic>))
           .toList();
     } on app_exceptions.GraphQLException catch (e) {
