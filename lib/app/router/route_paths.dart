@@ -29,6 +29,18 @@ class RoutePaths {
   /// Path template for a specific booking's detail screen.
   static const String bookingDetail = '/bookings/:id';
 
+  /// Path for the list of events screen.
+  static const String events = '/events';
+
+  /// Path template for a specific event's detail screen.
+  static const String eventDetail = '/events/:id';
+
+  /// Path template for RSVP form for an event.
+  static const String eventRSVP = '/events/:id/rsvp';
+
+  /// Path for the list of user's RSVPs.
+  static const String myRSVPs = '/my-rsvps';
+
   /// Path for the list of visits screen.
   static const String visits = '/visits';
 
@@ -79,4 +91,10 @@ class RoutePaths {
 
   /// Generates the absolute path for a specific visit's detail screen.
   static String getVisitDetailPath(String visitId) => '/visits/$visitId';
+
+  /// Generates the absolute path for a specific event's detail screen.
+  static String getEventDetailPath(String eventId) => '/events/$eventId';
+
+  /// Generates the absolute path for a specific event's RSVP form.
+  static String getEventRSVPPath(String eventId) => '/events/$eventId/rsvp';
 }

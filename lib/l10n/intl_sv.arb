@@ -274,5 +274,267 @@
   "selectTheme": "Välj Tema",
   "@selectTheme": {
     "description": "Titel för dialogrutan för temaval"
+  },
+  "events": "Evenemang",
+  "@events": {
+    "description": "Titel för evenemangssidan"
+  },
+  "myRSVPs": "Mina OSA",
+  "@myRSVPs": {
+    "description": "Titel för Mina OSA-sidan"
+  },
+  "eventDetails": "Evenemangsinformation",
+  "@eventDetails": {
+    "description": "Titel för evenemangsinformationssidan"
+  },
+  "rsvpToEvent": "OSA till evenemang",
+  "@rsvpToEvent": {
+    "description": "Titel för OSA-formulärsidan"
+  },
+  "searchEvents": "Sök evenemang...",
+  "@searchEvents": {
+    "description": "Platshållare för evenemangsökning"
+  },
+  "filterEvents": "Filtrera evenemang",
+  "@filterEvents": {
+    "description": "Verktygstips för filterknappen"
+  },
+  "noEventsFound": "Inga Evenemang Hittades",
+  "@noEventsFound": {
+    "description": "Tomt läge titel för inga evenemang"
+  },
+  "noEventsDescription": "Det finns inga kommande evenemang på denna klubb",
+  "@noEventsDescription": {
+    "description": "Tomt läge beskrivning för inga evenemang"
+  },
+  "adjustFilters": "Prova att justera din sökning eller filter",
+  "@adjustFilters": {
+    "description": "Tomt läge förslag för filtrerade resultat"
+  },
+  "clearFilters": "Rensa Filter",
+  "@clearFilters": {
+    "description": "Text för knappen rensa filter"
+  },
+  "connectionError": "Anslutningsfel",
+  "@connectionError": {
+    "description": "Titel för nätverksfel"
+  },
+  "connectionErrorMessage": "Kan inte ansluta till servern. Kontrollera din internetanslutning och försök igen.",
+  "@connectionErrorMessage": {
+    "description": "Meddelande för nätverksfel"
+  },
+  "serverError": "Serverfel",
+  "@serverError": {
+    "description": "Titel för serverfel"
+  },
+  "serverErrorMessage": "Servern stötte på ett fel. Försök igen senare.",
+  "@serverErrorMessage": {
+    "description": "Meddelande för serverfel"
+  },
+  "retry": "Försök igen",
+  "@retry": {
+    "description": "Text för knappen försök igen"
+  },
+  "aboutThisEvent": "Om detta evenemang",
+  "@aboutThisEvent": {
+    "description": "Titel för evenemangsbeskrivningssektion"
+  },
+  "capacity": "Kapacitet",
+  "@capacity": {
+    "description": "Titel för evenemangskapacitetssektion"
+  },
+  "eventInformation": "Evenemangsinformation",
+  "@eventInformation": {
+    "description": "Titel för evenemangsinformationssektion"
+  },
+  "eventType": "Evenemangstyp",
+  "@eventType": {
+    "description": "Etikett för evenemangstyp"
+  },
+  "organizer": "Arrangör",
+  "@organizer": {
+    "description": "Etikett för arrangör"
+  },
+  "guestPolicy": "Gästpolicy",
+  "@guestPolicy": {
+    "description": "Etikett för gästpolicy"
+  },
+  "maxGuests": "Max Gäster",
+  "@maxGuests": {
+    "description": "Etikett för max gäster"
+  },
+  "rsvpDeadline": "OSA-frist",
+  "@rsvpDeadline": {
+    "description": "Etikett för OSA-frist"
+  },
+  "cancellationDeadline": "Avbokningsfrist",
+  "@cancellationDeadline": {
+    "description": "Etikett för avbokningsfrist"
+  },
+  "paymentRequired": "Betalning krävs",
+  "@paymentRequired": {
+    "description": "Indikator för betalningskrav"
+  },
+  "approvalRequired": "Godkännande krävs",
+  "@approvalRequired": {
+    "description": "Indikator för godkännandekrav"
+  },
+  "yourResponse": "Ditt Svar",
+  "@yourResponse": {
+    "description": "Titel för OSA-svarssektion"
+  },
+  "yes": "Ja",
+  "@yes": {
+    "description": "Ja-svarsalternativ"
+  },
+  "no": "Nej",
+  "@no": {
+    "description": "Nej-svarsalternativ"
+  },
+  "maybe": "Kanske",
+  "@maybe": {
+    "description": "Kanske-svarsalternativ"
+  },
+  "numberOfAttendees": "Antal Deltagare",
+  "@numberOfAttendees": {
+    "description": "Titel för deltagarantalsektion"
+  },
+  "guestNames": "Gästnamn",
+  "@guestNames": {
+    "description": "Titel för gästnamnsektion"
+  },
+  "provideGuestNames": "Vänligen ange namnen på dina gäster",
+  "@provideGuestNames": {
+    "description": "Instruktion för gästnamn"
+  },
+  "guestName": "Gäst {number} Namn",
+  "@guestName": {
+    "description": "Etikett för gästnamnfält",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "dietaryRestrictions": "Kostbegränsningar",
+  "@dietaryRestrictions": {
+    "description": "Titel för kostbegränsningssektion"
+  },
+  "selectAllThatApply": "Välj alla som passar",
+  "@selectAllThatApply": {
+    "description": "Valinstruktion"
+  },
+  "seatingPreferences": "Sittpreferenser (Valfritt)",
+  "@seatingPreferences": {
+    "description": "Titel för sittpreferenssektion"
+  },
+  "seatingPreferencesHint": "t.ex. Nära fönster, tyst område, etc.",
+  "@seatingPreferencesHint": {
+    "description": "Hintext för sittpreferenser"
+  },
+  "specialRequests": "Särskilda Önskemål (Valfritt)",
+  "@specialRequests": {
+    "description": "Titel för särskilda önskemålsektion"
+  },
+  "specialRequestsHint": "Eventuella särskilda anpassningar eller önskemål",
+  "@specialRequestsHint": {
+    "description": "Hintext för särskilda önskemål"
+  },
+  "submitRSVP": "Skicka OSA",
+  "@submitRSVP": {
+    "description": "Text för knappen skicka OSA"
+  },
+  "submitting": "Skickar...",
+  "@submitting": {
+    "description": "Text för skickande tillstånd"
+  },
+  "rsvpSubmitted": "OSA Skickad",
+  "@rsvpSubmitted": {
+    "description": "Titel för OSA-framgångsdialog"
+  },
+  "rsvpPendingApproval": "Din OSA har skickats och väntar på godkännande från evenemangsarrangören.",
+  "@rsvpPendingApproval": {
+    "description": "OSA väntar på godkännande meddelande"
+  },
+  "rsvpConfirmed": "Din OSA har bekräftats! Vi ser fram emot att träffa dig på evenemanget.",
+  "@rsvpConfirmed": {
+    "description": "OSA bekräftad meddelande"
+  },
+  "rsvpFailed": "OSA Misslyckades",
+  "@rsvpFailed": {
+    "description": "Titel för OSA-misslyckandedialog"
+  },
+  "cancelRSVP": "Avboka OSA",
+  "@cancelRSVP": {
+    "description": "Text för knappen avboka OSA"
+  },
+  "cancelRSVPConfirmation": "Är du säker på att du vill avboka din OSA? Avbokningsavgifter kan tillkomma baserat på evenemangets avbokningspolicy.",
+  "@cancelRSVPConfirmation": {
+    "description": "Bekräftelsemeddelande för avbokning av OSA"
+  },
+  "keepRSVP": "Behåll OSA",
+  "@keepRSVP": {
+    "description": "Text för knappen behåll OSA"
+  },
+  "filterByStatus": "Filtrera efter Status",
+  "@filterByStatus": {
+    "description": "Titel för filtrera efter status-dialog"
+  },
+  "clear": "Rensa",
+  "@clear": {
+    "description": "Text för knappen rensa"
+  },
+  "applyFilter": "Tillämpa Filter",
+  "@applyFilter": {
+    "description": "Text för knappen tillämpa filter"
+  },
+  "confirmed": "Bekräftad",
+  "@confirmed": {
+    "description": "Bekräftad status"
+  },
+  "tentative": "Preliminär",
+  "@tentative": {
+    "description": "Preliminär status"
+  },
+  "pendingApproval": "Väntar på Godkännande",
+  "@pendingApproval": {
+    "description": "Väntar på godkännande status"
+  },
+  "waitlist": "Väntelista",
+  "@waitlist": {
+    "description": "Väntelista status"
+  },
+  "cancelled": "Avbokad",
+  "@cancelled": {
+    "description": "Avbokad status"
+  },
+  "declined": "Avböjd",
+  "@declined": {
+    "description": "Avböjd status"
+  },
+  "going": "Kommer",
+  "@going": {
+    "description": "Kommer svarsetikett"
+  },
+  "notGoing": "Kommer Inte",
+  "@notGoing": {
+    "description": "Kommer inte svarsetikett"
+  },
+  "includingYourself": "(Inklusive dig själv, max {max})",
+  "@includingYourself": {
+    "description": "Instruktion för deltagarantal",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "person": "person",
+  "@person": {
+    "description": "Person singular"
+  },
+  "people": "personer",
+  "@people": {
+    "description": "Personer plural"
   }
 }

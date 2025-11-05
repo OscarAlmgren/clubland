@@ -452,11 +452,28 @@ class EventDetailsPage extends ConsumerWidget {
   }
 
   void _navigateToRSVPForm(BuildContext context, EventEntity event) {
-    // TODO: Navigate to RSVP form page
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Navigate to RSVP form'),
-        duration: Duration(seconds: 2),
+    final eligibility = ref.read(
+      eventDetailsControllerProvider(eventId, memberId),
+    ).value?.eligibility;
+
+    if (eligibility == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Unable to load eligibility information'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (context) => RSVPFormPage(
+          event: event,
+          memberId: memberId,
+          clubId: event.clubId,
+          eligibility: eligibility,
+        ),
       ),
     );
   }
