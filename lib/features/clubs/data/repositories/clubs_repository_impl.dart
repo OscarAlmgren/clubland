@@ -4,39 +4,39 @@ import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/club_entity.dart';
 import '../../domain/entities/club_search_result_entity.dart';
-import '../../domain/repositories/clubs_repository.dart';
-import '../datasources/clubs_remote_datasource.dart';
+import '../../domain/repositories/clubs_repository.dart' as domain;
+import '../datasources/clubs_remote_datasource.dart' as datasource;
 import '../models/club_model.dart';
 
-/// Implementation of [ClubsRepository]
+/// Implementation of [domain.ClubsRepository]
 ///
 /// This class implements the repository interface and handles the conversion
 /// between data models and domain entities. It also handles error mapping
 /// from exceptions to failures.
-class ClubsRepositoryImpl implements ClubsRepository {
-  const ClubsRepositoryImpl({required ClubsRemoteDataSource remoteDataSource})
+class ClubsRepositoryImpl implements domain.ClubsRepository {
+  const ClubsRepositoryImpl({required datasource.ClubsRemoteDataSource remoteDataSource})
     : _remoteDataSource = remoteDataSource;
 
-  final ClubsRemoteDataSource _remoteDataSource;
+  final datasource.ClubsRemoteDataSource _remoteDataSource;
 
   @override
   Future<Either<Failure, List<ClubEntity>>> getClubs({
-    ClubFilterCriteria? filter,
-    ClubSortCriteria? sort,
+    domain.ClubFilterCriteria? filter,
+    domain.ClubSortCriteria? sort,
     int? limit,
     String? cursor,
   }) async {
     try {
       // Convert domain filter to data layer filter
       final dataFilter = filter != null
-          ? ClubFilter(
+          ? datasource.ClubFilter(
               city: filter.city,
               state: filter.state,
               amenities: filter.amenities,
               featured: filter.featured,
               favorited: filter.favorited,
               location: filter.latitude != null && filter.longitude != null
-                  ? LocationInput(
+                  ? datasource.LocationInput(
                       latitude: filter.latitude!,
                       longitude: filter.longitude!,
                     )
@@ -49,11 +49,11 @@ class ClubsRepositoryImpl implements ClubsRepository {
 
       // Convert domain sort to data layer sort
       final dataSort = sort != null
-          ? ClubSort(
+          ? datasource.ClubSort(
               field: _convertSortField(sort.field),
-              direction: sort.direction == SortDirection.asc
-                  ? lib_SortDirection.asc
-                  : lib_SortDirection.desc,
+              direction: sort.direction == domain.SortDirection.asc
+                  ? datasource.SortDirection.asc
+                  : datasource.SortDirection.desc,
             )
           : null;
 
@@ -103,7 +103,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
   }) async {
     try {
       final location = latitude != null && longitude != null
-          ? LocationInput(latitude: latitude, longitude: longitude)
+          ? datasource.LocationInput(latitude: latitude, longitude: longitude)
           : null;
 
       final results = await _remoteDataSource.searchClubs(
@@ -225,7 +225,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
   }
 
   @override
-  Future<Either<Failure, List<ClubReview>>> getClubReviews(
+  Future<Either<Failure, List<domain.ClubReview>>> getClubReviews(
     String clubId, {
     int? limit,
     String? cursor,
@@ -240,7 +240,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
       return Right(
         reviews
             .map(
-              (review) => ClubReview(
+              (review) => domain.ClubReview(
                 id: review.id,
                 rating: review.rating,
                 comment: review.comment,
@@ -290,22 +290,19 @@ class ClubsRepositoryImpl implements ClubsRepository {
     return models.map(_convertModelToEntity).toList();
   }
 
-  ClubSortField _convertSortField(lib_ClubSortField field) {
+  /// Convert domain ClubSortField to datasource ClubSortField
+  datasource.ClubSortField _convertSortField(domain.ClubSortField field) {
     switch (field) {
-      case lib_ClubSortField.name:
-        return ClubSortField.name;
-      case lib_ClubSortField.rating:
-        return ClubSortField.rating;
-      case lib_ClubSortField.distance:
-        return ClubSortField.distance;
-      case lib_ClubSortField.memberCount:
-        return ClubSortField.memberCount;
-      case lib_ClubSortField.createdAt:
-        return ClubSortField.createdAt;
+      case domain.ClubSortField.name:
+        return datasource.ClubSortField.name;
+      case domain.ClubSortField.rating:
+        return datasource.ClubSortField.rating;
+      case domain.ClubSortField.distance:
+        return datasource.ClubSortField.distance;
+      case domain.ClubSortField.memberCount:
+        return datasource.ClubSortField.memberCount;
+      case domain.ClubSortField.createdAt:
+        return datasource.ClubSortField.createdAt;
     }
   }
 }
-
-// Import aliases to avoid naming conflicts
-typedef lib_ClubSortField = ClubSortField;
-typedef lib_SortDirection = SortDirection;
