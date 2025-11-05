@@ -14,9 +14,8 @@ import '../models/club_model.dart';
 /// between data models and domain entities. It also handles error mapping
 /// from exceptions to failures.
 class ClubsRepositoryImpl implements ClubsRepository {
-  const ClubsRepositoryImpl({
-    required ClubsRemoteDataSource remoteDataSource,
-  }) : _remoteDataSource = remoteDataSource;
+  const ClubsRepositoryImpl({required ClubsRemoteDataSource remoteDataSource})
+    : _remoteDataSource = remoteDataSource;
 
   final ClubsRemoteDataSource _remoteDataSource;
 
@@ -71,7 +70,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -88,7 +87,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -138,7 +137,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -163,7 +162,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -179,7 +178,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -193,7 +192,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -207,7 +206,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -221,7 +220,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -256,7 +255,7 @@ class ClubsRepositoryImpl implements ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 

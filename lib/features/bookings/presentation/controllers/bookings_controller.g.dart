@@ -8,6 +8,59 @@ part of 'bookings_controller.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Provider for the bookings repository
+
+@ProviderFor(bookingsRepository)
+const bookingsRepositoryProvider = BookingsRepositoryProvider._();
+
+/// Provider for the bookings repository
+
+final class BookingsRepositoryProvider
+    extends
+        $FunctionalProvider<
+          BookingsRepository,
+          BookingsRepository,
+          BookingsRepository
+        >
+    with $Provider<BookingsRepository> {
+  /// Provider for the bookings repository
+  const BookingsRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'bookingsRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$bookingsRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<BookingsRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  BookingsRepository create(Ref ref) {
+    return bookingsRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BookingsRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BookingsRepository>(value),
+    );
+  }
+}
+
+String _$bookingsRepositoryHash() =>
+    r'277bc036b90766242eeeba3940122402f8d9a0e6';
+
 /// Provider for all bookings
 
 @ProviderFor(allBookings)
@@ -18,13 +71,13 @@ const allBookingsProvider = AllBookingsProvider._();
 final class AllBookingsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<BookingModel>>,
-          List<BookingModel>,
-          FutureOr<List<BookingModel>>
+          AsyncValue<List<BookingEntity>>,
+          List<BookingEntity>,
+          FutureOr<List<BookingEntity>>
         >
     with
-        $FutureModifier<List<BookingModel>>,
-        $FutureProvider<List<BookingModel>> {
+        $FutureModifier<List<BookingEntity>>,
+        $FutureProvider<List<BookingEntity>> {
   /// Provider for all bookings
   const AllBookingsProvider._()
     : super(
@@ -42,17 +95,17 @@ final class AllBookingsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<BookingModel>> $createElement(
+  $FutureProviderElement<List<BookingEntity>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<BookingModel>> create(Ref ref) {
+  FutureOr<List<BookingEntity>> create(Ref ref) {
     return allBookings(ref);
   }
 }
 
-String _$allBookingsHash() => r'41b541f96990ea5c7c382a12cb9a08ed2563d07d';
+String _$allBookingsHash() => r'b6a22d2713ed82fde9a3d3a960fe2b578c680057';
 
 /// Provider for upcoming bookings only
 
@@ -64,13 +117,13 @@ const upcomingBookingsProvider = UpcomingBookingsProvider._();
 final class UpcomingBookingsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<BookingModel>>,
-          List<BookingModel>,
-          FutureOr<List<BookingModel>>
+          AsyncValue<List<BookingEntity>>,
+          List<BookingEntity>,
+          FutureOr<List<BookingEntity>>
         >
     with
-        $FutureModifier<List<BookingModel>>,
-        $FutureProvider<List<BookingModel>> {
+        $FutureModifier<List<BookingEntity>>,
+        $FutureProvider<List<BookingEntity>> {
   /// Provider for upcoming bookings only
   const UpcomingBookingsProvider._()
     : super(
@@ -88,17 +141,17 @@ final class UpcomingBookingsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<BookingModel>> $createElement(
+  $FutureProviderElement<List<BookingEntity>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<BookingModel>> create(Ref ref) {
+  FutureOr<List<BookingEntity>> create(Ref ref) {
     return upcomingBookings(ref);
   }
 }
 
-String _$upcomingBookingsHash() => r'56d9ec6faa2cba86a33055363bda31ec326ca4a7';
+String _$upcomingBookingsHash() => r'2779ada3fbacb7634e951a7f6d26c4eac1cb56b3';
 
 /// Provider for past bookings only
 
@@ -110,13 +163,13 @@ const pastBookingsProvider = PastBookingsProvider._();
 final class PastBookingsProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<BookingModel>>,
-          List<BookingModel>,
-          FutureOr<List<BookingModel>>
+          AsyncValue<List<BookingEntity>>,
+          List<BookingEntity>,
+          FutureOr<List<BookingEntity>>
         >
     with
-        $FutureModifier<List<BookingModel>>,
-        $FutureProvider<List<BookingModel>> {
+        $FutureModifier<List<BookingEntity>>,
+        $FutureProvider<List<BookingEntity>> {
   /// Provider for past bookings only
   const PastBookingsProvider._()
     : super(
@@ -134,17 +187,17 @@ final class PastBookingsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<BookingModel>> $createElement(
+  $FutureProviderElement<List<BookingEntity>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<BookingModel>> create(Ref ref) {
+  FutureOr<List<BookingEntity>> create(Ref ref) {
     return pastBookings(ref);
   }
 }
 
-String _$pastBookingsHash() => r'859047f516581d3ea081036bc0352f15ec8d1899';
+String _$pastBookingsHash() => r'bb488e359798c5ea43f02972fe40fbc69ab87c28';
 
 /// Provider for real-time booking updates
 
@@ -199,7 +252,7 @@ const bookingsControllerProvider = BookingsControllerProvider._();
 
 /// Main bookings controller for managing booking state and actions
 final class BookingsControllerProvider
-    extends $AsyncNotifierProvider<BookingsController, List<BookingModel>> {
+    extends $AsyncNotifierProvider<BookingsController, List<BookingEntity>> {
   /// Main bookings controller for managing booking state and actions
   const BookingsControllerProvider._()
     : super(
@@ -221,23 +274,24 @@ final class BookingsControllerProvider
 }
 
 String _$bookingsControllerHash() =>
-    r'40e18f5be3c974e9c50b015ec57a35377476ca8d';
+    r'd91b97b21dbb8aed10d32c64bfbc1712ef54e7e8';
 
 /// Main bookings controller for managing booking state and actions
 
-abstract class _$BookingsController extends $AsyncNotifier<List<BookingModel>> {
-  FutureOr<List<BookingModel>> build();
+abstract class _$BookingsController
+    extends $AsyncNotifier<List<BookingEntity>> {
+  FutureOr<List<BookingEntity>> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
     final ref =
-        this.ref as $Ref<AsyncValue<List<BookingModel>>, List<BookingModel>>;
+        this.ref as $Ref<AsyncValue<List<BookingEntity>>, List<BookingEntity>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<BookingModel>>, List<BookingModel>>,
-              AsyncValue<List<BookingModel>>,
+              AnyNotifier<AsyncValue<List<BookingEntity>>, List<BookingEntity>>,
+              AsyncValue<List<BookingEntity>>,
               Object?,
               Object?
             >;

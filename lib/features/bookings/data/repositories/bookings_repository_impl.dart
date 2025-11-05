@@ -31,7 +31,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -48,7 +48,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -65,7 +65,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -84,7 +84,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -112,7 +112,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on ValidationException catch (e) {
       return Left(ValidationFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -140,7 +140,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on ValidationException catch (e) {
       return Left(ValidationFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -160,7 +160,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -228,7 +228,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -259,7 +259,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 
@@ -305,12 +305,15 @@ class BookingsRepositoryImpl implements BookingsRepository {
       final stats = BookingStatistics(
         totalBookings: bookings.length,
         upcomingBookings: bookings.where((b) => b.isUpcoming).length,
-        completedBookings:
-            bookings.where((b) => b.status == BookingStatus.completed).length,
-        cancelledBookings:
-            bookings.where((b) => b.status == BookingStatus.cancelled).length,
-        noShowBookings:
-            bookings.where((b) => b.status == BookingStatus.noShow).length,
+        completedBookings: bookings
+            .where((b) => b.status == BookingStatus.completed)
+            .length,
+        cancelledBookings: bookings
+            .where((b) => b.status == BookingStatus.cancelled)
+            .length,
+        noShowBookings: bookings
+            .where((b) => b.status == BookingStatus.noShow)
+            .length,
       );
 
       return Right(stats);
@@ -319,7 +322,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e.toString()}'));
+      return Left(ServerFailure('Unexpected error: ${e}'));
     }
   }
 

@@ -8,6 +8,53 @@ part of 'clubs_controller.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Provider for the clubs repository
+
+@ProviderFor(clubsRepository)
+const clubsRepositoryProvider = ClubsRepositoryProvider._();
+
+/// Provider for the clubs repository
+
+final class ClubsRepositoryProvider
+    extends
+        $FunctionalProvider<ClubsRepository, ClubsRepository, ClubsRepository>
+    with $Provider<ClubsRepository> {
+  /// Provider for the clubs repository
+  const ClubsRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clubsRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clubsRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ClubsRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ClubsRepository create(Ref ref) {
+    return clubsRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ClubsRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ClubsRepository>(value),
+    );
+  }
+}
+
+String _$clubsRepositoryHash() => r'3f9e714d0f585b42501c7f7fbaa982c83e3f90ad';
+
 /// Provider for all clubs
 
 @ProviderFor(allClubs)
@@ -50,7 +97,7 @@ final class AllClubsProvider
   }
 }
 
-String _$allClubsHash() => r'87ec568600bda400c4ba1da38f68789e1c207100';
+String _$allClubsHash() => r'f40db27feab91cca58a8499560568b0b47a2c67d';
 
 /// Provider for featured clubs
 
@@ -112,7 +159,7 @@ final class FeaturedClubsProvider
   }
 }
 
-String _$featuredClubsHash() => r'1bd971ba016d00bcba7d91c9f6e08236f0ca9579';
+String _$featuredClubsHash() => r'f14d69116e594e73a59ded175e7073264912d0d7';
 
 /// Provider for featured clubs
 
@@ -196,7 +243,7 @@ final class NearbyClubsProvider
   }
 }
 
-String _$nearbyClubsHash() => r'b647d7a426186173a6f5fe746e6e258109775bdc';
+String _$nearbyClubsHash() => r'e946906c8cd82d84c4c42073eacc20010e7d4f24';
 
 /// Provider for nearby clubs
 
@@ -262,7 +309,7 @@ final class FavoriteClubsProvider
   }
 }
 
-String _$favoriteClubsHash() => r'f98e722f2b97b16da3e673870ac131f460303901';
+String _$favoriteClubsHash() => r'd2da3c2bd562ac93aa20d251c3acd0c2d4877737';
 
 /// Main clubs controller for managing club state and actions
 
@@ -292,7 +339,7 @@ final class ClubsControllerProvider
   ClubsController create() => ClubsController();
 }
 
-String _$clubsControllerHash() => r'3332f036c39078fc0ebe54171faf9e1655f6b98f';
+String _$clubsControllerHash() => r'3f10db887d0b1be1829bfefe11bd110dd27d641a';
 
 /// Main clubs controller for managing club state and actions
 
