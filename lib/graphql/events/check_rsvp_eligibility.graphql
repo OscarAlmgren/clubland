@@ -1,0 +1,15 @@
+query CheckRSVPEligibility($eventId: ID!, $memberId: ID!) {
+  checkRSVPEligibility(eventId: $eventId, memberId: $memberId) {
+    eligible
+    reason
+    memberInGoodStanding
+    hasOutstandingDebt
+    debtAmount
+    wouldBeWaitlisted
+    estimatedWaitlistPosition
+    availableSpots
+    priority
+    requiresApproval
+    isSubgroupMember
+  }
+}

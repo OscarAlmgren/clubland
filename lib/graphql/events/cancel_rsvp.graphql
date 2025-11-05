@@ -1,0 +1,9 @@
+mutation CancelRSVP($id: ID!) {
+  cancelRSVP(id: $id) {
+    success
+    message
+    cancellationFee
+    refundAmount
+    feeWaived
+  }
+}

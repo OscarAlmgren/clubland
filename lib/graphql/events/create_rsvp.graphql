@@ -1,0 +1,30 @@
+mutation CreateRSVP($input: CreateRSVPInput!) {
+  createRSVP(input: $input) {
+    id
+    eventId
+    memberId
+    clubId
+    response
+    rsvpType
+    priority
+    attendanceCount
+    guestNames
+    dietaryRestrictions
+    seatingPreferences
+    specialRequests
+    status
+    paymentRequired
+    paymentVerified
+    paymentAmount
+    cancellationFee
+    feeWaived
+    waitlistPosition
+    rsvpedAt
+    updatedAt
+    cancelledAt
+    cancellationReason
+    approvedBy
+    approvedAt
+    declineReason
+  }
+}

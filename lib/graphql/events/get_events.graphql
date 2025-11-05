@@ -1,0 +1,47 @@
+query GetEvents($clubId: ID!, $filters: EventFilters, $pagination: PaginationInput!) {
+  events(clubId: $clubId, filters: $filters, pagination: $pagination) {
+    edges {
+      node {
+        id
+        clubId
+        title
+        description
+        eventType
+        startTime
+        endTime
+        location
+        imageUrl
+        capacity
+        currentAttendees
+        availableSpots
+        tentativeCount
+        waitlistCount
+        guestPolicy
+        maxGuestsPerMember
+        requiresApproval
+        requiresPayment
+        price
+        cancellationDeadline
+        freeCancellationDays
+        cancellationFeePercentage
+        allowsSubgroupPriority
+        fullHouseExclusive
+        rsvpDeadline
+        subgroupId
+        organizerName
+        contactEmail
+        contactPhone
+        paymentInstructions
+        createdAt
+        updatedAt
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}

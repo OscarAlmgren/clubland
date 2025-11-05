@@ -1,0 +1,36 @@
+query GetEvent($id: ID!) {
+  event(id: $id) {
+    id
+    clubId
+    title
+    description
+    eventType
+    startTime
+    endTime
+    location
+    imageUrl
+    capacity
+    currentAttendees
+    availableSpots
+    tentativeCount
+    waitlistCount
+    guestPolicy
+    maxGuestsPerMember
+    requiresApproval
+    requiresPayment
+    price
+    cancellationDeadline
+    freeCancellationDays
+    cancellationFeePercentage
+    allowsSubgroupPriority
+    fullHouseExclusive
+    rsvpDeadline
+    subgroupId
+    organizerName
+    contactEmail
+    contactPhone
+    paymentInstructions
+    createdAt
+    updatedAt
+  }
+}
