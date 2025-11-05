@@ -86,8 +86,31 @@ This project follows Clean Architecture principles with feature-based organizati
 ### Core Architecture Layers
 
 - **Presentation Layer**: UI widgets, controllers (Riverpod), and state management
-- **Domain Layer**: Business logic, entities, and use cases
-- **Data Layer**: Repositories, data sources (remote/local), and models
+- **Domain Layer**: Business logic, entities, repositories (interfaces), and use cases
+- **Data Layer**: Repository implementations, data sources (remote/local), and models
+
+### Repository Pattern Implementation
+
+The application implements the Repository pattern to provide a clean abstraction between domain and data layers:
+
+**Clubs Feature:**
+- `ClubsRepository` (interface): Defines club operations contract
+- `ClubsRepositoryImpl`: Implements repository using remote data source
+- **Operations**: getClubs, getClubById, searchClubs, getNearbyClubs, getFeaturedClubs, getFavoriteClubs, toggleFavoriteClub, checkInToClub, getClubReviews
+- **Error Handling**: All methods return `Either<Failure, T>` for functional error handling
+
+**Bookings Feature:**
+- `BookingsRepository` (interface): Defines booking and visit operations contract
+- `BookingsRepositoryImpl`: Implements repository using remote data source
+- **Operations**: getUserBookings, createBooking, updateBooking, cancelBooking, checkInBooking, checkOutBooking, getAvailableSlots, checkAvailability, recordVisit, checkoutVisit
+- **Entities**: BookingEntity, FacilityEntity, VisitEntity with full domain models
+
+**Benefits:**
+- Clean separation between business logic and data access
+- Testable through dependency injection
+- Consistent error handling with Failure classes
+- Type-safe operations with domain entities
+- Easy to mock for testing
 
 ### Architecture Flow Diagram
 
