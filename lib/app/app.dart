@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/design_system/design_system.dart';
 import '../core/providers/core_providers.dart';
 import '../core/providers/language_provider.dart';
+import '../core/providers/theme_provider.dart';
 import '../features/auth/presentation/controllers/auth_controller.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
 import '../generated/l10n/l10n.dart';
@@ -19,11 +20,13 @@ class ClublandApp extends ConsumerWidget {
     final currentLocale = ref.watch(currentLocaleProvider);
     final supportedLocales = ref.watch(supportedLocalesProvider);
     final scaffoldMessengerKey = ref.watch(scaffoldMessengerKeyProvider);
+    final themeMode = ref.watch(currentThemeModeProvider);
 
     return MaterialApp.router(
       title: 'Clubland',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode,
       routerConfig: ref.watch(appRouterProvider),
       debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: scaffoldMessengerKey,

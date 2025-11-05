@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/providers/language_provider.dart';
+import '../../../../core/providers/theme_provider.dart';
 import '../../../../generated/l10n/l10n.dart';
 
 /// Profile settings page for managing user preferences
@@ -12,6 +13,7 @@ class ProfileSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentLanguage = ref.watch<AsyncValue<AppLanguage?>>(languageProvider);
+    final currentThemeMode = ref.watch<AsyncValue<AppThemeMode>>(themeModeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -24,6 +26,10 @@ class ProfileSettingsPage extends ConsumerWidget {
         children: [
           _buildSettingsSection(context, S.of(context).language, [
             _buildLanguageTile(context, ref, currentLanguage),
+          ]),
+          const SizedBox(height: 16),
+          _buildSettingsSection(context, S.of(context).theme, [
+            _buildThemeTile(context, ref, currentThemeMode),
           ]),
         ],
       ),
@@ -116,6 +122,82 @@ class ProfileSettingsPage extends ConsumerWidget {
                   value: language,
                   title: Text(language.getDisplayName(currentLang)),
                   selected: language == selectedLanguage,
+                );
+              }).toList(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).cancel),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildThemeTile(
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<AppThemeMode> currentThemeModeAsync,
+  ) => ListTile(
+    leading: const Icon(Icons.palette),
+    title: Text(S.of(context).theme),
+    subtitle: Text(S.of(context).themeSubtitle),
+    trailing: currentThemeModeAsync.when(
+      data: (themeMode) {
+        final languageAsync = ref.watch(languageProvider);
+        final languageCode = languageAsync.value?.code ?? 'en';
+
+        return Text(
+          themeMode.getDisplayName(languageCode),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        );
+      },
+      loading: () => const SizedBox(
+        width: 16,
+        height: 16,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      ),
+      error: (_, __) => const Icon(Icons.error_outline),
+    ),
+    onTap: () => _showThemeSelector(context, ref, currentThemeModeAsync),
+  );
+
+  void _showThemeSelector(
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<AppThemeMode> currentThemeModeAsync,
+  ) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        final selectedThemeMode = currentThemeModeAsync.value ?? AppThemeMode.system;
+        final languageAsync = ref.watch(languageProvider);
+        final languageCode = languageAsync.value?.code ?? 'en';
+
+        return AlertDialog(
+          title: Text(S.of(context).selectTheme),
+          content: RadioGroup<AppThemeMode>(
+            groupValue: selectedThemeMode,
+            onChanged: (AppThemeMode? value) {
+              if (value != null) {
+                // Update Riverpod state
+                ref.read<ThemeModeNotifier>(themeModeProvider.notifier).setThemeMode(value);
+                // Close the dialog immediately after selection
+                Navigator.of(context).pop();
+              }
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: AppThemeMode.values.map((themeMode) {
+                return RadioListTile<AppThemeMode>(
+                  value: themeMode,
+                  title: Text(themeMode.getDisplayName(languageCode)),
+                  selected: themeMode == selectedThemeMode,
                 );
               }).toList(),
             ),

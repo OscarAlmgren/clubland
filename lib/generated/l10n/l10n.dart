@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -102,12 +106,7 @@ class S {
 
   /// `More`
   String get more {
-    return Intl.message(
-      'More',
-      name: 'more',
-      desc: 'More tab title',
-      args: [],
-    );
+    return Intl.message('More', name: 'more', desc: 'More tab title', args: []);
   }
 
   /// `Quick Actions`
@@ -659,6 +658,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Theme`
+  String get theme {
+    return Intl.message(
+      'Theme',
+      name: 'theme',
+      desc: 'Theme setting title',
+      args: [],
+    );
+  }
+
+  /// `Choose your preferred theme`
+  String get themeSubtitle {
+    return Intl.message(
+      'Choose your preferred theme',
+      name: 'themeSubtitle',
+      desc: 'Theme setting subtitle',
+      args: [],
+    );
+  }
+
+  /// `Light`
+  String get lightTheme {
+    return Intl.message(
+      'Light',
+      name: 'lightTheme',
+      desc: 'Light theme option',
+      args: [],
+    );
+  }
+
+  /// `Dark`
+  String get darkTheme {
+    return Intl.message(
+      'Dark',
+      name: 'darkTheme',
+      desc: 'Dark theme option',
+      args: [],
+    );
+  }
+
+  /// `System`
+  String get systemTheme {
+    return Intl.message(
+      'System',
+      name: 'systemTheme',
+      desc: 'System theme option',
+      args: [],
+    );
+  }
+
+  /// `Select Theme`
+  String get selectTheme {
+    return Intl.message(
+      'Select Theme',
+      name: 'selectTheme',
+      desc: 'Theme selection dialog title',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -667,6 +726,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'fr'),
       Locale.fromSubtags(languageCode: 'sv'),
     ];
   }

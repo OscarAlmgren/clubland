@@ -250,5 +250,29 @@
   "selectLanguage": "Välj Språk",
   "@selectLanguage": {
     "description": "Titel för dialogrutan för språkval"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Titel för temainställningen"
+  },
+  "themeSubtitle": "Välj ditt föredragna tema",
+  "@themeSubtitle": {
+    "description": "Undertitel för temainställningen"
+  },
+  "lightTheme": "Ljus",
+  "@lightTheme": {
+    "description": "Alternativ för ljust tema"
+  },
+  "darkTheme": "Mörk",
+  "@darkTheme": {
+    "description": "Alternativ för mörkt tema"
+  },
+  "systemTheme": "System",
+  "@systemTheme": {
+    "description": "Alternativ för systemtema"
+  },
+  "selectTheme": "Välj Tema",
+  "@selectTheme": {
+    "description": "Titel för dialogrutan för temaval"
   }
 }

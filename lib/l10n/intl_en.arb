@@ -250,5 +250,29 @@
   "selectLanguage": "Select Language",
   "@selectLanguage": {
     "description": "Language selection dialog title"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting title"
+  },
+  "themeSubtitle": "Choose your preferred theme",
+  "@themeSubtitle": {
+    "description": "Theme setting subtitle"
+  },
+  "lightTheme": "Light",
+  "@lightTheme": {
+    "description": "Light theme option"
+  },
+  "darkTheme": "Dark",
+  "@darkTheme": {
+    "description": "Dark theme option"
+  },
+  "systemTheme": "System",
+  "@systemTheme": {
+    "description": "System theme option"
+  },
+  "selectTheme": "Select Theme",
+  "@selectTheme": {
+    "description": "Theme selection dialog title"
   }
 }
