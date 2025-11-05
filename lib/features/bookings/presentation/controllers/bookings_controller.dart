@@ -4,14 +4,23 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/bookings_remote_datasource.dart';
 import '../../data/models/booking_model.dart';
+import '../../data/repositories/bookings_repository_impl.dart';
+import '../../domain/repositories/bookings_repository.dart';
 
 part 'bookings_controller.g.dart';
+
+/// Provider for the bookings repository.
+final bookingsRepositoryProvider = Provider<BookingsRepository>(
+  (ref) => BookingsRepositoryImpl(
+    remoteDataSource: ref.read(bookingsRemoteDataSourceProvider),
+  ),
+);
 
 /// Provider for all bookings
 @riverpod
 Future<List<BookingModel>> allBookings(Ref ref) async {
-  final datasource = ref.read(bookingsRemoteDataSourceProvider);
-  return await datasource.getUserBookings();
+  final repository = ref.read(bookingsRepositoryProvider);
+  return await repository.getUserBookings();
 }
 
 /// Provider for upcoming bookings only
@@ -65,8 +74,8 @@ class BookingsController extends _$BookingsController {
   Future<void> cancelBooking(String bookingId, {String? reason}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final datasource = ref.read(bookingsRemoteDataSourceProvider);
-      await datasource.cancelBooking(bookingId: bookingId, reason: reason);
+      final repository = ref.read(bookingsRepositoryProvider);
+      await repository.cancelBooking(bookingId: bookingId, reason: reason);
 
       // Refresh all bookings after cancellation
       ref.invalidate(allBookingsProvider);
@@ -78,8 +87,8 @@ class BookingsController extends _$BookingsController {
   Future<void> createBooking(CreateBookingRequest request) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final datasource = ref.read(bookingsRemoteDataSourceProvider);
-      await datasource.createBooking(
+      final repository = ref.read(bookingsRepositoryProvider);
+      await repository.createBooking(
         facilityId: request.facilityId,
         startTime: request.startTime,
         endTime: request.endTime,
@@ -100,8 +109,8 @@ class BookingsController extends _$BookingsController {
   ) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final datasource = ref.read(bookingsRemoteDataSourceProvider);
-      await datasource.updateBooking(
+      final repository = ref.read(bookingsRepositoryProvider);
+      await repository.updateBooking(
         bookingId: bookingId,
         startTime: request.startTime,
         endTime: request.endTime,

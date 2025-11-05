@@ -52,7 +52,7 @@ final class AllBookingsProvider
   }
 }
 
-String _$allBookingsHash() => r'60df9b242e85b6f04d1b13eacb1e93cb82055716';
+String _$allBookingsHash() => r'41b541f96990ea5c7c382a12cb9a08ed2563d07d';
 
 /// Provider for upcoming bookings only
 
@@ -221,7 +221,7 @@ final class BookingsControllerProvider
 }
 
 String _$bookingsControllerHash() =>
-    r'2ee6788f61a0d19f08d4b46bbdb4996a202f18c7';
+    r'40e18f5be3c974e9c50b015ec57a35377476ca8d';
 
 /// Main bookings controller for managing booking state and actions
 
