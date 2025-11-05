@@ -365,12 +365,25 @@ dart run build_runner build --delete-conflicting-outputs
 - **Multi-factor authentication** support (ready for backend integration)
 - **Logout functionality** with proper state cleanup and navigation
 
-### 2. Club Discovery & Booking
+### 2. Club Discovery & Booking ✅ **Repository Layer Implemented**
 
-- Location-based club search with GPS integration
-- Reciprocal access verification and privileges
-- Real-time availability checking
-- Seamless reservation management with QR codes
+**Clubs Feature:**
+- ✅ Repository pattern with Clean Architecture
+- ✅ Club listing with pagination support
+- ✅ Featured clubs and nearby clubs with GPS integration
+- ✅ Search functionality with filters
+- ✅ Favorite clubs management
+- 🟡 Club details page (in progress)
+- 🟡 Reviews and ratings display (in progress)
+
+**Bookings Feature:**
+- ✅ Complete domain layer with entities (BookingEntity, FacilityEntity, VisitEntity)
+- ✅ Repository pattern implementation
+- ✅ Booking CRUD operations (create, update, cancel, confirm)
+- ✅ Facility availability checking
+- ✅ Visit tracking and check-in/check-out support
+- 🟡 UI for booking creation flow (in progress)
+- 🟡 Real-time booking updates (backend integration pending)
 
 ### 3. Self-Service Check-in
 

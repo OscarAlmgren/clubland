@@ -5,36 +5,52 @@ import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/bookings_remote_datasource.dart';
 import '../../data/models/booking_model.dart';
 import '../../data/repositories/bookings_repository_impl.dart';
+import '../../domain/entities/booking_entity.dart';
 import '../../domain/repositories/bookings_repository.dart';
 
 part 'bookings_controller.g.dart';
 
-/// Provider for the bookings repository.
-final bookingsRepositoryProvider = Provider<BookingsRepository>(
-  (ref) => BookingsRepositoryImpl(
-    remoteDataSource: ref.read(bookingsRemoteDataSourceProvider),
-  ),
-);
+/// Provider for the bookings repository
+@riverpod
+BookingsRepository bookingsRepository(Ref ref) {
+  final datasource = ref.read(bookingsRemoteDataSourceProvider);
+  return BookingsRepositoryImpl(remoteDataSource: datasource);
+}
 
 /// Provider for all bookings
 @riverpod
-Future<List<BookingModel>> allBookings(Ref ref) async {
+Future<List<BookingEntity>> allBookings(Ref ref) async {
   final repository = ref.read(bookingsRepositoryProvider);
-  return await repository.getUserBookings();
+  final result = await repository.getUserBookings();
+
+  return result.fold(
+    (failure) => throw Exception(failure.message),
+    (bookings) => bookings,
+  );
 }
 
 /// Provider for upcoming bookings only
 @riverpod
-Future<List<BookingModel>> upcomingBookings(Ref ref) async {
-  final allBookings = await ref.watch(allBookingsProvider.future);
-  return allBookings.where((booking) => booking.isUpcoming).toList();
+Future<List<BookingEntity>> upcomingBookings(Ref ref) async {
+  final repository = ref.read(bookingsRepositoryProvider);
+  final result = await repository.getUpcomingBookings();
+
+  return result.fold(
+    (failure) => throw Exception(failure.message),
+    (bookings) => bookings,
+  );
 }
 
 /// Provider for past bookings only
 @riverpod
-Future<List<BookingModel>> pastBookings(Ref ref) async {
-  final allBookings = await ref.watch(allBookingsProvider.future);
-  return allBookings.where((booking) => booking.isPast).toList();
+Future<List<BookingEntity>> pastBookings(Ref ref) async {
+  final repository = ref.read(bookingsRepositoryProvider);
+  final result = await repository.getPastBookings();
+
+  return result.fold(
+    (failure) => throw Exception(failure.message),
+    (bookings) => bookings,
+  );
 }
 
 /// Provider for real-time booking updates
@@ -49,7 +65,7 @@ Stream<List<BookingUpdate>> bookingUpdates(Ref ref) async* {
 @riverpod
 class BookingsController extends _$BookingsController {
   @override
-  Future<List<BookingModel>> build() async =>
+  Future<List<BookingEntity>> build() async =>
       await ref.read(allBookingsProvider.future);
 
   /// Apply filter to bookings
@@ -75,10 +91,19 @@ class BookingsController extends _$BookingsController {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(bookingsRepositoryProvider);
-      await repository.cancelBooking(bookingId: bookingId, reason: reason);
+      final result = await repository.cancelBooking(
+        bookingId: bookingId,
+        reason: reason,
+      );
 
-      // Refresh all bookings after cancellation
-      ref.invalidate(allBookingsProvider);
+      result.fold(
+        (failure) => throw Exception(failure.message),
+        (_) {
+          // Refresh all bookings after cancellation
+          ref.invalidate(allBookingsProvider);
+        },
+      );
+
       return await ref.read(allBookingsProvider.future);
     });
   }
@@ -88,7 +113,7 @@ class BookingsController extends _$BookingsController {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(bookingsRepositoryProvider);
-      await repository.createBooking(
+      final result = await repository.createBooking(
         facilityId: request.facilityId,
         startTime: request.startTime,
         endTime: request.endTime,
@@ -96,8 +121,14 @@ class BookingsController extends _$BookingsController {
         participantIds: request.participants,
       );
 
-      // Refresh all bookings after creation
-      ref.invalidate(allBookingsProvider);
+      result.fold(
+        (failure) => throw Exception(failure.message),
+        (_) {
+          // Refresh all bookings after creation
+          ref.invalidate(allBookingsProvider);
+        },
+      );
+
       return await ref.read(allBookingsProvider.future);
     });
   }
@@ -110,7 +141,7 @@ class BookingsController extends _$BookingsController {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(bookingsRepositoryProvider);
-      await repository.updateBooking(
+      final result = await repository.updateBooking(
         bookingId: bookingId,
         startTime: request.startTime,
         endTime: request.endTime,
@@ -118,8 +149,14 @@ class BookingsController extends _$BookingsController {
         participantIds: request.participants,
       );
 
-      // Refresh all bookings after modification
-      ref.invalidate(allBookingsProvider);
+      result.fold(
+        (failure) => throw Exception(failure.message),
+        (_) {
+          // Refresh all bookings after modification
+          ref.invalidate(allBookingsProvider);
+        },
+      );
+
       return await ref.read(allBookingsProvider.future);
     });
   }
