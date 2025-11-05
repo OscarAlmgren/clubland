@@ -512,5 +512,47 @@
   "people": "Personen",
   "@people": {
     "description": "Personen Plural"
+  },
+  "updateRSVP": "Zusage Aktualisieren",
+  "@updateRSVP": {
+    "description": "Zusage aktualisieren Seitentitel"
+  },
+  "rsvpUpdated": "Zusage Aktualisiert",
+  "@rsvpUpdated": {
+    "description": "Zusage aktualisiert Erfolgstitel"
+  },
+  "rsvpUpdatedSuccessfully": "Ihre Zusage wurde erfolgreich aktualisiert.",
+  "@rsvpUpdatedSuccessfully": {
+    "description": "Zusage aktualisiert Erfolgsmeldung"
+  },
+  "updateFailed": "Aktualisierung Fehlgeschlagen",
+  "@updateFailed": {
+    "description": "Aktualisierung fehlgeschlagen Fehlertitel"
+  },
+  "failedToUpdateRSVP": "Fehler beim Aktualisieren Ihrer Zusage: {error}",
+  "@failedToUpdateRSVP": {
+    "description": "Fehler beim Aktualisieren der Zusage Fehlermeldung",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentStatus": "Aktueller Status: {status}",
+  "@currentStatus": {
+    "description": "Aktueller Zusagestatus Etikett",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Bearbeiten",
+  "@edit": {
+    "description": "Bearbeiten Button Etikett"
+  },
+  "updateRSVPFeatureComingSoon": "Die Funktion zum Aktualisieren der Zusage wird verfügbar sein, sobald die API-Integration abgeschlossen ist",
+  "@updateRSVPFeatureComingSoon": {
+    "description": "Zusage aktualisieren kommt bald Nachricht"
   }
 }

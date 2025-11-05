@@ -12,6 +12,7 @@ import '../../features/events/presentation/pages/event_details_page.dart';
 import '../../features/events/presentation/pages/events_list_page.dart';
 import '../../features/events/presentation/pages/my_rsvps_page.dart';
 import '../../features/events/presentation/pages/rsvp_form_page.dart';
+import '../../features/events/presentation/pages/update_rsvp_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/pages/profile_settings_page.dart';

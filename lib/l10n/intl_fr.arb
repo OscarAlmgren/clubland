@@ -512,5 +512,47 @@
   "people": "personnes",
   "@people": {
     "description": "Personnes pluriel"
+  },
+  "updateRSVP": "Modifier la Confirmation",
+  "@updateRSVP": {
+    "description": "Titre de la page modifier la confirmation"
+  },
+  "rsvpUpdated": "Confirmation Modifiée",
+  "@rsvpUpdated": {
+    "description": "Titre de succès de confirmation modifiée"
+  },
+  "rsvpUpdatedSuccessfully": "Votre confirmation a été modifiée avec succès.",
+  "@rsvpUpdatedSuccessfully": {
+    "description": "Message de succès de confirmation modifiée"
+  },
+  "updateFailed": "Modification Échouée",
+  "@updateFailed": {
+    "description": "Titre d'erreur de modification échouée"
+  },
+  "failedToUpdateRSVP": "Échec de la modification de votre confirmation: {error}",
+  "@failedToUpdateRSVP": {
+    "description": "Message d'erreur d'échec de modification",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentStatus": "Statut Actuel: {status}",
+  "@currentStatus": {
+    "description": "Étiquette du statut actuel de confirmation",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Modifier",
+  "@edit": {
+    "description": "Étiquette du bouton modifier"
+  },
+  "updateRSVPFeatureComingSoon": "La fonctionnalité de modification de confirmation sera disponible une fois l'intégration API terminée",
+  "@updateRSVPFeatureComingSoon": {
+    "description": "Message de fonctionnalité bientôt disponible"
   }
 }

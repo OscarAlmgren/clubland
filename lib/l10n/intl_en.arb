@@ -536,5 +536,47 @@
   "people": "people",
   "@people": {
     "description": "People plural"
+  },
+  "updateRSVP": "Update RSVP",
+  "@updateRSVP": {
+    "description": "Update RSVP page title"
+  },
+  "rsvpUpdated": "RSVP Updated",
+  "@rsvpUpdated": {
+    "description": "RSVP updated success title"
+  },
+  "rsvpUpdatedSuccessfully": "Your RSVP has been updated successfully.",
+  "@rsvpUpdatedSuccessfully": {
+    "description": "RSVP updated success message"
+  },
+  "updateFailed": "Update Failed",
+  "@updateFailed": {
+    "description": "Update failed error title"
+  },
+  "failedToUpdateRSVP": "Failed to update your RSVP: {error}",
+  "@failedToUpdateRSVP": {
+    "description": "Failed to update RSVP error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentStatus": "Current Status: {status}",
+  "@currentStatus": {
+    "description": "Current RSVP status label",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button label"
+  },
+  "updateRSVPFeatureComingSoon": "Update RSVP feature will be available once API integration is complete",
+  "@updateRSVPFeatureComingSoon": {
+    "description": "Update RSVP coming soon message"
   }
 }

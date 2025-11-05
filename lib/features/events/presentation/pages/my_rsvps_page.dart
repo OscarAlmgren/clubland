@@ -154,6 +154,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
           return _RSVPCard(
             rsvpData: rsvp as Map<String, dynamic>,
             onTap: () => _navigateToEventDetails(rsvp['eventId'] as String),
+            onEdit: () => _navigateToUpdateRSVP(rsvp as Map<String, dynamic>),
             onCancel: () => _showCancelDialog(rsvp['id'] as String),
           );
         },
@@ -208,6 +209,31 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
       SnackBar(
         content: Text('Navigate to event details: $eventId'),
         duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _navigateToUpdateRSVP(Map<String, dynamic> rsvpData) {
+    // TODO: Once proper entity parsing is implemented, navigate to UpdateRSVPPage
+    // For now, show placeholder message
+    //
+    // Expected usage when EventRSVPEntity and EventEntity are available:
+    // final rsvpEntity = EventRSVPEntity.fromJson(rsvpData);
+    // final eventEntity = await fetchEventDetails(rsvpEntity.eventId);
+    //
+    // Navigator.of(context).push<void>(
+    //   MaterialPageRoute(
+    //     builder: (context) => UpdateRSVPPage(
+    //       event: eventEntity,
+    //       rsvp: rsvpEntity,
+    //     ),
+    //   ),
+    // );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Update RSVP feature will be available once API integration is complete'),
+        duration: Duration(seconds: 3),
       ),
     );
   }
@@ -286,11 +312,13 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
 class _RSVPCard extends StatelessWidget {
   final Map<String, dynamic> rsvpData;
   final VoidCallback? onTap;
+  final VoidCallback? onEdit;
   final VoidCallback? onCancel;
 
   const _RSVPCard({
     required this.rsvpData,
     this.onTap,
+    this.onEdit,
     this.onCancel,
   });
 
@@ -374,19 +402,33 @@ class _RSVPCard extends StatelessWidget {
               ),
 
               // Action buttons
-              if (canCancel) ...[
+              if (canCancel || onEdit != null) ...[
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton.icon(
-                      onPressed: onCancel,
-                      icon: const Icon(Icons.cancel_outlined),
-                      label: const Text('Cancel RSVP'),
-                      style: TextButton.styleFrom(
-                        foregroundColor: theme.colorScheme.error,
+                    // Edit button (only show if RSVP can be modified)
+                    if (canCancel && onEdit != null) ...[
+                      TextButton.icon(
+                        onPressed: onEdit,
+                        icon: const Icon(Icons.edit_outlined),
+                        label: const Text('Edit'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: theme.colorScheme.primary,
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                    ],
+                    // Cancel button
+                    if (canCancel)
+                      TextButton.icon(
+                        onPressed: onCancel,
+                        icon: const Icon(Icons.cancel_outlined),
+                        label: const Text('Cancel RSVP'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: theme.colorScheme.error,
+                        ),
+                      ),
                   ],
                 ),
               ],

@@ -536,5 +536,47 @@
   "people": "personer",
   "@people": {
     "description": "Personer plural"
+  },
+  "updateRSVP": "Uppdatera OSA",
+  "@updateRSVP": {
+    "description": "Uppdatera OSA sidtitel"
+  },
+  "rsvpUpdated": "OSA Uppdaterad",
+  "@rsvpUpdated": {
+    "description": "OSA uppdaterad framgångstitel"
+  },
+  "rsvpUpdatedSuccessfully": "Din OSA har uppdaterats framgångsrikt.",
+  "@rsvpUpdatedSuccessfully": {
+    "description": "OSA uppdaterad framgångsmeddelande"
+  },
+  "updateFailed": "Uppdatering Misslyckades",
+  "@updateFailed": {
+    "description": "Uppdatering misslyckades feltitel"
+  },
+  "failedToUpdateRSVP": "Misslyckades med att uppdatera din OSA: {error}",
+  "@failedToUpdateRSVP": {
+    "description": "Misslyckades att uppdatera OSA felmeddelande",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentStatus": "Nuvarande Status: {status}",
+  "@currentStatus": {
+    "description": "Nuvarande OSA statusetikett",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Redigera",
+  "@edit": {
+    "description": "Redigeringsknapp etikett"
+  },
+  "updateRSVPFeatureComingSoon": "Uppdatera OSA-funktionen kommer att vara tillgänglig när API-integrationen är klar",
+  "@updateRSVPFeatureComingSoon": {
+    "description": "Uppdatera OSA kommer snart meddelande"
   }
 }
