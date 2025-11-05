@@ -4,46 +4,63 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/network/graphql_client.dart';
 import '../../../../core/services/location_service.dart';
 import '../../data/datasources/clubs_remote_datasource.dart';
+import '../../data/repositories/clubs_repository_impl.dart';
 import '../../domain/entities/simple_club.dart';
+import '../../domain/repositories/clubs_repository.dart';
 
 part 'clubs_controller.g.dart';
+
+/// Provider for the clubs repository
+@riverpod
+ClubsRepository clubsRepository(Ref ref) {
+  final datasource = ref.read(clubsRemoteDataSourceProvider);
+  return ClubsRepositoryImpl(remoteDataSource: datasource);
+}
 
 /// Provider for all clubs
 @riverpod
 Future<List<SimpleClub>> allClubs(Ref ref) async {
-  final datasource = ref.read(clubsRemoteDataSourceProvider);
-  final clubs = await datasource.getClubs();
-  return clubs
-      .map(
-        (club) => SimpleClub(
-          id: club.id,
-          name: club.name,
-          slug: club.slug,
-          description: club.description,
-          logo: club.logo,
-          coverImage: club.coverImage,
-        ),
-      )
-      .toList();
+  final repository = ref.read(clubsRepositoryProvider);
+  final result = await repository.getClubs();
+
+  return result.fold(
+    (failure) => throw Exception(failure.message),
+    (clubs) => clubs
+        .map(
+          (club) => SimpleClub(
+            id: club.id,
+            name: club.name,
+            slug: club.slug,
+            description: club.description,
+            logo: club.logo,
+            coverImage: club.coverImage,
+          ),
+        )
+        .toList(),
+  );
 }
 
 /// Provider for featured clubs
 @riverpod
 Future<List<SimpleClub>> featuredClubs(Ref ref, {int limit = 10}) async {
-  final datasource = ref.read(clubsRemoteDataSourceProvider);
-  final clubs = await datasource.getFeaturedClubs(limit: limit);
-  return clubs
-      .map(
-        (club) => SimpleClub(
-          id: club.id,
-          name: club.name,
-          slug: club.slug,
-          description: club.description,
-          logo: club.logo,
-          coverImage: club.coverImage,
-        ),
-      )
-      .toList();
+  final repository = ref.read(clubsRepositoryProvider);
+  final result = await repository.getFeaturedClubs(limit: limit);
+
+  return result.fold(
+    (failure) => throw Exception(failure.message),
+    (clubs) => clubs
+        .map(
+          (club) => SimpleClub(
+            id: club.id,
+            name: club.name,
+            slug: club.slug,
+            description: club.description,
+            logo: club.logo,
+            coverImage: club.coverImage,
+          ),
+        )
+        .toList(),
+  );
 }
 
 /// Provider for nearby clubs
@@ -54,43 +71,52 @@ Future<List<SimpleClub>> nearbyClubs(
 }) async {
   final locationService = ref.read(locationServiceProvider);
   final position = await locationService.getCurrentLocation();
-  final datasource = ref.read(clubsRemoteDataSourceProvider);
-  final clubs = await datasource.getNearbyClubs(
+  final repository = ref.read(clubsRepositoryProvider);
+
+  final result = await repository.getNearbyClubs(
     latitude: position.latitude,
     longitude: position.longitude,
     limit: limit,
   );
-  return clubs
-      .map(
-        (club) => SimpleClub(
-          id: club.id,
-          name: club.name,
-          slug: club.slug,
-          description: club.description,
-          logo: club.logo,
-          coverImage: club.coverImage,
-        ),
-      )
-      .toList();
+
+  return result.fold(
+    (failure) => throw Exception(failure.message),
+    (clubs) => clubs
+        .map(
+          (club) => SimpleClub(
+            id: club.id,
+            name: club.name,
+            slug: club.slug,
+            description: club.description,
+            logo: club.logo,
+            coverImage: club.coverImage,
+          ),
+        )
+        .toList(),
+  );
 }
 
 /// Provider for user favorite clubs
 @riverpod
 Future<List<SimpleClub>> favoriteClubs(Ref ref) async {
-  final datasource = ref.read(clubsRemoteDataSourceProvider);
-  final clubs = await datasource.getUserFavoriteClubs();
-  return clubs
-      .map(
-        (club) => SimpleClub(
-          id: club.id,
-          name: club.name,
-          slug: club.slug,
-          description: club.description,
-          logo: club.logo,
-          coverImage: club.coverImage,
-        ),
-      )
-      .toList();
+  final repository = ref.read(clubsRepositoryProvider);
+  final result = await repository.getFavoriteClubs();
+
+  return result.fold(
+    (failure) => throw Exception(failure.message),
+    (clubs) => clubs
+        .map(
+          (club) => SimpleClub(
+            id: club.id,
+            name: club.name,
+            slug: club.slug,
+            description: club.description,
+            logo: club.logo,
+            coverImage: club.coverImage,
+          ),
+        )
+        .toList(),
+  );
 }
 
 /// Main clubs controller for managing club state and actions
@@ -106,20 +132,27 @@ class ClubsController extends _$ClubsController {
 
   @override
   Future<List<SimpleClub>> build() async {
-    final datasource = ref.read(clubsRemoteDataSourceProvider);
-    final clubs = await datasource.getClubs();
-    return _allClubs = clubs
-        .map(
-          (club) => SimpleClub(
-            id: club.id,
-            name: club.name,
-            slug: club.slug,
-            description: club.description,
-            logo: club.logo,
-            coverImage: club.coverImage,
-          ),
-        )
-        .toList();
+    final repository = ref.read(clubsRepositoryProvider);
+    final result = await repository.getClubs();
+
+    return result.fold(
+      (failure) => throw Exception(failure.message),
+      (clubs) {
+        _allClubs = clubs
+            .map(
+              (club) => SimpleClub(
+                id: club.id,
+                name: club.name,
+                slug: club.slug,
+                description: club.description,
+                logo: club.logo,
+                coverImage: club.coverImage,
+              ),
+            )
+            .toList();
+        return _allClubs;
+      },
+    );
   }
 
   /// Load more clubs (pagination)
@@ -129,32 +162,53 @@ class ClubsController extends _$ClubsController {
     _isLoadingMore = true;
 
     try {
-      final datasource = ref.read(clubsRemoteDataSourceProvider);
+      final repository = ref.read(clubsRepositoryProvider);
 
-      final newClubs = await datasource.getClubs(
-        filter: _currentFilters,
+      // Convert ClubFilter to ClubFilterCriteria
+      final filterCriteria = _currentFilters != null
+          ? ClubFilterCriteria(
+              city: _currentFilters!.city,
+              state: _currentFilters!.state,
+              amenities: _currentFilters!.amenities,
+              featured: _currentFilters!.featured,
+              favorited: _currentFilters!.favorited,
+              latitude: _currentFilters!.location?.latitude,
+              longitude: _currentFilters!.location?.longitude,
+              radius: _currentFilters!.radius,
+              minRating: _currentFilters!.minRating,
+              isPublic: _currentFilters!.isPublic,
+            )
+          : null;
+
+      final result = await repository.getClubs(
+        filter: filterCriteria,
         limit: _pageSize,
         cursor: _currentCursor,
       );
 
-      final simpleClubs = newClubs
-          .map(
-            (club) => SimpleClub(
-              id: club.id,
-              name: club.name,
-              slug: club.slug,
-              description: club.description,
-              logo: club.logo,
-              coverImage: club.coverImage,
-            ),
-          )
-          .toList();
+      result.fold(
+        (failure) => throw Exception(failure.message),
+        (clubs) {
+          final simpleClubs = clubs
+              .map(
+                (club) => SimpleClub(
+                  id: club.id,
+                  name: club.name,
+                  slug: club.slug,
+                  description: club.description,
+                  logo: club.logo,
+                  coverImage: club.coverImage,
+                ),
+              )
+              .toList();
 
-      _allClubs.addAll(simpleClubs);
-      _hasMoreData = newClubs.length == _pageSize;
+          _allClubs.addAll(simpleClubs);
+          _hasMoreData = clubs.length == _pageSize;
 
-      // Update state to trigger UI rebuild
-      state = AsyncData(_allClubs);
+          // Update state to trigger UI rebuild
+          state = AsyncData(_allClubs);
+        },
+      );
     } on Exception {
       // Handle error
       rethrow;
@@ -173,28 +227,49 @@ class ClubsController extends _$ClubsController {
     state = const AsyncLoading();
 
     try {
-      final datasource = ref.read(clubsRemoteDataSourceProvider);
+      final repository = ref.read(clubsRepositoryProvider);
 
-      final clubs = await datasource.getClubs(
-        filter: filters,
+      // Convert ClubFilter to ClubFilterCriteria
+      final filterCriteria = filters != null
+          ? ClubFilterCriteria(
+              city: filters.city,
+              state: filters.state,
+              amenities: filters.amenities,
+              featured: filters.featured,
+              favorited: filters.favorited,
+              latitude: filters.location?.latitude,
+              longitude: filters.location?.longitude,
+              radius: filters.radius,
+              minRating: filters.minRating,
+              isPublic: filters.isPublic,
+            )
+          : null;
+
+      final result = await repository.getClubs(
+        filter: filterCriteria,
         limit: _pageSize,
       );
 
-      _allClubs = clubs
-          .map(
-            (club) => SimpleClub(
-              id: club.id,
-              name: club.name,
-              slug: club.slug,
-              description: club.description,
-              logo: club.logo,
-              coverImage: club.coverImage,
-            ),
-          )
-          .toList();
+      result.fold(
+        (failure) => state = AsyncError(Exception(failure.message), StackTrace.current),
+        (clubs) {
+          _allClubs = clubs
+              .map(
+                (club) => SimpleClub(
+                  id: club.id,
+                  name: club.name,
+                  slug: club.slug,
+                  description: club.description,
+                  logo: club.logo,
+                  coverImage: club.coverImage,
+                ),
+              )
+              .toList();
 
-      _hasMoreData = clubs.length == _pageSize;
-      state = AsyncData(_allClubs);
+          _hasMoreData = clubs.length == _pageSize;
+          state = AsyncData(_allClubs);
+        },
+      );
     } on Exception catch (e) {
       state = AsyncError(e, StackTrace.current);
     }
@@ -213,31 +288,36 @@ class ClubsController extends _$ClubsController {
     try {
       final locationService = ref.read(locationServiceProvider);
       final position = await locationService.getCurrentLocation();
-      final datasource = ref.read(clubsRemoteDataSourceProvider);
+      final repository = ref.read(clubsRepositoryProvider);
 
-      final clubs = await datasource.getNearbyClubs(
+      final result = await repository.getNearbyClubs(
         latitude: position.latitude,
         longitude: position.longitude,
         radius: 25.0,
         limit: _pageSize,
       );
 
-      _allClubs = clubs
-          .map(
-            (club) => SimpleClub(
-              id: club.id,
-              name: club.name,
-              slug: club.slug,
-              description: club.description,
-              logo: club.logo,
-              coverImage: club.coverImage,
-            ),
-          )
-          .toList();
+      result.fold(
+        (failure) => state = AsyncError(Exception(failure.message), StackTrace.current),
+        (clubs) {
+          _allClubs = clubs
+              .map(
+                (club) => SimpleClub(
+                  id: club.id,
+                  name: club.name,
+                  slug: club.slug,
+                  description: club.description,
+                  logo: club.logo,
+                  coverImage: club.coverImage,
+                ),
+              )
+              .toList();
 
-      _currentCursor = null;
-      _hasMoreData = false; // Nearby results typically don't paginate
-      state = AsyncData(_allClubs);
+          _currentCursor = null;
+          _hasMoreData = false; // Nearby results typically don't paginate
+          state = AsyncData(_allClubs);
+        },
+      );
     } on Exception catch (e) {
       state = AsyncError(e, StackTrace.current);
     }
@@ -246,12 +326,17 @@ class ClubsController extends _$ClubsController {
   /// Toggle favorite status for a club
   Future<void> toggleFavoriteClub(String clubId) async {
     try {
-      final datasource = ref.read(clubsRemoteDataSourceProvider);
+      final repository = ref.read(clubsRepositoryProvider);
 
-      await datasource.toggleFavoriteClub(clubId);
+      final result = await repository.toggleFavoriteClub(clubId);
 
-      // Invalidate related providers to refresh data
-      ref.invalidate(favoriteClubsProvider);
+      result.fold(
+        (failure) => throw Exception(failure.message),
+        (_) {
+          // Invalidate related providers to refresh data
+          ref.invalidate(favoriteClubsProvider);
+        },
+      );
     } on Exception {
       // Handle error
       rethrow;
@@ -270,25 +355,28 @@ class ClubsController extends _$ClubsController {
   /// Search for clubs
   Future<List<SimpleClub>> searchClubs(String query) async {
     try {
-      final datasource = ref.read(clubsRemoteDataSourceProvider);
+      final repository = ref.read(clubsRepositoryProvider);
 
-      final searchResults = await datasource.searchClubs(
+      final result = await repository.searchClubs(
         query: query,
         limit: 50,
       );
 
-      return searchResults
-          .map(
-            (result) => SimpleClub(
-              id: result.id,
-              name: result.name,
-              slug: result.slug,
-              description: result.description ?? '',
-              logo: result.logo,
-              coverImage: result.coverImage,
-            ),
-          )
-          .toList();
+      return result.fold(
+        (failure) => [],
+        (searchResults) => searchResults
+            .map(
+              (result) => SimpleClub(
+                id: result.id,
+                name: result.name,
+                slug: result.slug,
+                description: result.description ?? '',
+                logo: result.logo,
+                coverImage: result.coverImage,
+              ),
+            )
+            .toList(),
+      );
     } on Exception {
       return [];
     }
