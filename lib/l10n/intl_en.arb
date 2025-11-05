@@ -274,5 +274,309 @@
   "selectTheme": "Select Theme",
   "@selectTheme": {
     "description": "Theme selection dialog title"
+  },
+  "events": "Events",
+  "@events": {
+    "description": "Events page title"
+  },
+  "myRSVPs": "My RSVPs",
+  "@myRSVPs": {
+    "description": "My RSVPs page title"
+  },
+  "eventDetails": "Event Details",
+  "@eventDetails": {
+    "description": "Event details page title"
+  },
+  "rsvpToEvent": "RSVP to Event",
+  "@rsvpToEvent": {
+    "description": "RSVP form page title"
+  },
+  "searchEvents": "Search events...",
+  "@searchEvents": {
+    "description": "Events search placeholder"
+  },
+  "filterEvents": "Filter events",
+  "@filterEvents": {
+    "description": "Filter events button tooltip"
+  },
+  "noEventsFound": "No Events Found",
+  "@noEventsFound": {
+    "description": "Empty state title for no events"
+  },
+  "noEventsDescription": "There are no upcoming events at this club",
+  "@noEventsDescription": {
+    "description": "Empty state description for no events"
+  },
+  "adjustFilters": "Try adjusting your search or filters",
+  "@adjustFilters": {
+    "description": "Empty state suggestion for filtered results"
+  },
+  "clearFilters": "Clear Filters",
+  "@clearFilters": {
+    "description": "Clear filters button text"
+  },
+  "connectionError": "Connection Error",
+  "@connectionError": {
+    "description": "Network error title"
+  },
+  "connectionErrorMessage": "Unable to connect to the server. Please check your internet connection and try again.",
+  "@connectionErrorMessage": {
+    "description": "Network error message"
+  },
+  "serverError": "Server Error",
+  "@serverError": {
+    "description": "Server error title"
+  },
+  "serverErrorMessage": "The server encountered an error. Please try again later.",
+  "@serverErrorMessage": {
+    "description": "Server error message"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "aboutThisEvent": "About this event",
+  "@aboutThisEvent": {
+    "description": "Event description section title"
+  },
+  "capacity": "Capacity",
+  "@capacity": {
+    "description": "Event capacity section title"
+  },
+  "eventInformation": "Event Information",
+  "@eventInformation": {
+    "description": "Event info section title"
+  },
+  "eventType": "Event Type",
+  "@eventType": {
+    "description": "Event type label"
+  },
+  "organizer": "Organizer",
+  "@organizer": {
+    "description": "Organizer label"
+  },
+  "guestPolicy": "Guest Policy",
+  "@guestPolicy": {
+    "description": "Guest policy label"
+  },
+  "maxGuests": "Max Guests",
+  "@maxGuests": {
+    "description": "Max guests label"
+  },
+  "rsvpDeadline": "RSVP Deadline",
+  "@rsvpDeadline": {
+    "description": "RSVP deadline label"
+  },
+  "cancellationDeadline": "Cancellation Deadline",
+  "@cancellationDeadline": {
+    "description": "Cancellation deadline label"
+  },
+  "paymentRequired": "Payment required",
+  "@paymentRequired": {
+    "description": "Payment required indicator"
+  },
+  "approvalRequired": "Approval required",
+  "@approvalRequired": {
+    "description": "Approval required indicator"
+  },
+  "yourResponse": "Your Response",
+  "@yourResponse": {
+    "description": "RSVP response section title"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes response option"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No response option"
+  },
+  "maybe": "Maybe",
+  "@maybe": {
+    "description": "Maybe response option"
+  },
+  "numberOfAttendees": "Number of Attendees",
+  "@numberOfAttendees": {
+    "description": "Attendees count section title"
+  },
+  "guestNames": "Guest Names",
+  "@guestNames": {
+    "description": "Guest names section title"
+  },
+  "provideGuestNames": "Please provide the names of your guests",
+  "@provideGuestNames": {
+    "description": "Guest names instruction"
+  },
+  "guestName": "Guest {number} Name",
+  "@guestName": {
+    "description": "Guest name field label",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "dietaryRestrictions": "Dietary Restrictions",
+  "@dietaryRestrictions": {
+    "description": "Dietary restrictions section title"
+  },
+  "selectAllThatApply": "Select all that apply",
+  "@selectAllThatApply": {
+    "description": "Selection instruction"
+  },
+  "seatingPreferences": "Seating Preferences (Optional)",
+  "@seatingPreferences": {
+    "description": "Seating preferences section title"
+  },
+  "seatingPreferencesHint": "e.g., Near window, quiet area, etc.",
+  "@seatingPreferencesHint": {
+    "description": "Seating preferences hint text"
+  },
+  "specialRequests": "Special Requests (Optional)",
+  "@specialRequests": {
+    "description": "Special requests section title"
+  },
+  "specialRequestsHint": "Any special accommodations or requests",
+  "@specialRequestsHint": {
+    "description": "Special requests hint text"
+  },
+  "submitRSVP": "Submit RSVP",
+  "@submitRSVP": {
+    "description": "Submit RSVP button text"
+  },
+  "submitting": "Submitting...",
+  "@submitting": {
+    "description": "Submitting state text"
+  },
+  "rsvpSubmitted": "RSVP Submitted",
+  "@rsvpSubmitted": {
+    "description": "RSVP success dialog title"
+  },
+  "rsvpPendingApproval": "Your RSVP has been submitted and is pending approval from the event organizer.",
+  "@rsvpPendingApproval": {
+    "description": "RSVP pending approval message"
+  },
+  "rsvpConfirmed": "Your RSVP has been confirmed! We look forward to seeing you at the event.",
+  "@rsvpConfirmed": {
+    "description": "RSVP confirmed message"
+  },
+  "rsvpFailed": "RSVP Failed",
+  "@rsvpFailed": {
+    "description": "RSVP failure dialog title"
+  },
+  "cancelRSVP": "Cancel RSVP",
+  "@cancelRSVP": {
+    "description": "Cancel RSVP button text"
+  },
+  "cancelRSVPConfirmation": "Are you sure you want to cancel your RSVP? Cancellation fees may apply based on the event's cancellation policy.",
+  "@cancelRSVPConfirmation": {
+    "description": "Cancel RSVP confirmation message"
+  },
+  "keepRSVP": "Keep RSVP",
+  "@keepRSVP": {
+    "description": "Keep RSVP button text"
+  },
+  "filterByStatus": "Filter by Status",
+  "@filterByStatus": {
+    "description": "Filter by status dialog title"
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Clear button text"
+  },
+  "applyFilter": "Apply Filter",
+  "@applyFilter": {
+    "description": "Apply filter button text"
+  },
+  "confirmed": "Confirmed",
+  "@confirmed": {
+    "description": "Confirmed status"
+  },
+  "tentative": "Tentative",
+  "@tentative": {
+    "description": "Tentative status"
+  },
+  "pendingApproval": "Pending Approval",
+  "@pendingApproval": {
+    "description": "Pending approval status"
+  },
+  "waitlist": "Waitlist",
+  "@waitlist": {
+    "description": "Waitlist status"
+  },
+  "cancelled": "Cancelled",
+  "@cancelled": {
+    "description": "Cancelled status"
+  },
+  "declined": "Declined",
+  "@declined": {
+    "description": "Declined status"
+  },
+  "going": "Going",
+  "@going": {
+    "description": "Going response label"
+  },
+  "notGoing": "Not Going",
+  "@notGoing": {
+    "description": "Not going response label"
+  },
+  "includingYourself": "(Including yourself, max {max})",
+  "@includingYourself": {
+    "description": "Attendance count instruction",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "person": "person",
+  "@person": {
+    "description": "Person singular"
+  },
+  "people": "people",
+  "@people": {
+    "description": "People plural"
+  },
+  "updateRSVP": "Update RSVP",
+  "@updateRSVP": {
+    "description": "Update RSVP page title"
+  },
+  "rsvpUpdated": "RSVP Updated",
+  "@rsvpUpdated": {
+    "description": "RSVP updated success title"
+  },
+  "rsvpUpdatedSuccessfully": "Your RSVP has been updated successfully.",
+  "@rsvpUpdatedSuccessfully": {
+    "description": "RSVP updated success message"
+  },
+  "updateFailed": "Update Failed",
+  "@updateFailed": {
+    "description": "Update failed error title"
+  },
+  "failedToUpdateRSVP": "Failed to update your RSVP: {error}",
+  "@failedToUpdateRSVP": {
+    "description": "Failed to update RSVP error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentStatus": "Current Status: {status}",
+  "@currentStatus": {
+    "description": "Current RSVP status label",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button label"
+  },
+  "updateRSVPFeatureComingSoon": "Update RSVP feature will be available once API integration is complete",
+  "@updateRSVPFeatureComingSoon": {
+    "description": "Update RSVP coming soon message"
   }
 }

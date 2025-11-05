@@ -1,0 +1,158 @@
+import '../../domain/entities/event_entity.dart';
+
+/// Event model - data layer representation with JSON serialization
+class EventModel extends EventEntity {
+  const EventModel({
+    required super.id,
+    required super.clubId,
+    required super.title,
+    required super.description,
+    required super.eventType,
+    required super.startTime,
+    required super.endTime,
+    required super.location,
+    super.imageUrl,
+    super.capacity,
+    required super.currentAttendees,
+    required super.availableSpots,
+    required super.guestPolicy,
+    super.maxGuestsPerMember,
+    required super.requiresApproval,
+    required super.requiresPayment,
+    super.price,
+    super.cancellationDeadline,
+    super.freeCancellationDays,
+    super.cancellationFeePercentage,
+    required super.allowsSubgroupPriority,
+    required super.fullHouseExclusive,
+    super.rsvpDeadline,
+    required super.createdAt,
+    required super.updatedAt,
+    super.subgroupId,
+    super.organizerName,
+    super.contactEmail,
+    super.contactPhone,
+    super.paymentInstructions,
+    super.tentativeCount,
+    super.waitlistCount,
+  });
+
+  /// Create EventModel from JSON
+  factory EventModel.fromJson(Map<String, dynamic> json) {
+    return EventModel(
+      id: json['id'] as String,
+      clubId: json['clubId'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      eventType: EventType.fromString(json['eventType'] as String),
+      startTime: DateTime.parse(json['startTime'] as String),
+      endTime: DateTime.parse(json['endTime'] as String),
+      location: json['location'] as String,
+      imageUrl: json['imageUrl'] as String?,
+      capacity: json['capacity'] as int?,
+      currentAttendees: json['currentAttendees'] as int? ?? 0,
+      availableSpots: json['availableSpots'] as int? ?? 0,
+      guestPolicy: GuestPolicy.fromString(json['guestPolicy'] as String),
+      maxGuestsPerMember: json['maxGuestsPerMember'] as int?,
+      requiresApproval: json['requiresApproval'] as bool? ?? false,
+      requiresPayment: json['requiresPayment'] as bool? ?? false,
+      price: (json['price'] as num?)?.toDouble(),
+      cancellationDeadline: json['cancellationDeadline'] != null
+          ? DateTime.parse(json['cancellationDeadline'] as String)
+          : null,
+      freeCancellationDays: json['freeCancellationDays'] as int?,
+      cancellationFeePercentage:
+          (json['cancellationFeePercentage'] as num?)?.toDouble(),
+      allowsSubgroupPriority: json['allowsSubgroupPriority'] as bool? ?? false,
+      fullHouseExclusive: json['fullHouseExclusive'] as bool? ?? false,
+      rsvpDeadline: json['rsvpDeadline'] != null
+          ? DateTime.parse(json['rsvpDeadline'] as String)
+          : null,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      subgroupId: json['subgroupId'] as String?,
+      organizerName: json['organizerName'] as String?,
+      contactEmail: json['contactEmail'] as String?,
+      contactPhone: json['contactPhone'] as String?,
+      paymentInstructions: json['paymentInstructions'] as String?,
+      tentativeCount: json['tentativeCount'] as int?,
+      waitlistCount: json['waitlistCount'] as int?,
+    );
+  }
+
+  /// Convert EventModel to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'clubId': clubId,
+      'title': title,
+      'description': description,
+      'eventType': eventType.toGraphQL(),
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
+      'location': location,
+      'imageUrl': imageUrl,
+      'capacity': capacity,
+      'currentAttendees': currentAttendees,
+      'availableSpots': availableSpots,
+      'guestPolicy': guestPolicy.toGraphQL(),
+      'maxGuestsPerMember': maxGuestsPerMember,
+      'requiresApproval': requiresApproval,
+      'requiresPayment': requiresPayment,
+      'price': price,
+      'cancellationDeadline': cancellationDeadline?.toIso8601String(),
+      'freeCancellationDays': freeCancellationDays,
+      'cancellationFeePercentage': cancellationFeePercentage,
+      'allowsSubgroupPriority': allowsSubgroupPriority,
+      'fullHouseExclusive': fullHouseExclusive,
+      'rsvpDeadline': rsvpDeadline?.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'subgroupId': subgroupId,
+      'organizerName': organizerName,
+      'contactEmail': contactEmail,
+      'contactPhone': contactPhone,
+      'paymentInstructions': paymentInstructions,
+      'tentativeCount': tentativeCount,
+      'waitlistCount': waitlistCount,
+    };
+  }
+
+  /// Convert entity to model
+  factory EventModel.fromEntity(EventEntity entity) {
+    return EventModel(
+      id: entity.id,
+      clubId: entity.clubId,
+      title: entity.title,
+      description: entity.description,
+      eventType: entity.eventType,
+      startTime: entity.startTime,
+      endTime: entity.endTime,
+      location: entity.location,
+      imageUrl: entity.imageUrl,
+      capacity: entity.capacity,
+      currentAttendees: entity.currentAttendees,
+      availableSpots: entity.availableSpots,
+      guestPolicy: entity.guestPolicy,
+      maxGuestsPerMember: entity.maxGuestsPerMember,
+      requiresApproval: entity.requiresApproval,
+      requiresPayment: entity.requiresPayment,
+      price: entity.price,
+      cancellationDeadline: entity.cancellationDeadline,
+      freeCancellationDays: entity.freeCancellationDays,
+      cancellationFeePercentage: entity.cancellationFeePercentage,
+      allowsSubgroupPriority: entity.allowsSubgroupPriority,
+      fullHouseExclusive: entity.fullHouseExclusive,
+      rsvpDeadline: entity.rsvpDeadline,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      subgroupId: entity.subgroupId,
+      organizerName: entity.organizerName,
+      contactEmail: entity.contactEmail,
+      contactPhone: entity.contactPhone,
+      paymentInstructions: entity.paymentInstructions,
+      tentativeCount: entity.tentativeCount,
+      waitlistCount: entity.waitlistCount,
+    );
+  }
+}

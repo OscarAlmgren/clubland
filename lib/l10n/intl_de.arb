@@ -250,5 +250,309 @@
   "selectLanguage": "Sprache auswählen",
   "@selectLanguage": {
     "description": "Titel des Sprachauswahl-Dialogs"
+  },
+  "events": "Veranstaltungen",
+  "@events": {
+    "description": "Titel der Veranstaltungsseite"
+  },
+  "myRSVPs": "Meine Zusagen",
+  "@myRSVPs": {
+    "description": "Titel der Seite 'Meine Zusagen'"
+  },
+  "eventDetails": "Veranstaltungsdetails",
+  "@eventDetails": {
+    "description": "Titel der Veranstaltungsdetailseite"
+  },
+  "rsvpToEvent": "Zur Veranstaltung zusagen",
+  "@rsvpToEvent": {
+    "description": "Titel der Zusageformularseite"
+  },
+  "searchEvents": "Veranstaltungen suchen...",
+  "@searchEvents": {
+    "description": "Platzhalter für Veranstaltungssuche"
+  },
+  "filterEvents": "Veranstaltungen filtern",
+  "@filterEvents": {
+    "description": "Tooltip für Filterschaltfläche"
+  },
+  "noEventsFound": "Keine Veranstaltungen gefunden",
+  "@noEventsFound": {
+    "description": "Titel des leeren Zustands für keine Veranstaltungen"
+  },
+  "noEventsDescription": "Es gibt keine bevorstehenden Veranstaltungen in diesem Club",
+  "@noEventsDescription": {
+    "description": "Beschreibung des leeren Zustands für keine Veranstaltungen"
+  },
+  "adjustFilters": "Versuchen Sie, Ihre Suche oder Filter anzupassen",
+  "@adjustFilters": {
+    "description": "Vorschlag für leeren Zustand bei gefilterten Ergebnissen"
+  },
+  "clearFilters": "Filter löschen",
+  "@clearFilters": {
+    "description": "Text für Schaltfläche 'Filter löschen'"
+  },
+  "connectionError": "Verbindungsfehler",
+  "@connectionError": {
+    "description": "Titel für Netzwerkfehler"
+  },
+  "connectionErrorMessage": "Verbindung zum Server kann nicht hergestellt werden. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+  "@connectionErrorMessage": {
+    "description": "Nachricht für Netzwerkfehler"
+  },
+  "serverError": "Serverfehler",
+  "@serverError": {
+    "description": "Titel für Serverfehler"
+  },
+  "serverErrorMessage": "Der Server hat einen Fehler festgestellt. Bitte versuchen Sie es später erneut.",
+  "@serverErrorMessage": {
+    "description": "Nachricht für Serverfehler"
+  },
+  "retry": "Erneut versuchen",
+  "@retry": {
+    "description": "Text für Schaltfläche 'Erneut versuchen'"
+  },
+  "aboutThisEvent": "Über diese Veranstaltung",
+  "@aboutThisEvent": {
+    "description": "Titel der Veranstaltungsbeschreibungssektion"
+  },
+  "capacity": "Kapazität",
+  "@capacity": {
+    "description": "Titel der Veranstaltungskapazitätssektion"
+  },
+  "eventInformation": "Veranstaltungsinformationen",
+  "@eventInformation": {
+    "description": "Titel der Veranstaltungsinformationssektion"
+  },
+  "eventType": "Veranstaltungstyp",
+  "@eventType": {
+    "description": "Label für Veranstaltungstyp"
+  },
+  "organizer": "Veranstalter",
+  "@organizer": {
+    "description": "Label für Veranstalter"
+  },
+  "guestPolicy": "Gästerichtlinie",
+  "@guestPolicy": {
+    "description": "Label für Gästerichtlinie"
+  },
+  "maxGuests": "Max. Gäste",
+  "@maxGuests": {
+    "description": "Label für max. Gäste"
+  },
+  "rsvpDeadline": "Zusagefrist",
+  "@rsvpDeadline": {
+    "description": "Label für Zusagefrist"
+  },
+  "cancellationDeadline": "Stornierungsfrist",
+  "@cancellationDeadline": {
+    "description": "Label für Stornierungsfrist"
+  },
+  "paymentRequired": "Zahlung erforderlich",
+  "@paymentRequired": {
+    "description": "Indikator für Zahlungspflicht"
+  },
+  "approvalRequired": "Genehmigung erforderlich",
+  "@approvalRequired": {
+    "description": "Indikator für Genehmigungspflicht"
+  },
+  "yourResponse": "Ihre Antwort",
+  "@yourResponse": {
+    "description": "Titel der Zusageantwortsektion"
+  },
+  "yes": "Ja",
+  "@yes": {
+    "description": "Ja-Antwortoption"
+  },
+  "no": "Nein",
+  "@no": {
+    "description": "Nein-Antwortoption"
+  },
+  "maybe": "Vielleicht",
+  "@maybe": {
+    "description": "Vielleicht-Antwortoption"
+  },
+  "numberOfAttendees": "Anzahl der Teilnehmer",
+  "@numberOfAttendees": {
+    "description": "Titel der Teilnehmerzahlsektion"
+  },
+  "guestNames": "Gästenamen",
+  "@guestNames": {
+    "description": "Titel der Gästenamenss​ektion"
+  },
+  "provideGuestNames": "Bitte geben Sie die Namen Ihrer Gäste an",
+  "@provideGuestNames": {
+    "description": "Anweisung für Gästenamen"
+  },
+  "guestName": "Gast {number} Name",
+  "@guestName": {
+    "description": "Label für Gästenamenfeld",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "dietaryRestrictions": "Ernährungseinschränkungen",
+  "@dietaryRestrictions": {
+    "description": "Titel der Ernährungseinschränkungssektion"
+  },
+  "selectAllThatApply": "Wählen Sie alle zutreffenden aus",
+  "@selectAllThatApply": {
+    "description": "Auswahlanweisung"
+  },
+  "seatingPreferences": "Sitzpräferenzen (Optional)",
+  "@seatingPreferences": {
+    "description": "Titel der Sitzpräferenzsektion"
+  },
+  "seatingPreferencesHint": "z.B. Nähe Fenster, ruhiger Bereich, etc.",
+  "@seatingPreferencesHint": {
+    "description": "Hinweistext für Sitzpräferenzen"
+  },
+  "specialRequests": "Besondere Wünsche (Optional)",
+  "@specialRequests": {
+    "description": "Titel der Sektion für besondere Wünsche"
+  },
+  "specialRequestsHint": "Besondere Anpassungen oder Wünsche",
+  "@specialRequestsHint": {
+    "description": "Hinweistext für besondere Wünsche"
+  },
+  "submitRSVP": "Zusage senden",
+  "@submitRSVP": {
+    "description": "Text für Schaltfläche 'Zusage senden'"
+  },
+  "submitting": "Wird gesendet...",
+  "@submitting": {
+    "description": "Text für sendenden Zustand"
+  },
+  "rsvpSubmitted": "Zusage gesendet",
+  "@rsvpSubmitted": {
+    "description": "Titel des Erfolgsdialogs für Zusage"
+  },
+  "rsvpPendingApproval": "Ihre Zusage wurde gesendet und wartet auf Genehmigung durch den Veranstalter.",
+  "@rsvpPendingApproval": {
+    "description": "Nachricht für ausstehende Genehmigung der Zusage"
+  },
+  "rsvpConfirmed": "Ihre Zusage wurde bestätigt! Wir freuen uns darauf, Sie bei der Veranstaltung zu sehen.",
+  "@rsvpConfirmed": {
+    "description": "Nachricht für bestätigte Zusage"
+  },
+  "rsvpFailed": "Zusage fehlgeschlagen",
+  "@rsvpFailed": {
+    "description": "Titel des Fehlerdialogs für Zusage"
+  },
+  "cancelRSVP": "Zusage stornieren",
+  "@cancelRSVP": {
+    "description": "Text für Schaltfläche 'Zusage stornieren'"
+  },
+  "cancelRSVPConfirmation": "Sind Sie sicher, dass Sie Ihre Zusage stornieren möchten? Es können Stornierungsgebühren gemäß der Stornierungsrichtlinie der Veranstaltung anfallen.",
+  "@cancelRSVPConfirmation": {
+    "description": "Bestätigungsnachricht für Stornierung der Zusage"
+  },
+  "keepRSVP": "Zusage behalten",
+  "@keepRSVP": {
+    "description": "Text für Schaltfläche 'Zusage behalten'"
+  },
+  "filterByStatus": "Nach Status filtern",
+  "@filterByStatus": {
+    "description": "Titel des Dialogs 'Nach Status filtern'"
+  },
+  "clear": "Löschen",
+  "@clear": {
+    "description": "Text für Schaltfläche 'Löschen'"
+  },
+  "applyFilter": "Filter anwenden",
+  "@applyFilter": {
+    "description": "Text für Schaltfläche 'Filter anwenden'"
+  },
+  "confirmed": "Bestätigt",
+  "@confirmed": {
+    "description": "Bestätigter Status"
+  },
+  "tentative": "Vorläufig",
+  "@tentative": {
+    "description": "Vorläufiger Status"
+  },
+  "pendingApproval": "Genehmigung ausstehend",
+  "@pendingApproval": {
+    "description": "Status 'Genehmigung ausstehend'"
+  },
+  "waitlist": "Warteliste",
+  "@waitlist": {
+    "description": "Wartelistenstatus"
+  },
+  "cancelled": "Storniert",
+  "@cancelled": {
+    "description": "Stornierter Status"
+  },
+  "declined": "Abgelehnt",
+  "@declined": {
+    "description": "Abgelehnter Status"
+  },
+  "going": "Zusage",
+  "@going": {
+    "description": "Zusagelabel"
+  },
+  "notGoing": "Absage",
+  "@notGoing": {
+    "description": "Absagelabel"
+  },
+  "includingYourself": "(Einschließlich Sie selbst, max {max})",
+  "@includingYourself": {
+    "description": "Anweisung für Teilnehmerzahl",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "person": "Person",
+  "@person": {
+    "description": "Person Singular"
+  },
+  "people": "Personen",
+  "@people": {
+    "description": "Personen Plural"
+  },
+  "updateRSVP": "Zusage Aktualisieren",
+  "@updateRSVP": {
+    "description": "Zusage aktualisieren Seitentitel"
+  },
+  "rsvpUpdated": "Zusage Aktualisiert",
+  "@rsvpUpdated": {
+    "description": "Zusage aktualisiert Erfolgstitel"
+  },
+  "rsvpUpdatedSuccessfully": "Ihre Zusage wurde erfolgreich aktualisiert.",
+  "@rsvpUpdatedSuccessfully": {
+    "description": "Zusage aktualisiert Erfolgsmeldung"
+  },
+  "updateFailed": "Aktualisierung Fehlgeschlagen",
+  "@updateFailed": {
+    "description": "Aktualisierung fehlgeschlagen Fehlertitel"
+  },
+  "failedToUpdateRSVP": "Fehler beim Aktualisieren Ihrer Zusage: {error}",
+  "@failedToUpdateRSVP": {
+    "description": "Fehler beim Aktualisieren der Zusage Fehlermeldung",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentStatus": "Aktueller Status: {status}",
+  "@currentStatus": {
+    "description": "Aktueller Zusagestatus Etikett",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Bearbeiten",
+  "@edit": {
+    "description": "Bearbeiten Button Etikett"
+  },
+  "updateRSVPFeatureComingSoon": "Die Funktion zum Aktualisieren der Zusage wird verfügbar sein, sobald die API-Integration abgeschlossen ist",
+  "@updateRSVPFeatureComingSoon": {
+    "description": "Zusage aktualisieren kommt bald Nachricht"
   }
 }

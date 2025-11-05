@@ -1,0 +1,12 @@
+query FindingFriendsSubgroups($clubId: ID!) {
+  findingFriendsSubgroups(clubId: $clubId) {
+    id
+    clubId
+    name
+    description
+    memberCount
+    isActive
+    organizerId
+    organizerName
+  }
+}

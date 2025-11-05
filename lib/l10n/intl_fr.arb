@@ -250,5 +250,309 @@
   "selectLanguage": "Sélectionner la langue",
   "@selectLanguage": {
     "description": "Titre du dialogue de sélection de la langue"
+  },
+  "events": "Événements",
+  "@events": {
+    "description": "Titre de la page des événements"
+  },
+  "myRSVPs": "Mes Confirmations",
+  "@myRSVPs": {
+    "description": "Titre de la page 'Mes Confirmations'"
+  },
+  "eventDetails": "Détails de l'événement",
+  "@eventDetails": {
+    "description": "Titre de la page de détails de l'événement"
+  },
+  "rsvpToEvent": "Confirmer sa présence",
+  "@rsvpToEvent": {
+    "description": "Titre de la page du formulaire de confirmation"
+  },
+  "searchEvents": "Rechercher des événements...",
+  "@searchEvents": {
+    "description": "Texte d'espace réservé pour la recherche d'événements"
+  },
+  "filterEvents": "Filtrer les événements",
+  "@filterEvents": {
+    "description": "Info-bulle du bouton de filtre"
+  },
+  "noEventsFound": "Aucun événement trouvé",
+  "@noEventsFound": {
+    "description": "Titre de l'état vide pour aucun événement"
+  },
+  "noEventsDescription": "Il n'y a aucun événement à venir dans ce club",
+  "@noEventsDescription": {
+    "description": "Description de l'état vide pour aucun événement"
+  },
+  "adjustFilters": "Essayez d'ajuster votre recherche ou vos filtres",
+  "@adjustFilters": {
+    "description": "Suggestion pour l'état vide avec résultats filtrés"
+  },
+  "clearFilters": "Effacer les filtres",
+  "@clearFilters": {
+    "description": "Texte du bouton 'Effacer les filtres'"
+  },
+  "connectionError": "Erreur de connexion",
+  "@connectionError": {
+    "description": "Titre pour erreur réseau"
+  },
+  "connectionErrorMessage": "Impossible de se connecter au serveur. Veuillez vérifier votre connexion Internet et réessayer.",
+  "@connectionErrorMessage": {
+    "description": "Message pour erreur réseau"
+  },
+  "serverError": "Erreur du serveur",
+  "@serverError": {
+    "description": "Titre pour erreur serveur"
+  },
+  "serverErrorMessage": "Le serveur a rencontré une erreur. Veuillez réessayer plus tard.",
+  "@serverErrorMessage": {
+    "description": "Message pour erreur serveur"
+  },
+  "retry": "Réessayer",
+  "@retry": {
+    "description": "Texte du bouton 'Réessayer'"
+  },
+  "aboutThisEvent": "À propos de cet événement",
+  "@aboutThisEvent": {
+    "description": "Titre de la section de description de l'événement"
+  },
+  "capacity": "Capacité",
+  "@capacity": {
+    "description": "Titre de la section de capacité de l'événement"
+  },
+  "eventInformation": "Informations sur l'événement",
+  "@eventInformation": {
+    "description": "Titre de la section d'informations sur l'événement"
+  },
+  "eventType": "Type d'événement",
+  "@eventType": {
+    "description": "Étiquette pour le type d'événement"
+  },
+  "organizer": "Organisateur",
+  "@organizer": {
+    "description": "Étiquette pour l'organisateur"
+  },
+  "guestPolicy": "Politique d'invités",
+  "@guestPolicy": {
+    "description": "Étiquette pour la politique d'invités"
+  },
+  "maxGuests": "Max. d'invités",
+  "@maxGuests": {
+    "description": "Étiquette pour le max. d'invités"
+  },
+  "rsvpDeadline": "Date limite de confirmation",
+  "@rsvpDeadline": {
+    "description": "Étiquette pour la date limite de confirmation"
+  },
+  "cancellationDeadline": "Date limite d'annulation",
+  "@cancellationDeadline": {
+    "description": "Étiquette pour la date limite d'annulation"
+  },
+  "paymentRequired": "Paiement requis",
+  "@paymentRequired": {
+    "description": "Indicateur de paiement requis"
+  },
+  "approvalRequired": "Approbation requise",
+  "@approvalRequired": {
+    "description": "Indicateur d'approbation requise"
+  },
+  "yourResponse": "Votre réponse",
+  "@yourResponse": {
+    "description": "Titre de la section de réponse de confirmation"
+  },
+  "yes": "Oui",
+  "@yes": {
+    "description": "Option de réponse Oui"
+  },
+  "no": "Non",
+  "@no": {
+    "description": "Option de réponse Non"
+  },
+  "maybe": "Peut-être",
+  "@maybe": {
+    "description": "Option de réponse Peut-être"
+  },
+  "numberOfAttendees": "Nombre de participants",
+  "@numberOfAttendees": {
+    "description": "Titre de la section du nombre de participants"
+  },
+  "guestNames": "Noms des invités",
+  "@guestNames": {
+    "description": "Titre de la section des noms d'invités"
+  },
+  "provideGuestNames": "Veuillez fournir les noms de vos invités",
+  "@provideGuestNames": {
+    "description": "Instruction pour les noms d'invités"
+  },
+  "guestName": "Invité {number} Nom",
+  "@guestName": {
+    "description": "Étiquette pour le champ de nom d'invité",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "dietaryRestrictions": "Restrictions alimentaires",
+  "@dietaryRestrictions": {
+    "description": "Titre de la section des restrictions alimentaires"
+  },
+  "selectAllThatApply": "Sélectionnez toutes les réponses applicables",
+  "@selectAllThatApply": {
+    "description": "Instruction de sélection"
+  },
+  "seatingPreferences": "Préférences de placement (Optionnel)",
+  "@seatingPreferences": {
+    "description": "Titre de la section des préférences de placement"
+  },
+  "seatingPreferencesHint": "par ex. Près de la fenêtre, zone calme, etc.",
+  "@seatingPreferencesHint": {
+    "description": "Texte d'indication pour les préférences de placement"
+  },
+  "specialRequests": "Demandes spéciales (Optionnel)",
+  "@specialRequests": {
+    "description": "Titre de la section des demandes spéciales"
+  },
+  "specialRequestsHint": "Aménagements ou demandes spéciales",
+  "@specialRequestsHint": {
+    "description": "Texte d'indication pour les demandes spéciales"
+  },
+  "submitRSVP": "Envoyer la confirmation",
+  "@submitRSVP": {
+    "description": "Texte du bouton 'Envoyer la confirmation'"
+  },
+  "submitting": "Envoi en cours...",
+  "@submitting": {
+    "description": "Texte pour l'état d'envoi"
+  },
+  "rsvpSubmitted": "Confirmation envoyée",
+  "@rsvpSubmitted": {
+    "description": "Titre du dialogue de succès de confirmation"
+  },
+  "rsvpPendingApproval": "Votre confirmation a été envoyée et est en attente d'approbation par l'organisateur de l'événement.",
+  "@rsvpPendingApproval": {
+    "description": "Message pour confirmation en attente d'approbation"
+  },
+  "rsvpConfirmed": "Votre confirmation a été validée ! Nous avons hâte de vous voir à l'événement.",
+  "@rsvpConfirmed": {
+    "description": "Message pour confirmation validée"
+  },
+  "rsvpFailed": "Échec de la confirmation",
+  "@rsvpFailed": {
+    "description": "Titre du dialogue d'échec de confirmation"
+  },
+  "cancelRSVP": "Annuler la confirmation",
+  "@cancelRSVP": {
+    "description": "Texte du bouton 'Annuler la confirmation'"
+  },
+  "cancelRSVPConfirmation": "Êtes-vous sûr de vouloir annuler votre confirmation ? Des frais d'annulation peuvent s'appliquer selon la politique d'annulation de l'événement.",
+  "@cancelRSVPConfirmation": {
+    "description": "Message de confirmation d'annulation"
+  },
+  "keepRSVP": "Conserver la confirmation",
+  "@keepRSVP": {
+    "description": "Texte du bouton 'Conserver la confirmation'"
+  },
+  "filterByStatus": "Filtrer par statut",
+  "@filterByStatus": {
+    "description": "Titre du dialogue 'Filtrer par statut'"
+  },
+  "clear": "Effacer",
+  "@clear": {
+    "description": "Texte du bouton 'Effacer'"
+  },
+  "applyFilter": "Appliquer le filtre",
+  "@applyFilter": {
+    "description": "Texte du bouton 'Appliquer le filtre'"
+  },
+  "confirmed": "Confirmé",
+  "@confirmed": {
+    "description": "Statut confirmé"
+  },
+  "tentative": "Provisoire",
+  "@tentative": {
+    "description": "Statut provisoire"
+  },
+  "pendingApproval": "En attente d'approbation",
+  "@pendingApproval": {
+    "description": "Statut 'En attente d'approbation'"
+  },
+  "waitlist": "Liste d'attente",
+  "@waitlist": {
+    "description": "Statut liste d'attente"
+  },
+  "cancelled": "Annulé",
+  "@cancelled": {
+    "description": "Statut annulé"
+  },
+  "declined": "Refusé",
+  "@declined": {
+    "description": "Statut refusé"
+  },
+  "going": "Présent",
+  "@going": {
+    "description": "Étiquette de présence"
+  },
+  "notGoing": "Absent",
+  "@notGoing": {
+    "description": "Étiquette d'absence"
+  },
+  "includingYourself": "(Vous inclus, max {max})",
+  "@includingYourself": {
+    "description": "Instruction pour le nombre de participants",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "person": "personne",
+  "@person": {
+    "description": "Personne singulier"
+  },
+  "people": "personnes",
+  "@people": {
+    "description": "Personnes pluriel"
+  },
+  "updateRSVP": "Modifier la Confirmation",
+  "@updateRSVP": {
+    "description": "Titre de la page modifier la confirmation"
+  },
+  "rsvpUpdated": "Confirmation Modifiée",
+  "@rsvpUpdated": {
+    "description": "Titre de succès de confirmation modifiée"
+  },
+  "rsvpUpdatedSuccessfully": "Votre confirmation a été modifiée avec succès.",
+  "@rsvpUpdatedSuccessfully": {
+    "description": "Message de succès de confirmation modifiée"
+  },
+  "updateFailed": "Modification Échouée",
+  "@updateFailed": {
+    "description": "Titre d'erreur de modification échouée"
+  },
+  "failedToUpdateRSVP": "Échec de la modification de votre confirmation: {error}",
+  "@failedToUpdateRSVP": {
+    "description": "Message d'erreur d'échec de modification",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "currentStatus": "Statut Actuel: {status}",
+  "@currentStatus": {
+    "description": "Étiquette du statut actuel de confirmation",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Modifier",
+  "@edit": {
+    "description": "Étiquette du bouton modifier"
+  },
+  "updateRSVPFeatureComingSoon": "La fonctionnalité de modification de confirmation sera disponible une fois l'intégration API terminée",
+  "@updateRSVPFeatureComingSoon": {
+    "description": "Message de fonctionnalité bientôt disponible"
   }
 }

@@ -1,0 +1,38 @@
+query MyRSVPs($clubId: ID!, $status: [RSVPStatus!], $pagination: PaginationInput!) {
+  myRSVPs(clubId: $clubId, status: $status, pagination: $pagination) {
+    edges {
+      node {
+        id
+        eventId
+        memberId
+        clubId
+        response
+        rsvpType
+        priority
+        attendanceCount
+        guestNames
+        dietaryRestrictions
+        seatingPreferences
+        specialRequests
+        status
+        paymentRequired
+        paymentVerified
+        paymentAmount
+        cancellationFee
+        feeWaived
+        waitlistPosition
+        rsvpedAt
+        updatedAt
+        cancelledAt
+        cancellationReason
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}

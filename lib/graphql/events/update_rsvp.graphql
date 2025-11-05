@@ -1,0 +1,30 @@
+mutation UpdateRSVP($id: ID!, $input: UpdateRSVPInput!) {
+  updateRSVP(id: $id, input: $input) {
+    id
+    eventId
+    memberId
+    clubId
+    response
+    rsvpType
+    priority
+    attendanceCount
+    guestNames
+    dietaryRestrictions
+    seatingPreferences
+    specialRequests
+    status
+    paymentRequired
+    paymentVerified
+    paymentAmount
+    cancellationFee
+    feeWaived
+    waitlistPosition
+    rsvpedAt
+    updatedAt
+    cancelledAt
+    cancellationReason
+    approvedBy
+    approvedAt
+    declineReason
+  }
+}

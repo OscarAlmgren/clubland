@@ -8,6 +8,11 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/bookings/presentation/pages/bookings_page.dart';
 import '../../features/clubs/presentation/pages/clubs_page.dart';
+import '../../features/events/presentation/pages/event_details_page.dart';
+import '../../features/events/presentation/pages/events_list_page.dart';
+import '../../features/events/presentation/pages/my_rsvps_page.dart';
+import '../../features/events/presentation/pages/rsvp_form_page.dart';
+import '../../features/events/presentation/pages/update_rsvp_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/pages/profile_settings_page.dart';
@@ -124,6 +129,49 @@ GoRouter appRouter(Ref ref) {
         path: RoutePaths.settings,
         name: 'settings',
         builder: (context, state) => const ProfileSettingsPage(),
+      ),
+
+      // Events routes (outside main navigation)
+      GoRoute(
+        path: '/events/:clubId',
+        name: 'events',
+        builder: (context, state) {
+          final clubId = state.pathParameters['clubId']!;
+          return EventsListPage(clubId: clubId);
+        },
+      ),
+      GoRoute(
+        path: '/events/:clubId/event/:eventId',
+        name: 'eventDetail',
+        builder: (context, state) {
+          final eventId = state.pathParameters['eventId']!;
+          // TODO: Get memberId from auth state
+          const memberId = 'member123'; // Placeholder
+          return EventDetailsPage(
+            eventId: eventId,
+            memberId: memberId,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/events/:clubId/event/:eventId/rsvp',
+        name: 'eventRSVP',
+        builder: (context, state) {
+          // Note: This route expects event and eligibility to be passed via extra
+          // In a real app, you'd fetch these or pass them through state
+          throw UnimplementedError(
+            'RSVP form requires event and eligibility data. '
+            'Use Navigator.push with MaterialPageRoute instead.',
+          );
+        },
+      ),
+      GoRoute(
+        path: '/my-rsvps/:clubId',
+        name: 'myRSVPs',
+        builder: (context, state) {
+          final clubId = state.pathParameters['clubId']!;
+          return MyRSVPsPage(clubId: clubId);
+        },
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
