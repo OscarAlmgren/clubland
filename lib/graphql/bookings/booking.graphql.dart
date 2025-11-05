@@ -654,13 +654,13 @@ class Query$Booking$booking {
     required this.id,
     required this.facilityId,
     required this.userId,
-    required this.facility,
-    required this.user,
+    this.facility,
+    this.user,
     required this.startTime,
     required this.endTime,
     required this.status,
     this.notes,
-    this.participants,
+    required this.participants,
     this.partySize,
     this.mealType,
     this.dietaryRestrictions,
@@ -712,36 +712,34 @@ class Query$Booking$booking {
       id: (l$id as String),
       facilityId: (l$facilityId as String),
       userId: (l$userId as String),
-      facility: Query$Booking$booking$facility.fromJson(
-        (l$facility as Map<String, dynamic>),
-      ),
-      user: Query$Booking$booking$user.fromJson(
-        (l$user as Map<String, dynamic>),
-      ),
+      facility: l$facility == null
+          ? null
+          : Query$Booking$booking$facility.fromJson(
+              (l$facility as Map<String, dynamic>),
+            ),
+      user: l$user == null
+          ? null
+          : Query$Booking$booking$user.fromJson(
+              (l$user as Map<String, dynamic>),
+            ),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
       notes: (l$notes as String?),
-      participants: (l$participants as List<dynamic>?)
-          ?.map((e) => (e as String))
+      participants: (l$participants as List<dynamic>)
+          .map((e) => (e as String))
           .toList(),
       partySize: (l$partySize as int?),
-      mealType: l$mealType == null
-          ? null
-          : fromJson$Enum$MealType((l$mealType as String)),
+      mealType: (l$mealType as String?),
       dietaryRestrictions: (l$dietaryRestrictions as List<dynamic>?)
-          ?.map((e) => fromJson$Enum$DietaryRestriction((e as String)))
+          ?.map((e) => (e as String))
           .toList(),
       specialRequests: (l$specialRequests as String?),
-      tablePreference: l$tablePreference == null
-          ? null
-          : fromJson$Enum$TablePreference((l$tablePreference as String)),
-      eventType: l$eventType == null
-          ? null
-          : fromJson$Enum$EventType((l$eventType as String)),
+      tablePreference: (l$tablePreference as String?),
+      eventType: (l$eventType as String?),
       guestCount: (l$guestCount as int?),
       serviceAddons: (l$serviceAddons as List<dynamic>?)
-          ?.map((e) => fromJson$Enum$ServiceAddon((e as String)))
+          ?.map((e) => (e as String))
           .toList(),
       cancellationReason: (l$cancellationReason as String?),
       confirmedAt: l$confirmedAt == null
@@ -769,9 +767,9 @@ class Query$Booking$booking {
 
   final String userId;
 
-  final Query$Booking$booking$facility facility;
+  final Query$Booking$booking$facility? facility;
 
-  final Query$Booking$booking$user user;
+  final Query$Booking$booking$user? user;
 
   final DateTime startTime;
 
@@ -781,23 +779,23 @@ class Query$Booking$booking {
 
   final String? notes;
 
-  final List<String>? participants;
+  final List<String> participants;
 
   final int? partySize;
 
-  final Enum$MealType? mealType;
+  final String? mealType;
 
-  final List<Enum$DietaryRestriction>? dietaryRestrictions;
+  final List<String>? dietaryRestrictions;
 
   final String? specialRequests;
 
-  final Enum$TablePreference? tablePreference;
+  final String? tablePreference;
 
-  final Enum$EventType? eventType;
+  final String? eventType;
 
   final int? guestCount;
 
-  final List<Enum$ServiceAddon>? serviceAddons;
+  final List<String>? serviceAddons;
 
   final String? cancellationReason;
 
@@ -826,9 +824,9 @@ class Query$Booking$booking {
     final l$userId = userId;
     _resultData['userId'] = l$userId;
     final l$facility = facility;
-    _resultData['facility'] = l$facility.toJson();
+    _resultData['facility'] = l$facility?.toJson();
     final l$user = user;
-    _resultData['user'] = l$user.toJson();
+    _resultData['user'] = l$user?.toJson();
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
@@ -838,33 +836,25 @@ class Query$Booking$booking {
     final l$notes = notes;
     _resultData['notes'] = l$notes;
     final l$participants = participants;
-    _resultData['participants'] = l$participants?.map((e) => e).toList();
+    _resultData['participants'] = l$participants.map((e) => e).toList();
     final l$partySize = partySize;
     _resultData['partySize'] = l$partySize;
     final l$mealType = mealType;
-    _resultData['mealType'] = l$mealType == null
-        ? null
-        : toJson$Enum$MealType(l$mealType);
+    _resultData['mealType'] = l$mealType;
     final l$dietaryRestrictions = dietaryRestrictions;
     _resultData['dietaryRestrictions'] = l$dietaryRestrictions
-        ?.map((e) => toJson$Enum$DietaryRestriction(e))
+        ?.map((e) => e)
         .toList();
     final l$specialRequests = specialRequests;
     _resultData['specialRequests'] = l$specialRequests;
     final l$tablePreference = tablePreference;
-    _resultData['tablePreference'] = l$tablePreference == null
-        ? null
-        : toJson$Enum$TablePreference(l$tablePreference);
+    _resultData['tablePreference'] = l$tablePreference;
     final l$eventType = eventType;
-    _resultData['eventType'] = l$eventType == null
-        ? null
-        : toJson$Enum$EventType(l$eventType);
+    _resultData['eventType'] = l$eventType;
     final l$guestCount = guestCount;
     _resultData['guestCount'] = l$guestCount;
     final l$serviceAddons = serviceAddons;
-    _resultData['serviceAddons'] = l$serviceAddons
-        ?.map((e) => toJson$Enum$ServiceAddon(e))
-        .toList();
+    _resultData['serviceAddons'] = l$serviceAddons?.map((e) => e).toList();
     final l$cancellationReason = cancellationReason;
     _resultData['cancellationReason'] = l$cancellationReason;
     final l$confirmedAt = confirmedAt;
@@ -925,9 +915,7 @@ class Query$Booking$booking {
       l$endTime,
       l$status,
       l$notes,
-      l$participants == null
-          ? null
-          : Object.hashAll(l$participants.map((v) => v)),
+      Object.hashAll(l$participants.map((v) => v)),
       l$partySize,
       l$mealType,
       l$dietaryRestrictions == null
@@ -1007,19 +995,15 @@ class Query$Booking$booking {
     }
     final l$participants = participants;
     final lOther$participants = other.participants;
-    if (l$participants != null && lOther$participants != null) {
-      if (l$participants.length != lOther$participants.length) {
+    if (l$participants.length != lOther$participants.length) {
+      return false;
+    }
+    for (int i = 0; i < l$participants.length; i++) {
+      final l$participants$entry = l$participants[i];
+      final lOther$participants$entry = lOther$participants[i];
+      if (l$participants$entry != lOther$participants$entry) {
         return false;
       }
-      for (int i = 0; i < l$participants.length; i++) {
-        final l$participants$entry = l$participants[i];
-        final lOther$participants$entry = lOther$participants[i];
-        if (l$participants$entry != lOther$participants$entry) {
-          return false;
-        }
-      }
-    } else if (l$participants != lOther$participants) {
-      return false;
     }
     final l$partySize = partySize;
     final lOther$partySize = other.partySize;
@@ -1158,13 +1142,13 @@ abstract class CopyWith$Query$Booking$booking<TRes> {
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
-    Enum$EventType? eventType,
+    String? tablePreference,
+    String? eventType,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
+    List<String>? serviceAddons,
     String? cancellationReason,
     DateTime? confirmedAt,
     String? confirmedBy,
@@ -1226,12 +1210,12 @@ class _CopyWithImpl$Query$Booking$booking<TRes>
       userId: userId == _undefined || userId == null
           ? _instance.userId
           : (userId as String),
-      facility: facility == _undefined || facility == null
+      facility: facility == _undefined
           ? _instance.facility
-          : (facility as Query$Booking$booking$facility),
-      user: user == _undefined || user == null
+          : (facility as Query$Booking$booking$facility?),
+      user: user == _undefined
           ? _instance.user
-          : (user as Query$Booking$booking$user),
+          : (user as Query$Booking$booking$user?),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -1242,33 +1226,33 @@ class _CopyWithImpl$Query$Booking$booking<TRes>
           ? _instance.status
           : (status as Enum$BookingStatus),
       notes: notes == _undefined ? _instance.notes : (notes as String?),
-      participants: participants == _undefined
+      participants: participants == _undefined || participants == null
           ? _instance.participants
-          : (participants as List<String>?),
+          : (participants as List<String>),
       partySize: partySize == _undefined
           ? _instance.partySize
           : (partySize as int?),
       mealType: mealType == _undefined
           ? _instance.mealType
-          : (mealType as Enum$MealType?),
+          : (mealType as String?),
       dietaryRestrictions: dietaryRestrictions == _undefined
           ? _instance.dietaryRestrictions
-          : (dietaryRestrictions as List<Enum$DietaryRestriction>?),
+          : (dietaryRestrictions as List<String>?),
       specialRequests: specialRequests == _undefined
           ? _instance.specialRequests
           : (specialRequests as String?),
       tablePreference: tablePreference == _undefined
           ? _instance.tablePreference
-          : (tablePreference as Enum$TablePreference?),
+          : (tablePreference as String?),
       eventType: eventType == _undefined
           ? _instance.eventType
-          : (eventType as Enum$EventType?),
+          : (eventType as String?),
       guestCount: guestCount == _undefined
           ? _instance.guestCount
           : (guestCount as int?),
       serviceAddons: serviceAddons == _undefined
           ? _instance.serviceAddons
-          : (serviceAddons as List<Enum$ServiceAddon>?),
+          : (serviceAddons as List<String>?),
       cancellationReason: cancellationReason == _undefined
           ? _instance.cancellationReason
           : (cancellationReason as String?),
@@ -1301,18 +1285,19 @@ class _CopyWithImpl$Query$Booking$booking<TRes>
 
   CopyWith$Query$Booking$booking$facility<TRes> get facility {
     final local$facility = _instance.facility;
-    return CopyWith$Query$Booking$booking$facility(
-      local$facility,
-      (e) => call(facility: e),
-    );
+    return local$facility == null
+        ? CopyWith$Query$Booking$booking$facility.stub(_then(_instance))
+        : CopyWith$Query$Booking$booking$facility(
+            local$facility,
+            (e) => call(facility: e),
+          );
   }
 
   CopyWith$Query$Booking$booking$user<TRes> get user {
     final local$user = _instance.user;
-    return CopyWith$Query$Booking$booking$user(
-      local$user,
-      (e) => call(user: e),
-    );
+    return local$user == null
+        ? CopyWith$Query$Booking$booking$user.stub(_then(_instance))
+        : CopyWith$Query$Booking$booking$user(local$user, (e) => call(user: e));
   }
 }
 
@@ -1334,13 +1319,13 @@ class _CopyWithStubImpl$Query$Booking$booking<TRes>
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
-    Enum$EventType? eventType,
+    String? tablePreference,
+    String? eventType,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
+    List<String>? serviceAddons,
     String? cancellationReason,
     DateTime? confirmedAt,
     String? confirmedBy,
@@ -1364,7 +1349,7 @@ class Query$Booking$booking$facility {
     required this.id,
     required this.name,
     required this.type,
-    this.capacity,
+    required this.capacity,
     this.$__typename = 'Facility',
   });
 
@@ -1377,8 +1362,8 @@ class Query$Booking$booking$facility {
     return Query$Booking$booking$facility(
       id: (l$id as String),
       name: (l$name as String),
-      type: fromJson$Enum$FacilityType((l$type as String)),
-      capacity: (l$capacity as int?),
+      type: (l$type as String),
+      capacity: (l$capacity as int),
       $__typename: (l$$__typename as String),
     );
   }
@@ -1387,9 +1372,9 @@ class Query$Booking$booking$facility {
 
   final String name;
 
-  final Enum$FacilityType type;
+  final String type;
 
-  final int? capacity;
+  final int capacity;
 
   final String $__typename;
 
@@ -1400,7 +1385,7 @@ class Query$Booking$booking$facility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$FacilityType(l$type);
+    _resultData['type'] = l$type;
     final l$capacity = capacity;
     _resultData['capacity'] = l$capacity;
     final l$$__typename = $__typename;
@@ -1474,7 +1459,7 @@ abstract class CopyWith$Query$Booking$booking$facility<TRes> {
   TRes call({
     String? id,
     String? name,
-    Enum$FacilityType? type,
+    String? type,
     int? capacity,
     String? $__typename,
   });
@@ -1504,10 +1489,10 @@ class _CopyWithImpl$Query$Booking$booking$facility<TRes>
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$FacilityType),
-      capacity: capacity == _undefined
+          : (type as String),
+      capacity: capacity == _undefined || capacity == null
           ? _instance.capacity
-          : (capacity as int?),
+          : (capacity as int),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1524,7 +1509,7 @@ class _CopyWithStubImpl$Query$Booking$booking$facility<TRes>
   call({
     String? id,
     String? name,
-    Enum$FacilityType? type,
+    String? type,
     int? capacity,
     String? $__typename,
   }) => _res;

@@ -430,7 +430,7 @@ class Subscription$BookingUpdates$bookingUpdates {
   Subscription$BookingUpdates$bookingUpdates({
     required this.id,
     required this.status,
-    required this.facility,
+    this.facility,
     required this.startTime,
     required this.endTime,
     this.$__typename = 'Booking',
@@ -448,9 +448,11 @@ class Subscription$BookingUpdates$bookingUpdates {
     return Subscription$BookingUpdates$bookingUpdates(
       id: (l$id as String),
       status: fromJson$Enum$BookingStatus((l$status as String)),
-      facility: Subscription$BookingUpdates$bookingUpdates$facility.fromJson(
-        (l$facility as Map<String, dynamic>),
-      ),
+      facility: l$facility == null
+          ? null
+          : Subscription$BookingUpdates$bookingUpdates$facility.fromJson(
+              (l$facility as Map<String, dynamic>),
+            ),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       $__typename: (l$$__typename as String),
@@ -461,7 +463,7 @@ class Subscription$BookingUpdates$bookingUpdates {
 
   final Enum$BookingStatus status;
 
-  final Subscription$BookingUpdates$bookingUpdates$facility facility;
+  final Subscription$BookingUpdates$bookingUpdates$facility? facility;
 
   final DateTime startTime;
 
@@ -476,7 +478,7 @@ class Subscription$BookingUpdates$bookingUpdates {
     final l$status = status;
     _resultData['status'] = toJson$Enum$BookingStatus(l$status);
     final l$facility = facility;
-    _resultData['facility'] = l$facility.toJson();
+    _resultData['facility'] = l$facility?.toJson();
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
@@ -603,9 +605,9 @@ class _CopyWithImpl$Subscription$BookingUpdates$bookingUpdates<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$BookingStatus),
-      facility: facility == _undefined || facility == null
+      facility: facility == _undefined
           ? _instance.facility
-          : (facility as Subscription$BookingUpdates$bookingUpdates$facility),
+          : (facility as Subscription$BookingUpdates$bookingUpdates$facility?),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -621,10 +623,14 @@ class _CopyWithImpl$Subscription$BookingUpdates$bookingUpdates<TRes>
   CopyWith$Subscription$BookingUpdates$bookingUpdates$facility<TRes>
   get facility {
     final local$facility = _instance.facility;
-    return CopyWith$Subscription$BookingUpdates$bookingUpdates$facility(
-      local$facility,
-      (e) => call(facility: e),
-    );
+    return local$facility == null
+        ? CopyWith$Subscription$BookingUpdates$bookingUpdates$facility.stub(
+            _then(_instance),
+          )
+        : CopyWith$Subscription$BookingUpdates$bookingUpdates$facility(
+            local$facility,
+            (e) => call(facility: e),
+          );
   }
 }
 

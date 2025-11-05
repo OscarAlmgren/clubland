@@ -476,8 +476,8 @@ class Mutation$CreateBooking$createBooking {
     required this.endTime,
     required this.status,
     this.notes,
-    this.participants,
-    required this.facility,
+    required this.participants,
+    this.facility,
     required this.createdAt,
     this.$__typename = 'Booking',
   });
@@ -504,12 +504,14 @@ class Mutation$CreateBooking$createBooking {
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
       notes: (l$notes as String?),
-      participants: (l$participants as List<dynamic>?)
-          ?.map((e) => (e as String))
+      participants: (l$participants as List<dynamic>)
+          .map((e) => (e as String))
           .toList(),
-      facility: Mutation$CreateBooking$createBooking$facility.fromJson(
-        (l$facility as Map<String, dynamic>),
-      ),
+      facility: l$facility == null
+          ? null
+          : Mutation$CreateBooking$createBooking$facility.fromJson(
+              (l$facility as Map<String, dynamic>),
+            ),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -529,9 +531,9 @@ class Mutation$CreateBooking$createBooking {
 
   final String? notes;
 
-  final List<String>? participants;
+  final List<String> participants;
 
-  final Mutation$CreateBooking$createBooking$facility facility;
+  final Mutation$CreateBooking$createBooking$facility? facility;
 
   final DateTime createdAt;
 
@@ -554,9 +556,9 @@ class Mutation$CreateBooking$createBooking {
     final l$notes = notes;
     _resultData['notes'] = l$notes;
     final l$participants = participants;
-    _resultData['participants'] = l$participants?.map((e) => e).toList();
+    _resultData['participants'] = l$participants.map((e) => e).toList();
     final l$facility = facility;
-    _resultData['facility'] = l$facility.toJson();
+    _resultData['facility'] = l$facility?.toJson();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -585,9 +587,7 @@ class Mutation$CreateBooking$createBooking {
       l$endTime,
       l$status,
       l$notes,
-      l$participants == null
-          ? null
-          : Object.hashAll(l$participants.map((v) => v)),
+      Object.hashAll(l$participants.map((v) => v)),
       l$facility,
       l$createdAt,
       l$$__typename,
@@ -640,19 +640,15 @@ class Mutation$CreateBooking$createBooking {
     }
     final l$participants = participants;
     final lOther$participants = other.participants;
-    if (l$participants != null && lOther$participants != null) {
-      if (l$participants.length != lOther$participants.length) {
+    if (l$participants.length != lOther$participants.length) {
+      return false;
+    }
+    for (int i = 0; i < l$participants.length; i++) {
+      final l$participants$entry = l$participants[i];
+      final lOther$participants$entry = lOther$participants[i];
+      if (l$participants$entry != lOther$participants$entry) {
         return false;
       }
-      for (int i = 0; i < l$participants.length; i++) {
-        final l$participants$entry = l$participants[i];
-        final lOther$participants$entry = lOther$participants[i];
-        if (l$participants$entry != lOther$participants$entry) {
-          return false;
-        }
-      }
-    } else if (l$participants != lOther$participants) {
-      return false;
     }
     final l$facility = facility;
     final lOther$facility = other.facility;
@@ -750,12 +746,12 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
           ? _instance.status
           : (status as Enum$BookingStatus),
       notes: notes == _undefined ? _instance.notes : (notes as String?),
-      participants: participants == _undefined
+      participants: participants == _undefined || participants == null
           ? _instance.participants
-          : (participants as List<String>?),
-      facility: facility == _undefined || facility == null
+          : (participants as List<String>),
+      facility: facility == _undefined
           ? _instance.facility
-          : (facility as Mutation$CreateBooking$createBooking$facility),
+          : (facility as Mutation$CreateBooking$createBooking$facility?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -767,10 +763,14 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
 
   CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> get facility {
     final local$facility = _instance.facility;
-    return CopyWith$Mutation$CreateBooking$createBooking$facility(
-      local$facility,
-      (e) => call(facility: e),
-    );
+    return local$facility == null
+        ? CopyWith$Mutation$CreateBooking$createBooking$facility.stub(
+            _then(_instance),
+          )
+        : CopyWith$Mutation$CreateBooking$createBooking$facility(
+            local$facility,
+            (e) => call(facility: e),
+          );
   }
 }
 
@@ -813,14 +813,14 @@ class Mutation$CreateBooking$createBooking$facility {
     final l$$__typename = json['__typename'];
     return Mutation$CreateBooking$createBooking$facility(
       name: (l$name as String),
-      type: fromJson$Enum$FacilityType((l$type as String)),
+      type: (l$type as String),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String name;
 
-  final Enum$FacilityType type;
+  final String type;
 
   final String $__typename;
 
@@ -829,7 +829,7 @@ class Mutation$CreateBooking$createBooking$facility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$FacilityType(l$type);
+    _resultData['type'] = l$type;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -890,7 +890,7 @@ abstract class CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> {
     TRes res,
   ) = _CopyWithStubImpl$Mutation$CreateBooking$createBooking$facility;
 
-  TRes call({String? name, Enum$FacilityType? type, String? $__typename});
+  TRes call({String? name, String? type, String? $__typename});
 }
 
 class _CopyWithImpl$Mutation$CreateBooking$createBooking$facility<TRes>
@@ -917,7 +917,7 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking$facility<TRes>
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$FacilityType),
+          : (type as String),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -931,5 +931,5 @@ class _CopyWithStubImpl$Mutation$CreateBooking$createBooking$facility<TRes>
 
   TRes _res;
 
-  call({String? name, Enum$FacilityType? type, String? $__typename}) => _res;
+  call({String? name, String? type, String? $__typename}) => _res;
 }

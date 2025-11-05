@@ -301,6 +301,150 @@ class _CopyWithStubImpl$Input$RegisterInput<TRes>
   }) => _res;
 }
 
+class Input$PasskeyCredentialInput {
+  factory Input$PasskeyCredentialInput({
+    required String id,
+    required String rawId,
+    required String type,
+    required String response,
+  }) => Input$PasskeyCredentialInput._({
+    r'id': id,
+    r'rawId': rawId,
+    r'type': type,
+    r'response': response,
+  });
+
+  Input$PasskeyCredentialInput._(this._$data);
+
+  factory Input$PasskeyCredentialInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$id = data['id'];
+    result$data['id'] = (l$id as String);
+    final l$rawId = data['rawId'];
+    result$data['rawId'] = (l$rawId as String);
+    final l$type = data['type'];
+    result$data['type'] = (l$type as String);
+    final l$response = data['response'];
+    result$data['response'] = (l$response as String);
+    return Input$PasskeyCredentialInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get id => (_$data['id'] as String);
+
+  String get rawId => (_$data['rawId'] as String);
+
+  String get type => (_$data['type'] as String);
+
+  String get response => (_$data['response'] as String);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$id = id;
+    result$data['id'] = l$id;
+    final l$rawId = rawId;
+    result$data['rawId'] = l$rawId;
+    final l$type = type;
+    result$data['type'] = l$type;
+    final l$response = response;
+    result$data['response'] = l$response;
+    return result$data;
+  }
+
+  CopyWith$Input$PasskeyCredentialInput<Input$PasskeyCredentialInput>
+  get copyWith => CopyWith$Input$PasskeyCredentialInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$PasskeyCredentialInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    final l$rawId = rawId;
+    final lOther$rawId = other.rawId;
+    if (l$rawId != lOther$rawId) {
+      return false;
+    }
+    final l$type = type;
+    final lOther$type = other.type;
+    if (l$type != lOther$type) {
+      return false;
+    }
+    final l$response = response;
+    final lOther$response = other.response;
+    if (l$response != lOther$response) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$id = id;
+    final l$rawId = rawId;
+    final l$type = type;
+    final l$response = response;
+    return Object.hashAll([l$id, l$rawId, l$type, l$response]);
+  }
+}
+
+abstract class CopyWith$Input$PasskeyCredentialInput<TRes> {
+  factory CopyWith$Input$PasskeyCredentialInput(
+    Input$PasskeyCredentialInput instance,
+    TRes Function(Input$PasskeyCredentialInput) then,
+  ) = _CopyWithImpl$Input$PasskeyCredentialInput;
+
+  factory CopyWith$Input$PasskeyCredentialInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$PasskeyCredentialInput;
+
+  TRes call({String? id, String? rawId, String? type, String? response});
+}
+
+class _CopyWithImpl$Input$PasskeyCredentialInput<TRes>
+    implements CopyWith$Input$PasskeyCredentialInput<TRes> {
+  _CopyWithImpl$Input$PasskeyCredentialInput(this._instance, this._then);
+
+  final Input$PasskeyCredentialInput _instance;
+
+  final TRes Function(Input$PasskeyCredentialInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? id = _undefined,
+    Object? rawId = _undefined,
+    Object? type = _undefined,
+    Object? response = _undefined,
+  }) => _then(
+    Input$PasskeyCredentialInput._({
+      ..._instance._$data,
+      if (id != _undefined && id != null) 'id': (id as String),
+      if (rawId != _undefined && rawId != null) 'rawId': (rawId as String),
+      if (type != _undefined && type != null) 'type': (type as String),
+      if (response != _undefined && response != null)
+        'response': (response as String),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$PasskeyCredentialInput<TRes>
+    implements CopyWith$Input$PasskeyCredentialInput<TRes> {
+  _CopyWithStubImpl$Input$PasskeyCredentialInput(this._res);
+
+  TRes _res;
+
+  call({String? id, String? rawId, String? type, String? response}) => _res;
+}
+
 class Input$CreateMemberInput {
   factory Input$CreateMemberInput({
     required String userId,
@@ -2518,8 +2662,8 @@ class Input$CreateFacilityInput {
   factory Input$CreateFacilityInput({
     required String name,
     String? description,
-    required Enum$FacilityType type,
-    int? capacity,
+    required String type,
+    required int capacity,
     List<String>? amenities,
     int? minBookingDuration,
     int? maxBookingDuration,
@@ -2530,7 +2674,7 @@ class Input$CreateFacilityInput {
     r'name': name,
     if (description != null) r'description': description,
     r'type': type,
-    if (capacity != null) r'capacity': capacity,
+    r'capacity': capacity,
     if (amenities != null) r'amenities': amenities,
     if (minBookingDuration != null) r'minBookingDuration': minBookingDuration,
     if (maxBookingDuration != null) r'maxBookingDuration': maxBookingDuration,
@@ -2551,11 +2695,9 @@ class Input$CreateFacilityInput {
       result$data['description'] = (l$description as String?);
     }
     final l$type = data['type'];
-    result$data['type'] = fromJson$Enum$FacilityType((l$type as String));
-    if (data.containsKey('capacity')) {
-      final l$capacity = data['capacity'];
-      result$data['capacity'] = (l$capacity as int?);
-    }
+    result$data['type'] = (l$type as String);
+    final l$capacity = data['capacity'];
+    result$data['capacity'] = (l$capacity as int);
     if (data.containsKey('amenities')) {
       final l$amenities = data['amenities'];
       result$data['amenities'] = (l$amenities as List<dynamic>?)
@@ -2591,9 +2733,9 @@ class Input$CreateFacilityInput {
 
   String? get description => (_$data['description'] as String?);
 
-  Enum$FacilityType get type => (_$data['type'] as Enum$FacilityType);
+  String get type => (_$data['type'] as String);
 
-  int? get capacity => (_$data['capacity'] as int?);
+  int get capacity => (_$data['capacity'] as int);
 
   List<String>? get amenities => (_$data['amenities'] as List<String>?);
 
@@ -2616,11 +2758,9 @@ class Input$CreateFacilityInput {
       result$data['description'] = l$description;
     }
     final l$type = type;
-    result$data['type'] = toJson$Enum$FacilityType(l$type);
-    if (_$data.containsKey('capacity')) {
-      final l$capacity = capacity;
-      result$data['capacity'] = l$capacity;
-    }
+    result$data['type'] = l$type;
+    final l$capacity = capacity;
+    result$data['capacity'] = l$capacity;
     if (_$data.containsKey('amenities')) {
       final l$amenities = amenities;
       result$data['amenities'] = l$amenities?.map((e) => e).toList();
@@ -2681,10 +2821,6 @@ class Input$CreateFacilityInput {
     }
     final l$capacity = capacity;
     final lOther$capacity = other.capacity;
-    if (_$data.containsKey('capacity') !=
-        other._$data.containsKey('capacity')) {
-      return false;
-    }
     if (l$capacity != lOther$capacity) {
       return false;
     }
@@ -2772,7 +2908,7 @@ class Input$CreateFacilityInput {
       l$name,
       _$data.containsKey('description') ? l$description : const {},
       l$type,
-      _$data.containsKey('capacity') ? l$capacity : const {},
+      l$capacity,
       _$data.containsKey('amenities')
           ? l$amenities == null
                 ? null
@@ -2807,7 +2943,7 @@ abstract class CopyWith$Input$CreateFacilityInput<TRes> {
   TRes call({
     String? name,
     String? description,
-    Enum$FacilityType? type,
+    String? type,
     int? capacity,
     List<String>? amenities,
     int? minBookingDuration,
@@ -2844,9 +2980,9 @@ class _CopyWithImpl$Input$CreateFacilityInput<TRes>
       ..._instance._$data,
       if (name != _undefined && name != null) 'name': (name as String),
       if (description != _undefined) 'description': (description as String?),
-      if (type != _undefined && type != null)
-        'type': (type as Enum$FacilityType),
-      if (capacity != _undefined) 'capacity': (capacity as int?),
+      if (type != _undefined && type != null) 'type': (type as String),
+      if (capacity != _undefined && capacity != null)
+        'capacity': (capacity as int),
       if (amenities != _undefined) 'amenities': (amenities as List<String>?),
       if (minBookingDuration != _undefined)
         'minBookingDuration': (minBookingDuration as int?),
@@ -2871,7 +3007,7 @@ class _CopyWithStubImpl$Input$CreateFacilityInput<TRes>
   call({
     String? name,
     String? description,
-    Enum$FacilityType? type,
+    String? type,
     int? capacity,
     List<String>? amenities,
     int? minBookingDuration,
@@ -2886,6 +3022,7 @@ class Input$UpdateFacilityInput {
   factory Input$UpdateFacilityInput({
     String? name,
     String? description,
+    String? type,
     int? capacity,
     List<String>? amenities,
     Enum$FacilityStatus? status,
@@ -2897,6 +3034,7 @@ class Input$UpdateFacilityInput {
   }) => Input$UpdateFacilityInput._({
     if (name != null) r'name': name,
     if (description != null) r'description': description,
+    if (type != null) r'type': type,
     if (capacity != null) r'capacity': capacity,
     if (amenities != null) r'amenities': amenities,
     if (status != null) r'status': status,
@@ -2919,6 +3057,10 @@ class Input$UpdateFacilityInput {
     if (data.containsKey('description')) {
       final l$description = data['description'];
       result$data['description'] = (l$description as String?);
+    }
+    if (data.containsKey('type')) {
+      final l$type = data['type'];
+      result$data['type'] = (l$type as String?);
     }
     if (data.containsKey('capacity')) {
       final l$capacity = data['capacity'];
@@ -2965,6 +3107,8 @@ class Input$UpdateFacilityInput {
 
   String? get description => (_$data['description'] as String?);
 
+  String? get type => (_$data['type'] as String?);
+
   int? get capacity => (_$data['capacity'] as int?);
 
   List<String>? get amenities => (_$data['amenities'] as List<String>?);
@@ -2990,6 +3134,10 @@ class Input$UpdateFacilityInput {
     if (_$data.containsKey('description')) {
       final l$description = description;
       result$data['description'] = l$description;
+    }
+    if (_$data.containsKey('type')) {
+      final l$type = type;
+      result$data['type'] = l$type;
     }
     if (_$data.containsKey('capacity')) {
       final l$capacity = capacity;
@@ -3055,6 +3203,14 @@ class Input$UpdateFacilityInput {
       return false;
     }
     if (l$description != lOther$description) {
+      return false;
+    }
+    final l$type = type;
+    final lOther$type = other.type;
+    if (_$data.containsKey('type') != other._$data.containsKey('type')) {
+      return false;
+    }
+    if (l$type != lOther$type) {
       return false;
     }
     final l$capacity = capacity;
@@ -3146,6 +3302,7 @@ class Input$UpdateFacilityInput {
   int get hashCode {
     final l$name = name;
     final l$description = description;
+    final l$type = type;
     final l$capacity = capacity;
     final l$amenities = amenities;
     final l$status = status;
@@ -3157,6 +3314,7 @@ class Input$UpdateFacilityInput {
     return Object.hashAll([
       _$data.containsKey('name') ? l$name : const {},
       _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('type') ? l$type : const {},
       _$data.containsKey('capacity') ? l$capacity : const {},
       _$data.containsKey('amenities')
           ? l$amenities == null
@@ -3193,6 +3351,7 @@ abstract class CopyWith$Input$UpdateFacilityInput<TRes> {
   TRes call({
     String? name,
     String? description,
+    String? type,
     int? capacity,
     List<String>? amenities,
     Enum$FacilityStatus? status,
@@ -3217,6 +3376,7 @@ class _CopyWithImpl$Input$UpdateFacilityInput<TRes>
   TRes call({
     Object? name = _undefined,
     Object? description = _undefined,
+    Object? type = _undefined,
     Object? capacity = _undefined,
     Object? amenities = _undefined,
     Object? status = _undefined,
@@ -3230,6 +3390,7 @@ class _CopyWithImpl$Input$UpdateFacilityInput<TRes>
       ..._instance._$data,
       if (name != _undefined) 'name': (name as String?),
       if (description != _undefined) 'description': (description as String?),
+      if (type != _undefined) 'type': (type as String?),
       if (capacity != _undefined) 'capacity': (capacity as int?),
       if (amenities != _undefined) 'amenities': (amenities as List<String>?),
       if (status != _undefined) 'status': (status as Enum$FacilityStatus?),
@@ -3256,6 +3417,7 @@ class _CopyWithStubImpl$Input$UpdateFacilityInput<TRes>
   call({
     String? name,
     String? description,
+    String? type,
     int? capacity,
     List<String>? amenities,
     Enum$FacilityStatus? status,
@@ -3267,6 +3429,135 @@ class _CopyWithStubImpl$Input$UpdateFacilityInput<TRes>
   }) => _res;
 }
 
+class Input$FacilityFilterInput {
+  factory Input$FacilityFilterInput({
+    String? type,
+    Enum$FacilityStatus? status,
+  }) => Input$FacilityFilterInput._({
+    if (type != null) r'type': type,
+    if (status != null) r'status': status,
+  });
+
+  Input$FacilityFilterInput._(this._$data);
+
+  factory Input$FacilityFilterInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('type')) {
+      final l$type = data['type'];
+      result$data['type'] = (l$type as String?);
+    }
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$FacilityStatus((l$status as String));
+    }
+    return Input$FacilityFilterInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String? get type => (_$data['type'] as String?);
+
+  Enum$FacilityStatus? get status => (_$data['status'] as Enum$FacilityStatus?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('type')) {
+      final l$type = type;
+      result$data['type'] = l$type;
+    }
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$FacilityStatus(l$status);
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$FacilityFilterInput<Input$FacilityFilterInput> get copyWith =>
+      CopyWith$Input$FacilityFilterInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$FacilityFilterInput ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$type = type;
+    final lOther$type = other.type;
+    if (_$data.containsKey('type') != other._$data.containsKey('type')) {
+      return false;
+    }
+    if (l$type != lOther$type) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$type = type;
+    final l$status = status;
+    return Object.hashAll([
+      _$data.containsKey('type') ? l$type : const {},
+      _$data.containsKey('status') ? l$status : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$FacilityFilterInput<TRes> {
+  factory CopyWith$Input$FacilityFilterInput(
+    Input$FacilityFilterInput instance,
+    TRes Function(Input$FacilityFilterInput) then,
+  ) = _CopyWithImpl$Input$FacilityFilterInput;
+
+  factory CopyWith$Input$FacilityFilterInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$FacilityFilterInput;
+
+  TRes call({String? type, Enum$FacilityStatus? status});
+}
+
+class _CopyWithImpl$Input$FacilityFilterInput<TRes>
+    implements CopyWith$Input$FacilityFilterInput<TRes> {
+  _CopyWithImpl$Input$FacilityFilterInput(this._instance, this._then);
+
+  final Input$FacilityFilterInput _instance;
+
+  final TRes Function(Input$FacilityFilterInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? type = _undefined, Object? status = _undefined}) => _then(
+    Input$FacilityFilterInput._({
+      ..._instance._$data,
+      if (type != _undefined) 'type': (type as String?),
+      if (status != _undefined) 'status': (status as Enum$FacilityStatus?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$FacilityFilterInput<TRes>
+    implements CopyWith$Input$FacilityFilterInput<TRes> {
+  _CopyWithStubImpl$Input$FacilityFilterInput(this._res);
+
+  TRes _res;
+
+  call({String? type, Enum$FacilityStatus? status}) => _res;
+}
+
 class Input$CreateBookingInput {
   factory Input$CreateBookingInput({
     required String facilityId,
@@ -3275,13 +3566,13 @@ class Input$CreateBookingInput {
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
-    Enum$EventType? eventType,
+    String? tablePreference,
+    String? eventType,
+    List<String>? serviceAddons,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
   }) => Input$CreateBookingInput._({
     r'facilityId': facilityId,
     r'startTime': startTime,
@@ -3295,8 +3586,8 @@ class Input$CreateBookingInput {
     if (specialRequests != null) r'specialRequests': specialRequests,
     if (tablePreference != null) r'tablePreference': tablePreference,
     if (eventType != null) r'eventType': eventType,
-    if (guestCount != null) r'guestCount': guestCount,
     if (serviceAddons != null) r'serviceAddons': serviceAddons,
+    if (guestCount != null) r'guestCount': guestCount,
   });
 
   Input$CreateBookingInput._(this._$data);
@@ -3325,15 +3616,13 @@ class Input$CreateBookingInput {
     }
     if (data.containsKey('mealType')) {
       final l$mealType = data['mealType'];
-      result$data['mealType'] = l$mealType == null
-          ? null
-          : fromJson$Enum$MealType((l$mealType as String));
+      result$data['mealType'] = (l$mealType as String?);
     }
     if (data.containsKey('dietaryRestrictions')) {
       final l$dietaryRestrictions = data['dietaryRestrictions'];
       result$data['dietaryRestrictions'] =
           (l$dietaryRestrictions as List<dynamic>?)
-              ?.map((e) => fromJson$Enum$DietaryRestriction((e as String)))
+              ?.map((e) => (e as String))
               .toList();
     }
     if (data.containsKey('specialRequests')) {
@@ -3342,25 +3631,21 @@ class Input$CreateBookingInput {
     }
     if (data.containsKey('tablePreference')) {
       final l$tablePreference = data['tablePreference'];
-      result$data['tablePreference'] = l$tablePreference == null
-          ? null
-          : fromJson$Enum$TablePreference((l$tablePreference as String));
+      result$data['tablePreference'] = (l$tablePreference as String?);
     }
     if (data.containsKey('eventType')) {
       final l$eventType = data['eventType'];
-      result$data['eventType'] = l$eventType == null
-          ? null
-          : fromJson$Enum$EventType((l$eventType as String));
-    }
-    if (data.containsKey('guestCount')) {
-      final l$guestCount = data['guestCount'];
-      result$data['guestCount'] = (l$guestCount as int?);
+      result$data['eventType'] = (l$eventType as String?);
     }
     if (data.containsKey('serviceAddons')) {
       final l$serviceAddons = data['serviceAddons'];
       result$data['serviceAddons'] = (l$serviceAddons as List<dynamic>?)
-          ?.map((e) => fromJson$Enum$ServiceAddon((e as String)))
+          ?.map((e) => (e as String))
           .toList();
+    }
+    if (data.containsKey('guestCount')) {
+      final l$guestCount = data['guestCount'];
+      result$data['guestCount'] = (l$guestCount as int?);
     }
     return Input$CreateBookingInput._(result$data);
   }
@@ -3379,22 +3664,20 @@ class Input$CreateBookingInput {
 
   int? get partySize => (_$data['partySize'] as int?);
 
-  Enum$MealType? get mealType => (_$data['mealType'] as Enum$MealType?);
+  String? get mealType => (_$data['mealType'] as String?);
 
-  List<Enum$DietaryRestriction>? get dietaryRestrictions =>
-      (_$data['dietaryRestrictions'] as List<Enum$DietaryRestriction>?);
+  List<String>? get dietaryRestrictions =>
+      (_$data['dietaryRestrictions'] as List<String>?);
 
   String? get specialRequests => (_$data['specialRequests'] as String?);
 
-  Enum$TablePreference? get tablePreference =>
-      (_$data['tablePreference'] as Enum$TablePreference?);
+  String? get tablePreference => (_$data['tablePreference'] as String?);
 
-  Enum$EventType? get eventType => (_$data['eventType'] as Enum$EventType?);
+  String? get eventType => (_$data['eventType'] as String?);
+
+  List<String>? get serviceAddons => (_$data['serviceAddons'] as List<String>?);
 
   int? get guestCount => (_$data['guestCount'] as int?);
-
-  List<Enum$ServiceAddon>? get serviceAddons =>
-      (_$data['serviceAddons'] as List<Enum$ServiceAddon>?);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
@@ -3418,14 +3701,12 @@ class Input$CreateBookingInput {
     }
     if (_$data.containsKey('mealType')) {
       final l$mealType = mealType;
-      result$data['mealType'] = l$mealType == null
-          ? null
-          : toJson$Enum$MealType(l$mealType);
+      result$data['mealType'] = l$mealType;
     }
     if (_$data.containsKey('dietaryRestrictions')) {
       final l$dietaryRestrictions = dietaryRestrictions;
       result$data['dietaryRestrictions'] = l$dietaryRestrictions
-          ?.map((e) => toJson$Enum$DietaryRestriction(e))
+          ?.map((e) => e)
           .toList();
     }
     if (_$data.containsKey('specialRequests')) {
@@ -3434,25 +3715,19 @@ class Input$CreateBookingInput {
     }
     if (_$data.containsKey('tablePreference')) {
       final l$tablePreference = tablePreference;
-      result$data['tablePreference'] = l$tablePreference == null
-          ? null
-          : toJson$Enum$TablePreference(l$tablePreference);
+      result$data['tablePreference'] = l$tablePreference;
     }
     if (_$data.containsKey('eventType')) {
       final l$eventType = eventType;
-      result$data['eventType'] = l$eventType == null
-          ? null
-          : toJson$Enum$EventType(l$eventType);
+      result$data['eventType'] = l$eventType;
+    }
+    if (_$data.containsKey('serviceAddons')) {
+      final l$serviceAddons = serviceAddons;
+      result$data['serviceAddons'] = l$serviceAddons?.map((e) => e).toList();
     }
     if (_$data.containsKey('guestCount')) {
       final l$guestCount = guestCount;
       result$data['guestCount'] = l$guestCount;
-    }
-    if (_$data.containsKey('serviceAddons')) {
-      final l$serviceAddons = serviceAddons;
-      result$data['serviceAddons'] = l$serviceAddons
-          ?.map((e) => toJson$Enum$ServiceAddon(e))
-          .toList();
     }
     return result$data;
   }
@@ -3577,15 +3852,6 @@ class Input$CreateBookingInput {
     if (l$eventType != lOther$eventType) {
       return false;
     }
-    final l$guestCount = guestCount;
-    final lOther$guestCount = other.guestCount;
-    if (_$data.containsKey('guestCount') !=
-        other._$data.containsKey('guestCount')) {
-      return false;
-    }
-    if (l$guestCount != lOther$guestCount) {
-      return false;
-    }
     final l$serviceAddons = serviceAddons;
     final lOther$serviceAddons = other.serviceAddons;
     if (_$data.containsKey('serviceAddons') !=
@@ -3606,6 +3872,15 @@ class Input$CreateBookingInput {
     } else if (l$serviceAddons != lOther$serviceAddons) {
       return false;
     }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (_$data.containsKey('guestCount') !=
+        other._$data.containsKey('guestCount')) {
+      return false;
+    }
+    if (l$guestCount != lOther$guestCount) {
+      return false;
+    }
     return true;
   }
 
@@ -3622,8 +3897,8 @@ class Input$CreateBookingInput {
     final l$specialRequests = specialRequests;
     final l$tablePreference = tablePreference;
     final l$eventType = eventType;
-    final l$guestCount = guestCount;
     final l$serviceAddons = serviceAddons;
+    final l$guestCount = guestCount;
     return Object.hashAll([
       l$facilityId,
       l$startTime,
@@ -3644,12 +3919,12 @@ class Input$CreateBookingInput {
       _$data.containsKey('specialRequests') ? l$specialRequests : const {},
       _$data.containsKey('tablePreference') ? l$tablePreference : const {},
       _$data.containsKey('eventType') ? l$eventType : const {},
-      _$data.containsKey('guestCount') ? l$guestCount : const {},
       _$data.containsKey('serviceAddons')
           ? l$serviceAddons == null
                 ? null
                 : Object.hashAll(l$serviceAddons.map((v) => v))
           : const {},
+      _$data.containsKey('guestCount') ? l$guestCount : const {},
     ]);
   }
 }
@@ -3670,13 +3945,13 @@ abstract class CopyWith$Input$CreateBookingInput<TRes> {
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
-    Enum$EventType? eventType,
+    String? tablePreference,
+    String? eventType,
+    List<String>? serviceAddons,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
   });
 }
 
@@ -3702,8 +3977,8 @@ class _CopyWithImpl$Input$CreateBookingInput<TRes>
     Object? specialRequests = _undefined,
     Object? tablePreference = _undefined,
     Object? eventType = _undefined,
-    Object? guestCount = _undefined,
     Object? serviceAddons = _undefined,
+    Object? guestCount = _undefined,
   }) => _then(
     Input$CreateBookingInput._({
       ..._instance._$data,
@@ -3717,18 +3992,17 @@ class _CopyWithImpl$Input$CreateBookingInput<TRes>
       if (participants != _undefined)
         'participants': (participants as List<String>?),
       if (partySize != _undefined) 'partySize': (partySize as int?),
-      if (mealType != _undefined) 'mealType': (mealType as Enum$MealType?),
+      if (mealType != _undefined) 'mealType': (mealType as String?),
       if (dietaryRestrictions != _undefined)
-        'dietaryRestrictions':
-            (dietaryRestrictions as List<Enum$DietaryRestriction>?),
+        'dietaryRestrictions': (dietaryRestrictions as List<String>?),
       if (specialRequests != _undefined)
         'specialRequests': (specialRequests as String?),
       if (tablePreference != _undefined)
-        'tablePreference': (tablePreference as Enum$TablePreference?),
-      if (eventType != _undefined) 'eventType': (eventType as Enum$EventType?),
-      if (guestCount != _undefined) 'guestCount': (guestCount as int?),
+        'tablePreference': (tablePreference as String?),
+      if (eventType != _undefined) 'eventType': (eventType as String?),
       if (serviceAddons != _undefined)
-        'serviceAddons': (serviceAddons as List<Enum$ServiceAddon>?),
+        'serviceAddons': (serviceAddons as List<String>?),
+      if (guestCount != _undefined) 'guestCount': (guestCount as int?),
     }),
   );
 }
@@ -3746,13 +4020,13 @@ class _CopyWithStubImpl$Input$CreateBookingInput<TRes>
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
-    Enum$EventType? eventType,
+    String? tablePreference,
+    String? eventType,
+    List<String>? serviceAddons,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
   }) => _res;
 }
 
@@ -3763,12 +4037,13 @@ class Input$UpdateBookingInput {
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
+    String? tablePreference,
+    String? eventType,
+    List<String>? serviceAddons,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
   }) => Input$UpdateBookingInput._({
     if (startTime != null) r'startTime': startTime,
     if (endTime != null) r'endTime': endTime,
@@ -3780,8 +4055,9 @@ class Input$UpdateBookingInput {
       r'dietaryRestrictions': dietaryRestrictions,
     if (specialRequests != null) r'specialRequests': specialRequests,
     if (tablePreference != null) r'tablePreference': tablePreference,
-    if (guestCount != null) r'guestCount': guestCount,
+    if (eventType != null) r'eventType': eventType,
     if (serviceAddons != null) r'serviceAddons': serviceAddons,
+    if (guestCount != null) r'guestCount': guestCount,
   });
 
   Input$UpdateBookingInput._(this._$data);
@@ -3816,15 +4092,13 @@ class Input$UpdateBookingInput {
     }
     if (data.containsKey('mealType')) {
       final l$mealType = data['mealType'];
-      result$data['mealType'] = l$mealType == null
-          ? null
-          : fromJson$Enum$MealType((l$mealType as String));
+      result$data['mealType'] = (l$mealType as String?);
     }
     if (data.containsKey('dietaryRestrictions')) {
       final l$dietaryRestrictions = data['dietaryRestrictions'];
       result$data['dietaryRestrictions'] =
           (l$dietaryRestrictions as List<dynamic>?)
-              ?.map((e) => fromJson$Enum$DietaryRestriction((e as String)))
+              ?.map((e) => (e as String))
               .toList();
     }
     if (data.containsKey('specialRequests')) {
@@ -3833,19 +4107,21 @@ class Input$UpdateBookingInput {
     }
     if (data.containsKey('tablePreference')) {
       final l$tablePreference = data['tablePreference'];
-      result$data['tablePreference'] = l$tablePreference == null
-          ? null
-          : fromJson$Enum$TablePreference((l$tablePreference as String));
+      result$data['tablePreference'] = (l$tablePreference as String?);
     }
-    if (data.containsKey('guestCount')) {
-      final l$guestCount = data['guestCount'];
-      result$data['guestCount'] = (l$guestCount as int?);
+    if (data.containsKey('eventType')) {
+      final l$eventType = data['eventType'];
+      result$data['eventType'] = (l$eventType as String?);
     }
     if (data.containsKey('serviceAddons')) {
       final l$serviceAddons = data['serviceAddons'];
       result$data['serviceAddons'] = (l$serviceAddons as List<dynamic>?)
-          ?.map((e) => fromJson$Enum$ServiceAddon((e as String)))
+          ?.map((e) => (e as String))
           .toList();
+    }
+    if (data.containsKey('guestCount')) {
+      final l$guestCount = data['guestCount'];
+      result$data['guestCount'] = (l$guestCount as int?);
     }
     return Input$UpdateBookingInput._(result$data);
   }
@@ -3862,20 +4138,20 @@ class Input$UpdateBookingInput {
 
   int? get partySize => (_$data['partySize'] as int?);
 
-  Enum$MealType? get mealType => (_$data['mealType'] as Enum$MealType?);
+  String? get mealType => (_$data['mealType'] as String?);
 
-  List<Enum$DietaryRestriction>? get dietaryRestrictions =>
-      (_$data['dietaryRestrictions'] as List<Enum$DietaryRestriction>?);
+  List<String>? get dietaryRestrictions =>
+      (_$data['dietaryRestrictions'] as List<String>?);
 
   String? get specialRequests => (_$data['specialRequests'] as String?);
 
-  Enum$TablePreference? get tablePreference =>
-      (_$data['tablePreference'] as Enum$TablePreference?);
+  String? get tablePreference => (_$data['tablePreference'] as String?);
+
+  String? get eventType => (_$data['eventType'] as String?);
+
+  List<String>? get serviceAddons => (_$data['serviceAddons'] as List<String>?);
 
   int? get guestCount => (_$data['guestCount'] as int?);
-
-  List<Enum$ServiceAddon>? get serviceAddons =>
-      (_$data['serviceAddons'] as List<Enum$ServiceAddon>?);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
@@ -3901,14 +4177,12 @@ class Input$UpdateBookingInput {
     }
     if (_$data.containsKey('mealType')) {
       final l$mealType = mealType;
-      result$data['mealType'] = l$mealType == null
-          ? null
-          : toJson$Enum$MealType(l$mealType);
+      result$data['mealType'] = l$mealType;
     }
     if (_$data.containsKey('dietaryRestrictions')) {
       final l$dietaryRestrictions = dietaryRestrictions;
       result$data['dietaryRestrictions'] = l$dietaryRestrictions
-          ?.map((e) => toJson$Enum$DietaryRestriction(e))
+          ?.map((e) => e)
           .toList();
     }
     if (_$data.containsKey('specialRequests')) {
@@ -3917,19 +4191,19 @@ class Input$UpdateBookingInput {
     }
     if (_$data.containsKey('tablePreference')) {
       final l$tablePreference = tablePreference;
-      result$data['tablePreference'] = l$tablePreference == null
-          ? null
-          : toJson$Enum$TablePreference(l$tablePreference);
+      result$data['tablePreference'] = l$tablePreference;
+    }
+    if (_$data.containsKey('eventType')) {
+      final l$eventType = eventType;
+      result$data['eventType'] = l$eventType;
+    }
+    if (_$data.containsKey('serviceAddons')) {
+      final l$serviceAddons = serviceAddons;
+      result$data['serviceAddons'] = l$serviceAddons?.map((e) => e).toList();
     }
     if (_$data.containsKey('guestCount')) {
       final l$guestCount = guestCount;
       result$data['guestCount'] = l$guestCount;
-    }
-    if (_$data.containsKey('serviceAddons')) {
-      final l$serviceAddons = serviceAddons;
-      result$data['serviceAddons'] = l$serviceAddons
-          ?.map((e) => toJson$Enum$ServiceAddon(e))
-          .toList();
     }
     return result$data;
   }
@@ -4047,13 +4321,13 @@ class Input$UpdateBookingInput {
     if (l$tablePreference != lOther$tablePreference) {
       return false;
     }
-    final l$guestCount = guestCount;
-    final lOther$guestCount = other.guestCount;
-    if (_$data.containsKey('guestCount') !=
-        other._$data.containsKey('guestCount')) {
+    final l$eventType = eventType;
+    final lOther$eventType = other.eventType;
+    if (_$data.containsKey('eventType') !=
+        other._$data.containsKey('eventType')) {
       return false;
     }
-    if (l$guestCount != lOther$guestCount) {
+    if (l$eventType != lOther$eventType) {
       return false;
     }
     final l$serviceAddons = serviceAddons;
@@ -4076,6 +4350,15 @@ class Input$UpdateBookingInput {
     } else if (l$serviceAddons != lOther$serviceAddons) {
       return false;
     }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (_$data.containsKey('guestCount') !=
+        other._$data.containsKey('guestCount')) {
+      return false;
+    }
+    if (l$guestCount != lOther$guestCount) {
+      return false;
+    }
     return true;
   }
 
@@ -4090,8 +4373,9 @@ class Input$UpdateBookingInput {
     final l$dietaryRestrictions = dietaryRestrictions;
     final l$specialRequests = specialRequests;
     final l$tablePreference = tablePreference;
-    final l$guestCount = guestCount;
+    final l$eventType = eventType;
     final l$serviceAddons = serviceAddons;
+    final l$guestCount = guestCount;
     return Object.hashAll([
       _$data.containsKey('startTime') ? l$startTime : const {},
       _$data.containsKey('endTime') ? l$endTime : const {},
@@ -4110,12 +4394,13 @@ class Input$UpdateBookingInput {
           : const {},
       _$data.containsKey('specialRequests') ? l$specialRequests : const {},
       _$data.containsKey('tablePreference') ? l$tablePreference : const {},
-      _$data.containsKey('guestCount') ? l$guestCount : const {},
+      _$data.containsKey('eventType') ? l$eventType : const {},
       _$data.containsKey('serviceAddons')
           ? l$serviceAddons == null
                 ? null
                 : Object.hashAll(l$serviceAddons.map((v) => v))
           : const {},
+      _$data.containsKey('guestCount') ? l$guestCount : const {},
     ]);
   }
 }
@@ -4135,12 +4420,13 @@ abstract class CopyWith$Input$UpdateBookingInput<TRes> {
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
+    String? tablePreference,
+    String? eventType,
+    List<String>? serviceAddons,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
   });
 }
 
@@ -4164,8 +4450,9 @@ class _CopyWithImpl$Input$UpdateBookingInput<TRes>
     Object? dietaryRestrictions = _undefined,
     Object? specialRequests = _undefined,
     Object? tablePreference = _undefined,
-    Object? guestCount = _undefined,
+    Object? eventType = _undefined,
     Object? serviceAddons = _undefined,
+    Object? guestCount = _undefined,
   }) => _then(
     Input$UpdateBookingInput._({
       ..._instance._$data,
@@ -4175,17 +4462,17 @@ class _CopyWithImpl$Input$UpdateBookingInput<TRes>
       if (participants != _undefined)
         'participants': (participants as List<String>?),
       if (partySize != _undefined) 'partySize': (partySize as int?),
-      if (mealType != _undefined) 'mealType': (mealType as Enum$MealType?),
+      if (mealType != _undefined) 'mealType': (mealType as String?),
       if (dietaryRestrictions != _undefined)
-        'dietaryRestrictions':
-            (dietaryRestrictions as List<Enum$DietaryRestriction>?),
+        'dietaryRestrictions': (dietaryRestrictions as List<String>?),
       if (specialRequests != _undefined)
         'specialRequests': (specialRequests as String?),
       if (tablePreference != _undefined)
-        'tablePreference': (tablePreference as Enum$TablePreference?),
-      if (guestCount != _undefined) 'guestCount': (guestCount as int?),
+        'tablePreference': (tablePreference as String?),
+      if (eventType != _undefined) 'eventType': (eventType as String?),
       if (serviceAddons != _undefined)
-        'serviceAddons': (serviceAddons as List<Enum$ServiceAddon>?),
+        'serviceAddons': (serviceAddons as List<String>?),
+      if (guestCount != _undefined) 'guestCount': (guestCount as int?),
     }),
   );
 }
@@ -4202,210 +4489,35 @@ class _CopyWithStubImpl$Input$UpdateBookingInput<TRes>
     String? notes,
     List<String>? participants,
     int? partySize,
-    Enum$MealType? mealType,
-    List<Enum$DietaryRestriction>? dietaryRestrictions,
+    String? mealType,
+    List<String>? dietaryRestrictions,
     String? specialRequests,
-    Enum$TablePreference? tablePreference,
+    String? tablePreference,
+    String? eventType,
+    List<String>? serviceAddons,
     int? guestCount,
-    List<Enum$ServiceAddon>? serviceAddons,
-  }) => _res;
-}
-
-class Input$FacilityFilterInput {
-  factory Input$FacilityFilterInput({
-    String? clubId,
-    Enum$FacilityType? type,
-    Enum$FacilityStatus? status,
-  }) => Input$FacilityFilterInput._({
-    if (clubId != null) r'clubId': clubId,
-    if (type != null) r'type': type,
-    if (status != null) r'status': status,
-  });
-
-  Input$FacilityFilterInput._(this._$data);
-
-  factory Input$FacilityFilterInput.fromJson(Map<String, dynamic> data) {
-    final result$data = <String, dynamic>{};
-    if (data.containsKey('clubId')) {
-      final l$clubId = data['clubId'];
-      result$data['clubId'] = (l$clubId as String?);
-    }
-    if (data.containsKey('type')) {
-      final l$type = data['type'];
-      result$data['type'] = l$type == null
-          ? null
-          : fromJson$Enum$FacilityType((l$type as String));
-    }
-    if (data.containsKey('status')) {
-      final l$status = data['status'];
-      result$data['status'] = l$status == null
-          ? null
-          : fromJson$Enum$FacilityStatus((l$status as String));
-    }
-    return Input$FacilityFilterInput._(result$data);
-  }
-
-  Map<String, dynamic> _$data;
-
-  String? get clubId => (_$data['clubId'] as String?);
-
-  Enum$FacilityType? get type => (_$data['type'] as Enum$FacilityType?);
-
-  Enum$FacilityStatus? get status => (_$data['status'] as Enum$FacilityStatus?);
-
-  Map<String, dynamic> toJson() {
-    final result$data = <String, dynamic>{};
-    if (_$data.containsKey('clubId')) {
-      final l$clubId = clubId;
-      result$data['clubId'] = l$clubId;
-    }
-    if (_$data.containsKey('type')) {
-      final l$type = type;
-      result$data['type'] = l$type == null
-          ? null
-          : toJson$Enum$FacilityType(l$type);
-    }
-    if (_$data.containsKey('status')) {
-      final l$status = status;
-      result$data['status'] = l$status == null
-          ? null
-          : toJson$Enum$FacilityStatus(l$status);
-    }
-    return result$data;
-  }
-
-  CopyWith$Input$FacilityFilterInput<Input$FacilityFilterInput> get copyWith =>
-      CopyWith$Input$FacilityFilterInput(this, (i) => i);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Input$FacilityFilterInput ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$clubId = clubId;
-    final lOther$clubId = other.clubId;
-    if (_$data.containsKey('clubId') != other._$data.containsKey('clubId')) {
-      return false;
-    }
-    if (l$clubId != lOther$clubId) {
-      return false;
-    }
-    final l$type = type;
-    final lOther$type = other.type;
-    if (_$data.containsKey('type') != other._$data.containsKey('type')) {
-      return false;
-    }
-    if (l$type != lOther$type) {
-      return false;
-    }
-    final l$status = status;
-    final lOther$status = other.status;
-    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
-      return false;
-    }
-    if (l$status != lOther$status) {
-      return false;
-    }
-    return true;
-  }
-
-  @override
-  int get hashCode {
-    final l$clubId = clubId;
-    final l$type = type;
-    final l$status = status;
-    return Object.hashAll([
-      _$data.containsKey('clubId') ? l$clubId : const {},
-      _$data.containsKey('type') ? l$type : const {},
-      _$data.containsKey('status') ? l$status : const {},
-    ]);
-  }
-}
-
-abstract class CopyWith$Input$FacilityFilterInput<TRes> {
-  factory CopyWith$Input$FacilityFilterInput(
-    Input$FacilityFilterInput instance,
-    TRes Function(Input$FacilityFilterInput) then,
-  ) = _CopyWithImpl$Input$FacilityFilterInput;
-
-  factory CopyWith$Input$FacilityFilterInput.stub(TRes res) =
-      _CopyWithStubImpl$Input$FacilityFilterInput;
-
-  TRes call({
-    String? clubId,
-    Enum$FacilityType? type,
-    Enum$FacilityStatus? status,
-  });
-}
-
-class _CopyWithImpl$Input$FacilityFilterInput<TRes>
-    implements CopyWith$Input$FacilityFilterInput<TRes> {
-  _CopyWithImpl$Input$FacilityFilterInput(this._instance, this._then);
-
-  final Input$FacilityFilterInput _instance;
-
-  final TRes Function(Input$FacilityFilterInput) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? clubId = _undefined,
-    Object? type = _undefined,
-    Object? status = _undefined,
-  }) => _then(
-    Input$FacilityFilterInput._({
-      ..._instance._$data,
-      if (clubId != _undefined) 'clubId': (clubId as String?),
-      if (type != _undefined) 'type': (type as Enum$FacilityType?),
-      if (status != _undefined) 'status': (status as Enum$FacilityStatus?),
-    }),
-  );
-}
-
-class _CopyWithStubImpl$Input$FacilityFilterInput<TRes>
-    implements CopyWith$Input$FacilityFilterInput<TRes> {
-  _CopyWithStubImpl$Input$FacilityFilterInput(this._res);
-
-  TRes _res;
-
-  call({
-    String? clubId,
-    Enum$FacilityType? type,
-    Enum$FacilityStatus? status,
   }) => _res;
 }
 
 class Input$BookingFilterInput {
   factory Input$BookingFilterInput({
-    String? facilityId,
-    String? userId,
     Enum$BookingStatus? status,
     DateTime? startDate,
     DateTime? endDate,
+    String? facilityId,
+    String? userId,
   }) => Input$BookingFilterInput._({
-    if (facilityId != null) r'facilityId': facilityId,
-    if (userId != null) r'userId': userId,
     if (status != null) r'status': status,
     if (startDate != null) r'startDate': startDate,
     if (endDate != null) r'endDate': endDate,
+    if (facilityId != null) r'facilityId': facilityId,
+    if (userId != null) r'userId': userId,
   });
 
   Input$BookingFilterInput._(this._$data);
 
   factory Input$BookingFilterInput.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    if (data.containsKey('facilityId')) {
-      final l$facilityId = data['facilityId'];
-      result$data['facilityId'] = (l$facilityId as String?);
-    }
-    if (data.containsKey('userId')) {
-      final l$userId = data['userId'];
-      result$data['userId'] = (l$userId as String?);
-    }
     if (data.containsKey('status')) {
       final l$status = data['status'];
       result$data['status'] = l$status == null
@@ -4424,14 +4536,18 @@ class Input$BookingFilterInput {
           ? null
           : DateTime.parse((l$endDate as String));
     }
+    if (data.containsKey('facilityId')) {
+      final l$facilityId = data['facilityId'];
+      result$data['facilityId'] = (l$facilityId as String?);
+    }
+    if (data.containsKey('userId')) {
+      final l$userId = data['userId'];
+      result$data['userId'] = (l$userId as String?);
+    }
     return Input$BookingFilterInput._(result$data);
   }
 
   Map<String, dynamic> _$data;
-
-  String? get facilityId => (_$data['facilityId'] as String?);
-
-  String? get userId => (_$data['userId'] as String?);
 
   Enum$BookingStatus? get status => (_$data['status'] as Enum$BookingStatus?);
 
@@ -4439,16 +4555,12 @@ class Input$BookingFilterInput {
 
   DateTime? get endDate => (_$data['endDate'] as DateTime?);
 
+  String? get facilityId => (_$data['facilityId'] as String?);
+
+  String? get userId => (_$data['userId'] as String?);
+
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    if (_$data.containsKey('facilityId')) {
-      final l$facilityId = facilityId;
-      result$data['facilityId'] = l$facilityId;
-    }
-    if (_$data.containsKey('userId')) {
-      final l$userId = userId;
-      result$data['userId'] = l$userId;
-    }
     if (_$data.containsKey('status')) {
       final l$status = status;
       result$data['status'] = l$status == null
@@ -4463,6 +4575,14 @@ class Input$BookingFilterInput {
       final l$endDate = endDate;
       result$data['endDate'] = l$endDate?.toIso8601String();
     }
+    if (_$data.containsKey('facilityId')) {
+      final l$facilityId = facilityId;
+      result$data['facilityId'] = l$facilityId;
+    }
+    if (_$data.containsKey('userId')) {
+      final l$userId = userId;
+      result$data['userId'] = l$userId;
+    }
     return result$data;
   }
 
@@ -4476,23 +4596,6 @@ class Input$BookingFilterInput {
     }
     if (other is! Input$BookingFilterInput ||
         runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$facilityId = facilityId;
-    final lOther$facilityId = other.facilityId;
-    if (_$data.containsKey('facilityId') !=
-        other._$data.containsKey('facilityId')) {
-      return false;
-    }
-    if (l$facilityId != lOther$facilityId) {
-      return false;
-    }
-    final l$userId = userId;
-    final lOther$userId = other.userId;
-    if (_$data.containsKey('userId') != other._$data.containsKey('userId')) {
-      return false;
-    }
-    if (l$userId != lOther$userId) {
       return false;
     }
     final l$status = status;
@@ -4520,22 +4623,39 @@ class Input$BookingFilterInput {
     if (l$endDate != lOther$endDate) {
       return false;
     }
+    final l$facilityId = facilityId;
+    final lOther$facilityId = other.facilityId;
+    if (_$data.containsKey('facilityId') !=
+        other._$data.containsKey('facilityId')) {
+      return false;
+    }
+    if (l$facilityId != lOther$facilityId) {
+      return false;
+    }
+    final l$userId = userId;
+    final lOther$userId = other.userId;
+    if (_$data.containsKey('userId') != other._$data.containsKey('userId')) {
+      return false;
+    }
+    if (l$userId != lOther$userId) {
+      return false;
+    }
     return true;
   }
 
   @override
   int get hashCode {
-    final l$facilityId = facilityId;
-    final l$userId = userId;
     final l$status = status;
     final l$startDate = startDate;
     final l$endDate = endDate;
+    final l$facilityId = facilityId;
+    final l$userId = userId;
     return Object.hashAll([
-      _$data.containsKey('facilityId') ? l$facilityId : const {},
-      _$data.containsKey('userId') ? l$userId : const {},
       _$data.containsKey('status') ? l$status : const {},
       _$data.containsKey('startDate') ? l$startDate : const {},
       _$data.containsKey('endDate') ? l$endDate : const {},
+      _$data.containsKey('facilityId') ? l$facilityId : const {},
+      _$data.containsKey('userId') ? l$userId : const {},
     ]);
   }
 }
@@ -4550,11 +4670,11 @@ abstract class CopyWith$Input$BookingFilterInput<TRes> {
       _CopyWithStubImpl$Input$BookingFilterInput;
 
   TRes call({
-    String? facilityId,
-    String? userId,
     Enum$BookingStatus? status,
     DateTime? startDate,
     DateTime? endDate,
+    String? facilityId,
+    String? userId,
   });
 }
 
@@ -4569,19 +4689,19 @@ class _CopyWithImpl$Input$BookingFilterInput<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? facilityId = _undefined,
-    Object? userId = _undefined,
     Object? status = _undefined,
     Object? startDate = _undefined,
     Object? endDate = _undefined,
+    Object? facilityId = _undefined,
+    Object? userId = _undefined,
   }) => _then(
     Input$BookingFilterInput._({
       ..._instance._$data,
-      if (facilityId != _undefined) 'facilityId': (facilityId as String?),
-      if (userId != _undefined) 'userId': (userId as String?),
       if (status != _undefined) 'status': (status as Enum$BookingStatus?),
       if (startDate != _undefined) 'startDate': (startDate as DateTime?),
       if (endDate != _undefined) 'endDate': (endDate as DateTime?),
+      if (facilityId != _undefined) 'facilityId': (facilityId as String?),
+      if (userId != _undefined) 'userId': (userId as String?),
     }),
   );
 }
@@ -4593,20 +4713,1969 @@ class _CopyWithStubImpl$Input$BookingFilterInput<TRes>
   TRes _res;
 
   call({
-    String? facilityId,
-    String? userId,
     Enum$BookingStatus? status,
     DateTime? startDate,
     DateTime? endDate,
+    String? facilityId,
+    String? userId,
   }) => _res;
 }
 
-class Input$PaginationInput {
-  factory Input$PaginationInput({int? page, int? pageSize}) =>
-      Input$PaginationInput._({
-        if (page != null) r'page': page,
-        if (pageSize != null) r'pageSize': pageSize,
+class Input$ClubFilterInput {
+  factory Input$ClubFilterInput({
+    String? search,
+    String? city,
+    Enum$ClubStatus? status,
+    List<String>? amenities,
+  }) => Input$ClubFilterInput._({
+    if (search != null) r'search': search,
+    if (city != null) r'city': city,
+    if (status != null) r'status': status,
+    if (amenities != null) r'amenities': amenities,
+  });
+
+  Input$ClubFilterInput._(this._$data);
+
+  factory Input$ClubFilterInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('search')) {
+      final l$search = data['search'];
+      result$data['search'] = (l$search as String?);
+    }
+    if (data.containsKey('city')) {
+      final l$city = data['city'];
+      result$data['city'] = (l$city as String?);
+    }
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$ClubStatus((l$status as String));
+    }
+    if (data.containsKey('amenities')) {
+      final l$amenities = data['amenities'];
+      result$data['amenities'] = (l$amenities as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList();
+    }
+    return Input$ClubFilterInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String? get search => (_$data['search'] as String?);
+
+  String? get city => (_$data['city'] as String?);
+
+  Enum$ClubStatus? get status => (_$data['status'] as Enum$ClubStatus?);
+
+  List<String>? get amenities => (_$data['amenities'] as List<String>?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('search')) {
+      final l$search = search;
+      result$data['search'] = l$search;
+    }
+    if (_$data.containsKey('city')) {
+      final l$city = city;
+      result$data['city'] = l$city;
+    }
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$ClubStatus(l$status);
+    }
+    if (_$data.containsKey('amenities')) {
+      final l$amenities = amenities;
+      result$data['amenities'] = l$amenities?.map((e) => e).toList();
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$ClubFilterInput<Input$ClubFilterInput> get copyWith =>
+      CopyWith$Input$ClubFilterInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$ClubFilterInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$search = search;
+    final lOther$search = other.search;
+    if (_$data.containsKey('search') != other._$data.containsKey('search')) {
+      return false;
+    }
+    if (l$search != lOther$search) {
+      return false;
+    }
+    final l$city = city;
+    final lOther$city = other.city;
+    if (_$data.containsKey('city') != other._$data.containsKey('city')) {
+      return false;
+    }
+    if (l$city != lOther$city) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$amenities = amenities;
+    final lOther$amenities = other.amenities;
+    if (_$data.containsKey('amenities') !=
+        other._$data.containsKey('amenities')) {
+      return false;
+    }
+    if (l$amenities != null && lOther$amenities != null) {
+      if (l$amenities.length != lOther$amenities.length) {
+        return false;
+      }
+      for (int i = 0; i < l$amenities.length; i++) {
+        final l$amenities$entry = l$amenities[i];
+        final lOther$amenities$entry = lOther$amenities[i];
+        if (l$amenities$entry != lOther$amenities$entry) {
+          return false;
+        }
+      }
+    } else if (l$amenities != lOther$amenities) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$search = search;
+    final l$city = city;
+    final l$status = status;
+    final l$amenities = amenities;
+    return Object.hashAll([
+      _$data.containsKey('search') ? l$search : const {},
+      _$data.containsKey('city') ? l$city : const {},
+      _$data.containsKey('status') ? l$status : const {},
+      _$data.containsKey('amenities')
+          ? l$amenities == null
+                ? null
+                : Object.hashAll(l$amenities.map((v) => v))
+          : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$ClubFilterInput<TRes> {
+  factory CopyWith$Input$ClubFilterInput(
+    Input$ClubFilterInput instance,
+    TRes Function(Input$ClubFilterInput) then,
+  ) = _CopyWithImpl$Input$ClubFilterInput;
+
+  factory CopyWith$Input$ClubFilterInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$ClubFilterInput;
+
+  TRes call({
+    String? search,
+    String? city,
+    Enum$ClubStatus? status,
+    List<String>? amenities,
+  });
+}
+
+class _CopyWithImpl$Input$ClubFilterInput<TRes>
+    implements CopyWith$Input$ClubFilterInput<TRes> {
+  _CopyWithImpl$Input$ClubFilterInput(this._instance, this._then);
+
+  final Input$ClubFilterInput _instance;
+
+  final TRes Function(Input$ClubFilterInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? search = _undefined,
+    Object? city = _undefined,
+    Object? status = _undefined,
+    Object? amenities = _undefined,
+  }) => _then(
+    Input$ClubFilterInput._({
+      ..._instance._$data,
+      if (search != _undefined) 'search': (search as String?),
+      if (city != _undefined) 'city': (city as String?),
+      if (status != _undefined) 'status': (status as Enum$ClubStatus?),
+      if (amenities != _undefined) 'amenities': (amenities as List<String>?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$ClubFilterInput<TRes>
+    implements CopyWith$Input$ClubFilterInput<TRes> {
+  _CopyWithStubImpl$Input$ClubFilterInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? search,
+    String? city,
+    Enum$ClubStatus? status,
+    List<String>? amenities,
+  }) => _res;
+}
+
+class Input$CreateClubInput {
+  factory Input$CreateClubInput({
+    required String name,
+    required String slug,
+    String? description,
+    required String location,
+    String? website,
+    String? contactEmail,
+    String? contactPhone,
+    String? address,
+    Input$ClubSettingsInput? settings,
+  }) => Input$CreateClubInput._({
+    r'name': name,
+    r'slug': slug,
+    if (description != null) r'description': description,
+    r'location': location,
+    if (website != null) r'website': website,
+    if (contactEmail != null) r'contactEmail': contactEmail,
+    if (contactPhone != null) r'contactPhone': contactPhone,
+    if (address != null) r'address': address,
+    if (settings != null) r'settings': settings,
+  });
+
+  Input$CreateClubInput._(this._$data);
+
+  factory Input$CreateClubInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$name = data['name'];
+    result$data['name'] = (l$name as String);
+    final l$slug = data['slug'];
+    result$data['slug'] = (l$slug as String);
+    if (data.containsKey('description')) {
+      final l$description = data['description'];
+      result$data['description'] = (l$description as String?);
+    }
+    final l$location = data['location'];
+    result$data['location'] = (l$location as String);
+    if (data.containsKey('website')) {
+      final l$website = data['website'];
+      result$data['website'] = (l$website as String?);
+    }
+    if (data.containsKey('contactEmail')) {
+      final l$contactEmail = data['contactEmail'];
+      result$data['contactEmail'] = (l$contactEmail as String?);
+    }
+    if (data.containsKey('contactPhone')) {
+      final l$contactPhone = data['contactPhone'];
+      result$data['contactPhone'] = (l$contactPhone as String?);
+    }
+    if (data.containsKey('address')) {
+      final l$address = data['address'];
+      result$data['address'] = (l$address as String?);
+    }
+    if (data.containsKey('settings')) {
+      final l$settings = data['settings'];
+      result$data['settings'] = l$settings == null
+          ? null
+          : Input$ClubSettingsInput.fromJson(
+              (l$settings as Map<String, dynamic>),
+            );
+    }
+    return Input$CreateClubInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get name => (_$data['name'] as String);
+
+  String get slug => (_$data['slug'] as String);
+
+  String? get description => (_$data['description'] as String?);
+
+  String get location => (_$data['location'] as String);
+
+  String? get website => (_$data['website'] as String?);
+
+  String? get contactEmail => (_$data['contactEmail'] as String?);
+
+  String? get contactPhone => (_$data['contactPhone'] as String?);
+
+  String? get address => (_$data['address'] as String?);
+
+  Input$ClubSettingsInput? get settings =>
+      (_$data['settings'] as Input$ClubSettingsInput?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$name = name;
+    result$data['name'] = l$name;
+    final l$slug = slug;
+    result$data['slug'] = l$slug;
+    if (_$data.containsKey('description')) {
+      final l$description = description;
+      result$data['description'] = l$description;
+    }
+    final l$location = location;
+    result$data['location'] = l$location;
+    if (_$data.containsKey('website')) {
+      final l$website = website;
+      result$data['website'] = l$website;
+    }
+    if (_$data.containsKey('contactEmail')) {
+      final l$contactEmail = contactEmail;
+      result$data['contactEmail'] = l$contactEmail;
+    }
+    if (_$data.containsKey('contactPhone')) {
+      final l$contactPhone = contactPhone;
+      result$data['contactPhone'] = l$contactPhone;
+    }
+    if (_$data.containsKey('address')) {
+      final l$address = address;
+      result$data['address'] = l$address;
+    }
+    if (_$data.containsKey('settings')) {
+      final l$settings = settings;
+      result$data['settings'] = l$settings?.toJson();
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$CreateClubInput<Input$CreateClubInput> get copyWith =>
+      CopyWith$Input$CreateClubInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$CreateClubInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$slug = slug;
+    final lOther$slug = other.slug;
+    if (l$slug != lOther$slug) {
+      return false;
+    }
+    final l$description = description;
+    final lOther$description = other.description;
+    if (_$data.containsKey('description') !=
+        other._$data.containsKey('description')) {
+      return false;
+    }
+    if (l$description != lOther$description) {
+      return false;
+    }
+    final l$location = location;
+    final lOther$location = other.location;
+    if (l$location != lOther$location) {
+      return false;
+    }
+    final l$website = website;
+    final lOther$website = other.website;
+    if (_$data.containsKey('website') != other._$data.containsKey('website')) {
+      return false;
+    }
+    if (l$website != lOther$website) {
+      return false;
+    }
+    final l$contactEmail = contactEmail;
+    final lOther$contactEmail = other.contactEmail;
+    if (_$data.containsKey('contactEmail') !=
+        other._$data.containsKey('contactEmail')) {
+      return false;
+    }
+    if (l$contactEmail != lOther$contactEmail) {
+      return false;
+    }
+    final l$contactPhone = contactPhone;
+    final lOther$contactPhone = other.contactPhone;
+    if (_$data.containsKey('contactPhone') !=
+        other._$data.containsKey('contactPhone')) {
+      return false;
+    }
+    if (l$contactPhone != lOther$contactPhone) {
+      return false;
+    }
+    final l$address = address;
+    final lOther$address = other.address;
+    if (_$data.containsKey('address') != other._$data.containsKey('address')) {
+      return false;
+    }
+    if (l$address != lOther$address) {
+      return false;
+    }
+    final l$settings = settings;
+    final lOther$settings = other.settings;
+    if (_$data.containsKey('settings') !=
+        other._$data.containsKey('settings')) {
+      return false;
+    }
+    if (l$settings != lOther$settings) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$name = name;
+    final l$slug = slug;
+    final l$description = description;
+    final l$location = location;
+    final l$website = website;
+    final l$contactEmail = contactEmail;
+    final l$contactPhone = contactPhone;
+    final l$address = address;
+    final l$settings = settings;
+    return Object.hashAll([
+      l$name,
+      l$slug,
+      _$data.containsKey('description') ? l$description : const {},
+      l$location,
+      _$data.containsKey('website') ? l$website : const {},
+      _$data.containsKey('contactEmail') ? l$contactEmail : const {},
+      _$data.containsKey('contactPhone') ? l$contactPhone : const {},
+      _$data.containsKey('address') ? l$address : const {},
+      _$data.containsKey('settings') ? l$settings : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$CreateClubInput<TRes> {
+  factory CopyWith$Input$CreateClubInput(
+    Input$CreateClubInput instance,
+    TRes Function(Input$CreateClubInput) then,
+  ) = _CopyWithImpl$Input$CreateClubInput;
+
+  factory CopyWith$Input$CreateClubInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$CreateClubInput;
+
+  TRes call({
+    String? name,
+    String? slug,
+    String? description,
+    String? location,
+    String? website,
+    String? contactEmail,
+    String? contactPhone,
+    String? address,
+    Input$ClubSettingsInput? settings,
+  });
+  CopyWith$Input$ClubSettingsInput<TRes> get settings;
+}
+
+class _CopyWithImpl$Input$CreateClubInput<TRes>
+    implements CopyWith$Input$CreateClubInput<TRes> {
+  _CopyWithImpl$Input$CreateClubInput(this._instance, this._then);
+
+  final Input$CreateClubInput _instance;
+
+  final TRes Function(Input$CreateClubInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? name = _undefined,
+    Object? slug = _undefined,
+    Object? description = _undefined,
+    Object? location = _undefined,
+    Object? website = _undefined,
+    Object? contactEmail = _undefined,
+    Object? contactPhone = _undefined,
+    Object? address = _undefined,
+    Object? settings = _undefined,
+  }) => _then(
+    Input$CreateClubInput._({
+      ..._instance._$data,
+      if (name != _undefined && name != null) 'name': (name as String),
+      if (slug != _undefined && slug != null) 'slug': (slug as String),
+      if (description != _undefined) 'description': (description as String?),
+      if (location != _undefined && location != null)
+        'location': (location as String),
+      if (website != _undefined) 'website': (website as String?),
+      if (contactEmail != _undefined) 'contactEmail': (contactEmail as String?),
+      if (contactPhone != _undefined) 'contactPhone': (contactPhone as String?),
+      if (address != _undefined) 'address': (address as String?),
+      if (settings != _undefined)
+        'settings': (settings as Input$ClubSettingsInput?),
+    }),
+  );
+
+  CopyWith$Input$ClubSettingsInput<TRes> get settings {
+    final local$settings = _instance.settings;
+    return local$settings == null
+        ? CopyWith$Input$ClubSettingsInput.stub(_then(_instance))
+        : CopyWith$Input$ClubSettingsInput(
+            local$settings,
+            (e) => call(settings: e),
+          );
+  }
+}
+
+class _CopyWithStubImpl$Input$CreateClubInput<TRes>
+    implements CopyWith$Input$CreateClubInput<TRes> {
+  _CopyWithStubImpl$Input$CreateClubInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? name,
+    String? slug,
+    String? description,
+    String? location,
+    String? website,
+    String? contactEmail,
+    String? contactPhone,
+    String? address,
+    Input$ClubSettingsInput? settings,
+  }) => _res;
+
+  CopyWith$Input$ClubSettingsInput<TRes> get settings =>
+      CopyWith$Input$ClubSettingsInput.stub(_res);
+}
+
+class Input$UpdateClubInput {
+  factory Input$UpdateClubInput({
+    String? name,
+    String? description,
+    String? location,
+    String? website,
+    String? contactEmail,
+    String? contactPhone,
+    String? address,
+    Input$ClubSettingsInput? settings,
+    Enum$ClubStatus? status,
+  }) => Input$UpdateClubInput._({
+    if (name != null) r'name': name,
+    if (description != null) r'description': description,
+    if (location != null) r'location': location,
+    if (website != null) r'website': website,
+    if (contactEmail != null) r'contactEmail': contactEmail,
+    if (contactPhone != null) r'contactPhone': contactPhone,
+    if (address != null) r'address': address,
+    if (settings != null) r'settings': settings,
+    if (status != null) r'status': status,
+  });
+
+  Input$UpdateClubInput._(this._$data);
+
+  factory Input$UpdateClubInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('name')) {
+      final l$name = data['name'];
+      result$data['name'] = (l$name as String?);
+    }
+    if (data.containsKey('description')) {
+      final l$description = data['description'];
+      result$data['description'] = (l$description as String?);
+    }
+    if (data.containsKey('location')) {
+      final l$location = data['location'];
+      result$data['location'] = (l$location as String?);
+    }
+    if (data.containsKey('website')) {
+      final l$website = data['website'];
+      result$data['website'] = (l$website as String?);
+    }
+    if (data.containsKey('contactEmail')) {
+      final l$contactEmail = data['contactEmail'];
+      result$data['contactEmail'] = (l$contactEmail as String?);
+    }
+    if (data.containsKey('contactPhone')) {
+      final l$contactPhone = data['contactPhone'];
+      result$data['contactPhone'] = (l$contactPhone as String?);
+    }
+    if (data.containsKey('address')) {
+      final l$address = data['address'];
+      result$data['address'] = (l$address as String?);
+    }
+    if (data.containsKey('settings')) {
+      final l$settings = data['settings'];
+      result$data['settings'] = l$settings == null
+          ? null
+          : Input$ClubSettingsInput.fromJson(
+              (l$settings as Map<String, dynamic>),
+            );
+    }
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$ClubStatus((l$status as String));
+    }
+    return Input$UpdateClubInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String? get name => (_$data['name'] as String?);
+
+  String? get description => (_$data['description'] as String?);
+
+  String? get location => (_$data['location'] as String?);
+
+  String? get website => (_$data['website'] as String?);
+
+  String? get contactEmail => (_$data['contactEmail'] as String?);
+
+  String? get contactPhone => (_$data['contactPhone'] as String?);
+
+  String? get address => (_$data['address'] as String?);
+
+  Input$ClubSettingsInput? get settings =>
+      (_$data['settings'] as Input$ClubSettingsInput?);
+
+  Enum$ClubStatus? get status => (_$data['status'] as Enum$ClubStatus?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('name')) {
+      final l$name = name;
+      result$data['name'] = l$name;
+    }
+    if (_$data.containsKey('description')) {
+      final l$description = description;
+      result$data['description'] = l$description;
+    }
+    if (_$data.containsKey('location')) {
+      final l$location = location;
+      result$data['location'] = l$location;
+    }
+    if (_$data.containsKey('website')) {
+      final l$website = website;
+      result$data['website'] = l$website;
+    }
+    if (_$data.containsKey('contactEmail')) {
+      final l$contactEmail = contactEmail;
+      result$data['contactEmail'] = l$contactEmail;
+    }
+    if (_$data.containsKey('contactPhone')) {
+      final l$contactPhone = contactPhone;
+      result$data['contactPhone'] = l$contactPhone;
+    }
+    if (_$data.containsKey('address')) {
+      final l$address = address;
+      result$data['address'] = l$address;
+    }
+    if (_$data.containsKey('settings')) {
+      final l$settings = settings;
+      result$data['settings'] = l$settings?.toJson();
+    }
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$ClubStatus(l$status);
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$UpdateClubInput<Input$UpdateClubInput> get copyWith =>
+      CopyWith$Input$UpdateClubInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$UpdateClubInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (_$data.containsKey('name') != other._$data.containsKey('name')) {
+      return false;
+    }
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$description = description;
+    final lOther$description = other.description;
+    if (_$data.containsKey('description') !=
+        other._$data.containsKey('description')) {
+      return false;
+    }
+    if (l$description != lOther$description) {
+      return false;
+    }
+    final l$location = location;
+    final lOther$location = other.location;
+    if (_$data.containsKey('location') !=
+        other._$data.containsKey('location')) {
+      return false;
+    }
+    if (l$location != lOther$location) {
+      return false;
+    }
+    final l$website = website;
+    final lOther$website = other.website;
+    if (_$data.containsKey('website') != other._$data.containsKey('website')) {
+      return false;
+    }
+    if (l$website != lOther$website) {
+      return false;
+    }
+    final l$contactEmail = contactEmail;
+    final lOther$contactEmail = other.contactEmail;
+    if (_$data.containsKey('contactEmail') !=
+        other._$data.containsKey('contactEmail')) {
+      return false;
+    }
+    if (l$contactEmail != lOther$contactEmail) {
+      return false;
+    }
+    final l$contactPhone = contactPhone;
+    final lOther$contactPhone = other.contactPhone;
+    if (_$data.containsKey('contactPhone') !=
+        other._$data.containsKey('contactPhone')) {
+      return false;
+    }
+    if (l$contactPhone != lOther$contactPhone) {
+      return false;
+    }
+    final l$address = address;
+    final lOther$address = other.address;
+    if (_$data.containsKey('address') != other._$data.containsKey('address')) {
+      return false;
+    }
+    if (l$address != lOther$address) {
+      return false;
+    }
+    final l$settings = settings;
+    final lOther$settings = other.settings;
+    if (_$data.containsKey('settings') !=
+        other._$data.containsKey('settings')) {
+      return false;
+    }
+    if (l$settings != lOther$settings) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$name = name;
+    final l$description = description;
+    final l$location = location;
+    final l$website = website;
+    final l$contactEmail = contactEmail;
+    final l$contactPhone = contactPhone;
+    final l$address = address;
+    final l$settings = settings;
+    final l$status = status;
+    return Object.hashAll([
+      _$data.containsKey('name') ? l$name : const {},
+      _$data.containsKey('description') ? l$description : const {},
+      _$data.containsKey('location') ? l$location : const {},
+      _$data.containsKey('website') ? l$website : const {},
+      _$data.containsKey('contactEmail') ? l$contactEmail : const {},
+      _$data.containsKey('contactPhone') ? l$contactPhone : const {},
+      _$data.containsKey('address') ? l$address : const {},
+      _$data.containsKey('settings') ? l$settings : const {},
+      _$data.containsKey('status') ? l$status : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$UpdateClubInput<TRes> {
+  factory CopyWith$Input$UpdateClubInput(
+    Input$UpdateClubInput instance,
+    TRes Function(Input$UpdateClubInput) then,
+  ) = _CopyWithImpl$Input$UpdateClubInput;
+
+  factory CopyWith$Input$UpdateClubInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$UpdateClubInput;
+
+  TRes call({
+    String? name,
+    String? description,
+    String? location,
+    String? website,
+    String? contactEmail,
+    String? contactPhone,
+    String? address,
+    Input$ClubSettingsInput? settings,
+    Enum$ClubStatus? status,
+  });
+  CopyWith$Input$ClubSettingsInput<TRes> get settings;
+}
+
+class _CopyWithImpl$Input$UpdateClubInput<TRes>
+    implements CopyWith$Input$UpdateClubInput<TRes> {
+  _CopyWithImpl$Input$UpdateClubInput(this._instance, this._then);
+
+  final Input$UpdateClubInput _instance;
+
+  final TRes Function(Input$UpdateClubInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? name = _undefined,
+    Object? description = _undefined,
+    Object? location = _undefined,
+    Object? website = _undefined,
+    Object? contactEmail = _undefined,
+    Object? contactPhone = _undefined,
+    Object? address = _undefined,
+    Object? settings = _undefined,
+    Object? status = _undefined,
+  }) => _then(
+    Input$UpdateClubInput._({
+      ..._instance._$data,
+      if (name != _undefined) 'name': (name as String?),
+      if (description != _undefined) 'description': (description as String?),
+      if (location != _undefined) 'location': (location as String?),
+      if (website != _undefined) 'website': (website as String?),
+      if (contactEmail != _undefined) 'contactEmail': (contactEmail as String?),
+      if (contactPhone != _undefined) 'contactPhone': (contactPhone as String?),
+      if (address != _undefined) 'address': (address as String?),
+      if (settings != _undefined)
+        'settings': (settings as Input$ClubSettingsInput?),
+      if (status != _undefined) 'status': (status as Enum$ClubStatus?),
+    }),
+  );
+
+  CopyWith$Input$ClubSettingsInput<TRes> get settings {
+    final local$settings = _instance.settings;
+    return local$settings == null
+        ? CopyWith$Input$ClubSettingsInput.stub(_then(_instance))
+        : CopyWith$Input$ClubSettingsInput(
+            local$settings,
+            (e) => call(settings: e),
+          );
+  }
+}
+
+class _CopyWithStubImpl$Input$UpdateClubInput<TRes>
+    implements CopyWith$Input$UpdateClubInput<TRes> {
+  _CopyWithStubImpl$Input$UpdateClubInput(this._res);
+
+  TRes _res;
+
+  call({
+    String? name,
+    String? description,
+    String? location,
+    String? website,
+    String? contactEmail,
+    String? contactPhone,
+    String? address,
+    Input$ClubSettingsInput? settings,
+    Enum$ClubStatus? status,
+  }) => _res;
+
+  CopyWith$Input$ClubSettingsInput<TRes> get settings =>
+      CopyWith$Input$ClubSettingsInput.stub(_res);
+}
+
+class Input$ClubSettingsInput {
+  factory Input$ClubSettingsInput({
+    bool? allowReciprocal,
+    bool? requireApproval,
+    int? maxVisitsPerMonth,
+    double? reciprocalFee,
+    bool? enablePasskeyAuth,
+    bool? requirePasskeyAuth,
+    int? sessionTimeoutMinutes,
+    int? maxFailedAttempts,
+    int? lockoutDurationMinutes,
+    bool? enableAuditLogging,
+  }) => Input$ClubSettingsInput._({
+    if (allowReciprocal != null) r'allowReciprocal': allowReciprocal,
+    if (requireApproval != null) r'requireApproval': requireApproval,
+    if (maxVisitsPerMonth != null) r'maxVisitsPerMonth': maxVisitsPerMonth,
+    if (reciprocalFee != null) r'reciprocalFee': reciprocalFee,
+    if (enablePasskeyAuth != null) r'enablePasskeyAuth': enablePasskeyAuth,
+    if (requirePasskeyAuth != null) r'requirePasskeyAuth': requirePasskeyAuth,
+    if (sessionTimeoutMinutes != null)
+      r'sessionTimeoutMinutes': sessionTimeoutMinutes,
+    if (maxFailedAttempts != null) r'maxFailedAttempts': maxFailedAttempts,
+    if (lockoutDurationMinutes != null)
+      r'lockoutDurationMinutes': lockoutDurationMinutes,
+    if (enableAuditLogging != null) r'enableAuditLogging': enableAuditLogging,
+  });
+
+  Input$ClubSettingsInput._(this._$data);
+
+  factory Input$ClubSettingsInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('allowReciprocal')) {
+      final l$allowReciprocal = data['allowReciprocal'];
+      result$data['allowReciprocal'] = (l$allowReciprocal as bool?);
+    }
+    if (data.containsKey('requireApproval')) {
+      final l$requireApproval = data['requireApproval'];
+      result$data['requireApproval'] = (l$requireApproval as bool?);
+    }
+    if (data.containsKey('maxVisitsPerMonth')) {
+      final l$maxVisitsPerMonth = data['maxVisitsPerMonth'];
+      result$data['maxVisitsPerMonth'] = (l$maxVisitsPerMonth as int?);
+    }
+    if (data.containsKey('reciprocalFee')) {
+      final l$reciprocalFee = data['reciprocalFee'];
+      result$data['reciprocalFee'] = (l$reciprocalFee as num?)?.toDouble();
+    }
+    if (data.containsKey('enablePasskeyAuth')) {
+      final l$enablePasskeyAuth = data['enablePasskeyAuth'];
+      result$data['enablePasskeyAuth'] = (l$enablePasskeyAuth as bool?);
+    }
+    if (data.containsKey('requirePasskeyAuth')) {
+      final l$requirePasskeyAuth = data['requirePasskeyAuth'];
+      result$data['requirePasskeyAuth'] = (l$requirePasskeyAuth as bool?);
+    }
+    if (data.containsKey('sessionTimeoutMinutes')) {
+      final l$sessionTimeoutMinutes = data['sessionTimeoutMinutes'];
+      result$data['sessionTimeoutMinutes'] = (l$sessionTimeoutMinutes as int?);
+    }
+    if (data.containsKey('maxFailedAttempts')) {
+      final l$maxFailedAttempts = data['maxFailedAttempts'];
+      result$data['maxFailedAttempts'] = (l$maxFailedAttempts as int?);
+    }
+    if (data.containsKey('lockoutDurationMinutes')) {
+      final l$lockoutDurationMinutes = data['lockoutDurationMinutes'];
+      result$data['lockoutDurationMinutes'] =
+          (l$lockoutDurationMinutes as int?);
+    }
+    if (data.containsKey('enableAuditLogging')) {
+      final l$enableAuditLogging = data['enableAuditLogging'];
+      result$data['enableAuditLogging'] = (l$enableAuditLogging as bool?);
+    }
+    return Input$ClubSettingsInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  bool? get allowReciprocal => (_$data['allowReciprocal'] as bool?);
+
+  bool? get requireApproval => (_$data['requireApproval'] as bool?);
+
+  int? get maxVisitsPerMonth => (_$data['maxVisitsPerMonth'] as int?);
+
+  double? get reciprocalFee => (_$data['reciprocalFee'] as double?);
+
+  bool? get enablePasskeyAuth => (_$data['enablePasskeyAuth'] as bool?);
+
+  bool? get requirePasskeyAuth => (_$data['requirePasskeyAuth'] as bool?);
+
+  int? get sessionTimeoutMinutes => (_$data['sessionTimeoutMinutes'] as int?);
+
+  int? get maxFailedAttempts => (_$data['maxFailedAttempts'] as int?);
+
+  int? get lockoutDurationMinutes => (_$data['lockoutDurationMinutes'] as int?);
+
+  bool? get enableAuditLogging => (_$data['enableAuditLogging'] as bool?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('allowReciprocal')) {
+      final l$allowReciprocal = allowReciprocal;
+      result$data['allowReciprocal'] = l$allowReciprocal;
+    }
+    if (_$data.containsKey('requireApproval')) {
+      final l$requireApproval = requireApproval;
+      result$data['requireApproval'] = l$requireApproval;
+    }
+    if (_$data.containsKey('maxVisitsPerMonth')) {
+      final l$maxVisitsPerMonth = maxVisitsPerMonth;
+      result$data['maxVisitsPerMonth'] = l$maxVisitsPerMonth;
+    }
+    if (_$data.containsKey('reciprocalFee')) {
+      final l$reciprocalFee = reciprocalFee;
+      result$data['reciprocalFee'] = l$reciprocalFee;
+    }
+    if (_$data.containsKey('enablePasskeyAuth')) {
+      final l$enablePasskeyAuth = enablePasskeyAuth;
+      result$data['enablePasskeyAuth'] = l$enablePasskeyAuth;
+    }
+    if (_$data.containsKey('requirePasskeyAuth')) {
+      final l$requirePasskeyAuth = requirePasskeyAuth;
+      result$data['requirePasskeyAuth'] = l$requirePasskeyAuth;
+    }
+    if (_$data.containsKey('sessionTimeoutMinutes')) {
+      final l$sessionTimeoutMinutes = sessionTimeoutMinutes;
+      result$data['sessionTimeoutMinutes'] = l$sessionTimeoutMinutes;
+    }
+    if (_$data.containsKey('maxFailedAttempts')) {
+      final l$maxFailedAttempts = maxFailedAttempts;
+      result$data['maxFailedAttempts'] = l$maxFailedAttempts;
+    }
+    if (_$data.containsKey('lockoutDurationMinutes')) {
+      final l$lockoutDurationMinutes = lockoutDurationMinutes;
+      result$data['lockoutDurationMinutes'] = l$lockoutDurationMinutes;
+    }
+    if (_$data.containsKey('enableAuditLogging')) {
+      final l$enableAuditLogging = enableAuditLogging;
+      result$data['enableAuditLogging'] = l$enableAuditLogging;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$ClubSettingsInput<Input$ClubSettingsInput> get copyWith =>
+      CopyWith$Input$ClubSettingsInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$ClubSettingsInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$allowReciprocal = allowReciprocal;
+    final lOther$allowReciprocal = other.allowReciprocal;
+    if (_$data.containsKey('allowReciprocal') !=
+        other._$data.containsKey('allowReciprocal')) {
+      return false;
+    }
+    if (l$allowReciprocal != lOther$allowReciprocal) {
+      return false;
+    }
+    final l$requireApproval = requireApproval;
+    final lOther$requireApproval = other.requireApproval;
+    if (_$data.containsKey('requireApproval') !=
+        other._$data.containsKey('requireApproval')) {
+      return false;
+    }
+    if (l$requireApproval != lOther$requireApproval) {
+      return false;
+    }
+    final l$maxVisitsPerMonth = maxVisitsPerMonth;
+    final lOther$maxVisitsPerMonth = other.maxVisitsPerMonth;
+    if (_$data.containsKey('maxVisitsPerMonth') !=
+        other._$data.containsKey('maxVisitsPerMonth')) {
+      return false;
+    }
+    if (l$maxVisitsPerMonth != lOther$maxVisitsPerMonth) {
+      return false;
+    }
+    final l$reciprocalFee = reciprocalFee;
+    final lOther$reciprocalFee = other.reciprocalFee;
+    if (_$data.containsKey('reciprocalFee') !=
+        other._$data.containsKey('reciprocalFee')) {
+      return false;
+    }
+    if (l$reciprocalFee != lOther$reciprocalFee) {
+      return false;
+    }
+    final l$enablePasskeyAuth = enablePasskeyAuth;
+    final lOther$enablePasskeyAuth = other.enablePasskeyAuth;
+    if (_$data.containsKey('enablePasskeyAuth') !=
+        other._$data.containsKey('enablePasskeyAuth')) {
+      return false;
+    }
+    if (l$enablePasskeyAuth != lOther$enablePasskeyAuth) {
+      return false;
+    }
+    final l$requirePasskeyAuth = requirePasskeyAuth;
+    final lOther$requirePasskeyAuth = other.requirePasskeyAuth;
+    if (_$data.containsKey('requirePasskeyAuth') !=
+        other._$data.containsKey('requirePasskeyAuth')) {
+      return false;
+    }
+    if (l$requirePasskeyAuth != lOther$requirePasskeyAuth) {
+      return false;
+    }
+    final l$sessionTimeoutMinutes = sessionTimeoutMinutes;
+    final lOther$sessionTimeoutMinutes = other.sessionTimeoutMinutes;
+    if (_$data.containsKey('sessionTimeoutMinutes') !=
+        other._$data.containsKey('sessionTimeoutMinutes')) {
+      return false;
+    }
+    if (l$sessionTimeoutMinutes != lOther$sessionTimeoutMinutes) {
+      return false;
+    }
+    final l$maxFailedAttempts = maxFailedAttempts;
+    final lOther$maxFailedAttempts = other.maxFailedAttempts;
+    if (_$data.containsKey('maxFailedAttempts') !=
+        other._$data.containsKey('maxFailedAttempts')) {
+      return false;
+    }
+    if (l$maxFailedAttempts != lOther$maxFailedAttempts) {
+      return false;
+    }
+    final l$lockoutDurationMinutes = lockoutDurationMinutes;
+    final lOther$lockoutDurationMinutes = other.lockoutDurationMinutes;
+    if (_$data.containsKey('lockoutDurationMinutes') !=
+        other._$data.containsKey('lockoutDurationMinutes')) {
+      return false;
+    }
+    if (l$lockoutDurationMinutes != lOther$lockoutDurationMinutes) {
+      return false;
+    }
+    final l$enableAuditLogging = enableAuditLogging;
+    final lOther$enableAuditLogging = other.enableAuditLogging;
+    if (_$data.containsKey('enableAuditLogging') !=
+        other._$data.containsKey('enableAuditLogging')) {
+      return false;
+    }
+    if (l$enableAuditLogging != lOther$enableAuditLogging) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$allowReciprocal = allowReciprocal;
+    final l$requireApproval = requireApproval;
+    final l$maxVisitsPerMonth = maxVisitsPerMonth;
+    final l$reciprocalFee = reciprocalFee;
+    final l$enablePasskeyAuth = enablePasskeyAuth;
+    final l$requirePasskeyAuth = requirePasskeyAuth;
+    final l$sessionTimeoutMinutes = sessionTimeoutMinutes;
+    final l$maxFailedAttempts = maxFailedAttempts;
+    final l$lockoutDurationMinutes = lockoutDurationMinutes;
+    final l$enableAuditLogging = enableAuditLogging;
+    return Object.hashAll([
+      _$data.containsKey('allowReciprocal') ? l$allowReciprocal : const {},
+      _$data.containsKey('requireApproval') ? l$requireApproval : const {},
+      _$data.containsKey('maxVisitsPerMonth') ? l$maxVisitsPerMonth : const {},
+      _$data.containsKey('reciprocalFee') ? l$reciprocalFee : const {},
+      _$data.containsKey('enablePasskeyAuth') ? l$enablePasskeyAuth : const {},
+      _$data.containsKey('requirePasskeyAuth')
+          ? l$requirePasskeyAuth
+          : const {},
+      _$data.containsKey('sessionTimeoutMinutes')
+          ? l$sessionTimeoutMinutes
+          : const {},
+      _$data.containsKey('maxFailedAttempts') ? l$maxFailedAttempts : const {},
+      _$data.containsKey('lockoutDurationMinutes')
+          ? l$lockoutDurationMinutes
+          : const {},
+      _$data.containsKey('enableAuditLogging')
+          ? l$enableAuditLogging
+          : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$ClubSettingsInput<TRes> {
+  factory CopyWith$Input$ClubSettingsInput(
+    Input$ClubSettingsInput instance,
+    TRes Function(Input$ClubSettingsInput) then,
+  ) = _CopyWithImpl$Input$ClubSettingsInput;
+
+  factory CopyWith$Input$ClubSettingsInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$ClubSettingsInput;
+
+  TRes call({
+    bool? allowReciprocal,
+    bool? requireApproval,
+    int? maxVisitsPerMonth,
+    double? reciprocalFee,
+    bool? enablePasskeyAuth,
+    bool? requirePasskeyAuth,
+    int? sessionTimeoutMinutes,
+    int? maxFailedAttempts,
+    int? lockoutDurationMinutes,
+    bool? enableAuditLogging,
+  });
+}
+
+class _CopyWithImpl$Input$ClubSettingsInput<TRes>
+    implements CopyWith$Input$ClubSettingsInput<TRes> {
+  _CopyWithImpl$Input$ClubSettingsInput(this._instance, this._then);
+
+  final Input$ClubSettingsInput _instance;
+
+  final TRes Function(Input$ClubSettingsInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? allowReciprocal = _undefined,
+    Object? requireApproval = _undefined,
+    Object? maxVisitsPerMonth = _undefined,
+    Object? reciprocalFee = _undefined,
+    Object? enablePasskeyAuth = _undefined,
+    Object? requirePasskeyAuth = _undefined,
+    Object? sessionTimeoutMinutes = _undefined,
+    Object? maxFailedAttempts = _undefined,
+    Object? lockoutDurationMinutes = _undefined,
+    Object? enableAuditLogging = _undefined,
+  }) => _then(
+    Input$ClubSettingsInput._({
+      ..._instance._$data,
+      if (allowReciprocal != _undefined)
+        'allowReciprocal': (allowReciprocal as bool?),
+      if (requireApproval != _undefined)
+        'requireApproval': (requireApproval as bool?),
+      if (maxVisitsPerMonth != _undefined)
+        'maxVisitsPerMonth': (maxVisitsPerMonth as int?),
+      if (reciprocalFee != _undefined)
+        'reciprocalFee': (reciprocalFee as double?),
+      if (enablePasskeyAuth != _undefined)
+        'enablePasskeyAuth': (enablePasskeyAuth as bool?),
+      if (requirePasskeyAuth != _undefined)
+        'requirePasskeyAuth': (requirePasskeyAuth as bool?),
+      if (sessionTimeoutMinutes != _undefined)
+        'sessionTimeoutMinutes': (sessionTimeoutMinutes as int?),
+      if (maxFailedAttempts != _undefined)
+        'maxFailedAttempts': (maxFailedAttempts as int?),
+      if (lockoutDurationMinutes != _undefined)
+        'lockoutDurationMinutes': (lockoutDurationMinutes as int?),
+      if (enableAuditLogging != _undefined)
+        'enableAuditLogging': (enableAuditLogging as bool?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$ClubSettingsInput<TRes>
+    implements CopyWith$Input$ClubSettingsInput<TRes> {
+  _CopyWithStubImpl$Input$ClubSettingsInput(this._res);
+
+  TRes _res;
+
+  call({
+    bool? allowReciprocal,
+    bool? requireApproval,
+    int? maxVisitsPerMonth,
+    double? reciprocalFee,
+    bool? enablePasskeyAuth,
+    bool? requirePasskeyAuth,
+    int? sessionTimeoutMinutes,
+    int? maxFailedAttempts,
+    int? lockoutDurationMinutes,
+    bool? enableAuditLogging,
+  }) => _res;
+}
+
+class Input$CreateRSVPInput {
+  factory Input$CreateRSVPInput({int? guestCount, String? notes}) =>
+      Input$CreateRSVPInput._({
+        if (guestCount != null) r'guestCount': guestCount,
+        if (notes != null) r'notes': notes,
       });
+
+  Input$CreateRSVPInput._(this._$data);
+
+  factory Input$CreateRSVPInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('guestCount')) {
+      final l$guestCount = data['guestCount'];
+      result$data['guestCount'] = (l$guestCount as int?);
+    }
+    if (data.containsKey('notes')) {
+      final l$notes = data['notes'];
+      result$data['notes'] = (l$notes as String?);
+    }
+    return Input$CreateRSVPInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  int? get guestCount => (_$data['guestCount'] as int?);
+
+  String? get notes => (_$data['notes'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('guestCount')) {
+      final l$guestCount = guestCount;
+      result$data['guestCount'] = l$guestCount;
+    }
+    if (_$data.containsKey('notes')) {
+      final l$notes = notes;
+      result$data['notes'] = l$notes;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$CreateRSVPInput<Input$CreateRSVPInput> get copyWith =>
+      CopyWith$Input$CreateRSVPInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$CreateRSVPInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (_$data.containsKey('guestCount') !=
+        other._$data.containsKey('guestCount')) {
+      return false;
+    }
+    if (l$guestCount != lOther$guestCount) {
+      return false;
+    }
+    final l$notes = notes;
+    final lOther$notes = other.notes;
+    if (_$data.containsKey('notes') != other._$data.containsKey('notes')) {
+      return false;
+    }
+    if (l$notes != lOther$notes) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$guestCount = guestCount;
+    final l$notes = notes;
+    return Object.hashAll([
+      _$data.containsKey('guestCount') ? l$guestCount : const {},
+      _$data.containsKey('notes') ? l$notes : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$CreateRSVPInput<TRes> {
+  factory CopyWith$Input$CreateRSVPInput(
+    Input$CreateRSVPInput instance,
+    TRes Function(Input$CreateRSVPInput) then,
+  ) = _CopyWithImpl$Input$CreateRSVPInput;
+
+  factory CopyWith$Input$CreateRSVPInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$CreateRSVPInput;
+
+  TRes call({int? guestCount, String? notes});
+}
+
+class _CopyWithImpl$Input$CreateRSVPInput<TRes>
+    implements CopyWith$Input$CreateRSVPInput<TRes> {
+  _CopyWithImpl$Input$CreateRSVPInput(this._instance, this._then);
+
+  final Input$CreateRSVPInput _instance;
+
+  final TRes Function(Input$CreateRSVPInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? guestCount = _undefined, Object? notes = _undefined}) =>
+      _then(
+        Input$CreateRSVPInput._({
+          ..._instance._$data,
+          if (guestCount != _undefined) 'guestCount': (guestCount as int?),
+          if (notes != _undefined) 'notes': (notes as String?),
+        }),
+      );
+}
+
+class _CopyWithStubImpl$Input$CreateRSVPInput<TRes>
+    implements CopyWith$Input$CreateRSVPInput<TRes> {
+  _CopyWithStubImpl$Input$CreateRSVPInput(this._res);
+
+  TRes _res;
+
+  call({int? guestCount, String? notes}) => _res;
+}
+
+class Input$UpdateRSVPInput {
+  factory Input$UpdateRSVPInput({
+    Enum$RSVPStatus? status,
+    int? guestCount,
+    String? notes,
+  }) => Input$UpdateRSVPInput._({
+    if (status != null) r'status': status,
+    if (guestCount != null) r'guestCount': guestCount,
+    if (notes != null) r'notes': notes,
+  });
+
+  Input$UpdateRSVPInput._(this._$data);
+
+  factory Input$UpdateRSVPInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$RSVPStatus((l$status as String));
+    }
+    if (data.containsKey('guestCount')) {
+      final l$guestCount = data['guestCount'];
+      result$data['guestCount'] = (l$guestCount as int?);
+    }
+    if (data.containsKey('notes')) {
+      final l$notes = data['notes'];
+      result$data['notes'] = (l$notes as String?);
+    }
+    return Input$UpdateRSVPInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  Enum$RSVPStatus? get status => (_$data['status'] as Enum$RSVPStatus?);
+
+  int? get guestCount => (_$data['guestCount'] as int?);
+
+  String? get notes => (_$data['notes'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$RSVPStatus(l$status);
+    }
+    if (_$data.containsKey('guestCount')) {
+      final l$guestCount = guestCount;
+      result$data['guestCount'] = l$guestCount;
+    }
+    if (_$data.containsKey('notes')) {
+      final l$notes = notes;
+      result$data['notes'] = l$notes;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$UpdateRSVPInput<Input$UpdateRSVPInput> get copyWith =>
+      CopyWith$Input$UpdateRSVPInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$UpdateRSVPInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (_$data.containsKey('guestCount') !=
+        other._$data.containsKey('guestCount')) {
+      return false;
+    }
+    if (l$guestCount != lOther$guestCount) {
+      return false;
+    }
+    final l$notes = notes;
+    final lOther$notes = other.notes;
+    if (_$data.containsKey('notes') != other._$data.containsKey('notes')) {
+      return false;
+    }
+    if (l$notes != lOther$notes) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$status = status;
+    final l$guestCount = guestCount;
+    final l$notes = notes;
+    return Object.hashAll([
+      _$data.containsKey('status') ? l$status : const {},
+      _$data.containsKey('guestCount') ? l$guestCount : const {},
+      _$data.containsKey('notes') ? l$notes : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$UpdateRSVPInput<TRes> {
+  factory CopyWith$Input$UpdateRSVPInput(
+    Input$UpdateRSVPInput instance,
+    TRes Function(Input$UpdateRSVPInput) then,
+  ) = _CopyWithImpl$Input$UpdateRSVPInput;
+
+  factory CopyWith$Input$UpdateRSVPInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$UpdateRSVPInput;
+
+  TRes call({Enum$RSVPStatus? status, int? guestCount, String? notes});
+}
+
+class _CopyWithImpl$Input$UpdateRSVPInput<TRes>
+    implements CopyWith$Input$UpdateRSVPInput<TRes> {
+  _CopyWithImpl$Input$UpdateRSVPInput(this._instance, this._then);
+
+  final Input$UpdateRSVPInput _instance;
+
+  final TRes Function(Input$UpdateRSVPInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? status = _undefined,
+    Object? guestCount = _undefined,
+    Object? notes = _undefined,
+  }) => _then(
+    Input$UpdateRSVPInput._({
+      ..._instance._$data,
+      if (status != _undefined) 'status': (status as Enum$RSVPStatus?),
+      if (guestCount != _undefined) 'guestCount': (guestCount as int?),
+      if (notes != _undefined) 'notes': (notes as String?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$UpdateRSVPInput<TRes>
+    implements CopyWith$Input$UpdateRSVPInput<TRes> {
+  _CopyWithStubImpl$Input$UpdateRSVPInput(this._res);
+
+  TRes _res;
+
+  call({Enum$RSVPStatus? status, int? guestCount, String? notes}) => _res;
+}
+
+class Input$EventFilterInput {
+  factory Input$EventFilterInput({
+    DateTime? startDate,
+    DateTime? endDate,
+    String? eventType,
+  }) => Input$EventFilterInput._({
+    if (startDate != null) r'startDate': startDate,
+    if (endDate != null) r'endDate': endDate,
+    if (eventType != null) r'eventType': eventType,
+  });
+
+  Input$EventFilterInput._(this._$data);
+
+  factory Input$EventFilterInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('startDate')) {
+      final l$startDate = data['startDate'];
+      result$data['startDate'] = l$startDate == null
+          ? null
+          : DateTime.parse((l$startDate as String));
+    }
+    if (data.containsKey('endDate')) {
+      final l$endDate = data['endDate'];
+      result$data['endDate'] = l$endDate == null
+          ? null
+          : DateTime.parse((l$endDate as String));
+    }
+    if (data.containsKey('eventType')) {
+      final l$eventType = data['eventType'];
+      result$data['eventType'] = (l$eventType as String?);
+    }
+    return Input$EventFilterInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  DateTime? get startDate => (_$data['startDate'] as DateTime?);
+
+  DateTime? get endDate => (_$data['endDate'] as DateTime?);
+
+  String? get eventType => (_$data['eventType'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('startDate')) {
+      final l$startDate = startDate;
+      result$data['startDate'] = l$startDate?.toIso8601String();
+    }
+    if (_$data.containsKey('endDate')) {
+      final l$endDate = endDate;
+      result$data['endDate'] = l$endDate?.toIso8601String();
+    }
+    if (_$data.containsKey('eventType')) {
+      final l$eventType = eventType;
+      result$data['eventType'] = l$eventType;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$EventFilterInput<Input$EventFilterInput> get copyWith =>
+      CopyWith$Input$EventFilterInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$EventFilterInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$startDate = startDate;
+    final lOther$startDate = other.startDate;
+    if (_$data.containsKey('startDate') !=
+        other._$data.containsKey('startDate')) {
+      return false;
+    }
+    if (l$startDate != lOther$startDate) {
+      return false;
+    }
+    final l$endDate = endDate;
+    final lOther$endDate = other.endDate;
+    if (_$data.containsKey('endDate') != other._$data.containsKey('endDate')) {
+      return false;
+    }
+    if (l$endDate != lOther$endDate) {
+      return false;
+    }
+    final l$eventType = eventType;
+    final lOther$eventType = other.eventType;
+    if (_$data.containsKey('eventType') !=
+        other._$data.containsKey('eventType')) {
+      return false;
+    }
+    if (l$eventType != lOther$eventType) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$startDate = startDate;
+    final l$endDate = endDate;
+    final l$eventType = eventType;
+    return Object.hashAll([
+      _$data.containsKey('startDate') ? l$startDate : const {},
+      _$data.containsKey('endDate') ? l$endDate : const {},
+      _$data.containsKey('eventType') ? l$eventType : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$EventFilterInput<TRes> {
+  factory CopyWith$Input$EventFilterInput(
+    Input$EventFilterInput instance,
+    TRes Function(Input$EventFilterInput) then,
+  ) = _CopyWithImpl$Input$EventFilterInput;
+
+  factory CopyWith$Input$EventFilterInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$EventFilterInput;
+
+  TRes call({DateTime? startDate, DateTime? endDate, String? eventType});
+}
+
+class _CopyWithImpl$Input$EventFilterInput<TRes>
+    implements CopyWith$Input$EventFilterInput<TRes> {
+  _CopyWithImpl$Input$EventFilterInput(this._instance, this._then);
+
+  final Input$EventFilterInput _instance;
+
+  final TRes Function(Input$EventFilterInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? startDate = _undefined,
+    Object? endDate = _undefined,
+    Object? eventType = _undefined,
+  }) => _then(
+    Input$EventFilterInput._({
+      ..._instance._$data,
+      if (startDate != _undefined) 'startDate': (startDate as DateTime?),
+      if (endDate != _undefined) 'endDate': (endDate as DateTime?),
+      if (eventType != _undefined) 'eventType': (eventType as String?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$EventFilterInput<TRes>
+    implements CopyWith$Input$EventFilterInput<TRes> {
+  _CopyWithStubImpl$Input$EventFilterInput(this._res);
+
+  TRes _res;
+
+  call({DateTime? startDate, DateTime? endDate, String? eventType}) => _res;
+}
+
+class Input$EventFilters {
+  factory Input$EventFilters({
+    DateTime? startDate,
+    DateTime? endDate,
+    String? eventType,
+  }) => Input$EventFilters._({
+    if (startDate != null) r'startDate': startDate,
+    if (endDate != null) r'endDate': endDate,
+    if (eventType != null) r'eventType': eventType,
+  });
+
+  Input$EventFilters._(this._$data);
+
+  factory Input$EventFilters.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('startDate')) {
+      final l$startDate = data['startDate'];
+      result$data['startDate'] = l$startDate == null
+          ? null
+          : DateTime.parse((l$startDate as String));
+    }
+    if (data.containsKey('endDate')) {
+      final l$endDate = data['endDate'];
+      result$data['endDate'] = l$endDate == null
+          ? null
+          : DateTime.parse((l$endDate as String));
+    }
+    if (data.containsKey('eventType')) {
+      final l$eventType = data['eventType'];
+      result$data['eventType'] = (l$eventType as String?);
+    }
+    return Input$EventFilters._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  DateTime? get startDate => (_$data['startDate'] as DateTime?);
+
+  DateTime? get endDate => (_$data['endDate'] as DateTime?);
+
+  String? get eventType => (_$data['eventType'] as String?);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('startDate')) {
+      final l$startDate = startDate;
+      result$data['startDate'] = l$startDate?.toIso8601String();
+    }
+    if (_$data.containsKey('endDate')) {
+      final l$endDate = endDate;
+      result$data['endDate'] = l$endDate?.toIso8601String();
+    }
+    if (_$data.containsKey('eventType')) {
+      final l$eventType = eventType;
+      result$data['eventType'] = l$eventType;
+    }
+    return result$data;
+  }
+
+  CopyWith$Input$EventFilters<Input$EventFilters> get copyWith =>
+      CopyWith$Input$EventFilters(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$EventFilters || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$startDate = startDate;
+    final lOther$startDate = other.startDate;
+    if (_$data.containsKey('startDate') !=
+        other._$data.containsKey('startDate')) {
+      return false;
+    }
+    if (l$startDate != lOther$startDate) {
+      return false;
+    }
+    final l$endDate = endDate;
+    final lOther$endDate = other.endDate;
+    if (_$data.containsKey('endDate') != other._$data.containsKey('endDate')) {
+      return false;
+    }
+    if (l$endDate != lOther$endDate) {
+      return false;
+    }
+    final l$eventType = eventType;
+    final lOther$eventType = other.eventType;
+    if (_$data.containsKey('eventType') !=
+        other._$data.containsKey('eventType')) {
+      return false;
+    }
+    if (l$eventType != lOther$eventType) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$startDate = startDate;
+    final l$endDate = endDate;
+    final l$eventType = eventType;
+    return Object.hashAll([
+      _$data.containsKey('startDate') ? l$startDate : const {},
+      _$data.containsKey('endDate') ? l$endDate : const {},
+      _$data.containsKey('eventType') ? l$eventType : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$EventFilters<TRes> {
+  factory CopyWith$Input$EventFilters(
+    Input$EventFilters instance,
+    TRes Function(Input$EventFilters) then,
+  ) = _CopyWithImpl$Input$EventFilters;
+
+  factory CopyWith$Input$EventFilters.stub(TRes res) =
+      _CopyWithStubImpl$Input$EventFilters;
+
+  TRes call({DateTime? startDate, DateTime? endDate, String? eventType});
+}
+
+class _CopyWithImpl$Input$EventFilters<TRes>
+    implements CopyWith$Input$EventFilters<TRes> {
+  _CopyWithImpl$Input$EventFilters(this._instance, this._then);
+
+  final Input$EventFilters _instance;
+
+  final TRes Function(Input$EventFilters) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? startDate = _undefined,
+    Object? endDate = _undefined,
+    Object? eventType = _undefined,
+  }) => _then(
+    Input$EventFilters._({
+      ..._instance._$data,
+      if (startDate != _undefined) 'startDate': (startDate as DateTime?),
+      if (endDate != _undefined) 'endDate': (endDate as DateTime?),
+      if (eventType != _undefined) 'eventType': (eventType as String?),
+    }),
+  );
+}
+
+class _CopyWithStubImpl$Input$EventFilters<TRes>
+    implements CopyWith$Input$EventFilters<TRes> {
+  _CopyWithStubImpl$Input$EventFilters(this._res);
+
+  TRes _res;
+
+  call({DateTime? startDate, DateTime? endDate, String? eventType}) => _res;
+}
+
+class Input$LocationInput {
+  factory Input$LocationInput({
+    required double latitude,
+    required double longitude,
+  }) => Input$LocationInput._({r'latitude': latitude, r'longitude': longitude});
+
+  Input$LocationInput._(this._$data);
+
+  factory Input$LocationInput.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$latitude = data['latitude'];
+    result$data['latitude'] = (l$latitude as num).toDouble();
+    final l$longitude = data['longitude'];
+    result$data['longitude'] = (l$longitude as num).toDouble();
+    return Input$LocationInput._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  double get latitude => (_$data['latitude'] as double);
+
+  double get longitude => (_$data['longitude'] as double);
+
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$latitude = latitude;
+    result$data['latitude'] = l$latitude;
+    final l$longitude = longitude;
+    result$data['longitude'] = l$longitude;
+    return result$data;
+  }
+
+  CopyWith$Input$LocationInput<Input$LocationInput> get copyWith =>
+      CopyWith$Input$LocationInput(this, (i) => i);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Input$LocationInput || runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$latitude = latitude;
+    final lOther$latitude = other.latitude;
+    if (l$latitude != lOther$latitude) {
+      return false;
+    }
+    final l$longitude = longitude;
+    final lOther$longitude = other.longitude;
+    if (l$longitude != lOther$longitude) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$latitude = latitude;
+    final l$longitude = longitude;
+    return Object.hashAll([l$latitude, l$longitude]);
+  }
+}
+
+abstract class CopyWith$Input$LocationInput<TRes> {
+  factory CopyWith$Input$LocationInput(
+    Input$LocationInput instance,
+    TRes Function(Input$LocationInput) then,
+  ) = _CopyWithImpl$Input$LocationInput;
+
+  factory CopyWith$Input$LocationInput.stub(TRes res) =
+      _CopyWithStubImpl$Input$LocationInput;
+
+  TRes call({double? latitude, double? longitude});
+}
+
+class _CopyWithImpl$Input$LocationInput<TRes>
+    implements CopyWith$Input$LocationInput<TRes> {
+  _CopyWithImpl$Input$LocationInput(this._instance, this._then);
+
+  final Input$LocationInput _instance;
+
+  final TRes Function(Input$LocationInput) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? latitude = _undefined, Object? longitude = _undefined}) =>
+      _then(
+        Input$LocationInput._({
+          ..._instance._$data,
+          if (latitude != _undefined && latitude != null)
+            'latitude': (latitude as double),
+          if (longitude != _undefined && longitude != null)
+            'longitude': (longitude as double),
+        }),
+      );
+}
+
+class _CopyWithStubImpl$Input$LocationInput<TRes>
+    implements CopyWith$Input$LocationInput<TRes> {
+  _CopyWithStubImpl$Input$LocationInput(this._res);
+
+  TRes _res;
+
+  call({double? latitude, double? longitude}) => _res;
+}
+
+class Input$PaginationInput {
+  factory Input$PaginationInput({
+    int? page,
+    int? pageSize,
+    int? first,
+    String? after,
+  }) => Input$PaginationInput._({
+    if (page != null) r'page': page,
+    if (pageSize != null) r'pageSize': pageSize,
+    if (first != null) r'first': first,
+    if (after != null) r'after': after,
+  });
 
   Input$PaginationInput._(this._$data);
 
@@ -4620,6 +6689,14 @@ class Input$PaginationInput {
       final l$pageSize = data['pageSize'];
       result$data['pageSize'] = (l$pageSize as int?);
     }
+    if (data.containsKey('first')) {
+      final l$first = data['first'];
+      result$data['first'] = (l$first as int?);
+    }
+    if (data.containsKey('after')) {
+      final l$after = data['after'];
+      result$data['after'] = (l$after as String?);
+    }
     return Input$PaginationInput._(result$data);
   }
 
@@ -4628,6 +6705,10 @@ class Input$PaginationInput {
   int? get page => (_$data['page'] as int?);
 
   int? get pageSize => (_$data['pageSize'] as int?);
+
+  int? get first => (_$data['first'] as int?);
+
+  String? get after => (_$data['after'] as String?);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
@@ -4638,6 +6719,14 @@ class Input$PaginationInput {
     if (_$data.containsKey('pageSize')) {
       final l$pageSize = pageSize;
       result$data['pageSize'] = l$pageSize;
+    }
+    if (_$data.containsKey('first')) {
+      final l$first = first;
+      result$data['first'] = l$first;
+    }
+    if (_$data.containsKey('after')) {
+      final l$after = after;
+      result$data['after'] = l$after;
     }
     return result$data;
   }
@@ -4670,6 +6759,22 @@ class Input$PaginationInput {
     if (l$pageSize != lOther$pageSize) {
       return false;
     }
+    final l$first = first;
+    final lOther$first = other.first;
+    if (_$data.containsKey('first') != other._$data.containsKey('first')) {
+      return false;
+    }
+    if (l$first != lOther$first) {
+      return false;
+    }
+    final l$after = after;
+    final lOther$after = other.after;
+    if (_$data.containsKey('after') != other._$data.containsKey('after')) {
+      return false;
+    }
+    if (l$after != lOther$after) {
+      return false;
+    }
     return true;
   }
 
@@ -4677,9 +6782,13 @@ class Input$PaginationInput {
   int get hashCode {
     final l$page = page;
     final l$pageSize = pageSize;
+    final l$first = first;
+    final l$after = after;
     return Object.hashAll([
       _$data.containsKey('page') ? l$page : const {},
       _$data.containsKey('pageSize') ? l$pageSize : const {},
+      _$data.containsKey('first') ? l$first : const {},
+      _$data.containsKey('after') ? l$after : const {},
     ]);
   }
 }
@@ -4693,7 +6802,7 @@ abstract class CopyWith$Input$PaginationInput<TRes> {
   factory CopyWith$Input$PaginationInput.stub(TRes res) =
       _CopyWithStubImpl$Input$PaginationInput;
 
-  TRes call({int? page, int? pageSize});
+  TRes call({int? page, int? pageSize, int? first, String? after});
 }
 
 class _CopyWithImpl$Input$PaginationInput<TRes>
@@ -4706,14 +6815,20 @@ class _CopyWithImpl$Input$PaginationInput<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? page = _undefined, Object? pageSize = _undefined}) =>
-      _then(
-        Input$PaginationInput._({
-          ..._instance._$data,
-          if (page != _undefined) 'page': (page as int?),
-          if (pageSize != _undefined) 'pageSize': (pageSize as int?),
-        }),
-      );
+  TRes call({
+    Object? page = _undefined,
+    Object? pageSize = _undefined,
+    Object? first = _undefined,
+    Object? after = _undefined,
+  }) => _then(
+    Input$PaginationInput._({
+      ..._instance._$data,
+      if (page != _undefined) 'page': (page as int?),
+      if (pageSize != _undefined) 'pageSize': (pageSize as int?),
+      if (first != _undefined) 'first': (first as int?),
+      if (after != _undefined) 'after': (after as String?),
+    }),
+  );
 }
 
 class _CopyWithStubImpl$Input$PaginationInput<TRes>
@@ -4722,7 +6837,7 @@ class _CopyWithStubImpl$Input$PaginationInput<TRes>
 
   TRes _res;
 
-  call({int? page, int? pageSize}) => _res;
+  call({int? page, int? pageSize, int? first, String? after}) => _res;
 }
 
 enum Enum$UserStatus {
@@ -4889,6 +7004,97 @@ Enum$ClubStatus fromJson$Enum$ClubStatus(String value) {
       return Enum$ClubStatus.SUSPENDED;
     default:
       return Enum$ClubStatus.$unknown;
+  }
+}
+
+enum Enum$FacilityStatus {
+  AVAILABLE,
+  UNAVAILABLE,
+  MAINTENANCE,
+  RESERVED,
+  $unknown;
+
+  factory Enum$FacilityStatus.fromJson(String value) =>
+      fromJson$Enum$FacilityStatus(value);
+
+  String toJson() => toJson$Enum$FacilityStatus(this);
+}
+
+String toJson$Enum$FacilityStatus(Enum$FacilityStatus e) {
+  switch (e) {
+    case Enum$FacilityStatus.AVAILABLE:
+      return r'AVAILABLE';
+    case Enum$FacilityStatus.UNAVAILABLE:
+      return r'UNAVAILABLE';
+    case Enum$FacilityStatus.MAINTENANCE:
+      return r'MAINTENANCE';
+    case Enum$FacilityStatus.RESERVED:
+      return r'RESERVED';
+    case Enum$FacilityStatus.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$FacilityStatus fromJson$Enum$FacilityStatus(String value) {
+  switch (value) {
+    case r'AVAILABLE':
+      return Enum$FacilityStatus.AVAILABLE;
+    case r'UNAVAILABLE':
+      return Enum$FacilityStatus.UNAVAILABLE;
+    case r'MAINTENANCE':
+      return Enum$FacilityStatus.MAINTENANCE;
+    case r'RESERVED':
+      return Enum$FacilityStatus.RESERVED;
+    default:
+      return Enum$FacilityStatus.$unknown;
+  }
+}
+
+enum Enum$BookingStatus {
+  PENDING,
+  CONFIRMED,
+  CANCELLED,
+  COMPLETED,
+  NO_SHOW,
+  $unknown;
+
+  factory Enum$BookingStatus.fromJson(String value) =>
+      fromJson$Enum$BookingStatus(value);
+
+  String toJson() => toJson$Enum$BookingStatus(this);
+}
+
+String toJson$Enum$BookingStatus(Enum$BookingStatus e) {
+  switch (e) {
+    case Enum$BookingStatus.PENDING:
+      return r'PENDING';
+    case Enum$BookingStatus.CONFIRMED:
+      return r'CONFIRMED';
+    case Enum$BookingStatus.CANCELLED:
+      return r'CANCELLED';
+    case Enum$BookingStatus.COMPLETED:
+      return r'COMPLETED';
+    case Enum$BookingStatus.NO_SHOW:
+      return r'NO_SHOW';
+    case Enum$BookingStatus.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$BookingStatus fromJson$Enum$BookingStatus(String value) {
+  switch (value) {
+    case r'PENDING':
+      return Enum$BookingStatus.PENDING;
+    case r'CONFIRMED':
+      return Enum$BookingStatus.CONFIRMED;
+    case r'CANCELLED':
+      return Enum$BookingStatus.CANCELLED;
+    case r'COMPLETED':
+      return Enum$BookingStatus.COMPLETED;
+    case r'NO_SHOW':
+      return Enum$BookingStatus.NO_SHOW;
+    default:
+      return Enum$BookingStatus.$unknown;
   }
 }
 
@@ -5218,434 +7424,6 @@ Enum$TransactionStatus fromJson$Enum$TransactionStatus(String value) {
   }
 }
 
-enum Enum$FacilityType {
-  TENNIS_COURT,
-  GOLF_COURSE,
-  SWIMMING_POOL,
-  GYM,
-  DINING_ROOM,
-  EVENT_SPACE,
-  CONFERENCE_ROOM,
-  SPA,
-  OTHER,
-  $unknown;
-
-  factory Enum$FacilityType.fromJson(String value) =>
-      fromJson$Enum$FacilityType(value);
-
-  String toJson() => toJson$Enum$FacilityType(this);
-}
-
-String toJson$Enum$FacilityType(Enum$FacilityType e) {
-  switch (e) {
-    case Enum$FacilityType.TENNIS_COURT:
-      return r'TENNIS_COURT';
-    case Enum$FacilityType.GOLF_COURSE:
-      return r'GOLF_COURSE';
-    case Enum$FacilityType.SWIMMING_POOL:
-      return r'SWIMMING_POOL';
-    case Enum$FacilityType.GYM:
-      return r'GYM';
-    case Enum$FacilityType.DINING_ROOM:
-      return r'DINING_ROOM';
-    case Enum$FacilityType.EVENT_SPACE:
-      return r'EVENT_SPACE';
-    case Enum$FacilityType.CONFERENCE_ROOM:
-      return r'CONFERENCE_ROOM';
-    case Enum$FacilityType.SPA:
-      return r'SPA';
-    case Enum$FacilityType.OTHER:
-      return r'OTHER';
-    case Enum$FacilityType.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$FacilityType fromJson$Enum$FacilityType(String value) {
-  switch (value) {
-    case r'TENNIS_COURT':
-      return Enum$FacilityType.TENNIS_COURT;
-    case r'GOLF_COURSE':
-      return Enum$FacilityType.GOLF_COURSE;
-    case r'SWIMMING_POOL':
-      return Enum$FacilityType.SWIMMING_POOL;
-    case r'GYM':
-      return Enum$FacilityType.GYM;
-    case r'DINING_ROOM':
-      return Enum$FacilityType.DINING_ROOM;
-    case r'EVENT_SPACE':
-      return Enum$FacilityType.EVENT_SPACE;
-    case r'CONFERENCE_ROOM':
-      return Enum$FacilityType.CONFERENCE_ROOM;
-    case r'SPA':
-      return Enum$FacilityType.SPA;
-    case r'OTHER':
-      return Enum$FacilityType.OTHER;
-    default:
-      return Enum$FacilityType.$unknown;
-  }
-}
-
-enum Enum$FacilityStatus {
-  ACTIVE,
-  INACTIVE,
-  MAINTENANCE,
-  CLOSED,
-  $unknown;
-
-  factory Enum$FacilityStatus.fromJson(String value) =>
-      fromJson$Enum$FacilityStatus(value);
-
-  String toJson() => toJson$Enum$FacilityStatus(this);
-}
-
-String toJson$Enum$FacilityStatus(Enum$FacilityStatus e) {
-  switch (e) {
-    case Enum$FacilityStatus.ACTIVE:
-      return r'ACTIVE';
-    case Enum$FacilityStatus.INACTIVE:
-      return r'INACTIVE';
-    case Enum$FacilityStatus.MAINTENANCE:
-      return r'MAINTENANCE';
-    case Enum$FacilityStatus.CLOSED:
-      return r'CLOSED';
-    case Enum$FacilityStatus.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$FacilityStatus fromJson$Enum$FacilityStatus(String value) {
-  switch (value) {
-    case r'ACTIVE':
-      return Enum$FacilityStatus.ACTIVE;
-    case r'INACTIVE':
-      return Enum$FacilityStatus.INACTIVE;
-    case r'MAINTENANCE':
-      return Enum$FacilityStatus.MAINTENANCE;
-    case r'CLOSED':
-      return Enum$FacilityStatus.CLOSED;
-    default:
-      return Enum$FacilityStatus.$unknown;
-  }
-}
-
-enum Enum$BookingStatus {
-  PENDING,
-  CONFIRMED,
-  CHECKED_IN,
-  COMPLETED,
-  CANCELLED,
-  NO_SHOW,
-  $unknown;
-
-  factory Enum$BookingStatus.fromJson(String value) =>
-      fromJson$Enum$BookingStatus(value);
-
-  String toJson() => toJson$Enum$BookingStatus(this);
-}
-
-String toJson$Enum$BookingStatus(Enum$BookingStatus e) {
-  switch (e) {
-    case Enum$BookingStatus.PENDING:
-      return r'PENDING';
-    case Enum$BookingStatus.CONFIRMED:
-      return r'CONFIRMED';
-    case Enum$BookingStatus.CHECKED_IN:
-      return r'CHECKED_IN';
-    case Enum$BookingStatus.COMPLETED:
-      return r'COMPLETED';
-    case Enum$BookingStatus.CANCELLED:
-      return r'CANCELLED';
-    case Enum$BookingStatus.NO_SHOW:
-      return r'NO_SHOW';
-    case Enum$BookingStatus.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$BookingStatus fromJson$Enum$BookingStatus(String value) {
-  switch (value) {
-    case r'PENDING':
-      return Enum$BookingStatus.PENDING;
-    case r'CONFIRMED':
-      return Enum$BookingStatus.CONFIRMED;
-    case r'CHECKED_IN':
-      return Enum$BookingStatus.CHECKED_IN;
-    case r'COMPLETED':
-      return Enum$BookingStatus.COMPLETED;
-    case r'CANCELLED':
-      return Enum$BookingStatus.CANCELLED;
-    case r'NO_SHOW':
-      return Enum$BookingStatus.NO_SHOW;
-    default:
-      return Enum$BookingStatus.$unknown;
-  }
-}
-
-enum Enum$MealType {
-  BREAKFAST,
-  BRUNCH,
-  LUNCH,
-  DINNER,
-  AFTERNOON_TEA,
-  $unknown;
-
-  factory Enum$MealType.fromJson(String value) => fromJson$Enum$MealType(value);
-
-  String toJson() => toJson$Enum$MealType(this);
-}
-
-String toJson$Enum$MealType(Enum$MealType e) {
-  switch (e) {
-    case Enum$MealType.BREAKFAST:
-      return r'BREAKFAST';
-    case Enum$MealType.BRUNCH:
-      return r'BRUNCH';
-    case Enum$MealType.LUNCH:
-      return r'LUNCH';
-    case Enum$MealType.DINNER:
-      return r'DINNER';
-    case Enum$MealType.AFTERNOON_TEA:
-      return r'AFTERNOON_TEA';
-    case Enum$MealType.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$MealType fromJson$Enum$MealType(String value) {
-  switch (value) {
-    case r'BREAKFAST':
-      return Enum$MealType.BREAKFAST;
-    case r'BRUNCH':
-      return Enum$MealType.BRUNCH;
-    case r'LUNCH':
-      return Enum$MealType.LUNCH;
-    case r'DINNER':
-      return Enum$MealType.DINNER;
-    case r'AFTERNOON_TEA':
-      return Enum$MealType.AFTERNOON_TEA;
-    default:
-      return Enum$MealType.$unknown;
-  }
-}
-
-enum Enum$DietaryRestriction {
-  VEGETARIAN,
-  VEGAN,
-  GLUTEN_FREE,
-  DAIRY_FREE,
-  NUT_ALLERGY,
-  SHELLFISH_ALLERGY,
-  HALAL,
-  KOSHER,
-  $unknown;
-
-  factory Enum$DietaryRestriction.fromJson(String value) =>
-      fromJson$Enum$DietaryRestriction(value);
-
-  String toJson() => toJson$Enum$DietaryRestriction(this);
-}
-
-String toJson$Enum$DietaryRestriction(Enum$DietaryRestriction e) {
-  switch (e) {
-    case Enum$DietaryRestriction.VEGETARIAN:
-      return r'VEGETARIAN';
-    case Enum$DietaryRestriction.VEGAN:
-      return r'VEGAN';
-    case Enum$DietaryRestriction.GLUTEN_FREE:
-      return r'GLUTEN_FREE';
-    case Enum$DietaryRestriction.DAIRY_FREE:
-      return r'DAIRY_FREE';
-    case Enum$DietaryRestriction.NUT_ALLERGY:
-      return r'NUT_ALLERGY';
-    case Enum$DietaryRestriction.SHELLFISH_ALLERGY:
-      return r'SHELLFISH_ALLERGY';
-    case Enum$DietaryRestriction.HALAL:
-      return r'HALAL';
-    case Enum$DietaryRestriction.KOSHER:
-      return r'KOSHER';
-    case Enum$DietaryRestriction.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$DietaryRestriction fromJson$Enum$DietaryRestriction(String value) {
-  switch (value) {
-    case r'VEGETARIAN':
-      return Enum$DietaryRestriction.VEGETARIAN;
-    case r'VEGAN':
-      return Enum$DietaryRestriction.VEGAN;
-    case r'GLUTEN_FREE':
-      return Enum$DietaryRestriction.GLUTEN_FREE;
-    case r'DAIRY_FREE':
-      return Enum$DietaryRestriction.DAIRY_FREE;
-    case r'NUT_ALLERGY':
-      return Enum$DietaryRestriction.NUT_ALLERGY;
-    case r'SHELLFISH_ALLERGY':
-      return Enum$DietaryRestriction.SHELLFISH_ALLERGY;
-    case r'HALAL':
-      return Enum$DietaryRestriction.HALAL;
-    case r'KOSHER':
-      return Enum$DietaryRestriction.KOSHER;
-    default:
-      return Enum$DietaryRestriction.$unknown;
-  }
-}
-
-enum Enum$TablePreference {
-  WINDOW,
-  OUTDOOR,
-  PRIVATE,
-  BAR,
-  NO_PREFERENCE,
-  $unknown;
-
-  factory Enum$TablePreference.fromJson(String value) =>
-      fromJson$Enum$TablePreference(value);
-
-  String toJson() => toJson$Enum$TablePreference(this);
-}
-
-String toJson$Enum$TablePreference(Enum$TablePreference e) {
-  switch (e) {
-    case Enum$TablePreference.WINDOW:
-      return r'WINDOW';
-    case Enum$TablePreference.OUTDOOR:
-      return r'OUTDOOR';
-    case Enum$TablePreference.PRIVATE:
-      return r'PRIVATE';
-    case Enum$TablePreference.BAR:
-      return r'BAR';
-    case Enum$TablePreference.NO_PREFERENCE:
-      return r'NO_PREFERENCE';
-    case Enum$TablePreference.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$TablePreference fromJson$Enum$TablePreference(String value) {
-  switch (value) {
-    case r'WINDOW':
-      return Enum$TablePreference.WINDOW;
-    case r'OUTDOOR':
-      return Enum$TablePreference.OUTDOOR;
-    case r'PRIVATE':
-      return Enum$TablePreference.PRIVATE;
-    case r'BAR':
-      return Enum$TablePreference.BAR;
-    case r'NO_PREFERENCE':
-      return Enum$TablePreference.NO_PREFERENCE;
-    default:
-      return Enum$TablePreference.$unknown;
-  }
-}
-
-enum Enum$EventType {
-  WEDDING,
-  CONFERENCE,
-  MEETING,
-  PARTY,
-  CORPORATE_EVENT,
-  OTHER,
-  $unknown;
-
-  factory Enum$EventType.fromJson(String value) =>
-      fromJson$Enum$EventType(value);
-
-  String toJson() => toJson$Enum$EventType(this);
-}
-
-String toJson$Enum$EventType(Enum$EventType e) {
-  switch (e) {
-    case Enum$EventType.WEDDING:
-      return r'WEDDING';
-    case Enum$EventType.CONFERENCE:
-      return r'CONFERENCE';
-    case Enum$EventType.MEETING:
-      return r'MEETING';
-    case Enum$EventType.PARTY:
-      return r'PARTY';
-    case Enum$EventType.CORPORATE_EVENT:
-      return r'CORPORATE_EVENT';
-    case Enum$EventType.OTHER:
-      return r'OTHER';
-    case Enum$EventType.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$EventType fromJson$Enum$EventType(String value) {
-  switch (value) {
-    case r'WEDDING':
-      return Enum$EventType.WEDDING;
-    case r'CONFERENCE':
-      return Enum$EventType.CONFERENCE;
-    case r'MEETING':
-      return Enum$EventType.MEETING;
-    case r'PARTY':
-      return Enum$EventType.PARTY;
-    case r'CORPORATE_EVENT':
-      return Enum$EventType.CORPORATE_EVENT;
-    case r'OTHER':
-      return Enum$EventType.OTHER;
-    default:
-      return Enum$EventType.$unknown;
-  }
-}
-
-enum Enum$ServiceAddon {
-  CATERING,
-  AV_EQUIPMENT,
-  DECORATIONS,
-  PHOTOGRAPHY,
-  MUSIC,
-  VALET_PARKING,
-  $unknown;
-
-  factory Enum$ServiceAddon.fromJson(String value) =>
-      fromJson$Enum$ServiceAddon(value);
-
-  String toJson() => toJson$Enum$ServiceAddon(this);
-}
-
-String toJson$Enum$ServiceAddon(Enum$ServiceAddon e) {
-  switch (e) {
-    case Enum$ServiceAddon.CATERING:
-      return r'CATERING';
-    case Enum$ServiceAddon.AV_EQUIPMENT:
-      return r'AV_EQUIPMENT';
-    case Enum$ServiceAddon.DECORATIONS:
-      return r'DECORATIONS';
-    case Enum$ServiceAddon.PHOTOGRAPHY:
-      return r'PHOTOGRAPHY';
-    case Enum$ServiceAddon.MUSIC:
-      return r'MUSIC';
-    case Enum$ServiceAddon.VALET_PARKING:
-      return r'VALET_PARKING';
-    case Enum$ServiceAddon.$unknown:
-      return r'$unknown';
-  }
-}
-
-Enum$ServiceAddon fromJson$Enum$ServiceAddon(String value) {
-  switch (value) {
-    case r'CATERING':
-      return Enum$ServiceAddon.CATERING;
-    case r'AV_EQUIPMENT':
-      return Enum$ServiceAddon.AV_EQUIPMENT;
-    case r'DECORATIONS':
-      return Enum$ServiceAddon.DECORATIONS;
-    case r'PHOTOGRAPHY':
-      return Enum$ServiceAddon.PHOTOGRAPHY;
-    case r'MUSIC':
-      return Enum$ServiceAddon.MUSIC;
-    case r'VALET_PARKING':
-      return Enum$ServiceAddon.VALET_PARKING;
-    default:
-      return Enum$ServiceAddon.$unknown;
-  }
-}
-
 enum Enum$ProposalType {
   AGREEMENT_CHANGE,
   POLICY_UPDATE,
@@ -5772,6 +7550,59 @@ Enum$VoteChoice fromJson$Enum$VoteChoice(String value) {
       return Enum$VoteChoice.ABSTAIN;
     default:
       return Enum$VoteChoice.$unknown;
+  }
+}
+
+enum Enum$RSVPStatus {
+  PENDING,
+  CONFIRMED,
+  TENTATIVE,
+  DECLINED,
+  WAITLIST,
+  CANCELLED,
+  $unknown;
+
+  factory Enum$RSVPStatus.fromJson(String value) =>
+      fromJson$Enum$RSVPStatus(value);
+
+  String toJson() => toJson$Enum$RSVPStatus(this);
+}
+
+String toJson$Enum$RSVPStatus(Enum$RSVPStatus e) {
+  switch (e) {
+    case Enum$RSVPStatus.PENDING:
+      return r'PENDING';
+    case Enum$RSVPStatus.CONFIRMED:
+      return r'CONFIRMED';
+    case Enum$RSVPStatus.TENTATIVE:
+      return r'TENTATIVE';
+    case Enum$RSVPStatus.DECLINED:
+      return r'DECLINED';
+    case Enum$RSVPStatus.WAITLIST:
+      return r'WAITLIST';
+    case Enum$RSVPStatus.CANCELLED:
+      return r'CANCELLED';
+    case Enum$RSVPStatus.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$RSVPStatus fromJson$Enum$RSVPStatus(String value) {
+  switch (value) {
+    case r'PENDING':
+      return Enum$RSVPStatus.PENDING;
+    case r'CONFIRMED':
+      return Enum$RSVPStatus.CONFIRMED;
+    case r'TENTATIVE':
+      return Enum$RSVPStatus.TENTATIVE;
+    case r'DECLINED':
+      return Enum$RSVPStatus.DECLINED;
+    case r'WAITLIST':
+      return Enum$RSVPStatus.WAITLIST;
+    case r'CANCELLED':
+      return Enum$RSVPStatus.CANCELLED;
+    default:
+      return Enum$RSVPStatus.$unknown;
   }
 }
 

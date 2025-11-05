@@ -493,7 +493,7 @@ class Query$BookingStatistics$bookingStatistics {
     required this.cancelledBookings,
     required this.completedBookings,
     required this.noShowBookings,
-    this.averageBookingDuration,
+    required this.averageBookingDuration,
     this.$__typename = 'BookingStatistics',
   });
 
@@ -513,7 +513,7 @@ class Query$BookingStatistics$bookingStatistics {
       cancelledBookings: (l$cancelledBookings as int),
       completedBookings: (l$completedBookings as int),
       noShowBookings: (l$noShowBookings as int),
-      averageBookingDuration: (l$averageBookingDuration as num?)?.toDouble(),
+      averageBookingDuration: (l$averageBookingDuration as num).toDouble(),
       $__typename: (l$$__typename as String),
     );
   }
@@ -528,7 +528,7 @@ class Query$BookingStatistics$bookingStatistics {
 
   final int noShowBookings;
 
-  final double? averageBookingDuration;
+  final double averageBookingDuration;
 
   final String $__typename;
 
@@ -689,9 +689,10 @@ class _CopyWithImpl$Query$BookingStatistics$bookingStatistics<TRes>
       noShowBookings: noShowBookings == _undefined || noShowBookings == null
           ? _instance.noShowBookings
           : (noShowBookings as int),
-      averageBookingDuration: averageBookingDuration == _undefined
+      averageBookingDuration:
+          averageBookingDuration == _undefined || averageBookingDuration == null
           ? _instance.averageBookingDuration
-          : (averageBookingDuration as double?),
+          : (averageBookingDuration as double),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),

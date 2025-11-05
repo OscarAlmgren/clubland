@@ -830,8 +830,8 @@ class Query$MyBookings$myBookings$nodes {
     required this.endTime,
     required this.status,
     this.notes,
-    required this.facility,
-    required this.user,
+    this.facility,
+    this.user,
     required this.createdAt,
     this.$__typename = 'Booking',
   });
@@ -856,12 +856,16 @@ class Query$MyBookings$myBookings$nodes {
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
       notes: (l$notes as String?),
-      facility: Query$MyBookings$myBookings$nodes$facility.fromJson(
-        (l$facility as Map<String, dynamic>),
-      ),
-      user: Query$MyBookings$myBookings$nodes$user.fromJson(
-        (l$user as Map<String, dynamic>),
-      ),
+      facility: l$facility == null
+          ? null
+          : Query$MyBookings$myBookings$nodes$facility.fromJson(
+              (l$facility as Map<String, dynamic>),
+            ),
+      user: l$user == null
+          ? null
+          : Query$MyBookings$myBookings$nodes$user.fromJson(
+              (l$user as Map<String, dynamic>),
+            ),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -879,9 +883,9 @@ class Query$MyBookings$myBookings$nodes {
 
   final String? notes;
 
-  final Query$MyBookings$myBookings$nodes$facility facility;
+  final Query$MyBookings$myBookings$nodes$facility? facility;
 
-  final Query$MyBookings$myBookings$nodes$user user;
+  final Query$MyBookings$myBookings$nodes$user? user;
 
   final DateTime createdAt;
 
@@ -902,9 +906,9 @@ class Query$MyBookings$myBookings$nodes {
     final l$notes = notes;
     _resultData['notes'] = l$notes;
     final l$facility = facility;
-    _resultData['facility'] = l$facility.toJson();
+    _resultData['facility'] = l$facility?.toJson();
     final l$user = user;
-    _resultData['user'] = l$user.toJson();
+    _resultData['user'] = l$user?.toJson();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -1069,12 +1073,12 @@ class _CopyWithImpl$Query$MyBookings$myBookings$nodes<TRes>
           ? _instance.status
           : (status as Enum$BookingStatus),
       notes: notes == _undefined ? _instance.notes : (notes as String?),
-      facility: facility == _undefined || facility == null
+      facility: facility == _undefined
           ? _instance.facility
-          : (facility as Query$MyBookings$myBookings$nodes$facility),
-      user: user == _undefined || user == null
+          : (facility as Query$MyBookings$myBookings$nodes$facility?),
+      user: user == _undefined
           ? _instance.user
-          : (user as Query$MyBookings$myBookings$nodes$user),
+          : (user as Query$MyBookings$myBookings$nodes$user?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -1086,18 +1090,24 @@ class _CopyWithImpl$Query$MyBookings$myBookings$nodes<TRes>
 
   CopyWith$Query$MyBookings$myBookings$nodes$facility<TRes> get facility {
     final local$facility = _instance.facility;
-    return CopyWith$Query$MyBookings$myBookings$nodes$facility(
-      local$facility,
-      (e) => call(facility: e),
-    );
+    return local$facility == null
+        ? CopyWith$Query$MyBookings$myBookings$nodes$facility.stub(
+            _then(_instance),
+          )
+        : CopyWith$Query$MyBookings$myBookings$nodes$facility(
+            local$facility,
+            (e) => call(facility: e),
+          );
   }
 
   CopyWith$Query$MyBookings$myBookings$nodes$user<TRes> get user {
     final local$user = _instance.user;
-    return CopyWith$Query$MyBookings$myBookings$nodes$user(
-      local$user,
-      (e) => call(user: e),
-    );
+    return local$user == null
+        ? CopyWith$Query$MyBookings$myBookings$nodes$user.stub(_then(_instance))
+        : CopyWith$Query$MyBookings$myBookings$nodes$user(
+            local$user,
+            (e) => call(user: e),
+          );
   }
 }
 
@@ -1142,14 +1152,14 @@ class Query$MyBookings$myBookings$nodes$facility {
     final l$$__typename = json['__typename'];
     return Query$MyBookings$myBookings$nodes$facility(
       name: (l$name as String),
-      type: fromJson$Enum$FacilityType((l$type as String)),
+      type: (l$type as String),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String name;
 
-  final Enum$FacilityType type;
+  final String type;
 
   final String $__typename;
 
@@ -1158,7 +1168,7 @@ class Query$MyBookings$myBookings$nodes$facility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$FacilityType(l$type);
+    _resultData['type'] = l$type;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1218,7 +1228,7 @@ abstract class CopyWith$Query$MyBookings$myBookings$nodes$facility<TRes> {
   factory CopyWith$Query$MyBookings$myBookings$nodes$facility.stub(TRes res) =
       _CopyWithStubImpl$Query$MyBookings$myBookings$nodes$facility;
 
-  TRes call({String? name, Enum$FacilityType? type, String? $__typename});
+  TRes call({String? name, String? type, String? $__typename});
 }
 
 class _CopyWithImpl$Query$MyBookings$myBookings$nodes$facility<TRes>
@@ -1245,7 +1255,7 @@ class _CopyWithImpl$Query$MyBookings$myBookings$nodes$facility<TRes>
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$FacilityType),
+          : (type as String),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1259,7 +1269,7 @@ class _CopyWithStubImpl$Query$MyBookings$myBookings$nodes$facility<TRes>
 
   TRes _res;
 
-  call({String? name, Enum$FacilityType? type, String? $__typename}) => _res;
+  call({String? name, String? type, String? $__typename}) => _res;
 }
 
 class Query$MyBookings$myBookings$nodes$user {

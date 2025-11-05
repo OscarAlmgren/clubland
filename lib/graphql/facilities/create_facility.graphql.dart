@@ -430,7 +430,7 @@ class Mutation$CreateFacility$createFacility {
     required this.clubId,
     required this.name,
     required this.type,
-    this.capacity,
+    required this.capacity,
     required this.status,
     required this.createdAt,
     this.$__typename = 'Facility',
@@ -451,8 +451,8 @@ class Mutation$CreateFacility$createFacility {
       id: (l$id as String),
       clubId: (l$clubId as String),
       name: (l$name as String),
-      type: fromJson$Enum$FacilityType((l$type as String)),
-      capacity: (l$capacity as int?),
+      type: (l$type as String),
+      capacity: (l$capacity as int),
       status: fromJson$Enum$FacilityStatus((l$status as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
@@ -465,9 +465,9 @@ class Mutation$CreateFacility$createFacility {
 
   final String name;
 
-  final Enum$FacilityType type;
+  final String type;
 
-  final int? capacity;
+  final int capacity;
 
   final Enum$FacilityStatus status;
 
@@ -484,7 +484,7 @@ class Mutation$CreateFacility$createFacility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$FacilityType(l$type);
+    _resultData['type'] = l$type;
     final l$capacity = capacity;
     _resultData['capacity'] = l$capacity;
     final l$status = status;
@@ -593,7 +593,7 @@ abstract class CopyWith$Mutation$CreateFacility$createFacility<TRes> {
     String? id,
     String? clubId,
     String? name,
-    Enum$FacilityType? type,
+    String? type,
     int? capacity,
     Enum$FacilityStatus? status,
     DateTime? createdAt,
@@ -634,10 +634,10 @@ class _CopyWithImpl$Mutation$CreateFacility$createFacility<TRes>
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$FacilityType),
-      capacity: capacity == _undefined
+          : (type as String),
+      capacity: capacity == _undefined || capacity == null
           ? _instance.capacity
-          : (capacity as int?),
+          : (capacity as int),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$FacilityStatus),
@@ -661,7 +661,7 @@ class _CopyWithStubImpl$Mutation$CreateFacility$createFacility<TRes>
     String? id,
     String? clubId,
     String? name,
-    Enum$FacilityType? type,
+    String? type,
     int? capacity,
     Enum$FacilityStatus? status,
     DateTime? createdAt,

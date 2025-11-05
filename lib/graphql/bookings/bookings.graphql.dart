@@ -856,13 +856,13 @@ class Query$Bookings$bookings$nodes {
     required this.id,
     required this.facilityId,
     required this.userId,
-    required this.facility,
-    required this.user,
+    this.facility,
+    this.user,
     required this.startTime,
     required this.endTime,
     required this.status,
     this.notes,
-    this.participants,
+    required this.participants,
     required this.createdAt,
     this.$__typename = 'Booking',
   });
@@ -884,18 +884,22 @@ class Query$Bookings$bookings$nodes {
       id: (l$id as String),
       facilityId: (l$facilityId as String),
       userId: (l$userId as String),
-      facility: Query$Bookings$bookings$nodes$facility.fromJson(
-        (l$facility as Map<String, dynamic>),
-      ),
-      user: Query$Bookings$bookings$nodes$user.fromJson(
-        (l$user as Map<String, dynamic>),
-      ),
+      facility: l$facility == null
+          ? null
+          : Query$Bookings$bookings$nodes$facility.fromJson(
+              (l$facility as Map<String, dynamic>),
+            ),
+      user: l$user == null
+          ? null
+          : Query$Bookings$bookings$nodes$user.fromJson(
+              (l$user as Map<String, dynamic>),
+            ),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
       notes: (l$notes as String?),
-      participants: (l$participants as List<dynamic>?)
-          ?.map((e) => (e as String))
+      participants: (l$participants as List<dynamic>)
+          .map((e) => (e as String))
           .toList(),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
@@ -908,9 +912,9 @@ class Query$Bookings$bookings$nodes {
 
   final String userId;
 
-  final Query$Bookings$bookings$nodes$facility facility;
+  final Query$Bookings$bookings$nodes$facility? facility;
 
-  final Query$Bookings$bookings$nodes$user user;
+  final Query$Bookings$bookings$nodes$user? user;
 
   final DateTime startTime;
 
@@ -920,7 +924,7 @@ class Query$Bookings$bookings$nodes {
 
   final String? notes;
 
-  final List<String>? participants;
+  final List<String> participants;
 
   final DateTime createdAt;
 
@@ -935,9 +939,9 @@ class Query$Bookings$bookings$nodes {
     final l$userId = userId;
     _resultData['userId'] = l$userId;
     final l$facility = facility;
-    _resultData['facility'] = l$facility.toJson();
+    _resultData['facility'] = l$facility?.toJson();
     final l$user = user;
-    _resultData['user'] = l$user.toJson();
+    _resultData['user'] = l$user?.toJson();
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
@@ -947,7 +951,7 @@ class Query$Bookings$bookings$nodes {
     final l$notes = notes;
     _resultData['notes'] = l$notes;
     final l$participants = participants;
-    _resultData['participants'] = l$participants?.map((e) => e).toList();
+    _resultData['participants'] = l$participants.map((e) => e).toList();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -979,9 +983,7 @@ class Query$Bookings$bookings$nodes {
       l$endTime,
       l$status,
       l$notes,
-      l$participants == null
-          ? null
-          : Object.hashAll(l$participants.map((v) => v)),
+      Object.hashAll(l$participants.map((v) => v)),
       l$createdAt,
       l$$__typename,
     ]);
@@ -1043,19 +1045,15 @@ class Query$Bookings$bookings$nodes {
     }
     final l$participants = participants;
     final lOther$participants = other.participants;
-    if (l$participants != null && lOther$participants != null) {
-      if (l$participants.length != lOther$participants.length) {
+    if (l$participants.length != lOther$participants.length) {
+      return false;
+    }
+    for (int i = 0; i < l$participants.length; i++) {
+      final l$participants$entry = l$participants[i];
+      final lOther$participants$entry = lOther$participants[i];
+      if (l$participants$entry != lOther$participants$entry) {
         return false;
       }
-      for (int i = 0; i < l$participants.length; i++) {
-        final l$participants$entry = l$participants[i];
-        final lOther$participants$entry = lOther$participants[i];
-        if (l$participants$entry != lOther$participants$entry) {
-          return false;
-        }
-      }
-    } else if (l$participants != lOther$participants) {
-      return false;
     }
     final l$createdAt = createdAt;
     final lOther$createdAt = other.createdAt;
@@ -1136,12 +1134,12 @@ class _CopyWithImpl$Query$Bookings$bookings$nodes<TRes>
       userId: userId == _undefined || userId == null
           ? _instance.userId
           : (userId as String),
-      facility: facility == _undefined || facility == null
+      facility: facility == _undefined
           ? _instance.facility
-          : (facility as Query$Bookings$bookings$nodes$facility),
-      user: user == _undefined || user == null
+          : (facility as Query$Bookings$bookings$nodes$facility?),
+      user: user == _undefined
           ? _instance.user
-          : (user as Query$Bookings$bookings$nodes$user),
+          : (user as Query$Bookings$bookings$nodes$user?),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -1152,9 +1150,9 @@ class _CopyWithImpl$Query$Bookings$bookings$nodes<TRes>
           ? _instance.status
           : (status as Enum$BookingStatus),
       notes: notes == _undefined ? _instance.notes : (notes as String?),
-      participants: participants == _undefined
+      participants: participants == _undefined || participants == null
           ? _instance.participants
-          : (participants as List<String>?),
+          : (participants as List<String>),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -1166,18 +1164,22 @@ class _CopyWithImpl$Query$Bookings$bookings$nodes<TRes>
 
   CopyWith$Query$Bookings$bookings$nodes$facility<TRes> get facility {
     final local$facility = _instance.facility;
-    return CopyWith$Query$Bookings$bookings$nodes$facility(
-      local$facility,
-      (e) => call(facility: e),
-    );
+    return local$facility == null
+        ? CopyWith$Query$Bookings$bookings$nodes$facility.stub(_then(_instance))
+        : CopyWith$Query$Bookings$bookings$nodes$facility(
+            local$facility,
+            (e) => call(facility: e),
+          );
   }
 
   CopyWith$Query$Bookings$bookings$nodes$user<TRes> get user {
     final local$user = _instance.user;
-    return CopyWith$Query$Bookings$bookings$nodes$user(
-      local$user,
-      (e) => call(user: e),
-    );
+    return local$user == null
+        ? CopyWith$Query$Bookings$bookings$nodes$user.stub(_then(_instance))
+        : CopyWith$Query$Bookings$bookings$nodes$user(
+            local$user,
+            (e) => call(user: e),
+          );
   }
 }
 
@@ -1224,14 +1226,14 @@ class Query$Bookings$bookings$nodes$facility {
     final l$$__typename = json['__typename'];
     return Query$Bookings$bookings$nodes$facility(
       name: (l$name as String),
-      type: fromJson$Enum$FacilityType((l$type as String)),
+      type: (l$type as String),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String name;
 
-  final Enum$FacilityType type;
+  final String type;
 
   final String $__typename;
 
@@ -1240,7 +1242,7 @@ class Query$Bookings$bookings$nodes$facility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$FacilityType(l$type);
+    _resultData['type'] = l$type;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1300,7 +1302,7 @@ abstract class CopyWith$Query$Bookings$bookings$nodes$facility<TRes> {
   factory CopyWith$Query$Bookings$bookings$nodes$facility.stub(TRes res) =
       _CopyWithStubImpl$Query$Bookings$bookings$nodes$facility;
 
-  TRes call({String? name, Enum$FacilityType? type, String? $__typename});
+  TRes call({String? name, String? type, String? $__typename});
 }
 
 class _CopyWithImpl$Query$Bookings$bookings$nodes$facility<TRes>
@@ -1327,7 +1329,7 @@ class _CopyWithImpl$Query$Bookings$bookings$nodes$facility<TRes>
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$FacilityType),
+          : (type as String),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1341,7 +1343,7 @@ class _CopyWithStubImpl$Query$Bookings$bookings$nodes$facility<TRes>
 
   TRes _res;
 
-  call({String? name, Enum$FacilityType? type, String? $__typename}) => _res;
+  call({String? name, String? type, String? $__typename}) => _res;
 }
 
 class Query$Bookings$bookings$nodes$user {

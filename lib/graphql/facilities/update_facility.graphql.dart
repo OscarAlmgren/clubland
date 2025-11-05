@@ -446,7 +446,7 @@ class Mutation$UpdateFacility$updateFacility {
     required this.id,
     required this.name,
     this.description,
-    this.capacity,
+    required this.capacity,
     required this.status,
     required this.updatedAt,
     this.$__typename = 'Facility',
@@ -466,7 +466,7 @@ class Mutation$UpdateFacility$updateFacility {
       id: (l$id as String),
       name: (l$name as String),
       description: (l$description as String?),
-      capacity: (l$capacity as int?),
+      capacity: (l$capacity as int),
       status: fromJson$Enum$FacilityStatus((l$status as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -479,7 +479,7 @@ class Mutation$UpdateFacility$updateFacility {
 
   final String? description;
 
-  final int? capacity;
+  final int capacity;
 
   final Enum$FacilityStatus status;
 
@@ -633,9 +633,9 @@ class _CopyWithImpl$Mutation$UpdateFacility$updateFacility<TRes>
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      capacity: capacity == _undefined
+      capacity: capacity == _undefined || capacity == null
           ? _instance.capacity
-          : (capacity as int?),
+          : (capacity as int),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$FacilityStatus),

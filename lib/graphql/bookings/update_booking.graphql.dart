@@ -445,7 +445,7 @@ class Mutation$UpdateBooking$updateBooking {
     required this.startTime,
     required this.endTime,
     this.notes,
-    this.participants,
+    required this.participants,
     required this.updatedAt,
     this.$__typename = 'Booking',
   });
@@ -465,8 +465,8 @@ class Mutation$UpdateBooking$updateBooking {
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       notes: (l$notes as String?),
-      participants: (l$participants as List<dynamic>?)
-          ?.map((e) => (e as String))
+      participants: (l$participants as List<dynamic>)
+          .map((e) => (e as String))
           .toList(),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -481,7 +481,7 @@ class Mutation$UpdateBooking$updateBooking {
 
   final String? notes;
 
-  final List<String>? participants;
+  final List<String> participants;
 
   final DateTime updatedAt;
 
@@ -498,7 +498,7 @@ class Mutation$UpdateBooking$updateBooking {
     final l$notes = notes;
     _resultData['notes'] = l$notes;
     final l$participants = participants;
-    _resultData['participants'] = l$participants?.map((e) => e).toList();
+    _resultData['participants'] = l$participants.map((e) => e).toList();
     final l$updatedAt = updatedAt;
     _resultData['updatedAt'] = l$updatedAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -520,9 +520,7 @@ class Mutation$UpdateBooking$updateBooking {
       l$startTime,
       l$endTime,
       l$notes,
-      l$participants == null
-          ? null
-          : Object.hashAll(l$participants.map((v) => v)),
+      Object.hashAll(l$participants.map((v) => v)),
       l$updatedAt,
       l$$__typename,
     ]);
@@ -559,19 +557,15 @@ class Mutation$UpdateBooking$updateBooking {
     }
     final l$participants = participants;
     final lOther$participants = other.participants;
-    if (l$participants != null && lOther$participants != null) {
-      if (l$participants.length != lOther$participants.length) {
+    if (l$participants.length != lOther$participants.length) {
+      return false;
+    }
+    for (int i = 0; i < l$participants.length; i++) {
+      final l$participants$entry = l$participants[i];
+      final lOther$participants$entry = lOther$participants[i];
+      if (l$participants$entry != lOther$participants$entry) {
         return false;
       }
-      for (int i = 0; i < l$participants.length; i++) {
-        final l$participants$entry = l$participants[i];
-        final lOther$participants$entry = lOther$participants[i];
-        if (l$participants$entry != lOther$participants$entry) {
-          return false;
-        }
-      }
-    } else if (l$participants != lOther$participants) {
-      return false;
     }
     final l$updatedAt = updatedAt;
     final lOther$updatedAt = other.updatedAt;
@@ -646,9 +640,9 @@ class _CopyWithImpl$Mutation$UpdateBooking$updateBooking<TRes>
           ? _instance.endTime
           : (endTime as DateTime),
       notes: notes == _undefined ? _instance.notes : (notes as String?),
-      participants: participants == _undefined
+      participants: participants == _undefined || participants == null
           ? _instance.participants
-          : (participants as List<String>?),
+          : (participants as List<String>),
       updatedAt: updatedAt == _undefined || updatedAt == null
           ? _instance.updatedAt
           : (updatedAt as DateTime),
