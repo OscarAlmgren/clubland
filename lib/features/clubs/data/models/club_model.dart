@@ -35,6 +35,7 @@ class ClubModel extends ClubEntity {
     super.userRelation,
     super.createdAt,
     super.updatedAt,
+    required super.location,
   });
 
   factory ClubModel.fromJson(Map<String, dynamic> json) => ClubModel(
@@ -81,6 +82,7 @@ class ClubModel extends ClubEntity {
     updatedAt: json['updatedAt'] != null
         ? DateTime.parse(json['updatedAt'] as String)
         : null,
+    location: null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -150,6 +152,7 @@ class ClubModel extends ClubEntity {
     userRelation: userRelation ?? this.userRelation,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
+    location: null,
   );
 
   @override

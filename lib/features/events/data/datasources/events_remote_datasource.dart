@@ -64,11 +64,9 @@ abstract class EventsRemoteDataSource {
 
 /// Implementation of events remote data source using GraphQL
 class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
-  EventsRemoteDataSourceImpl({
-    required GraphQLClient client,
-    Logger? logger,
-  })  : _client = client,
-        _logger = logger ?? Logger();
+  EventsRemoteDataSourceImpl({required GraphQLClient client, Logger? logger})
+    : _client = client,
+      _logger = logger ?? Logger();
 
   final GraphQLClient _client;
   final Logger _logger;
@@ -136,10 +134,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       final variables = {
         'clubId': clubId,
         'filters': filters,
-        'pagination': {
-          'page': page,
-          'pageSize': pageSize,
-        },
+        'pagination': {'page': page, 'pageSize': pageSize},
       };
 
       final result = await _client.query(
@@ -257,7 +252,9 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     required String eventId,
     required String memberId,
   }) async {
-    _logger.d('Checking RSVP eligibility for event: $eventId, member: $memberId');
+    _logger.d(
+      'Checking RSVP eligibility for event: $eventId, member: $memberId',
+    );
 
     try {
       const query = r'''
@@ -281,16 +278,16 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       final result = await _client.query(
         QueryOptions(
           document: gql(query),
-          variables: {
-            'eventId': eventId,
-            'memberId': memberId,
-          },
+          variables: {'eventId': eventId, 'memberId': memberId},
           fetchPolicy: FetchPolicy.networkOnly,
         ),
       );
 
       if (result.hasException) {
-        _logger.e('GraphQL error checking eligibility', error: result.exception);
+        _logger.e(
+          'GraphQL error checking eligibility',
+          error: result.exception,
+        );
         throw _handleGraphQLException(result.exception!);
       }
 
@@ -353,10 +350,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       ''';
 
       final result = await _client.mutate(
-        MutationOptions(
-          document: gql(mutation),
-          variables: {'input': input},
-        ),
+        MutationOptions(document: gql(mutation), variables: {'input': input}),
       );
 
       if (result.hasException) {
@@ -428,10 +422,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       final result = await _client.mutate(
         MutationOptions(
           document: gql(mutation),
-          variables: {
-            'id': rsvpId,
-            'input': input,
-          },
+          variables: {'id': rsvpId, 'input': input},
         ),
       );
 
@@ -481,10 +472,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       ''';
 
       final result = await _client.mutate(
-        MutationOptions(
-          document: gql(mutation),
-          variables: {'id': rsvpId},
-        ),
+        MutationOptions(document: gql(mutation), variables: {'id': rsvpId}),
       );
 
       if (result.hasException) {
@@ -566,10 +554,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       final variables = {
         'clubId': clubId,
         'status': statusFilter,
-        'pagination': {
-          'page': page,
-          'pageSize': pageSize,
-        },
+        'pagination': {'page': page, 'pageSize': pageSize},
       };
 
       final result = await _client.query(
@@ -647,8 +632,11 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
 
       final subgroups = data as List<dynamic>;
       return subgroups
-          .map((json) =>
-              FindingFriendsSubgroupModel.fromJson(json as Map<String, dynamic>))
+          .map(
+            (json) => FindingFriendsSubgroupModel.fromJson(
+              json as Map<String, dynamic>,
+            ),
+          )
           .toList();
     } on app_exceptions.NetworkException {
       rethrow;
@@ -685,27 +673,27 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
 
     return _client
         .subscribe(
-      SubscriptionOptions(
-        document: gql(subscription),
-        variables: {'eventId': eventId},
-      ),
-    )
+          SubscriptionOptions(
+            document: gql(subscription),
+            variables: {'eventId': eventId},
+          ),
+        )
         .map((result) {
-      if (result.hasException) {
-        _logger.e('GraphQL subscription error', error: result.exception);
-        throw _handleGraphQLException(result.exception!);
-      }
+          if (result.hasException) {
+            _logger.e('GraphQL subscription error', error: result.exception);
+            throw _handleGraphQLException(result.exception!);
+          }
 
-      final data = result.data?['rsvpUpdated'];
-      if (data == null) {
-        throw const app_exceptions.NetworkException(
-          'No RSVP update data received',
-          'NO_DATA',
-        );
-      }
+          final data = result.data?['rsvpUpdated'];
+          if (data == null) {
+            throw const app_exceptions.NetworkException(
+              'No RSVP update data received',
+              'NO_DATA',
+            );
+          }
 
-      return EventRSVPModel.fromJson(data as Map<String, dynamic>);
-    });
+          return EventRSVPModel.fromJson(data as Map<String, dynamic>);
+        });
   }
 
   @override
@@ -725,27 +713,27 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
 
     return _client
         .subscribe(
-      SubscriptionOptions(
-        document: gql(subscription),
-        variables: {'eventId': eventId},
-      ),
-    )
+          SubscriptionOptions(
+            document: gql(subscription),
+            variables: {'eventId': eventId},
+          ),
+        )
         .map((result) {
-      if (result.hasException) {
-        _logger.e('GraphQL subscription error', error: result.exception);
-        throw _handleGraphQLException(result.exception!);
-      }
+          if (result.hasException) {
+            _logger.e('GraphQL subscription error', error: result.exception);
+            throw _handleGraphQLException(result.exception!);
+          }
 
-      final data = result.data?['eventCapacityUpdated'];
-      if (data == null) {
-        throw const app_exceptions.NetworkException(
-          'No capacity update data received',
-          'NO_DATA',
-        );
-      }
+          final data = result.data?['eventCapacityUpdated'];
+          if (data == null) {
+            throw const app_exceptions.NetworkException(
+              'No capacity update data received',
+              'NO_DATA',
+            );
+          }
 
-      return data as Map<String, dynamic>;
-    });
+          return data as Map<String, dynamic>;
+        });
   }
 
   /// Handle GraphQL exceptions and convert to NetworkException
@@ -779,10 +767,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       }
 
-      return app_exceptions.NetworkException.serverError(
-        500,
-        error.message,
-      );
+      return app_exceptions.NetworkException.serverError(500, error.message);
     }
 
     if (exception.linkException != null) {

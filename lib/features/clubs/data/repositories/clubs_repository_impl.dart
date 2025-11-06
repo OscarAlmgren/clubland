@@ -262,34 +262,31 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
 
   // Helper methods for conversion
 
-  ClubEntity _convertModelToEntity(ClubModel model) {
-    return ClubEntity(
-      id: model.id,
-      name: model.name,
-      slug: model.slug,
-      description: model.description,
-      location: model.location,
-      address: model.address,
-      website: model.website,
-      logo: model.logo,
-      coverImage: model.coverImage,
-      status: model.status,
-      settings: model.settings,
-      facilities: model.facilities,
-      amenities: model.amenities,
-      operatingHours: model.operatingHours,
-      contact: model.contact,
-      stats: model.stats,
-      membership: model.membership,
-      userRelation: model.userRelation,
-      createdAt: model.createdAt,
-      updatedAt: model.updatedAt,
-    );
-  }
+  ClubEntity _convertModelToEntity(ClubModel model) => ClubEntity(
+    id: model.id,
+    name: model.name,
+    slug: model.slug,
+    description: model.description,
+    location: model.location,
+    address: model.address,
+    website: model.website,
+    logo: model.logo,
+    coverImage: model.coverImage,
+    status: model.status,
+    settings: model.settings,
+    facilities: model.facilities,
+    amenities: model.amenities,
+    operatingHours: model.operatingHours,
+    contact: model.contact,
+    stats: model.stats,
+    membership: model.membership,
+    userRelation: model.userRelation,
+    createdAt: model.createdAt,
+    updatedAt: model.updatedAt,
+  );
 
-  List<ClubEntity> _convertModelsToEntities(List<ClubModel> models) {
-    return models.map(_convertModelToEntity).toList();
-  }
+  List<ClubEntity> _convertModelsToEntities(List<ClubModel> models) =>
+      models.map(_convertModelToEntity).toList();
 
   /// Convert domain ClubSortField to datasource ClubSortField
   datasource.ClubSortField _convertSortField(domain.ClubSortField field) {
