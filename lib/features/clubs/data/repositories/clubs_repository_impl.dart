@@ -267,7 +267,6 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     name: model.name,
     slug: model.slug,
     description: model.description,
-    location: model.location,
     address: model.address,
     logo: model.logo,
     coverImage: model.coverImage,
@@ -280,7 +279,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     userRelation: model.userRelation,
     createdAt: model.createdAt,
     updatedAt: model.updatedAt,
-    website: null,
+    website: model.website,
   );
 
   List<ClubEntity> _convertModelsToEntities(List<ClubModel> models) =>

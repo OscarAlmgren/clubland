@@ -28,8 +28,7 @@ class ClubEntity extends Equatable {
     this.userRelation,
     this.createdAt,
     this.updatedAt,
-    required location,
-    required website,
+    this.website,
   });
 
   final String id;
@@ -49,6 +48,7 @@ class ClubEntity extends Equatable {
   final ClubUserRelationEntity? userRelation;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? website;
 
   @override
   List<Object?> get props => [
@@ -69,6 +69,7 @@ class ClubEntity extends Equatable {
     userRelation,
     createdAt,
     updatedAt,
+    website,
   ];
 
   @override
