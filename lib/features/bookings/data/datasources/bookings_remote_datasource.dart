@@ -234,7 +234,10 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
 
       final bookingData = result.data?['booking'];
       if (bookingData == null) {
-        throw app_exceptions.NetworkException.notFound();
+        throw app_exceptions.NetworkException.notFound(
+          'Null booking',
+          'Booking data is null',
+        );
       }
 
       return BookingModel.fromJson(bookingData as Map<String, dynamic>);

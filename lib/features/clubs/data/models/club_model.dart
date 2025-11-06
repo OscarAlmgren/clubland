@@ -23,6 +23,8 @@ class ClubModel extends ClubEntity {
     required super.slug,
     required super.description,
     required super.address,
+    required super.location,
+    required super.website,
     super.logo,
     super.coverImage,
     super.images,
@@ -35,7 +37,6 @@ class ClubModel extends ClubEntity {
     super.userRelation,
     super.createdAt,
     super.updatedAt,
-    required super.location,
   });
 
   factory ClubModel.fromJson(Map<String, dynamic> json) => ClubModel(
@@ -83,6 +84,7 @@ class ClubModel extends ClubEntity {
         ? DateTime.parse(json['updatedAt'] as String)
         : null,
     location: null,
+    website: null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -153,6 +155,7 @@ class ClubModel extends ClubEntity {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     location: null,
+    website: null,
   );
 
   @override
@@ -175,6 +178,8 @@ class ClubModel extends ClubEntity {
     createdAt,
     updatedAt,
   ];
+
+  void get location {}
 
   @override
   String toString() => 'ClubModel(id: $id, name: $name, slug: $slug)';
