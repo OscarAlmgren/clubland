@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../data/models/booking_model.dart';
 import '../../domain/entities/booking_entity.dart';
 
 class BookingCardWidget extends StatelessWidget {
@@ -11,7 +10,7 @@ class BookingCardWidget extends StatelessWidget {
     super.key,
   });
 
-  final BookingModel booking;
+  final BookingEntity booking;
   final VoidCallback? onTap;
   final VoidCallback? onCancel;
   final VoidCallback? onModify;

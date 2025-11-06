@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/design_system/design_system.dart';
 import '../../../../shared/widgets/app_error_widget.dart';
 import '../../../../shared/widgets/app_loading_widget.dart';
-import '../../data/models/booking_model.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../controllers/bookings_controller.dart';
 import '../widgets/booking_card_widget.dart';
@@ -95,7 +94,7 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
     final bookingsState = ref.watch(allBookingsProvider);
 
     return bookingsState.when(
-      data: (List<BookingModel> bookings) => RefreshIndicator(
+      data: (bookings) => RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(allBookingsProvider);
         },
