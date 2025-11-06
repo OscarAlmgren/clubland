@@ -205,16 +205,27 @@ class BookingsRepositoryImpl implements BookingsRepository {
       );
 
       // Convert availability model to slots
-      final slots = availability.slots
-          .map(
-            (slot) => FacilityAvailabilitySlot(
-              startTime: slot.startTime,
-              endTime: slot.endTime,
-              isAvailable: slot.isAvailable,
-              bookingId: slot.bookingId,
+      final slots = <FacilityAvailabilitySlot>[
+        // Add available slots
+        ...availability.availableSlots
+            .where((slot) => slot.available)
+            .map(
+              (slot) => FacilityAvailabilitySlot(
+                startTime: slot.startTime,
+                endTime: slot.endTime,
+                isAvailable: true,
+              ),
             ),
-          )
-          .toList();
+        // Add booked slots
+        ...availability.bookedSlots.map(
+          (slot) => FacilityAvailabilitySlot(
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+            isAvailable: false,
+            bookingId: slot.id,
+          ),
+        ),
+      ];
 
       return Right(slots);
     } on NetworkException catch (e) {
@@ -240,11 +251,14 @@ class BookingsRepositoryImpl implements BookingsRepository {
       );
 
       // Check if the requested time slot is available
-      final isAvailable = availability.slots.any(
+      // A slot is available if there's an available slot that covers the requested time
+      final isAvailable = availability.availableSlots.any(
         (slot) =>
-            slot.startTime.isBefore(startTime) &&
-            slot.endTime.isAfter(endTime) &&
-            slot.isAvailable,
+            slot.available &&
+            (slot.startTime.isBefore(startTime) ||
+                slot.startTime.isAtSameMomentAs(startTime)) &&
+            (slot.endTime.isAfter(endTime) ||
+                slot.endTime.isAtSameMomentAs(endTime)),
       );
 
       return Right(isAvailable);
