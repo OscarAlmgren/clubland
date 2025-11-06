@@ -11,10 +11,7 @@ class EventsListPage extends ConsumerStatefulWidget {
   /// Club ID to fetch events for
   final String clubId;
 
-  const EventsListPage({
-    required this.clubId,
-    super.key,
-  });
+  const EventsListPage({required this.clubId, super.key});
 
   @override
   ConsumerState<EventsListPage> createState() => _EventsListPageState();
@@ -103,7 +100,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
                   ? Icons.filter_alt
                   : Icons.filter_alt_outlined,
             ),
-            onPressed: () => _showFiltersDialog(),
+            onPressed: _showFiltersDialog,
             tooltip: 'Filter events',
           ),
         ],
@@ -129,18 +126,13 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
       ),
       body: eventsListState.when(
         data: (state) => _buildEventsList(state.events, state),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => _buildErrorState(error),
       ),
     );
   }
 
-  Widget _buildEventsList(
-    List<EventEntity> events,
-    EventsListState state,
-  ) {
+  Widget _buildEventsList(List<EventEntity> events, EventsListState state) {
     if (events.isEmpty) {
       return EmptyStateDisplay(
         title: 'No Events Found',
@@ -173,9 +165,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
             if (state.isLoadingMore) {
               return const Padding(
                 padding: EdgeInsets.all(16),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: Center(child: CircularProgressIndicator()),
               );
             }
             return const SizedBox.shrink();
@@ -198,9 +188,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
     if (errorMessage.contains('SocketException') ||
         errorMessage.contains('NetworkException') ||
         errorMessage.contains('Failed host lookup')) {
-      return ErrorDisplay.network(
-        onRetry: _refresh,
-      );
+      return ErrorDisplay.network(onRetry: _refresh);
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
         errorMessage.contains('AuthenticationFailure')) {
       return ErrorDisplay.unauthorized();
@@ -212,10 +200,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
         icon: Icons.access_time,
       );
     } else {
-      return ErrorDisplay.server(
-        onRetry: _refresh,
-        details: errorMessage,
-      );
+      return ErrorDisplay.server(onRetry: _refresh, details: errorMessage);
     }
   }
 
@@ -223,9 +208,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
     showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       isScrollControlled: true,
-      builder: (context) => _EventFiltersSheet(
-        currentFilters: _filters,
-      ),
+      builder: (context) => _EventFiltersSheet(currentFilters: _filters),
     ).then((filters) {
       if (filters != null) {
         _applyFilters(filters);
@@ -249,9 +232,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
 class _EventFiltersSheet extends StatefulWidget {
   final Map<String, dynamic>? currentFilters;
 
-  const _EventFiltersSheet({
-    this.currentFilters,
-  });
+  const _EventFiltersSheet({this.currentFilters});
 
   @override
   State<_EventFiltersSheet> createState() => _EventFiltersSheetState();
@@ -274,15 +255,19 @@ class _EventFiltersSheetState extends State<_EventFiltersSheet> {
       final eventTypes = widget.currentFilters!['eventTypes'] as List<String>?;
       if (eventTypes != null) {
         _selectedEventTypes = eventTypes
-            .map((type) => EventType.values.firstWhere(
-                  (e) => e.toString() == type,
-                  orElse: () => EventType.social,
-                ))
+            .map(
+              (type) => EventType.values.firstWhere(
+                (e) => e.toString() == type,
+                orElse: () => EventType.social,
+              ),
+            )
             .toSet();
       }
 
-      _requiresPayment = widget.currentFilters!['requiresPayment'] as bool? ?? false;
-      _requiresApproval = widget.currentFilters!['requiresApproval'] as bool? ?? false;
+      _requiresPayment =
+          widget.currentFilters!['requiresPayment'] as bool? ?? false;
+      _requiresApproval =
+          widget.currentFilters!['requiresApproval'] as bool? ?? false;
     }
   }
 

@@ -14,8 +14,9 @@ import '../models/club_model.dart';
 /// between data models and domain entities. It also handles error mapping
 /// from exceptions to failures.
 class ClubsRepositoryImpl implements domain.ClubsRepository {
-  const ClubsRepositoryImpl({required datasource.ClubsRemoteDataSource remoteDataSource})
-    : _remoteDataSource = remoteDataSource;
+  const ClubsRepositoryImpl({
+    required datasource.ClubsRemoteDataSource remoteDataSource,
+  }) : _remoteDataSource = remoteDataSource;
 
   final datasource.ClubsRemoteDataSource _remoteDataSource;
 
@@ -70,7 +71,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -87,7 +88,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -137,7 +138,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -162,7 +163,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -178,7 +179,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -192,7 +193,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -206,7 +207,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -220,7 +221,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 
@@ -255,7 +256,7 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
     } on GraphQLException catch (e) {
       return Left(ServerFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: ${e}'));
+      return Left(ServerFailure('Unexpected error: $e'));
     }
   }
 

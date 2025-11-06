@@ -12,10 +12,7 @@ class MyRSVPsPage extends ConsumerStatefulWidget {
   /// Club ID to fetch RSVPs for
   final String clubId;
 
-  const MyRSVPsPage({
-    required this.clubId,
-    super.key,
-  });
+  const MyRSVPsPage({required this.clubId, super.key});
 
   @override
   ConsumerState<MyRSVPsPage> createState() => _MyRSVPsPageState();
@@ -77,9 +74,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final rsvpsState = ref.watch(
-      myRSVPsControllerProvider(widget.clubId),
-    );
+    final rsvpsState = ref.watch(myRSVPsControllerProvider(widget.clubId));
 
     return Scaffold(
       appBar: AppBar(
@@ -92,31 +87,26 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
                   ? Icons.filter_alt
                   : Icons.filter_alt_outlined,
             ),
-            onPressed: () => _showFilterDialog(),
+            onPressed: _showFilterDialog,
             tooltip: 'Filter RSVPs',
           ),
         ],
       ),
       body: rsvpsState.when(
         data: (state) => _buildRSVPsList(state.rsvps, state),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => _buildErrorState(error),
       ),
     );
   }
 
-  Widget _buildRSVPsList(
-    List<dynamic> rsvps,
-    MyRSVPsState state,
-  ) {
+  Widget _buildRSVPsList(List<dynamic> rsvps, MyRSVPsState state) {
     if (rsvps.isEmpty) {
       return EmptyStateDisplay(
         title: 'No RSVPs Found',
         description: _statusFilter != null && _statusFilter!.isNotEmpty
             ? 'No RSVPs match your filter criteria'
-            : 'You haven\'t RSVP\'d to any events yet',
+            : "You haven't RSVP'd to any events yet",
         icon: Icons.event_note,
         action: _statusFilter != null && _statusFilter!.isNotEmpty
             ? FilledButton.icon(
@@ -140,9 +130,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
             if (state.isLoadingMore) {
               return const Padding(
                 padding: EdgeInsets.all(16),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: Center(child: CircularProgressIndicator()),
               );
             }
             return const SizedBox.shrink();
@@ -154,7 +142,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
           return _RSVPCard(
             rsvpData: rsvp as Map<String, dynamic>,
             onTap: () => _navigateToEventDetails(rsvp['eventId'] as String),
-            onEdit: () => _navigateToUpdateRSVP(rsvp as Map<String, dynamic>),
+            onEdit: () => _navigateToUpdateRSVP(rsvp),
             onCancel: () => _showCancelDialog(rsvp['id'] as String),
           );
         },
@@ -169,9 +157,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
     if (errorMessage.contains('SocketException') ||
         errorMessage.contains('NetworkException') ||
         errorMessage.contains('Failed host lookup')) {
-      return ErrorDisplay.network(
-        onRetry: _refresh,
-      );
+      return ErrorDisplay.network(onRetry: _refresh);
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
         errorMessage.contains('AuthenticationFailure')) {
       return ErrorDisplay.unauthorized();
@@ -183,19 +169,14 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
         icon: Icons.access_time,
       );
     } else {
-      return ErrorDisplay.server(
-        onRetry: _refresh,
-        details: errorMessage,
-      );
+      return ErrorDisplay.server(onRetry: _refresh, details: errorMessage);
     }
   }
 
   void _showFilterDialog() {
     showModalBottomSheet<List<String>>(
       context: context,
-      builder: (context) => _RSVPFilterSheet(
-        currentFilter: _statusFilter,
-      ),
+      builder: (context) => _RSVPFilterSheet(currentFilter: _statusFilter),
     ).then((filter) {
       if (filter != null) {
         _applyFilter(filter.isEmpty ? null : filter);
@@ -232,7 +213,9 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Update RSVP feature will be available once API integration is complete'),
+        content: Text(
+          'Update RSVP feature will be available once API integration is complete',
+        ),
         duration: Duration(seconds: 3),
       ),
     );
@@ -245,7 +228,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
         title: const Text('Cancel RSVP'),
         content: const Text(
           'Are you sure you want to cancel your RSVP? '
-          'Cancellation fees may apply based on the event\'s cancellation policy.',
+          "Cancellation fees may apply based on the event's cancellation policy.",
         ),
         actions: [
           TextButton(
@@ -263,7 +246,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
       ),
     );
 
-    if (confirmed == true && mounted) {
+    if ((confirmed ?? false) && mounted) {
       _cancelRSVP(rsvpId);
     }
   }
@@ -278,9 +261,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
       if (response.success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              response.message ?? 'RSVP cancelled successfully',
-            ),
+            content: Text(response.message ?? 'RSVP cancelled successfully'),
             backgroundColor: Colors.green,
           ),
         );
@@ -300,7 +281,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error cancelling RSVP: ${e.toString()}'),
+          content: Text('Error cancelling RSVP: ${e}'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -440,7 +421,9 @@ class _RSVPCard extends StatelessWidget {
   }
 
   bool _canCancelRSVP(String status) {
-    return status == 'confirmed' || status == 'tentative' || status == 'pending_approval';
+    return status == 'confirmed' ||
+        status == 'tentative' ||
+        status == 'pending_approval';
   }
 
   IconData _getResponseIcon(String response) {
@@ -496,9 +479,7 @@ class _RSVPCard extends StatelessWidget {
 class _RSVPFilterSheet extends StatefulWidget {
   final List<String>? currentFilter;
 
-  const _RSVPFilterSheet({
-    this.currentFilter,
-  });
+  const _RSVPFilterSheet({this.currentFilter});
 
   @override
   State<_RSVPFilterSheet> createState() => _RSVPFilterSheetState();

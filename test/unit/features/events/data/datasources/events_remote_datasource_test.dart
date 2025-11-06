@@ -83,8 +83,8 @@ void main() {
               'paymentInstructions': 'Pay at the door',
               'createdAt': '2024-06-01T10:00:00Z',
               'updatedAt': '2024-06-01T10:00:00Z',
-            }
-          }
+            },
+          },
         ],
         'pageInfo': {
           'hasNextPage': true,
@@ -93,7 +93,7 @@ void main() {
           'endCursor': 'cursor2',
         },
         'totalCount': 10,
-      }
+      },
     };
 
     test('should return events data successfully', () async {
@@ -107,11 +107,7 @@ void main() {
       );
 
       // Act
-      final result = await dataSource.getEvents(
-        clubId: clubId,
-        page: page,
-        pageSize: pageSize,
-      );
+      final result = await dataSource.getEvents(clubId: clubId);
 
       // Assert
       expect(result, isA<Map<String, dynamic>>());
@@ -125,12 +121,9 @@ void main() {
       when(() => mockClient.query(any())).thenAnswer(
         (_) async => QueryResult(
           source: QueryResultSource.network,
-          data: null,
           options: QueryOptions(document: gql('')),
           exception: OperationException(
-            graphqlErrors: [
-              GraphQLError(message: 'Server error'),
-            ],
+            graphqlErrors: [GraphQLError(message: 'Server error')],
           ),
         ),
       );
@@ -197,7 +190,7 @@ void main() {
         'paymentInstructions': 'Pay at the door',
         'createdAt': '2024-06-01T10:00:00Z',
         'updatedAt': '2024-06-01T10:00:00Z',
-      }
+      },
     };
 
     test('should return event model successfully', () async {
@@ -255,7 +248,7 @@ void main() {
         'priority': 2,
         'requiresApproval': false,
         'isSubgroupMember': false,
-      }
+      },
     };
 
     test('should return eligibility model successfully', () async {
@@ -296,7 +289,7 @@ void main() {
           'priority': 2,
           'requiresApproval': false,
           'isSubgroupMember': false,
-        }
+        },
       };
 
       when(() => mockClient.query(any())).thenAnswer(
@@ -359,7 +352,7 @@ void main() {
         'approvedBy': null,
         'approvedAt': null,
         'declineReason': null,
-      }
+      },
     };
 
     test('should create RSVP successfully', () async {
@@ -388,13 +381,12 @@ void main() {
       when(() => mockClient.mutate(any())).thenAnswer(
         (_) async => QueryResult(
           source: QueryResultSource.network,
-          data: null,
           options: MutationOptions(document: gql('')),
           exception: OperationException(
             graphqlErrors: [
               GraphQLError(
                 message: 'Event is full',
-                extensions: {'code': 'VALIDATION_ERROR'},
+                extensions: const {'code': 'VALIDATION_ERROR'},
               ),
             ],
           ),
@@ -419,7 +411,7 @@ void main() {
         'cancellationFee': 25.0,
         'refundAmount': null,
         'feeWaived': false,
-      }
+      },
     };
 
     test('should cancel RSVP successfully', () async {
@@ -451,7 +443,7 @@ void main() {
           'cancellationFee': 0.0,
           'refundAmount': null,
           'feeWaived': true,
-        }
+        },
       };
 
       when(() => mockClient.mutate(any())).thenAnswer(
@@ -496,7 +488,7 @@ void main() {
           'organizerId': 'organizer2',
           'organizerName': 'John Smith',
         },
-      ]
+      ],
     };
 
     test('should return list of subgroups successfully', () async {
@@ -510,7 +502,9 @@ void main() {
       );
 
       // Act
-      final result = await dataSource.getFindingFriendsSubgroups(clubId: clubId);
+      final result = await dataSource.getFindingFriendsSubgroups(
+        clubId: clubId,
+      );
 
       // Assert
       expect(result, isA<List<FindingFriendsSubgroupModel>>());
@@ -531,7 +525,9 @@ void main() {
       );
 
       // Act
-      final result = await dataSource.getFindingFriendsSubgroups(clubId: clubId);
+      final result = await dataSource.getFindingFriendsSubgroups(
+        clubId: clubId,
+      );
 
       // Assert
       expect(result, isEmpty);
@@ -544,13 +540,12 @@ void main() {
       when(() => mockClient.query(any())).thenAnswer(
         (_) async => QueryResult(
           source: QueryResultSource.network,
-          data: null,
           options: QueryOptions(document: gql('')),
           exception: OperationException(
             graphqlErrors: [
               GraphQLError(
                 message: 'Not authenticated',
-                extensions: {'code': 'UNAUTHENTICATED'},
+                extensions: const {'code': 'UNAUTHENTICATED'},
               ),
             ],
           ),
@@ -575,13 +570,15 @@ void main() {
       when(() => mockClient.query(any())).thenAnswer(
         (_) async => QueryResult(
           source: QueryResultSource.network,
-          data: null,
           options: QueryOptions(document: gql('')),
           exception: OperationException(
             graphqlErrors: [
               GraphQLError(
                 message: 'Resource not found',
-                extensions: {'code': 'NOT_FOUND', 'resourceId': 'event123'},
+                extensions: const {
+                  'code': 'NOT_FOUND',
+                  'resourceId': 'event123',
+                },
               ),
             ],
           ),
@@ -600,7 +597,6 @@ void main() {
       when(() => mockClient.query(any())).thenAnswer(
         (_) async => QueryResult(
           source: QueryResultSource.network,
-          data: null,
           options: QueryOptions(document: gql('')),
           exception: OperationException(
             linkException: Exception('Network connection failed'),

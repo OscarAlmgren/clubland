@@ -11,19 +11,19 @@ class EventRSVPModel extends EventRSVPEntity {
     required super.rsvpType,
     required super.priority,
     required super.attendanceCount,
+    required super.status,
+    required super.paymentRequired,
+    required super.paymentVerified,
+    required super.feeWaived,
+    required super.rsvpedAt,
+    required super.updatedAt,
     super.guestNames,
     super.dietaryRestrictions,
     super.seatingPreferences,
     super.specialRequests,
-    required super.status,
-    required super.paymentRequired,
-    required super.paymentVerified,
     super.paymentAmount,
     super.cancellationFee,
-    required super.feeWaived,
     super.waitlistPosition,
-    required super.rsvpedAt,
-    required super.updatedAt,
     super.cancelledAt,
     super.cancellationReason,
     super.approvedBy,
@@ -42,11 +42,13 @@ class EventRSVPModel extends EventRSVPEntity {
       rsvpType: RSVPType.fromString(json['rsvpType'] as String),
       priority: json['priority'] as int? ?? 2,
       attendanceCount: json['attendanceCount'] as int? ?? 1,
-      guestNames: (json['guestNames'] as List<dynamic>?)
+      guestNames:
+          (json['guestNames'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      dietaryRestrictions: (json['dietaryRestrictions'] as List<dynamic>?)
+      dietaryRestrictions:
+          (json['dietaryRestrictions'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],

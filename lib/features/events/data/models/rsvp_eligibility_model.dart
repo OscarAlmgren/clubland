@@ -4,14 +4,14 @@ import '../../domain/entities/rsvp_eligibility_entity.dart';
 class RSVPEligibilityModel extends RSVPEligibilityEntity {
   const RSVPEligibilityModel({
     required super.eligible,
-    super.reason,
     required super.memberInGoodStanding,
     required super.hasOutstandingDebt,
-    super.debtAmount,
     required super.wouldBeWaitlisted,
-    super.estimatedWaitlistPosition,
     required super.availableSpots,
     required super.priority,
+    super.reason,
+    super.debtAmount,
+    super.estimatedWaitlistPosition,
     super.requiresApproval,
     super.isSubgroupMember,
   });

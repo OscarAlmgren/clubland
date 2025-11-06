@@ -24,11 +24,7 @@ class RSVPStatusBadge extends StatelessWidget {
     final statusInfo = _getStatusInfo(status);
 
     if (!showLabel) {
-      return Icon(
-        statusInfo.icon,
-        size: size ?? 20,
-        color: statusInfo.color,
-      );
+      return Icon(statusInfo.icon, size: size ?? 20, color: statusInfo.color);
     }
 
     return Container(
@@ -36,19 +32,12 @@ class RSVPStatusBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: statusInfo.color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: statusInfo.color,
-          width: 1,
-        ),
+        border: Border.all(color: statusInfo.color),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            statusInfo.icon,
-            size: size ?? 16,
-            color: statusInfo.color,
-          ),
+          Icon(statusInfo.icon, size: size ?? 16, color: statusInfo.color),
           const SizedBox(width: 6),
           Text(
             statusInfo.label,
@@ -102,11 +91,7 @@ class RSVPStatusBadge extends StatelessWidget {
         label: 'Declined',
       );
     } else {
-      return _StatusInfo(
-        color: Colors.grey,
-        icon: Icons.info,
-        label: status,
-      );
+      return _StatusInfo(color: Colors.grey, icon: Icons.info, label: status);
     }
   }
 }
@@ -116,9 +101,5 @@ class _StatusInfo {
   final IconData icon;
   final String label;
 
-  _StatusInfo({
-    required this.color,
-    required this.icon,
-    required this.label,
-  });
+  _StatusInfo({required this.color, required this.icon, required this.label});
 }

@@ -27,13 +27,11 @@ class ErrorDisplay extends StatelessWidget {
   });
 
   /// Factory constructor for network errors
-  factory ErrorDisplay.network({
-    VoidCallback? onRetry,
-    Key? key,
-  }) {
+  factory ErrorDisplay.network({VoidCallback? onRetry, Key? key}) {
     return ErrorDisplay(
       message: 'Connection Error',
-      details: 'Unable to connect to the server. Please check your internet connection and try again.',
+      details:
+          'Unable to connect to the server. Please check your internet connection and try again.',
       onRetry: onRetry,
       icon: Icons.signal_wifi_off,
       key: key,
@@ -48,7 +46,8 @@ class ErrorDisplay extends StatelessWidget {
   }) {
     return ErrorDisplay(
       message: 'Server Error',
-      details: details ?? 'The server encountered an error. Please try again later.',
+      details:
+          details ?? 'The server encountered an error. Please try again later.',
       onRetry: onRetry,
       icon: Icons.cloud_off,
       key: key,
@@ -72,10 +71,7 @@ class ErrorDisplay extends StatelessWidget {
   }
 
   /// Factory constructor for unauthorized errors
-  factory ErrorDisplay.unauthorized({
-    VoidCallback? onRetry,
-    Key? key,
-  }) {
+  factory ErrorDisplay.unauthorized({VoidCallback? onRetry, Key? key}) {
     return ErrorDisplay(
       message: 'Authentication Required',
       details: 'Please log in to access this content.',
@@ -150,11 +146,7 @@ class CompactErrorDisplay extends StatelessWidget {
   /// Callback for retry action
   final VoidCallback? onRetry;
 
-  const CompactErrorDisplay({
-    required this.message,
-    this.onRetry,
-    super.key,
-  });
+  const CompactErrorDisplay({required this.message, this.onRetry, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -166,18 +158,11 @@ class CompactErrorDisplay extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.errorContainer,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.error,
-          width: 1,
-        ),
+        border: Border.all(color: theme.colorScheme.error),
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.error_outline,
-            color: theme.colorScheme.error,
-            size: 24,
-          ),
+          Icon(Icons.error_outline, color: theme.colorScheme.error, size: 24),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -191,10 +176,7 @@ class CompactErrorDisplay extends StatelessWidget {
             const SizedBox(width: 12),
             IconButton(
               onPressed: onRetry,
-              icon: Icon(
-                Icons.refresh,
-                color: theme.colorScheme.error,
-              ),
+              icon: Icon(Icons.refresh, color: theme.colorScheme.error),
               tooltip: 'Retry',
             ),
           ],
@@ -259,10 +241,7 @@ class EmptyStateDisplay extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ],
-            if (action != null) ...[
-              const SizedBox(height: 24),
-              action!,
-            ],
+            if (action != null) ...[const SizedBox(height: 24), action!],
           ],
         ),
       ),

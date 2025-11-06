@@ -169,7 +169,6 @@ class EventCard extends StatelessWidget {
                     CapacityIndicator(
                       currentAttendees: event.currentAttendees,
                       capacity: event.capacity!,
-                      showLabel: true,
                     ),
                   ],
 

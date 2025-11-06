@@ -5,9 +5,9 @@ class CancelRSVPResponseModel extends CancelRSVPResponseEntity {
   const CancelRSVPResponseModel({
     required super.success,
     required super.message,
+    required super.feeWaived,
     super.cancellationFee,
     super.refundAmount,
-    required super.feeWaived,
   });
 
   /// Create CancelRSVPResponseModel from JSON

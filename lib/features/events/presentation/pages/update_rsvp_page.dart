@@ -13,11 +13,7 @@ class UpdateRSVPPage extends ConsumerStatefulWidget {
   /// Existing RSVP to update
   final EventRSVPEntity rsvp;
 
-  const UpdateRSVPPage({
-    required this.event,
-    required this.rsvp,
-    super.key,
-  });
+  const UpdateRSVPPage({required this.event, required this.rsvp, super.key});
 
   @override
   ConsumerState<UpdateRSVPPage> createState() => _UpdateRSVPPageState();
@@ -75,7 +71,9 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
     final guestCount = _attendanceCount - 1;
     for (var i = 0; i < guestCount; i++) {
       final controller = TextEditingController(
-        text: i < widget.rsvp.guestNames.length ? widget.rsvp.guestNames[i] : '',
+        text: i < widget.rsvp.guestNames.length
+            ? widget.rsvp.guestNames[i]
+            : '',
       );
       _guestNameControllers.add(controller);
     }
@@ -167,9 +165,7 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
           size: 64,
         ),
         title: const Text('RSVP Updated'),
-        content: const Text(
-          'Your RSVP has been updated successfully.',
-        ),
+        content: const Text('Your RSVP has been updated successfully.'),
         actions: [
           FilledButton(
             onPressed: () {
@@ -193,9 +189,7 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
           size: 64,
         ),
         title: const Text('Update Failed'),
-        content: Text(
-          'Failed to update your RSVP: $error',
-        ),
+        content: Text('Failed to update your RSVP: $error'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -212,9 +206,7 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
     final maxGuests = widget.event.maxGuests ?? 4;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Update RSVP'),
-      ),
+      appBar: AppBar(title: const Text('Update RSVP')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -243,7 +235,9 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '${widget.event.startTime.toLocal().toString().split(' ')[0]}',
+                          widget.event.startTime.toLocal().toString().split(
+                            ' ',
+                          )[0],
                           style: theme.textTheme.bodyMedium,
                         ),
                       ],
@@ -424,7 +418,9 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
                 spacing: 8,
                 runSpacing: 8,
                 children: _dietaryOptions.map((option) {
-                  final isSelected = _selectedDietaryRestrictions.contains(option);
+                  final isSelected = _selectedDietaryRestrictions.contains(
+                    option,
+                  );
                   return FilterChip(
                     label: Text(option),
                     selected: isSelected,

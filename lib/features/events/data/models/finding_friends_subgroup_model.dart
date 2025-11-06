@@ -6,9 +6,9 @@ class FindingFriendsSubgroupModel extends FindingFriendsSubgroupEntity {
     required super.id,
     required super.clubId,
     required super.name,
-    super.description,
     required super.memberCount,
     required super.isActive,
+    super.description,
     super.organizerId,
     super.organizerName,
   });

@@ -36,8 +36,8 @@ void main() {
       title: 'Summer Gala',
       description: 'Annual summer event',
       eventType: EventType.social,
-      startTime: DateTime(2024, 7, 1, 18, 0),
-      endTime: DateTime(2024, 7, 1, 23, 0),
+      startTime: DateTime(2024, 7, 1, 18),
+      endTime: DateTime(2024, 7, 1, 23),
       location: 'Main Hall',
       capacity: 100,
       currentAttendees: 50,
@@ -48,13 +48,13 @@ void main() {
       price: 50.0,
       allowsSubgroupPriority: false,
       fullHouseExclusive: false,
-      createdAt: DateTime(2024, 6, 1, 10, 0),
-      updatedAt: DateTime(2024, 6, 1, 10, 0),
+      createdAt: DateTime(2024, 6, 1, 10),
+      updatedAt: DateTime(2024, 6, 1, 10),
     );
 
     final mockData = {
       'edges': [
-        {'node': mockEventModel.toJson()}
+        {'node': mockEventModel.toJson()},
       ],
       'pageInfo': {
         'hasNextPage': true,
@@ -67,51 +67,41 @@ void main() {
 
     test('should return EventsConnectionEntity on success', () async {
       // Arrange
-      when(() => mockRemoteDataSource.getEvents(
-            clubId: clubId,
-            filters: any(named: 'filters'),
-            page: page,
-            pageSize: pageSize,
-          )).thenAnswer((_) async => mockData);
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+        ),
+      ).thenAnswer((_) async => mockData);
 
       // Act
-      final result = await repository.getEvents(
-        clubId: clubId,
-        page: page,
-        pageSize: pageSize,
-      );
+      final result = await repository.getEvents(clubId: clubId);
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (connection) {
-          expect(connection.events.length, 1);
-          expect(connection.events.first.title, 'Summer Gala');
-          expect(connection.pageInfo.hasNextPage, true);
-          expect(connection.totalCount, 10);
-        },
-      );
-      verify(() => mockRemoteDataSource.getEvents(
-            clubId: clubId,
-            filters: any(named: 'filters'),
-            page: page,
-            pageSize: pageSize,
-          )).called(1);
+      result.fold((failure) => fail('Should return Right'), (connection) {
+        expect(connection.events.length, 1);
+        expect(connection.events.first.title, 'Summer Gala');
+        expect(connection.pageInfo.hasNextPage, true);
+        expect(connection.totalCount, 10);
+      });
+      verify(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+        ),
+      ).called(1);
     });
 
     test('should return NetworkFailure on NetworkException', () async {
       // Arrange
-      when(() => mockRemoteDataSource.getEvents(
-            clubId: clubId,
-            filters: any(named: 'filters'),
-            page: page,
-            pageSize: pageSize,
-          )).thenThrow(
-        const app_exceptions.NetworkException(
-          'Network error',
-          'NETWORK_ERROR',
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
         ),
+      ).thenThrow(
+        const app_exceptions.NetworkException('Network error', 'NETWORK_ERROR'),
       );
 
       // Act
@@ -119,42 +109,38 @@ void main() {
 
       // Assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<NetworkFailure>());
-          expect(failure.message, 'Network error');
-        },
-        (connection) => fail('Should return Left'),
-      );
+      result.fold((failure) {
+        expect(failure, isA<NetworkFailure>());
+        expect(failure.message, 'Network error');
+      }, (connection) => fail('Should return Left'));
     });
 
-    test('should return AuthenticationFailure on UNAUTHENTICATED error',
-        () async {
-      // Arrange
-      when(() => mockRemoteDataSource.getEvents(
+    test(
+      'should return AuthenticationFailure on UNAUTHENTICATED error',
+      () async {
+        // Arrange
+        when(
+          () => mockRemoteDataSource.getEvents(
             clubId: clubId,
             filters: any(named: 'filters'),
-            page: page,
-            pageSize: pageSize,
-          )).thenThrow(
-        const app_exceptions.NetworkException(
-          'Not authenticated',
-          'UNAUTHENTICATED',
-        ),
-      );
+          ),
+        ).thenThrow(
+          const app_exceptions.NetworkException(
+            'Not authenticated',
+            'UNAUTHENTICATED',
+          ),
+        );
 
-      // Act
-      final result = await repository.getEvents(clubId: clubId);
+        // Act
+        final result = await repository.getEvents(clubId: clubId);
 
-      // Assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // Assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<AuthenticationFailure>());
-        },
-        (connection) => fail('Should return Left'),
-      );
-    });
+        }, (connection) => fail('Should return Left'));
+      },
+    );
   });
 
   group('getEventById', () {
@@ -166,8 +152,8 @@ void main() {
       title: 'Summer Gala',
       description: 'Annual summer event',
       eventType: EventType.social,
-      startTime: DateTime(2024, 7, 1, 18, 0),
-      endTime: DateTime(2024, 7, 1, 23, 0),
+      startTime: DateTime(2024, 7, 1, 18),
+      endTime: DateTime(2024, 7, 1, 23),
       location: 'Main Hall',
       capacity: 100,
       currentAttendees: 50,
@@ -177,28 +163,26 @@ void main() {
       requiresPayment: true,
       allowsSubgroupPriority: false,
       fullHouseExclusive: false,
-      createdAt: DateTime(2024, 6, 1, 10, 0),
-      updatedAt: DateTime(2024, 6, 1, 10, 0),
+      createdAt: DateTime(2024, 6, 1, 10),
+      updatedAt: DateTime(2024, 6, 1, 10),
     );
 
     test('should return EventEntity on success', () async {
       // Arrange
-      when(() => mockRemoteDataSource.getEventById(eventId))
-          .thenAnswer((_) async => mockEventModel);
+      when(
+        () => mockRemoteDataSource.getEventById(eventId),
+      ).thenAnswer((_) async => mockEventModel);
 
       // Act
       final result = await repository.getEventById(eventId);
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (event) {
-          expect(event, isA<EventEntity>());
-          expect(event.id, eventId);
-          expect(event.title, 'Summer Gala');
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (event) {
+        expect(event, isA<EventEntity>());
+        expect(event.id, eventId);
+        expect(event.title, 'Summer Gala');
+      });
       verify(() => mockRemoteDataSource.getEventById(eventId)).called(1);
     });
 
@@ -213,12 +197,9 @@ void main() {
 
       // Assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<NotFoundFailure>());
-        },
-        (event) => fail('Should return Left'),
-      );
+      result.fold((failure) {
+        expect(failure, isA<NotFoundFailure>());
+      }, (event) => fail('Should return Left'));
     });
   });
 
@@ -226,7 +207,7 @@ void main() {
     const eventId = 'event123';
     const memberId = 'member123';
 
-    final mockEligibility = const RSVPEligibilityModel(
+    const mockEligibility = RSVPEligibilityModel(
       eligible: true,
       memberInGoodStanding: true,
       hasOutstandingDebt: false,
@@ -237,10 +218,12 @@ void main() {
 
     test('should return RSVPEligibilityEntity on success', () async {
       // Arrange
-      when(() => mockRemoteDataSource.checkRSVPEligibility(
-            eventId: eventId,
-            memberId: memberId,
-          )).thenAnswer((_) async => mockEligibility);
+      when(
+        () => mockRemoteDataSource.checkRSVPEligibility(
+          eventId: eventId,
+          memberId: memberId,
+        ),
+      ).thenAnswer((_) async => mockEligibility);
 
       // Act
       final result = await repository.checkRSVPEligibility(
@@ -250,18 +233,15 @@ void main() {
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (eligibility) {
-          expect(eligibility.eligible, true);
-          expect(eligibility.availableSpots, 50);
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (eligibility) {
+        expect(eligibility.eligible, true);
+        expect(eligibility.availableSpots, 50);
+      });
     });
 
     test('should return ineligible when member has debt', () async {
       // Arrange
-      final ineligibleModel = const RSVPEligibilityModel(
+      const ineligibleModel = RSVPEligibilityModel(
         eligible: false,
         reason: 'Outstanding debt',
         memberInGoodStanding: false,
@@ -272,10 +252,12 @@ void main() {
         priority: 2,
       );
 
-      when(() => mockRemoteDataSource.checkRSVPEligibility(
-            eventId: eventId,
-            memberId: memberId,
-          )).thenAnswer((_) async => ineligibleModel);
+      when(
+        () => mockRemoteDataSource.checkRSVPEligibility(
+          eventId: eventId,
+          memberId: memberId,
+        ),
+      ).thenAnswer((_) async => ineligibleModel);
 
       // Act
       final result = await repository.checkRSVPEligibility(
@@ -285,14 +267,11 @@ void main() {
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (eligibility) {
-          expect(eligibility.eligible, false);
-          expect(eligibility.hasOutstandingDebt, true);
-          expect(eligibility.debtAmount, 150.0);
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (eligibility) {
+        expect(eligibility.eligible, false);
+        expect(eligibility.hasOutstandingDebt, true);
+        expect(eligibility.debtAmount, 150.0);
+      });
     });
   });
 
@@ -318,28 +297,26 @@ void main() {
       paymentRequired: false,
       paymentVerified: false,
       feeWaived: false,
-      rsvpedAt: DateTime(2024, 6, 15, 10, 0),
-      updatedAt: DateTime(2024, 6, 15, 10, 0),
+      rsvpedAt: DateTime(2024, 6, 15, 10),
+      updatedAt: DateTime(2024, 6, 15, 10),
     );
 
     test('should return EventRSVPEntity on success', () async {
       // Arrange
-      when(() => mockRemoteDataSource.createRSVP(input))
-          .thenAnswer((_) async => mockRSVP);
+      when(
+        () => mockRemoteDataSource.createRSVP(input),
+      ).thenAnswer((_) async => mockRSVP);
 
       // Act
       final result = await repository.createRSVP(input);
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (rsvp) {
-          expect(rsvp, isA<EventRSVPEntity>());
-          expect(rsvp.id, 'rsvp123');
-          expect(rsvp.status, RSVPStatus.confirmed);
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (rsvp) {
+        expect(rsvp, isA<EventRSVPEntity>());
+        expect(rsvp.id, 'rsvp123');
+        expect(rsvp.status, RSVPStatus.confirmed);
+      });
       verify(() => mockRemoteDataSource.createRSVP(input)).called(1);
     });
 
@@ -357,19 +334,16 @@ void main() {
 
       // Assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<ValidationFailure>());
-        },
-        (rsvp) => fail('Should return Left'),
-      );
+      result.fold((failure) {
+        expect(failure, isA<ValidationFailure>());
+      }, (rsvp) => fail('Should return Left'));
     });
   });
 
   group('cancelRSVP', () {
     const rsvpId = 'rsvp123';
 
-    final mockCancelResponse = const CancelRSVPResponseModel(
+    const mockCancelResponse = CancelRSVPResponseModel(
       success: true,
       message: 'RSVP cancelled successfully',
       cancellationFee: 25.0,
@@ -378,35 +352,38 @@ void main() {
 
     test('should return CancelRSVPResponseEntity on success', () async {
       // Arrange
-      when(() => mockRemoteDataSource.cancelRSVP(
-            rsvpId: rsvpId,
-            reason: any(named: 'reason'),
-          )).thenAnswer((_) async => mockCancelResponse);
+      when(
+        () => mockRemoteDataSource.cancelRSVP(
+          rsvpId: rsvpId,
+          reason: any(named: 'reason'),
+        ),
+      ).thenAnswer((_) async => mockCancelResponse);
 
       // Act
       final result = await repository.cancelRSVP(rsvpId: rsvpId);
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (response) {
-          expect(response.success, true);
-          expect(response.cancellationFee, 25.0);
-        },
-      );
-      verify(() => mockRemoteDataSource.cancelRSVP(
-            rsvpId: rsvpId,
-            reason: any(named: 'reason'),
-          )).called(1);
+      result.fold((failure) => fail('Should return Right'), (response) {
+        expect(response.success, true);
+        expect(response.cancellationFee, 25.0);
+      });
+      verify(
+        () => mockRemoteDataSource.cancelRSVP(
+          rsvpId: rsvpId,
+          reason: any(named: 'reason'),
+        ),
+      ).called(1);
     });
 
     test('should return NotFoundFailure when RSVP not found', () async {
       // Arrange
-      when(() => mockRemoteDataSource.cancelRSVP(
-            rsvpId: rsvpId,
-            reason: any(named: 'reason'),
-          )).thenThrow(
+      when(
+        () => mockRemoteDataSource.cancelRSVP(
+          rsvpId: rsvpId,
+          reason: any(named: 'reason'),
+        ),
+      ).thenThrow(
         app_exceptions.NetworkException.notFound('RSVP not found', rsvpId),
       );
 
@@ -415,12 +392,9 @@ void main() {
 
       // Assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<NotFoundFailure>());
-        },
-        (response) => fail('Should return Left'),
-      );
+      result.fold((failure) {
+        expect(failure, isA<NotFoundFailure>());
+      }, (response) => fail('Should return Left'));
     });
   });
 
@@ -446,45 +420,43 @@ void main() {
 
     test('should return list of subgroups on success', () async {
       // Arrange
-      when(() => mockRemoteDataSource.getFindingFriendsSubgroups(clubId: clubId))
-          .thenAnswer((_) async => mockSubgroups);
+      when(
+        () => mockRemoteDataSource.getFindingFriendsSubgroups(clubId: clubId),
+      ).thenAnswer((_) async => mockSubgroups);
 
       // Act
-      final result =
-          await repository.getFindingFriendsSubgroups(clubId: clubId);
+      final result = await repository.getFindingFriendsSubgroups(
+        clubId: clubId,
+      );
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (subgroups) {
-          expect(subgroups.length, 2);
-          expect(subgroups.first.name, 'Vinna Vänner');
-          expect(subgroups.first.memberCount, 25);
-        },
-      );
-      verify(() =>
-              mockRemoteDataSource.getFindingFriendsSubgroups(clubId: clubId))
-          .called(1);
+      result.fold((failure) => fail('Should return Right'), (subgroups) {
+        expect(subgroups.length, 2);
+        expect(subgroups.first.name, 'Vinna Vänner');
+        expect(subgroups.first.memberCount, 25);
+      });
+      verify(
+        () => mockRemoteDataSource.getFindingFriendsSubgroups(clubId: clubId),
+      ).called(1);
     });
 
     test('should return empty list when no subgroups exist', () async {
       // Arrange
-      when(() => mockRemoteDataSource.getFindingFriendsSubgroups(clubId: clubId))
-          .thenAnswer((_) async => []);
+      when(
+        () => mockRemoteDataSource.getFindingFriendsSubgroups(clubId: clubId),
+      ).thenAnswer((_) async => []);
 
       // Act
-      final result =
-          await repository.getFindingFriendsSubgroups(clubId: clubId);
+      final result = await repository.getFindingFriendsSubgroups(
+        clubId: clubId,
+      );
 
       // Assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (subgroups) {
-          expect(subgroups, isEmpty);
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (subgroups) {
+        expect(subgroups, isEmpty);
+      });
     });
   });
 }

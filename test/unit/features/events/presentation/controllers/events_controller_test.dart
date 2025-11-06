@@ -58,7 +58,7 @@ void main() {
     paymentAmount: 50.0,
     rsvpDeadline: DateTime.now().add(const Duration(days: 6)),
     cancellationDeadline: DateTime.now().add(const Duration(days: 5)),
-    tags: ['wine', 'dining'],
+    tags: const ['wine', 'dining'],
     organizerId: 'organizer123',
     organizerName: 'John Doe',
     createdAt: DateTime.now(),
@@ -74,30 +74,22 @@ void main() {
     rsvpType: RSVPType.primary,
     priority: 1,
     attendanceCount: 1,
-    guestNames: [],
-    dietaryRestrictions: [],
-    seatingPreferences: [],
-    specialRequests: [],
+    guestNames: const [],
+    dietaryRestrictions: const [],
+    seatingPreferences: const [],
+    specialRequests: const [],
     status: RSVPStatus.confirmed,
     paymentRequired: true,
     paymentVerified: true,
     paymentAmount: 50.0,
-    cancellationFee: null,
     feeWaived: false,
-    waitlistPosition: null,
     rsvpedAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    cancelledAt: null,
-    cancellationReason: null,
-    approvedBy: null,
-    approvedAt: null,
-    declineReason: null,
   );
 
   final mockEligibility = RSVPEligibilityEntity(
     canRSVP: true,
     reason: 'Eligible',
-    requiresApproval: false,
     requiresPayment: true,
     paymentAmount: 50.0,
     availableSpots: 5,
@@ -136,20 +128,11 @@ void main() {
       mockGetEvents = MockGetEvents();
 
       container = ProviderContainer(
-        overrides: [
-          getEventsUseCaseProvider.overrideWithValue(mockGetEvents),
-        ],
+        overrides: [getEventsUseCaseProvider.overrideWithValue(mockGetEvents)],
       );
 
       // Register fallback values
-      registerFallbackValue(
-        GetEventsParams(
-          clubId: clubId,
-          filters: null,
-          page: 1,
-          pageSize: 20,
-        ),
-      );
+      registerFallbackValue(GetEventsParams(clubId: clubId));
     });
 
     tearDown(() {
@@ -158,11 +141,14 @@ void main() {
 
     test('should load events on initialization', () async {
       // Arrange
-      when(() => mockGetEvents(any()))
-          .thenAnswer((_) async => Right(mockEventsConnection));
+      when(
+        () => mockGetEvents(any()),
+      ).thenAnswer((_) async => Right(mockEventsConnection));
 
       // Act
-      final controller = container.read(eventsListControllerProvider(clubId).future);
+      final controller = container.read(
+        eventsListControllerProvider(clubId).future,
+      );
 
       // Assert
       final state = await controller;
@@ -175,8 +161,9 @@ void main() {
 
     test('should handle loading error', () async {
       // Arrange
-      when(() => mockGetEvents(any()))
-          .thenAnswer((_) async => Left(ServerFailure('Server error')));
+      when(
+        () => mockGetEvents(any()),
+      ).thenAnswer((_) async => Left(ServerFailure('Server error')));
 
       // Act & Assert
       expect(
@@ -187,28 +174,34 @@ void main() {
 
     test('should apply filters and reload events', () async {
       // Arrange
-      when(() => mockGetEvents(any()))
-          .thenAnswer((_) async => Right(mockEventsConnection));
+      when(
+        () => mockGetEvents(any()),
+      ).thenAnswer((_) async => Right(mockEventsConnection));
 
-      final controller =
-          container.read(eventsListControllerProvider(clubId).notifier);
+      final controller = container.read(
+        eventsListControllerProvider(clubId).notifier,
+      );
 
       // Act
       await controller.applyFilters({'eventType': 'dining'});
 
       // Assert
-      final state = await container.read(eventsListControllerProvider(clubId).future);
+      final state = await container.read(
+        eventsListControllerProvider(clubId).future,
+      );
       expect(state.filters, {'eventType': 'dining'});
       verify(() => mockGetEvents(any())).called(2); // Initial + applyFilters
     });
 
     test('should load more events on pagination', () async {
       // Arrange
-      when(() => mockGetEvents(any()))
-          .thenAnswer((_) async => Right(mockEventsConnection));
+      when(
+        () => mockGetEvents(any()),
+      ).thenAnswer((_) async => Right(mockEventsConnection));
 
-      final controller =
-          container.read(eventsListControllerProvider(clubId).notifier);
+      final controller = container.read(
+        eventsListControllerProvider(clubId).notifier,
+      );
 
       // Wait for initial load
       await container.read(eventsListControllerProvider(clubId).future);
@@ -222,11 +215,13 @@ void main() {
 
     test('should not load more when already loading', () async {
       // Arrange
-      when(() => mockGetEvents(any()))
-          .thenAnswer((_) async => Right(mockEventsConnection));
+      when(
+        () => mockGetEvents(any()),
+      ).thenAnswer((_) async => Right(mockEventsConnection));
 
-      final controller =
-          container.read(eventsListControllerProvider(clubId).notifier);
+      final controller = container.read(
+        eventsListControllerProvider(clubId).notifier,
+      );
 
       // Wait for initial load
       await container.read(eventsListControllerProvider(clubId).future);
@@ -244,11 +239,13 @@ void main() {
 
     test('should refresh events list', () async {
       // Arrange
-      when(() => mockGetEvents(any()))
-          .thenAnswer((_) async => Right(mockEventsConnection));
+      when(
+        () => mockGetEvents(any()),
+      ).thenAnswer((_) async => Right(mockEventsConnection));
 
-      final controller =
-          container.read(eventsListControllerProvider(clubId).notifier);
+      final controller = container.read(
+        eventsListControllerProvider(clubId).notifier,
+      );
 
       // Wait for initial load
       await container.read(eventsListControllerProvider(clubId).future);
@@ -262,17 +259,21 @@ void main() {
 
     test('should search events', () async {
       // Arrange
-      when(() => mockGetEvents(any()))
-          .thenAnswer((_) async => Right(mockEventsConnection));
+      when(
+        () => mockGetEvents(any()),
+      ).thenAnswer((_) async => Right(mockEventsConnection));
 
-      final controller =
-          container.read(eventsListControllerProvider(clubId).notifier);
+      final controller = container.read(
+        eventsListControllerProvider(clubId).notifier,
+      );
 
       // Act
       await controller.search('wine');
 
       // Assert
-      final state = await container.read(eventsListControllerProvider(clubId).future);
+      final state = await container.read(
+        eventsListControllerProvider(clubId).future,
+      );
       expect(state.filters?['search'], 'wine');
       verify(() => mockGetEvents(any())).called(2); // Initial + search
     });
@@ -290,7 +291,9 @@ void main() {
       container = ProviderContainer(
         overrides: [
           getEventByIdUseCaseProvider.overrideWithValue(mockGetEventById),
-          checkRSVPEligibilityUseCaseProvider.overrideWithValue(mockCheckEligibility),
+          checkRSVPEligibilityUseCaseProvider.overrideWithValue(
+            mockCheckEligibility,
+          ),
         ],
       );
 
@@ -305,32 +308,39 @@ void main() {
       container.dispose();
     });
 
-    test('should load event details and eligibility on initialization', () async {
-      // Arrange
-      when(() => mockGetEventById(any()))
-          .thenAnswer((_) async => Right(mockEvent));
-      when(() => mockCheckEligibility(any()))
-          .thenAnswer((_) async => Right(mockEligibility));
+    test(
+      'should load event details and eligibility on initialization',
+      () async {
+        // Arrange
+        when(
+          () => mockGetEventById(any()),
+        ).thenAnswer((_) async => Right(mockEvent));
+        when(
+          () => mockCheckEligibility(any()),
+        ).thenAnswer((_) async => Right(mockEligibility));
 
-      // Act
-      final controller = container.read(
-        eventDetailsControllerProvider(eventId, memberId).future,
-      );
+        // Act
+        final controller = container.read(
+          eventDetailsControllerProvider(eventId, memberId).future,
+        );
 
-      // Assert
-      final state = await controller;
-      expect(state.event.id, eventId);
-      expect(state.eligibility.canRSVP, true);
-      verify(() => mockGetEventById(any())).called(1);
-      verify(() => mockCheckEligibility(any())).called(1);
-    });
+        // Assert
+        final state = await controller;
+        expect(state.event.id, eventId);
+        expect(state.eligibility.canRSVP, true);
+        verify(() => mockGetEventById(any())).called(1);
+        verify(() => mockCheckEligibility(any())).called(1);
+      },
+    );
 
     test('should handle event not found error', () async {
       // Arrange
-      when(() => mockGetEventById(any()))
-          .thenAnswer((_) async => Left(NotFoundFailure('Event not found')));
-      when(() => mockCheckEligibility(any()))
-          .thenAnswer((_) async => Right(mockEligibility));
+      when(
+        () => mockGetEventById(any()),
+      ).thenAnswer((_) async => Left(NotFoundFailure('Event not found')));
+      when(
+        () => mockCheckEligibility(any()),
+      ).thenAnswer((_) async => Right(mockEligibility));
 
       // Act & Assert
       expect(
@@ -343,10 +353,12 @@ void main() {
 
     test('should reload event details', () async {
       // Arrange
-      when(() => mockGetEventById(any()))
-          .thenAnswer((_) async => Right(mockEvent));
-      when(() => mockCheckEligibility(any()))
-          .thenAnswer((_) async => Right(mockEligibility));
+      when(
+        () => mockGetEventById(any()),
+      ).thenAnswer((_) async => Right(mockEvent));
+      when(
+        () => mockCheckEligibility(any()),
+      ).thenAnswer((_) async => Right(mockEligibility));
 
       final controller = container.read(
         eventDetailsControllerProvider(eventId, memberId).notifier,
@@ -367,10 +379,12 @@ void main() {
 
     test('should refresh eligibility only', () async {
       // Arrange
-      when(() => mockGetEventById(any()))
-          .thenAnswer((_) async => Right(mockEvent));
-      when(() => mockCheckEligibility(any()))
-          .thenAnswer((_) async => Right(mockEligibility));
+      when(
+        () => mockGetEventById(any()),
+      ).thenAnswer((_) async => Right(mockEvent));
+      when(
+        () => mockCheckEligibility(any()),
+      ).thenAnswer((_) async => Right(mockEligibility));
 
       final controller = container.read(
         eventDetailsControllerProvider(eventId, memberId).notifier,
@@ -427,8 +441,9 @@ void main() {
         'attendanceCount': 1,
       };
 
-      when(() => mockCreateRSVP(any()))
-          .thenAnswer((_) async => Right(mockRSVP));
+      when(
+        () => mockCreateRSVP(any()),
+      ).thenAnswer((_) async => Right(mockRSVP));
 
       final controller = container.read(rsvpControllerProvider.notifier);
 
@@ -450,8 +465,9 @@ void main() {
         'response': 'yes',
       };
 
-      when(() => mockCreateRSVP(any()))
-          .thenAnswer((_) async => Left(ValidationFailure('Invalid input')));
+      when(
+        () => mockCreateRSVP(any()),
+      ).thenAnswer((_) async => Left(ValidationFailure('Invalid input')));
 
       final controller = container.read(rsvpControllerProvider.notifier);
 
@@ -466,15 +482,13 @@ void main() {
 
     test('should update RSVP successfully', () async {
       // Arrange
-      final input = {
-        'response': 'maybe',
-        'attendanceCount': 2,
-      };
+      final input = {'response': 'maybe', 'attendanceCount': 2};
 
       final updatedRSVP = mockRSVP.copyWith(response: RSVPResponse.maybe);
 
-      when(() => mockUpdateRSVP(any()))
-          .thenAnswer((_) async => Right(updatedRSVP));
+      when(
+        () => mockUpdateRSVP(any()),
+      ).thenAnswer((_) async => Right(updatedRSVP));
 
       final controller = container.read(rsvpControllerProvider.notifier);
 
@@ -490,8 +504,9 @@ void main() {
 
     test('should cancel RSVP successfully', () async {
       // Arrange
-      when(() => mockCancelRSVP(any()))
-          .thenAnswer((_) async => Right(mockCancelResponse));
+      when(
+        () => mockCancelRSVP(any()),
+      ).thenAnswer((_) async => Right(mockCancelResponse));
 
       final controller = container.read(rsvpControllerProvider.notifier);
 
@@ -509,16 +524,14 @@ void main() {
 
     test('should handle cancel RSVP error', () async {
       // Arrange
-      when(() => mockCancelRSVP(any()))
-          .thenAnswer((_) async => Left(ServerFailure('Cancellation failed')));
+      when(
+        () => mockCancelRSVP(any()),
+      ).thenAnswer((_) async => Left(ServerFailure('Cancellation failed')));
 
       final controller = container.read(rsvpControllerProvider.notifier);
 
       // Act & Assert
-      expect(
-        () => controller.cancelRSVP(rsvpId),
-        throwsA(isA<Exception>()),
-      );
+      expect(() => controller.cancelRSVP(rsvpId), throwsA(isA<Exception>()));
     });
   });
 
@@ -558,14 +571,7 @@ void main() {
       );
 
       // Register fallback values
-      registerFallbackValue(
-        GetMyRSVPsParams(
-          clubId: clubId,
-          status: null,
-          page: 1,
-          pageSize: 20,
-        ),
-      );
+      registerFallbackValue(GetMyRSVPsParams(clubId: clubId, status: null));
     });
 
     tearDown(() {
@@ -574,11 +580,14 @@ void main() {
 
     test('should load RSVPs on initialization', () async {
       // Arrange
-      when(() => mockGetMyRSVPs(any()))
-          .thenAnswer((_) async => Right(mockRSVPsConnection));
+      when(
+        () => mockGetMyRSVPs(any()),
+      ).thenAnswer((_) async => Right(mockRSVPsConnection));
 
       // Act
-      final controller = container.read(myRSVPsControllerProvider(clubId).future);
+      final controller = container.read(
+        myRSVPsControllerProvider(clubId).future,
+      );
 
       // Assert
       final state = await controller;
@@ -590,8 +599,9 @@ void main() {
 
     test('should handle loading error', () async {
       // Arrange
-      when(() => mockGetMyRSVPs(any()))
-          .thenAnswer((_) async => Left(NetworkFailure('Network error')));
+      when(
+        () => mockGetMyRSVPs(any()),
+      ).thenAnswer((_) async => Left(NetworkFailure('Network error')));
 
       // Act & Assert
       expect(
@@ -602,26 +612,34 @@ void main() {
 
     test('should apply status filter', () async {
       // Arrange
-      when(() => mockGetMyRSVPs(any()))
-          .thenAnswer((_) async => Right(mockRSVPsConnection));
+      when(
+        () => mockGetMyRSVPs(any()),
+      ).thenAnswer((_) async => Right(mockRSVPsConnection));
 
-      final controller = container.read(myRSVPsControllerProvider(clubId).notifier);
+      final controller = container.read(
+        myRSVPsControllerProvider(clubId).notifier,
+      );
 
       // Act
       await controller.applyFilter(['confirmed', 'tentative']);
 
       // Assert
-      final state = await container.read(myRSVPsControllerProvider(clubId).future);
+      final state = await container.read(
+        myRSVPsControllerProvider(clubId).future,
+      );
       expect(state.statusFilter, ['confirmed', 'tentative']);
       verify(() => mockGetMyRSVPs(any())).called(2); // Initial + applyFilter
     });
 
     test('should load more RSVPs on pagination', () async {
       // Arrange
-      when(() => mockGetMyRSVPs(any()))
-          .thenAnswer((_) async => Right(mockRSVPsConnection));
+      when(
+        () => mockGetMyRSVPs(any()),
+      ).thenAnswer((_) async => Right(mockRSVPsConnection));
 
-      final controller = container.read(myRSVPsControllerProvider(clubId).notifier);
+      final controller = container.read(
+        myRSVPsControllerProvider(clubId).notifier,
+      );
 
       // Wait for initial load
       await container.read(myRSVPsControllerProvider(clubId).future);
@@ -635,10 +653,13 @@ void main() {
 
     test('should refresh RSVPs list', () async {
       // Arrange
-      when(() => mockGetMyRSVPs(any()))
-          .thenAnswer((_) async => Right(mockRSVPsConnection));
+      when(
+        () => mockGetMyRSVPs(any()),
+      ).thenAnswer((_) async => Right(mockRSVPsConnection));
 
-      final controller = container.read(myRSVPsControllerProvider(clubId).notifier);
+      final controller = container.read(
+        myRSVPsControllerProvider(clubId).notifier,
+      );
 
       // Wait for initial load
       await container.read(myRSVPsControllerProvider(clubId).future);

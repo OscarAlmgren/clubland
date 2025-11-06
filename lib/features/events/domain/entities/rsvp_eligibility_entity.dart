@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 class RSVPEligibilityEntity extends Equatable {
   const RSVPEligibilityEntity({
     required this.eligible,
-    this.reason,
     required this.memberInGoodStanding,
     required this.hasOutstandingDebt,
-    this.debtAmount,
     required this.wouldBeWaitlisted,
-    this.estimatedWaitlistPosition,
     required this.availableSpots,
     required this.priority,
+    this.reason,
+    this.debtAmount,
+    this.estimatedWaitlistPosition,
     this.requiresApproval = false,
     this.isSubgroupMember = false,
   });
@@ -81,16 +81,16 @@ class RSVPEligibilityEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        eligible,
-        reason,
-        memberInGoodStanding,
-        hasOutstandingDebt,
-        debtAmount,
-        wouldBeWaitlisted,
-        estimatedWaitlistPosition,
-        availableSpots,
-        priority,
-        requiresApproval,
-        isSubgroupMember,
-      ];
+    eligible,
+    reason,
+    memberInGoodStanding,
+    hasOutstandingDebt,
+    debtAmount,
+    wouldBeWaitlisted,
+    estimatedWaitlistPosition,
+    availableSpots,
+    priority,
+    requiresApproval,
+    isSubgroupMember,
+  ];
 }

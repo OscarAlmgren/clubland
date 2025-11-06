@@ -22,8 +22,9 @@ void main() {
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
 
-    testWidgets('should show retry button when onRetry is provided',
-        (tester) async {
+    testWidgets('should show retry button when onRetry is provided', (
+      tester,
+    ) async {
       var wasRetried = false;
 
       await tester.pumpApp(
@@ -40,27 +41,20 @@ void main() {
       expect(wasRetried, true);
     });
 
-    testWidgets('should hide retry button when onRetry is null',
-        (tester) async {
-      await tester.pumpApp(
-        const ErrorDisplay(
-          message: 'Error',
-          showRetry: true,
-        ),
-      );
+    testWidgets('should hide retry button when onRetry is null', (
+      tester,
+    ) async {
+      await tester.pumpApp(const ErrorDisplay(message: 'Error'));
 
       expect(find.text('Retry'), findsNothing);
       expect(find.byType(FilledButton), findsNothing);
     });
 
-    testWidgets('should hide retry button when showRetry is false',
-        (tester) async {
+    testWidgets('should hide retry button when showRetry is false', (
+      tester,
+    ) async {
       await tester.pumpApp(
-        ErrorDisplay(
-          message: 'Error',
-          onRetry: () {},
-          showRetry: false,
-        ),
+        ErrorDisplay(message: 'Error', onRetry: () {}, showRetry: false),
       );
 
       expect(find.text('Retry'), findsNothing);
@@ -68,10 +62,7 @@ void main() {
 
     testWidgets('should show custom icon when provided', (tester) async {
       await tester.pumpApp(
-        const ErrorDisplay(
-          message: 'Custom Error',
-          icon: Icons.cloud_off,
-        ),
+        const ErrorDisplay(message: 'Custom Error', icon: Icons.cloud_off),
       );
 
       expect(find.byIcon(Icons.cloud_off), findsOneWidget);
@@ -79,17 +70,13 @@ void main() {
     });
 
     testWidgets('should use default icon when not provided', (tester) async {
-      await tester.pumpApp(
-        const ErrorDisplay(message: 'Error'),
-      );
+      await tester.pumpApp(const ErrorDisplay(message: 'Error'));
 
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
 
     testWidgets('should hide details when not provided', (tester) async {
-      await tester.pumpApp(
-        const ErrorDisplay(message: 'Simple Error'),
-      );
+      await tester.pumpApp(const ErrorDisplay(message: 'Simple Error'));
 
       expect(find.text('Simple Error'), findsOneWidget);
       // Details section should not be shown
@@ -120,9 +107,7 @@ void main() {
       });
 
       testWidgets('should create server error display', (tester) async {
-        await tester.pumpApp(
-          ErrorDisplay.server(),
-        );
+        await tester.pumpApp(ErrorDisplay.server());
 
         expect(find.text('Server Error'), findsOneWidget);
         expect(
@@ -132,8 +117,9 @@ void main() {
         expect(find.byIcon(Icons.cloud_off), findsOneWidget);
       });
 
-      testWidgets('should create server error with custom details',
-          (tester) async {
+      testWidgets('should create server error with custom details', (
+        tester,
+      ) async {
         await tester.pumpApp(
           ErrorDisplay.server(details: 'Custom server error details'),
         );
@@ -143,9 +129,7 @@ void main() {
       });
 
       testWidgets('should create not found error display', (tester) async {
-        await tester.pumpApp(
-          ErrorDisplay.notFound(),
-        );
+        await tester.pumpApp(ErrorDisplay.notFound());
 
         expect(find.text('Not Found'), findsOneWidget);
         expect(
@@ -156,22 +140,22 @@ void main() {
         expect(find.text('Retry'), findsNothing); // No retry for not found
       });
 
-      testWidgets('should create not found error with custom message',
-          (tester) async {
-        await tester.pumpApp(
-          ErrorDisplay.notFound(message: 'Event Not Found'),
-        );
+      testWidgets('should create not found error with custom message', (
+        tester,
+      ) async {
+        await tester.pumpApp(ErrorDisplay.notFound(message: 'Event Not Found'));
 
         expect(find.text('Event Not Found'), findsOneWidget);
       });
 
       testWidgets('should create unauthorized error display', (tester) async {
-        await tester.pumpApp(
-          ErrorDisplay.unauthorized(),
-        );
+        await tester.pumpApp(ErrorDisplay.unauthorized());
 
         expect(find.text('Authentication Required'), findsOneWidget);
-        expect(find.text('Please log in to access this content.'), findsOneWidget);
+        expect(
+          find.text('Please log in to access this content.'),
+          findsOneWidget,
+        );
         expect(find.byIcon(Icons.lock_outline), findsOneWidget);
         expect(find.text('Retry'), findsNothing); // No retry for unauthorized
       });
@@ -181,24 +165,20 @@ void main() {
   group('CompactErrorDisplay', () {
     testWidgets('should render compact error message', (tester) async {
       await tester.pumpApp(
-        const CompactErrorDisplay(
-          message: 'Failed to load data',
-        ),
+        const CompactErrorDisplay(message: 'Failed to load data'),
       );
 
       expect(find.text('Failed to load data'), findsOneWidget);
       expect(find.byIcon(Icons.error_outline), findsOneWidget);
     });
 
-    testWidgets('should show retry button when onRetry is provided',
-        (tester) async {
+    testWidgets('should show retry button when onRetry is provided', (
+      tester,
+    ) async {
       var wasRetried = false;
 
       await tester.pumpApp(
-        CompactErrorDisplay(
-          message: 'Error',
-          onRetry: () => wasRetried = true,
-        ),
+        CompactErrorDisplay(message: 'Error', onRetry: () => wasRetried = true),
       );
 
       expect(find.byIcon(Icons.refresh), findsOneWidget);
@@ -208,21 +188,17 @@ void main() {
       expect(wasRetried, true);
     });
 
-    testWidgets('should hide retry button when onRetry is null',
-        (tester) async {
-      await tester.pumpApp(
-        const CompactErrorDisplay(message: 'Error'),
-      );
+    testWidgets('should hide retry button when onRetry is null', (
+      tester,
+    ) async {
+      await tester.pumpApp(const CompactErrorDisplay(message: 'Error'));
 
       expect(find.byType(IconButton), findsNothing);
     });
 
     testWidgets('should have tooltip on retry button', (tester) async {
       await tester.pumpApp(
-        CompactErrorDisplay(
-          message: 'Error',
-          onRetry: () {},
-        ),
+        CompactErrorDisplay(message: 'Error', onRetry: () {}),
       );
 
       final iconButton = tester.widget<IconButton>(find.byType(IconButton));
@@ -230,9 +206,7 @@ void main() {
     });
 
     testWidgets('should render with proper styling', (tester) async {
-      await tester.pumpApp(
-        const CompactErrorDisplay(message: 'Styled error'),
-      );
+      await tester.pumpApp(const CompactErrorDisplay(message: 'Styled error'));
 
       final container = tester.widget<Container>(
         find.descendant(
@@ -249,11 +223,7 @@ void main() {
 
   group('EmptyStateDisplay', () {
     testWidgets('should render empty state with title', (tester) async {
-      await tester.pumpApp(
-        const EmptyStateDisplay(
-          title: 'No Events Found',
-        ),
-      );
+      await tester.pumpApp(const EmptyStateDisplay(title: 'No Events Found'));
 
       expect(find.text('No Events Found'), findsOneWidget);
       expect(find.byIcon(Icons.inbox), findsOneWidget);
@@ -275,9 +245,7 @@ void main() {
     });
 
     testWidgets('should hide description when not provided', (tester) async {
-      await tester.pumpApp(
-        const EmptyStateDisplay(title: 'Empty'),
-      );
+      await tester.pumpApp(const EmptyStateDisplay(title: 'Empty'));
 
       expect(find.text('Empty'), findsOneWidget);
       // Description should not be shown
@@ -304,19 +272,14 @@ void main() {
     });
 
     testWidgets('should hide action when not provided', (tester) async {
-      await tester.pumpApp(
-        const EmptyStateDisplay(title: 'Empty'),
-      );
+      await tester.pumpApp(const EmptyStateDisplay(title: 'Empty'));
 
       expect(find.byType(FilledButton), findsNothing);
     });
 
     testWidgets('should show custom icon when provided', (tester) async {
       await tester.pumpApp(
-        const EmptyStateDisplay(
-          title: 'No Data',
-          icon: Icons.event_note,
-        ),
+        const EmptyStateDisplay(title: 'No Data', icon: Icons.event_note),
       );
 
       expect(find.byIcon(Icons.event_note), findsOneWidget);
@@ -324,9 +287,7 @@ void main() {
     });
 
     testWidgets('should use default icon when not provided', (tester) async {
-      await tester.pumpApp(
-        const EmptyStateDisplay(title: 'Empty'),
-      );
+      await tester.pumpApp(const EmptyStateDisplay(title: 'Empty'));
 
       expect(find.byIcon(Icons.inbox), findsOneWidget);
     });
@@ -334,12 +295,7 @@ void main() {
 
   group('accessibility', () {
     testWidgets('ErrorDisplay should be accessible', (tester) async {
-      await tester.pumpApp(
-        ErrorDisplay(
-          message: 'Test Error',
-          onRetry: () {},
-        ),
-      );
+      await tester.pumpApp(ErrorDisplay(message: 'Test Error', onRetry: () {}));
 
       expect(find.byType(ErrorDisplay), findsOneWidget);
       expect(find.text('Test Error'), findsOneWidget);
@@ -348,10 +304,7 @@ void main() {
 
     testWidgets('CompactErrorDisplay should be accessible', (tester) async {
       await tester.pumpApp(
-        CompactErrorDisplay(
-          message: 'Compact Error',
-          onRetry: () {},
-        ),
+        CompactErrorDisplay(message: 'Compact Error', onRetry: () {}),
       );
 
       expect(find.byType(CompactErrorDisplay), findsOneWidget);

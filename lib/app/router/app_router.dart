@@ -11,8 +11,6 @@ import '../../features/clubs/presentation/pages/clubs_page.dart';
 import '../../features/events/presentation/pages/event_details_page.dart';
 import '../../features/events/presentation/pages/events_list_page.dart';
 import '../../features/events/presentation/pages/my_rsvps_page.dart';
-import '../../features/events/presentation/pages/rsvp_form_page.dart';
-import '../../features/events/presentation/pages/update_rsvp_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/pages/profile_settings_page.dart';
@@ -25,10 +23,7 @@ part 'app_router.g.dart';
 class _RouterRefreshNotifier extends ChangeNotifier {
   _RouterRefreshNotifier(this._ref) {
     // Listen to auth changes and notify router
-    _ref.listen(
-      authControllerProvider,
-      (_, __) => notifyListeners(),
-    );
+    _ref.listen(authControllerProvider, (_, __) => notifyListeners());
   }
 
   final Ref _ref;
@@ -147,10 +142,7 @@ GoRouter appRouter(Ref ref) {
           final eventId = state.pathParameters['eventId']!;
           // TODO: Get memberId from auth state
           const memberId = 'member123'; // Placeholder
-          return EventDetailsPage(
-            eventId: eventId,
-            memberId: memberId,
-          );
+          return EventDetailsPage(eventId: eventId, memberId: memberId);
         },
       ),
       GoRoute(

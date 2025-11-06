@@ -5,9 +5,9 @@ class CancelRSVPResponseEntity extends Equatable {
   const CancelRSVPResponseEntity({
     required this.success,
     required this.message,
+    required this.feeWaived,
     this.cancellationFee,
     this.refundAmount,
-    required this.feeWaived,
   });
 
   /// Whether the cancellation was successful
@@ -42,10 +42,10 @@ class CancelRSVPResponseEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        success,
-        message,
-        cancellationFee,
-        refundAmount,
-        feeWaived,
-      ];
+    success,
+    message,
+    cancellationFee,
+    refundAmount,
+    feeWaived,
+  ];
 }

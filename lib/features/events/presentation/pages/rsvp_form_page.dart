@@ -40,8 +40,10 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
   int _attendanceCount = 1;
   final List<TextEditingController> _guestNameControllers = [];
   final Set<String> _selectedDietaryRestrictions = {};
-  final TextEditingController _seatingPreferencesController = TextEditingController();
-  final TextEditingController _specialRequestsController = TextEditingController();
+  final TextEditingController _seatingPreferencesController =
+      TextEditingController();
+  final TextEditingController _specialRequestsController =
+      TextEditingController();
 
   // Available dietary restrictions
   final List<String> _dietaryOptions = [
@@ -181,9 +183,7 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
           size: 64,
         ),
         title: const Text('RSVP Failed'),
-        content: Text(
-          'Failed to submit your RSVP: $error',
-        ),
+        content: Text('Failed to submit your RSVP: $error'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -200,9 +200,7 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
     final maxGuests = widget.event.maxGuests ?? 4;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('RSVP to Event'),
-      ),
+      appBar: AppBar(title: const Text('RSVP to Event')),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -231,7 +229,9 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '${widget.event.startTime.toLocal().toString().split(' ')[0]}',
+                          widget.event.startTime.toLocal().toString().split(
+                            ' ',
+                          )[0],
                           style: theme.textTheme.bodyMedium,
                         ),
                       ],
@@ -392,7 +392,9 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
                 spacing: 8,
                 runSpacing: 8,
                 children: _dietaryOptions.map((option) {
-                  final isSelected = _selectedDietaryRestrictions.contains(option);
+                  final isSelected = _selectedDietaryRestrictions.contains(
+                    option,
+                  );
                   return FilterChip(
                     label: Text(option),
                     selected: isSelected,

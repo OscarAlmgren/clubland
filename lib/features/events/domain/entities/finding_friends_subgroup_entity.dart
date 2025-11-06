@@ -6,9 +6,9 @@ class FindingFriendsSubgroupEntity extends Equatable {
     required this.id,
     required this.clubId,
     required this.name,
-    this.description,
     required this.memberCount,
     required this.isActive,
+    this.description,
     this.organizerId,
     this.organizerName,
   });
@@ -30,13 +30,13 @@ class FindingFriendsSubgroupEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        clubId,
-        name,
-        description,
-        memberCount,
-        isActive,
-        organizerId,
-        organizerName,
-      ];
+    id,
+    clubId,
+    name,
+    description,
+    memberCount,
+    isActive,
+    organizerId,
+    organizerName,
+  ];
 }
