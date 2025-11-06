@@ -401,8 +401,7 @@ class EventDetailsPage extends ConsumerWidget {
               .reload();
         },
       );
-    } else if (errorMessage.contains('NOT_FOUND') ||
-        errorMessage.contains('NotFoundFailure')) {
+    } else if (errorMessage.contains('NOT_FOUND')) {
       return ErrorDisplay.notFound(
         message: 'Event Not Found',
       );
