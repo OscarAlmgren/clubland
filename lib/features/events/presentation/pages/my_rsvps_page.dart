@@ -159,7 +159,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
         errorMessage.contains('Failed host lookup')) {
       return ErrorDisplay.network(onRetry: _refresh);
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
-        errorMessage.contains('AuthenticationFailure')) {
+        errorMessage.contains('AuthFailure')) {
       return ErrorDisplay.unauthorized();
     } else if (errorMessage.contains('TimeoutException')) {
       return ErrorDisplay(

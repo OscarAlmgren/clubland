@@ -66,7 +66,7 @@ class EventsRepositoryImpl implements EventsRepository {
       );
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
@@ -117,7 +117,7 @@ class EventsRepositoryImpl implements EventsRepository {
         return Left(NetworkFailure.notFound());
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
@@ -140,7 +140,7 @@ class EventsRepositoryImpl implements EventsRepository {
       return Right(eligibility);
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
@@ -162,7 +162,7 @@ class EventsRepositoryImpl implements EventsRepository {
         return Left(ValidationFailure(e.message, e.code));
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
@@ -193,7 +193,7 @@ class EventsRepositoryImpl implements EventsRepository {
         return Left(NetworkFailure.notFound());
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
@@ -221,7 +221,7 @@ class EventsRepositoryImpl implements EventsRepository {
         return Left(NetworkFailure.notFound());
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
@@ -273,7 +273,7 @@ class EventsRepositoryImpl implements EventsRepository {
       );
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
@@ -305,7 +305,7 @@ class EventsRepositoryImpl implements EventsRepository {
       return Right(subgroups);
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {

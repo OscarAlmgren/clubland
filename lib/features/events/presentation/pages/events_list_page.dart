@@ -190,7 +190,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
         errorMessage.contains('Failed host lookup')) {
       return ErrorDisplay.network(onRetry: _refresh);
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
-        errorMessage.contains('AuthenticationFailure')) {
+        errorMessage.contains('AuthFailure')) {
       return ErrorDisplay.unauthorized();
     } else if (errorMessage.contains('TimeoutException')) {
       return ErrorDisplay(
