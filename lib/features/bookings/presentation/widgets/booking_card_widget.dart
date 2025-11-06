@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../data/models/booking_model.dart';
+import '../../domain/entities/booking_entity.dart';
 
 class BookingCardWidget extends StatelessWidget {
   const BookingCardWidget({
