@@ -253,7 +253,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
 
   Future<void> _cancelRSVP(String rsvpId) async {
     try {
-      final controller = ref.read(rsvpControllerProvider.notifier);
+      final controller = ref.read(rSVPControllerProvider.notifier);
       final response = await controller.cancelRSVP(rsvpId);
 
       if (!mounted) return;

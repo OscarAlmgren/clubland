@@ -120,12 +120,12 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
           'specialRequests': [_specialRequestsController.text.trim()],
       };
 
-      final controller = ref.read(rsvpControllerProvider.notifier);
+      final controller = ref.read(rSVPControllerProvider.notifier);
       await controller.createRSVP(input);
 
       if (!mounted) return;
 
-      final rsvpState = ref.read(rsvpControllerProvider);
+      final rsvpState = ref.read(rSVPControllerProvider);
 
       if (rsvpState.hasError) {
         _showErrorDialog(rsvpState.error.toString());
