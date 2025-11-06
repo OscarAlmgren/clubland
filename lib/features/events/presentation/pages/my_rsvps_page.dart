@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../domain/entities/event_rsvp_entity.dart';
 import '../controllers/events_controller.dart';
 import '../widgets/error_display.dart';
 import '../widgets/rsvp_status_badge.dart';

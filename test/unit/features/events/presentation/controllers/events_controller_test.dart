@@ -63,6 +63,8 @@ void main() {
     organizerName: 'John Doe',
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
+    allowsSubgroupPriority: null,
+    fullHouseExclusive: null,
   );
 
   final mockRSVP = EventRSVPEntity(
