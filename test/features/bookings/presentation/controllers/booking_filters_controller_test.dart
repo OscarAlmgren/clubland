@@ -1,4 +1,4 @@
-import 'package:clubland/features/bookings/data/models/booking_model.dart';
+import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:clubland/features/bookings/presentation/controllers/booking_filters_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

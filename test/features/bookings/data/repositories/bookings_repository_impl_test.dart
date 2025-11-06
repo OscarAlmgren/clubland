@@ -3,6 +3,7 @@ import 'package:clubland/features/bookings/data/datasources/bookings_remote_data
 import 'package:clubland/features/bookings/data/models/booking_model.dart';
 import 'package:clubland/features/bookings/data/models/facility_availability_model.dart';
 import 'package:clubland/features/bookings/data/repositories/bookings_repository_impl.dart';
+import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
