@@ -141,9 +141,10 @@ class EventDetailsPage extends ConsumerWidget {
             ],
 
             // RSVP Information
-            _buildRSVPInfo(context, event, eligibility),
-
-            const SizedBox(height: 24),
+            if (eligibility != null) ...[
+              _buildRSVPInfo(context, event, eligibility),
+              const SizedBox(height: 24),
+            ],
 
             // Event details
             _buildEventInfo(context, event),
@@ -173,7 +174,8 @@ class EventDetailsPage extends ConsumerWidget {
             ],
 
             // RSVP Button
-            _buildRSVPButton(context, ref, event, eligibility),
+            if (eligibility != null)
+              _buildRSVPButton(context, ref, event, eligibility),
 
             const SizedBox(height: 16),
           ],
