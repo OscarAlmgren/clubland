@@ -78,7 +78,7 @@ class NetworkException extends AppException {
       NetworkException('Bad request: $message', 'BAD_REQUEST');
 
   /// Creates an exception for resources that cannot be found (404 status code).
-  factory NetworkException.notFound() =>
+  factory NetworkException.notFound(String message, String? extension) =>
       const NetworkException('Resource not found', 'NOT_FOUND');
 
   /// Creates an exception for actions that are forbidden due to user role or policy (403 status code).

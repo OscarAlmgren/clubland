@@ -28,6 +28,7 @@ class ClubEntity extends Equatable {
     this.userRelation,
     this.createdAt,
     this.updatedAt,
+    required location,
   });
 
   final String id;
