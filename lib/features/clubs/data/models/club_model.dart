@@ -83,8 +83,7 @@ class ClubModel extends ClubEntity {
     updatedAt: json['updatedAt'] != null
         ? DateTime.parse(json['updatedAt'] as String)
         : null,
-    location: null,
-    website: null,
+    website: json['website'] as String?,
   );
 
   Map<String, dynamic> toJson() => {
@@ -116,6 +115,7 @@ class ClubModel extends ClubEntity {
       'userRelation': (userRelation as ClubUserRelationModel).toJson(),
     if (createdAt != null) 'createdAt': createdAt!.toIso8601String(),
     if (updatedAt != null) 'updatedAt': updatedAt!.toIso8601String(),
+    if (website != null) 'website': website,
   };
 
   ClubModel copyWith({
@@ -136,6 +136,7 @@ class ClubModel extends ClubEntity {
     ClubUserRelationEntity? userRelation,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? website,
   }) => ClubModel(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -154,8 +155,7 @@ class ClubModel extends ClubEntity {
     userRelation: userRelation ?? this.userRelation,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    location: null,
-    website: null,
+    website: website ?? this.website,
   );
 
   @override
@@ -177,9 +177,8 @@ class ClubModel extends ClubEntity {
     userRelation,
     createdAt,
     updatedAt,
+    website,
   ];
-
-  void get location {}
 
   @override
   String toString() => 'ClubModel(id: $id, name: $name, slug: $slug)';

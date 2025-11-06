@@ -15,10 +15,23 @@ import '../entities/visit_entity.dart';
 abstract class BookingsRepository {
   /// Get all bookings for the current user
   ///
+  /// Parameters:
+  /// - [status]: Optional filter by booking status
+  /// - [startDate]: Optional filter for bookings starting after this date
+  /// - [endDate]: Optional filter for bookings ending before this date
+  /// - [limit]: Optional limit on number of results
+  /// - [cursor]: Optional pagination cursor
+  ///
   /// Returns:
   /// - [Right<List<BookingEntity>>]: List of user's bookings on success
   /// - [Left<Failure>]: Failure object on error
-  Future<Either<Failure, List<BookingEntity>>> getUserBookings();
+  Future<Either<Failure, List<BookingEntity>>> getUserBookings({
+    BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
+    int? limit,
+    String? cursor,
+  });
 
   /// Get upcoming bookings for the current user
   ///

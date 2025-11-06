@@ -22,9 +22,21 @@ class BookingsRepositoryImpl implements BookingsRepository {
   final BookingsRemoteDataSource _remoteDataSource;
 
   @override
-  Future<Either<Failure, List<BookingEntity>>> getUserBookings() async {
+  Future<Either<Failure, List<BookingEntity>>> getUserBookings({
+    BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
+    int? limit,
+    String? cursor,
+  }) async {
     try {
-      final bookings = await _remoteDataSource.getUserBookings();
+      final bookings = await _remoteDataSource.getUserBookings(
+        status: status,
+        startDate: startDate,
+        endDate: endDate,
+        limit: limit,
+        cursor: cursor,
+      );
       return Right(_convertModelsToEntities(bookings));
     } on NetworkException catch (e) {
       return Left(NetworkFailure(e.message, e.code));
