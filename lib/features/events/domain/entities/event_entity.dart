@@ -104,6 +104,7 @@ class EventEntity extends Equatable {
     this.paymentInstructions,
     this.tentativeCount,
     this.waitlistCount,
+    this.tags = const [],
   });
 
   final String id;
@@ -152,6 +153,9 @@ class EventEntity extends Equatable {
 
   // Payment
   final String? paymentInstructions;
+
+  // Tags
+  final List<String> tags;
 
   // Timestamps
   final DateTime createdAt;
@@ -221,5 +225,6 @@ class EventEntity extends Equatable {
     paymentInstructions,
     tentativeCount,
     waitlistCount,
+    tags,
   ];
 }
