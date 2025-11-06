@@ -123,7 +123,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
       child: ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.symmetric(vertical: 8),
-        itemCount: rsvps.length + (state.hasMore ? 1 : 0),
+        itemCount: rsvps.length + (state.pageInfo.hasNextPage ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= rsvps.length) {
             // Loading more indicator
@@ -159,7 +159,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
         errorMessage.contains('Failed host lookup')) {
       return ErrorDisplay.network(onRetry: _refresh);
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
-        errorMessage.contains('AuthenticationFailure')) {
+        errorMessage.contains('AuthFailure')) {
       return ErrorDisplay.unauthorized();
     } else if (errorMessage.contains('TimeoutException')) {
       return ErrorDisplay(
@@ -253,7 +253,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
 
   Future<void> _cancelRSVP(String rsvpId) async {
     try {
-      final controller = ref.read(rsvpControllerProvider.notifier);
+      final controller = ref.read(rSVPControllerProvider.notifier);
       final response = await controller.cancelRSVP(rsvpId);
 
       if (!mounted) return;

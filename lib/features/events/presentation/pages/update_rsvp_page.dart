@@ -130,12 +130,12 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
           'specialRequests': [_specialRequestsController.text.trim()],
       };
 
-      final controller = ref.read(rsvpControllerProvider.notifier);
+      final controller = ref.read(rSVPControllerProvider.notifier);
       await controller.updateRSVP(widget.rsvp.id, input);
 
       if (!mounted) return;
 
-      final rsvpState = ref.read(rsvpControllerProvider);
+      final rsvpState = ref.read(rSVPControllerProvider);
 
       if (rsvpState.hasError) {
         _showErrorDialog(rsvpState.error.toString());

@@ -1,12 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-enum BookingStatus {
-  confirmed,
-  pending,
-  cancelled,
-  completed,
-  noShow,
-}
+import '../../domain/entities/booking_entity.dart';
 
 enum BookingUpdateType {
   confirmed,

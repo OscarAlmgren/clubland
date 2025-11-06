@@ -141,9 +141,10 @@ class EventDetailsPage extends ConsumerWidget {
             ],
 
             // RSVP Information
-            _buildRSVPInfo(context, event, eligibility),
-
-            const SizedBox(height: 24),
+            if (eligibility != null) ...[
+              _buildRSVPInfo(context, event, eligibility),
+              const SizedBox(height: 24),
+            ],
 
             // Event details
             _buildEventInfo(context, event),
@@ -173,7 +174,8 @@ class EventDetailsPage extends ConsumerWidget {
             ],
 
             // RSVP Button
-            _buildRSVPButton(context, ref, event, eligibility),
+            if (eligibility != null)
+              _buildRSVPButton(context, ref, event, eligibility),
 
             const SizedBox(height: 16),
           ],
@@ -401,13 +403,12 @@ class EventDetailsPage extends ConsumerWidget {
               .reload();
         },
       );
-    } else if (errorMessage.contains('NOT_FOUND') ||
-        errorMessage.contains('NotFoundFailure')) {
+    } else if (errorMessage.contains('NOT_FOUND')) {
       return ErrorDisplay.notFound(
         message: 'Event Not Found',
       );
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
-        errorMessage.contains('AuthenticationFailure')) {
+        errorMessage.contains('AuthFailure')) {
       return ErrorDisplay.unauthorized();
     } else if (errorMessage.contains('TimeoutException')) {
       return ErrorDisplay(

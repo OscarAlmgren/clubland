@@ -158,7 +158,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
       child: ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.symmetric(vertical: 8),
-        itemCount: events.length + (state.hasMore ? 1 : 0),
+        itemCount: events.length + (state.pageInfo.hasNextPage ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= events.length) {
             // Loading more indicator
@@ -190,7 +190,7 @@ class _EventsListPageState extends ConsumerState<EventsListPage> {
         errorMessage.contains('Failed host lookup')) {
       return ErrorDisplay.network(onRetry: _refresh);
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
-        errorMessage.contains('AuthenticationFailure')) {
+        errorMessage.contains('AuthFailure')) {
       return ErrorDisplay.unauthorized();
     } else if (errorMessage.contains('TimeoutException')) {
       return ErrorDisplay(

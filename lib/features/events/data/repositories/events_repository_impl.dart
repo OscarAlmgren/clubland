@@ -66,13 +66,13 @@ class EventsRepositoryImpl implements EventsRepository {
       );
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -101,9 +101,9 @@ class EventsRepositoryImpl implements EventsRepository {
     } on NetworkException catch (e) {
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -114,16 +114,16 @@ class EventsRepositoryImpl implements EventsRepository {
       return Right(event);
     } on NetworkException catch (e) {
       if (e.code == 'NOT_FOUND') {
-        return Left(NotFoundFailure('Event not found', e.code));
+        return Left(NetworkFailure.notFound());
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -140,13 +140,13 @@ class EventsRepositoryImpl implements EventsRepository {
       return Right(eligibility);
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -162,15 +162,15 @@ class EventsRepositoryImpl implements EventsRepository {
         return Left(ValidationFailure(e.message, e.code));
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on ValidationException catch (e) {
       return Left(ValidationFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -190,18 +190,18 @@ class EventsRepositoryImpl implements EventsRepository {
         return Left(ValidationFailure(e.message, e.code));
       }
       if (e.code == 'NOT_FOUND') {
-        return Left(NotFoundFailure('RSVP not found', e.code));
+        return Left(NetworkFailure.notFound());
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on ValidationException catch (e) {
       return Left(ValidationFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -218,16 +218,16 @@ class EventsRepositoryImpl implements EventsRepository {
       return Right(response);
     } on NetworkException catch (e) {
       if (e.code == 'NOT_FOUND') {
-        return Left(NotFoundFailure('RSVP not found', e.code));
+        return Left(NetworkFailure.notFound());
       }
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -273,13 +273,13 @@ class EventsRepositoryImpl implements EventsRepository {
       );
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -290,7 +290,7 @@ class EventsRepositoryImpl implements EventsRepository {
       // For now, return empty list - to be implemented with backend support
       return const Right([]);
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -305,13 +305,13 @@ class EventsRepositoryImpl implements EventsRepository {
       return Right(subgroups);
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {
-        return Left(AuthenticationFailure(e.message, e.code));
+        return Left(AuthFailure(e.message, e.code));
       }
       return Left(NetworkFailure(e.message, e.code));
     } on GraphQLException catch (e) {
-      return Left(ServerFailure(e.message, e.code));
+      return Left(GraphQLFailure(e.message, e.code));
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -319,10 +319,10 @@ class EventsRepositoryImpl implements EventsRepository {
   Future<Either<Failure, EventRSVPEntity>> getRSVPById(String rsvpId) async {
     try {
       // This would require a backend query for single RSVP
-      // For now, return a NotFoundFailure - to be implemented with backend support
-      return Left(NotFoundFailure('Method not yet implemented', 'NOT_IMPLEMENTED'));
+      // For now, return UnknownFailure.notImplemented() - to be implemented with backend support
+      return Left(UnknownFailure.notImplemented());
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 
@@ -336,7 +336,7 @@ class EventsRepositoryImpl implements EventsRepository {
       // For now, return empty list - to be implemented with backend support
       return const Right([]);
     } on Exception catch (e) {
-      return Left(ServerFailure('Unexpected error: $e'));
+      return Left(UnknownFailure.unexpected(e.toString()));
     }
   }
 }
