@@ -123,7 +123,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
       child: ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.symmetric(vertical: 8),
-        itemCount: rsvps.length + (state.hasMore ? 1 : 0),
+        itemCount: rsvps.length + (state.pageInfo.hasNextPage ? 1 : 0),
         itemBuilder: (context, index) {
           if (index >= rsvps.length) {
             // Loading more indicator
