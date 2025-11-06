@@ -203,7 +203,7 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final maxGuests = widget.event.maxGuests ?? 4;
+    final maxGuests = widget.event.maxGuestsPerMember ?? 4;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Update RSVP')),

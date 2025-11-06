@@ -14,6 +14,9 @@ class RSVPEligibilityEntity extends Equatable {
     this.estimatedWaitlistPosition,
     this.requiresApproval = false,
     this.isSubgroupMember = false,
+    this.hasExistingRSVP = false,
+    this.requiresPayment = false,
+    this.paymentAmount,
   });
 
   /// Whether the member is eligible to RSVP
@@ -48,6 +51,18 @@ class RSVPEligibilityEntity extends Equatable {
 
   /// Whether member is part of the subgroup
   final bool isSubgroupMember;
+
+  /// Whether member has an existing RSVP for this event
+  final bool hasExistingRSVP;
+
+  /// Whether payment is required for this RSVP
+  final bool requiresPayment;
+
+  /// Payment amount required (if applicable)
+  final double? paymentAmount;
+
+  /// Whether member can RSVP (alias for eligible for backward compatibility)
+  bool get canRSVP => eligible;
 
   /// Whether member would get immediate confirmation
   bool get wouldBeConfirmed {
@@ -92,5 +107,8 @@ class RSVPEligibilityEntity extends Equatable {
     priority,
     requiresApproval,
     isSubgroupMember,
+    hasExistingRSVP,
+    requiresPayment,
+    paymentAmount,
   ];
 }

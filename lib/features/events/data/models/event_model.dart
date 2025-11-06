@@ -35,6 +35,7 @@ class EventModel extends EventEntity {
     super.paymentInstructions,
     super.tentativeCount,
     super.waitlistCount,
+    super.tags,
   });
 
   /// Create EventModel from JSON
@@ -77,6 +78,10 @@ class EventModel extends EventEntity {
       paymentInstructions: json['paymentInstructions'] as String?,
       tentativeCount: json['tentativeCount'] as int?,
       waitlistCount: json['waitlistCount'] as int?,
+      tags: (json['tags'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
   }
 
@@ -115,6 +120,7 @@ class EventModel extends EventEntity {
       'paymentInstructions': paymentInstructions,
       'tentativeCount': tentativeCount,
       'waitlistCount': waitlistCount,
+      'tags': tags,
     };
   }
 
@@ -153,6 +159,7 @@ class EventModel extends EventEntity {
       paymentInstructions: entity.paymentInstructions,
       tentativeCount: entity.tentativeCount,
       waitlistCount: entity.waitlistCount,
+      tags: entity.tags,
     );
   }
 }

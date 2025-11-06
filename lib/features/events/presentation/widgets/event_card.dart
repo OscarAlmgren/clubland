@@ -184,7 +184,7 @@ class EventCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Payment required: \$${event.paymentAmount?.toStringAsFixed(2) ?? '0.00'}',
+                          'Payment required: \$${event.price?.toStringAsFixed(2) ?? '0.00'}',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.primary,
                             fontWeight: FontWeight.w600,

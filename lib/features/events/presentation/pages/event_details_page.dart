@@ -7,6 +7,7 @@ import '../../domain/entities/rsvp_eligibility_entity.dart';
 import '../controllers/events_controller.dart';
 import '../widgets/capacity_indicator.dart';
 import '../widgets/error_display.dart';
+import 'rsvp_form_page.dart';
 
 /// Event details page with RSVP functionality
 class EventDetailsPage extends ConsumerWidget {
@@ -312,12 +313,12 @@ class EventDetailsPage extends ConsumerWidget {
                   label: 'Guest Policy',
                   value: _getGuestPolicyLabel(event.guestPolicy),
                 ),
-                if (event.maxGuests != null) ...[
+                if (event.maxGuestsPerMember != null) ...[
                   const Divider(height: 24),
                   _InfoRow(
                     icon: Icons.person_add,
                     label: 'Max Guests',
-                    value: event.maxGuests.toString(),
+                    value: event.maxGuestsPerMember.toString(),
                   ),
                 ],
                 if (event.rsvpDeadline != null) ...[
@@ -373,7 +374,7 @@ class EventDetailsPage extends ConsumerWidget {
     }
 
     return FilledButton.icon(
-      onPressed: () => _navigateToRSVPForm(context, event),
+      onPressed: () => _navigateToRSVPForm(context, event, eligibility),
       icon: const Icon(Icons.event_available),
       label: const Text('RSVP to Event'),
       style: FilledButton.styleFrom(
@@ -451,21 +452,11 @@ class EventDetailsPage extends ConsumerWidget {
     );
   }
 
-  void _navigateToRSVPForm(BuildContext context, EventEntity event) {
-    final eligibility = ref.read(
-      eventDetailsControllerProvider(eventId, memberId),
-    ).value?.eligibility;
-
-    if (eligibility == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to load eligibility information'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
+  void _navigateToRSVPForm(
+    BuildContext context,
+    EventEntity event,
+    RSVPEligibilityEntity eligibility,
+  ) {
     Navigator.of(context).push<void>(
       MaterialPageRoute(
         builder: (context) => RSVPFormPage(

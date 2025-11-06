@@ -14,6 +14,9 @@ class RSVPEligibilityModel extends RSVPEligibilityEntity {
     super.estimatedWaitlistPosition,
     super.requiresApproval,
     super.isSubgroupMember,
+    super.hasExistingRSVP,
+    super.requiresPayment,
+    super.paymentAmount,
   });
 
   /// Create RSVPEligibilityModel from JSON
@@ -30,6 +33,9 @@ class RSVPEligibilityModel extends RSVPEligibilityEntity {
       priority: json['priority'] as int? ?? 2,
       requiresApproval: json['requiresApproval'] as bool? ?? false,
       isSubgroupMember: json['isSubgroupMember'] as bool? ?? false,
+      hasExistingRSVP: json['hasExistingRSVP'] as bool? ?? false,
+      requiresPayment: json['requiresPayment'] as bool? ?? false,
+      paymentAmount: (json['paymentAmount'] as num?)?.toDouble(),
     );
   }
 
@@ -47,6 +53,9 @@ class RSVPEligibilityModel extends RSVPEligibilityEntity {
       'priority': priority,
       'requiresApproval': requiresApproval,
       'isSubgroupMember': isSubgroupMember,
+      'hasExistingRSVP': hasExistingRSVP,
+      'requiresPayment': requiresPayment,
+      'paymentAmount': paymentAmount,
     };
   }
 }
