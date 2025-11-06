@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/models/booking_model.dart';
+import '../../domain/entities/booking_entity.dart';
 
 part 'booking_filters_controller.g.dart';
 
