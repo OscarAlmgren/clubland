@@ -1,13 +1,23 @@
-import '../../../../core/design_system/design_system.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-/// Home page - main dashboard for the app
-class HomePage extends StatelessWidget {
+import '../../../../core/design_system/design_system.dart';
+import '../../domain/entities/news_feed_item_entity.dart';
+import '../controllers/news_feed_controller.dart';
+import '../widgets/lunch_menu_card.dart';
+import '../widgets/news_feed_event_card.dart';
+import '../widgets/news_post_card.dart';
+import '../widgets/rsvp_modal.dart';
+
+/// Home page - main dashboard for the app with news feed
+class HomePage extends ConsumerWidget {
   /// Constructs a [HomePage].
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final newsFeedState = ref.watch(newsFeedControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -27,82 +37,172 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: AppSpacing.pagePadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Welcome to Clubland',
-              style: AppTextStyles.headlineMedium.copyWith(
-                color: colorScheme.onSurface,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await ref.read(newsFeedControllerProvider.notifier).refresh();
+        },
+        child: SingleChildScrollView(
+          padding: AppSpacing.pagePadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Welcome to Clubland',
+                style: AppTextStyles.headlineMedium.copyWith(
+                  color: colorScheme.onSurface,
+                ),
               ),
-            ),
-            AppSpacing.verticalSpaceSM,
-            Text(
-              'Discover premium clubs and make reservations worldwide.',
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: colorScheme.onSurface,
+              AppSpacing.verticalSpaceSM,
+              Text(
+                'Stay up to date with club news, events, and dining.',
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: colorScheme.onSurface,
+                ),
               ),
-            ),
-            AppSpacing.verticalSpaceXXL,
+              AppSpacing.verticalSpaceXXL,
 
-            // Quick Actions
-            Text(
-              'Quick Actions',
-              style: AppTextStyles.titleMedium.copyWith(
-                color: colorScheme.onSurface,
+              // News Feed Section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'News Feed',
+                    style: AppTextStyles.titleMedium.copyWith(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  if (newsFeedState.isLoading)
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                ],
               ),
-            ),
-            AppSpacing.verticalSpaceMD,
-            Row(
-              children: [
-                Expanded(
-                  child: AppCard(
+              AppSpacing.verticalSpaceMD,
+
+              // News feed items
+              newsFeedState.when(
+                data: (items) => _buildNewsFeed(context, ref, items),
+                loading: () => const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                error: (error, stack) => Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
                     child: Column(
                       children: [
-                        Icon(
-                          Icons.location_city,
-                          size: 32,
-                          color: colorScheme.onSurface,
+                        const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                        AppSpacing.verticalSpaceMD,
+                        Text(
+                          'Failed to load news feed',
+                          style: AppTextStyles.titleMedium,
                         ),
                         AppSpacing.verticalSpaceSM,
                         Text(
-                          'Browse Clubs',
-                          style: AppTextStyles.titleSmall.copyWith(
-                            color: colorScheme.onSurface,
-                          ),
+                          error.toString(),
+                          style: AppTextStyles.bodySmall,
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
                   ),
                 ),
-                AppSpacing.horizontalSpaceMD,
-                Expanded(
-                  child: AppCard(
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.calendar_today,
-                          size: 32,
-                          color: colorScheme.onSurface,
-                        ),
-                        AppSpacing.verticalSpaceSM,
-                        Text(
-                          'My Bookings',
-                          style: AppTextStyles.titleSmall.copyWith(
-                            color: colorScheme.onSurface,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildNewsFeed(
+    BuildContext context,
+    WidgetRef ref,
+    List<NewsFeedItemEntity> items,
+  ) {
+    if (items.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Text(
+            'No news feed items available',
+            style: AppTextStyles.bodyMedium,
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: items.map((item) {
+        switch (item.type) {
+          case NewsFeedItemType.newsPost:
+            return NewsPostCard(
+              newsPost: item.newsPost!,
+              onTap: () {
+                // Could navigate to full news article
+              },
+            );
+
+          case NewsFeedItemType.event:
+            return NewsFeedEventCard(
+              event: item.event!,
+              userRSVPStatus: item.userRSVPStatus,
+              onTap: () {
+                // Navigate to event details
+                context.go(
+                  '/events/${item.event!.clubId}/event/${item.event!.id}',
+                );
+              },
+              onRSVPTap: () async {
+                final response = await RSVPModal.show(
+                  context: context,
+                  event: item.event!,
+                );
+
+                if (response != null) {
+                  // Map response to RSVP status
+                  String status;
+                  switch (response) {
+                    case RSVPResponse.yes:
+                      status = 'confirmed';
+                    case RSVPResponse.maybe:
+                      status = 'tentative';
+                    case RSVPResponse.no:
+                      status = 'declined';
+                  }
+
+                  // Update RSVP status
+                  await ref
+                      .read(newsFeedControllerProvider.notifier)
+                      .updateRSVP(item.event!.id, status);
+
+                  // Show confirmation
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'RSVP updated to: ${status.toUpperCase()}',
+                        ),
+                      ),
+                    );
+                  }
+                }
+              },
+            );
+
+          case NewsFeedItemType.lunchMenu:
+            return LunchMenuCard(
+              lunchMenu: item.lunchMenu!,
+              onTap: () {
+                // Could navigate to full menu or restaurant page
+              },
+            );
+        }
+      }).toList(),
     );
   }
 }
