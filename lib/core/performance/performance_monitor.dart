@@ -107,6 +107,12 @@ class PerformanceMonitor {
     _operationStartTimes.clear();
   }
 
+  /// Reset the singleton instance (for testing only)
+  @visibleForTesting
+  static void resetInstance() {
+    _instance = null;
+  }
+
   /// Get current memory usage (platform-specific)
   Map<String, dynamic> _getMemoryUsage() {
     try {

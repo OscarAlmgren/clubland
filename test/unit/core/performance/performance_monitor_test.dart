@@ -7,14 +7,14 @@ void main() {
 
     setUp(() {
       // Reset singleton instance before each test
-      PerformanceMonitor._instance = null;
+      PerformanceMonitor.resetInstance();
       monitor = PerformanceMonitor();
       monitor.clearStats();
     });
 
     tearDown(() {
       monitor.clearStats();
-      PerformanceMonitor._instance = null;
+      PerformanceMonitor.resetInstance();
     });
 
     group('Singleton Pattern', () {
@@ -441,7 +441,7 @@ void main() {
       test('should create broadcast stream controller', () {
         final controller = monitor.createPerformantStreamController<int>('test_stream');
 
-        expect(controller.isBroadcast, true);
+        expect(controller.stream.isBroadcast, true);
         expect(controller.hasListener, false);
 
         controller.close();

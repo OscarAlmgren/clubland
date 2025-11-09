@@ -84,6 +84,36 @@ class AuthFailure extends Failure {
     'BIOMETRIC_NOT_ENROLLED',
   );
 
+  /// Factory constructor for biometric authentication failure.
+  factory AuthFailure.biometricFailed() => const AuthFailure(
+    'Biometric authentication failed',
+    'BIOMETRIC_FAILED',
+  );
+
+  /// Factory constructor for biometric lockout.
+  factory AuthFailure.biometricLockout() => const AuthFailure(
+    'Biometric authentication temporarily locked',
+    'BIOMETRIC_LOCKOUT',
+  );
+
+  /// Factory constructor for authentication timeout.
+  factory AuthFailure.timeout() => const AuthFailure(
+    'Authentication timed out',
+    'AUTH_TIMEOUT',
+  );
+
+  /// Factory constructor for unknown authentication errors.
+  factory AuthFailure.unknown() => const AuthFailure(
+    'Unknown authentication error',
+    'UNKNOWN_ERROR',
+  );
+
+  /// Factory constructor for permission denied errors.
+  factory AuthFailure.permissionDenied() => const AuthFailure(
+    'Permission denied for authentication',
+    'PERMISSION_DENIED',
+  );
+
   /// Factory constructor for errors originating from the Hanko authentication service.
   factory AuthFailure.hankoError(String message) =>
       AuthFailure('Hanko authentication error: $message', 'HANKO_ERROR');

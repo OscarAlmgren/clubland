@@ -580,178 +580,178 @@ void main() {
       expect(true, true);
     });
   });
-}
 
-// Additional test groups for ErrorReport class
-group('ErrorReport', () {
-  test('should serialize to JSON', () {
-    // Arrange
-    final report = ErrorReport(
-      failure: const NetworkFailure('Test failure', 'TEST_CODE'),
-      operation: 'test_op',
-      severity: ErrorSeverity.error,
-      timestamp: DateTime(2024, 1, 1),
-      environment: 'test',
-      buildNumber: '1.0.0',
-      deviceInfo: {'platform': 'test'},
-      userId: 'user123',
-      context: {'key': 'value'},
-    );
+  // Additional test groups for ErrorReport class
+  group('ErrorReport', () {
+    test('should serialize to JSON', () {
+      // Arrange
+      final report = ErrorReport(
+        failure: const NetworkFailure('Test failure', 'TEST_CODE'),
+        operation: 'test_op',
+        severity: ErrorSeverity.error,
+        timestamp: DateTime(2024, 1, 1),
+        environment: 'test',
+        buildNumber: '1.0.0',
+        deviceInfo: {'platform': 'test'},
+        userId: 'user123',
+        context: {'key': 'value'},
+      );
 
-    // Act
-    final json = report.toJson();
+      // Act
+      final json = report.toJson();
 
-    // Assert
-    expect(json, isA<Map<String, dynamic>>());
-    expect(json['operation'], equals('test_op'));
-    expect(json['userId'], equals('user123'));
-    expect(json['environment'], equals('test'));
-    expect(json['buildNumber'], equals('1.0.0'));
-  });
+      // Assert
+      expect(json, isA<Map<String, dynamic>>());
+      expect(json['operation'], equals('test_op'));
+      expect(json['userId'], equals('user123'));
+      expect(json['environment'], equals('test'));
+      expect(json['buildNumber'], equals('1.0.0'));
+    });
 
-  test('should deserialize from JSON', () {
-    // Arrange
-    final json = {
-      'failure': {
-        'type': 'NetworkFailure',
-        'message': 'Test failure',
-        'code': 'TEST_CODE',
-      },
-      'operation': 'test_op',
-      'stackTrace': null,
-      'userId': 'user123',
-      'context': {'key': 'value'},
-      'severity': 'error',
-      'timestamp': '2024-01-01T00:00:00.000',
-      'environment': 'test',
-      'buildNumber': '1.0.0',
-      'deviceInfo': {'platform': 'test'},
-    };
-
-    // Act
-    final report = ErrorReport.fromJson(json);
-
-    // Assert
-    expect(report.operation, equals('test_op'));
-    expect(report.userId, equals('user123'));
-    expect(report.severity, equals(ErrorSeverity.error));
-    expect(report.environment, equals('test'));
-    expect(report.buildNumber, equals('1.0.0'));
-  });
-
-  test('should handle missing optional fields in JSON', () {
-    // Arrange
-    final json = {
-      'failure': {
-        'message': 'Test',
-        'code': null,
-      },
-      'operation': 'test',
-      'stackTrace': null,
-      'userId': null,
-      'context': <String, dynamic>{},
-      'severity': 'warning',
-      'timestamp': DateTime.now().toIso8601String(),
-      'environment': 'test',
-      'buildNumber': '1.0.0',
-      'deviceInfo': <String, dynamic>{},
-    };
-
-    // Act
-    final report = ErrorReport.fromJson(json);
-
-    // Assert
-    expect(report.userId, isNull);
-    expect(report.stackTrace, isNull);
-  });
-
-  test('should handle all severity levels in JSON', () {
-    final severities = ErrorSeverity.values;
-
-    for (final severity in severities) {
+    test('should deserialize from JSON', () {
+      // Arrange
       final json = {
-        'failure': {'message': 'Test', 'code': null},
+        'failure': {
+          'type': 'NetworkFailure',
+          'message': 'Test failure',
+          'code': 'TEST_CODE',
+        },
+        'operation': 'test_op',
+        'stackTrace': null,
+        'userId': 'user123',
+        'context': {'key': 'value'},
+        'severity': 'error',
+        'timestamp': '2024-01-01T00:00:00.000',
+        'environment': 'test',
+        'buildNumber': '1.0.0',
+        'deviceInfo': {'platform': 'test'},
+      };
+
+      // Act
+      final report = ErrorReport.fromJson(json);
+
+      // Assert
+      expect(report.operation, equals('test_op'));
+      expect(report.userId, equals('user123'));
+      expect(report.severity, equals(ErrorSeverity.error));
+      expect(report.environment, equals('test'));
+      expect(report.buildNumber, equals('1.0.0'));
+    });
+
+    test('should handle missing optional fields in JSON', () {
+      // Arrange
+      final json = {
+        'failure': {
+          'message': 'Test',
+          'code': null,
+        },
         'operation': 'test',
         'stackTrace': null,
         'userId': null,
         'context': <String, dynamic>{},
-        'severity': severity.name,
+        'severity': 'warning',
         'timestamp': DateTime.now().toIso8601String(),
         'environment': 'test',
         'buildNumber': '1.0.0',
         'deviceInfo': <String, dynamic>{},
       };
 
+      // Act
       final report = ErrorReport.fromJson(json);
-      expect(report.severity, equals(severity));
-    }
+
+      // Assert
+      expect(report.userId, isNull);
+      expect(report.stackTrace, isNull);
+    });
+
+    test('should handle all severity levels in JSON', () {
+      const severities = ErrorSeverity.values;
+
+      for (final severity in severities) {
+        final json = {
+          'failure': {'message': 'Test', 'code': null},
+          'operation': 'test',
+          'stackTrace': null,
+          'userId': null,
+          'context': <String, dynamic>{},
+          'severity': severity.name,
+          'timestamp': DateTime.now().toIso8601String(),
+          'environment': 'test',
+          'buildNumber': '1.0.0',
+          'deviceInfo': <String, dynamic>{},
+        };
+
+        final report = ErrorReport.fromJson(json);
+        expect(report.severity, equals(severity));
+      }
+    });
+
+    test('should fallback to error severity for invalid severity name', () {
+      // Arrange
+      final json = {
+        'failure': {'message': 'Test', 'code': null},
+        'operation': 'test',
+        'stackTrace': null,
+        'userId': null,
+        'context': <String, dynamic>{},
+        'severity': 'INVALID_SEVERITY',
+        'timestamp': DateTime.now().toIso8601String(),
+        'environment': 'test',
+        'buildNumber': '1.0.0',
+        'deviceInfo': <String, dynamic>{},
+      };
+
+      // Act
+      final report = ErrorReport.fromJson(json);
+
+      // Assert
+      expect(report.severity, equals(ErrorSeverity.error));
+    });
   });
 
-  test('should fallback to error severity for invalid severity name', () {
-    // Arrange
-    final json = {
-      'failure': {'message': 'Test', 'code': null},
-      'operation': 'test',
-      'stackTrace': null,
-      'userId': null,
-      'context': <String, dynamic>{},
-      'severity': 'INVALID_SEVERITY',
-      'timestamp': DateTime.now().toIso8601String(),
-      'environment': 'test',
-      'buildNumber': '1.0.0',
-      'deviceInfo': <String, dynamic>{},
-    };
+  // Test extension method
+  group('FailureReporting Extension', () {
+    test('should report failure using extension method', () {
+      // Arrange
+      const failure = AuthFailure('Test failure');
 
-    // Act
-    final report = ErrorReport.fromJson(json);
+      // Act
+      failure.report(
+        operation: 'extension_test',
+        userId: 'user123',
+        context: {'source': 'extension'},
+      );
 
-    // Assert
-    expect(report.severity, equals(ErrorSeverity.error));
+      // Assert - no exception should be thrown
+      expect(true, true);
+    });
+
+    test('should report with all parameters', () {
+      // Arrange
+      const failure = NetworkFailure('Network error', 'NO_CONNECTION');
+
+      // Act
+      failure.report(
+        operation: 'network_test',
+        stackTrace: StackTrace.current,
+        userId: 'user456',
+        context: {'attempt': 1},
+        severity: ErrorSeverity.warning,
+      );
+
+      // Assert - no exception should be thrown
+      expect(true, true);
+    });
+
+    test('should report with minimal parameters', () {
+      // Arrange
+      const failure = ValidationFailure('Validation error');
+
+      // Act
+      failure.report(operation: 'minimal_test');
+
+      // Assert - no exception should be thrown
+      expect(true, true);
+    });
   });
-});
-
-// Test extension method
-group('FailureReporting Extension', () {
-  test('should report failure using extension method', () {
-    // Arrange
-    const failure = AuthFailure('Test failure');
-
-    // Act
-    failure.report(
-      operation: 'extension_test',
-      userId: 'user123',
-      context: {'source': 'extension'},
-    );
-
-    // Assert - no exception should be thrown
-    expect(true, true);
-  });
-
-  test('should report with all parameters', () {
-    // Arrange
-    const failure = NetworkFailure('Network error', 'NO_CONNECTION');
-
-    // Act
-    failure.report(
-      operation: 'network_test',
-      stackTrace: StackTrace.current,
-      userId: 'user456',
-      context: {'attempt': 1},
-      severity: ErrorSeverity.warning,
-    );
-
-    // Assert - no exception should be thrown
-    expect(true, true);
-  });
-
-  test('should report with minimal parameters', () {
-    // Arrange
-    const failure = ValidationFailure('Validation error');
-
-    // Act
-    failure.report(operation: 'minimal_test');
-
-    // Assert - no exception should be thrown
-    expect(true, true);
-  });
-});
+}

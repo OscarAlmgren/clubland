@@ -419,9 +419,13 @@ void main() {
         // Arrange
         when(() => mockRepository.isBiometricAvailable())
             .thenAnswer((_) async => true);
+
+        var callCount = 0;
         when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => const Right(false))
-            .thenAnswer((_) async => const Right(true));
+            .thenAnswer((_) async {
+              callCount++;
+              return callCount == 1 ? const Right(false) : const Right(true);
+            });
 
         // Act - First attempt fails
         final result1 = await usecase.authenticate();
