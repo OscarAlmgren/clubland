@@ -2,6 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
+import '../../../../core/network/graphql_client.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../models/booking_model.dart';
 import '../models/facility_availability_model.dart';
@@ -216,12 +217,16 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.query(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeQuery(
         QueryOptions(
           document: gql(query),
           variables: {'id': bookingId},
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
+        timeout: GraphQLHelpers.defaultSingleItemTimeout,
+        showErrorToUser: false,
+        operationName: 'BookingDetails',
       );
 
       if (result.hasException) {
@@ -288,12 +293,16 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.query(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeQuery(
         QueryOptions(
           document: gql(query),
           variables: variables,
           fetchPolicy: FetchPolicy.networkOnly, // Always get fresh availability
         ),
+        timeout: GraphQLHelpers.defaultSingleItemTimeout,
+        showErrorToUser: false,
+        operationName: 'FacilityAvailability',
       );
 
       if (result.hasException) {
@@ -366,8 +375,12 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.mutate(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeMutation(
         MutationOptions(document: gql(mutation), variables: variables),
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'CreateBooking',
       );
 
       if (result.hasException) {
@@ -445,8 +458,12 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.mutate(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeMutation(
         MutationOptions(document: gql(mutation), variables: variables),
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'UpdateBooking',
       );
 
       if (result.hasException) {
@@ -519,8 +536,12 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.mutate(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeMutation(
         MutationOptions(document: gql(mutation), variables: variables),
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'CancelBooking',
       );
 
       if (result.hasException) {
@@ -585,38 +606,33 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      return _client
-          .subscribe(
-            SubscriptionOptions(
-              document: gql(subscription),
-              variables: {'userId': userId},
-            ),
-          )
-          .map((result) {
-            if (result.hasException) {
-              throw app_exceptions.NetworkException(
-                result.exception?.graphqlErrors.firstOrNull?.message ??
-                    'Subscription error',
-                'SUBSCRIPTION_ERROR',
-              );
-            }
+      // Use GraphQLHelpers with automatic timeout and error handling
+      return GraphQLHelpers.executeSubscription(
+        SubscriptionOptions(
+          document: gql(subscription),
+          variables: {'userId': userId},
+        ),
+        connectionTimeout: const Duration(seconds: 30),
+        showErrorToUser: false,
+        operationName: 'BookingUpdates',
+      ).map((result) {
+        if (result.hasException) {
+          throw app_exceptions.NetworkException(
+            result.exception?.graphqlErrors.firstOrNull?.message ??
+                'Subscription error',
+            'SUBSCRIPTION_ERROR',
+          );
+        }
 
-            final data = result.data?['bookingUpdates'];
-            if (data == null) {
-              throw const app_exceptions.NetworkException(
-                'No booking update data received',
-                'NO_DATA',
-              );
-            }
-            return BookingUpdateEvent.fromJson(data as Map<String, dynamic>);
-          })
-          .handleError((Object error) {
-            _logger.e('Error in booking updates subscription', error: error);
-            throw app_exceptions.NetworkException(
-              'Booking updates subscription error: $error',
-              'SUBSCRIPTION_ERROR',
-            );
-          });
+        final data = result.data?['bookingUpdates'];
+        if (data == null) {
+          throw const app_exceptions.NetworkException(
+            'No booking update data received',
+            'NO_DATA',
+          );
+        }
+        return BookingUpdateEvent.fromJson(data as Map<String, dynamic>);
+      });
     } on Exception catch (e) {
       _logger.e('Error setting up booking updates subscription', error: e);
       throw app_exceptions.NetworkException.serverError(

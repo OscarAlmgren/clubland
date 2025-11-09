@@ -4,6 +4,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/network/graphql_client.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
 
@@ -142,7 +143,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         variables: {'email': email, 'password': password},
       );
 
-      final QueryResult result = await _graphqlClient.mutate(options);
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final QueryResult result = await GraphQLHelpers.executeMutation(
+        options,
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'Login',
+      );
 
       if (result.hasException) {
         _logger.e('Login failed: ${result.exception}');
@@ -280,7 +287,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         },
       );
 
-      final QueryResult result = await _graphqlClient.mutate(options);
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final QueryResult result = await GraphQLHelpers.executeMutation(
+        options,
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'Register',
+      );
 
       if (result.hasException) {
         _logger.e('Registration failed: ${result.exception}');
@@ -320,7 +333,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         document: gql(logoutMutation),
       );
 
-      final QueryResult result = await _graphqlClient.mutate(options);
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final QueryResult result = await GraphQLHelpers.executeMutation(
+        options,
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'Logout',
+      );
 
       if (result.hasException) {
         _logger.e('Logout failed: ${result.exception}');
@@ -382,7 +401,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         variables: {'refreshToken': refreshToken},
       );
 
-      final QueryResult result = await _graphqlClient.mutate(options);
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final QueryResult result = await GraphQLHelpers.executeMutation(
+        options,
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'RefreshToken',
+      );
 
       if (result.hasException) {
         _logger.e('Token refresh failed: ${result.exception}');
