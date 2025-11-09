@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:logger/logger.dart';
 
 import '../constants/api_constants.dart';
@@ -232,7 +232,7 @@ class GraphQLHelpers {
           .timeout(
             timeout ?? defaultQueryTimeout,
             onTimeout: () {
-              _logger.w(
+              GraphQLClientConfig._logger.w(
                 'GraphQL query timeout${operationName != null ? ' for $operationName' : ''}',
               );
               throw NetworkException.timeout();
@@ -271,7 +271,7 @@ class GraphQLHelpers {
           .timeout(
             timeout ?? defaultMutationTimeout,
             onTimeout: () {
-              _logger.w(
+              GraphQLClientConfig._logger.w(
                 'GraphQL mutation timeout${operationName != null ? ' for $operationName' : ''}',
               );
               throw NetworkException.timeout();
@@ -312,7 +312,7 @@ class GraphQLHelpers {
         return stream.timeout(
           connectionTimeout,
           onTimeout: (sink) {
-            _logger.w(
+            GraphQLClientConfig._logger.w(
               'GraphQL subscription timeout${operationName != null ? ' for $operationName' : ''}',
             );
             sink.addError(
@@ -362,7 +362,7 @@ class GraphQLHelpers {
         operationName: operationName,
       );
     } catch (e) {
-      _logger.w(
+      GraphQLClientConfig._logger.w(
         'Safe query failed${operationName != null ? ' for $operationName' : ''}: $e',
       );
       return null;
@@ -403,13 +403,13 @@ class GraphQLHelpers {
   /// Check if error is a timeout error
   static bool isTimeoutError(Exception exception) {
     return exception.toString().contains('TIMEOUT') ||
-        exception is NetworkException && exception.code == 'TIMEOUT';
+        (exception is NetworkException && exception.code == 'TIMEOUT');
   }
 
   /// Check if error is a network connectivity error
   static bool isNetworkError(Exception exception) {
     return exception.toString().contains('NO_CONNECTION') ||
         exception.toString().contains('SocketException') ||
-        exception is NetworkException && exception.code == 'NO_CONNECTION';
+        (exception is NetworkException && exception.code == 'NO_CONNECTION');
   }
 }
