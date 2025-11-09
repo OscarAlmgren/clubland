@@ -29,6 +29,21 @@ class EventDetailsPage extends ConsumerWidget {
       eventDetailsControllerProvider(eventId, memberId),
     );
 
+    // Listen for errors and show dialog + navigate back
+    ref.listen(
+      eventDetailsControllerProvider(eventId, memberId),
+      (previous, next) {
+        next.whenOrNull(
+          error: (error, stackTrace) {
+            // Only show error dialog if this is a new error (not just rebuilding)
+            if (previous?.hasError != true) {
+              _showErrorAndNavigateBack(context, error);
+            }
+          },
+        );
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Event Details'),
@@ -431,6 +446,66 @@ class EventDetailsPage extends ConsumerWidget {
         details: errorMessage,
       );
     }
+  }
+
+  void _showErrorAndNavigateBack(BuildContext context, Object error) {
+    final errorMessage = error.toString();
+
+    // Determine user-friendly error message
+    String title = 'Error Loading Event';
+    String message;
+
+    if (errorMessage.contains('API_UNAVAILABLE') ||
+        errorMessage.contains('Cannot query field') ||
+        errorMessage.contains('GRAPHQL_VALIDATION_FAILED')) {
+      title = 'Feature Unavailable';
+      message =
+          'Event details are not available at this time. This feature is still being developed. Please check back later.';
+    } else if (errorMessage.contains('SocketException') ||
+        errorMessage.contains('NetworkException') ||
+        errorMessage.contains('Failed host lookup')) {
+      title = 'Network Error';
+      message =
+          'Unable to connect to the server. Please check your internet connection and try again.';
+    } else if (errorMessage.contains('TimeoutException') ||
+        errorMessage.contains('TIMEOUT')) {
+      title = 'Request Timeout';
+      message =
+          'The request took too long to complete. Please try again later.';
+    } else if (errorMessage.contains('NOT_FOUND')) {
+      title = 'Event Not Found';
+      message = 'The requested event could not be found.';
+    } else if (errorMessage.contains('UNAUTHENTICATED') ||
+        errorMessage.contains('AuthFailure')) {
+      title = 'Authentication Required';
+      message = 'Please sign in again to view event details.';
+    } else {
+      message =
+          'An unexpected error occurred while loading event details. Please try again later.';
+    }
+
+    // Show error dialog and navigate back when dismissed
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) return;
+
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Close dialog
+                Navigator.of(context).pop(); // Navigate back
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   void _shareEvent(BuildContext context) {
