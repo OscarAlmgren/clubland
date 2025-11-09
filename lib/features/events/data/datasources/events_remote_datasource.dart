@@ -2,6 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
+import '../../../../core/network/graphql_client.dart';
 import '../models/cancel_rsvp_response_model.dart';
 import '../models/event_model.dart';
 import '../models/event_rsvp_model.dart';
@@ -137,12 +138,16 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         'pagination': {'page': page, 'pageSize': pageSize},
       };
 
-      final result = await _client.query(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeQuery(
         QueryOptions(
           document: gql(query),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
+        timeout: GraphQLHelpers.defaultQueryTimeout,
+        showErrorToUser: false,
+        operationName: 'GetEvents',
       );
 
       if (result.hasException) {
@@ -214,12 +219,16 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.query(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeQuery(
         QueryOptions(
           document: gql(query),
           variables: {'id': eventId},
           fetchPolicy: FetchPolicy.cacheFirst,
         ),
+        timeout: GraphQLHelpers.defaultSingleItemTimeout,
+        showErrorToUser: false,
+        operationName: 'GetEventById',
       );
 
       if (result.hasException) {
@@ -275,12 +284,16 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.query(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeQuery(
         QueryOptions(
           document: gql(query),
           variables: {'eventId': eventId, 'memberId': memberId},
           fetchPolicy: FetchPolicy.networkOnly,
         ),
+        timeout: GraphQLHelpers.defaultSingleItemTimeout,
+        showErrorToUser: false,
+        operationName: 'CheckRSVPEligibility',
       );
 
       if (result.hasException) {
@@ -349,8 +362,15 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.mutate(
-        MutationOptions(document: gql(mutation), variables: {'input': input}),
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeMutation(
+        MutationOptions(
+          document: gql(mutation),
+          variables: {'input': input},
+        ),
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'CreateRSVP',
       );
 
       if (result.hasException) {
@@ -419,11 +439,15 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.mutate(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeMutation(
         MutationOptions(
           document: gql(mutation),
           variables: {'id': rsvpId, 'input': input},
         ),
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'UpdateRSVP',
       );
 
       if (result.hasException) {
@@ -471,8 +495,12 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.mutate(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeMutation(
         MutationOptions(document: gql(mutation), variables: {'id': rsvpId}),
+        timeout: GraphQLHelpers.defaultMutationTimeout,
+        showErrorToUser: false,
+        operationName: 'CancelRSVP',
       );
 
       if (result.hasException) {
@@ -557,12 +585,16 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         'pagination': {'page': page, 'pageSize': pageSize},
       };
 
-      final result = await _client.query(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeQuery(
         QueryOptions(
           document: gql(query),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
+        timeout: GraphQLHelpers.defaultQueryTimeout,
+        showErrorToUser: false,
+        operationName: 'GetMyRSVPs',
       );
 
       if (result.hasException) {
@@ -612,12 +644,16 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.query(
+      // Use GraphQLHelpers with automatic timeout and error handling
+      final result = await GraphQLHelpers.executeQuery(
         QueryOptions(
           document: gql(query),
           variables: {'clubId': clubId},
           fetchPolicy: FetchPolicy.cacheFirst,
         ),
+        timeout: GraphQLHelpers.defaultQueryTimeout,
+        showErrorToUser: false,
+        operationName: 'GetFindingFriendsSubgroups',
       );
 
       if (result.hasException) {

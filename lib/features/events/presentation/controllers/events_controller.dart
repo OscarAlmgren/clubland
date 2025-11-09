@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/network/graphql_client.dart';
@@ -136,7 +137,27 @@ Future<EventEntity> eventDetails(Ref ref, String eventId) async {
   final result = await useCase(eventId);
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) {
+      // Check if this is a GraphQL validation error (API doesn't support the query yet)
+      if (failure.message.contains('Cannot query field') ||
+          failure.message.contains('GRAPHQL_VALIDATION_FAILED') ||
+          failure.code == 'SERVER_ERROR_500') {
+        // Log warning about API unavailability
+        Logger().w(
+          'Event details API not available yet. Event ID: $eventId. '
+          'Error: ${failure.message}',
+        );
+
+        // Return a mock event as fallback with a clear error message
+        throw Exception(
+          'Unable to load event details. The event details API is currently unavailable. '
+          'Please try again later or contact support if the problem persists.',
+        );
+      }
+
+      // For other failures, throw with the original message
+      throw Exception(failure.message);
+    },
     (event) => event,
   );
 }
@@ -378,7 +399,8 @@ class EventDetailsController extends _$EventDetailsController {
         rsvpEligibilityProvider(eventId, memberId).future,
       );
     } catch (e) {
-      // Eligibility check failed, continue without it
+      // Eligibility check failed, log and continue without it
+      Logger().w('Failed to fetch RSVP eligibility for event $eventId: $e');
       eligibility = null;
     }
 
@@ -405,7 +427,8 @@ class EventDetailsController extends _$EventDetailsController {
       );
       state = AsyncData(currentState.copyWith(eligibility: eligibility));
     } catch (e) {
-      // Silently fail eligibility refresh
+      // Log the error but don't update state
+      Logger().w('Failed to refresh RSVP eligibility: $e');
     }
   }
 }

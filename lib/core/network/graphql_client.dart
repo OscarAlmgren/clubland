@@ -6,6 +6,7 @@ import '../constants/api_constants.dart';
 import '../constants/app_constants.dart';
 import '../constants/storage_keys.dart';
 import '../errors/error_handler.dart' as app_error;
+import '../errors/exceptions.dart';
 
 /// GraphQL client configuration and setup
 class GraphQLClientConfig {
@@ -207,15 +208,36 @@ class GraphQLClientConfig {
   }
 }
 
-/// GraphQL operation helpers
+/// GraphQL operation helpers with timeout and error handling
 class GraphQLHelpers {
-  /// Execute query with error handling
+  /// Default timeout for queries (can be overridden)
+  static const Duration defaultQueryTimeout = Duration(seconds: 15);
+
+  /// Default timeout for mutations (can be overridden)
+  static const Duration defaultMutationTimeout = Duration(seconds: 20);
+
+  /// Default timeout for single-item queries (can be overridden)
+  static const Duration defaultSingleItemTimeout = Duration(seconds: 10);
+
+  /// Execute query with automatic timeout and error handling
   static Future<QueryResult<T>> executeQuery<T>(
     QueryOptions<T> options, {
+    Duration? timeout,
     bool showErrorToUser = true,
+    String? operationName,
   }) async {
     try {
-      final result = await GraphQLClientConfig.client.query<T>(options);
+      final result = await GraphQLClientConfig.client
+          .query<T>(options)
+          .timeout(
+            timeout ?? defaultQueryTimeout,
+            onTimeout: () {
+              _logger.w(
+                'GraphQL query timeout${operationName != null ? ' for $operationName' : ''}',
+              );
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException && showErrorToUser) {
         final failure = app_error.ErrorHandler.handleException(
@@ -225,6 +247,8 @@ class GraphQLHelpers {
       }
 
       return result;
+    } on NetworkException {
+      rethrow;
     } on Exception catch (e) {
       if (showErrorToUser) {
         final failure = app_error.ErrorHandler.handleException(e);
@@ -234,13 +258,25 @@ class GraphQLHelpers {
     }
   }
 
-  /// Execute mutation with error handling
+  /// Execute mutation with automatic timeout and error handling
   static Future<QueryResult<T>> executeMutation<T>(
     MutationOptions<T> options, {
+    Duration? timeout,
     bool showErrorToUser = true,
+    String? operationName,
   }) async {
     try {
-      final result = await GraphQLClientConfig.client.mutate<T>(options);
+      final result = await GraphQLClientConfig.client
+          .mutate<T>(options)
+          .timeout(
+            timeout ?? defaultMutationTimeout,
+            onTimeout: () {
+              _logger.w(
+                'GraphQL mutation timeout${operationName != null ? ' for $operationName' : ''}',
+              );
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException && showErrorToUser) {
         final failure = app_error.ErrorHandler.handleException(
@@ -250,6 +286,8 @@ class GraphQLHelpers {
       }
 
       return result;
+    } on NetworkException {
+      rethrow;
     } on Exception catch (e) {
       if (showErrorToUser) {
         final failure = app_error.ErrorHandler.handleException(e);
@@ -259,15 +297,41 @@ class GraphQLHelpers {
     }
   }
 
-  /// Subscribe with error handling
+  /// Subscribe with error handling and automatic timeout for initial connection
   static Stream<QueryResult<T>> executeSubscription<T>(
     SubscriptionOptions<T> options, {
+    Duration? connectionTimeout,
     bool showErrorToUser = true,
+    String? operationName,
   }) {
     try {
-      return GraphQLClientConfig.client.subscribe<T>(options).handleError((
-        Object error,
-      ) {
+      final stream = GraphQLClientConfig.client.subscribe<T>(options);
+
+      // Add timeout for initial connection
+      if (connectionTimeout != null) {
+        return stream.timeout(
+          connectionTimeout,
+          onTimeout: (sink) {
+            _logger.w(
+              'GraphQL subscription timeout${operationName != null ? ' for $operationName' : ''}',
+            );
+            sink.addError(
+              const NetworkException(
+                'Subscription connection timed out',
+                'SUBSCRIPTION_TIMEOUT',
+              ),
+            );
+            sink.close();
+          },
+        ).handleError((Object error) {
+          if (showErrorToUser) {
+            final failure = app_error.ErrorHandler.handleException(error);
+            app_error.ErrorHandler.showErrorToUser(failure);
+          }
+        });
+      }
+
+      return stream.handleError((Object error) {
         if (showErrorToUser) {
           final failure = app_error.ErrorHandler.handleException(error);
           app_error.ErrorHandler.showErrorToUser(failure);
@@ -279,6 +343,29 @@ class GraphQLHelpers {
         app_error.ErrorHandler.showErrorToUser(failure);
       }
       rethrow;
+    }
+  }
+
+  /// Execute a query with resilient error handling (doesn't throw on GraphQL errors)
+  ///
+  /// Returns null if the operation fails, useful for non-critical operations
+  static Future<QueryResult<T>?> executeQuerySafe<T>(
+    QueryOptions<T> options, {
+    Duration? timeout,
+    String? operationName,
+  }) async {
+    try {
+      return await executeQuery<T>(
+        options,
+        timeout: timeout,
+        showErrorToUser: false,
+        operationName: operationName,
+      );
+    } catch (e) {
+      _logger.w(
+        'Safe query failed${operationName != null ? ' for $operationName' : ''}: $e',
+      );
+      return null;
     }
   }
 
@@ -303,5 +390,26 @@ class GraphQLHelpers {
       return result.exception!.linkException.toString();
     }
     return null;
+  }
+
+  /// Check if error is a validation error (API doesn't support the query)
+  static bool isValidationError(Exception exception) {
+    final errorString = exception.toString();
+    return errorString.contains('Cannot query field') ||
+        errorString.contains('GRAPHQL_VALIDATION_FAILED') ||
+        errorString.contains('ValidationError');
+  }
+
+  /// Check if error is a timeout error
+  static bool isTimeoutError(Exception exception) {
+    return exception.toString().contains('TIMEOUT') ||
+        exception is NetworkException && exception.code == 'TIMEOUT';
+  }
+
+  /// Check if error is a network connectivity error
+  static bool isNetworkError(Exception exception) {
+    return exception.toString().contains('NO_CONNECTION') ||
+        exception.toString().contains('SocketException') ||
+        exception is NetworkException && exception.code == 'NO_CONNECTION';
   }
 }
