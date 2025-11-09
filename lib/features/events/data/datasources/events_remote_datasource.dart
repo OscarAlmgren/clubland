@@ -137,13 +137,22 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         'pagination': {'page': page, 'pageSize': pageSize},
       };
 
-      final result = await _client.query(
-        QueryOptions(
-          document: gql(query),
-          variables: variables,
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ),
-      );
+      // Add timeout to prevent infinite loops
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(query),
+              variables: variables,
+              fetchPolicy: FetchPolicy.cacheAndNetwork,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              _logger.w('GraphQL query timeout for events list');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e('GraphQL error fetching events', error: result.exception);
@@ -214,13 +223,22 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.query(
-        QueryOptions(
-          document: gql(query),
-          variables: {'id': eventId},
-          fetchPolicy: FetchPolicy.cacheFirst,
-        ),
-      );
+      // Add timeout to prevent infinite loops
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(query),
+              variables: {'id': eventId},
+              fetchPolicy: FetchPolicy.cacheFirst,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              _logger.w('GraphQL query timeout for event: $eventId');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e('GraphQL error fetching event', error: result.exception);
@@ -275,13 +293,22 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.query(
-        QueryOptions(
-          document: gql(query),
-          variables: {'eventId': eventId, 'memberId': memberId},
-          fetchPolicy: FetchPolicy.networkOnly,
-        ),
-      );
+      // Add timeout to prevent infinite loops
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(query),
+              variables: {'eventId': eventId, 'memberId': memberId},
+              fetchPolicy: FetchPolicy.networkOnly,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              _logger.w('GraphQL query timeout for RSVP eligibility check');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e(
@@ -349,9 +376,21 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
       ''';
 
-      final result = await _client.mutate(
-        MutationOptions(document: gql(mutation), variables: {'input': input}),
-      );
+      // Add timeout to prevent infinite loops
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: gql(mutation),
+              variables: {'input': input},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              _logger.w('GraphQL mutation timeout for create RSVP');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e('GraphQL error creating RSVP', error: result.exception);
