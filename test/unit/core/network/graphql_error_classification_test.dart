@@ -1,4 +1,4 @@
-import 'package:clubland/core/errors/exceptions.dart';
+import 'package:clubland/core/errors/exceptions.dart' as app_exceptions;
 import 'package:clubland/core/network/graphql_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -65,9 +65,9 @@ void main() {
           Exception('Network connection failed'),
           Exception('Server error 500'),
           Exception('Request timeout'),
-          NetworkException.timeout(),
-          NetworkException.noConnection(),
-          NetworkException.serverError(500, 'Internal error'),
+          app_exceptions.NetworkException.timeout(),
+          app_exceptions.NetworkException.noConnection(),
+          app_exceptions.NetworkException.serverError(500, 'Internal error'),
         ];
 
         for (final exception in testCases) {
@@ -98,7 +98,7 @@ void main() {
 
     group('isTimeoutError', () {
       test('should identify NetworkException timeout errors', () {
-        final timeoutException = NetworkException.timeout();
+        final timeoutException = app_exceptions.NetworkException.timeout();
         expect(GraphQLHelpers.isTimeoutError(timeoutException), isTrue);
       });
 
@@ -123,8 +123,8 @@ void main() {
         final testCases = [
           Exception('Network connection failed'),
           Exception('Cannot query field'),
-          NetworkException.noConnection(),
-          NetworkException.serverError(500, 'Error'),
+          app_exceptions.NetworkException.noConnection(),
+          app_exceptions.NetworkException.serverError(500, 'Error'),
           Exception('Server error'),
         ];
 
@@ -157,7 +157,7 @@ void main() {
 
     group('isNetworkError', () {
       test('should identify NetworkException with NO_CONNECTION code', () {
-        final networkException = NetworkException.noConnection();
+        final networkException = app_exceptions.NetworkException.noConnection();
         expect(GraphQLHelpers.isNetworkError(networkException), isTrue);
       });
 
@@ -199,8 +199,8 @@ void main() {
           Exception('Request timeout'),
           Exception('Validation error'),
           Exception('Cannot query field'),
-          NetworkException.timeout(),
-          NetworkException.serverError(500, 'Error'),
+          app_exceptions.NetworkException.timeout(),
+          app_exceptions.NetworkException.serverError(500, 'Error'),
         ];
 
         for (final exception in testCases) {
@@ -300,8 +300,8 @@ void main() {
           () {
         final testExceptions = [
           Exception('Cannot query field "test"'),
-          NetworkException.timeout(),
-          NetworkException.noConnection(),
+          app_exceptions.NetworkException.timeout(),
+          app_exceptions.NetworkException.noConnection(),
           Exception('SocketException: Connection failed'),
           Exception('GRAPHQL_VALIDATION_FAILED'),
           Exception('Random error message'),
@@ -342,7 +342,7 @@ void main() {
       test('should correctly classify network connectivity issues', () {
         final connectivityErrors = [
           Exception('SocketException: Network is unreachable'),
-          NetworkException.noConnection(),
+          app_exceptions.NetworkException.noConnection(),
           Exception('NO_CONNECTION to server'),
         ];
 
@@ -355,7 +355,7 @@ void main() {
 
       test('should correctly classify slow API response timeouts', () {
         final timeoutErrors = [
-          NetworkException.timeout(),
+          app_exceptions.NetworkException.timeout(),
           Exception('Request TIMEOUT after 30 seconds'),
           Exception('Operation TIMEOUT'),
         ];

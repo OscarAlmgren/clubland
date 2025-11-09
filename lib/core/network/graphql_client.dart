@@ -6,7 +6,7 @@ import '../constants/api_constants.dart';
 import '../constants/app_constants.dart';
 import '../constants/storage_keys.dart';
 import '../errors/error_handler.dart' as app_error;
-import '../errors/exceptions.dart';
+import '../errors/exceptions.dart' as app_exceptions;
 
 /// GraphQL client configuration and setup
 class GraphQLClientConfig {
@@ -232,10 +232,10 @@ class GraphQLHelpers {
           .timeout(
             timeout ?? defaultQueryTimeout,
             onTimeout: () {
-              _logger.w(
+              GraphQLClientConfig._logger.w(
                 'GraphQL query timeout${operationName != null ? ' for $operationName' : ''}',
               );
-              throw NetworkException.timeout();
+              throw app_exceptions.NetworkException.timeout();
             },
           );
 
@@ -247,7 +247,7 @@ class GraphQLHelpers {
       }
 
       return result;
-    } on NetworkException {
+    } on app_exceptions.NetworkException {
       rethrow;
     } on Exception catch (e) {
       if (showErrorToUser) {
@@ -271,10 +271,10 @@ class GraphQLHelpers {
           .timeout(
             timeout ?? defaultMutationTimeout,
             onTimeout: () {
-              _logger.w(
+              GraphQLClientConfig._logger.w(
                 'GraphQL mutation timeout${operationName != null ? ' for $operationName' : ''}',
               );
-              throw NetworkException.timeout();
+              throw app_exceptions.NetworkException.timeout();
             },
           );
 
@@ -286,7 +286,7 @@ class GraphQLHelpers {
       }
 
       return result;
-    } on NetworkException {
+    } on app_exceptions.NetworkException {
       rethrow;
     } on Exception catch (e) {
       if (showErrorToUser) {
@@ -312,11 +312,11 @@ class GraphQLHelpers {
         return stream.timeout(
           connectionTimeout,
           onTimeout: (sink) {
-            _logger.w(
+            GraphQLClientConfig._logger.w(
               'GraphQL subscription timeout${operationName != null ? ' for $operationName' : ''}',
             );
             sink.addError(
-              const NetworkException(
+              const app_exceptions.NetworkException(
                 'Subscription connection timed out',
                 'SUBSCRIPTION_TIMEOUT',
               ),
@@ -362,7 +362,7 @@ class GraphQLHelpers {
         operationName: operationName,
       );
     } catch (e) {
-      _logger.w(
+      GraphQLClientConfig._logger.w(
         'Safe query failed${operationName != null ? ' for $operationName' : ''}: $e',
       );
       return null;
@@ -402,14 +402,18 @@ class GraphQLHelpers {
 
   /// Check if error is a timeout error
   static bool isTimeoutError(Exception exception) {
-    return exception.toString().contains('TIMEOUT') ||
-        exception is NetworkException && exception.code == 'TIMEOUT';
+    if (exception is app_exceptions.NetworkException) {
+      return exception.code == 'TIMEOUT';
+    }
+    return exception.toString().contains('TIMEOUT');
   }
 
   /// Check if error is a network connectivity error
   static bool isNetworkError(Exception exception) {
+    if (exception is app_exceptions.NetworkException) {
+      return exception.code == 'NO_CONNECTION';
+    }
     return exception.toString().contains('NO_CONNECTION') ||
-        exception.toString().contains('SocketException') ||
-        exception is NetworkException && exception.code == 'NO_CONNECTION';
+        exception.toString().contains('SocketException');
   }
 }
