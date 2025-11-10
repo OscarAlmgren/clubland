@@ -136,8 +136,7 @@ Future<EventsConnectionEntity> clubEvents(
 
     return result.fold(
       (failure) {
-        // Schedule disposal after error
-        timer = Timer(const Duration(seconds: 30), link.close);
+        // Note: Don't set timer here, let the catch block handle it to avoid orphaned timers
         throw Exception(failure.message);
       },
       (connection) {
@@ -186,6 +185,7 @@ Future<EventEntity> eventDetails(Ref ref, String eventId) async {
         }
 
         // For other failures, throw with the original message
+        // Note: Don't set timer here, let the catch block handle it to avoid orphaned timers
         throw Exception(failure.message);
       },
       (event) {
@@ -251,8 +251,7 @@ Future<RSVPsConnectionEntity> myRSVPs(
 
     return result.fold(
       (failure) {
-        // Schedule disposal after error
-        timer = Timer(const Duration(seconds: 30), link.close);
+        // Note: Don't set timer here, let the catch block handle it to avoid orphaned timers
         throw Exception(failure.message);
       },
       (connection) {
@@ -328,6 +327,9 @@ class EventsListController extends _$EventsListController {
 
   @override
   Future<EventsListState> build(String clubId) async {
+    // Keep this controller alive to prevent auto-disposal during error handling
+    ref.keepAlive();
+
     _currentPage = 1;
     _allEvents = [];
     return _fetchEvents(clubId);
@@ -617,6 +619,9 @@ class MyRSVPsController extends _$MyRSVPsController {
 
   @override
   Future<MyRSVPsState> build(String clubId) async {
+    // Keep this controller alive to prevent auto-disposal during error handling
+    ref.keepAlive();
+
     _currentPage = 1;
     _allRSVPs = [];
     return _fetchRSVPs(clubId);
