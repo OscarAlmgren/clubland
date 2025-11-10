@@ -2,7 +2,6 @@ import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/events/domain/entities/event_rsvp_entity.dart';
 import 'package:clubland/features/events/domain/entities/events_connection_entity.dart';
-import 'package:clubland/features/events/domain/entities/page_info_entity.dart';
 import 'package:clubland/features/events/domain/entities/rsvp_eligibility_entity.dart';
 import 'package:clubland/features/events/domain/entities/cancel_rsvp_response_entity.dart';
 import 'package:clubland/features/events/domain/usecases/get_events.dart';
@@ -55,11 +54,10 @@ void main() {
     guestPolicy: GuestPolicy.membersOnly,
     requiresApproval: false,
     requiresPayment: true,
-    paymentAmount: 50.0,
+    price: 50.0,
     rsvpDeadline: DateTime.now().add(const Duration(days: 6)),
     cancellationDeadline: DateTime.now().add(const Duration(days: 5)),
     tags: const ['wine', 'dining'],
-    organizerId: 'organizer123',
     organizerName: 'John Doe',
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
@@ -90,15 +88,16 @@ void main() {
   );
 
   final mockEligibility = RSVPEligibilityEntity(
-    canRSVP: true,
+    eligible: true,
     reason: 'Eligible',
+    memberInGoodStanding: true,
+    hasOutstandingDebt: false,
+    wouldBeWaitlisted: false,
+    availableSpots: 5,
+    priority: 2,
     requiresPayment: true,
     paymentAmount: 50.0,
-    availableSpots: 5,
-    isWaitlistAvailable: false,
     hasExistingRSVP: false,
-    existingRSVPId: null,
-    existingRSVPStatus: null,
   );
 
   final mockPageInfo = PageInfoEntity(
@@ -165,7 +164,7 @@ void main() {
       // Arrange
       when(
         () => mockGetEvents(any()),
-      ).thenAnswer((_) async => Left(ServerFailure('Server error')));
+      ).thenAnswer((_) async => const Left(NetworkFailure('Server error')));
 
       // Act & Assert
       expect(
@@ -300,7 +299,7 @@ void main() {
       );
 
       // Register fallback values
-      registerFallbackValue(GetEventByIdParams(eventId: eventId));
+      registerFallbackValue(eventId);
       registerFallbackValue(
         CheckRSVPEligibilityParams(eventId: eventId, memberId: memberId),
       );
@@ -339,7 +338,7 @@ void main() {
       // Arrange
       when(
         () => mockGetEventById(any()),
-      ).thenAnswer((_) async => Left(NotFoundFailure('Event not found')));
+      ).thenAnswer((_) async => Left(NetworkFailure.notFound()));
       when(
         () => mockCheckEligibility(any()),
       ).thenAnswer((_) async => Right(mockEligibility));
@@ -528,7 +527,7 @@ void main() {
       // Arrange
       when(
         () => mockCancelRSVP(any()),
-      ).thenAnswer((_) async => Left(ServerFailure('Cancellation failed')));
+      ).thenAnswer((_) async => const Left(NetworkFailure('Cancellation failed')));
 
       final controller = container.read(rsvpControllerProvider.notifier);
 
