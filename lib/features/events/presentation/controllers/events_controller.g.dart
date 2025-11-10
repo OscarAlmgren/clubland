@@ -521,7 +521,7 @@ final class ClubEventsProvider
   }
 }
 
-String _$clubEventsHash() => r'f9ef0b77eef16ab2a8b891636e616d205dc91c97';
+String _$clubEventsHash() => r'e21522208f1d0c3995d887980acaa9fe4e2a4960';
 
 /// Provider for fetching events for a club
 
@@ -801,7 +801,7 @@ final class MyRSVPsProvider
   }
 }
 
-String _$myRSVPsHash() => r'dc392387eea5ea3748c52e051e5376fec584f53e';
+String _$myRSVPsHash() => r'40797b5e37aef571bbe2a0b483f188479b4e61ab';
 
 /// Provider for fetching member's RSVPs
 
@@ -979,7 +979,7 @@ final class EventsListControllerProvider
 }
 
 String _$eventsListControllerHash() =>
-    r'683268e1a423b61e6db08c8a11ea5b868496ffa8';
+    r'609d1dc8d657c047b21462b4190158ef2ba921e2';
 
 /// Controller for managing events list with pagination and filtering
 
@@ -1081,7 +1081,7 @@ final class EventDetailsControllerProvider
 }
 
 String _$eventDetailsControllerHash() =>
-    r'64f866a9908776079388851474e7e988fd56dc19';
+    r'48f44bb0a013f315988716f6ee7adf55be7ec9fb';
 
 /// Controller for managing event details and eligibility
 
@@ -1239,7 +1239,7 @@ final class MyRSVPsControllerProvider
   }
 }
 
-String _$myRSVPsControllerHash() => r'a7703586184560183fed6990dfbcc6317cf9cd6f';
+String _$myRSVPsControllerHash() => r'2974944c80404d246b93add59d66e7c7c7167fcf';
 
 /// Controller for managing member's RSVPs
 
