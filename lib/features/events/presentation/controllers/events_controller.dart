@@ -331,7 +331,9 @@ class EventsListController extends _$EventsListController {
   /// Load more events (pagination)
   Future<void> loadMore() async {
     final currentState = state.value;
-    if (currentState == null || !currentState.pageInfo.hasNextPage) {
+    if (currentState == null ||
+        !currentState.pageInfo.hasNextPage ||
+        currentState.isLoadingMore) {
       return;
     }
 
@@ -607,7 +609,9 @@ class MyRSVPsController extends _$MyRSVPsController {
   /// Load more RSVPs (pagination)
   Future<void> loadMore() async {
     final currentState = state.value;
-    if (currentState == null || !currentState.pageInfo.hasNextPage) {
+    if (currentState == null ||
+        !currentState.pageInfo.hasNextPage ||
+        currentState.isLoadingMore) {
       return;
     }
 
