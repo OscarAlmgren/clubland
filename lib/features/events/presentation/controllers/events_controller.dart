@@ -116,20 +116,41 @@ Future<EventsConnectionEntity> clubEvents(
   int page = 1,
   int pageSize = 20,
 }) async {
-  final useCase = ref.read(getEventsUseCaseProvider);
-  final result = await useCase(
-    GetEventsParams(
-      clubId: clubId,
-      filters: filters,
-      page: page,
-      pageSize: pageSize,
-    ),
-  );
+  // Keep this provider alive to prevent auto-disposal during fetch
+  final link = ref.keepAlive();
 
-  return result.fold(
-    (failure) => throw Exception(failure.message),
-    (connection) => connection,
-  );
+  // After the fetch completes, schedule disposal after a delay
+  Timer? timer;
+  ref.onDispose(() => timer?.cancel());
+
+  try {
+    final useCase = ref.read(getEventsUseCaseProvider);
+    final result = await useCase(
+      GetEventsParams(
+        clubId: clubId,
+        filters: filters,
+        page: page,
+        pageSize: pageSize,
+      ),
+    );
+
+    return result.fold(
+      (failure) {
+        // Schedule disposal after error
+        timer = Timer(const Duration(seconds: 30), link.close);
+        throw Exception(failure.message);
+      },
+      (connection) {
+        // Schedule disposal after successful fetch
+        timer = Timer(const Duration(minutes: 5), link.close);
+        return connection;
+      },
+    );
+  } catch (e) {
+    // Schedule disposal after error
+    timer = Timer(const Duration(seconds: 30), link.close);
+    rethrow;
+  }
 }
 
 /// Provider for fetching a single event by ID
@@ -210,20 +231,41 @@ Future<RSVPsConnectionEntity> myRSVPs(
   int page = 1,
   int pageSize = 20,
 }) async {
-  final useCase = ref.read(getMyRSVPsUseCaseProvider);
-  final result = await useCase(
-    GetMyRSVPsParams(
-      clubId: clubId,
-      statusFilter: statusFilter,
-      page: page,
-      pageSize: pageSize,
-    ),
-  );
+  // Keep this provider alive to prevent auto-disposal during fetch
+  final link = ref.keepAlive();
 
-  return result.fold(
-    (failure) => throw Exception(failure.message),
-    (connection) => connection,
-  );
+  // After the fetch completes, schedule disposal after a delay
+  Timer? timer;
+  ref.onDispose(() => timer?.cancel());
+
+  try {
+    final useCase = ref.read(getMyRSVPsUseCaseProvider);
+    final result = await useCase(
+      GetMyRSVPsParams(
+        clubId: clubId,
+        statusFilter: statusFilter,
+        page: page,
+        pageSize: pageSize,
+      ),
+    );
+
+    return result.fold(
+      (failure) {
+        // Schedule disposal after error
+        timer = Timer(const Duration(seconds: 30), link.close);
+        throw Exception(failure.message);
+      },
+      (connection) {
+        // Schedule disposal after successful fetch
+        timer = Timer(const Duration(minutes: 5), link.close);
+        return connection;
+      },
+    );
+  } catch (e) {
+    // Schedule disposal after error
+    timer = Timer(const Duration(seconds: 30), link.close);
+    rethrow;
+  }
 }
 
 /// Provider for fetching Finding Friends subgroups
