@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -133,33 +135,49 @@ Future<EventsConnectionEntity> clubEvents(
 /// Provider for fetching a single event by ID
 @riverpod
 Future<EventEntity> eventDetails(Ref ref, String eventId) async {
-  final useCase = ref.read(getEventByIdUseCaseProvider);
-  final result = await useCase(eventId);
+  // Keep this provider alive to prevent auto-disposal during fetch
+  final link = ref.keepAlive();
 
-  return result.fold(
-    (failure) {
-      // Check if this is a GraphQL validation error (API doesn't support the query yet)
-      if (failure.message.contains('Cannot query field') ||
-          failure.message.contains('GRAPHQL_VALIDATION_FAILED') ||
-          failure.code == 'SERVER_ERROR_500') {
-        // Log warning about API unavailability
-        Logger().w(
-          'Event details API not available yet. Event ID: $eventId. '
-          'Error: ${failure.message}',
-        );
+  // After the fetch completes, schedule disposal after a delay
+  Timer? timer;
+  ref.onDispose(() => timer?.cancel());
 
-        // Return a mock event as fallback with a clear error message
-        throw Exception(
-          'Unable to load event details. The event details API is currently unavailable. '
-          'Please try again later or contact support if the problem persists.',
-        );
-      }
+  try {
+    final useCase = ref.read(getEventByIdUseCaseProvider);
+    final result = await useCase(eventId);
 
-      // For other failures, throw with the original message
-      throw Exception(failure.message);
-    },
-    (event) => event,
-  );
+    return result.fold(
+      (failure) {
+        // Check if this is a GraphQL validation error (API doesn't support the query yet)
+        if (failure.message.contains('Cannot query field') ||
+            failure.message.contains('GRAPHQL_VALIDATION_FAILED') ||
+            failure.code == 'SERVER_ERROR_500') {
+          // Log warning about API unavailability
+          Logger().w(
+            'Event details API not available yet. Event ID: $eventId. '
+            'Error: ${failure.message}',
+          );
+
+          // Throw a specific exception for API unavailability
+          throw Exception(
+            'API_UNAVAILABLE: Unable to load event details. The event details API is currently unavailable.',
+          );
+        }
+
+        // For other failures, throw with the original message
+        throw Exception(failure.message);
+      },
+      (event) {
+        // Schedule disposal after successful fetch
+        timer = Timer(const Duration(minutes: 5), link.close);
+        return event;
+      },
+    );
+  } catch (e) {
+    // Schedule disposal after error
+    timer = Timer(const Duration(seconds: 30), link.close);
+    rethrow;
+  }
 }
 
 /// Provider for checking RSVP eligibility
@@ -390,6 +408,9 @@ class EventDetailsState {
 class EventDetailsController extends _$EventDetailsController {
   @override
   Future<EventDetailsState> build(String eventId, String memberId) async {
+    // Keep this controller alive to prevent auto-disposal and refetching
+    ref.keepAlive();
+
     final event = await ref.read(eventDetailsProvider(eventId).future);
 
     // Fetch eligibility in parallel
