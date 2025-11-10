@@ -11,39 +11,45 @@ void main() {
   late ClubsRemoteDataSource dataSource;
   late MockGraphQLClient mockClient;
 
+  setUpAll(() {
+    // Register fallback values for mocktail
+    registerFallbackValue(QueryOptions<Map<String, dynamic>>(document: gql('')));
+    registerFallbackValue(MutationOptions<Map<String, dynamic>>(document: gql('')));
+  });
+
   setUp(() {
     mockClient = MockGraphQLClient();
     dataSource = ClubsRemoteDataSourceImpl(client: mockClient);
-    registerFallbackValue(QueryOptions(document: gql('')));
-    registerFallbackValue(MutationOptions(document: gql('')));
   });
 
   group('getClubs', () {
     test('should return a list of ClubModel when the call is successful', () async {
       // Arrange
       final mockData = {
-        'clubs': [
-          {
-            'id': '1',
-            'name': 'Test Club 1',
-            'slug': 'test-club-1',
-            'description': 'Description 1',
-            'address': {
-              'street': '123 Test St',
-              'city': 'Test City',
-              'state': 'TS',
-              'zipCode': '12345',
-              'country': 'Test Country',
+        'clubs': {
+          'nodes': [
+            {
+              'id': '1',
+              'name': 'Test Club 1',
+              'slug': 'test-club-1',
+              'description': 'Description 1',
+              'address': {
+                'street': '123 Test St',
+                'city': 'Test City',
+                'state': 'TS',
+                'zipCode': '12345',
+                'country': 'Test Country',
+              },
+              'website': 'https://test.com',
+              'status': 'ACTIVE',
+              'createdAt': '2024-01-01T00:00:00Z',
+              'updatedAt': '2024-01-01T00:00:00Z',
             },
-            'website': 'https://test.com',
-            'status': 'ACTIVE',
-            'createdAt': '2024-01-01T00:00:00Z',
-            'updatedAt': '2024-01-01T00:00:00Z',
-          },
-        ],
+          ],
+        },
       };
 
-      when(() => mockClient.query<Map<String, dynamic>>(any()))
+      when(() => mockClient.query(any()))
           .thenAnswer((_) async => QueryResult(
                 source: QueryResultSource.network,
                 data: mockData,
@@ -60,7 +66,7 @@ void main() {
 
     test('should throw NetworkException when the call fails', () async {
       // Arrange
-      when(() => mockClient.query<Map<String, dynamic>>(any()))
+      when(() => mockClient.query(any()))
           .thenAnswer((_) async => QueryResult(
                 source: QueryResultSource.network,
                 options: QueryOptions(document: gql('')),
@@ -79,28 +85,30 @@ void main() {
     test('should return filtered clubs based on query', () async {
       // Arrange
       final mockData = {
-        'clubs': [
-          {
-            'id': '1',
-            'name': 'Test Club',
-            'slug': 'test-club',
-            'description': 'A test club',
-            'address': {
-              'street': '123 Test St',
-              'city': 'Test City',
-              'state': 'TS',
-              'zipCode': '12345',
-              'country': 'Test Country',
+        'clubs': {
+          'nodes': [
+            {
+              'id': '1',
+              'name': 'Test Club',
+              'slug': 'test-club',
+              'description': 'A test club',
+              'address': {
+                'street': '123 Test St',
+                'city': 'Test City',
+                'state': 'TS',
+                'zipCode': '12345',
+                'country': 'Test Country',
+              },
+              'website': 'https://test.com',
+              'status': 'ACTIVE',
+              'createdAt': '2024-01-01T00:00:00Z',
+              'updatedAt': '2024-01-01T00:00:00Z',
             },
-            'website': 'https://test.com',
-            'status': 'ACTIVE',
-            'createdAt': '2024-01-01T00:00:00Z',
-            'updatedAt': '2024-01-01T00:00:00Z',
-          },
-        ],
+          ],
+        },
       };
 
-      when(() => mockClient.query<Map<String, dynamic>>(any()))
+      when(() => mockClient.query(any()))
           .thenAnswer((_) async => QueryResult(
                 source: QueryResultSource.network,
                 data: mockData,
@@ -130,7 +138,7 @@ void main() {
             'street': '123 Test St',
             'city': 'Test City',
             'state': 'TS',
-            'postalCode': '12345',
+            'zipCode': '12345',
             'country': 'Test Country',
           },
           'website': 'https://test.com',
@@ -140,7 +148,7 @@ void main() {
         },
       };
 
-      when(() => mockClient.query<Map<String, dynamic>>(any()))
+      when(() => mockClient.query(any()))
           .thenAnswer((_) async => QueryResult(
                 source: QueryResultSource.network,
                 data: mockClubData,
