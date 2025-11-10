@@ -64,7 +64,7 @@ flutter build web --release --dart-define=ENVIRONMENT=production
 
 ## Project Structure
 
-```
+```text
 lib/
 ├── main.dart                    # Main entry point
 ├── simple_main.dart             # Simplified entry point
