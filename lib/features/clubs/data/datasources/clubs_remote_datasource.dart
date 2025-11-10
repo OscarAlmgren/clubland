@@ -3,7 +3,6 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
 import '../../../../core/graphql/graphql_api.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../models/club_model.dart';
 import '../models/club_search_result_model.dart';
 
@@ -112,15 +111,12 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
+      // Execute query with direct client call
+      final result = await _client.query(
         QueryOptions(
           document: gql(clubsQuery),
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
-        timeout: GraphQLHelpers.defaultQueryTimeout,
-        showErrorToUser: false,
-        operationName: 'Clubs',
       );
 
       if (result.hasException) {
@@ -158,16 +154,13 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Fetching club details for ID: $clubId');
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
+      // Execute query with direct client call
+      final result = await _client.query(
         QueryOptions(
           document: documentNodeQueryClub,
           variables: {'id': clubId},
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
-        timeout: GraphQLHelpers.defaultSingleItemTimeout,
-        showErrorToUser: false,
-        operationName: 'ClubDetails',
       );
 
       if (result.hasException) {
@@ -280,16 +273,13 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         },
       };
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
+      // Execute query with direct client call
+      final result = await _client.query(
         QueryOptions(
           document: gql(nearbyClubsQuery),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
-        timeout: GraphQLHelpers.defaultQueryTimeout,
-        showErrorToUser: false,
-        operationName: 'NearbyClubs',
       );
 
       if (result.hasException) {
@@ -367,16 +357,13 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         },
       };
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
+      // Execute query with direct client call
+      final result = await _client.query(
         QueryOptions(
           document: gql(featuredClubsQuery),
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
-        timeout: GraphQLHelpers.defaultQueryTimeout,
-        showErrorToUser: false,
-        operationName: 'FeaturedClubs',
       );
 
       if (result.hasException) {
@@ -468,12 +455,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
+      // Execute mutation with direct client call
+      final result = await _client.mutate(
         MutationOptions(document: gql(mutation), variables: {'clubId': clubId}),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'CheckInToClub',
       );
 
       if (result.hasException) {
