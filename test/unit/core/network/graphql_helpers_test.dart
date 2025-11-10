@@ -1,7 +1,14 @@
-import 'package:clubland/core/errors/exceptions.dart';
+import 'package:clubland/core/errors/exceptions.dart' as core;
 import 'package:clubland/core/network/graphql_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+
+// Helper function to create test QueryOptions
+QueryOptions _createTestQueryOptions() {
+  return QueryOptions(
+    document: gql('query { test }'),
+  );
+}
 
 void main() {
   group('GraphQLHelpers', () {
@@ -99,9 +106,9 @@ void main() {
           Exception('Network connection failed'),
           Exception('Server error 500'),
           Exception('Request timeout'),
-          NetworkException.timeout(),
-          NetworkException.noConnection(),
-          NetworkException.serverError(500, 'Internal error'),
+          core.NetworkException.timeout(),
+          core.NetworkException.noConnection(),
+          core.NetworkException.serverError(500, 'Internal error'),
         ];
 
         for (final exception in testCases) {
@@ -116,7 +123,7 @@ void main() {
 
     group('Error Classification - isTimeoutError', () {
       test('should identify NetworkException timeout errors', () {
-        final timeoutException = NetworkException.timeout();
+        final timeoutException = core.NetworkException.timeout();
         expect(GraphQLHelpers.isTimeoutError(timeoutException), isTrue);
       });
 
@@ -141,8 +148,8 @@ void main() {
         final testCases = [
           Exception('Network connection failed'),
           Exception('Cannot query field'),
-          NetworkException.noConnection(),
-          NetworkException.serverError(500, 'Error'),
+          core.NetworkException.noConnection(),
+          core.NetworkException.serverError(500, 'Error'),
           Exception('Server error'),
         ];
 
@@ -158,7 +165,7 @@ void main() {
 
     group('Error Classification - isNetworkError', () {
       test('should identify NetworkException with NO_CONNECTION code', () {
-        final networkException = NetworkException.noConnection();
+        final networkException = core.NetworkException.noConnection();
         expect(GraphQLHelpers.isNetworkError(networkException), isTrue);
       });
 
@@ -200,8 +207,8 @@ void main() {
           Exception('Request timeout'),
           Exception('Validation error'),
           Exception('Cannot query field'),
-          NetworkException.timeout(),
-          NetworkException.serverError(500, 'Error'),
+          core.NetworkException.timeout(),
+          core.NetworkException.serverError(500, 'Error'),
         ];
 
         for (final exception in testCases) {
@@ -220,6 +227,7 @@ void main() {
           final result = QueryResult(
             data: {'test': 'data'},
             source: QueryResultSource.network,
+            options: _createTestQueryOptions(),
           );
           expect(GraphQLHelpers.isSuccess(result), isTrue);
         });
@@ -228,6 +236,7 @@ void main() {
           final result = QueryResult(
             source: QueryResultSource.network,
             exception: OperationException(),
+            options: _createTestQueryOptions(),
           );
           expect(GraphQLHelpers.isSuccess(result), isFalse);
         });
@@ -235,6 +244,7 @@ void main() {
         test('should return false for result without data', () {
           final result = QueryResult(
             source: QueryResultSource.network,
+            options: _createTestQueryOptions(),
           );
           expect(GraphQLHelpers.isSuccess(result), isFalse);
         });
@@ -249,6 +259,7 @@ void main() {
                 const GraphQLError(message: 'Field not found'),
               ],
             ),
+            options: _createTestQueryOptions(),
           );
           final message = GraphQLHelpers.getErrorMessage(result);
           expect(message, equals('Field not found'));
@@ -262,6 +273,7 @@ void main() {
                 parsedResponse: null,
               ),
             ),
+            options: _createTestQueryOptions(),
           );
           final message = GraphQLHelpers.getErrorMessage(result);
           expect(message, isNotNull);
@@ -271,6 +283,7 @@ void main() {
           final result = QueryResult(
             data: {'test': 'data'},
             source: QueryResultSource.network,
+            options: _createTestQueryOptions(),
           );
           final message = GraphQLHelpers.getErrorMessage(result);
           expect(message, isNull);
@@ -293,7 +306,7 @@ void main() {
       test('should correctly classify network connectivity issues', () {
         final connectivityErrors = [
           Exception('SocketException: Network is unreachable'),
-          NetworkException.noConnection(),
+          core.NetworkException.noConnection(),
           Exception('NO_CONNECTION to server'),
         ];
 
@@ -306,7 +319,7 @@ void main() {
 
       test('should correctly classify slow API response timeouts', () {
         final timeoutErrors = [
-          NetworkException.timeout(),
+          core.NetworkException.timeout(),
           Exception('Request TIMEOUT after 30 seconds'),
           Exception('Operation TIMEOUT'),
         ];
