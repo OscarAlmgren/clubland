@@ -167,8 +167,8 @@ void main() {
       ).thenAnswer((_) async => const Left(NetworkFailure('Server error')));
 
       // Act & Assert
-      expect(
-        () => container.read(eventsListControllerProvider(clubId).future),
+      await expectLater(
+        container.read(eventsListControllerProvider(clubId).future),
         throwsA(isA<Exception>()),
       );
     });
@@ -344,8 +344,8 @@ void main() {
       ).thenAnswer((_) async => Right(mockEligibility));
 
       // Act & Assert
-      expect(
-        () => container.read(
+      await expectLater(
+        container.read(
           eventDetailsControllerProvider(eventId, memberId).future,
         ),
         throwsA(isA<Exception>()),
@@ -427,6 +427,9 @@ void main() {
       // Register fallback values
       registerFallbackValue(<String, dynamic>{});
       registerFallbackValue(CancelRSVPParams(rsvpId: rsvpId));
+      registerFallbackValue(
+        UpdateRSVPParams(rsvpId: rsvpId, input: const {}),
+      );
     });
 
     tearDown(() {
@@ -620,8 +623,8 @@ void main() {
       ).thenAnswer((_) async => Left(NetworkFailure('Network error')));
 
       // Act & Assert
-      expect(
-        () => container.read(myRSVPsControllerProvider(clubId).future),
+      await expectLater(
+        container.read(myRSVPsControllerProvider(clubId).future),
         throwsA(isA<Exception>()),
       );
     });
