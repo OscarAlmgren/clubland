@@ -2,7 +2,6 @@ import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/events/domain/entities/event_rsvp_entity.dart';
 import 'package:clubland/features/events/domain/entities/events_connection_entity.dart';
-import 'package:clubland/features/events/domain/entities/page_info_entity.dart';
 import 'package:clubland/features/events/domain/entities/rsvp_eligibility_entity.dart';
 import 'package:clubland/features/events/domain/entities/cancel_rsvp_response_entity.dart';
 import 'package:clubland/features/events/domain/usecases/get_events.dart';
@@ -55,16 +54,15 @@ void main() {
     guestPolicy: GuestPolicy.membersOnly,
     requiresApproval: false,
     requiresPayment: true,
-    paymentAmount: 50.0,
+    price: 50.0,
     rsvpDeadline: DateTime.now().add(const Duration(days: 6)),
     cancellationDeadline: DateTime.now().add(const Duration(days: 5)),
     tags: const ['wine', 'dining'],
-    organizerId: 'organizer123',
     organizerName: 'John Doe',
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    allowsSubgroupPriority: null,
-    fullHouseExclusive: null,
+    allowsSubgroupPriority: false,
+    fullHouseExclusive: false,
   );
 
   final mockRSVP = EventRSVPEntity(
@@ -78,8 +76,8 @@ void main() {
     attendanceCount: 1,
     guestNames: const [],
     dietaryRestrictions: const [],
-    seatingPreferences: const [],
-    specialRequests: const [],
+    seatingPreferences: null,
+    specialRequests: null,
     status: RSVPStatus.confirmed,
     paymentRequired: true,
     paymentVerified: true,
@@ -90,15 +88,16 @@ void main() {
   );
 
   final mockEligibility = RSVPEligibilityEntity(
-    canRSVP: true,
+    eligible: true,
     reason: 'Eligible',
+    memberInGoodStanding: true,
+    hasOutstandingDebt: false,
+    wouldBeWaitlisted: false,
+    availableSpots: 5,
+    priority: 2,
     requiresPayment: true,
     paymentAmount: 50.0,
-    availableSpots: 5,
-    isWaitlistAvailable: false,
     hasExistingRSVP: false,
-    existingRSVPId: null,
-    existingRSVPStatus: null,
   );
 
   final mockPageInfo = PageInfoEntity(
@@ -156,7 +155,7 @@ void main() {
       final state = await controller;
       expect(state.events, isNotEmpty);
       expect(state.events.first.id, eventId);
-      expect(state.hasMore, true);
+      expect(state.pageInfo.hasNextPage, true);
       expect(state.isLoadingMore, false);
       verify(() => mockGetEvents(any())).called(1);
     });
@@ -165,7 +164,7 @@ void main() {
       // Arrange
       when(
         () => mockGetEvents(any()),
-      ).thenAnswer((_) async => Left(ServerFailure('Server error')));
+      ).thenAnswer((_) async => const Left(NetworkFailure('Server error')));
 
       // Act & Assert
       expect(
@@ -300,7 +299,7 @@ void main() {
       );
 
       // Register fallback values
-      registerFallbackValue(GetEventByIdParams(eventId: eventId));
+      registerFallbackValue(eventId);
       registerFallbackValue(
         CheckRSVPEligibilityParams(eventId: eventId, memberId: memberId),
       );
@@ -329,7 +328,7 @@ void main() {
         // Assert
         final state = await controller;
         expect(state.event.id, eventId);
-        expect(state.eligibility.canRSVP, true);
+        expect(state.eligibility?.canRSVP, true);
         verify(() => mockGetEventById(any())).called(1);
         verify(() => mockCheckEligibility(any())).called(1);
       },
@@ -339,7 +338,7 @@ void main() {
       // Arrange
       when(
         () => mockGetEventById(any()),
-      ).thenAnswer((_) async => Left(NotFoundFailure('Event not found')));
+      ).thenAnswer((_) async => Left(NetworkFailure.notFound()));
       when(
         () => mockCheckEligibility(any()),
       ).thenAnswer((_) async => Right(mockEligibility));
@@ -447,13 +446,13 @@ void main() {
         () => mockCreateRSVP(any()),
       ).thenAnswer((_) async => Right(mockRSVP));
 
-      final controller = container.read(rsvpControllerProvider.notifier);
+      final controller = container.read(rSVPControllerProvider.notifier);
 
       // Act
       await controller.createRSVP(input);
 
       // Assert
-      final state = container.read(rsvpControllerProvider);
+      final state = container.read(rSVPControllerProvider);
       expect(state.value, isNotNull);
       expect(state.value!.id, rsvpId);
       verify(() => mockCreateRSVP(input)).called(1);
@@ -471,13 +470,13 @@ void main() {
         () => mockCreateRSVP(any()),
       ).thenAnswer((_) async => Left(ValidationFailure('Invalid input')));
 
-      final controller = container.read(rsvpControllerProvider.notifier);
+      final controller = container.read(rSVPControllerProvider.notifier);
 
       // Act
       await controller.createRSVP(input);
 
       // Assert
-      final state = container.read(rsvpControllerProvider);
+      final state = container.read(rSVPControllerProvider);
       expect(state.hasError, true);
       verify(() => mockCreateRSVP(input)).called(1);
     });
@@ -486,22 +485,44 @@ void main() {
       // Arrange
       final input = {'response': 'maybe', 'attendanceCount': 2};
 
-      final updatedRSVP = mockRSVP.copyWith(response: RSVPResponse.maybe);
+      final updatedRSVP = EventRSVPEntity(
+        id: mockRSVP.id,
+        eventId: mockRSVP.eventId,
+        memberId: mockRSVP.memberId,
+        clubId: mockRSVP.clubId,
+        response: RSVPResponse.maybe,
+        rsvpType: mockRSVP.rsvpType,
+        priority: mockRSVP.priority,
+        attendanceCount: 2,
+        guestNames: mockRSVP.guestNames,
+        dietaryRestrictions: mockRSVP.dietaryRestrictions,
+        status: mockRSVP.status,
+        paymentRequired: mockRSVP.paymentRequired,
+        paymentVerified: mockRSVP.paymentVerified,
+        paymentAmount: mockRSVP.paymentAmount,
+        feeWaived: mockRSVP.feeWaived,
+        rsvpedAt: mockRSVP.rsvpedAt,
+        updatedAt: DateTime.now(),
+      );
 
       when(
         () => mockUpdateRSVP(any()),
       ).thenAnswer((_) async => Right(updatedRSVP));
 
-      final controller = container.read(rsvpControllerProvider.notifier);
+      final controller = container.read(rSVPControllerProvider.notifier);
 
       // Act
       await controller.updateRSVP(rsvpId, input);
 
       // Assert
-      final state = container.read(rsvpControllerProvider);
+      final state = container.read(rSVPControllerProvider);
       expect(state.value, isNotNull);
       expect(state.value!.response, RSVPResponse.maybe);
-      verify(() => mockUpdateRSVP({'id': rsvpId, ...input})).called(1);
+      verify(
+        () => mockUpdateRSVP(
+          UpdateRSVPParams(rsvpId: rsvpId, input: input),
+        ),
+      ).called(1);
     });
 
     test('should cancel RSVP successfully', () async {
@@ -510,7 +531,7 @@ void main() {
         () => mockCancelRSVP(any()),
       ).thenAnswer((_) async => Right(mockCancelResponse));
 
-      final controller = container.read(rsvpControllerProvider.notifier);
+      final controller = container.read(rSVPControllerProvider.notifier);
 
       // Act
       final result = await controller.cancelRSVP(
@@ -528,9 +549,9 @@ void main() {
       // Arrange
       when(
         () => mockCancelRSVP(any()),
-      ).thenAnswer((_) async => Left(ServerFailure('Cancellation failed')));
+      ).thenAnswer((_) async => const Left(NetworkFailure('Cancellation failed')));
 
-      final controller = container.read(rsvpControllerProvider.notifier);
+      final controller = container.read(rSVPControllerProvider.notifier);
 
       // Act & Assert
       expect(() => controller.cancelRSVP(rsvpId), throwsA(isA<Exception>()));
@@ -541,27 +562,20 @@ void main() {
     late MockGetMyRSVPs mockGetMyRSVPs;
     late ProviderContainer container;
 
-    final mockRSVPsConnection = {
-      'edges': [
+    final mockRSVPsConnection = RSVPsConnectionEntity(
+      rsvps: [
         {
-          'node': {
-            'id': rsvpId,
-            'eventId': eventId,
-            'memberId': memberId,
-            'clubId': clubId,
-            'response': 'yes',
-            'status': 'confirmed',
-          },
+          'id': rsvpId,
+          'eventId': eventId,
+          'memberId': memberId,
+          'clubId': clubId,
+          'response': 'yes',
+          'status': 'confirmed',
         },
       ],
-      'pageInfo': {
-        'hasNextPage': true,
-        'hasPreviousPage': false,
-        'startCursor': 'cursor1',
-        'endCursor': 'cursor2',
-      },
-      'totalCount': 5,
-    };
+      pageInfo: mockPageInfo,
+      totalCount: 5,
+    );
 
     setUp(() {
       mockGetMyRSVPs = MockGetMyRSVPs();
@@ -573,7 +587,7 @@ void main() {
       );
 
       // Register fallback values
-      registerFallbackValue(GetMyRSVPsParams(clubId: clubId, status: null));
+      registerFallbackValue(const GetMyRSVPsParams(clubId: clubId));
     });
 
     tearDown(() {
@@ -594,7 +608,7 @@ void main() {
       // Assert
       final state = await controller;
       expect(state.rsvps, isNotEmpty);
-      expect(state.hasMore, true);
+      expect(state.pageInfo.hasNextPage, true);
       expect(state.isLoadingMore, false);
       verify(() => mockGetMyRSVPs(any())).called(1);
     });

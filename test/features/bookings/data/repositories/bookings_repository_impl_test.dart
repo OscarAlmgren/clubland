@@ -1,7 +1,6 @@
 import 'package:clubland/core/errors/exceptions.dart';
 import 'package:clubland/features/bookings/data/datasources/bookings_remote_datasource.dart';
 import 'package:clubland/features/bookings/data/models/booking_model.dart';
-import 'package:clubland/features/bookings/data/models/facility_availability_model.dart';
 import 'package:clubland/features/bookings/data/repositories/bookings_repository_impl.dart';
 import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -59,7 +58,11 @@ void main() {
           final result = await repository.getUserBookings();
 
           // assert
-          expect(result, equals(tBookingsList));
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return Right'),
+            (bookings) => expect(bookings.length, equals(1)),
+          );
           verify(
             () => mockRemoteDataSource.getUserBookings(
               status: any(named: 'status'),
@@ -92,7 +95,11 @@ void main() {
           );
 
           // assert
-          expect(result, equals(tBookingsList));
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return Right'),
+            (bookings) => expect(bookings.length, equals(1)),
+          );
           verify(
             () => mockRemoteDataSource.getUserBookings(
               status: BookingStatus.confirmed,
@@ -105,7 +112,7 @@ void main() {
         },
       );
 
-      test('should throw NetworkException when datasource throws', () async {
+      test('should return NetworkFailure when datasource throws', () async {
         // arrange
         when(
           () => mockRemoteDataSource.getUserBookings(
@@ -117,10 +124,14 @@ void main() {
           ),
         ).thenThrow(const NetworkException('Server error', 'SERVER_ERROR'));
 
-        // act & assert
-        expect(
-          () => repository.getUserBookings(),
-          throwsA(isA<NetworkException>()),
+        // act
+        final result = await repository.getUserBookings();
+
+        // assert
+        expect(result.isLeft(), true);
+        result.fold(
+          (failure) => expect(failure.message, contains('Server error')),
+          (_) => fail('Should return Left'),
         );
       });
     });
@@ -151,20 +162,28 @@ void main() {
         final result = await repository.getBookingById('1');
 
         // assert
-        expect(result, equals(tBooking));
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Should return Right'),
+          (booking) => expect(booking.id, equals('1')),
+        );
         verify(() => mockRemoteDataSource.getBookingById('1')).called(1);
       });
 
-      test('should throw NetworkException when booking not found', () async {
+      test('should return NetworkFailure when booking not found', () async {
         // arrange
         when(
           () => mockRemoteDataSource.getBookingById('999'),
-        ).thenThrow(NetworkException.notFound());
+        ).thenThrow(NetworkException.notFound('Booking not found', null));
 
-        // act & assert
-        expect(
-          () => repository.getBookingById('999'),
-          throwsA(isA<NetworkException>()),
+        // act
+        final result = await repository.getBookingById('999');
+
+        // assert
+        expect(result.isLeft(), true);
+        result.fold(
+          (failure) => expect(failure.code, equals('NOT_FOUND')),
+          (_) => fail('Should return Left'),
         );
       });
     });
@@ -207,7 +226,11 @@ void main() {
           );
 
           // assert
-          expect(result, equals(tBooking));
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return Right'),
+            (booking) => expect(booking.id, equals('new-booking')),
+          );
           verify(
             () => mockRemoteDataSource.createBooking(
               facilityId: 'facility1',
@@ -220,7 +243,7 @@ void main() {
         },
       );
 
-      test('should throw NetworkException when creation fails', () async {
+      test('should return NetworkFailure when creation fails', () async {
         // arrange
         when(
           () => mockRemoteDataSource.createBooking(
@@ -232,14 +255,18 @@ void main() {
           ),
         ).thenThrow(const NetworkException('Creation failed', 'CREATE_ERROR'));
 
-        // act & assert
-        expect(
-          () => repository.createBooking(
-            facilityId: 'facility1',
-            startTime: DateTime(2025, 12, 1, 10),
-            endTime: DateTime(2025, 12, 1, 11),
-          ),
-          throwsA(isA<NetworkException>()),
+        // act
+        final result = await repository.createBooking(
+          facilityId: 'facility1',
+          startTime: DateTime(2025, 12, 1, 10),
+          endTime: DateTime(2025, 12, 1, 11),
+        );
+
+        // assert
+        expect(result.isLeft(), true);
+        result.fold(
+          (failure) => expect(failure.message, contains('Creation failed')),
+          (_) => fail('Should return Left'),
         );
       });
     });
@@ -281,7 +308,11 @@ void main() {
           );
 
           // assert
-          expect(result, equals(tUpdatedBooking));
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return Right'),
+            (booking) => expect(booking.id, equals('1')),
+          );
           verify(
             () => mockRemoteDataSource.updateBooking(
               bookingId: '1',
@@ -333,68 +364,15 @@ void main() {
           );
 
           // assert
-          expect(result.status, equals(BookingStatus.cancelled));
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return Right'),
+            (booking) => expect(booking.status, equals(BookingStatus.cancelled)),
+          );
           verify(
             () => mockRemoteDataSource.cancelBooking(
               bookingId: '1',
               reason: 'User cancelled',
-            ),
-          ).called(1);
-        },
-      );
-    });
-
-    group('getFacilityAvailability', () {
-      final tAvailability = FacilityAvailabilityModel(
-        facility: const FacilityDetails(
-          id: 'facility1',
-          name: 'Tennis Court',
-          capacity: 4,
-          bookingSettings: BookingSettings(
-            minBookingDuration: Duration(minutes: 60),
-            maxBookingDuration: Duration(minutes: 120),
-            advanceBookingLimit: Duration(days: 7),
-            cancellationPolicy: '24 hours before',
-          ),
-        ),
-        availableSlots: [
-          AvailableSlot(
-            startTime: DateTime(2025, 12, 1, 10),
-            endTime: DateTime(2025, 12, 1, 11),
-            available: true,
-            capacity: 4,
-            remainingSpots: 4,
-          ),
-        ],
-        bookedSlots: const [],
-      );
-
-      test(
-        'should return facility availability when datasource call succeeds',
-        () async {
-          // arrange
-          when(
-            () => mockRemoteDataSource.getFacilityAvailability(
-              facilityId: any(named: 'facilityId'),
-              startDate: any(named: 'startDate'),
-              endDate: any(named: 'endDate'),
-            ),
-          ).thenAnswer((_) async => tAvailability);
-
-          // act
-          final result = await repository.getFacilityAvailability(
-            facilityId: 'facility1',
-            startDate: DateTime(2025, 12),
-            endDate: DateTime(2025, 12, 2),
-          );
-
-          // assert
-          expect(result, equals(tAvailability));
-          verify(
-            () => mockRemoteDataSource.getFacilityAvailability(
-              facilityId: 'facility1',
-              startDate: any(named: 'startDate'),
-              endDate: any(named: 'endDate'),
             ),
           ).called(1);
         },

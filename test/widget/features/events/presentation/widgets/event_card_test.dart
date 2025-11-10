@@ -5,7 +5,7 @@ import 'package:clubland/features/events/presentation/widgets/rsvp_status_badge.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../helpers/test_helpers.dart';
+import '../../../../../helpers/test_helpers.dart';
 
 void main() {
   group('EventCard', () {
@@ -369,7 +369,7 @@ void main() {
 
     group('capacity variations', () {
       testWidgets('should handle event without capacity limit', (tester) async {
-        final noCap Event = EventEntity(
+        final noCapEvent = EventEntity(
           id: '10',
           clubId: 'club1',
           title: 'Open Event',

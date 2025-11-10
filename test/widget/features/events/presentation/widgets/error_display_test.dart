@@ -2,7 +2,7 @@ import 'package:clubland/features/events/presentation/widgets/error_display.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../helpers/test_helpers.dart';
+import '../../../../../helpers/test_helpers.dart';
 
 void main() {
   group('ErrorDisplay', () {

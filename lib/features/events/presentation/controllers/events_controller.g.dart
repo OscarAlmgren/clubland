@@ -616,7 +616,7 @@ final class EventDetailsProvider
   }
 }
 
-String _$eventDetailsHash() => r'011c65005bf0fa213e65e080e3493c4967f4a35f';
+String _$eventDetailsHash() => r'c780b77b90edef8ba26df5c1b81eebcd99cceb08';
 
 /// Provider for fetching a single event by ID
 
@@ -1081,7 +1081,7 @@ final class EventDetailsControllerProvider
 }
 
 String _$eventDetailsControllerHash() =>
-    r'fdbb0d8fc457171a146c271d9541632850904c2c';
+    r'64f866a9908776079388851474e7e988fd56dc19';
 
 /// Controller for managing event details and eligibility
 

@@ -599,7 +599,9 @@ void main() {
           source: QueryResultSource.network,
           options: QueryOptions(document: gql('')),
           exception: OperationException(
-            linkException: Exception('Network connection failed'),
+            linkException: const ServerException(
+              parsedResponse: null,
+            ),
           ),
         ),
       );

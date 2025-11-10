@@ -137,7 +137,7 @@ void main() {
         // Assert
         expect(result.isLeft(), true);
         result.fold((failure) {
-          expect(failure, isA<AuthenticationFailure>());
+          expect(failure, isA<AuthFailure>());
         }, (connection) => fail('Should return Left'));
       },
     );
@@ -198,7 +198,8 @@ void main() {
       // Assert
       expect(result.isLeft(), true);
       result.fold((failure) {
-        expect(failure, isA<NotFoundFailure>());
+        expect(failure, isA<NetworkFailure>());
+        expect((failure as NetworkFailure).code, 'NOT_FOUND');
       }, (event) => fail('Should return Left'));
     });
   });
@@ -393,7 +394,8 @@ void main() {
       // Assert
       expect(result.isLeft(), true);
       result.fold((failure) {
-        expect(failure, isA<NotFoundFailure>());
+        expect(failure, isA<NetworkFailure>());
+        expect((failure as NetworkFailure).code, 'NOT_FOUND');
       }, (response) => fail('Should return Left'));
     });
   });

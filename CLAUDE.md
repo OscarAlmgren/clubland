@@ -7,6 +7,7 @@ AI instructions for Claude Code working with this repository.
 **Clubland** - Premium Flutter application for Reciprocal Clubs platform.
 
 **Tech Stack:**
+
 - Flutter 3.37.0+ (beta), Dart 3.10.0+
 - Clean Architecture with feature-based organization
 - Riverpod 3.x for state management
@@ -25,6 +26,7 @@ flutter run
 ## Essential Commands
 
 ### Running & Development
+
 ```bash
 flutter run                                    # Run app
 flutter run --target lib/simple_main.dart      # Run simplified version
@@ -33,6 +35,7 @@ R                                              # Hot restart (in terminal)
 ```
 
 ### Code Generation (Required after changes to GraphQL/Riverpod/i18n)
+
 ```bash
 dart run build_runner build --delete-conflicting-outputs    # Generate all
 dart run build_runner watch --delete-conflicting-outputs    # Watch mode
@@ -40,6 +43,7 @@ dart run intl_utils:generate                                # i18n only
 ```
 
 ### Testing & Quality
+
 ```bash
 flutter test                                   # All tests
 flutter test test/unit/                        # Unit tests
@@ -50,6 +54,7 @@ dart format .                                  # Format
 ```
 
 ### Building
+
 ```bash
 flutter build apk --release --dart-define=ENVIRONMENT=production
 flutter build appbundle --release --dart-define=ENVIRONMENT=production
@@ -124,6 +129,7 @@ class MyController extends _$MyController {
 ```
 
 **Key points:**
+
 - Use `@riverpod` annotation (not manual providers)
 - Run `dart run build_runner build` after changes
 - Use `Ref` parameter, not custom ref types
@@ -132,6 +138,7 @@ class MyController extends _$MyController {
 ### 3. GraphQL Operations (Type-Safe)
 
 **Workflow:**
+
 1. Add/update `.graphql` files in `lib/graphql/[feature]/`
 2. Run `dart run build_runner build --delete-conflicting-outputs`
 3. Import: `import 'package:clubland/core/graphql/graphql_api.dart';`
@@ -241,6 +248,7 @@ Text(S.of(context).myKey)
 ## Testing Strategy
 
 ### Test Structure
+
 - `test/unit/` - Business logic, repositories, use cases
 - `test/widget/` - UI components
 - `integration_test/` - End-to-end flows
@@ -286,6 +294,7 @@ test('test name', () async {
 ## Key Dependencies
 
 **Production:**
+
 - flutter_riverpod, riverpod_annotation (state management)
 - go_router (navigation)
 - graphql_flutter, gql (GraphQL)
@@ -296,6 +305,7 @@ test('test name', () async {
 - intl (i18n)
 
 **Development:**
+
 - build_runner, riverpod_generator (code generation)
 - graphql_codegen (GraphQL type generation)
 - drift_dev (database code generation)
@@ -326,4 +336,4 @@ test('test name', () async {
 
 7. **Performance target**: <100ms for critical operations (auth, navigation)
 
-8. **Accessibility**: Follow WCAG 2.1 AA standards (use AccessibilityUtils when needed)
+8. **Accessibility**: Follow WCAG 2.1 AAA standards (use AccessibilityUtils when needed)

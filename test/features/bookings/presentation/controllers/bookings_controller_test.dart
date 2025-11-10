@@ -1,48 +1,42 @@
-import 'package:clubland/features/bookings/data/datasources/bookings_remote_datasource.dart';
-import 'package:clubland/features/bookings/data/models/booking_model.dart';
 import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:clubland/features/bookings/domain/repositories/bookings_repository.dart';
 import 'package:clubland/features/bookings/presentation/controllers/bookings_controller.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockBookingsRepository extends Mock implements BookingsRepository {}
 
-class MockBookingsRemoteDataSource extends Mock
-    implements BookingsRemoteDataSource {}
-
 void main() {
   late MockBookingsRepository mockRepository;
-  late MockBookingsRemoteDataSource mockDataSource;
 
   setUp(() {
     mockRepository = MockBookingsRepository();
-    mockDataSource = MockBookingsRemoteDataSource();
   });
 
   // Test data
-  final tBooking1 = BookingModel(
+  final tBooking1 = BookingEntity(
     id: '1',
     startTime: DateTime.now().add(const Duration(days: 1)),
     endTime: DateTime.now().add(const Duration(days: 1, hours: 1)),
     status: BookingStatus.confirmed,
-    club: const ClubSummary(id: 'club1', name: 'Test Club'),
-    facility: const FacilitySummary(id: 'facility1', name: 'Tennis Court'),
-    user: const UserSummary(id: 'user1', firstName: 'John', lastName: 'Doe'),
+    club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
+    facility: const FacilitySummaryEntity(id: 'facility1', name: 'Tennis Court'),
+    user: const UserSummaryEntity(id: 'user1', firstName: 'John', lastName: 'Doe'),
     createdAt: DateTime.now(),
   );
 
-  final tBooking2 = BookingModel(
+  final tBooking2 = BookingEntity(
     id: '2',
     startTime: DateTime.now().subtract(const Duration(days: 1)),
     endTime: DateTime.now()
         .subtract(const Duration(days: 1))
         .add(const Duration(hours: 1)),
     status: BookingStatus.completed,
-    club: const ClubSummary(id: 'club1', name: 'Test Club'),
-    facility: const FacilitySummary(id: 'facility2', name: 'Pool'),
-    user: const UserSummary(id: 'user1', firstName: 'John', lastName: 'Doe'),
+    club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
+    facility: const FacilitySummaryEntity(id: 'facility2', name: 'Pool'),
+    user: const UserSummaryEntity(id: 'user1', firstName: 'John', lastName: 'Doe'),
     createdAt: DateTime.now().subtract(const Duration(days: 2)),
   );
 
@@ -59,7 +53,7 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       final container = ProviderContainer(
         overrides: [
@@ -79,15 +73,8 @@ void main() {
   group('upcomingBookingsProvider -', () {
     test('should return only upcoming bookings', () async {
       // arrange
-      when(
-        () => mockRepository.getUserBookings(
-          status: any(named: 'status'),
-          startDate: any(named: 'startDate'),
-          endDate: any(named: 'endDate'),
-          limit: any(named: 'limit'),
-          cursor: any(named: 'cursor'),
-        ),
-      ).thenAnswer((_) async => tBookingsList);
+      when(() => mockRepository.getUpcomingBookings())
+          .thenAnswer((_) async => Right([tBooking1]));
 
       final container = ProviderContainer(
         overrides: [
@@ -108,15 +95,8 @@ void main() {
   group('pastBookingsProvider -', () {
     test('should return only past bookings', () async {
       // arrange
-      when(
-        () => mockRepository.getUserBookings(
-          status: any(named: 'status'),
-          startDate: any(named: 'startDate'),
-          endDate: any(named: 'endDate'),
-          limit: any(named: 'limit'),
-          cursor: any(named: 'cursor'),
-        ),
-      ).thenAnswer((_) async => tBookingsList);
+      when(() => mockRepository.getPastBookings())
+          .thenAnswer((_) async => Right([tBooking2]));
 
       final container = ProviderContainer(
         overrides: [
@@ -145,7 +125,7 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       final container = ProviderContainer(
         overrides: [
@@ -171,7 +151,7 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       final container = ProviderContainer(
         overrides: [
@@ -204,7 +184,7 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       final container = ProviderContainer(
         overrides: [
@@ -228,7 +208,7 @@ void main() {
 
     test('should cancel booking successfully', () async {
       // arrange
-      final cancelledBooking = BookingModel(
+      final cancelledBooking = BookingEntity(
         id: '1',
         startTime: tBooking1.startTime,
         endTime: tBooking1.endTime,
@@ -237,7 +217,7 @@ void main() {
         facility: tBooking1.facility,
         user: tBooking1.user,
         createdAt: tBooking1.createdAt,
-        cancellation: BookingCancellation(
+        cancellation: BookingCancellationEntity(
           reason: 'User cancelled',
           cancelledAt: DateTime.now(),
         ),
@@ -251,14 +231,14 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       when(
         () => mockRepository.cancelBooking(
           bookingId: any(named: 'bookingId'),
           reason: any(named: 'reason'),
         ),
-      ).thenAnswer((_) async => cancelledBooking);
+      ).thenAnswer((_) async => Right(cancelledBooking));
 
       final container = ProviderContainer(
         overrides: [
@@ -285,14 +265,14 @@ void main() {
 
     test('should create booking successfully', () async {
       // arrange
-      final newBooking = BookingModel(
+      final newBooking = BookingEntity(
         id: 'new-booking',
         startTime: DateTime.now().add(const Duration(days: 2)),
         endTime: DateTime.now().add(const Duration(days: 2, hours: 1)),
         status: BookingStatus.pending,
-        club: const ClubSummary(id: 'club1', name: 'Test Club'),
-        facility: const FacilitySummary(id: 'facility1', name: 'Tennis Court'),
-        user: const UserSummary(
+        club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
+        facility: const FacilitySummaryEntity(id: 'facility1', name: 'Tennis Court'),
+        user: const UserSummaryEntity(
           id: 'user1',
           firstName: 'John',
           lastName: 'Doe',
@@ -308,7 +288,7 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       when(
         () => mockRepository.createBooking(
@@ -318,7 +298,7 @@ void main() {
           notes: any(named: 'notes'),
           participantIds: any(named: 'participantIds'),
         ),
-      ).thenAnswer((_) async => newBooking);
+      ).thenAnswer((_) async => Right(newBooking));
 
       final container = ProviderContainer(
         overrides: [
@@ -355,7 +335,7 @@ void main() {
 
     test('should update booking successfully', () async {
       // arrange
-      final updatedBooking = BookingModel(
+      final updatedBooking = BookingEntity(
         id: '1',
         startTime: DateTime.now().add(const Duration(days: 2)),
         endTime: DateTime.now().add(const Duration(days: 2, hours: 1)),
@@ -375,7 +355,7 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       when(
         () => mockRepository.updateBooking(
@@ -385,7 +365,7 @@ void main() {
           notes: any(named: 'notes'),
           participantIds: any(named: 'participantIds'),
         ),
-      ).thenAnswer((_) async => updatedBooking);
+      ).thenAnswer((_) async => Right(updatedBooking));
 
       final container = ProviderContainer(
         overrides: [
@@ -425,7 +405,7 @@ void main() {
           limit: any(named: 'limit'),
           cursor: any(named: 'cursor'),
         ),
-      ).thenAnswer((_) async => tBookingsList);
+      ).thenAnswer((_) async => Right(tBookingsList));
 
       final container = ProviderContainer(
         overrides: [
