@@ -358,6 +358,10 @@ class EventsListController extends _$EventsListController {
     _allEvents = [];
 
     final currentFilters = state.value?.filters;
+
+    // Invalidate the data provider to force a fresh fetch
+    ref.invalidate(clubEventsProvider);
+
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () => _fetchEvents(clubId, filters: currentFilters),
@@ -435,6 +439,10 @@ class EventDetailsController extends _$EventDetailsController {
 
   /// Reload event details
   Future<void> reload() async {
+    // Invalidate the data providers to force fresh fetches
+    ref.invalidate(eventDetailsProvider);
+    ref.invalidate(rsvpEligibilityProvider);
+
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => build(eventId, memberId));
   }
@@ -443,6 +451,9 @@ class EventDetailsController extends _$EventDetailsController {
   Future<void> refreshEligibility() async {
     final currentState = state.value;
     if (currentState == null) return;
+
+    // Invalidate the eligibility provider to force a fresh fetch
+    ref.invalidate(rsvpEligibilityProvider);
 
     try {
       final eligibility = await ref.read(
@@ -639,6 +650,10 @@ class MyRSVPsController extends _$MyRSVPsController {
     _allRSVPs = [];
 
     final currentFilter = state.value?.statusFilter;
+
+    // Invalidate the data provider to force a fresh fetch
+    ref.invalidate(myRSVPsProvider);
+
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () => _fetchRSVPs(clubId, statusFilter: currentFilter),
