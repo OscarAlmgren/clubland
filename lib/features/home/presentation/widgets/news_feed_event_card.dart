@@ -47,7 +47,7 @@ class NewsFeedEventCard extends StatelessWidget {
             // Header with event type and status markers
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: _getEventTypeColor(event.eventType).withOpacity(0.1),
+              color: _getEventTypeColor(event.eventType).withValues(alpha: .1),
               child: Wrap(
                 spacing: 8,
                 runSpacing: 8,

@@ -74,10 +74,6 @@ void main() {
     rsvpType: RSVPType.primary,
     priority: 1,
     attendanceCount: 1,
-    guestNames: const [],
-    dietaryRestrictions: const [],
-    seatingPreferences: null,
-    specialRequests: null,
     status: RSVPStatus.confirmed,
     paymentRequired: true,
     paymentVerified: true,
@@ -97,7 +93,6 @@ void main() {
     priority: 2,
     requiresPayment: true,
     paymentAmount: 50.0,
-    hasExistingRSVP: false,
   );
 
   final mockPageInfo = PageInfoEntity(
@@ -439,9 +434,7 @@ void main() {
       // Register fallback values
       registerFallbackValue(<String, dynamic>{});
       registerFallbackValue(CancelRSVPParams(rsvpId: rsvpId));
-      registerFallbackValue(
-        UpdateRSVPParams(rsvpId: rsvpId, input: const {}),
-      );
+      registerFallbackValue(UpdateRSVPParams(rsvpId: rsvpId, input: const {}));
     });
 
     tearDown(() async {
@@ -536,9 +529,7 @@ void main() {
       expect(state.value, isNotNull);
       expect(state.value!.response, RSVPResponse.maybe);
       verify(
-        () => mockUpdateRSVP(
-          UpdateRSVPParams(rsvpId: rsvpId, input: input),
-        ),
+        () => mockUpdateRSVP(UpdateRSVPParams(rsvpId: rsvpId, input: input)),
       ).called(1);
     });
 
@@ -564,9 +555,9 @@ void main() {
 
     test('should handle cancel RSVP error', () async {
       // Arrange
-      when(
-        () => mockCancelRSVP(any()),
-      ).thenAnswer((_) async => const Left(NetworkFailure('Cancellation failed')));
+      when(() => mockCancelRSVP(any())).thenAnswer(
+        (_) async => const Left(NetworkFailure('Cancellation failed')),
+      );
 
       final controller = container.read(rSVPControllerProvider.notifier);
 
@@ -580,7 +571,7 @@ void main() {
     late ProviderContainer container;
 
     final mockRSVPsConnection = RSVPsConnectionEntity(
-      rsvps: [
+      rsvps: const [
         {
           'id': rsvpId,
           'eventId': eventId,

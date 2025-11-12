@@ -5,9 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 // Helper function to create test QueryOptions
 QueryOptions _createTestQueryOptions() {
-  return QueryOptions(
-    document: gql('query { test }'),
-  );
+  return QueryOptions(document: gql('query { test }'));
 }
 
 void main() {
@@ -50,9 +48,7 @@ void main() {
         final testCases = [
           Exception('Cannot query field "user" on type "Query".'),
           Exception('Cannot query field "event" on type "Query".'),
-          Exception(
-            'Field "invalidField" doesn\'t exist on type "Mutation".',
-          ),
+          Exception('Field "invalidField" doesn\'t exist on type "Mutation".'),
           Exception('Error: Cannot query field "test"'),
         ];
 
@@ -60,8 +56,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isTrue,
-            reason:
-                'Should identify validation error: ${exception.toString()}',
+            reason: 'Should identify validation error: $exception',
           );
         }
       });
@@ -79,8 +74,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isTrue,
-            reason:
-                'Should identify GRAPHQL_VALIDATION_FAILED: ${exception.toString()}',
+            reason: 'Should identify GRAPHQL_VALIDATION_FAILED: $exception',
           );
         }
       });
@@ -96,7 +90,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isTrue,
-            reason: 'Should identify ValidationError: ${exception.toString()}',
+            reason: 'Should identify ValidationError: $exception',
           );
         }
       });
@@ -115,7 +109,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isFalse,
-            reason: 'Should NOT be validation error: ${exception.toString()}',
+            reason: 'Should NOT be validation error: $exception',
           );
         }
       });
@@ -139,7 +133,7 @@ void main() {
           expect(
             GraphQLHelpers.isTimeoutError(exception),
             isTrue,
-            reason: 'Should identify timeout error: ${exception.toString()}',
+            reason: 'Should identify timeout error: $exception',
           );
         }
       });
@@ -157,7 +151,7 @@ void main() {
           expect(
             GraphQLHelpers.isTimeoutError(exception),
             isFalse,
-            reason: 'Should NOT be timeout error: ${exception.toString()}',
+            reason: 'Should NOT be timeout error: $exception',
           );
         }
       });
@@ -180,7 +174,7 @@ void main() {
           expect(
             GraphQLHelpers.isNetworkError(exception),
             isTrue,
-            reason: 'Should identify network error: ${exception.toString()}',
+            reason: 'Should identify network error: $exception',
           );
         }
       });
@@ -197,7 +191,7 @@ void main() {
           expect(
             GraphQLHelpers.isNetworkError(exception),
             isTrue,
-            reason: 'Should identify SocketException: ${exception.toString()}',
+            reason: 'Should identify SocketException: $exception',
           );
         }
       });
@@ -215,7 +209,7 @@ void main() {
           expect(
             GraphQLHelpers.isNetworkError(exception),
             isFalse,
-            reason: 'Should NOT be network error: ${exception.toString()}',
+            reason: 'Should NOT be network error: $exception',
           );
         }
       });
@@ -255,9 +249,7 @@ void main() {
           final result = QueryResult(
             source: QueryResultSource.network,
             exception: OperationException(
-              graphqlErrors: [
-                const GraphQLError(message: 'Field not found'),
-              ],
+              graphqlErrors: [const GraphQLError(message: 'Field not found')],
             ),
             options: _createTestQueryOptions(),
           );
@@ -269,9 +261,7 @@ void main() {
           final result = QueryResult(
             source: QueryResultSource.network,
             exception: OperationException(
-              linkException: const ServerException(
-                parsedResponse: null,
-              ),
+              linkException: const ServerException(),
             ),
             options: _createTestQueryOptions(),
           );

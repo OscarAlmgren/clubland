@@ -9,9 +9,7 @@ void main() {
         final testCases = [
           Exception('Cannot query field "user" on type "Query".'),
           Exception('Cannot query field "event" on type "Query".'),
-          Exception(
-            'Field "invalidField" doesn\'t exist on type "Mutation".',
-          ),
+          Exception('Field "invalidField" doesn\'t exist on type "Mutation".'),
           Exception('Error: Cannot query field "test"'),
         ];
 
@@ -19,8 +17,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isTrue,
-            reason:
-                'Should identify validation error: ${exception.toString()}',
+            reason: 'Should identify validation error: $exception',
           );
         }
       });
@@ -38,8 +35,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isTrue,
-            reason:
-                'Should identify GRAPHQL_VALIDATION_FAILED: ${exception.toString()}',
+            reason: 'Should identify GRAPHQL_VALIDATION_FAILED: $exception',
           );
         }
       });
@@ -55,7 +51,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isTrue,
-            reason: 'Should identify ValidationError: ${exception.toString()}',
+            reason: 'Should identify ValidationError: $exception',
           );
         }
       });
@@ -74,7 +70,7 @@ void main() {
           expect(
             GraphQLHelpers.isValidationError(exception),
             isFalse,
-            reason: 'Should NOT be validation error: ${exception.toString()}',
+            reason: 'Should NOT be validation error: $exception',
           );
         }
       });
@@ -114,7 +110,7 @@ void main() {
           expect(
             GraphQLHelpers.isTimeoutError(exception),
             isTrue,
-            reason: 'Should identify timeout error: ${exception.toString()}',
+            reason: 'Should identify timeout error: $exception',
           );
         }
       });
@@ -132,7 +128,7 @@ void main() {
           expect(
             GraphQLHelpers.isTimeoutError(exception),
             isFalse,
-            reason: 'Should NOT be timeout error: ${exception.toString()}',
+            reason: 'Should NOT be timeout error: $exception',
           );
         }
       });
@@ -172,7 +168,7 @@ void main() {
           expect(
             GraphQLHelpers.isNetworkError(exception),
             isTrue,
-            reason: 'Should identify network error: ${exception.toString()}',
+            reason: 'Should identify network error: $exception',
           );
         }
       });
@@ -189,7 +185,7 @@ void main() {
           expect(
             GraphQLHelpers.isNetworkError(exception),
             isTrue,
-            reason: 'Should identify SocketException: ${exception.toString()}',
+            reason: 'Should identify SocketException: $exception',
           );
         }
       });
@@ -207,7 +203,7 @@ void main() {
           expect(
             GraphQLHelpers.isNetworkError(exception),
             isFalse,
-            reason: 'Should NOT be network error: ${exception.toString()}',
+            reason: 'Should NOT be network error: $exception',
           );
         }
       });
@@ -262,9 +258,8 @@ void main() {
       });
 
       test('should handle very long error messages', () {
-        final longMessage = 'Error: ' +
-            'Cannot query field ' * 100 +
-            '"test" on type "Query"';
+        final longMessage =
+            'Error: ${'Cannot query field ' * 100}"test" on type "Query"';
         final longException = Exception(longMessage);
 
         expect(GraphQLHelpers.isValidationError(longException), isTrue);
@@ -296,8 +291,7 @@ void main() {
         expect(GraphQLHelpers.isTimeoutError(networkError), isFalse);
       });
 
-      test('should handle all three classification methods consistently',
-          () {
+      test('should handle all three classification methods consistently', () {
         final testExceptions = [
           Exception('Cannot query field "test"'),
           NetworkException.timeout(),
@@ -314,14 +308,16 @@ void main() {
 
           // At least one should be false (unless it's a mixed error)
           // Each error should be classified as something OR as unknown
-          final classificationCount =
-              [isValidation, isTimeout, isNetwork].where((x) => x).length;
+          final classificationCount = [
+            isValidation,
+            isTimeout,
+            isNetwork,
+          ].where((x) => x).length;
 
           expect(
             classificationCount >= 0,
             isTrue,
-            reason:
-                'Classification should be consistent for: ${exception.toString()}',
+            reason: 'Classification should be consistent for: $exception',
           );
         }
       });

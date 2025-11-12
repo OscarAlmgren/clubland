@@ -56,8 +56,8 @@ void main() {
       });
 
       test('should calculate contrast for gray colors', () {
-        final lightGray = const Color(0xFFCCCCCC);
-        final darkGray = const Color(0xFF333333);
+        const lightGray = Color(0xFFCCCCCC);
+        const darkGray = Color(0xFF333333);
 
         final ratio = AccessibilityUtils.calculateContrastRatio(
           lightGray,
@@ -114,7 +114,7 @@ void main() {
       });
 
       test('should handle colors with alpha channel', () {
-        final semiTransparentBlack = const Color(0x80000000);
+        const semiTransparentBlack = Color(0x80000000);
         final ratio = AccessibilityUtils.calculateContrastRatio(
           semiTransparentBlack,
           Colors.white,
@@ -130,7 +130,6 @@ void main() {
         final passes = AccessibilityUtils.hasSufficientContrast(
           Colors.black,
           Colors.white,
-          fontSize: 16.0,
         );
 
         expect(passes, true);
@@ -140,7 +139,6 @@ void main() {
         final passes = AccessibilityUtils.hasSufficientContrast(
           Colors.white,
           Colors.black,
-          fontSize: 16.0,
         );
 
         expect(passes, true);
@@ -150,7 +148,6 @@ void main() {
         final passes = AccessibilityUtils.hasSufficientContrast(
           const Color(0xFFDDDDDD),
           Colors.white,
-          fontSize: 16.0,
         );
 
         expect(passes, false);
@@ -161,7 +158,6 @@ void main() {
         final normalText = AccessibilityUtils.hasSufficientContrast(
           const Color(0xFF767676),
           Colors.white,
-          fontSize: 16.0,
         );
 
         final largeText = AccessibilityUtils.hasSufficientContrast(
@@ -190,15 +186,12 @@ void main() {
         final boldSmall = AccessibilityUtils.hasSufficientContrast(
           const Color(0xFF999999),
           Colors.white,
-          fontSize: 16.0,
           isBold: true,
         );
 
         final regularSmall = AccessibilityUtils.hasSufficientContrast(
           const Color(0xFF999999),
           Colors.white,
-          fontSize: 16.0,
-          isBold: false,
         );
 
         // Both should use same standard since bold isn't large enough
@@ -210,7 +203,6 @@ void main() {
         final passes = AccessibilityUtils.hasSufficientContrast(
           Colors.blue[800]!,
           Colors.grey[100]!,
-          fontSize: 16.0,
         );
 
         expect(passes, true);
@@ -222,7 +214,6 @@ void main() {
         final passes = AccessibilityUtils.hasSufficientContrast(
           const Color(0xFF767676),
           Colors.white,
-          fontSize: 16.0,
         );
 
         // Should pass at exactly the minimum
@@ -235,7 +226,6 @@ void main() {
         final passes = AccessibilityUtils.hasSufficientContrastAAA(
           Colors.black,
           Colors.white,
-          fontSize: 16.0,
         );
 
         expect(passes, true);
@@ -243,18 +233,16 @@ void main() {
 
       test('should have stricter requirements than AA', () {
         // Color that passes AA but fails AAA
-        final colorValue = const Color(0xFF767676);
+        const colorValue = Color(0xFF767676);
 
         final passesAA = AccessibilityUtils.hasSufficientContrast(
           colorValue,
           Colors.white,
-          fontSize: 16.0,
         );
 
         final passesAAA = AccessibilityUtils.hasSufficientContrastAAA(
           colorValue,
           Colors.white,
-          fontSize: 16.0,
         );
 
         // If it passes AA but fails AAA, AAA is stricter
@@ -446,7 +434,6 @@ void main() {
             const Color(0xFFDDDDDD),
             Colors.white,
             context: 'Test button',
-            fontSize: 16.0,
           ),
           returnsNormally,
         );
@@ -458,7 +445,6 @@ void main() {
             Colors.black,
             Colors.white,
             context: 'Compliant button',
-            fontSize: 16.0,
           ),
           returnsNormally,
         );
@@ -501,7 +487,7 @@ void main() {
       });
 
       test('should handle custom colors with specific RGB values', () {
-        final customColor = const Color.fromRGBO(123, 45, 67, 1.0);
+        const customColor = Color.fromRGBO(123, 45, 67, 1.0);
         final ratio = AccessibilityUtils.calculateContrastRatio(
           customColor,
           Colors.white,
@@ -511,8 +497,8 @@ void main() {
       });
 
       test('should handle very similar colors', () {
-        final color1 = const Color(0xFF010101);
-        final color2 = const Color(0xFF020202);
+        const color1 = Color(0xFF010101);
+        const color2 = Color(0xFF020202);
 
         final ratio = AccessibilityUtils.calculateContrastRatio(color1, color2);
 
@@ -574,7 +560,6 @@ void main() {
         final primaryButton = AccessibilityUtils.hasSufficientContrast(
           Colors.white,
           Colors.blue[700]!,
-          fontSize: 16.0,
         );
 
         expect(primaryButton, true);
@@ -585,7 +570,6 @@ void main() {
         final link = AccessibilityUtils.hasSufficientContrast(
           Colors.blue[700]!,
           Colors.white,
-          fontSize: 16.0,
         );
 
         expect(link, true);
@@ -618,7 +602,6 @@ void main() {
         final disabledButton = AccessibilityUtils.hasSufficientContrast(
           Colors.grey[400]!,
           Colors.grey[200]!,
-          fontSize: 16.0,
         );
 
         // Disabled states often don't meet contrast requirements

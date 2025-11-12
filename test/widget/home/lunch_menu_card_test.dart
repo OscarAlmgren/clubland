@@ -29,13 +29,12 @@ void main() {
       );
     });
 
-    testWidgets('renders lunch menu information correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders lunch menu information correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: LunchMenuCard(lunchMenu: testLunchMenu),
-          ),
+          home: Scaffold(body: LunchMenuCard(lunchMenu: testLunchMenu)),
         ),
       );
 
@@ -43,7 +42,7 @@ void main() {
       expect(find.text('LUNCH MENU'), findsOneWidget);
 
       // Verify title is displayed
-      expect(find.text('This Week\'s Lunch Menu'), findsOneWidget);
+      expect(find.text("This Week's Lunch Menu"), findsOneWidget);
 
       // Verify menu items are displayed
       expect(find.text('Grilled Salmon'), findsOneWidget);
@@ -57,8 +56,9 @@ void main() {
       expect(find.text('All meals include soup or salad'), findsOneWidget);
     });
 
-    testWidgets('displays only first 3 items when more than 3 items exist',
-        (WidgetTester tester) async {
+    testWidgets('displays only first 3 items when more than 3 items exist', (
+      WidgetTester tester,
+    ) async {
       final menuWithManyItems = LunchMenuEntity(
         id: '1',
         clubId: 'club_1',
@@ -75,9 +75,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: LunchMenuCard(lunchMenu: menuWithManyItems),
-          ),
+          home: Scaffold(body: LunchMenuCard(lunchMenu: menuWithManyItems)),
         ),
       );
 
@@ -94,8 +92,7 @@ void main() {
       expect(find.text('+ 2 more items'), findsOneWidget);
     });
 
-    testWidgets('calls onTap when card is tapped',
-        (WidgetTester tester) async {
+    testWidgets('calls onTap when card is tapped', (WidgetTester tester) async {
       bool wasTapped = false;
 
       await tester.pumpWidget(

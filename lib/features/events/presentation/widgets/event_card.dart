@@ -49,7 +49,7 @@ class EventCard extends StatelessWidget {
             // Event type and RSVP status header
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: _getEventTypeColor(event.eventType).withOpacity(0.1),
+              color: _getEventTypeColor(event.eventType).withValues(alpha: .1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

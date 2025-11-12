@@ -598,11 +598,7 @@ void main() {
         (_) async => QueryResult(
           source: QueryResultSource.network,
           options: QueryOptions(document: gql('')),
-          exception: OperationException(
-            linkException: const ServerException(
-              parsedResponse: null,
-            ),
-          ),
+          exception: OperationException(linkException: const ServerException()),
         ),
       );
 

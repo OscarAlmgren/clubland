@@ -129,7 +129,10 @@ void main() {
     test('should report auth failures using reportAuthFailure', () {
       // Arrange
       const sessionExpired = AuthFailure('Session expired', 'SESSION_EXPIRED');
-      const invalidCreds = AuthFailure('Invalid credentials', 'INVALID_CREDENTIALS');
+      const invalidCreds = AuthFailure(
+        'Invalid credentials',
+        'INVALID_CREDENTIALS',
+      );
       const unauthorized = AuthFailure('Unauthorized', 'UNAUTHORIZED');
 
       // Act & Assert
@@ -152,9 +155,7 @@ void main() {
 
     test('should report connectivity issues', () {
       // Act & Assert
-      errorReportingService.reportConnectivityIssue(
-        operation: 'network_check',
-      );
+      errorReportingService.reportConnectivityIssue(operation: 'network_check');
 
       // No exception should be thrown
       expect(true, true);
@@ -202,9 +203,7 @@ void main() {
     test('should handle multiple queue operations', () {
       // Act
       for (var i = 0; i < 10; i++) {
-        errorReportingService.reportConnectivityIssue(
-          operation: 'test_$i',
-        );
+        errorReportingService.reportConnectivityIssue(operation: 'test_$i');
       }
 
       // Assert - no exception should be thrown
@@ -411,7 +410,6 @@ void main() {
       await errorReportingService.reportFailure(
         failure: failure,
         operation: 'error_operation',
-        severity: ErrorSeverity.error,
       );
 
       // Assert - no exception should be thrown
@@ -465,7 +463,10 @@ void main() {
 
     test('should map token refresh failed to error', () {
       // Arrange
-      const failure = AuthFailure('Token refresh failed', 'TOKEN_REFRESH_FAILED');
+      const failure = AuthFailure(
+        'Token refresh failed',
+        'TOKEN_REFRESH_FAILED',
+      );
 
       // Act
       errorReportingService.reportAuthFailure(
@@ -572,9 +573,7 @@ void main() {
 
     test('should report without context', () {
       // Act
-      errorReportingService.reportConnectivityIssue(
-        operation: 'network_check',
-      );
+      errorReportingService.reportConnectivityIssue(operation: 'network_check');
 
       // Assert - no exception should be thrown
       expect(true, true);
@@ -589,7 +588,7 @@ void main() {
         failure: const NetworkFailure('Test failure', 'TEST_CODE'),
         operation: 'test_op',
         severity: ErrorSeverity.error,
-        timestamp: DateTime(2024, 1, 1),
+        timestamp: DateTime(2024),
         environment: 'test',
         buildNumber: '1.0.0',
         deviceInfo: {'platform': 'test'},
@@ -641,10 +640,7 @@ void main() {
     test('should handle missing optional fields in JSON', () {
       // Arrange
       final json = {
-        'failure': {
-          'message': 'Test',
-          'code': null,
-        },
+        'failure': {'message': 'Test', 'code': null},
         'operation': 'test',
         'stackTrace': null,
         'userId': null,

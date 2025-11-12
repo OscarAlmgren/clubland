@@ -4,11 +4,7 @@ import '../../../../core/design_system/design_system.dart';
 import '../../../events/domain/entities/event_entity.dart';
 
 /// RSVP response type
-enum RSVPResponse {
-  yes,
-  no,
-  maybe,
-}
+enum RSVPResponse { yes, no, maybe }
 
 /// RSVP modal dialog for event responses
 class RSVPModal extends StatelessWidget {
@@ -18,34 +14,26 @@ class RSVPModal extends StatelessWidget {
   /// Callback when RSVP is selected
   final void Function(RSVPResponse response) onRSVP;
 
-  const RSVPModal({
-    required this.event,
-    required this.onRSVP,
-    super.key,
-  });
+  const RSVPModal({required this.event, required this.onRSVP, super.key});
 
   /// Show the RSVP modal
   static Future<RSVPResponse?> show({
     required BuildContext context,
     required EventEntity event,
-  }) {
-    return showDialog<RSVPResponse>(
-      context: context,
-      builder: (context) => RSVPModal(
-        event: event,
-        onRSVP: (response) => Navigator.of(context).pop(response),
-      ),
-    );
-  }
+  }) => showDialog<RSVPResponse>(
+    context: context,
+    builder: (context) => RSVPModal(
+      event: event,
+      onRSVP: (response) => Navigator.of(context).pop(response),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -106,7 +94,7 @@ class RSVPModal extends StatelessWidget {
               theme: theme,
               response: RSVPResponse.yes,
               icon: Icons.check_circle,
-              label: 'Yes, I\'ll attend',
+              label: "Yes, I'll attend",
               description: 'Confirm your attendance',
               color: Colors.green,
             ),
@@ -119,7 +107,7 @@ class RSVPModal extends StatelessWidget {
               response: RSVPResponse.maybe,
               icon: Icons.help_outline,
               label: 'Maybe',
-              description: 'You\'re not sure yet',
+              description: "You're not sure yet",
               color: Colors.orange,
             ),
 
@@ -130,7 +118,7 @@ class RSVPModal extends StatelessWidget {
               theme: theme,
               response: RSVPResponse.no,
               icon: Icons.cancel,
-              label: 'No, I can\'t attend',
+              label: "No, I can't attend",
               description: 'Decline the invitation',
               color: Colors.red,
             ),
@@ -177,61 +165,55 @@ class RSVPModal extends StatelessWidget {
     required String label,
     required String description,
     required Color color,
-  }) {
-    return InkWell(
-      onTap: () => onRSVP(response),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: theme.colorScheme.outline.withOpacity(0.3),
-          ),
-          borderRadius: BorderRadius.circular(12),
+  }) => InkWell(
+    onTap: () => onRSVP(response),
+    borderRadius: BorderRadius.circular(12),
+    child: Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: .3),
         ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                color: color,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    description,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(12),
       ),
-    );
-  }
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: .1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  description,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            Icons.arrow_forward_ios,
+            size: 16,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ],
+      ),
+    ),
+  );
 }

@@ -243,10 +243,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
 
       final bookingData = result.data?['booking'];
       if (bookingData == null) {
-        throw app_exceptions.NetworkException.notFound(
-          'Null booking',
-          'Booking data is null',
-        );
+        throw app_exceptions.NetworkException.notFound('Booking data is null');
       }
 
       return BookingModel.fromJson(bookingData as Map<String, dynamic>);
@@ -303,7 +300,8 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
             QueryOptions(
               document: gql(query),
               variables: variables,
-              fetchPolicy: FetchPolicy.networkOnly, // Always get fresh availability
+              fetchPolicy:
+                  FetchPolicy.networkOnly, // Always get fresh availability
             ),
           )
           .timeout(
@@ -386,7 +384,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
 
       // Execute mutation with timeout
       final result = await _client
-          .mutate(MutationOptions(document: gql(mutation), variables: variables))
+          .mutate(
+            MutationOptions(document: gql(mutation), variables: variables),
+          )
           .timeout(
             const Duration(seconds: 20),
             onTimeout: () {
@@ -472,7 +472,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
 
       // Execute mutation with timeout
       final result = await _client
-          .mutate(MutationOptions(document: gql(mutation), variables: variables))
+          .mutate(
+            MutationOptions(document: gql(mutation), variables: variables),
+          )
           .timeout(
             const Duration(seconds: 20),
             onTimeout: () {
@@ -553,7 +555,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
 
       // Execute mutation with timeout
       final result = await _client
-          .mutate(MutationOptions(document: gql(mutation), variables: variables))
+          .mutate(
+            MutationOptions(document: gql(mutation), variables: variables),
+          )
           .timeout(
             const Duration(seconds: 20),
             onTimeout: () {
@@ -646,23 +650,23 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
             },
           )
           .map((result) {
-        if (result.hasException) {
-          throw app_exceptions.NetworkException(
-            result.exception?.graphqlErrors.firstOrNull?.message ??
-                'Subscription error',
-            'SUBSCRIPTION_ERROR',
-          );
-        }
+            if (result.hasException) {
+              throw app_exceptions.NetworkException(
+                result.exception?.graphqlErrors.firstOrNull?.message ??
+                    'Subscription error',
+                'SUBSCRIPTION_ERROR',
+              );
+            }
 
-        final data = result.data?['bookingUpdates'];
-        if (data == null) {
-          throw const app_exceptions.NetworkException(
-            'No booking update data received',
-            'NO_DATA',
-          );
-        }
-        return BookingUpdateEvent.fromJson(data as Map<String, dynamic>);
-      });
+            final data = result.data?['bookingUpdates'];
+            if (data == null) {
+              throw const app_exceptions.NetworkException(
+                'No booking update data received',
+                'NO_DATA',
+              );
+            }
+            return BookingUpdateEvent.fromJson(data as Map<String, dynamic>);
+          });
     } on Exception catch (e) {
       _logger.e('Error setting up booking updates subscription', error: e);
       throw app_exceptions.NetworkException.serverError(

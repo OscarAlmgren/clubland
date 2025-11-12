@@ -289,7 +289,7 @@ class _EventFiltersSheetState extends State<_EventFiltersSheet> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: theme.colorScheme.onSurfaceVariant.withOpacity(0.4),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha: .4),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),

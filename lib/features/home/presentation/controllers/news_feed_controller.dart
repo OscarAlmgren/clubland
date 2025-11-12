@@ -76,27 +76,32 @@ class NewsFeedController extends _$NewsFeedController {
           menuItems: const [
             LunchMenuItem(
               name: 'Grilled Salmon with Herbs',
-              description: 'Fresh Atlantic salmon with seasonal vegetables and lemon butter sauce',
+              description:
+                  'Fresh Atlantic salmon with seasonal vegetables and lemon butter sauce',
               price: 28.50,
             ),
             LunchMenuItem(
               name: 'Classic Caesar Salad',
-              description: 'Crispy romaine lettuce, parmesan, croutons, and house-made dressing',
+              description:
+                  'Crispy romaine lettuce, parmesan, croutons, and house-made dressing',
               price: 16.00,
             ),
             LunchMenuItem(
               name: 'Beef Tenderloin Medallions',
-              description: 'Perfectly seared beef with roasted potatoes and red wine reduction',
+              description:
+                  'Perfectly seared beef with roasted potatoes and red wine reduction',
               price: 35.00,
             ),
             LunchMenuItem(
               name: 'Vegetarian Pasta Primavera',
-              description: 'Fresh pasta with seasonal vegetables in a light cream sauce',
+              description:
+                  'Fresh pasta with seasonal vegetables in a light cream sauce',
               price: 22.00,
             ),
             LunchMenuItem(
               name: 'Club Sandwich',
-              description: 'Triple-decker with turkey, bacon, lettuce, and tomato',
+              description:
+                  'Triple-decker with turkey, bacon, lettuce, and tomato',
               price: 18.50,
             ),
           ],
@@ -130,7 +135,6 @@ class NewsFeedController extends _$NewsFeedController {
           createdAt: now.subtract(const Duration(days: 30)),
           updatedAt: now.subtract(const Duration(days: 30)),
         ),
-        userRSVPStatus: null, // Not attending
       ),
 
       // News post about new facility
@@ -170,7 +174,6 @@ class NewsFeedController extends _$NewsFeedController {
           createdAt: now.subtract(const Duration(days: 21)),
           updatedAt: now.subtract(const Duration(days: 21)),
         ),
-        userRSVPStatus: null, // Not attending
       ),
 
       // Event with guests welcome
@@ -198,7 +201,6 @@ class NewsFeedController extends _$NewsFeedController {
           createdAt: now.subtract(const Duration(days: 10)),
           updatedAt: now.subtract(const Duration(days: 10)),
         ),
-        userRSVPStatus: null, // Not attending
       ),
     ];
   }
@@ -206,15 +208,21 @@ class NewsFeedController extends _$NewsFeedController {
   /// Get start of current week (Monday)
   DateTime _getStartOfWeek(DateTime date) {
     final daysFromMonday = date.weekday - 1;
-    return DateTime(date.year, date.month, date.day)
-        .subtract(Duration(days: daysFromMonday));
+    return DateTime(
+      date.year,
+      date.month,
+      date.day,
+    ).subtract(Duration(days: daysFromMonday));
   }
 
   /// Get end of current week (Sunday)
   DateTime _getEndOfWeek(DateTime date) {
     final daysToSunday = 7 - date.weekday;
-    return DateTime(date.year, date.month, date.day)
-        .add(Duration(days: daysToSunday));
+    return DateTime(
+      date.year,
+      date.month,
+      date.day,
+    ).add(Duration(days: daysToSunday));
   }
 
   /// Refresh news feed
@@ -233,8 +241,7 @@ class NewsFeedController extends _$NewsFeedController {
 
     // Update the RSVP status in the list
     final updatedItems = currentState.map((item) {
-      if (item.type == NewsFeedItemType.event &&
-          item.event?.id == eventId) {
+      if (item.type == NewsFeedItemType.event && item.event?.id == eventId) {
         return NewsFeedItemEntity.event(
           event: item.event!,
           userRSVPStatus: status,

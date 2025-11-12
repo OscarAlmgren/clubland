@@ -21,13 +21,13 @@ class PageInfoEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        hasNextPage,
-        hasPreviousPage,
-        startCursor,
-        endCursor,
-        page,
-        total,
-      ];
+    hasNextPage,
+    hasPreviousPage,
+    startCursor,
+    endCursor,
+    page,
+    total,
+  ];
 }
 
 /// Events connection entity - represents a paginated list of events

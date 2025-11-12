@@ -65,10 +65,7 @@ Future<List<SimpleClub>> featuredClubs(Ref ref, {int limit = 10}) async {
 
 /// Provider for nearby clubs
 @riverpod
-Future<List<SimpleClub>> nearbyClubs(
-  Ref ref, {
-  int limit = 20,
-}) async {
+Future<List<SimpleClub>> nearbyClubs(Ref ref, {int limit = 20}) async {
   final locationService = ref.read(locationServiceProvider);
   final position = await locationService.getCurrentLocation();
   final repository = ref.read(clubsRepositoryProvider);
@@ -135,24 +132,20 @@ class ClubsController extends _$ClubsController {
     final repository = ref.read(clubsRepositoryProvider);
     final result = await repository.getClubs();
 
-    return result.fold(
-      (failure) => throw Exception(failure.message),
-      (clubs) {
-        _allClubs = clubs
-            .map(
-              (club) => SimpleClub(
-                id: club.id,
-                name: club.name,
-                slug: club.slug,
-                description: club.description,
-                logo: club.logo,
-                coverImage: club.coverImage,
-              ),
-            )
-            .toList();
-        return _allClubs;
-      },
-    );
+    return result.fold((failure) => throw Exception(failure.message), (clubs) {
+      return clubs
+          .map(
+            (club) => SimpleClub(
+              id: club.id,
+              name: club.name,
+              slug: club.slug,
+              description: club.description,
+              logo: club.logo,
+              coverImage: club.coverImage,
+            ),
+          )
+          .toList();
+    });
   }
 
   /// Load more clubs (pagination)
@@ -186,29 +179,26 @@ class ClubsController extends _$ClubsController {
         cursor: _currentCursor,
       );
 
-      result.fold(
-        (failure) => throw Exception(failure.message),
-        (clubs) {
-          final simpleClubs = clubs
-              .map(
-                (club) => SimpleClub(
-                  id: club.id,
-                  name: club.name,
-                  slug: club.slug,
-                  description: club.description,
-                  logo: club.logo,
-                  coverImage: club.coverImage,
-                ),
-              )
-              .toList();
+      result.fold((failure) => throw Exception(failure.message), (clubs) {
+        final simpleClubs = clubs
+            .map(
+              (club) => SimpleClub(
+                id: club.id,
+                name: club.name,
+                slug: club.slug,
+                description: club.description,
+                logo: club.logo,
+                coverImage: club.coverImage,
+              ),
+            )
+            .toList();
 
-          _allClubs.addAll(simpleClubs);
-          _hasMoreData = clubs.length == _pageSize;
+        _allClubs.addAll(simpleClubs);
+        _hasMoreData = clubs.length == _pageSize;
 
-          // Update state to trigger UI rebuild
-          state = AsyncData(_allClubs);
-        },
-      );
+        // Update state to trigger UI rebuild
+        state = AsyncData(_allClubs);
+      });
     } on Exception {
       // Handle error
       rethrow;
@@ -251,7 +241,8 @@ class ClubsController extends _$ClubsController {
       );
 
       result.fold(
-        (failure) => state = AsyncError(Exception(failure.message), StackTrace.current),
+        (failure) =>
+            state = AsyncError(Exception(failure.message), StackTrace.current),
         (clubs) {
           _allClubs = clubs
               .map(
@@ -298,7 +289,8 @@ class ClubsController extends _$ClubsController {
       );
 
       result.fold(
-        (failure) => state = AsyncError(Exception(failure.message), StackTrace.current),
+        (failure) =>
+            state = AsyncError(Exception(failure.message), StackTrace.current),
         (clubs) {
           _allClubs = clubs
               .map(
@@ -330,13 +322,10 @@ class ClubsController extends _$ClubsController {
 
       final result = await repository.toggleFavoriteClub(clubId);
 
-      result.fold(
-        (failure) => throw Exception(failure.message),
-        (_) {
-          // Invalidate related providers to refresh data
-          ref.invalidate(favoriteClubsProvider);
-        },
-      );
+      result.fold((failure) => throw Exception(failure.message), (_) {
+        // Invalidate related providers to refresh data
+        ref.invalidate(favoriteClubsProvider);
+      });
     } on Exception {
       // Handle error
       rethrow;
@@ -357,10 +346,7 @@ class ClubsController extends _$ClubsController {
     try {
       final repository = ref.read(clubsRepositoryProvider);
 
-      final result = await repository.searchClubs(
-        query: query,
-        limit: 50,
-      );
+      final result = await repository.searchClubs(query: query, limit: 50);
 
       return result.fold(
         (failure) => [],
@@ -409,7 +395,5 @@ Future<bool> locationPermission(Ref ref) async {
 
 /// Provider for the remote datasource
 final clubsRemoteDataSourceProvider = Provider<ClubsRemoteDataSource>(
-  (ref) => ClubsRemoteDataSourceImpl(
-    client: GraphQLClientConfig.client,
-  ),
+  (ref) => ClubsRemoteDataSourceImpl(client: GraphQLClientConfig.client),
 );

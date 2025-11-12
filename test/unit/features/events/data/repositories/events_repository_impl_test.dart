@@ -9,7 +9,6 @@ import 'package:clubland/features/events/data/models/rsvp_eligibility_model.dart
 import 'package:clubland/features/events/data/repositories/events_repository_impl.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/events/domain/entities/event_rsvp_entity.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -189,7 +188,7 @@ void main() {
     test('should return NotFoundFailure when event not found', () async {
       // Arrange
       when(() => mockRemoteDataSource.getEventById(eventId)).thenThrow(
-        app_exceptions.NetworkException.notFound('Event not found', eventId),
+        app_exceptions.NetworkException.notFound('Event not found: $eventId'),
       );
 
       // Act
@@ -385,7 +384,7 @@ void main() {
           reason: any(named: 'reason'),
         ),
       ).thenThrow(
-        app_exceptions.NetworkException.notFound('RSVP not found', rsvpId),
+        app_exceptions.NetworkException.notFound('RSVP not found: $rsvpId'),
       );
 
       // Act

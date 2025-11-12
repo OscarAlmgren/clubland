@@ -174,7 +174,7 @@ void main() {
         // arrange
         when(
           () => mockRemoteDataSource.getBookingById('999'),
-        ).thenThrow(NetworkException.notFound('Booking not found', null));
+        ).thenThrow(NetworkException.notFound('Booking not found'));
 
         // act
         final result = await repository.getBookingById('999');
@@ -367,7 +367,8 @@ void main() {
           expect(result.isRight(), true);
           result.fold(
             (failure) => fail('Should return Right'),
-            (booking) => expect(booking.status, equals(BookingStatus.cancelled)),
+            (booking) =>
+                expect(booking.status, equals(BookingStatus.cancelled)),
           );
           verify(
             () => mockRemoteDataSource.cancelBooking(

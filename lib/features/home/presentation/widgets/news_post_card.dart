@@ -12,11 +12,7 @@ class NewsPostCard extends StatelessWidget {
   /// Callback when card is tapped
   final VoidCallback? onTap;
 
-  const NewsPostCard({
-    required this.newsPost,
-    this.onTap,
-    super.key,
-  });
+  const NewsPostCard({required this.newsPost, this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +31,7 @@ class NewsPostCard extends StatelessWidget {
             // Header with news badge
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+              color: theme.colorScheme.primaryContainer.withValues(alpha: .5),
               child: Row(
                 children: [
                   Container(

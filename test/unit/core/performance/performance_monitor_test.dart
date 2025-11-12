@@ -91,7 +91,10 @@ void main() {
         final activeOps = stats['activeOperations'] as List;
 
         expect(activeOps.length, equals(3));
-        expect(activeOps, containsAll(['operation_1', 'operation_2', 'operation_3']));
+        expect(
+          activeOps,
+          containsAll(['operation_1', 'operation_2', 'operation_3']),
+        );
       });
 
       test('should handle rapid successive operations', () {
@@ -122,13 +125,10 @@ void main() {
       });
 
       test('should time delayed async operation', () async {
-        final result = await monitor.timeOperation(
-          'delayed_op',
-          () async {
-            await Future.delayed(const Duration(milliseconds: 50));
-            return 42;
-          },
-        );
+        final result = await monitor.timeOperation('delayed_op', () async {
+          await Future.delayed(const Duration(milliseconds: 50));
+          return 42;
+        });
 
         expect(result, equals(42));
 
@@ -155,13 +155,10 @@ void main() {
       test('should handle multiple concurrent async operations', () async {
         final futures = List.generate(
           5,
-          (i) => monitor.timeOperation(
-            'concurrent_$i',
-            () async {
-              await Future.delayed(Duration(milliseconds: 10 * (i + 1)));
-              return i;
-            },
-          ),
+          (i) => monitor.timeOperation('concurrent_$i', () async {
+            await Future.delayed(Duration(milliseconds: 10 * (i + 1)));
+            return i;
+          }),
         );
 
         final results = await Future.wait(futures);
@@ -192,10 +189,7 @@ void main() {
 
     group('Sync Operation Timing', () {
       test('should time sync operation and return result', () {
-        final result = monitor.timeSync(
-          'sync_test',
-          () => 'sync_result',
-        );
+        final result = monitor.timeSync('sync_test', () => 'sync_result');
 
         expect(result, equals('sync_result'));
 
@@ -426,7 +420,7 @@ void main() {
       });
 
       test('should handle special characters in operation names', () {
-        final specialName = 'op-with.special@chars#123';
+        const specialName = 'op-with.special@chars#123';
 
         monitor.startOperation(specialName);
         monitor.endOperation(specialName);
@@ -439,7 +433,9 @@ void main() {
 
     group('Stream Controller Creation', () {
       test('should create broadcast stream controller', () {
-        final controller = monitor.createPerformantStreamController<int>('test_stream');
+        final controller = monitor.createPerformantStreamController<int>(
+          'test_stream',
+        );
 
         expect(controller.stream.isBroadcast, true);
         expect(controller.hasListener, false);
@@ -448,7 +444,9 @@ void main() {
       });
 
       test('should handle multiple listeners', () async {
-        final controller = monitor.createPerformantStreamController<String>('multi_stream');
+        final controller = monitor.createPerformantStreamController<String>(
+          'multi_stream',
+        );
 
         var listener1Called = false;
         var listener2Called = false;

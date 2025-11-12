@@ -280,7 +280,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error cancelling RSVP: ${e}'),
+          content: Text('Error cancelling RSVP: $e'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );

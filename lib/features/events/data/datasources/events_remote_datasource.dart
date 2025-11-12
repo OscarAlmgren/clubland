@@ -232,8 +232,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       final data = result.data?['event'];
       if (data == null) {
         throw app_exceptions.NetworkException.notFound(
-          'Event not found',
-          eventId,
+          'Event not found: $eventId',
         );
       }
 
@@ -354,10 +353,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
 
       // Execute mutation with direct client call
       final result = await _client.mutate(
-        MutationOptions(
-          document: gql(mutation),
-          variables: {'input': input},
-        ),
+        MutationOptions(document: gql(mutation), variables: {'input': input}),
       );
 
       if (result.hasException) {
@@ -766,8 +762,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
         if (code == 'NOT_FOUND') {
           return app_exceptions.NetworkException.notFound(
-            error.message,
-            extensions['resourceId'] as String?,
+            '${error.message}:${extensions['resourceId']}',
           );
         }
         if (code == 'VALIDATION_ERROR') {
