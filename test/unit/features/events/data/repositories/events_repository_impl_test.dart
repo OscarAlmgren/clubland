@@ -188,7 +188,8 @@ void main() {
     test('should return NotFoundFailure when event not found', () async {
       // Arrange
       when(() => mockRemoteDataSource.getEventById(eventId)).thenThrow(
-        app_exceptions.NetworkException.notFound('Event not found: $eventId'),
+        app_exceptions
+            .NetworkException.notFound(), // 'Event not found: $eventId'
       );
 
       // Act
@@ -384,7 +385,7 @@ void main() {
           reason: any(named: 'reason'),
         ),
       ).thenThrow(
-        app_exceptions.NetworkException.notFound('RSVP not found: $rsvpId'),
+        app_exceptions.NetworkException.notFound(), // 'RSVP not found: $rsvpId'
       );
 
       // Act

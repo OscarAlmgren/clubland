@@ -232,7 +232,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       final data = result.data?['event'];
       if (data == null) {
         throw app_exceptions.NetworkException.notFound(
-          'Event not found: $eventId',
+          // 'Event not found: $eventId',
         );
       }
 
@@ -762,7 +762,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         }
         if (code == 'NOT_FOUND') {
           return app_exceptions.NetworkException.notFound(
-            '${error.message}:${extensions['resourceId']}',
+            // '${error.message}:${extensions['resourceId']}',
           );
         }
         if (code == 'VALIDATION_ERROR') {

@@ -174,7 +174,7 @@ void main() {
         // arrange
         when(
           () => mockRemoteDataSource.getBookingById('999'),
-        ).thenThrow(NetworkException.notFound('Booking not found'));
+        ).thenThrow(NetworkException.notFound());
 
         // act
         final result = await repository.getBookingById('999');
