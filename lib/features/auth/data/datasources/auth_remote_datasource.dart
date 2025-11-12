@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
 
@@ -143,12 +143,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         variables: {'email': email, 'password': password},
       );
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final QueryResult result = await GraphQLHelpers.executeMutation(
-        options,
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'Login',
+      // Execute mutation with timeout
+      final QueryResult result = await _graphqlClient.mutate(options).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          _logger.w('Login mutation timeout');
+          throw NetworkException.timeout();
+        },
       );
 
       if (result.hasException) {
@@ -287,12 +288,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         },
       );
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final QueryResult result = await GraphQLHelpers.executeMutation(
-        options,
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'Register',
+      // Execute mutation with timeout
+      final QueryResult result = await _graphqlClient.mutate(options).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          _logger.w('Register mutation timeout');
+          throw NetworkException.timeout();
+        },
       );
 
       if (result.hasException) {
@@ -333,12 +335,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         document: gql(logoutMutation),
       );
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final QueryResult result = await GraphQLHelpers.executeMutation(
-        options,
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'Logout',
+      // Execute mutation with timeout
+      final QueryResult result = await _graphqlClient.mutate(options).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          _logger.w('Logout mutation timeout');
+          throw NetworkException.timeout();
+        },
       );
 
       if (result.hasException) {
@@ -401,12 +404,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         variables: {'refreshToken': refreshToken},
       );
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final QueryResult result = await GraphQLHelpers.executeMutation(
-        options,
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'RefreshToken',
+      // Execute mutation with timeout
+      final QueryResult result = await _graphqlClient.mutate(options).timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          _logger.w('RefreshToken mutation timeout');
+          throw NetworkException.timeout();
+        },
       );
 
       if (result.hasException) {

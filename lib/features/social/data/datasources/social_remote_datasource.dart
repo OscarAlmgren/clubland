@@ -2,7 +2,6 @@ import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../models/activity_model.dart';
 import '../models/club_review_model.dart';
 import '../models/notification_model.dart';
@@ -141,17 +140,22 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
-        QueryOptions(
-          document: gql(userActivityQuery),
-          variables: variables,
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ),
-        timeout: GraphQLHelpers.defaultQueryTimeout,
-        showErrorToUser: false,
-        operationName: 'UserActivity',
-      );
+      // Execute query with timeout
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(userActivityQuery),
+              variables: variables,
+              fetchPolicy: FetchPolicy.cacheAndNetwork,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              _logger.w('UserActivity query timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -226,17 +230,22 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
-        QueryOptions(
-          document: gql(clubReviewsQuery),
-          variables: variables,
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ),
-        timeout: GraphQLHelpers.defaultQueryTimeout,
-        showErrorToUser: false,
-        operationName: 'ClubReviews',
-      );
+      // Execute query with timeout
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(clubReviewsQuery),
+              variables: variables,
+              fetchPolicy: FetchPolicy.cacheAndNetwork,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              _logger.w('ClubReviews query timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -306,16 +315,21 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(createReviewMutation),
-          variables: variables,
-        ),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'CreateReview',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: gql(createReviewMutation),
+              variables: variables,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('CreateReview mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -374,16 +388,21 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(likeActivityMutation),
-          variables: {'activityId': activityId},
-        ),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'LikeActivity',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: gql(likeActivityMutation),
+              variables: {'activityId': activityId},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('LikeActivity mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -437,16 +456,21 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(addCommentMutation),
-          variables: {'activityId': activityId, 'text': text},
-        ),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'AddComment',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: gql(addCommentMutation),
+              variables: {'activityId': activityId, 'text': text},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('AddComment mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -492,16 +516,21 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(mutation),
-          variables: {'activityId': activityId},
-        ),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'ShareActivity',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: gql(mutation),
+              variables: {'activityId': activityId},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('ShareActivity mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -572,17 +601,22 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         },
       };
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
-        QueryOptions(
-          document: gql(query),
-          variables: variables,
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ),
-        timeout: GraphQLHelpers.defaultQueryTimeout,
-        showErrorToUser: false,
-        operationName: 'Notifications',
-      );
+      // Execute query with timeout
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(query),
+              variables: variables,
+              fetchPolicy: FetchPolicy.cacheAndNetwork,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              _logger.w('Notifications query timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -634,16 +668,21 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(
-          document: gql(mutation),
-          variables: {'notificationId': notificationId},
-        ),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'MarkNotificationRead',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: gql(mutation),
+              variables: {'notificationId': notificationId},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('MarkNotificationRead mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.w('Failed to mark notification as read: $notificationId');
@@ -674,13 +713,16 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(document: gql(mutation)),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'MarkAllNotificationsRead',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(MutationOptions(document: gql(mutation)))
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('MarkAllNotificationsRead mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw NetworkException.serverError(
@@ -726,16 +768,28 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      return GraphQLHelpers.executeSubscription(
-        SubscriptionOptions(
-          document: gql(notificationsSubscription),
-          variables: {'userId': userId},
-        ),
-        connectionTimeout: const Duration(seconds: 30),
-        showErrorToUser: false,
-        operationName: 'NotificationReceived',
-      ).map((result) {
+      // Execute subscription
+      return _client
+          .subscribe(
+            SubscriptionOptions(
+              document: gql(notificationsSubscription),
+              variables: {'userId': userId},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 30),
+            onTimeout: (sink) {
+              _logger.w('NotificationReceived subscription timeout');
+              sink.addError(
+                const NetworkException(
+                  'Subscription connection timed out',
+                  'SUBSCRIPTION_TIMEOUT',
+                ),
+              );
+              sink.close();
+            },
+          )
+          .map((result) {
         if (result.hasException) {
           throw NetworkException('Subscription error: ${result.exception}');
         }
@@ -778,16 +832,28 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      return GraphQLHelpers.executeSubscription(
-        SubscriptionOptions(
-          document: gql(clubActivitySubscription),
-          variables: {'clubId': clubId},
-        ),
-        connectionTimeout: const Duration(seconds: 30),
-        showErrorToUser: false,
-        operationName: 'ClubActivityUpdated',
-      ).map((result) {
+      // Execute subscription
+      return _client
+          .subscribe(
+            SubscriptionOptions(
+              document: gql(clubActivitySubscription),
+              variables: {'clubId': clubId},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 30),
+            onTimeout: (sink) {
+              _logger.w('ClubActivityUpdated subscription timeout');
+              sink.addError(
+                const NetworkException(
+                  'Subscription connection timed out',
+                  'SUBSCRIPTION_TIMEOUT',
+                ),
+              );
+              sink.close();
+            },
+          )
+          .map((result) {
         if (result.hasException) {
           throw NetworkException('Subscription error: ${result.exception}');
         }

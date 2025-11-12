@@ -2,7 +2,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
-import '../../../../core/network/graphql_client.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../models/booking_model.dart';
 import '../models/facility_availability_model.dart';
@@ -217,17 +216,22 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
-        QueryOptions(
-          document: gql(query),
-          variables: {'id': bookingId},
-          fetchPolicy: FetchPolicy.cacheAndNetwork,
-        ),
-        timeout: GraphQLHelpers.defaultSingleItemTimeout,
-        showErrorToUser: false,
-        operationName: 'BookingDetails',
-      );
+      // Execute query with timeout
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(query),
+              variables: {'id': bookingId},
+              fetchPolicy: FetchPolicy.cacheAndNetwork,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              _logger.w('BookingDetails query timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
@@ -293,17 +297,22 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeQuery(
-        QueryOptions(
-          document: gql(query),
-          variables: variables,
-          fetchPolicy: FetchPolicy.networkOnly, // Always get fresh availability
-        ),
-        timeout: GraphQLHelpers.defaultSingleItemTimeout,
-        showErrorToUser: false,
-        operationName: 'FacilityAvailability',
-      );
+      // Execute query with timeout
+      final result = await _client
+          .query(
+            QueryOptions(
+              document: gql(query),
+              variables: variables,
+              fetchPolicy: FetchPolicy.networkOnly, // Always get fresh availability
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              _logger.w('FacilityAvailability query timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
@@ -375,13 +384,16 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(document: gql(mutation), variables: variables),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'CreateBooking',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(MutationOptions(document: gql(mutation), variables: variables))
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('CreateBooking mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
@@ -458,13 +470,16 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(document: gql(mutation), variables: variables),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'UpdateBooking',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(MutationOptions(document: gql(mutation), variables: variables))
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('UpdateBooking mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
@@ -536,13 +551,16 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      final result = await GraphQLHelpers.executeMutation(
-        MutationOptions(document: gql(mutation), variables: variables),
-        timeout: GraphQLHelpers.defaultMutationTimeout,
-        showErrorToUser: false,
-        operationName: 'CancelBooking',
-      );
+      // Execute mutation with timeout
+      final result = await _client
+          .mutate(MutationOptions(document: gql(mutation), variables: variables))
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('CancelBooking mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         throw app_exceptions.NetworkException.serverError(
@@ -606,16 +624,28 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         }
       ''';
 
-      // Use GraphQLHelpers with automatic timeout and error handling
-      return GraphQLHelpers.executeSubscription(
-        SubscriptionOptions(
-          document: gql(subscription),
-          variables: {'userId': userId},
-        ),
-        connectionTimeout: const Duration(seconds: 30),
-        showErrorToUser: false,
-        operationName: 'BookingUpdates',
-      ).map((result) {
+      // Execute subscription with timeout
+      return _client
+          .subscribe(
+            SubscriptionOptions(
+              document: gql(subscription),
+              variables: {'userId': userId},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 30),
+            onTimeout: (sink) {
+              _logger.w('BookingUpdates subscription timeout');
+              sink.addError(
+                const app_exceptions.NetworkException(
+                  'Subscription connection timed out',
+                  'SUBSCRIPTION_TIMEOUT',
+                ),
+              );
+              sink.close();
+            },
+          )
+          .map((result) {
         if (result.hasException) {
           throw app_exceptions.NetworkException(
             result.exception?.graphqlErrors.firstOrNull?.message ??
