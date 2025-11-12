@@ -1,6 +1,7 @@
 # Events & RSVP Implementation - Consolidated Status Report
 
 **Generated**: November 12, 2025
+**Last Updated**: November 12, 2025
 **Branch**: `claude/read-files-011CV4GTPfg1eUykyGv2KKDX`
 **Status**: Flutter App Complete ✅ | Backend API Pending ⏳
 
@@ -38,12 +39,15 @@ The **Events & RSVP** feature has been fully implemented in the Flutter app with
 **Key Features**:
 - ✅ Events listing with pagination, search, and filtering
 - ✅ Event details with RSVP eligibility checking
+- ✅ Event image display (imageUrl) with loading/error states
+- ✅ Location, price, and cancellation deadline display
 - ✅ RSVP form with dynamic guest fields, dietary restrictions, payment/approval notices
 - ✅ My RSVPs page with status filtering and cancellation
 - ✅ Real-time subscription support (WebSocket ready in data layer)
 - ✅ Comprehensive error handling (network, timeout, auth, server errors)
 - ✅ Material Design 3 UI with color-coded status badges
 - ✅ Pull-to-refresh and infinite scroll
+- ✅ Proper null safety for all optional fields
 
 **Test Coverage**: 148 tests
 - 24 remote datasource tests
@@ -529,16 +533,42 @@ query TestFlutterFields {
 
 ---
 
+## Recent Updates (November 12, 2025)
+
+### UI Enhancements - Commit `84f8952`
+
+**Changes Made**:
+- ✅ Added event image (imageUrl) display to EventCard and EventDetailsPage
+  - 16:9 aspect ratio for consistent display
+  - Error handling with fallback icon
+  - Loading progress indicator
+  - Rounded corners and Material Design styling
+- ✅ Fixed null safety for location field (conditional display)
+- ✅ Fixed null safety for requiresPayment and requiresApproval (changed from `!` to `== true`)
+- ✅ Added price display in event details information section
+- ✅ Enhanced error handling for network image loading
+
+**Impact**:
+All new backend fields (imageUrl, location, price, cancellationDeadline) are now properly displayed in the UI with proper null safety. The app will not crash if any of these optional fields are null.
+
+**Files Modified**:
+- `lib/features/events/presentation/widgets/event_card.dart` (+64, -12 lines)
+- `lib/features/events/presentation/pages/event_details_page.dart` (+38, -8 lines)
+
+---
+
 ## Summary
 
 ### ✅ Completed
 - Flutter app fully implemented (100%)
+- All new backend fields displayed in UI (imageUrl, location, price, cancellationDeadline)
 - GraphQL schema updated with aliases
 - Comprehensive documentation created
 - 148 tests written and passing
 - 4 languages supported (en, sv, de, fr)
 - Error handling with no retry loops
-- Material Design 3 UI
+- Material Design 3 UI with proper null safety
+- Event images with loading/error states
 
 ### ⏳ Remaining
 - Backend code generation (`go generate`)
@@ -558,11 +588,12 @@ query TestFlutterFields {
 5. Notify Flutter team when ready for testing
 
 **Flutter Team**:
-1. Run code generation locally if not done
-2. Wait for backend completion notification
-3. Begin API integration testing using testing guide
-4. Report issues via GitHub issues
-5. Plan for real-time updates implementation
+1. ✅ All UI implementations complete (including imageUrl, price, location display)
+2. ✅ Null safety issues resolved
+3. ⏳ Wait for backend completion notification
+4. ⏳ Begin API integration testing using testing guide
+5. ⏳ Report issues via GitHub issues
+6. ⏳ Plan for real-time updates implementation (optional enhancement)
 
 ---
 
