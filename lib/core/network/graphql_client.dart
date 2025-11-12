@@ -396,6 +396,7 @@ class GraphQLHelpers {
   static bool isValidationError(Exception exception) {
     final errorString = exception.toString();
     return errorString.contains('Cannot query field') ||
+        errorString.contains("doesn't exist on type") ||
         errorString.contains('GRAPHQL_VALIDATION_FAILED') ||
         errorString.contains('ValidationError');
   }
