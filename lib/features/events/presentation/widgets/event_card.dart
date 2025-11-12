@@ -141,7 +141,7 @@ class EventCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          event.location,
+                          event.location!,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -167,13 +167,13 @@ class EventCard extends StatelessWidget {
                   if (showCapacity && event.capacity != null) ...[
                     const SizedBox(height: 16),
                     CapacityIndicator(
-                      currentAttendees: event.currentAttendees,
+                      currentAttendees: event.currentAttendees!,
                       capacity: event.capacity!,
                     ),
                   ],
 
                   // Payment indicator
-                  if (event.requiresPayment) ...[
+                  if (event.requiresPayment!) ...[
                     const SizedBox(height: 12),
                     Row(
                       children: [
@@ -195,7 +195,7 @@ class EventCard extends StatelessWidget {
                   ],
 
                   // Requires approval indicator
-                  if (event.requiresApproval) ...[
+                  if (event.requiresApproval!) ...[
                     const SizedBox(height: 8),
                     Row(
                       children: [

@@ -481,7 +481,7 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
             const SizedBox(height: 24),
 
             // Payment info (if required)
-            if (widget.event.requiresPayment && widget.event.price != null) ...[
+            if (widget.event.price != null) ...[
               Card(
                 color: theme.colorScheme.tertiaryContainer,
                 child: Padding(
