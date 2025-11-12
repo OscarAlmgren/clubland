@@ -46,6 +46,40 @@ class EventCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Event image (if available)
+            if (event.imageUrl != null)
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.network(
+                  event.imageUrl!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: theme.colorScheme.surfaceContainerHighest,
+                      child: Icon(
+                        Icons.image_not_supported,
+                        size: 48,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      color: theme.colorScheme.surfaceContainerHighest,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
             // Event type and RSVP status header
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -131,26 +165,27 @@ class EventCard extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   // Location
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        size: 16,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          event.location!,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                  if (event.location != null)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          size: 16,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                      ),
-                    ],
-                  ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            event.location!,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
 
                   // Description (if available)
                   if (event.description.isNotEmpty) ...[
@@ -173,7 +208,7 @@ class EventCard extends StatelessWidget {
                   ],
 
                   // Payment indicator
-                  if (event.requiresPayment!) ...[
+                  if (event.requiresPayment == true) ...[
                     const SizedBox(height: 12),
                     Row(
                       children: [
@@ -195,7 +230,7 @@ class EventCard extends StatelessWidget {
                   ],
 
                   // Requires approval indicator
-                  if (event.requiresApproval!) ...[
+                  if (event.requiresApproval == true) ...[
                     const SizedBox(height: 8),
                     Row(
                       children: [
