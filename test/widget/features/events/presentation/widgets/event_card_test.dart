@@ -272,8 +272,7 @@ void main() {
       await tester.pumpApp(EventCard(event: noDescriptionEvent));
 
       // Description text should not be present when empty
-      final descriptionFinder = find.text('');
-      expect(descriptionFinder, findsWidgets);
+      expect(find.text(noDescriptionEvent.description), findsNothing);
     });
 
     group('event type badges', () {
