@@ -7,22 +7,12 @@ query GetEvent($id: ID!) {
     eventType
     startTime
     endTime
-    location
-    imageUrl
-    capacity
-    currentAttendees
     availableSpots
     tentativeCount
     waitlistCount
     guestPolicy
     maxGuestsPerMember
-    requiresApproval
-    requiresPayment
-    price
-    cancellationDeadline
     freeCancellationDays
-    cancellationFeePercentage
-    allowsSubgroupPriority
     fullHouseExclusive
     rsvpDeadline
     subgroupId

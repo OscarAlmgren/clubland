@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../app/router/route_paths.dart';
 import '../../domain/entities/event_entity.dart';
 import '../../domain/entities/rsvp_eligibility_entity.dart';
 import '../controllers/events_controller.dart';
@@ -109,12 +111,14 @@ class EventDetailsPage extends ConsumerWidget {
                       label: 'Time',
                       value: '${timeFormat.format(event.startTime)} - ${timeFormat.format(event.endTime)}',
                     ),
-                    const Divider(height: 24),
-                    _InfoRow(
-                      icon: Icons.location_on,
-                      label: 'Location',
-                      value: event.location,
-                    ),
+                    if (event.location != null) ...[
+                      const Divider(height: 24),
+                      _InfoRow(
+                        icon: Icons.location_on,
+                        label: 'Location',
+                        value: event.location!,
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -139,7 +143,7 @@ class EventDetailsPage extends ConsumerWidget {
             ],
 
             // Capacity
-            if (event.capacity != null) ...[
+            if (event.capacity != null && event.currentAttendees != null) ...[
               Text(
                 'Capacity',
                 style: theme.textTheme.titleLarge?.copyWith(
@@ -148,7 +152,7 @@ class EventDetailsPage extends ConsumerWidget {
               ),
               const SizedBox(height: 12),
               CapacityIndicator(
-                currentAttendees: event.currentAttendees,
+                currentAttendees: event.currentAttendees!,
                 capacity: event.capacity!,
                 height: 12,
               ),
@@ -246,7 +250,7 @@ class EventDetailsPage extends ConsumerWidget {
                     : theme.colorScheme.onErrorContainer,
               ),
             ),
-            if (eligibility.requiresApproval) ...[
+            if (eligibility.requiresApproval ?? false) ...[
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -484,7 +488,7 @@ class EventDetailsPage extends ConsumerWidget {
           'An unexpected error occurred while loading event details. Please try again later.';
     }
 
-    // Show error dialog and navigate back when dismissed
+    // Show error dialog and navigate to home when dismissed
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!context.mounted) return;
 
@@ -498,7 +502,9 @@ class EventDetailsPage extends ConsumerWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop(); // Close dialog
-                Navigator.of(context).pop(); // Navigate back
+                // Use go_router to navigate to home instead of popping
+                // This prevents the "popped last page" error
+                context.go(RoutePaths.home);
               },
               child: const Text('OK'),
             ),

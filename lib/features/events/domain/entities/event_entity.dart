@@ -79,23 +79,23 @@ class EventEntity extends Equatable {
     required this.eventType,
     required this.startTime,
     required this.endTime,
-    required this.location,
-    required this.currentAttendees,
     required this.availableSpots,
     required this.guestPolicy,
-    required this.requiresApproval,
-    required this.requiresPayment,
-    required this.allowsSubgroupPriority,
     required this.fullHouseExclusive,
     required this.createdAt,
     required this.updatedAt,
+    this.location,
     this.imageUrl,
     this.capacity,
+    this.currentAttendees,
     this.maxGuestsPerMember,
+    this.requiresApproval,
+    this.requiresPayment,
     this.price,
     this.cancellationDeadline,
     this.freeCancellationDays,
     this.cancellationFeePercentage,
+    this.allowsSubgroupPriority,
     this.rsvpDeadline,
     this.subgroupId,
     this.organizerName,
@@ -114,12 +114,12 @@ class EventEntity extends Equatable {
   final EventType eventType;
   final DateTime startTime;
   final DateTime endTime;
-  final String location;
+  final String? location;
   final String? imageUrl;
 
   // Capacity
   final int? capacity;
-  final int currentAttendees;
+  final int? currentAttendees;
   final int availableSpots;
   final int? tentativeCount;
   final int? waitlistCount;
@@ -129,8 +129,8 @@ class EventEntity extends Equatable {
   final int? maxGuestsPerMember;
 
   // RSVP settings
-  final bool requiresApproval;
-  final bool requiresPayment;
+  final bool? requiresApproval;
+  final bool? requiresPayment;
   final double? price;
   final DateTime? rsvpDeadline;
 
@@ -140,7 +140,7 @@ class EventEntity extends Equatable {
   final double? cancellationFeePercentage;
 
   // Settings
-  final bool allowsSubgroupPriority;
+  final bool? allowsSubgroupPriority;
   final bool fullHouseExclusive;
 
   // Subgroup
@@ -168,7 +168,7 @@ class EventEntity extends Equatable {
   bool get acceptsGuests => guestPolicy != GuestPolicy.noGuests;
 
   /// Whether this event is paid
-  bool get isPaid => requiresPayment && price != null && price! > 0;
+  bool get isPaid => (requiresPayment ?? false) && price != null && price! > 0;
 
   /// Whether this event is upcoming
   bool get isUpcoming => DateTime.now().isBefore(startTime);
@@ -184,8 +184,8 @@ class EventEntity extends Equatable {
 
   /// Capacity utilization percentage (0.0 to 1.0)
   double get capacityUtilization {
-    if (capacity == null || capacity == 0) return 0.0;
-    return currentAttendees / capacity!;
+    if (capacity == null || capacity == 0 || currentAttendees == null) return 0.0;
+    return currentAttendees! / capacity!;
   }
 
   /// Whether event is nearly full (>= 90%)
