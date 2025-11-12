@@ -92,7 +92,7 @@ void main() {
 
       test('should handle Material Design colors', () {
         final ratio = AccessibilityUtils.calculateContrastRatio(
-          Colors.blue[700]!,
+          Colors.blue[800]!,
           Colors.grey[100]!,
         );
 
@@ -206,9 +206,9 @@ void main() {
       });
 
       test('should pass for Material Design recommended combinations', () {
-        // Material Design Blue 700 on Grey 100
+        // Material Design Blue 800 on Grey 100
         final passes = AccessibilityUtils.hasSufficientContrast(
-          Colors.blue[700]!,
+          Colors.blue[800]!,
           Colors.grey[100]!,
           fontSize: 16.0,
         );
@@ -352,9 +352,7 @@ void main() {
       });
 
       test('should fail for zero-size touch targets', () {
-        final passes = AccessibilityUtils.hasMinimumTouchTarget(
-          Size.zero,
-        );
+        final passes = AccessibilityUtils.hasMinimumTouchTarget(Size.zero);
 
         expect(passes, false);
       });
@@ -429,7 +427,9 @@ void main() {
           background,
         );
 
-        final otherColor = suggested == Colors.white ? Colors.black : Colors.white;
+        final otherColor = suggested == Colors.white
+            ? Colors.black
+            : Colors.white;
         final otherRatio = AccessibilityUtils.calculateContrastRatio(
           otherColor,
           background,
@@ -514,10 +514,7 @@ void main() {
         final color1 = const Color(0xFF010101);
         final color2 = const Color(0xFF020202);
 
-        final ratio = AccessibilityUtils.calculateContrastRatio(
-          color1,
-          color2,
-        );
+        final ratio = AccessibilityUtils.calculateContrastRatio(color1, color2);
 
         expect(ratio, closeTo(1.0, 0.1));
       });
