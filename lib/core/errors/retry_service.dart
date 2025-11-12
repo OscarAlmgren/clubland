@@ -172,17 +172,23 @@ class RetryService {
 
   /// Check if failure should be retried based on configuration and failure type.
   bool _shouldRetry(Failure failure, RetryConfig config) {
-    // Use the new isRetryable property if available
-    if (failure.isRetryable) {
-      return true;
-    }
-
     // Check if failure type is in retryable list
     if (!config.retryableFailures.any((type) => failure.runtimeType == type)) {
       return false;
     }
 
     // Specific retry logic for different failure types
+    // AuthFailure must be checked before isRetryable to respect retryAuth config
+    if (failure is AuthFailure) {
+      switch (failure.code) {
+        case 'TOKEN_REFRESH_FAILED':
+        case 'SESSION_EXPIRED':
+          return config.retryAuth;
+        default:
+          return false;
+      }
+    }
+
     if (failure is NetworkFailure) {
       switch (failure.code) {
         case 'TIMEOUT':
@@ -199,16 +205,6 @@ class RetryService {
       }
     }
 
-    if (failure is AuthFailure) {
-      switch (failure.code) {
-        case 'TOKEN_REFRESH_FAILED':
-        case 'SESSION_EXPIRED':
-          return config.retryAuth;
-        default:
-          return false;
-      }
-    }
-
     if (failure is GraphQLFailure) {
       switch (failure.code) {
         case 'NETWORK_ERROR':
@@ -218,6 +214,11 @@ class RetryService {
         default:
           return false;
       }
+    }
+
+    // Use the isRetryable property as a fallback for other failure types
+    if (failure.isRetryable) {
+      return true;
     }
 
     return false;
