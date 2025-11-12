@@ -79,9 +79,12 @@ void main() {
       await tester.pumpApp(const ErrorDisplay(message: 'Simple Error'));
 
       expect(find.text('Simple Error'), findsOneWidget);
-      // Details section should not be shown
-      final centerWidget = tester.widget<Center>(find.byType(Center));
-      expect(centerWidget, isNotNull);
+      // Details section should not be shown - verify only one Text in ErrorDisplay
+      final textWidgets = find.descendant(
+        of: find.byType(ErrorDisplay),
+        matching: find.byType(Text),
+      );
+      expect(textWidgets, findsOneWidget);
     });
 
     group('factory constructors', () {
