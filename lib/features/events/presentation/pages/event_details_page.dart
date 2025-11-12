@@ -342,6 +342,14 @@ class EventDetailsPage extends ConsumerWidget {
                     value: event.maxGuestsPerMember.toString(),
                   ),
                 ],
+                if (event.requiresPayment == true && event.price != null) ...[
+                  const Divider(height: 24),
+                  _InfoRow(
+                    icon: Icons.payment,
+                    label: 'Price',
+                    value: '\$${event.price!.toStringAsFixed(2)}',
+                  ),
+                ],
                 if (event.rsvpDeadline != null) ...[
                   const Divider(height: 24),
                   _InfoRow(
@@ -603,6 +611,45 @@ class _EventHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Event image (if available)
+        if (event.imageUrl != null) ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Image.network(
+                event.imageUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: theme.colorScheme.surfaceContainerHighest,
+                    child: Icon(
+                      Icons.image_not_supported,
+                      size: 64,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  );
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: theme.colorScheme.surfaceContainerHighest,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+
         // Event type badge
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
