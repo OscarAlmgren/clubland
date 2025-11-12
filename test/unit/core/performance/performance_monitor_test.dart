@@ -138,8 +138,8 @@ void main() {
       });
 
       test('should handle async operation errors', () async {
-        expect(
-          () => monitor.timeOperation(
+        await expectLater(
+          monitor.timeOperation(
             'error_op',
             () async => throw Exception('Test error'),
           ),
@@ -346,8 +346,8 @@ void main() {
       test('should handle Future extension errors', () async {
         final future = Future<String>.error(Exception('Extension error'));
 
-        expect(
-          () => future.withPerformanceMonitoring('extension_error'),
+        await expectLater(
+          future.withPerformanceMonitoring('extension_error'),
           throwsException,
         );
       });
@@ -447,7 +447,7 @@ void main() {
         controller.close();
       });
 
-      test('should handle multiple listeners', () {
+      test('should handle multiple listeners', () async {
         final controller = monitor.createPerformantStreamController<String>('multi_stream');
 
         var listener1Called = false;
@@ -458,10 +458,13 @@ void main() {
 
         controller.add('test');
 
+        // Wait for stream events to be delivered
+        await Future.delayed(Duration.zero);
+
         expect(listener1Called, true);
         expect(listener2Called, true);
 
-        controller.close();
+        await controller.close();
       });
     });
   });
