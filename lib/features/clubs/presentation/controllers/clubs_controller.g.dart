@@ -339,7 +339,7 @@ final class ClubsControllerProvider
   ClubsController create() => ClubsController();
 }
 
-String _$clubsControllerHash() => r'3f10db887d0b1be1829bfefe11bd110dd27d641a';
+String _$clubsControllerHash() => r'0d09d3cce5819fe58f6c87b3702838b0fce302b6';
 
 /// Main clubs controller for managing club state and actions
 

@@ -286,34 +286,6 @@ const documentNodeQueryGetEvent = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'location'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'imageUrl'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'capacity'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'currentAttendees'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
                   name: NameNode(value: 'availableSpots'),
                   alias: null,
                   arguments: [],
@@ -349,49 +321,7 @@ const documentNodeQueryGetEvent = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'requiresApproval'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'requiresPayment'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'price'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'cancellationDeadline'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
                   name: NameNode(value: 'freeCancellationDays'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'cancellationFeePercentage'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'allowsSubgroupPriority'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -621,22 +551,12 @@ class Query$GetEvent$event {
     this.eventType,
     required this.startTime,
     required this.endTime,
-    this.location,
-    this.imageUrl,
-    this.capacity,
-    this.currentAttendees,
     this.availableSpots,
     this.tentativeCount,
     this.waitlistCount,
     this.guestPolicy,
     this.maxGuestsPerMember,
-    this.requiresApproval,
-    this.requiresPayment,
-    this.price,
-    this.cancellationDeadline,
     this.freeCancellationDays,
-    this.cancellationFeePercentage,
-    this.allowsSubgroupPriority,
     this.fullHouseExclusive,
     this.rsvpDeadline,
     this.subgroupId,
@@ -657,22 +577,12 @@ class Query$GetEvent$event {
     final l$eventType = json['eventType'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
-    final l$location = json['location'];
-    final l$imageUrl = json['imageUrl'];
-    final l$capacity = json['capacity'];
-    final l$currentAttendees = json['currentAttendees'];
     final l$availableSpots = json['availableSpots'];
     final l$tentativeCount = json['tentativeCount'];
     final l$waitlistCount = json['waitlistCount'];
     final l$guestPolicy = json['guestPolicy'];
     final l$maxGuestsPerMember = json['maxGuestsPerMember'];
-    final l$requiresApproval = json['requiresApproval'];
-    final l$requiresPayment = json['requiresPayment'];
-    final l$price = json['price'];
-    final l$cancellationDeadline = json['cancellationDeadline'];
     final l$freeCancellationDays = json['freeCancellationDays'];
-    final l$cancellationFeePercentage = json['cancellationFeePercentage'];
-    final l$allowsSubgroupPriority = json['allowsSubgroupPriority'];
     final l$fullHouseExclusive = json['fullHouseExclusive'];
     final l$rsvpDeadline = json['rsvpDeadline'];
     final l$subgroupId = json['subgroupId'];
@@ -691,25 +601,12 @@ class Query$GetEvent$event {
       eventType: (l$eventType as String?),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
-      location: (l$location as String?),
-      imageUrl: (l$imageUrl as String?),
-      capacity: (l$capacity as int?),
-      currentAttendees: (l$currentAttendees as int?),
       availableSpots: (l$availableSpots as int?),
       tentativeCount: (l$tentativeCount as int?),
       waitlistCount: (l$waitlistCount as int?),
       guestPolicy: (l$guestPolicy as String?),
       maxGuestsPerMember: (l$maxGuestsPerMember as int?),
-      requiresApproval: (l$requiresApproval as bool?),
-      requiresPayment: (l$requiresPayment as bool?),
-      price: (l$price as num?)?.toDouble(),
-      cancellationDeadline: l$cancellationDeadline == null
-          ? null
-          : DateTime.parse((l$cancellationDeadline as String)),
       freeCancellationDays: (l$freeCancellationDays as int?),
-      cancellationFeePercentage: (l$cancellationFeePercentage as num?)
-          ?.toDouble(),
-      allowsSubgroupPriority: (l$allowsSubgroupPriority as bool?),
       fullHouseExclusive: (l$fullHouseExclusive as bool?),
       rsvpDeadline: l$rsvpDeadline == null
           ? null
@@ -739,14 +636,6 @@ class Query$GetEvent$event {
 
   final DateTime endTime;
 
-  final String? location;
-
-  final String? imageUrl;
-
-  final int? capacity;
-
-  final int? currentAttendees;
-
   final int? availableSpots;
 
   final int? tentativeCount;
@@ -757,19 +646,7 @@ class Query$GetEvent$event {
 
   final int? maxGuestsPerMember;
 
-  final bool? requiresApproval;
-
-  final bool? requiresPayment;
-
-  final double? price;
-
-  final DateTime? cancellationDeadline;
-
   final int? freeCancellationDays;
-
-  final double? cancellationFeePercentage;
-
-  final bool? allowsSubgroupPriority;
 
   final bool? fullHouseExclusive;
 
@@ -807,14 +684,6 @@ class Query$GetEvent$event {
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
     _resultData['endTime'] = l$endTime.toIso8601String();
-    final l$location = location;
-    _resultData['location'] = l$location;
-    final l$imageUrl = imageUrl;
-    _resultData['imageUrl'] = l$imageUrl;
-    final l$capacity = capacity;
-    _resultData['capacity'] = l$capacity;
-    final l$currentAttendees = currentAttendees;
-    _resultData['currentAttendees'] = l$currentAttendees;
     final l$availableSpots = availableSpots;
     _resultData['availableSpots'] = l$availableSpots;
     final l$tentativeCount = tentativeCount;
@@ -825,21 +694,8 @@ class Query$GetEvent$event {
     _resultData['guestPolicy'] = l$guestPolicy;
     final l$maxGuestsPerMember = maxGuestsPerMember;
     _resultData['maxGuestsPerMember'] = l$maxGuestsPerMember;
-    final l$requiresApproval = requiresApproval;
-    _resultData['requiresApproval'] = l$requiresApproval;
-    final l$requiresPayment = requiresPayment;
-    _resultData['requiresPayment'] = l$requiresPayment;
-    final l$price = price;
-    _resultData['price'] = l$price;
-    final l$cancellationDeadline = cancellationDeadline;
-    _resultData['cancellationDeadline'] = l$cancellationDeadline
-        ?.toIso8601String();
     final l$freeCancellationDays = freeCancellationDays;
     _resultData['freeCancellationDays'] = l$freeCancellationDays;
-    final l$cancellationFeePercentage = cancellationFeePercentage;
-    _resultData['cancellationFeePercentage'] = l$cancellationFeePercentage;
-    final l$allowsSubgroupPriority = allowsSubgroupPriority;
-    _resultData['allowsSubgroupPriority'] = l$allowsSubgroupPriority;
     final l$fullHouseExclusive = fullHouseExclusive;
     _resultData['fullHouseExclusive'] = l$fullHouseExclusive;
     final l$rsvpDeadline = rsvpDeadline;
@@ -872,22 +728,12 @@ class Query$GetEvent$event {
     final l$eventType = eventType;
     final l$startTime = startTime;
     final l$endTime = endTime;
-    final l$location = location;
-    final l$imageUrl = imageUrl;
-    final l$capacity = capacity;
-    final l$currentAttendees = currentAttendees;
     final l$availableSpots = availableSpots;
     final l$tentativeCount = tentativeCount;
     final l$waitlistCount = waitlistCount;
     final l$guestPolicy = guestPolicy;
     final l$maxGuestsPerMember = maxGuestsPerMember;
-    final l$requiresApproval = requiresApproval;
-    final l$requiresPayment = requiresPayment;
-    final l$price = price;
-    final l$cancellationDeadline = cancellationDeadline;
     final l$freeCancellationDays = freeCancellationDays;
-    final l$cancellationFeePercentage = cancellationFeePercentage;
-    final l$allowsSubgroupPriority = allowsSubgroupPriority;
     final l$fullHouseExclusive = fullHouseExclusive;
     final l$rsvpDeadline = rsvpDeadline;
     final l$subgroupId = subgroupId;
@@ -906,22 +752,12 @@ class Query$GetEvent$event {
       l$eventType,
       l$startTime,
       l$endTime,
-      l$location,
-      l$imageUrl,
-      l$capacity,
-      l$currentAttendees,
       l$availableSpots,
       l$tentativeCount,
       l$waitlistCount,
       l$guestPolicy,
       l$maxGuestsPerMember,
-      l$requiresApproval,
-      l$requiresPayment,
-      l$price,
-      l$cancellationDeadline,
       l$freeCancellationDays,
-      l$cancellationFeePercentage,
-      l$allowsSubgroupPriority,
       l$fullHouseExclusive,
       l$rsvpDeadline,
       l$subgroupId,
@@ -978,26 +814,6 @@ class Query$GetEvent$event {
     if (l$endTime != lOther$endTime) {
       return false;
     }
-    final l$location = location;
-    final lOther$location = other.location;
-    if (l$location != lOther$location) {
-      return false;
-    }
-    final l$imageUrl = imageUrl;
-    final lOther$imageUrl = other.imageUrl;
-    if (l$imageUrl != lOther$imageUrl) {
-      return false;
-    }
-    final l$capacity = capacity;
-    final lOther$capacity = other.capacity;
-    if (l$capacity != lOther$capacity) {
-      return false;
-    }
-    final l$currentAttendees = currentAttendees;
-    final lOther$currentAttendees = other.currentAttendees;
-    if (l$currentAttendees != lOther$currentAttendees) {
-      return false;
-    }
     final l$availableSpots = availableSpots;
     final lOther$availableSpots = other.availableSpots;
     if (l$availableSpots != lOther$availableSpots) {
@@ -1023,39 +839,9 @@ class Query$GetEvent$event {
     if (l$maxGuestsPerMember != lOther$maxGuestsPerMember) {
       return false;
     }
-    final l$requiresApproval = requiresApproval;
-    final lOther$requiresApproval = other.requiresApproval;
-    if (l$requiresApproval != lOther$requiresApproval) {
-      return false;
-    }
-    final l$requiresPayment = requiresPayment;
-    final lOther$requiresPayment = other.requiresPayment;
-    if (l$requiresPayment != lOther$requiresPayment) {
-      return false;
-    }
-    final l$price = price;
-    final lOther$price = other.price;
-    if (l$price != lOther$price) {
-      return false;
-    }
-    final l$cancellationDeadline = cancellationDeadline;
-    final lOther$cancellationDeadline = other.cancellationDeadline;
-    if (l$cancellationDeadline != lOther$cancellationDeadline) {
-      return false;
-    }
     final l$freeCancellationDays = freeCancellationDays;
     final lOther$freeCancellationDays = other.freeCancellationDays;
     if (l$freeCancellationDays != lOther$freeCancellationDays) {
-      return false;
-    }
-    final l$cancellationFeePercentage = cancellationFeePercentage;
-    final lOther$cancellationFeePercentage = other.cancellationFeePercentage;
-    if (l$cancellationFeePercentage != lOther$cancellationFeePercentage) {
-      return false;
-    }
-    final l$allowsSubgroupPriority = allowsSubgroupPriority;
-    final lOther$allowsSubgroupPriority = other.allowsSubgroupPriority;
-    if (l$allowsSubgroupPriority != lOther$allowsSubgroupPriority) {
       return false;
     }
     final l$fullHouseExclusive = fullHouseExclusive;
@@ -1134,22 +920,12 @@ abstract class CopyWith$Query$GetEvent$event<TRes> {
     String? eventType,
     DateTime? startTime,
     DateTime? endTime,
-    String? location,
-    String? imageUrl,
-    int? capacity,
-    int? currentAttendees,
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
     String? guestPolicy,
     int? maxGuestsPerMember,
-    bool? requiresApproval,
-    bool? requiresPayment,
-    double? price,
-    DateTime? cancellationDeadline,
     int? freeCancellationDays,
-    double? cancellationFeePercentage,
-    bool? allowsSubgroupPriority,
     bool? fullHouseExclusive,
     DateTime? rsvpDeadline,
     String? subgroupId,
@@ -1181,22 +957,12 @@ class _CopyWithImpl$Query$GetEvent$event<TRes>
     Object? eventType = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
-    Object? location = _undefined,
-    Object? imageUrl = _undefined,
-    Object? capacity = _undefined,
-    Object? currentAttendees = _undefined,
     Object? availableSpots = _undefined,
     Object? tentativeCount = _undefined,
     Object? waitlistCount = _undefined,
     Object? guestPolicy = _undefined,
     Object? maxGuestsPerMember = _undefined,
-    Object? requiresApproval = _undefined,
-    Object? requiresPayment = _undefined,
-    Object? price = _undefined,
-    Object? cancellationDeadline = _undefined,
     Object? freeCancellationDays = _undefined,
-    Object? cancellationFeePercentage = _undefined,
-    Object? allowsSubgroupPriority = _undefined,
     Object? fullHouseExclusive = _undefined,
     Object? rsvpDeadline = _undefined,
     Object? subgroupId = _undefined,
@@ -1228,18 +994,6 @@ class _CopyWithImpl$Query$GetEvent$event<TRes>
       endTime: endTime == _undefined || endTime == null
           ? _instance.endTime
           : (endTime as DateTime),
-      location: location == _undefined
-          ? _instance.location
-          : (location as String?),
-      imageUrl: imageUrl == _undefined
-          ? _instance.imageUrl
-          : (imageUrl as String?),
-      capacity: capacity == _undefined
-          ? _instance.capacity
-          : (capacity as int?),
-      currentAttendees: currentAttendees == _undefined
-          ? _instance.currentAttendees
-          : (currentAttendees as int?),
       availableSpots: availableSpots == _undefined
           ? _instance.availableSpots
           : (availableSpots as int?),
@@ -1255,25 +1009,9 @@ class _CopyWithImpl$Query$GetEvent$event<TRes>
       maxGuestsPerMember: maxGuestsPerMember == _undefined
           ? _instance.maxGuestsPerMember
           : (maxGuestsPerMember as int?),
-      requiresApproval: requiresApproval == _undefined
-          ? _instance.requiresApproval
-          : (requiresApproval as bool?),
-      requiresPayment: requiresPayment == _undefined
-          ? _instance.requiresPayment
-          : (requiresPayment as bool?),
-      price: price == _undefined ? _instance.price : (price as double?),
-      cancellationDeadline: cancellationDeadline == _undefined
-          ? _instance.cancellationDeadline
-          : (cancellationDeadline as DateTime?),
       freeCancellationDays: freeCancellationDays == _undefined
           ? _instance.freeCancellationDays
           : (freeCancellationDays as int?),
-      cancellationFeePercentage: cancellationFeePercentage == _undefined
-          ? _instance.cancellationFeePercentage
-          : (cancellationFeePercentage as double?),
-      allowsSubgroupPriority: allowsSubgroupPriority == _undefined
-          ? _instance.allowsSubgroupPriority
-          : (allowsSubgroupPriority as bool?),
       fullHouseExclusive: fullHouseExclusive == _undefined
           ? _instance.fullHouseExclusive
           : (fullHouseExclusive as bool?),
@@ -1322,22 +1060,12 @@ class _CopyWithStubImpl$Query$GetEvent$event<TRes>
     String? eventType,
     DateTime? startTime,
     DateTime? endTime,
-    String? location,
-    String? imageUrl,
-    int? capacity,
-    int? currentAttendees,
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
     String? guestPolicy,
     int? maxGuestsPerMember,
-    bool? requiresApproval,
-    bool? requiresPayment,
-    double? price,
-    DateTime? cancellationDeadline,
     int? freeCancellationDays,
-    double? cancellationFeePercentage,
-    bool? allowsSubgroupPriority,
     bool? fullHouseExclusive,
     DateTime? rsvpDeadline,
     String? subgroupId,
