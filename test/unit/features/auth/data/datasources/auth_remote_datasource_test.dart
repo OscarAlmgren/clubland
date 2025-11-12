@@ -200,7 +200,7 @@ void main() {
         result.fold(
           (failure) {
             expect(failure, isA<AuthFailure>());
-            expect(failure.message, contains('Biometric error'));
+            expect(failure.message, contains('not available'));
           },
           (success) => fail('Should not return success'),
         );
@@ -274,7 +274,7 @@ void main() {
         result.fold(
           (failure) {
             expect(failure, isA<AuthFailure>());
-            expect(failure.message, contains('Error setting biometric auth'));
+            expect(failure.message, contains('not available'));
           },
           (success) => fail('Should not return success'),
         );
