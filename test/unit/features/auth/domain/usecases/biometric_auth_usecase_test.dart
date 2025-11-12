@@ -195,7 +195,7 @@ void main() {
         result.fold(
           (failure) {
             expect(failure, isA<AuthFailure>());
-            expect(failure.message, contains('lockout'));
+            expect(failure.message, contains('locked'));
           },
           (success) => fail('Should return failure'),
         );
