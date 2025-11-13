@@ -32,19 +32,19 @@ class EventDetailsPage extends ConsumerWidget {
     );
 
     // Listen for errors and show dialog + navigate back
-    ref.listen(
-      eventDetailsControllerProvider(eventId, memberId),
-      (previous, next) {
-        next.whenOrNull(
-          error: (error, stackTrace) {
-            // Only show error dialog if this is a new error (not just rebuilding)
-            if (previous?.hasError != true) {
-              _showErrorAndNavigateBack(context, error);
-            }
-          },
-        );
-      },
-    );
+    ref.listen(eventDetailsControllerProvider(eventId, memberId), (
+      previous,
+      next,
+    ) {
+      next.whenOrNull(
+        error: (error, stackTrace) {
+          // Only show error dialog if this is a new error (not just rebuilding)
+          if (previous?.hasError != true) {
+            _showErrorAndNavigateBack(context, error);
+          }
+        },
+      );
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -59,9 +59,7 @@ class EventDetailsPage extends ConsumerWidget {
       ),
       body: detailsState.when(
         data: (state) => _buildEventDetails(context, ref, state),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => _buildErrorState(context, ref, error),
       ),
     );
@@ -109,7 +107,8 @@ class EventDetailsPage extends ConsumerWidget {
                     _InfoRow(
                       icon: Icons.access_time,
                       label: 'Time',
-                      value: '${timeFormat.format(event.startTime)} - ${timeFormat.format(event.endTime)}',
+                      value:
+                          '${timeFormat.format(event.startTime)} - ${timeFormat.format(event.endTime)}',
                     ),
                     if (event.location != null) ...[
                       const Divider(height: 24),
@@ -135,10 +134,7 @@ class EventDetailsPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
-                event.description,
-                style: theme.textTheme.bodyLarge,
-              ),
+              Text(event.description, style: theme.textTheme.bodyLarge),
               const SizedBox(height: 24),
             ],
 
@@ -342,7 +338,8 @@ class EventDetailsPage extends ConsumerWidget {
                     value: event.maxGuestsPerMember.toString(),
                   ),
                 ],
-                if (event.requiresPayment == true && event.price != null) ...[
+                if ((event.requiresPayment ?? false) &&
+                    event.price != null) ...[
                   const Divider(height: 24),
                   _InfoRow(
                     icon: Icons.payment,
@@ -355,8 +352,9 @@ class EventDetailsPage extends ConsumerWidget {
                   _InfoRow(
                     icon: Icons.event_available,
                     label: 'RSVP Deadline',
-                    value: DateFormat('MMM d, y h:mm a')
-                        .format(event.rsvpDeadline!),
+                    value: DateFormat(
+                      'MMM d, y h:mm a',
+                    ).format(event.rsvpDeadline!),
                   ),
                 ],
                 if (event.cancellationDeadline != null) ...[
@@ -364,8 +362,9 @@ class EventDetailsPage extends ConsumerWidget {
                   _InfoRow(
                     icon: Icons.event_busy,
                     label: 'Cancellation Deadline',
-                    value: DateFormat('MMM d, y h:mm a')
-                        .format(event.cancellationDeadline!),
+                    value: DateFormat(
+                      'MMM d, y h:mm a',
+                    ).format(event.cancellationDeadline!),
                   ),
                 ],
               ],
@@ -385,9 +384,7 @@ class EventDetailsPage extends ConsumerWidget {
     if (eligibility.hasExistingRSVP) {
       return FilledButton.tonal(
         onPressed: () => _navigateToMyRSVPs(context),
-        style: FilledButton.styleFrom(
-          minimumSize: const Size.fromHeight(48),
-        ),
+        style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
         child: const Text('View My RSVP'),
       );
     }
@@ -395,9 +392,7 @@ class EventDetailsPage extends ConsumerWidget {
     if (!eligibility.canRSVP) {
       return FilledButton(
         onPressed: null,
-        style: FilledButton.styleFrom(
-          minimumSize: const Size.fromHeight(48),
-        ),
+        style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
         child: const Text('RSVP Not Available'),
       );
     }
@@ -406,17 +401,11 @@ class EventDetailsPage extends ConsumerWidget {
       onPressed: () => _navigateToRSVPForm(context, event, eligibility),
       icon: const Icon(Icons.event_available),
       label: const Text('RSVP to Event'),
-      style: FilledButton.styleFrom(
-        minimumSize: const Size.fromHeight(48),
-      ),
+      style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
     );
   }
 
-  Widget _buildErrorState(
-    BuildContext context,
-    WidgetRef ref,
-    Object error,
-  ) {
+  Widget _buildErrorState(BuildContext context, WidgetRef ref, Object error) {
     final errorMessage = error.toString();
 
     // Determine error type and show appropriate message
@@ -431,9 +420,7 @@ class EventDetailsPage extends ConsumerWidget {
         },
       );
     } else if (errorMessage.contains('NOT_FOUND')) {
-      return ErrorDisplay.notFound(
-        message: 'Event Not Found',
-      );
+      return ErrorDisplay.notFound(message: 'Event Not Found');
     } else if (errorMessage.contains('UNAUTHENTICATED') ||
         errorMessage.contains('AuthFailure')) {
       return ErrorDisplay.unauthorized();
@@ -621,7 +608,7 @@ class _EventHeader extends StatelessWidget {
                 event.imageUrl!,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  return Container(
+                  return ColoredBox(
                     color: theme.colorScheme.surfaceContainerHighest,
                     child: Icon(
                       Icons.image_not_supported,
@@ -632,13 +619,13 @@ class _EventHeader extends StatelessWidget {
                 },
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
-                  return Container(
+                  return ColoredBox(
                     color: theme.colorScheme.surfaceContainerHighest,
                     child: Center(
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
+                                  loadingProgress.expectedTotalBytes!
                             : null,
                       ),
                     ),
@@ -744,11 +731,7 @@ class _InfoRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: theme.colorScheme.primary,
-        ),
+        Icon(icon, size: 20, color: theme.colorScheme.primary),
         const SizedBox(width: 12),
         Expanded(
           child: Column(

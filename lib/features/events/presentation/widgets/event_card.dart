@@ -54,7 +54,7 @@ class EventCard extends StatelessWidget {
                   event.imageUrl!,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return Container(
+                    return ColoredBox(
                       color: theme.colorScheme.surfaceContainerHighest,
                       child: Icon(
                         Icons.image_not_supported,
@@ -65,13 +65,13 @@ class EventCard extends StatelessWidget {
                   },
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
-                    return Container(
+                    return ColoredBox(
                       color: theme.colorScheme.surfaceContainerHighest,
                       child: Center(
                         child: CircularProgressIndicator(
                           value: loadingProgress.expectedTotalBytes != null
                               ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
+                                    loadingProgress.expectedTotalBytes!
                               : null,
                         ),
                       ),
@@ -208,7 +208,7 @@ class EventCard extends StatelessWidget {
                   ],
 
                   // Payment indicator
-                  if (event.requiresPayment == true) ...[
+                  if (event.requiresPayment ?? false) ...[
                     const SizedBox(height: 12),
                     Row(
                       children: [
@@ -230,7 +230,7 @@ class EventCard extends StatelessWidget {
                   ],
 
                   // Requires approval indicator
-                  if (event.requiresApproval == true) ...[
+                  if (event.requiresApproval ?? false) ...[
                     const SizedBox(height: 8),
                     Row(
                       children: [
