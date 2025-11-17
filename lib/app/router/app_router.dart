@@ -11,6 +11,7 @@ import '../../features/clubs/presentation/pages/clubs_page.dart';
 import '../../features/events/presentation/pages/event_details_page.dart';
 import '../../features/events/presentation/pages/events_list_page.dart';
 import '../../features/events/presentation/pages/my_rsvps_page.dart';
+import '../../features/events/presentation/pages/rsvp_form_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/pages/profile_settings_page.dart';
@@ -140,23 +141,27 @@ GoRouter appRouter(Ref ref) {
         name: 'eventDetail',
         builder: (context, state) {
           final eventId = state.pathParameters['eventId']!;
-          // TODO: Get memberId from auth state
-          const memberId = 'member123'; // Placeholder
+          // Get memberId from auth state
+          final authState = ref.read(authControllerProvider);
+          final memberId = authState.value?.user.id ?? 'guest';
           return EventDetailsPage(eventId: eventId, memberId: memberId);
         },
       ),
-      GoRoute(
-        path: '/events/:clubId/event/:eventId/rsvp',
-        name: 'eventRSVP',
-        builder: (context, state) {
-          // Note: This route expects event and eligibility to be passed via extra
-          // In a real app, you'd fetch these or pass them through state
-          throw UnimplementedError(
-            'RSVP form requires event and eligibility data. '
-            'Use Navigator.push with MaterialPageRoute instead.',
-          );
-        },
-      ),
+      // Note: RSVP form navigation is handled via Navigator.push from EventDetailsPage
+      // because it requires complex data (event, eligibility) to be passed.
+      // GoRouter's extra parameter could be used, but direct navigation is simpler.
+      //
+      // To navigate to RSVP form, use from EventDetailsPage:
+      // Navigator.of(context).push(
+      //   MaterialPageRoute(
+      //     builder: (_) => RSVPFormPage(
+      //       event: event,
+      //       memberId: memberId,
+      //       clubId: clubId,
+      //       eligibility: eligibility,
+      //     ),
+      //   ),
+      // );
       GoRoute(
         path: '/my-rsvps/:clubId',
         name: 'myRSVPs',

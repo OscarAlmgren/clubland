@@ -12,10 +12,8 @@ part 'news_feed_controller.g.dart';
 class NewsFeedController extends _$NewsFeedController {
   @override
   Future<List<NewsFeedItemEntity>> build() async {
-    // Simulate API delay
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    // Return mock data
+    // TODO: Implement full data layer (repository/datasource) when backend API is ready
+    // For now, returning mock data directly
     return _getMockNewsFeedItems();
   }
 
@@ -229,7 +227,6 @@ class NewsFeedController extends _$NewsFeedController {
   Future<void> refresh() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await Future.delayed(const Duration(milliseconds: 500));
       return _getMockNewsFeedItems();
     });
   }
@@ -241,9 +238,10 @@ class NewsFeedController extends _$NewsFeedController {
 
     // Update the RSVP status in the list
     final updatedItems = currentState.map((item) {
-      if (item.type == NewsFeedItemType.event && item.event?.id == eventId) {
+      if (item.type == NewsFeedItemType.event &&
+          item.event case final event? when event.id == eventId) {
         return NewsFeedItemEntity.event(
-          event: item.event!,
+          event: event,
           userRSVPStatus: status,
         );
       }

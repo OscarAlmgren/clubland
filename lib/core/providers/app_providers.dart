@@ -1,24 +1,31 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
 
 part 'app_providers.g.dart';
 
-// --- MOCK STORAGE AND PLATFORM PLACEHOLDERS ---
+// --- STORAGE HELPERS ---
 
-/// MOCK: Simulate reading data from local storage.
-Future<String?> _mockReadStorage(String key) async {
-  await Future<void>.delayed(const Duration(milliseconds: 100));
-  // Example for theme mode: return stored value on initial load
-  if (key == 'theme_mode') return 'dark';
-  return null;
+/// Provider for SharedPreferences instance
+@riverpod
+Future<SharedPreferences> sharedPreferences(Ref ref) async {
+  return await SharedPreferences.getInstance();
 }
 
-/// MOCK: Simulate writing data to local storage.
-Future<void> _mockWriteStorage(String key, String value) async {
-  await Future<void>.delayed(const Duration(milliseconds: 100));
-  debugPrint('MOCK STORAGE: Saved $value for key $key');
+/// Read data from local storage (SharedPreferences)
+Future<String?> _readStorage(Ref ref, String key) async {
+  final prefs = await ref.read(sharedPreferencesProvider.future);
+  return prefs.getString(key);
+}
+
+/// Write data to local storage (SharedPreferences)
+Future<void> _writeStorage(Ref ref, String key, String value) async {
+  final prefs = await ref.read(sharedPreferencesProvider.future);
+  await prefs.setString(key, value);
 }
 
 // --- PROVIDERS: THEME & LOCALE ---
@@ -31,33 +38,37 @@ class AppThemeMode extends _$AppThemeMode {
   /// Loads the persisted theme mode from storage, defaulting to [ThemeMode.system].
   @override
   ThemeMode build() {
-    // MOCK: Load from storage.
-    _mockReadStorage('theme_mode').then((value) {
-      if (value == 'light') {
-        state = ThemeMode.light;
-      } else if (value == 'dark') {
-        state = ThemeMode.dark;
-      }
-    });
+    // Load from storage asynchronously
+    _loadThemeMode();
     return ThemeMode.system;
   }
 
+  Future<void> _loadThemeMode() async {
+    final value = await _readStorage(ref, 'theme_mode');
+    if (value == 'light') {
+      state = ThemeMode.light;
+    } else if (value == 'dark') {
+      state = ThemeMode.dark;
+    } else if (value == 'system') {
+      state = ThemeMode.system;
+    }
+  }
+
   /// Sets the application theme mode and persists the choice to storage.
-  void setThemeMode(ThemeMode mode) {
+  Future<void> setThemeMode(ThemeMode mode) async {
     state = mode;
-    // MOCK: Persist to storage
-    _mockWriteStorage('theme_mode', mode.name);
+    await _writeStorage(ref, 'theme_mode', mode.name);
   }
 
   /// Toggles the theme mode between light and dark, or defaults to light from system.
-  void toggleTheme() {
+  Future<void> toggleTheme() async {
     switch (state) {
       case ThemeMode.light:
-        setThemeMode(ThemeMode.dark);
+        await setThemeMode(ThemeMode.dark);
         break;
       case ThemeMode.dark:
       case ThemeMode.system: // Default to light when toggling from system
-        setThemeMode(ThemeMode.light);
+        await setThemeMode(ThemeMode.light);
         break;
     }
   }
@@ -71,21 +82,24 @@ class AppLocale extends _$AppLocale {
   /// Loads the persisted locale from storage, defaulting to English ('en', 'US').
   @override
   Locale build() {
-    // MOCK: Load from storage.
-    _mockReadStorage('app_locale').then((value) {
-      if (value != null && value.contains('_')) {
-        final parts = value.split('_');
-        state = Locale(parts[0], parts[1]);
-      }
-    });
+    // Load from storage asynchronously
+    _loadLocale();
     return const Locale('en', 'US');
   }
 
+  Future<void> _loadLocale() async {
+    final value = await _readStorage(ref, 'app_locale');
+    if (value != null && value.contains('_')) {
+      final parts = value.split('_');
+      state = Locale(parts[0], parts[1]);
+    }
+  }
+
   /// Sets the application locale and persists the choice to storage.
-  void setLocale(Locale locale) {
+  Future<void> setLocale(Locale locale) async {
     state = locale;
-    // MOCK: Persist to storage
-    _mockWriteStorage(
+    await _writeStorage(
+      ref,
       'app_locale',
       '${locale.languageCode}_${locale.countryCode}',
     );
@@ -221,12 +235,14 @@ class AppSettingsNotifier extends _$AppSettingsNotifier {
   /// Loads the persisted [AppSettings] from storage.
   @override
   Future<AppSettings> build() async {
-    // MOCK: Load from storage
-    final json = await _mockReadStorage('app_settings');
+    final json = await _readStorage(ref, 'app_settings');
     if (json != null) {
-      // In a real app, you would need to decode the JSON string first:
-      // final map = jsonDecode(json) as Map<String, dynamic>;
-      // return AppSettings.fromJson(map);
+      try {
+        final map = jsonDecode(json) as Map<String, dynamic>;
+        return AppSettings.fromJson(map);
+      } catch (e) {
+        debugPrint('Error decoding app settings: $e');
+      }
     }
     return const AppSettings();
   }
@@ -234,9 +250,11 @@ class AppSettingsNotifier extends _$AppSettingsNotifier {
   /// Updates the entire settings object and saves it to storage.
   Future<void> updateSettings(AppSettings settings) async {
     state = AsyncData(settings);
-    // MOCK: Save to storage
-    // In a real app, you would encode the map to a JSON string:
-    // await _mockWriteStorage('app_settings', jsonEncode(settings.toJson()));
+    try {
+      await _writeStorage(ref, 'app_settings', jsonEncode(settings.toJson()));
+    } catch (e) {
+      debugPrint('Error saving app settings: $e');
+    }
   }
 
   /// Generic method to update a single setting property.

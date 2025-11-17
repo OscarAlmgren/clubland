@@ -113,8 +113,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                       children: [
                         CircleAvatar(
                           radius: 40,
-                          backgroundImage: user.avatar != null
-                              ? NetworkImage(user.avatar!)
+                          backgroundImage: user.avatar case final avatar?
+                              ? NetworkImage(avatar)
                               : null,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
@@ -147,10 +147,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                                       ).colorScheme.onSurfaceVariant,
                                     ),
                               ),
-                              if (user.bio != null) ...[
+                              if (user.bio case final bio?) ...[
                                 const SizedBox(height: 4),
                                 Text(
-                                  user.bio!,
+                                  bio,
                                   style: Theme.of(context).textTheme.bodySmall,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -514,9 +514,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                                   : Theme.of(context).colorScheme.onSurface,
                             ),
                       ),
-                      subtitle: item.subtitle != null
+                      subtitle: item.subtitle case final subtitle?
                           ? Text(
-                              item.subtitle!,
+                              subtitle,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall

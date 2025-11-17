@@ -140,27 +140,35 @@ class HomePage extends ConsumerWidget {
       children: items.map((item) {
         switch (item.type) {
           case NewsFeedItemType.newsPost:
+            // Skip item if newsPost is null (data integrity issue)
+            final newsPost = item.newsPost;
+            if (newsPost == null) {
+              return const SizedBox.shrink();
+            }
             return NewsPostCard(
-              newsPost: item.newsPost!,
+              newsPost: newsPost,
               onTap: () {
                 // Could navigate to full news article
               },
             );
 
           case NewsFeedItemType.event:
+            // Skip item if event is null (data integrity issue)
+            final event = item.event;
+            if (event == null) {
+              return const SizedBox.shrink();
+            }
             return NewsFeedEventCard(
-              event: item.event!,
+              event: event,
               userRSVPStatus: item.userRSVPStatus,
               onTap: () {
                 // Navigate to event details
-                context.go(
-                  '/events/${item.event!.clubId}/event/${item.event!.id}',
-                );
+                context.go('/events/${event.clubId}/event/${event.id}');
               },
               onRSVPTap: () async {
                 final response = await RSVPModal.show(
                   context: context,
-                  event: item.event!,
+                  event: event,
                 );
 
                 if (response != null) {
@@ -178,7 +186,7 @@ class HomePage extends ConsumerWidget {
                   // Update RSVP status
                   await ref
                       .read(newsFeedControllerProvider.notifier)
-                      .updateRSVP(item.event!.id, status);
+                      .updateRSVP(event.id, status);
 
                   // Show confirmation
                   if (context.mounted) {
@@ -195,8 +203,13 @@ class HomePage extends ConsumerWidget {
             );
 
           case NewsFeedItemType.lunchMenu:
+            // Skip item if lunchMenu is null (data integrity issue)
+            final lunchMenu = item.lunchMenu;
+            if (lunchMenu == null) {
+              return const SizedBox.shrink();
+            }
             return LunchMenuCard(
-              lunchMenu: item.lunchMenu!,
+              lunchMenu: lunchMenu,
               onTap: () {
                 // Could navigate to full menu or restaurant page
               },

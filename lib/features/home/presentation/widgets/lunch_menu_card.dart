@@ -170,7 +170,7 @@ class LunchMenuCard extends StatelessWidget {
                     ),
 
                   // Special notes
-                  if (lunchMenu.specialNotes != null) ...[
+                  if (lunchMenu.specialNotes case final specialNotes?) ...[
                     AppSpacing.verticalSpaceSM,
                     Container(
                       padding: const EdgeInsets.all(12),
@@ -188,7 +188,7 @@ class LunchMenuCard extends StatelessWidget {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              lunchMenu.specialNotes!,
+                              specialNotes,
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),

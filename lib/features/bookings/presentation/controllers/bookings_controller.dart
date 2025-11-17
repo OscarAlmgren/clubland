@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/bookings_remote_datasource.dart';
-import '../../data/models/booking_model.dart';
 import '../../data/repositories/bookings_repository_impl.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../../domain/repositories/bookings_repository.dart';
@@ -24,7 +23,7 @@ Future<List<BookingEntity>> allBookings(Ref ref) async {
   final result = await repository.getUserBookings();
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (bookings) => bookings,
   );
 }
@@ -36,7 +35,7 @@ Future<List<BookingEntity>> upcomingBookings(Ref ref) async {
   final result = await repository.getUpcomingBookings();
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (bookings) => bookings,
   );
 }
@@ -48,7 +47,7 @@ Future<List<BookingEntity>> pastBookings(Ref ref) async {
   final result = await repository.getPastBookings();
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (bookings) => bookings,
   );
 }
@@ -96,15 +95,14 @@ class BookingsController extends _$BookingsController {
         reason: reason,
       );
 
-      result.fold(
-        (failure) => throw Exception(failure.message),
-        (_) {
+      return result.fold(
+        (failure) => throw failure,
+        (_) async {
           // Refresh all bookings after cancellation
           ref.invalidate(allBookingsProvider);
+          return await ref.read(allBookingsProvider.future);
         },
       );
-
-      return await ref.read(allBookingsProvider.future);
     });
   }
 
@@ -121,15 +119,14 @@ class BookingsController extends _$BookingsController {
         participantIds: request.participants,
       );
 
-      result.fold(
-        (failure) => throw Exception(failure.message),
-        (_) {
+      return result.fold(
+        (failure) => throw failure,
+        (_) async {
           // Refresh all bookings after creation
           ref.invalidate(allBookingsProvider);
+          return await ref.read(allBookingsProvider.future);
         },
       );
-
-      return await ref.read(allBookingsProvider.future);
     });
   }
 
@@ -149,15 +146,14 @@ class BookingsController extends _$BookingsController {
         participantIds: request.participants,
       );
 
-      result.fold(
-        (failure) => throw Exception(failure.message),
-        (_) {
+      return result.fold(
+        (failure) => throw failure,
+        (_) async {
           // Refresh all bookings after modification
           ref.invalidate(allBookingsProvider);
+          return await ref.read(allBookingsProvider.future);
         },
       );
-
-      return await ref.read(allBookingsProvider.future);
     });
   }
 
