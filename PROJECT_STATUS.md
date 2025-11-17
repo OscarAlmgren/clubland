@@ -1,7 +1,7 @@
 # Clubland Project Status
 
 **Last Updated**: 2025-11-17
-**Status**: 🟢 Active Development - Phases 1, 2, 3 Complete
+**Status**: 🟢 Active Development - Phase 4 In Progress
 
 ---
 
@@ -17,7 +17,7 @@ Clubland is a premium Flutter application for the Reciprocal Clubs platform. The
 | High Priority | ✅ Complete | 100% (3/3) |
 | Technical Debt | ✅ Reduced | 75% (15/20 null assertions fixed) |
 | Lint Rules | ✅ Improved | 4 critical rules re-enabled |
-| Test Coverage | 🔴 Needs Work | 32% (Target: 80%) |
+| Test Coverage | 🟡 Improving | Auth feature: 100% repo + usecases |
 | TODO Count | 🔴 High | 56 items |
 | Code Quality | 🟢 Good | Clean Architecture + Type Safety |
 
@@ -195,7 +195,66 @@ if (user.bio case final bio?) {
 
 ---
 
-## 🟣 Phase 4: FUTURE
+## 🟡 Phase 4: IN PROGRESS (2025-11-17)
+
+### Test Coverage Improvements
+
+#### 1. **Auth Feature Tests** ✅ COMPLETED (2025-11-17)
+**Problem**: Auth feature had 0 tests despite being critical for security.
+
+**Tests Created**:
+1. **Repository Tests** (`test/features/auth/data/repositories/auth_repository_impl_test.dart`)
+   - 25+ comprehensive test cases covering all auth operations
+   - Login/register/logout flows with success and failure scenarios
+   - Hanko passwordless authentication
+   - Token refresh and session management
+   - Password management (change, reset, request reset)
+   - Email verification flows
+   - Biometric authentication
+   - Account deletion
+   - Profile updates
+   - Social account linking
+   - Stream-based auth state changes
+
+2. **Use Case Tests** (`test/features/auth/domain/usecases/login_usecase_test.dart`)
+   - `LoginUsecase` - 7 test cases (validation + repository integration)
+   - `HankoLoginUsecase` - 6 test cases (Hanko flow + completion)
+   - `RegisterUsecase` - 15 test cases (comprehensive validation)
+   - `LogoutUsecase` - 2 test cases
+   - `RefreshTokenUsecase` - 2 test cases
+   - `GetCurrentUserUsecase` - 1 test case
+   - `CheckAuthStatusUsecase` - 2 test cases
+   - `BiometricAuthUsecase` - 6 test cases
+
+**Test Patterns Applied**:
+- Arrange-Act-Assert structure
+- Comprehensive mocking with Mocktail
+- Edge case coverage (empty inputs, invalid formats, network errors)
+- Stream testing for auth state changes
+- Validation logic testing
+- Error handling verification
+
+**Coverage Areas**:
+- ✅ Login (email/password + Hanko)
+- ✅ Registration with validation
+- ✅ Logout
+- ✅ Token refresh
+- ✅ Session management
+- ✅ Password operations
+- ✅ Email verification
+- ✅ Biometric authentication
+- ✅ Profile updates
+- ✅ Account deletion
+
+**Impact**: ✅ Auth feature now has comprehensive test coverage for data and domain layers.
+
+**Remaining Work**:
+- ⚠️ Widget tests for auth pages (login, register, splash)
+- ⚠️ Integration tests for complete auth flows
+
+---
+
+## 🟣 Phase 5: FUTURE
 
 ### Complete Clean Architecture
 
@@ -273,6 +332,16 @@ if (user.bio case final bio?) {
 ---
 
 ## 🔄 Recent Changes
+
+### 2025-11-17 (Phase 4 Test Coverage - In Progress)
+- ✅ Created comprehensive auth repository tests (25+ test cases)
+- ✅ Created auth use case tests (41+ test cases across 8 use cases)
+- ✅ Established test patterns: Arrange-Act-Assert with Mocktail mocking
+- ✅ Covered critical auth flows: login, register, logout, token refresh, password management
+- ✅ Added Hanko passwordless authentication tests
+- ✅ Added biometric authentication tests
+- ✅ Stream-based auth state change testing
+- ⚠️ Widget tests for auth pages pending
 
 ### 2025-11-17 (Phase 3 Technical Debt)
 - ✅ Eliminated 15 unsafe non-null assertions in presentation layer
