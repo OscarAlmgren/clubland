@@ -141,8 +141,9 @@ GoRouter appRouter(Ref ref) {
         name: 'eventDetail',
         builder: (context, state) {
           final eventId = state.pathParameters['eventId']!;
-          // TODO: Get memberId from auth state
-          const memberId = 'member123'; // Placeholder
+          // Get memberId from auth state
+          final authState = ref.read(authControllerProvider);
+          final memberId = authState.value?.user.id ?? 'guest';
           return EventDetailsPage(eventId: eventId, memberId: memberId);
         },
       ),
