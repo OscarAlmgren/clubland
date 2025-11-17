@@ -203,7 +203,7 @@ jobs:
         run: echo '${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}' > google-play-key.json
 
       - name: Deploy to Google Play
-        uses: r0adkll/upload-google-play@v1.1.1
+        uses: r0adkll/upload-google-play@v1.1.3
         with:
           serviceAccountJson: google-play-key.json
           packageName: com.clubland.app
