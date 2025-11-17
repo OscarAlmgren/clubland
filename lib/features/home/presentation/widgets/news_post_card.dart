@@ -95,7 +95,7 @@ class NewsPostCard extends StatelessWidget {
                   // Author and date
                   Row(
                     children: [
-                      if (newsPost.author != null) ...[
+                      if (newsPost.author case final author?) ...[
                         Icon(
                           Icons.person,
                           size: 14,
@@ -103,7 +103,7 @@ class NewsPostCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          newsPost.author!,
+                          author,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
