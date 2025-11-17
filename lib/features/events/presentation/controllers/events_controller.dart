@@ -137,7 +137,7 @@ Future<EventsConnectionEntity> clubEvents(
     return result.fold(
       (failure) {
         // Note: Don't set timer here, let the catch block handle it to avoid orphaned timers
-        throw Exception(failure.message);
+        throw failure;
       },
       (connection) {
         // Schedule disposal after successful fetch
@@ -184,9 +184,9 @@ Future<EventEntity> eventDetails(Ref ref, String eventId) async {
           );
         }
 
-        // For other failures, throw with the original message
+        // For other failures, throw the failure object directly
         // Note: Don't set timer here, let the catch block handle it to avoid orphaned timers
-        throw Exception(failure.message);
+        throw failure;
       },
       (event) {
         // Schedule disposal after successful fetch
@@ -217,7 +217,7 @@ Future<RSVPEligibilityEntity> rsvpEligibility(
   );
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (eligibility) => eligibility,
   );
 }
@@ -252,7 +252,7 @@ Future<RSVPsConnectionEntity> myRSVPs(
     return result.fold(
       (failure) {
         // Note: Don't set timer here, let the catch block handle it to avoid orphaned timers
-        throw Exception(failure.message);
+        throw failure;
       },
       (connection) {
         // Schedule disposal after successful fetch
@@ -277,7 +277,7 @@ Future<List<FindingFriendsSubgroupEntity>> findingFriendsSubgroups(
   final result = await useCase(clubId);
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (subgroups) => subgroups,
   );
 }
@@ -531,7 +531,7 @@ class RSVPController extends _$RSVPController {
     state = await AsyncValue.guard(() async {
       final result = await useCase(input);
       return result.fold(
-        (failure) => throw Exception(failure.message),
+        (failure) => throw failure,
         (rsvp) => rsvp,
       );
     });
@@ -547,7 +547,7 @@ class RSVPController extends _$RSVPController {
         UpdateRSVPParams(rsvpId: rsvpId, input: input),
       );
       return result.fold(
-        (failure) => throw Exception(failure.message),
+        (failure) => throw failure,
         (rsvp) => rsvp,
       );
     });
@@ -564,7 +564,7 @@ class RSVPController extends _$RSVPController {
     );
 
     return result.fold(
-      (failure) => throw Exception(failure.message),
+      (failure) => throw failure,
       (response) {
         // Clear current RSVP state on successful cancellation
         state = const AsyncData(null);

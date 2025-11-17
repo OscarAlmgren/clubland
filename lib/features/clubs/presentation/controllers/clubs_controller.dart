@@ -24,7 +24,7 @@ Future<List<SimpleClub>> allClubs(Ref ref) async {
   final result = await repository.getClubs();
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (clubs) => clubs
         .map(
           (club) => SimpleClub(
@@ -47,7 +47,7 @@ Future<List<SimpleClub>> featuredClubs(Ref ref, {int limit = 10}) async {
   final result = await repository.getFeaturedClubs(limit: limit);
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (clubs) => clubs
         .map(
           (club) => SimpleClub(
@@ -77,7 +77,7 @@ Future<List<SimpleClub>> nearbyClubs(Ref ref, {int limit = 20}) async {
   );
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (clubs) => clubs
         .map(
           (club) => SimpleClub(
@@ -100,7 +100,7 @@ Future<List<SimpleClub>> favoriteClubs(Ref ref) async {
   final result = await repository.getFavoriteClubs();
 
   return result.fold(
-    (failure) => throw Exception(failure.message),
+    (failure) => throw failure,
     (clubs) => clubs
         .map(
           (club) => SimpleClub(
@@ -132,7 +132,7 @@ class ClubsController extends _$ClubsController {
     final repository = ref.read(clubsRepositoryProvider);
     final result = await repository.getClubs();
 
-    return result.fold((failure) => throw Exception(failure.message), (clubs) {
+    return result.fold((failure) => throw failure, (clubs) {
       return clubs
           .map(
             (club) => SimpleClub(
@@ -179,7 +179,7 @@ class ClubsController extends _$ClubsController {
         cursor: _currentCursor,
       );
 
-      result.fold((failure) => throw Exception(failure.message), (clubs) {
+      result.fold((failure) => throw failure, (clubs) {
         final simpleClubs = clubs
             .map(
               (club) => SimpleClub(
@@ -241,8 +241,7 @@ class ClubsController extends _$ClubsController {
       );
 
       result.fold(
-        (failure) =>
-            state = AsyncError(Exception(failure.message), StackTrace.current),
+        (failure) => state = AsyncError(failure, StackTrace.current),
         (clubs) {
           _allClubs = clubs
               .map(
@@ -289,8 +288,7 @@ class ClubsController extends _$ClubsController {
       );
 
       result.fold(
-        (failure) =>
-            state = AsyncError(Exception(failure.message), StackTrace.current),
+        (failure) => state = AsyncError(failure, StackTrace.current),
         (clubs) {
           _allClubs = clubs
               .map(
@@ -322,7 +320,7 @@ class ClubsController extends _$ClubsController {
 
       final result = await repository.toggleFavoriteClub(clubId);
 
-      result.fold((failure) => throw Exception(failure.message), (_) {
+      result.fold((failure) => throw failure, (_) {
         // Invalidate related providers to refresh data
         ref.invalidate(favoriteClubsProvider);
       });
