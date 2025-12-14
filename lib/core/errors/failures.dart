@@ -16,7 +16,10 @@ enum FailureSeverity {
 }
 
 /// Base failure class for error handling in the Either pattern
-abstract class Failure extends Equatable {
+///
+/// Implements [Exception] to allow failures to be thrown when used
+/// in fold() callbacks or other contexts that require throwable types.
+abstract class Failure extends Equatable implements Exception {
   /// Creates a new [Failure] instance.
   const Failure(
     this.message, [

@@ -113,8 +113,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                       children: [
                         CircleAvatar(
                           radius: 40,
-                          backgroundImage: user.avatar case final avatar?
-                              ? NetworkImage(avatar)
+                          backgroundImage: user.avatar != null
+                              ? NetworkImage(user.avatar!)
                               : null,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
@@ -514,9 +514,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                                   : Theme.of(context).colorScheme.onSurface,
                             ),
                       ),
-                      subtitle: item.subtitle case final subtitle?
+                      subtitle: item.subtitle != null
                           ? Text(
-                              subtitle,
+                              item.subtitle!,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall

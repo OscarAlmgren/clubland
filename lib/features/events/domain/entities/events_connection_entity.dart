@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'event_entity.dart';
+import 'event_rsvp_entity.dart';
 
 /// Page info entity for pagination
 class PageInfoEntity extends Equatable {
@@ -60,7 +61,7 @@ class RSVPsConnectionEntity extends Equatable {
     required this.totalCount,
   });
 
-  final List rsvps;
+  final List<EventRSVPEntity> rsvps;
   final PageInfoEntity pageInfo;
   final int totalCount;
 

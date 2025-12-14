@@ -399,7 +399,7 @@ class _OptimizedImageState extends State<OptimizedImage>
         setState(() {
           _imageProvider = provider;
         });
-        _animationController.forward();
+        unawaited(_animationController.forward());
       }
     } on Exception catch (_) {
       if (mounted) {
@@ -418,13 +418,17 @@ class _OptimizedImageState extends State<OptimizedImage>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final placeholderColor = theme.colorScheme.surfaceContainerHighest;
+    final iconColor = theme.colorScheme.onSurfaceVariant;
+
     if (_hasError) {
       return widget.errorWidget ??
           Container(
             width: widget.width,
             height: widget.height,
-            color: Colors.grey[300],
-            child: const Icon(Icons.error, color: Colors.grey),
+            color: placeholderColor,
+            child: Icon(Icons.error, color: iconColor),
           );
     }
 
@@ -433,7 +437,7 @@ class _OptimizedImageState extends State<OptimizedImage>
           Container(
             width: widget.width,
             height: widget.height,
-            color: Colors.grey[200],
+            color: placeholderColor,
             child: const Center(child: CircularProgressIndicator.adaptive()),
           );
     }
@@ -453,7 +457,7 @@ class _OptimizedImageState extends State<OptimizedImage>
               Container(
                 width: widget.width,
                 height: widget.height,
-                color: Colors.grey[200],
+                color: placeholderColor,
               );
         },
         errorBuilder: (context, error, stackTrace) =>
@@ -461,8 +465,8 @@ class _OptimizedImageState extends State<OptimizedImage>
             Container(
               width: widget.width,
               height: widget.height,
-              color: Colors.grey[300],
-              child: const Icon(Icons.broken_image, color: Colors.grey),
+              color: placeholderColor,
+              child: Icon(Icons.broken_image, color: iconColor),
             ),
       ),
     );

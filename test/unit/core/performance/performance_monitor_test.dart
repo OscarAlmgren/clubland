@@ -126,7 +126,7 @@ void main() {
 
       test('should time delayed async operation', () async {
         final result = await monitor.timeOperation('delayed_op', () async {
-          await Future.delayed(const Duration(milliseconds: 50));
+          await Future<void>.delayed(const Duration(milliseconds: 50));
           return 42;
         });
 
@@ -156,7 +156,7 @@ void main() {
         final futures = List.generate(
           5,
           (i) => monitor.timeOperation('concurrent_$i', () async {
-            await Future.delayed(Duration(milliseconds: 10 * (i + 1)));
+            await Future<void>.delayed(Duration(milliseconds: 10 * (i + 1)));
             return i;
           }),
         );
@@ -174,12 +174,12 @@ void main() {
         final results = <int>[];
 
         await monitor.timeOperation('first', () async {
-          await Future.delayed(const Duration(milliseconds: 20));
+          await Future<void>.delayed(const Duration(milliseconds: 20));
           results.add(1);
         });
 
         await monitor.timeOperation('second', () async {
-          await Future.delayed(const Duration(milliseconds: 10));
+          await Future<void>.delayed(const Duration(milliseconds: 10));
           results.add(2);
         });
 
@@ -253,7 +253,7 @@ void main() {
         final stats = monitor.getPerformanceStats();
 
         expect(stats.containsKey('memoryUsage'), true);
-        expect(stats['memoryUsage'], isA<Map>());
+        expect(stats['memoryUsage'], isA<Map<String, dynamic>>());
       });
 
       test('should track operation counts accurately', () {
@@ -275,7 +275,8 @@ void main() {
 
         var stats = monitor.getPerformanceStats();
         var durations = stats['averageDurations'] as Map<String, double>;
-        final firstDuration = durations['avg_test']!;
+        // Store first duration for comparison (unused but kept for documentation)
+        expect(durations['avg_test'], isNotNull);
 
         // Second operation
         monitor.startOperation('avg_test');
@@ -457,7 +458,7 @@ void main() {
         controller.add('test');
 
         // Wait for stream events to be delivered
-        await Future.delayed(Duration.zero);
+        await Future<void>.delayed(Duration.zero);
 
         expect(listener1Called, true);
         expect(listener2Called, true);

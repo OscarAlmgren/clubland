@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/events/domain/entities/event_rsvp_entity.dart';
@@ -133,7 +135,7 @@ void main() {
 
     tearDown(() async {
       // Allow pending operations to complete before disposing
-      await Future.delayed(Duration.zero);
+      await Future<void>.delayed(Duration.zero);
       container.dispose();
     });
 
@@ -229,11 +231,11 @@ void main() {
       await container.read(eventsListControllerProvider(clubId).future);
 
       // Act - Call loadMore multiple times quickly
-      controller.loadMore();
-      controller.loadMore();
-      controller.loadMore();
+      unawaited(controller.loadMore());
+      unawaited(controller.loadMore());
+      unawaited(controller.loadMore());
 
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future<void>.delayed(const Duration(milliseconds: 100));
 
       // Assert - Should only call once (second and third calls blocked)
       verify(() => mockGetEvents(any())).called(2); // Initial + one loadMore
@@ -308,7 +310,7 @@ void main() {
 
     tearDown(() async {
       // Allow pending operations to complete before disposing
-      await Future.delayed(Duration.zero);
+      await Future<void>.delayed(Duration.zero);
       container.dispose();
     });
 
@@ -439,7 +441,7 @@ void main() {
 
     tearDown(() async {
       // Allow pending operations to complete before disposing
-      await Future.delayed(Duration.zero);
+      await Future<void>.delayed(Duration.zero);
       container.dispose();
     });
 
@@ -571,15 +573,23 @@ void main() {
     late ProviderContainer container;
 
     final mockRSVPsConnection = RSVPsConnectionEntity(
-      rsvps: const [
-        {
-          'id': rsvpId,
-          'eventId': eventId,
-          'memberId': memberId,
-          'clubId': clubId,
-          'response': 'yes',
-          'status': 'confirmed',
-        },
+      rsvps: [
+        EventRSVPEntity(
+          id: rsvpId,
+          eventId: eventId,
+          memberId: memberId,
+          clubId: clubId,
+          response: RSVPResponse.yes,
+          rsvpType: RSVPType.primary,
+          priority: 1,
+          attendanceCount: 1,
+          status: RSVPStatus.confirmed,
+          paymentRequired: false,
+          paymentVerified: false,
+          feeWaived: false,
+          rsvpedAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
       ],
       pageInfo: mockPageInfo,
       totalCount: 5,
@@ -600,7 +610,7 @@ void main() {
 
     tearDown(() async {
       // Allow pending operations to complete before disposing
-      await Future.delayed(Duration.zero);
+      await Future<void>.delayed(Duration.zero);
       container.dispose();
     });
 

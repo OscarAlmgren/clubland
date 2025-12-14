@@ -503,12 +503,12 @@ void main() {
         // Arrange
         when(() => mockRepository.isBiometricAvailable())
             .thenAnswer((_) async {
-          await Future.delayed(const Duration(milliseconds: 100));
+          await Future<void>.delayed(const Duration(milliseconds: 100));
           return true;
         });
         when(() => mockRepository.authenticateWithBiometrics())
             .thenAnswer((_) async {
-          await Future.delayed(const Duration(milliseconds: 200));
+          await Future<void>.delayed(const Duration(milliseconds: 200));
           return const Right(true);
         });
 

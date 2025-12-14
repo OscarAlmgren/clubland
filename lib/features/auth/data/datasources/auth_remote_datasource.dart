@@ -354,7 +354,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return Left(AuthFailure.unexpected('Logout failed'));
       }
 
-      final success = result.data!['logout']['success'] as bool? ?? false;
+      final logoutData = result.data!['logout'] as Map<String, dynamic>;
+      final success = logoutData['success'] as bool? ?? false;
 
       if (success) {
         _logger.d('Logout successful');

@@ -93,9 +93,9 @@ void main() {
 
       test('should return empty list when no events exist', () async {
         // arrange
-        final mockResponse = {
-          'edges': [],
-          'pageInfo': {
+        final mockResponse = <String, dynamic>{
+          'edges': <Map<String, dynamic>>[],
+          'pageInfo': <String, dynamic>{
             'hasNextPage': false,
             'hasPreviousPage': false,
           },
@@ -200,10 +200,10 @@ void main() {
 
       test('should handle filters and pagination parameters', () async {
         // arrange
-        final filters = {'eventType': 'dining'};
-        final mockResponse = {
-          'edges': [],
-          'pageInfo': {
+        final filters = <String, dynamic>{'eventType': 'dining'};
+        final mockResponse = <String, dynamic>{
+          'edges': <Map<String, dynamic>>[],
+          'pageInfo': <String, dynamic>{
             'hasNextPage': false,
             'hasPreviousPage': false,
           },
@@ -269,7 +269,7 @@ void main() {
               },
             },
           ],
-          'pageInfo': {},
+          'pageInfo': <String, dynamic>{},
           'totalCount': 1,
         };
 
@@ -297,9 +297,9 @@ void main() {
 
       test('should use default limit when not provided', () async {
         // arrange
-        final mockResponse = {
-          'edges': [],
-          'pageInfo': {},
+        final mockResponse = <String, dynamic>{
+          'edges': <Map<String, dynamic>>[],
+          'pageInfo': <String, dynamic>{},
           'totalCount': 0,
         };
 
@@ -322,9 +322,9 @@ void main() {
 
       test('should use custom limit when provided', () async {
         // arrange
-        final mockResponse = {
-          'edges': [],
-          'pageInfo': {},
+        final mockResponse = <String, dynamic>{
+          'edges': <Map<String, dynamic>>[],
+          'pageInfo': <String, dynamic>{},
           'totalCount': 0,
         };
 
@@ -347,9 +347,9 @@ void main() {
 
       test('should filter events by start date (upcoming)', () async {
         // arrange
-        final mockResponse = {
-          'edges': [],
-          'pageInfo': {},
+        final mockResponse = <String, dynamic>{
+          'edges': <Map<String, dynamic>>[],
+          'pageInfo': <String, dynamic>{},
           'totalCount': 0,
         };
 

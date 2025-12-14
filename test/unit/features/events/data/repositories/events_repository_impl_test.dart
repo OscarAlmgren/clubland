@@ -26,8 +26,6 @@ void main() {
 
   group('getEvents', () {
     const clubId = 'club123';
-    const page = 1;
-    const pageSize = 20;
 
     final mockEventModel = EventModel(
       id: 'event1',

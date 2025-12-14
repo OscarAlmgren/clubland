@@ -142,7 +142,6 @@ void main() {
 
     test('should filter bookings by status', () async {
       // arrange
-      final confirmedOnly = [tBooking1];
       when(
         () => mockRepository.getUserBookings(
           status: any(named: 'status'),

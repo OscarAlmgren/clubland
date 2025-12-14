@@ -205,3 +205,27 @@ final bookingsRemoteDataSourceProvider = Provider<BookingsRemoteDataSource>(
     client: GraphQLClientConfig.client,
   ),
 );
+
+/// Represents a real-time booking update notification
+class BookingUpdate {
+  const BookingUpdate({
+    required this.bookingId,
+    required this.updateType,
+    this.updatedBooking,
+    this.timestamp,
+  });
+
+  final String bookingId;
+  final BookingUpdateType updateType;
+  final BookingEntity? updatedBooking;
+  final DateTime? timestamp;
+}
+
+/// Types of booking updates that can be received
+enum BookingUpdateType {
+  created,
+  modified,
+  cancelled,
+  confirmed,
+  statusChanged,
+}

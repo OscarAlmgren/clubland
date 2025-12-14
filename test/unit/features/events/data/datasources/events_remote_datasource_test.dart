@@ -43,8 +43,6 @@ void main() {
 
   group('getEvents', () {
     const clubId = 'club123';
-    const page = 1;
-    const pageSize = 20;
 
     final mockEventsData = {
       'events': {
@@ -111,7 +109,7 @@ void main() {
 
       // Assert
       expect(result, isA<Map<String, dynamic>>());
-      expect(result['edges'], isA<List>());
+      expect(result['edges'], isA<List<dynamic>>());
       expect(result['totalCount'], 10);
       verify(() => mockClient.query(any())).called(1);
     });
@@ -519,7 +517,7 @@ void main() {
       when(() => mockClient.query(any())).thenAnswer(
         (_) async => QueryResult(
           source: QueryResultSource.network,
-          data: {'findingFriendsSubgroups': []},
+          data: {'findingFriendsSubgroups': <Map<String, dynamic>>[]},
           options: QueryOptions(document: gql('')),
         ),
       );

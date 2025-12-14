@@ -11,7 +11,6 @@ import '../../features/clubs/presentation/pages/clubs_page.dart';
 import '../../features/events/presentation/pages/event_details_page.dart';
 import '../../features/events/presentation/pages/events_list_page.dart';
 import '../../features/events/presentation/pages/my_rsvps_page.dart';
-import '../../features/events/presentation/pages/rsvp_form_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/pages/profile_settings_page.dart';
@@ -143,7 +142,7 @@ GoRouter appRouter(Ref ref) {
           final eventId = state.pathParameters['eventId']!;
           // Get memberId from auth state
           final authState = ref.read(authControllerProvider);
-          final memberId = authState.value?.user.id ?? 'guest';
+          final memberId = authState.value?.id ?? 'guest';
           return EventDetailsPage(eventId: eventId, memberId: memberId);
         },
       ),

@@ -2,7 +2,6 @@ import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:clubland/features/auth/domain/usecases/login_usecase.dart';
-import 'package:clubland/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:clubland/features/auth/presentation/pages/login_page.dart';
 import 'package:clubland/features/auth/presentation/providers/auth_providers.dart';
 import 'package:dartz/dartz.dart';

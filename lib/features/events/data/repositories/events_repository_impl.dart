@@ -42,9 +42,10 @@ class EventsRepositoryImpl implements EventsRepository {
 
       // Parse events from edges
       final edges = data['edges'] as List<dynamic>? ?? [];
-      final events = edges
-          .map((edge) => EventModel.fromJson(edge['node'] as Map<String, dynamic>))
-          .toList();
+      final events = edges.map((edge) {
+        final edgeMap = edge as Map<String, dynamic>;
+        return EventModel.fromJson(edgeMap['node'] as Map<String, dynamic>);
+      }).toList();
 
       // Parse page info
       final pageInfoData = data['pageInfo'] as Map<String, dynamic>? ?? {};
@@ -93,9 +94,10 @@ class EventsRepositoryImpl implements EventsRepository {
       );
 
       final edges = data['edges'] as List<dynamic>? ?? [];
-      final events = edges
-          .map((edge) => EventModel.fromJson(edge['node'] as Map<String, dynamic>))
-          .toList();
+      final events = edges.map((edge) {
+        final edgeMap = edge as Map<String, dynamic>;
+        return EventModel.fromJson(edgeMap['node'] as Map<String, dynamic>);
+      }).toList();
 
       return Right(events);
     } on NetworkException catch (e) {
@@ -248,10 +250,10 @@ class EventsRepositoryImpl implements EventsRepository {
 
       // Parse RSVPs from edges
       final edges = data['edges'] as List<dynamic>? ?? [];
-      final rsvps = edges
-          .map((edge) =>
-              EventRSVPModel.fromJson(edge['node'] as Map<String, dynamic>))
-          .toList();
+      final rsvps = edges.map((edge) {
+        final edgeMap = edge as Map<String, dynamic>;
+        return EventRSVPModel.fromJson(edgeMap['node'] as Map<String, dynamic>);
+      }).toList();
 
       // Parse page info
       final pageInfoData = data['pageInfo'] as Map<String, dynamic>? ?? {};

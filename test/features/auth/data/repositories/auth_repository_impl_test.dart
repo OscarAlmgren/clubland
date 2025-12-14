@@ -47,9 +47,9 @@ void main() {
     );
 
     // Setup common stubs
-    when(() => mockLogger.d(any())).thenReturn(null);
-    when(() => mockLogger.i(any())).thenReturn(null);
-    when(() => mockLogger.e(any(), error: any(named: 'error'), stackTrace: any(named: 'stackTrace')))
+    when(() => mockLogger.d(any<dynamic>())).thenReturn(null);
+    when(() => mockLogger.i(any<dynamic>())).thenReturn(null);
+    when(() => mockLogger.e(any<dynamic>(), error: any<dynamic>(named: 'error'), stackTrace: any<StackTrace?>(named: 'stackTrace')))
         .thenReturn(null);
   });
 
@@ -89,9 +89,9 @@ void main() {
         when(() => mockRemoteDataSource.login(
               email: any(named: 'email'),
               password: any(named: 'password'),
-            )).thenAnswer((_) async => Right(testSession));
+            )).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
@@ -177,19 +177,19 @@ void main() {
         when(() => mockRemoteDataSource.login(
               email: any(named: 'email'),
               password: any(named: 'password'),
-            )).thenAnswer((_) async => Right(testSession));
+            )).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
             .thenAnswer((_) async {});
 
         // act & assert
-        expectLater(
+        unawaited(expectLater(
           repository.authStateChanges,
           emits(testSession),
-        );
+        ));
 
         await repository.login(
           email: 'test@example.com',
@@ -211,9 +211,9 @@ void main() {
           () async {
         // arrange
         when(() => mockHankoDataSource.isEmailRegistered(testEmail))
-            .thenAnswer((_) async => const Right(true));
+            .thenAnswer((_) async => const Right<Failure, bool>(true));
         when(() => mockHankoDataSource.initiateLogin(testEmail))
-            .thenAnswer((_) async => Right(testHankoResponse));
+            .thenAnswer((_) async => Right<Failure, HankoAuthResponse>(testHankoResponse));
         when(() => mockSecureStorage.saveHankoSessionId(testSessionId))
             .thenAnswer((_) async {});
 
@@ -241,7 +241,7 @@ void main() {
       test('should return AuthFailure when email is not registered', () async {
         // arrange
         when(() => mockHankoDataSource.isEmailRegistered(testEmail))
-            .thenAnswer((_) async => const Right(false));
+            .thenAnswer((_) async => const Right<Failure, bool>(false));
 
         // act
         final result = await repository.loginWithHanko(email: testEmail);
@@ -268,9 +268,9 @@ void main() {
         when(() => mockHankoDataSource.completeLogin(
               sessionId: testSessionId,
               credential: testCredential,
-            )).thenAnswer((_) async => Right(testSession));
+            )).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
@@ -306,9 +306,9 @@ void main() {
               firstName: any(named: 'firstName'),
               lastName: any(named: 'lastName'),
               clubId: any(named: 'clubId'),
-            )).thenAnswer((_) async => Right(testSession));
+            )).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
@@ -348,19 +348,19 @@ void main() {
               firstName: any(named: 'firstName'),
               lastName: any(named: 'lastName'),
               clubId: any(named: 'clubId'),
-            )).thenAnswer((_) async => Right(testSession));
+            )).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
             .thenAnswer((_) async {});
 
         // act & assert
-        expectLater(
+        unawaited(expectLater(
           repository.authStateChanges,
           emits(testSession),
-        );
+        ));
 
         await repository.register(
           email: 'test@example.com',
@@ -375,9 +375,9 @@ void main() {
       test('should return true when logout succeeds', () async {
         // arrange
         when(() => mockRemoteDataSource.logout())
-            .thenAnswer((_) async => const Right(true));
+            .thenAnswer((_) async => const Right<Failure, bool>(true));
         when(() => mockLocalDataSource.clearSession())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.deleteAccessToken())
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.deleteRefreshToken())
@@ -401,19 +401,19 @@ void main() {
       test('should emit null auth state on successful logout', () async {
         // arrange
         when(() => mockRemoteDataSource.logout())
-            .thenAnswer((_) async => const Right(true));
+            .thenAnswer((_) async => const Right<Failure, bool>(true));
         when(() => mockLocalDataSource.clearSession())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.deleteAccessToken())
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.deleteRefreshToken())
             .thenAnswer((_) async {});
 
         // act & assert
-        expectLater(
+        unawaited(expectLater(
           repository.authStateChanges,
           emits(null),
-        );
+        ));
 
         await repository.logout();
       });
@@ -430,7 +430,7 @@ void main() {
               refreshToken: 'test_refresh_token',
             )).thenAnswer((_) async => Right(newSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
@@ -476,7 +476,7 @@ void main() {
       test('should return null when no user is stored', () async {
         // arrange
         when(() => mockLocalDataSource.getCurrentUser())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, UserEntity?>(null));
 
         // act
         final result = await repository.getCurrentUser();
@@ -494,7 +494,7 @@ void main() {
       test('should return AuthSessionEntity from local storage', () async {
         // arrange
         when(() => mockLocalDataSource.getCurrentSession())
-            .thenAnswer((_) async => Right(testSession));
+            .thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
 
         // act
         final result = await repository.getCurrentSession();
@@ -515,7 +515,7 @@ void main() {
       test('should return true when valid session exists', () async {
         // arrange
         when(() => mockLocalDataSource.getCurrentSession())
-            .thenAnswer((_) async => Right(testSession));
+            .thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
 
         // act
         final result = await repository.isAuthenticated();
@@ -542,7 +542,7 @@ void main() {
       test('should return false when no session exists', () async {
         // arrange
         when(() => mockLocalDataSource.getCurrentSession())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, AuthSessionEntity?>(null));
 
         // act
         final result = await repository.isAuthenticated();
@@ -569,7 +569,7 @@ void main() {
         // arrange
         when(() => mockRemoteDataSource.checkEmailAvailability(
               email: 'test@example.com',
-            )).thenAnswer((_) async => const Right(true));
+            )).thenAnswer((_) async => const Right<Failure, bool>(true));
 
         // act
         final result = await repository.checkEmailAvailability(
@@ -596,11 +596,11 @@ void main() {
               profile: testProfile,
             )).thenAnswer((_) async => Right(updatedUser));
         when(() => mockLocalDataSource.storeUser(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockLocalDataSource.getCurrentSession())
-            .thenAnswer((_) async => Right(testSession));
+            .thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
@@ -630,7 +630,7 @@ void main() {
         when(() => mockRemoteDataSource.changePassword(
               currentPassword: 'OldPassword123!',
               newPassword: 'NewPassword123!',
-            )).thenAnswer((_) async => const Right(true));
+            )).thenAnswer((_) async => const Right<Failure, bool>(true));
 
         // act
         final result = await repository.changePassword(
@@ -653,7 +653,7 @@ void main() {
         // arrange
         when(() => mockRemoteDataSource.requestPasswordReset(
               email: 'test@example.com',
-            )).thenAnswer((_) async => const Right(true));
+            )).thenAnswer((_) async => const Right<Failure, bool>(true));
 
         // act
         final result = await repository.requestPasswordReset(
@@ -675,7 +675,7 @@ void main() {
         when(() => mockRemoteDataSource.resetPassword(
               token: 'reset_token',
               newPassword: 'NewPassword123!',
-            )).thenAnswer((_) async => const Right(true));
+            )).thenAnswer((_) async => const Right<Failure, bool>(true));
 
         // act
         final result = await repository.resetPassword(
@@ -697,11 +697,11 @@ void main() {
         // arrange
         when(() => mockRemoteDataSource.deleteAccount(
               password: 'Password123!',
-            )).thenAnswer((_) async => const Right(true));
+            )).thenAnswer((_) async => const Right<Failure, bool>(true));
         when(() => mockLocalDataSource.clearSession())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockLocalDataSource.clearUser())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.deleteAccessToken())
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.deleteRefreshToken())
@@ -729,21 +729,21 @@ void main() {
         // arrange
         when(() => mockRemoteDataSource.deleteAccount(
               password: 'Password123!',
-            )).thenAnswer((_) async => const Right(true));
+            )).thenAnswer((_) async => const Right<Failure, bool>(true));
         when(() => mockLocalDataSource.clearSession())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockLocalDataSource.clearUser())
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.deleteAccessToken())
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.deleteRefreshToken())
             .thenAnswer((_) async {});
 
         // act & assert
-        expectLater(
+        unawaited(expectLater(
           repository.authStateChanges,
           emits(null),
-        );
+        ));
 
         await repository.deleteAccount(password: 'Password123!');
       });
@@ -755,15 +755,15 @@ void main() {
         // arrange
         when(() => mockRemoteDataSource.verifyEmail(
               token: 'verify_token',
-            )).thenAnswer((_) async => const Right(true));
+            )).thenAnswer((_) async => const Right<Failure, bool>(true));
         when(() => mockLocalDataSource.getCurrentUser())
             .thenAnswer((_) async => Right(testUser));
         when(() => mockLocalDataSource.storeUser(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockLocalDataSource.getCurrentSession())
-            .thenAnswer((_) async => Right(testSession));
+            .thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
         when(() => mockLocalDataSource.storeSession(any()))
-            .thenAnswer((_) async => const Right(null));
+            .thenAnswer((_) async => const Right<Failure, void>(null));
         when(() => mockSecureStorage.storeAccessToken(any()))
             .thenAnswer((_) async {});
         when(() => mockSecureStorage.storeRefreshToken(any()))
@@ -821,7 +821,7 @@ void main() {
           () async {
         // arrange
         when(() => mockRemoteDataSource.authenticateWithBiometrics())
-            .thenAnswer((_) async => const Right(true));
+            .thenAnswer((_) async => const Right<Failure, bool>(true));
 
         // act
         final result = await repository.authenticateWithBiometrics();
@@ -837,7 +837,7 @@ void main() {
       test('setBiometricAuth should enable biometric auth', () async {
         // arrange
         when(() => mockRemoteDataSource.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => const Right(true));
+            .thenAnswer((_) async => const Right<Failure, bool>(true));
 
         // act
         final result = await repository.setBiometricAuth(enabled: true);

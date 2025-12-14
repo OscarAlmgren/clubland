@@ -290,7 +290,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data = result.data?['nearbyClubs'];
+      final data = result.data?['nearbyClubs'] as Map<String, dynamic>?;
       if (data == null) {
         _logger.w('nearbyClubs data is null from API');
         return [];
@@ -374,7 +374,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data = result.data?['featuredClubs'];
+      final data = result.data?['featuredClubs'] as Map<String, dynamic>?;
       if (data == null) {
         _logger.w('featuredClubs data is null from API');
         return [];
@@ -468,7 +468,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data = result.data?['checkInToClub'];
+      final data = result.data?['checkInToClub'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw app_exceptions.NetworkException(
           (data?['message'] as String?) ?? 'Failed to check in',

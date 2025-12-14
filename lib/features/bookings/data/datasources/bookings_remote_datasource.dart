@@ -403,7 +403,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         );
       }
 
-      final data = result.data?['createBooking'];
+      final data = result.data?['createBooking'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw app_exceptions.NetworkException(
           (data?['message'] as String?) ?? 'Failed to create booking',
@@ -411,7 +411,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         );
       }
 
-      final bookingData = data['booking'];
+      final bookingData = data['booking'] as Map<String, dynamic>?;
       if (bookingData == null) {
         throw const app_exceptions.NetworkException(
           'No booking data received',
@@ -420,7 +420,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       }
 
       _logger.i('Successfully created booking: ${bookingData['id']}');
-      return BookingModel.fromJson(bookingData as Map<String, dynamic>);
+      return BookingModel.fromJson(bookingData);
     } on app_exceptions.GraphQLException catch (e) {
       _logger.e('GraphQL error creating booking', error: e);
       throw app_exceptions.NetworkException.serverError(500, e.toString());
@@ -491,7 +491,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         );
       }
 
-      final data = result.data?['updateBooking'];
+      final data = result.data?['updateBooking'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw app_exceptions.NetworkException(
           (data?['message'] as String?) ?? 'Failed to update booking',
@@ -499,7 +499,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         );
       }
 
-      final bookingData = data['booking'];
+      final bookingData = data['booking'] as Map<String, dynamic>?;
       if (bookingData == null) {
         throw const app_exceptions.NetworkException(
           'No booking data received',
@@ -508,7 +508,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       }
 
       _logger.i('Successfully updated booking: $bookingId');
-      return BookingModel.fromJson(bookingData as Map<String, dynamic>);
+      return BookingModel.fromJson(bookingData);
     } on app_exceptions.GraphQLException catch (e) {
       _logger.e('GraphQL error updating booking', error: e);
       throw app_exceptions.NetworkException.serverError(500, e.toString());
@@ -574,7 +574,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         );
       }
 
-      final data = result.data?['cancelBooking'];
+      final data = result.data?['cancelBooking'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw app_exceptions.NetworkException(
           (data?['message'] as String?) ?? 'Failed to cancel booking',
@@ -582,7 +582,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         );
       }
 
-      final bookingData = data['booking'];
+      final bookingData = data['booking'] as Map<String, dynamic>?;
       if (bookingData == null) {
         throw const app_exceptions.NetworkException(
           'No booking data received',
@@ -591,7 +591,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       }
 
       _logger.i('Successfully cancelled booking: $bookingId');
-      return BookingModel.fromJson(bookingData as Map<String, dynamic>);
+      return BookingModel.fromJson(bookingData);
     } on app_exceptions.GraphQLException catch (e) {
       _logger.e('GraphQL error cancelling booking', error: e);
       throw app_exceptions.NetworkException.serverError(500, e.toString());

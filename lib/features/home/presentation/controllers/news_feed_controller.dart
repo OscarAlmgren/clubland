@@ -238,8 +238,10 @@ class NewsFeedController extends _$NewsFeedController {
 
     // Update the RSVP status in the list
     final updatedItems = currentState.map((item) {
+      final event = item.event;
       if (item.type == NewsFeedItemType.event &&
-          item.event case final event? when event.id == eventId) {
+          event != null &&
+          event.id == eventId) {
         return NewsFeedItemEntity.event(
           event: event,
           userRSVPStatus: status,

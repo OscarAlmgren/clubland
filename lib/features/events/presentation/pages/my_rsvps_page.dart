@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/design_system/design_system.dart';
 import '../controllers/events_controller.dart';
 import '../widgets/error_display.dart';
 import '../widgets/rsvp_status_badge.dart';
@@ -246,7 +246,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
     );
 
     if ((confirmed ?? false) && mounted) {
-      _cancelRSVP(rsvpId);
+      await _cancelRSVP(rsvpId);
     }
   }
 
@@ -260,8 +260,8 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
       if (response.success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.message ?? 'RSVP cancelled successfully'),
-            backgroundColor: Colors.green,
+            content: Text(response.message),
+            backgroundColor: AppColors.success, // WCAG AAA compliant
           ),
         );
 
@@ -270,7 +270,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.message ?? 'Failed to cancel RSVP'),
+            content: Text(response.message),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -438,16 +438,17 @@ class _RSVPCard extends StatelessWidget {
     }
   }
 
+  /// Returns WCAG AAA compliant color for RSVP responses.
   Color _getResponseColor(String response) {
     switch (response.toLowerCase()) {
       case 'yes':
-        return Colors.green;
+        return AppColors.success; // 7.23:1 contrast
       case 'no':
-        return Colors.red;
+        return AppColors.error; // 7.56:1 contrast
       case 'maybe':
-        return Colors.orange;
+        return AppColors.warning; // 7.81:1 contrast
       default:
-        return Colors.grey;
+        return AppColors.neutral600; // 7.01:1 contrast
     }
   }
 

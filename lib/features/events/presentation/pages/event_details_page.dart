@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../app/router/route_paths.dart';
+import '../../../../core/design_system/design_system.dart';
 import '../../domain/entities/event_entity.dart';
 import '../../domain/entities/rsvp_eligibility_entity.dart';
 import '../controllers/events_controller.dart';
@@ -246,7 +246,7 @@ class EventDetailsPage extends ConsumerWidget {
                     : theme.colorScheme.onErrorContainer,
               ),
             ),
-            if (eligibility.requiresApproval ?? false) ...[
+            if (eligibility.requiresApproval) ...[
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -647,7 +647,7 @@ class _EventHeader extends StatelessWidget {
           child: Text(
             _getEventTypeLabel(event.eventType),
             style: theme.textTheme.labelLarge?.copyWith(
-              color: Colors.white,
+              color: theme.colorScheme.onPrimary,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -665,26 +665,27 @@ class _EventHeader extends StatelessWidget {
     );
   }
 
+  /// Returns WCAG AAA compliant color for event type badges.
   Color _getEventTypeColor(EventType type) {
     switch (type) {
       case EventType.social:
-        return Colors.blue;
+        return AppColors.getEventTypeColor('social');
       case EventType.dining:
-        return Colors.orange;
+        return AppColors.getEventTypeColor('dining');
       case EventType.sports:
-        return Colors.green;
+        return AppColors.getEventTypeColor('sports');
       case EventType.cultural:
-        return Colors.purple;
+        return AppColors.getEventTypeColor('cultural');
       case EventType.educational:
-        return Colors.teal;
+        return AppColors.getEventTypeColor('educational');
       case EventType.networking:
-        return Colors.indigo;
+        return AppColors.getEventTypeColor('networking');
       case EventType.family:
-        return Colors.pink;
+        return AppColors.getEventTypeColor('family');
       case EventType.special:
-        return Colors.red;
+        return AppColors.getEventTypeColor('special');
       case EventType.findingFriends:
-        return Colors.amber;
+        return AppColors.getEventTypeColor('finding_friends');
     }
   }
 

@@ -254,7 +254,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['clubReviews'];
+      final data = result.data?['clubReviews'] as Map<String, dynamic>?;
       if (data == null) {
         throw const NetworkException('No reviews data received', 'NO_DATA');
       }
@@ -338,7 +338,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['createReview'];
+      final data = result.data?['createReview'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw NetworkException(
           data?['message']?.toString() ?? 'Failed to create review',
@@ -346,13 +346,13 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final reviewData = data['review'];
+      final reviewData = data['review'] as Map<String, dynamic>?;
       if (reviewData == null) {
         throw const NetworkException('No review data received', 'NO_DATA');
       }
 
       _logger.i('Successfully created review for club: $clubId');
-      return ClubReviewModel.fromJson(reviewData as Map<String, dynamic>);
+      return ClubReviewModel.fromJson(reviewData);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error creating review', error: e);
       throw GraphQLException(e.toString());
@@ -411,17 +411,17 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['likeActivity'];
+      final data = result.data?['likeActivity'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw const NetworkException('Failed to like activity', 'LIKE_FAILED');
       }
 
-      final activityData = data['activity'];
+      final activityData = data['activity'] as Map<String, dynamic>?;
       if (activityData == null) {
         throw const NetworkException('No activity data received', 'NO_DATA');
       }
 
-      return ActivityModel.fromJson(activityData as Map<String, dynamic>);
+      return ActivityModel.fromJson(activityData);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error liking activity', error: e);
       throw GraphQLException(e.toString());
@@ -479,17 +479,17 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['addComment'];
+      final data = result.data?['addComment'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw const NetworkException('Failed to add comment', 'COMMENT_FAILED');
       }
 
-      final commentData = data['comment'];
+      final commentData = data['comment'] as Map<String, dynamic>?;
       if (commentData == null) {
         throw const NetworkException('No comment data received', 'NO_DATA');
       }
 
-      return ActivityCommentModel.fromJson(commentData as Map<String, dynamic>);
+      return ActivityCommentModel.fromJson(commentData);
     } on GraphQLException catch (e) {
       _logger.e('GraphQL error adding comment', error: e);
       throw GraphQLException(e.toString());
@@ -539,7 +539,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['shareActivity'];
+      final data = result.data?['shareActivity'] as Map<String, dynamic>?;
       if (data == null || data['success'] != true) {
         throw NetworkException(
           data?['message']?.toString() ?? 'Failed to share activity',
@@ -625,7 +625,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['notifications'];
+      final data = result.data?['notifications'] as Map<String, dynamic>?;
       if (data == null) {
         throw const NetworkException(
           'No notifications data received',
@@ -732,9 +732,9 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['markAllNotificationsRead'];
+      final data = result.data?['markAllNotificationsRead'] as Map<String, dynamic>?;
       if (data?['success'] == true) {
-        final count = data['count'] as int?;
+        final count = data?['count'] as int?;
         _logger.i('Successfully marked $count notifications as read');
       }
     } on GraphQLException catch (e) {
@@ -857,7 +857,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         if (result.hasException) {
           throw NetworkException('Subscription error: ${result.exception}');
         }
-        final data = result.data?['clubActivity'];
+        final data = result.data?['clubActivity'] as Map<String, dynamic>?;
         if (data == null || data['activity'] == null) {
           throw const NetworkException(
             'No activity data received',

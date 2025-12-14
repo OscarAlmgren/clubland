@@ -1,7 +1,5 @@
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
-import 'package:clubland/features/home/domain/entities/lunch_menu_entity.dart';
 import 'package:clubland/features/home/domain/entities/news_feed_item_entity.dart';
-import 'package:clubland/features/home/domain/entities/news_post_entity.dart';
 import 'package:clubland/features/home/presentation/controllers/news_feed_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -291,8 +289,8 @@ void main() {
           .toList();
 
       // assert
-      final hasPaidEvents = events.any((e) => e.requiresPayment && e.price != null);
-      final hasFreeEvents = events.any((e) => !e.requiresPayment);
+      final hasPaidEvents = events.any((e) => (e.requiresPayment ?? false) && e.price != null);
+      final hasFreeEvents = events.any((e) => !(e.requiresPayment ?? false));
 
       expect(hasPaidEvents, true);
       expect(hasFreeEvents, true);
