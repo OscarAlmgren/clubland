@@ -133,7 +133,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                             children: [
                               Text(
                                 user.fullName,
-                                style: Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                    ),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -151,7 +153,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                                 const SizedBox(height: 4),
                                 Text(
                                   bio,
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -182,7 +186,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                     padding: const EdgeInsets.all(16),
                     child: Text(
                       S.of(context).quickActions,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                     ),
                   ),
                   _buildQuickAction(
@@ -228,7 +234,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                         Expanded(
                           child: Text(
                             S.of(context).recentActivity,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                ),
                           ),
                         ),
                         TextButton(
@@ -407,7 +415,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: Theme.of(context).textTheme.bodyMedium),
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                    ),
                     const SizedBox(height: 4),
                     Text(
                       subtitle,

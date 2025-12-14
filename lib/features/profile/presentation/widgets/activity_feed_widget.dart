@@ -25,6 +25,7 @@ class ActivityFeedWidget extends ConsumerWidget {
             S.of(context).activityFeed,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
@@ -55,8 +56,18 @@ class ActivityTile extends StatelessWidget {
         _getActivityIcon(activity.type),
         color: Theme.of(context).colorScheme.primary,
       ),
-      title: Text(activity.title),
-      subtitle: Text(activity.description),
+      title: Text(
+        activity.title,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      ),
+      subtitle: Text(
+        activity.description,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+      ),
       trailing: compact
           ? null
           : Text(

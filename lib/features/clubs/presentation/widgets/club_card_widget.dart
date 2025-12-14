@@ -69,6 +69,7 @@ class ClubCardWidget extends StatelessWidget {
                         club.name,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

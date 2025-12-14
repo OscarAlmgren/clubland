@@ -76,6 +76,7 @@ class NewsPostCard extends StatelessWidget {
                     newsPost.title,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
 
@@ -84,7 +85,9 @@ class NewsPostCard extends StatelessWidget {
                   // Content preview
                   Text(
                     newsPost.content,
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -99,12 +99,16 @@ class HomePage extends ConsumerWidget {
                         AppSpacing.verticalSpaceMD,
                         Text(
                           'Failed to load news feed',
-                          style: AppTextStyles.titleMedium,
+                          style: AppTextStyles.titleMedium.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                         ),
                         AppSpacing.verticalSpaceSM,
                         Text(
                           error.toString(),
-                          style: AppTextStyles.bodySmall,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -130,7 +134,9 @@ class HomePage extends ConsumerWidget {
           padding: const EdgeInsets.all(32.0),
           child: Text(
             'No news feed items available',
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
       );
