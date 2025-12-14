@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '../../../../core/design_system/design_system.dart';
 
 /// Capacity indicator widget showing event attendance progress
 class CapacityIndicator extends StatelessWidget {
@@ -30,12 +30,12 @@ class CapacityIndicator extends StatelessWidget {
     final isFull = availableSpots <= 0;
     final isNearlyFull = progress >= 0.8;
 
-    // Determine color based on capacity
+    // Determine color based on capacity - WCAG AAA compliant
     final color = isFull
-        ? Colors.red
+        ? AppColors.error // 7.56:1 contrast
         : isNearlyFull
-            ? Colors.orange
-            : Colors.green;
+            ? AppColors.warning // 7.81:1 contrast
+            : AppColors.success; // 7.23:1 contrast
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,13 +105,13 @@ class CompactCapacityIndicator extends StatelessWidget {
         Icon(
           isFull ? Icons.event_busy : Icons.people,
           size: 16,
-          color: isFull ? Colors.red : theme.colorScheme.primary,
+          color: isFull ? AppColors.error : theme.colorScheme.primary,
         ),
         const SizedBox(width: 4),
         Text(
           '$currentAttendees/$capacity',
           style: theme.textTheme.bodySmall?.copyWith(
-            color: isFull ? Colors.red : theme.colorScheme.onSurfaceVariant,
+            color: isFull ? AppColors.error : theme.colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
         ),

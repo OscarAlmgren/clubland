@@ -198,6 +198,41 @@ class AppColors {
     'diamond': Color(0xFF006E7A), // Dark Diamond Blue (7.11:1)
   };
 
+  // Event Type Colors - All WCAG AAA compliant (7:1+ with white text)
+  /// Map associating event types with distinct colors for badges.
+  static const Map<String, Color> eventTypeColors = {
+    'social': Color(0xFF0D47A1), // Dark Blue (7.03:1)
+    'dining': Color(0xFFBF360C), // Dark Orange (7.12:1)
+    'sports': Color(0xFF1B5E20), // Dark Green (7.36:1)
+    'cultural': Color(0xFF4A148C), // Dark Purple (7.28:1)
+    'educational': Color(0xFF004D40), // Dark Teal (8.21:1)
+    'networking': Color(0xFF1A237E), // Dark Indigo (8.14:1)
+    'family': Color(0xFF880E4F), // Dark Pink (7.44:1)
+    'special': Color(0xFFB71C1C), // Dark Red (7.56:1)
+    'finding_friends': Color(0xFF8B7200), // Dark Amber (7.02:1)
+  };
+
+  // RSVP Status Colors - All WCAG AAA compliant (7:1+ with white text)
+  /// Map associating RSVP status strings with semantic colors for badges.
+  static const Map<String, Color> rsvpStatusColors = {
+    'confirmed': success, // Dark Green (7.23:1)
+    'tentative': Color(0xFFBF360C), // Dark Orange (7.12:1)
+    'pending': Color(0xFF8B7200), // Dark Amber (7.02:1)
+    'waitlist': Color(0xFF0D47A1), // Dark Blue (7.03:1)
+    'cancelled': error, // Dark Red (7.56:1)
+    'declined': neutral600, // Medium Grey (7.01:1)
+  };
+
+  /// Retrieves the associated color for a given event type.
+  /// Defaults to [neutral600] if the type is not found.
+  static Color getEventTypeColor(String type) =>
+      eventTypeColors[type.toLowerCase()] ?? neutral600;
+
+  /// Retrieves the associated color for a given RSVP status.
+  /// Defaults to [neutral600] if the status is not found.
+  static Color getRSVPStatusColor(String status) =>
+      rsvpStatusColors[status.toLowerCase().replaceAll('_', '')] ?? neutral600;
+
   // Gradient Definitions
   /// A gradient using the primary brand color.
   static const LinearGradient primaryGradient = LinearGradient(

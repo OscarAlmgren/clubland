@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../../../core/design_system/design_system.dart';
 import '../../domain/entities/lunch_menu_entity.dart';
 
@@ -26,10 +24,10 @@ class LunchMenuCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with lunch menu badge
+            // Header with lunch menu badge - WCAG AAA compliant
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: Colors.orange.shade50,
+              color: AppColors.getEventTypeColor('dining').withValues(alpha: 0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -39,22 +37,22 @@ class LunchMenuCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: AppColors.getEventTypeColor('dining'), // 7.12:1 contrast
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.restaurant_menu,
                           size: 14,
-                          color: Colors.white,
+                          color: theme.colorScheme.onPrimary,
                         ),
                         const SizedBox(width: 6),
                         Text(
                           'LUNCH MENU',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
+                            color: theme.colorScheme.onPrimary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

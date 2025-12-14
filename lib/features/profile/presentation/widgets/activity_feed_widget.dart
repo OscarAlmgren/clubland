@@ -9,21 +9,30 @@ class ActivityFeedWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     // For now, show a simple placeholder
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.timeline, size: 64, color: Colors.grey),
+          Icon(
+            Icons.timeline,
+            size: 64,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
           const SizedBox(height: 16),
           Text(
             S.of(context).activityFeed,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             S.of(context).activityHistoryPlaceholder,
-            style: const TextStyle(color: Colors.grey, fontSize: 14),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             textAlign: TextAlign.center,
           ),
         ],

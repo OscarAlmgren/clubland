@@ -17,19 +17,30 @@ class UpcomingBookingsSection extends ConsumerWidget {
     return bookingsState.when(
       data: (bookings) {
         if (bookings.isEmpty) {
-          return const Center(
+          return Center(
             child: Padding(
-              padding: EdgeInsets.all(32),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.event_available, size: 64, color: Colors.grey),
-                  SizedBox(height: 16),
-                  Text(
-                    'No upcoming bookings',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                ],
+              padding: const EdgeInsets.all(32),
+              child: Builder(
+                builder: (context) {
+                  final theme = Theme.of(context);
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.event_available,
+                        size: 64,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No upcoming bookings',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           );

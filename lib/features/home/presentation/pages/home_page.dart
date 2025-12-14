@@ -95,7 +95,7 @@ class HomePage extends ConsumerWidget {
                     padding: const EdgeInsets.all(32.0),
                     child: Column(
                       children: [
-                        const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                        Icon(Icons.error_outline, size: 48, color: AppColors.error),
                         AppSpacing.verticalSpaceMD,
                         Text(
                           'Failed to load news feed',

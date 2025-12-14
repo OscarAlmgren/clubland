@@ -521,7 +521,7 @@ final class ClubEventsProvider
   }
 }
 
-String _$clubEventsHash() => r'e21522208f1d0c3995d887980acaa9fe4e2a4960';
+String _$clubEventsHash() => r'5ef5095fc325b6a8179ec1c7745e219478d3479a';
 
 /// Provider for fetching events for a club
 
@@ -616,7 +616,7 @@ final class EventDetailsProvider
   }
 }
 
-String _$eventDetailsHash() => r'c780b77b90edef8ba26df5c1b81eebcd99cceb08';
+String _$eventDetailsHash() => r'c47b78333d04ef77d03a45988666288cd54eec65';
 
 /// Provider for fetching a single event by ID
 
@@ -702,7 +702,7 @@ final class RsvpEligibilityProvider
   }
 }
 
-String _$rsvpEligibilityHash() => r'f6ac887148523f232b8da425cc4489dd41c86b1c';
+String _$rsvpEligibilityHash() => r'c5adfa05ad77181470293985faa7f1c2778100cb';
 
 /// Provider for checking RSVP eligibility
 
@@ -801,7 +801,7 @@ final class MyRSVPsProvider
   }
 }
 
-String _$myRSVPsHash() => r'40797b5e37aef571bbe2a0b483f188479b4e61ab';
+String _$myRSVPsHash() => r'32bd69326a5ab6285447e6ef93d93eaf3441016f';
 
 /// Provider for fetching member's RSVPs
 
@@ -905,7 +905,7 @@ final class FindingFriendsSubgroupsProvider
 }
 
 String _$findingFriendsSubgroupsHash() =>
-    r'7d4a55107ac70b5acb52f5a43874b9dda3f89f94';
+    r'c081558793b365eafe876e28e8a45e91f98f92e9';
 
 /// Provider for fetching Finding Friends subgroups
 
@@ -1170,7 +1170,7 @@ final class RSVPControllerProvider
   RSVPController create() => RSVPController();
 }
 
-String _$rSVPControllerHash() => r'ed98276d2594fb0e34f20d14d1f3c9421116fab9';
+String _$rSVPControllerHash() => r'005887eb6dbd143baf6a280b6c45699e85ce3ec3';
 
 /// Controller for managing RSVP operations
 

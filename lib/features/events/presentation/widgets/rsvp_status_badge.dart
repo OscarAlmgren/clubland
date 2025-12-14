@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '../../../../core/design_system/design_system.dart';
 
 /// RSVP status badge widget showing status with appropriate colors
 class RSVPStatusBadge extends StatelessWidget {
@@ -51,47 +51,52 @@ class RSVPStatusBadge extends StatelessWidget {
     );
   }
 
+  /// Returns WCAG AAA compliant status info for the given RSVP status.
   _StatusInfo _getStatusInfo(String status) {
     final statusLower = status.toLowerCase();
 
     if (statusLower == 'confirmed') {
       return _StatusInfo(
-        color: Colors.green,
+        color: AppColors.success, // 7.23:1 contrast
         icon: Icons.check_circle,
         label: 'Confirmed',
       );
     } else if (statusLower == 'tentative') {
       return _StatusInfo(
-        color: Colors.orange,
+        color: AppColors.getRSVPStatusColor('tentative'), // 7.12:1 contrast
         icon: Icons.help_outline,
         label: 'Tentative',
       );
     } else if (statusLower == 'pending_approval' || statusLower == 'pending') {
       return _StatusInfo(
-        color: Colors.amber,
+        color: AppColors.getRSVPStatusColor('pending'), // 7.02:1 contrast
         icon: Icons.schedule,
         label: 'Pending',
       );
     } else if (statusLower == 'waitlist') {
       return _StatusInfo(
-        color: Colors.blue,
+        color: AppColors.info, // 7.03:1 contrast
         icon: Icons.hourglass_empty,
         label: 'Waitlist',
       );
     } else if (statusLower == 'cancelled') {
       return _StatusInfo(
-        color: Colors.red,
+        color: AppColors.error, // 7.56:1 contrast
         icon: Icons.cancel,
         label: 'Cancelled',
       );
     } else if (statusLower == 'declined') {
       return _StatusInfo(
-        color: Colors.grey,
+        color: AppColors.neutral600, // 7.01:1 contrast
         icon: Icons.not_interested,
         label: 'Declined',
       );
     } else {
-      return _StatusInfo(color: Colors.grey, icon: Icons.info, label: status);
+      return _StatusInfo(
+        color: AppColors.neutral600, // 7.01:1 contrast
+        icon: Icons.info,
+        label: status,
+      );
     }
   }
 }

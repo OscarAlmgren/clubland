@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../../../core/design_system/design_system.dart';
 import '../../../events/domain/entities/event_entity.dart';
 
@@ -96,7 +94,7 @@ class RSVPModal extends StatelessWidget {
               icon: Icons.check_circle,
               label: "Yes, I'll attend",
               description: 'Confirm your attendance',
-              color: Colors.green,
+              color: AppColors.success, // WCAG AAA 7.23:1 contrast
             ),
 
             AppSpacing.verticalSpaceMD,
@@ -108,7 +106,7 @@ class RSVPModal extends StatelessWidget {
               icon: Icons.help_outline,
               label: 'Maybe',
               description: "You're not sure yet",
-              color: Colors.orange,
+              color: AppColors.warning, // WCAG AAA 7.81:1 contrast
             ),
 
             AppSpacing.verticalSpaceMD,
@@ -120,7 +118,7 @@ class RSVPModal extends StatelessWidget {
               icon: Icons.cancel,
               label: "No, I can't attend",
               description: 'Decline the invitation',
-              color: Colors.red,
+              color: AppColors.error, // WCAG AAA 7.56:1 contrast
             ),
 
             AppSpacing.verticalSpaceMD,

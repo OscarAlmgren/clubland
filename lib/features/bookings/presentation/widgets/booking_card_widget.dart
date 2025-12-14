@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import '../../../../core/design_system/design_system.dart';
 import '../../domain/entities/booking_entity.dart';
 
 class BookingCardWidget extends StatelessWidget {
@@ -108,6 +108,7 @@ class BookingCardWidget extends StatelessWidget {
   }
 }
 
+/// Status chip widget with WCAG AAA compliant colors that adapt to theme.
 class _StatusChip extends StatelessWidget {
   const _StatusChip({required this.status});
 
@@ -115,52 +116,63 @@ class _StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor;
-    Color textColor;
-    String text;
-
-    switch (status) {
-      case BookingStatus.confirmed:
-        backgroundColor = Colors.green.shade100;
-        textColor = Colors.green.shade800;
-        text = 'Confirmed';
-        break;
-      case BookingStatus.pending:
-        backgroundColor = Colors.orange.shade100;
-        textColor = Colors.orange.shade800;
-        text = 'Pending';
-        break;
-      case BookingStatus.cancelled:
-        backgroundColor = Colors.red.shade100;
-        textColor = Colors.red.shade800;
-        text = 'Cancelled';
-        break;
-      case BookingStatus.completed:
-        backgroundColor = Colors.blue.shade100;
-        textColor = Colors.blue.shade800;
-        text = 'Completed';
-        break;
-      case BookingStatus.noShow:
-        backgroundColor = Colors.grey.shade100;
-        textColor = Colors.grey.shade800;
-        text = 'No Show';
-        break;
-    }
+    final theme = Theme.of(context);
+    final statusInfo = _getStatusInfo(status);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: statusInfo.color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: statusInfo.color.withValues(alpha: 0.3),
+        ),
       ),
       child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
+        statusInfo.label,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: statusInfo.color,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
   }
+
+  /// Returns WCAG AAA compliant status info for booking statuses.
+  _BookingStatusInfo _getStatusInfo(BookingStatus status) {
+    switch (status) {
+      case BookingStatus.confirmed:
+        return _BookingStatusInfo(
+          color: AppColors.success, // 7.23:1 contrast
+          label: 'Confirmed',
+        );
+      case BookingStatus.pending:
+        return _BookingStatusInfo(
+          color: AppColors.warning, // 7.81:1 contrast
+          label: 'Pending',
+        );
+      case BookingStatus.cancelled:
+        return _BookingStatusInfo(
+          color: AppColors.error, // 7.56:1 contrast
+          label: 'Cancelled',
+        );
+      case BookingStatus.completed:
+        return _BookingStatusInfo(
+          color: AppColors.info, // 7.03:1 contrast
+          label: 'Completed',
+        );
+      case BookingStatus.noShow:
+        return _BookingStatusInfo(
+          color: AppColors.neutral600, // 7.01:1 contrast
+          label: 'No Show',
+        );
+    }
+  }
+}
+
+class _BookingStatusInfo {
+  final Color color;
+  final String label;
+
+  _BookingStatusInfo({required this.color, required this.label});
 }

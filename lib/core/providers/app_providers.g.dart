@@ -8,6 +8,52 @@ part of 'app_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Provider for SharedPreferences instance
+
+@ProviderFor(sharedPreferences)
+const sharedPreferencesProvider = SharedPreferencesProvider._();
+
+/// Provider for SharedPreferences instance
+
+final class SharedPreferencesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<SharedPreferences>,
+          SharedPreferences,
+          FutureOr<SharedPreferences>
+        >
+    with
+        $FutureModifier<SharedPreferences>,
+        $FutureProvider<SharedPreferences> {
+  /// Provider for SharedPreferences instance
+  const SharedPreferencesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'sharedPreferencesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$sharedPreferencesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<SharedPreferences> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<SharedPreferences> create(Ref ref) {
+    return sharedPreferences(ref);
+  }
+}
+
+String _$sharedPreferencesHash() => r'dc403fbb1d968c7d5ab4ae1721a29ffe173701c7';
+
 /// App theme mode provider.
 ///
 /// Manages the current application theme mode (light, dark, or system).
@@ -50,7 +96,7 @@ final class AppThemeModeProvider
   }
 }
 
-String _$appThemeModeHash() => r'a3db36fb0316d2806369586d915f9bbb7f2838d8';
+String _$appThemeModeHash() => r'9f86263ae00fcf6cedd3ec0762149926929d0b41';
 
 /// App theme mode provider.
 ///
@@ -116,7 +162,7 @@ final class AppLocaleProvider extends $NotifierProvider<AppLocale, Locale> {
   }
 }
 
-String _$appLocaleHash() => r'dc3e20333cb17b2fe86cb6d352c6af858bb071e2';
+String _$appLocaleHash() => r'950d09bb77e15ab271e2fedad4e31dc47d68af79';
 
 /// App locale provider.
 ///
@@ -176,7 +222,7 @@ final class AppSettingsNotifierProvider
 }
 
 String _$appSettingsNotifierHash() =>
-    r'd0cdd1d4172dd61ac85077bbe8277124c177e13a';
+    r'b9ca2df611a103cff664d70c93385f707a37e1b0';
 
 /// App settings provider.
 ///

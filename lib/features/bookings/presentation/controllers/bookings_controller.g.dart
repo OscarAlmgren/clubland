@@ -105,7 +105,7 @@ final class AllBookingsProvider
   }
 }
 
-String _$allBookingsHash() => r'b6a22d2713ed82fde9a3d3a960fe2b578c680057';
+String _$allBookingsHash() => r'9c6650635637d6ff7ad22f77d6ce9f0d3c453aa6';
 
 /// Provider for upcoming bookings only
 
@@ -151,7 +151,7 @@ final class UpcomingBookingsProvider
   }
 }
 
-String _$upcomingBookingsHash() => r'2779ada3fbacb7634e951a7f6d26c4eac1cb56b3';
+String _$upcomingBookingsHash() => r'e9b3266426eb10b45e0cf68d4b00719a096942f5';
 
 /// Provider for past bookings only
 
@@ -197,7 +197,7 @@ final class PastBookingsProvider
   }
 }
 
-String _$pastBookingsHash() => r'bb488e359798c5ea43f02972fe40fbc69ab87c28';
+String _$pastBookingsHash() => r'f772aa570508a3576f9440e437fee34432be91c0';
 
 /// Provider for real-time booking updates
 
@@ -274,7 +274,7 @@ final class BookingsControllerProvider
 }
 
 String _$bookingsControllerHash() =>
-    r'd91b97b21dbb8aed10d32c64bfbc1712ef54e7e8';
+    r'67a8acf96c269ab20a5c9bbfdcff2cdfca00d2b8';
 
 /// Main bookings controller for managing booking state and actions
 
