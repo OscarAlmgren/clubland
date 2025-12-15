@@ -65,7 +65,9 @@ class _EmptyNearbyView extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'No Nearby Clubs Found',
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           const SizedBox(height: 8),
           Text(

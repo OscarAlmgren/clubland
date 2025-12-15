@@ -34,7 +34,9 @@ class AppErrorWidget extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               errorMessage['title']!,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),

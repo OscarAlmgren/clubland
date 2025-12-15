@@ -80,6 +80,7 @@ class LunchMenuCard extends StatelessWidget {
                     "This Week's Lunch Menu",
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
 
@@ -120,6 +121,7 @@ class LunchMenuCard extends StatelessWidget {
                                             style: theme.textTheme.bodyMedium
                                                 ?.copyWith(
                                                   fontWeight: FontWeight.w600,
+                                                  color: theme.colorScheme.onSurface,
                                                 ),
                                           ),
                                         ),

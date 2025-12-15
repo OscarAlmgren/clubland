@@ -179,7 +179,9 @@ GoRouter appRouter(Ref ref) {
             const SizedBox(height: 16),
             Text(
               'Page not found: ${state.matchedLocation}',
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(

@@ -220,7 +220,9 @@ class _EmptyBookingsView extends StatelessWidget {
         AppSpacing.verticalSpaceLG,
         Text(
           'No Bookings Yet',
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
         AppSpacing.verticalSpaceMD,
         Text(

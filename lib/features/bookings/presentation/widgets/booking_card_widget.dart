@@ -32,7 +32,9 @@ class BookingCardWidget extends StatelessWidget {
                   Expanded(
                     child: Text(
                       booking.club.name,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                   _StatusChip(status: booking.status),
@@ -41,7 +43,9 @@ class BookingCardWidget extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 booking.facility.name,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
               const SizedBox(height: 8),
               Row(
@@ -54,7 +58,9 @@ class BookingCardWidget extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     '${_formatDateTime(booking.startTime)} - ${_formatTime(booking.endTime)}',
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -62,7 +68,9 @@ class BookingCardWidget extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   booking.notes!,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

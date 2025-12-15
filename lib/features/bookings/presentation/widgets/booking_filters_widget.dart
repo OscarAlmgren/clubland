@@ -24,7 +24,9 @@ class BookingFiltersWidget extends StatelessWidget {
         children: [
           Text(
             'Filter by Status',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           const SizedBox(height: 12),
           Wrap(

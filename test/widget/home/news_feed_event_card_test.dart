@@ -9,7 +9,7 @@ void main() {
 
     setUp(() {
       testEvent = EventEntity(
-        id: 'event_1',
+        id: '1',
         clubId: 'club_1',
         title: 'Wine Tasting Evening',
         description: 'An exclusive wine tasting event',
@@ -79,7 +79,7 @@ void main() {
       WidgetTester tester,
     ) async {
       final fullEvent = EventEntity(
-        id: 'event_1',
+        id: '1',
         clubId: 'club_1',
         title: 'Full Event',
         description: 'This event is full',
@@ -116,7 +116,7 @@ void main() {
       WidgetTester tester,
     ) async {
       final exclusiveEvent = EventEntity(
-        id: 'event_1',
+        id: '1',
         clubId: 'club_1',
         title: 'Exclusive Event',
         description: 'Full house exclusive event',
@@ -150,7 +150,7 @@ void main() {
       WidgetTester tester,
     ) async {
       final guestEvent = EventEntity(
-        id: 'event_1',
+        id: '1',
         clubId: 'club_1',
         title: 'Family Event',
         description: 'Guests welcome',

@@ -131,10 +131,16 @@ class EventDetailsPage extends ConsumerWidget {
                 'About this event',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 12),
-              Text(event.description, style: theme.textTheme.bodyLarge),
+              Text(
+                event.description,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
               const SizedBox(height: 24),
             ],
 
@@ -144,6 +150,7 @@ class EventDetailsPage extends ConsumerWidget {
                 'Capacity',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 12),
@@ -172,6 +179,7 @@ class EventDetailsPage extends ConsumerWidget {
                 'Tags',
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 12),
@@ -303,6 +311,7 @@ class EventDetailsPage extends ConsumerWidget {
           'Event Information',
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 12),
@@ -749,6 +758,7 @@ class _InfoRow extends StatelessWidget {
                 value,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w500,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ],

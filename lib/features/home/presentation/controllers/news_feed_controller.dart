@@ -39,7 +39,7 @@ class NewsFeedController extends _$NewsFeedController {
       // Upcoming event - user is attending
       NewsFeedItemEntity.event(
         event: EventEntity(
-          id: 'event_1',
+          id: '1',
           clubId: 'club_1',
           title: 'Wine Tasting Evening',
           description:
@@ -110,7 +110,7 @@ class NewsFeedController extends _$NewsFeedController {
       // Full house exclusive event - not attending yet
       NewsFeedItemEntity.event(
         event: EventEntity(
-          id: 'event_2',
+          id: '2',
           clubId: 'club_1',
           title: 'Annual Gala Dinner',
           description:
@@ -152,7 +152,7 @@ class NewsFeedController extends _$NewsFeedController {
       // Fully booked event
       NewsFeedItemEntity.event(
         event: EventEntity(
-          id: 'event_3',
+          id: '3',
           clubId: 'club_1',
           title: 'Golf Tournament',
           description:
@@ -177,7 +177,7 @@ class NewsFeedController extends _$NewsFeedController {
       // Event with guests welcome
       NewsFeedItemEntity.event(
         event: EventEntity(
-          id: 'event_4',
+          id: '4',
           clubId: 'club_1',
           title: 'Family Brunch',
           description:

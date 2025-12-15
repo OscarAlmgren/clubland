@@ -191,7 +191,9 @@ class _EmptyClubsView extends StatelessWidget {
             AppSpacing.verticalSpaceLG,
             Text(
               'No Clubs Found',
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
             AppSpacing.verticalSpaceMD,
             Text(

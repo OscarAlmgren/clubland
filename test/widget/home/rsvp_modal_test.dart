@@ -9,7 +9,7 @@ void main() {
 
     setUp(() {
       testEvent = EventEntity(
-        id: 'event_1',
+        id: '1',
         clubId: 'club_1',
         title: 'Wine Tasting Evening',
         description: 'An exclusive wine tasting event',

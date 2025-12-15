@@ -193,7 +193,9 @@ class EventCard extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(
                       event.description,
-                      style: theme.textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
