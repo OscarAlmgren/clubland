@@ -43,7 +43,7 @@ dependencies:
 
   # Local Storage & Caching
   drift: ^2.20.3
-  sqlite3_flutter_libs: ^0.5.24
+  sqlite3_flutter_libs: ^0.5.40
   shared_preferences: ^2.2.2
 
   # Maps & Location
