@@ -28,12 +28,15 @@ void main() {
       final newsFeed = await container.read(newsFeedControllerProvider.future);
 
       // assert
-      final hasNewsPost =
-          newsFeed.any((item) => item.type == NewsFeedItemType.newsPost);
-      final hasEvent =
-          newsFeed.any((item) => item.type == NewsFeedItemType.event);
-      final hasLunchMenu =
-          newsFeed.any((item) => item.type == NewsFeedItemType.lunchMenu);
+      final hasNewsPost = newsFeed.any(
+        (item) => item.type == NewsFeedItemType.newsPost,
+      );
+      final hasEvent = newsFeed.any(
+        (item) => item.type == NewsFeedItemType.event,
+      );
+      final hasLunchMenu = newsFeed.any(
+        (item) => item.type == NewsFeedItemType.lunchMenu,
+      );
 
       expect(hasNewsPost, true, reason: 'Should contain news posts');
       expect(hasEvent, true, reason: 'Should contain events');
@@ -71,8 +74,9 @@ void main() {
 
       // act
       final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final eventItems =
-          newsFeed.where((item) => item.type == NewsFeedItemType.event).toList();
+      final eventItems = newsFeed
+          .where((item) => item.type == NewsFeedItemType.event)
+          .toList();
 
       // assert
       expect(eventItems.isNotEmpty, true);
@@ -126,10 +130,12 @@ void main() {
           .toList();
 
       // assert
-      final hasMembersOnly =
-          events.any((e) => e.guestPolicy == GuestPolicy.membersOnly);
-      final hasFriendsAndFamily =
-          events.any((e) => e.guestPolicy == GuestPolicy.friendsAndFamily);
+      final hasMembersOnly = events.any(
+        (e) => e.guestPolicy == GuestPolicy.membersOnly,
+      );
+      final hasFriendsAndFamily = events.any(
+        (e) => e.guestPolicy == GuestPolicy.friendsAndFamily,
+      );
 
       expect(hasMembersOnly, true);
       expect(hasFriendsAndFamily, true);
@@ -162,18 +168,26 @@ void main() {
 
       // act
       final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final eventItems =
-          newsFeed.where((item) => item.type == NewsFeedItemType.event).toList();
+      final eventItems = newsFeed
+          .where((item) => item.type == NewsFeedItemType.event)
+          .toList();
 
       // assert
-      final hasConfirmedRSVP =
-          eventItems.any((item) => item.userRSVPStatus == 'confirmed');
+      final hasConfirmedRSVP = eventItems.any(
+        (item) => item.userRSVPStatus == 'confirmed',
+      );
       final hasNoRSVP = eventItems.any((item) => item.userRSVPStatus == null);
 
-      expect(hasConfirmedRSVP, true,
-          reason: 'Should have events user is attending');
-      expect(hasNoRSVP, true,
-          reason: 'Should have events user has not RSVP\'d to');
+      expect(
+        hasConfirmedRSVP,
+        true,
+        reason: 'Should have events user is attending',
+      );
+      expect(
+        hasNoRSVP,
+        true,
+        reason: "Should have events user has not RSVP'd to",
+      );
     });
 
     test('should refresh news feed', () async {
@@ -245,7 +259,9 @@ void main() {
 
       final initial = await container.read(newsFeedControllerProvider.future);
       final eventItems = initial
-          .where((item) => item.type == NewsFeedItemType.event && item.event != null)
+          .where(
+            (item) => item.type == NewsFeedItemType.event && item.event != null,
+          )
           .toList();
 
       expect(eventItems.length, greaterThan(1));
@@ -289,7 +305,9 @@ void main() {
           .toList();
 
       // assert
-      final hasPaidEvents = events.any((e) => (e.requiresPayment ?? false) && e.price != null);
+      final hasPaidEvents = events.any(
+        (e) => (e.requiresPayment ?? false) && e.price != null,
+      );
       final hasFreeEvents = events.any((e) => !(e.requiresPayment ?? false));
 
       expect(hasPaidEvents, true);
@@ -328,8 +346,11 @@ void main() {
 
       // assert - check for various event types
       final eventTypes = events.map((e) => e.eventType).toSet();
-      expect(eventTypes.length, greaterThan(1),
-          reason: 'Should have multiple event types');
+      expect(
+        eventTypes.length,
+        greaterThan(1),
+        reason: 'Should have multiple event types',
+      );
     });
   });
 }

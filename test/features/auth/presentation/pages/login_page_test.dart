@@ -33,8 +33,7 @@ void main() {
     email: TestConstants.testEmail,
     firstName: TestConstants.testFirstName,
     lastName: TestConstants.testLastName,
-    status: UserStatus.active,
-    createdAt: DateTime(2025, 1, 1),
+    createdAt: DateTime(2025),
   );
 
   final testSession = AuthSessionEntity(
@@ -47,26 +46,31 @@ void main() {
   );
 
   group('LoginPage Widget Tests -', () {
-    testWidgets('should display login form with all required fields',
-        (tester) async {
+    testWidgets('should display login form with all required fields', (
+      tester,
+    ) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // assert
       expect(find.text('Welcome to Clubland'), findsOneWidget);
-      expect(find.text('Sign in to access premium clubs worldwide'),
-          findsOneWidget);
+      expect(
+        find.text('Sign in to access premium clubs worldwide'),
+        findsOneWidget,
+      );
       expect(find.byType(TextFormField), findsNWidgets(2)); // Email & Password
       expect(find.text('Sign In'), findsOneWidget);
       expect(find.text('Forgot Password?'), findsOneWidget);
@@ -77,15 +81,17 @@ void main() {
 
     testWidgets('should validate email field when empty', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
@@ -100,15 +106,17 @@ void main() {
 
     testWidgets('should validate email format', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
@@ -124,22 +132,26 @@ void main() {
 
     testWidgets('should validate password field when empty', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter email but not password
       await tester.enterText(
-          find.byType(TextFormField).first, TestConstants.testEmail);
+        find.byType(TextFormField).first,
+        TestConstants.testEmail,
+      );
       await tester.tap(find.text('Sign In'));
       await tester.pumpAndSettle();
 
@@ -149,76 +161,95 @@ void main() {
 
     testWidgets('should validate password minimum length', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter email and short password
       await tester.enterText(
-          find.byType(TextFormField).first, TestConstants.testEmail);
+        find.byType(TextFormField).first,
+        TestConstants.testEmail,
+      );
       await tester.enterText(find.byType(TextFormField).at(1), '12345');
       await tester.tap(find.text('Sign In'));
       await tester.pumpAndSettle();
 
       // assert
-      expect(find.text('Password must be at least 6 characters'),
-          findsOneWidget);
+      expect(
+        find.text('Password must be at least 6 characters'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('should call login usecase when form is valid', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
-      when(() => mockLoginUsecase(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
+      when(
+        () => mockLoginUsecase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
           loginUsecaseProvider.overrideWithValue(mockLoginUsecase),
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter valid credentials
       await tester.enterText(
-          find.byType(TextFormField).first, TestConstants.testEmail);
+        find.byType(TextFormField).first,
+        TestConstants.testEmail,
+      );
       await tester.enterText(
-          find.byType(TextFormField).at(1), TestConstants.testPassword);
+        find.byType(TextFormField).at(1),
+        TestConstants.testPassword,
+      );
 
       // Tap sign in
       await tester.tap(find.text('Sign In'));
       await tester.pumpAndSettle();
 
       // assert
-      verify(() => mockLoginUsecase(
-            email: TestConstants.testEmail,
-            password: TestConstants.testPassword,
-          )).called(1);
+      verify(
+        () => mockLoginUsecase(
+          email: TestConstants.testEmail,
+          password: TestConstants.testPassword,
+        ),
+      ).called(1);
     });
 
     testWidgets('should show loading state during login', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
-      when(() => mockLoginUsecase(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer(
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
+      when(
+        () => mockLoginUsecase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer(
         (_) => Future.delayed(
           const Duration(milliseconds: 100),
           () => Right(testSession),
@@ -230,17 +261,22 @@ void main() {
         const LoginPage(),
         overrides: [
           loginUsecaseProvider.overrideWithValue(mockLoginUsecase),
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter valid credentials and tap sign in
       await tester.enterText(
-          find.byType(TextFormField).first, TestConstants.testEmail);
+        find.byType(TextFormField).first,
+        TestConstants.testEmail,
+      );
       await tester.enterText(
-          find.byType(TextFormField).at(1), TestConstants.testPassword);
+        find.byType(TextFormField).at(1),
+        TestConstants.testPassword,
+      );
       await tester.tap(find.text('Sign In'));
       await tester.pump();
 
@@ -250,83 +286,103 @@ void main() {
 
     testWidgets('should trim email before login', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
-      when(() => mockLoginUsecase(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
+      when(
+        () => mockLoginUsecase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
           loginUsecaseProvider.overrideWithValue(mockLoginUsecase),
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter email with spaces
       await tester.enterText(
-          find.byType(TextFormField).first, '  ${TestConstants.testEmail}  ');
+        find.byType(TextFormField).first,
+        '  ${TestConstants.testEmail}  ',
+      );
       await tester.enterText(
-          find.byType(TextFormField).at(1), TestConstants.testPassword);
+        find.byType(TextFormField).at(1),
+        TestConstants.testPassword,
+      );
       await tester.tap(find.text('Sign In'));
       await tester.pumpAndSettle();
 
       // assert - should call with trimmed email
-      verify(() => mockLoginUsecase(
-            email: TestConstants.testEmail,
-            password: TestConstants.testPassword,
-          )).called(1);
+      verify(
+        () => mockLoginUsecase(
+          email: TestConstants.testEmail,
+          password: TestConstants.testPassword,
+        ),
+      ).called(1);
     });
 
-    testWidgets('should call Hanko login when email is provided',
-        (tester) async {
+    testWidgets('should call Hanko login when email is provided', (
+      tester,
+    ) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
-      when(() => mockHankoLoginUsecase(email: any(named: 'email')))
-          .thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
+      when(
+        () => mockHankoLoginUsecase(email: any(named: 'email')),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
           hankoLoginUsecaseProvider.overrideWithValue(mockHankoLoginUsecase),
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter email
       await tester.enterText(
-          find.byType(TextFormField).first, TestConstants.testEmail);
+        find.byType(TextFormField).first,
+        TestConstants.testEmail,
+      );
 
       // Tap Hanko login
       await tester.tap(find.text('Continue with Hanko'));
       await tester.pumpAndSettle();
 
       // assert
-      verify(() => mockHankoLoginUsecase(email: TestConstants.testEmail))
-          .called(1);
+      verify(
+        () => mockHankoLoginUsecase(email: TestConstants.testEmail),
+      ).called(1);
     });
 
-    testWidgets('should show error when Hanko login without email',
-        (tester) async {
+    testWidgets('should show error when Hanko login without email', (
+      tester,
+    ) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
@@ -341,12 +397,15 @@ void main() {
 
     testWidgets('should disable sign in button when loading', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
-      when(() => mockLoginUsecase(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer(
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
+      when(
+        () => mockLoginUsecase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer(
         (_) => Future.delayed(
           const Duration(seconds: 1),
           () => Right(testSession),
@@ -358,17 +417,22 @@ void main() {
         const LoginPage(),
         overrides: [
           loginUsecaseProvider.overrideWithValue(mockLoginUsecase),
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter credentials and start login
       await tester.enterText(
-          find.byType(TextFormField).first, TestConstants.testEmail);
+        find.byType(TextFormField).first,
+        TestConstants.testEmail,
+      );
       await tester.enterText(
-          find.byType(TextFormField).at(1), TestConstants.testPassword);
+        find.byType(TextFormField).at(1),
+        TestConstants.testPassword,
+      );
       await tester.tap(find.text('Sign In'));
       await tester.pump();
 
@@ -384,29 +448,34 @@ void main() {
 
     testWidgets('should handle login failure gracefully', (tester) async {
       // arrange
-      when(() => mockGetCurrentUserUsecase())
-          .thenAnswer((_) async => const Right(null));
-      when(() => mockLoginUsecase(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
+      when(
+        () => mockGetCurrentUserUsecase(),
+      ).thenAnswer((_) async => const Right(null));
+      when(
+        () => mockLoginUsecase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
           loginUsecaseProvider.overrideWithValue(mockLoginUsecase),
-          getCurrentUserUsecaseProvider
-              .overrideWithValue(mockGetCurrentUserUsecase),
+          getCurrentUserUsecaseProvider.overrideWithValue(
+            mockGetCurrentUserUsecase,
+          ),
         ],
       );
       await tester.pumpAndSettle();
 
       // Enter credentials and login
       await tester.enterText(
-          find.byType(TextFormField).first, TestConstants.testEmail);
-      await tester.enterText(
-          find.byType(TextFormField).at(1), 'wrongpassword');
+        find.byType(TextFormField).first,
+        TestConstants.testEmail,
+      );
+      await tester.enterText(find.byType(TextFormField).at(1), 'wrongpassword');
       await tester.tap(find.text('Sign In'));
       await tester.pumpAndSettle();
 

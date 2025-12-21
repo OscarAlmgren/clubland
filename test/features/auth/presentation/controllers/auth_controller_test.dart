@@ -51,8 +51,7 @@ void main() {
     email: 'test@example.com',
     firstName: 'John',
     lastName: 'Doe',
-    status: UserStatus.active,
-    createdAt: DateTime(2025, 1, 1),
+    createdAt: DateTime(2025),
   );
 
   final testSession = AuthSessionEntity(
@@ -72,10 +71,12 @@ void main() {
         registerUsecaseProvider.overrideWithValue(mockRegisterUsecase),
         logoutUsecaseProvider.overrideWithValue(mockLogoutUsecase),
         refreshTokenUsecaseProvider.overrideWithValue(mockRefreshTokenUsecase),
-        biometricAuthUsecaseProvider
-            .overrideWithValue(mockBiometricAuthUsecase),
-        getCurrentUserUsecaseProvider
-            .overrideWithValue(mockGetCurrentUserUsecase),
+        biometricAuthUsecaseProvider.overrideWithValue(
+          mockBiometricAuthUsecase,
+        ),
+        getCurrentUserUsecaseProvider.overrideWithValue(
+          mockGetCurrentUserUsecase,
+        ),
       ],
     );
   }
@@ -84,8 +85,9 @@ void main() {
     group('build (initialization)', () {
       test('should start with loading state', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
 
         final container = makeProviderContainer();
 
@@ -101,8 +103,9 @@ void main() {
 
       test('should load stored user on initialization', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(testUser));
 
         final container = makeProviderContainer();
 
@@ -120,8 +123,9 @@ void main() {
 
       test('should handle no stored user gracefully', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
 
         final container = makeProviderContainer();
 
@@ -138,8 +142,9 @@ void main() {
 
       test('should handle storage failure gracefully', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Left(StorageFailure.readError()));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Left(StorageFailure.readError()));
 
         final container = makeProviderContainer();
 
@@ -159,12 +164,15 @@ void main() {
     group('login', () {
       test('should update state to loading during login', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockLoginUsecase(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            )).thenAnswer((_) async => Right(testSession));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockLoginUsecase(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => Right(testSession));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -187,12 +195,15 @@ void main() {
 
       test('should update state with user on successful login', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockLoginUsecase(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            )).thenAnswer((_) async => Right(testSession));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockLoginUsecase(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => Right(testSession));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -208,10 +219,12 @@ void main() {
         final state = container.read(authControllerProvider);
         expect(state.value, testUser);
         expect(state.value?.email, 'test@example.com');
-        verify(() => mockLoginUsecase(
-              email: 'test@example.com',
-              password: 'Password123!',
-            )).called(1);
+        verify(
+          () => mockLoginUsecase(
+            email: 'test@example.com',
+            password: 'Password123!',
+          ),
+        ).called(1);
 
         // cleanup
         container.dispose();
@@ -219,12 +232,15 @@ void main() {
 
       test('should update state to error on login failure', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockLoginUsecase(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            )).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockLoginUsecase(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -247,12 +263,15 @@ void main() {
 
       test('should handle exceptions during login', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockLoginUsecase(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            )).thenThrow(Exception('Network error'));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockLoginUsecase(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(Exception('Network error'));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -277,10 +296,12 @@ void main() {
     group('loginWithHanko', () {
       test('should update state with user on successful Hanko login', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockHankoLoginUsecase(email: any(named: 'email')))
-            .thenAnswer((_) async => Right(testSession));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockHankoLoginUsecase(email: any(named: 'email')),
+        ).thenAnswer((_) async => Right(testSession));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -292,8 +313,9 @@ void main() {
         // assert
         final state = container.read(authControllerProvider);
         expect(state.value, testUser);
-        verify(() => mockHankoLoginUsecase(email: 'test@example.com'))
-            .called(1);
+        verify(
+          () => mockHankoLoginUsecase(email: 'test@example.com'),
+        ).called(1);
 
         // cleanup
         container.dispose();
@@ -301,10 +323,12 @@ void main() {
 
       test('should update state to error on Hanko login failure', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockHankoLoginUsecase(email: any(named: 'email')))
-            .thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockHankoLoginUsecase(email: any(named: 'email')),
+        ).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -325,12 +349,15 @@ void main() {
     group('completeHankoAuth', () {
       test('should update state with user on successful completion', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockHankoLoginUsecase.completeAuth(
-              sessionId: any(named: 'sessionId'),
-              credential: any(named: 'credential'),
-            )).thenAnswer((_) async => Right(testSession));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockHankoLoginUsecase.completeAuth(
+            sessionId: any(named: 'sessionId'),
+            credential: any(named: 'credential'),
+          ),
+        ).thenAnswer((_) async => Right(testSession));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -352,63 +379,70 @@ void main() {
     });
 
     group('register', () {
-      test('should update state with user on successful registration',
-          () async {
-        // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockRegisterUsecase(
+      test(
+        'should update state with user on successful registration',
+        () async {
+          // arrange
+          when(
+            () => mockGetCurrentUserUsecase(),
+          ).thenAnswer((_) async => const Right(null));
+          when(
+            () => mockRegisterUsecase(
               email: any(named: 'email'),
               password: any(named: 'password'),
               confirmPassword: any(named: 'confirmPassword'),
               firstName: any(named: 'firstName'),
               lastName: any(named: 'lastName'),
               clubId: any(named: 'clubId'),
-            )).thenAnswer((_) async => Right(testSession));
+            ),
+          ).thenAnswer((_) async => Right(testSession));
 
-        final container = makeProviderContainer();
-        await container.read(authControllerProvider.future);
+          final container = makeProviderContainer();
+          await container.read(authControllerProvider.future);
 
-        // act
-        final controller = container.read(authControllerProvider.notifier);
-        await controller.register(
-          email: 'test@example.com',
-          password: 'Password123!',
-          confirmPassword: 'Password123!',
-          firstName: 'John',
-          lastName: 'Doe',
-        );
+          // act
+          final controller = container.read(authControllerProvider.notifier);
+          await controller.register(
+            email: 'test@example.com',
+            password: 'Password123!',
+            confirmPassword: 'Password123!',
+            firstName: 'John',
+            lastName: 'Doe',
+          );
 
-        // assert
-        final state = container.read(authControllerProvider);
-        expect(state.value, testUser);
-        verify(() => mockRegisterUsecase(
+          // assert
+          final state = container.read(authControllerProvider);
+          expect(state.value, testUser);
+          verify(
+            () => mockRegisterUsecase(
               email: 'test@example.com',
               password: 'Password123!',
               confirmPassword: 'Password123!',
               firstName: 'John',
               lastName: 'Doe',
-              clubId: null,
-            )).called(1);
+            ),
+          ).called(1);
 
-        // cleanup
-        container.dispose();
-      });
+          // cleanup
+          container.dispose();
+        },
+      );
 
       test('should update state to error on registration failure', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockRegisterUsecase(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-              confirmPassword: any(named: 'confirmPassword'),
-              firstName: any(named: 'firstName'),
-              lastName: any(named: 'lastName'),
-              clubId: any(named: 'clubId'),
-            )).thenAnswer(
-          (_) async => Left(ValidationFailure.invalidEmail()),
-        );
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockRegisterUsecase(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+            confirmPassword: any(named: 'confirmPassword'),
+            firstName: any(named: 'firstName'),
+            lastName: any(named: 'lastName'),
+            clubId: any(named: 'clubId'),
+          ),
+        ).thenAnswer((_) async => Left(ValidationFailure.invalidEmail()));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -436,10 +470,12 @@ void main() {
     group('logout', () {
       test('should clear state on successful logout', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
-        when(() => mockLogoutUsecase())
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(testUser));
+        when(
+          () => mockLogoutUsecase(),
+        ).thenAnswer((_) async => const Right(true));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -462,10 +498,12 @@ void main() {
 
       test('should clear state even if logout fails', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
-        when(() => mockLogoutUsecase())
-            .thenAnswer((_) async => Left(NetworkFailure.noConnection()));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(testUser));
+        when(
+          () => mockLogoutUsecase(),
+        ).thenAnswer((_) async => Left(NetworkFailure.noConnection()));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -484,8 +522,9 @@ void main() {
 
       test('should clear state even if logout throws exception', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(testUser));
         when(() => mockLogoutUsecase()).thenThrow(Exception('Logout error'));
 
         final container = makeProviderContainer();
@@ -507,8 +546,9 @@ void main() {
     group('updateProfile', () {
       test('should update user profile when user is authenticated', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(testUser));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -533,8 +573,9 @@ void main() {
 
       test('should do nothing when user is not authenticated', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -560,10 +601,12 @@ void main() {
     group('authenticateWithBiometrics', () {
       test('should call biometric usecase on authentication', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockBiometricAuthUsecase.authenticate())
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockBiometricAuthUsecase.authenticate(),
+        ).thenAnswer((_) async => const Right(true));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -581,10 +624,12 @@ void main() {
 
       test('should handle biometric authentication failure', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockBiometricAuthUsecase.authenticate())
-            .thenAnswer((_) async => Left(AuthFailure.biometricFailed()));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockBiometricAuthUsecase.authenticate(),
+        ).thenAnswer((_) async => Left(AuthFailure.biometricFailed()));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -604,10 +649,12 @@ void main() {
     group('setBiometricAuth', () {
       test('should call usecase to enable biometric auth', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockBiometricAuthUsecase.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockBiometricAuthUsecase.setBiometricAuth(enabled: true),
+        ).thenAnswer((_) async => const Right(true));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -617,8 +664,9 @@ void main() {
         await controller.setBiometricAuth(enabled: true);
 
         // assert
-        verify(() => mockBiometricAuthUsecase.setBiometricAuth(enabled: true))
-            .called(1);
+        verify(
+          () => mockBiometricAuthUsecase.setBiometricAuth(enabled: true),
+        ).called(1);
 
         // cleanup
         container.dispose();
@@ -626,10 +674,12 @@ void main() {
 
       test('should call usecase to disable biometric auth', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
-        when(() => mockBiometricAuthUsecase.setBiometricAuth(enabled: false))
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
+        when(
+          () => mockBiometricAuthUsecase.setBiometricAuth(enabled: false),
+        ).thenAnswer((_) async => const Right(true));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -639,8 +689,9 @@ void main() {
         await controller.setBiometricAuth(enabled: false);
 
         // assert
-        verify(() => mockBiometricAuthUsecase.setBiometricAuth(enabled: false))
-            .called(1);
+        verify(
+          () => mockBiometricAuthUsecase.setBiometricAuth(enabled: false),
+        ).called(1);
 
         // cleanup
         container.dispose();
@@ -650,8 +701,9 @@ void main() {
     group('helper methods', () {
       test('isAuthenticated should return true when user exists', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(testUser));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -668,8 +720,9 @@ void main() {
 
       test('isAuthenticated should return false when user is null', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => const Right(null));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -687,8 +740,9 @@ void main() {
       test('hasRole should return true when user has role', () async {
         // arrange
         final userWithRole = testUser.copyWith(roles: ['admin', 'member']);
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(userWithRole));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(userWithRole));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -705,33 +759,38 @@ void main() {
         container.dispose();
       });
 
-      test('hasPermission should return true when user has permission',
-          () async {
-        // arrange
-        final userWithPermission =
-            testUser.copyWith(permissions: ['read', 'write']);
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(userWithPermission));
+      test(
+        'hasPermission should return true when user has permission',
+        () async {
+          // arrange
+          final userWithPermission = testUser.copyWith(
+            permissions: ['read', 'write'],
+          );
+          when(
+            () => mockGetCurrentUserUsecase(),
+          ).thenAnswer((_) async => Right(userWithPermission));
 
-        final container = makeProviderContainer();
-        await container.read(authControllerProvider.future);
+          final container = makeProviderContainer();
+          await container.read(authControllerProvider.future);
 
-        // act
-        final controller = container.read(authControllerProvider.notifier);
+          // act
+          final controller = container.read(authControllerProvider.notifier);
 
-        // assert
-        expect(controller.hasPermission('read'), true);
-        expect(controller.hasPermission('write'), true);
-        expect(controller.hasPermission('delete'), false);
+          // assert
+          expect(controller.hasPermission('read'), true);
+          expect(controller.hasPermission('write'), true);
+          expect(controller.hasPermission('delete'), false);
 
-        // cleanup
-        container.dispose();
-      });
+          // cleanup
+          container.dispose();
+        },
+      );
 
       test('currentUser should return current user', () async {
         // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
+        when(
+          () => mockGetCurrentUserUsecase(),
+        ).thenAnswer((_) async => Right(testUser));
 
         final container = makeProviderContainer();
         await container.read(authControllerProvider.future);
@@ -748,62 +807,71 @@ void main() {
     });
 
     group('derived providers', () {
-      test('currentUserProvider should return user from auth controller',
-          () async {
-        // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
+      test(
+        'currentUserProvider should return user from auth controller',
+        () async {
+          // arrange
+          when(
+            () => mockGetCurrentUserUsecase(),
+          ).thenAnswer((_) async => Right(testUser));
 
-        final container = makeProviderContainer();
-        await container.read(authControllerProvider.future);
+          final container = makeProviderContainer();
+          await container.read(authControllerProvider.future);
 
-        // act
-        final user = container.read(currentUserProvider);
+          // act
+          final user = container.read(currentUserProvider);
 
-        // assert
-        expect(user, testUser);
+          // assert
+          expect(user, testUser);
 
-        // cleanup
-        container.dispose();
-      });
+          // cleanup
+          container.dispose();
+        },
+      );
 
-      test('isAuthenticatedProvider should return true when user exists',
-          () async {
-        // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => Right(testUser));
+      test(
+        'isAuthenticatedProvider should return true when user exists',
+        () async {
+          // arrange
+          when(
+            () => mockGetCurrentUserUsecase(),
+          ).thenAnswer((_) async => Right(testUser));
 
-        final container = makeProviderContainer();
-        await container.read(authControllerProvider.future);
+          final container = makeProviderContainer();
+          await container.read(authControllerProvider.future);
 
-        // act
-        final isAuth = container.read(isAuthenticatedProvider);
+          // act
+          final isAuth = container.read(isAuthenticatedProvider);
 
-        // assert
-        expect(isAuth, true);
+          // assert
+          expect(isAuth, true);
 
-        // cleanup
-        container.dispose();
-      });
+          // cleanup
+          container.dispose();
+        },
+      );
 
-      test('isAuthenticatedProvider should return false when user is null',
-          () async {
-        // arrange
-        when(() => mockGetCurrentUserUsecase())
-            .thenAnswer((_) async => const Right(null));
+      test(
+        'isAuthenticatedProvider should return false when user is null',
+        () async {
+          // arrange
+          when(
+            () => mockGetCurrentUserUsecase(),
+          ).thenAnswer((_) async => const Right(null));
 
-        final container = makeProviderContainer();
-        await container.read(authControllerProvider.future);
+          final container = makeProviderContainer();
+          await container.read(authControllerProvider.future);
 
-        // act
-        final isAuth = container.read(isAuthenticatedProvider);
+          // act
+          final isAuth = container.read(isAuthenticatedProvider);
 
-        // assert
-        expect(isAuth, false);
+          // assert
+          expect(isAuth, false);
 
-        // cleanup
-        container.dispose();
-      });
+          // cleanup
+          container.dispose();
+        },
+      );
     });
   });
 }

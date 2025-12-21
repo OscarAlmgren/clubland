@@ -22,8 +22,7 @@ void main() {
     email: 'test@example.com',
     firstName: 'John',
     lastName: 'Doe',
-    status: UserStatus.active,
-    createdAt: DateTime(2025, 1, 1),
+    createdAt: DateTime(2025),
   );
 
   final testSession = AuthSessionEntity(
@@ -44,30 +43,33 @@ void main() {
 
     test('should trim and lowercase email before calling repository', () async {
       // arrange
-      when(() => mockRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
-      await usecase(
-        email: ' Test@Example.COM ',
-        password: 'Password123!',
-      );
+      await usecase(email: ' Test@Example.COM ', password: 'Password123!');
 
       // assert
-      verify(() => mockRepository.login(
-            email: 'test@example.com',
-            password: 'Password123!',
-          )).called(1);
+      verify(
+        () => mockRepository.login(
+          email: 'test@example.com',
+          password: 'Password123!',
+        ),
+      ).called(1);
     });
 
     test('should return AuthSessionEntity when login succeeds', () async {
       // arrange
-      when(() => mockRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       final result = await usecase(
@@ -77,129 +79,121 @@ void main() {
 
       // assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (session) {
-          expect(session.user.email, 'test@example.com');
-          expect(session.accessToken, 'test_access_token');
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (session) {
+        expect(session.user.email, 'test@example.com');
+        expect(session.accessToken, 'test_access_token');
+      });
     });
 
     test('should return ValidationFailure when email is empty', () async {
       // act
-      final result = await usecase(
-        email: '',
-        password: 'Password123!',
-      );
+      final result = await usecase(email: '', password: 'Password123!');
 
       // assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.code, 'INVALID_EMAIL');
-        },
-        (_) => fail('Should return Left'),
+      result.fold((failure) {
+        expect(failure, isA<ValidationFailure>());
+        expect(failure.code, 'INVALID_EMAIL');
+      }, (_) => fail('Should return Left'));
+      verifyNever(
+        () => mockRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
       );
-      verifyNever(() => mockRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ));
     });
 
-    test('should return ValidationFailure when email format is invalid',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'invalid-email',
-        password: 'Password123!',
-      );
+    test(
+      'should return ValidationFailure when email format is invalid',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'invalid-email',
+          password: 'Password123!',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'INVALID_EMAIL');
-        },
-        (_) => fail('Should return Left'),
-      );
-      verifyNever(() => mockRepository.login(
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockRepository.login(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          ));
-    });
+          ),
+        );
+      },
+    );
 
     test('should return ValidationFailure when password is empty', () async {
       // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: '',
-      );
+      final result = await usecase(email: 'test@example.com', password: '');
 
       // assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.code, 'FIELD_REQUIRED');
-        },
-        (_) => fail('Should return Left'),
+      result.fold((failure) {
+        expect(failure, isA<ValidationFailure>());
+        expect(failure.code, 'FIELD_REQUIRED');
+      }, (_) => fail('Should return Left'));
+      verifyNever(
+        () => mockRepository.login(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
       );
-      verifyNever(() => mockRepository.login(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ));
     });
 
-    test('should return ValidationFailure when password is too short',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'Pass1!',
-      );
+    test(
+      'should return ValidationFailure when password is too short',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'Pass1!',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'WEAK_PASSWORD');
-        },
-        (_) => fail('Should return Left'),
-      );
-      verifyNever(() => mockRepository.login(
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockRepository.login(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          ));
-    });
+          ),
+        );
+      },
+    );
 
-    test('should return AuthFailure from repository when credentials are invalid',
-        () async {
-      // arrange
-      when(() => mockRepository.login(
+    test(
+      'should return AuthFailure from repository when credentials are invalid',
+      () async {
+        // arrange
+        when(
+          () => mockRepository.login(
             email: any(named: 'email'),
             password: any(named: 'password'),
-          )).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
+          ),
+        ).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
 
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'WrongPassword123!',
-      );
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'WrongPassword123!',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<AuthFailure>());
           expect(failure.code, 'INVALID_CREDENTIALS');
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
   });
 
   group('HankoLoginUsecase -', () {
@@ -211,36 +205,33 @@ void main() {
 
     test('should trim and lowercase email before calling repository', () async {
       // arrange
-      when(() => mockRepository.loginWithHanko(
-            email: any(named: 'email'),
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockRepository.loginWithHanko(email: any(named: 'email')),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       await usecase(email: ' Test@Example.COM ');
 
       // assert
-      verify(() => mockRepository.loginWithHanko(
-            email: 'test@example.com',
-          )).called(1);
+      verify(
+        () => mockRepository.loginWithHanko(email: 'test@example.com'),
+      ).called(1);
     });
 
     test('should return AuthSessionEntity when Hanko login succeeds', () async {
       // arrange
-      when(() => mockRepository.loginWithHanko(
-            email: any(named: 'email'),
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockRepository.loginWithHanko(email: any(named: 'email')),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       final result = await usecase(email: 'test@example.com');
 
       // assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (session) {
-          expect(session.user.email, 'test@example.com');
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (session) {
+        expect(session.user.email, 'test@example.com');
+      });
     });
 
     test('should return ValidationFailure when email is empty', () async {
@@ -249,59 +240,58 @@ void main() {
 
       // assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.code, 'INVALID_EMAIL');
-        },
-        (_) => fail('Should return Left'),
-      );
-      verifyNever(() => mockRepository.loginWithHanko(
-            email: any(named: 'email'),
-          ));
-    });
-
-    test('should return ValidationFailure when email format is invalid',
-        () async {
-      // act
-      final result = await usecase(email: 'invalid-email');
-
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.code, 'INVALID_EMAIL');
-        },
-        (_) => fail('Should return Left'),
+      result.fold((failure) {
+        expect(failure, isA<ValidationFailure>());
+        expect(failure.code, 'INVALID_EMAIL');
+      }, (_) => fail('Should return Left'));
+      verifyNever(
+        () => mockRepository.loginWithHanko(email: any(named: 'email')),
       );
     });
 
-    group('completeAuth', () {
-      test('should return AuthSessionEntity when completion succeeds',
-          () async {
-        // arrange
-        when(() => mockRepository.completeHankoAuth(
-              sessionId: 'session123',
-              credential: 'credential',
-            )).thenAnswer((_) async => Right(testSession));
-
+    test(
+      'should return ValidationFailure when email format is invalid',
+      () async {
         // act
-        final result = await usecase.completeAuth(
-          sessionId: 'session123',
-          credential: 'credential',
-        );
+        final result = await usecase(email: 'invalid-email');
 
         // assert
-        expect(result.isRight(), true);
-        result.fold(
-          (failure) => fail('Should return Right'),
-          (session) => expect(session.accessToken, 'test_access_token'),
-        );
-      });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'INVALID_EMAIL');
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-      test('should return ValidationFailure when sessionId is empty',
-          () async {
+    group('completeAuth', () {
+      test(
+        'should return AuthSessionEntity when completion succeeds',
+        () async {
+          // arrange
+          when(
+            () => mockRepository.completeHankoAuth(
+              sessionId: 'session123',
+              credential: 'credential',
+            ),
+          ).thenAnswer((_) async => Right(testSession));
+
+          // act
+          final result = await usecase.completeAuth(
+            sessionId: 'session123',
+            credential: 'credential',
+          );
+
+          // assert
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return Right'),
+            (session) => expect(session.accessToken, 'test_access_token'),
+          );
+        },
+      );
+
+      test('should return ValidationFailure when sessionId is empty', () async {
         // act
         final result = await usecase.completeAuth(
           sessionId: '',
@@ -310,33 +300,29 @@ void main() {
 
         // assert
         expect(result.isLeft(), true);
-        result.fold(
-          (failure) {
-            expect(failure, isA<ValidationFailure>());
-            expect(failure.code, 'FIELD_REQUIRED');
-          },
-          (_) => fail('Should return Left'),
-        );
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'FIELD_REQUIRED');
+        }, (_) => fail('Should return Left'));
       });
 
-      test('should return ValidationFailure when credential is empty',
-          () async {
-        // act
-        final result = await usecase.completeAuth(
-          sessionId: 'session123',
-          credential: '',
-        );
+      test(
+        'should return ValidationFailure when credential is empty',
+        () async {
+          // act
+          final result = await usecase.completeAuth(
+            sessionId: 'session123',
+            credential: '',
+          );
 
-        // assert
-        expect(result.isLeft(), true);
-        result.fold(
-          (failure) {
+          // assert
+          expect(result.isLeft(), true);
+          result.fold((failure) {
             expect(failure, isA<ValidationFailure>());
             expect(failure.code, 'FIELD_REQUIRED');
-          },
-          (_) => fail('Should return Left'),
-        );
-      });
+          }, (_) => fail('Should return Left'));
+        },
+      );
     });
   });
 
@@ -349,16 +335,18 @@ void main() {
 
     test('should trim and lowercase email before calling repository', () async {
       // arrange
-      when(() => mockRepository.checkEmailAvailability(
-            email: any(named: 'email'),
-          )).thenAnswer((_) async => const Right(true));
-      when(() => mockRepository.register(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-            firstName: any(named: 'firstName'),
-            lastName: any(named: 'lastName'),
-            clubId: any(named: 'clubId'),
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockRepository.checkEmailAvailability(email: any(named: 'email')),
+      ).thenAnswer((_) async => const Right(true));
+      when(
+        () => mockRepository.register(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          firstName: any(named: 'firstName'),
+          lastName: any(named: 'lastName'),
+          clubId: any(named: 'clubId'),
+        ),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       await usecase(
@@ -370,47 +358,50 @@ void main() {
       );
 
       // assert
-      verify(() => mockRepository.register(
-            email: 'test@example.com',
-            password: 'Password123!',
-            firstName: 'John',
-            lastName: 'Doe',
-            clubId: null,
-          )).called(1);
+      verify(
+        () => mockRepository.register(
+          email: 'test@example.com',
+          password: 'Password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        ),
+      ).called(1);
     });
 
-    test('should return AuthSessionEntity when registration succeeds',
-        () async {
-      // arrange
-      when(() => mockRepository.checkEmailAvailability(
-            email: any(named: 'email'),
-          )).thenAnswer((_) async => const Right(true));
-      when(() => mockRepository.register(
+    test(
+      'should return AuthSessionEntity when registration succeeds',
+      () async {
+        // arrange
+        when(
+          () =>
+              mockRepository.checkEmailAvailability(email: any(named: 'email')),
+        ).thenAnswer((_) async => const Right(true));
+        when(
+          () => mockRepository.register(
             email: any(named: 'email'),
             password: any(named: 'password'),
             firstName: any(named: 'firstName'),
             lastName: any(named: 'lastName'),
             clubId: any(named: 'clubId'),
-          )).thenAnswer((_) async => Right(testSession));
+          ),
+        ).thenAnswer((_) async => Right(testSession));
 
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (session) {
+        // assert
+        expect(result.isRight(), true);
+        result.fold((failure) => fail('Should return Right'), (session) {
           expect(session.user.email, 'test@example.com');
-        },
-      );
-    });
+        });
+      },
+    );
 
     test('should return ValidationFailure when email is empty', () async {
       // act
@@ -424,169 +415,159 @@ void main() {
 
       // assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.code, 'FIELD_REQUIRED');
-        },
-        (_) => fail('Should return Left'),
-      );
+      result.fold((failure) {
+        expect(failure, isA<ValidationFailure>());
+        expect(failure.code, 'FIELD_REQUIRED');
+      }, (_) => fail('Should return Left'));
     });
 
-    test('should return ValidationFailure when email format is invalid',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'invalid-email',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when email format is invalid',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'invalid-email',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'INVALID_EMAIL');
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when password is too short',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'Pass1!',
-        confirmPassword: 'Pass1!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when password is too short',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'Pass1!',
+          confirmPassword: 'Pass1!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'WEAK_PASSWORD');
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when password missing uppercase',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'password123!',
-        confirmPassword: 'password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when password missing uppercase',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'password123!',
+          confirmPassword: 'password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'WEAK_PASSWORD');
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when password missing lowercase',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'PASSWORD123!',
-        confirmPassword: 'PASSWORD123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when password missing lowercase',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'PASSWORD123!',
+          confirmPassword: 'PASSWORD123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'WEAK_PASSWORD');
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when password missing number',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'Password!',
-        confirmPassword: 'Password!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when password missing number',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'Password!',
+          confirmPassword: 'Password!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'WEAK_PASSWORD');
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when password missing special character',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'Password123',
-        confirmPassword: 'Password123',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when password missing special character',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'Password123',
+          confirmPassword: 'Password123',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'WEAK_PASSWORD');
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when passwords do not match',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'Password123!',
-        confirmPassword: 'DifferentPassword123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when passwords do not match',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'Password123!',
+          confirmPassword: 'DifferentPassword123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'INVALID_INPUT');
           expect(failure.message, contains('Passwords do not match'));
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
     test('should return ValidationFailure when firstName is empty', () async {
       // act
@@ -600,71 +581,69 @@ void main() {
 
       // assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.code, 'FIELD_REQUIRED');
-        },
-        (_) => fail('Should return Left'),
-      );
+      result.fold((failure) {
+        expect(failure, isA<ValidationFailure>());
+        expect(failure.code, 'FIELD_REQUIRED');
+      }, (_) => fail('Should return Left'));
     });
 
-    test('should return ValidationFailure when firstName is too short',
-        () async {
-      // act
-      final result = await usecase(
-        email: 'test@example.com',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'J',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when firstName is too short',
+      () async {
+        // act
+        final result = await usecase(
+          email: 'test@example.com',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'J',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'INVALID_INPUT');
           expect(failure.message, contains('at least 2 characters'));
-        },
-        (_) => fail('Should return Left'),
-      );
-    });
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when email is not available',
-        () async {
-      // arrange
-      when(() => mockRepository.checkEmailAvailability(
-            email: any(named: 'email'),
-          )).thenAnswer((_) async => const Right(false));
+    test(
+      'should return ValidationFailure when email is not available',
+      () async {
+        // arrange
+        when(
+          () =>
+              mockRepository.checkEmailAvailability(email: any(named: 'email')),
+        ).thenAnswer((_) async => const Right(false));
 
-      // act
-      final result = await usecase(
-        email: 'taken@example.com',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+        // act
+        final result = await usecase(
+          email: 'taken@example.com',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.message, contains('already taken'));
-        },
-        (_) => fail('Should return Left'),
-      );
-      verifyNever(() => mockRepository.register(
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockRepository.register(
             email: any(named: 'email'),
             password: any(named: 'password'),
             firstName: any(named: 'firstName'),
             lastName: any(named: 'lastName'),
             clubId: any(named: 'clubId'),
-          ));
-    });
+          ),
+        );
+      },
+    );
   });
 
   group('LogoutUsecase -', () {
@@ -676,8 +655,9 @@ void main() {
 
     test('should call repository logout method', () async {
       // arrange
-      when(() => mockRepository.logout())
-          .thenAnswer((_) async => const Right(true));
+      when(
+        () => mockRepository.logout(),
+      ).thenAnswer((_) async => const Right(true));
 
       // act
       final result = await usecase();
@@ -693,21 +673,19 @@ void main() {
 
     test('should return failure from repository', () async {
       // arrange
-      when(() => mockRepository.logout())
-          .thenAnswer((_) async => Left(AuthFailure.unexpected('Logout failed')));
+      when(
+        () => mockRepository.logout(),
+      ).thenAnswer((_) async => Left(AuthFailure.unexpected('Logout failed')));
 
       // act
       final result = await usecase();
 
       // assert
       expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
-          expect(failure, isA<AuthFailure>());
-          expect(failure.message, contains('Logout failed'));
-        },
-        (_) => fail('Should return Left'),
-      );
+      result.fold((failure) {
+        expect(failure, isA<AuthFailure>());
+        expect(failure.message, contains('Logout failed'));
+      }, (_) => fail('Should return Left'));
     });
   });
 
@@ -720,9 +698,9 @@ void main() {
 
     test('should return new session when token refresh succeeds', () async {
       // arrange
-      when(() => mockRepository.refreshToken(
-            refreshToken: 'test_refresh_token',
-          )).thenAnswer((_) async => Right(testSession));
+      when(
+        () => mockRepository.refreshToken(refreshToken: 'test_refresh_token'),
+      ).thenAnswer((_) async => Right(testSession));
 
       // act
       final result = await usecase(refreshToken: 'test_refresh_token');
@@ -735,24 +713,25 @@ void main() {
       );
     });
 
-    test('should return ValidationFailure when refreshToken is empty',
-        () async {
-      // act
-      final result = await usecase(refreshToken: '');
+    test(
+      'should return ValidationFailure when refreshToken is empty',
+      () async {
+        // act
+        final result = await usecase(refreshToken: '');
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<ValidationFailure>());
           expect(failure.code, 'FIELD_REQUIRED');
-        },
-        (_) => fail('Should return Left'),
-      );
-      verifyNever(() => mockRepository.refreshToken(
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockRepository.refreshToken(
             refreshToken: any(named: 'refreshToken'),
-          ));
-    });
+          ),
+        );
+      },
+    );
   });
 
   group('GetCurrentUserUsecase -', () {
@@ -764,21 +743,19 @@ void main() {
 
     test('should return current user when available', () async {
       // arrange
-      when(() => mockRepository.getCurrentUser())
-          .thenAnswer((_) async => Right(testUser));
+      when(
+        () => mockRepository.getCurrentUser(),
+      ).thenAnswer((_) async => Right(testUser));
 
       // act
       final result = await usecase();
 
       // assert
       expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (user) {
-          expect(user?.id, 'user123');
-          expect(user?.email, 'test@example.com');
-        },
-      );
+      result.fold((failure) => fail('Should return Right'), (user) {
+        expect(user?.id, 'user123');
+        expect(user?.email, 'test@example.com');
+      });
     });
   });
 
@@ -791,7 +768,9 @@ void main() {
 
     test('should return true when user is authenticated', () async {
       // arrange
-      when(() => mockRepository.isAuthenticated()).thenAnswer((_) async => true);
+      when(
+        () => mockRepository.isAuthenticated(),
+      ).thenAnswer((_) async => true);
 
       // act
       final result = await usecase();
@@ -802,8 +781,9 @@ void main() {
 
     test('should return false when user is not authenticated', () async {
       // arrange
-      when(() => mockRepository.isAuthenticated())
-          .thenAnswer((_) async => false);
+      when(
+        () => mockRepository.isAuthenticated(),
+      ).thenAnswer((_) async => false);
 
       // act
       final result = await usecase();
@@ -820,65 +800,74 @@ void main() {
       usecase = BiometricAuthUsecase(mockRepository);
     });
 
-    test('isAvailable should return true when biometrics are available',
-        () async {
-      // arrange
-      when(() => mockRepository.isBiometricAvailable())
-          .thenAnswer((_) async => true);
+    test(
+      'isAvailable should return true when biometrics are available',
+      () async {
+        // arrange
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
 
-      // act
-      final result = await usecase.isAvailable();
+        // act
+        final result = await usecase.isAvailable();
 
-      // assert
-      expect(result, true);
-    });
+        // assert
+        expect(result, true);
+      },
+    );
 
-    test('authenticate should return true when authentication succeeds',
-        () async {
-      // arrange
-      when(() => mockRepository.isBiometricAvailable())
-          .thenAnswer((_) async => true);
-      when(() => mockRepository.authenticateWithBiometrics())
-          .thenAnswer((_) async => const Right(true));
+    test(
+      'authenticate should return true when authentication succeeds',
+      () async {
+        // arrange
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => const Right(true));
 
-      // act
-      final result = await usecase.authenticate();
+        // act
+        final result = await usecase.authenticate();
 
-      // assert
-      expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (success) => expect(success, true),
-      );
-    });
+        // assert
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Should return Right'),
+          (success) => expect(success, true),
+        );
+      },
+    );
 
-    test('authenticate should return failure when biometrics not available',
-        () async {
-      // arrange
-      when(() => mockRepository.isBiometricAvailable())
-          .thenAnswer((_) async => false);
+    test(
+      'authenticate should return failure when biometrics not available',
+      () async {
+        // arrange
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => false);
 
-      // act
-      final result = await usecase.authenticate();
+        // act
+        final result = await usecase.authenticate();
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<AuthFailure>());
           expect(failure.code, 'BIOMETRIC_UNAVAILABLE');
-        },
-        (_) => fail('Should return Left'),
-      );
-      verifyNever(() => mockRepository.authenticateWithBiometrics());
-    });
+        }, (_) => fail('Should return Left'));
+        verifyNever(() => mockRepository.authenticateWithBiometrics());
+      },
+    );
 
     test('setBiometricAuth should enable biometrics when available', () async {
       // arrange
-      when(() => mockRepository.isBiometricAvailable())
-          .thenAnswer((_) async => true);
-      when(() => mockRepository.setBiometricAuth(enabled: true))
-          .thenAnswer((_) async => const Right(true));
+      when(
+        () => mockRepository.isBiometricAvailable(),
+      ).thenAnswer((_) async => true);
+      when(
+        () => mockRepository.setBiometricAuth(enabled: true),
+      ).thenAnswer((_) async => const Right(true));
 
       // act
       final result = await usecase.setBiometricAuth(enabled: true);
@@ -891,43 +880,48 @@ void main() {
       );
     });
 
-    test('setBiometricAuth should return failure when enabling but not available',
-        () async {
-      // arrange
-      when(() => mockRepository.isBiometricAvailable())
-          .thenAnswer((_) async => false);
+    test(
+      'setBiometricAuth should return failure when enabling but not available',
+      () async {
+        // arrange
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => false);
 
-      // act
-      final result = await usecase.setBiometricAuth(enabled: true);
+        // act
+        final result = await usecase.setBiometricAuth(enabled: true);
 
-      // assert
-      expect(result.isLeft(), true);
-      result.fold(
-        (failure) {
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
           expect(failure, isA<AuthFailure>());
           expect(failure.code, 'BIOMETRIC_UNAVAILABLE');
-        },
-        (_) => fail('Should return Left'),
-      );
-      verifyNever(() => mockRepository.setBiometricAuth(enabled: any(named: 'enabled')));
-    });
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockRepository.setBiometricAuth(enabled: any(named: 'enabled')),
+        );
+      },
+    );
 
-    test('setBiometricAuth should disable biometrics without checking availability',
-        () async {
-      // arrange
-      when(() => mockRepository.setBiometricAuth(enabled: false))
-          .thenAnswer((_) async => const Right(true));
+    test(
+      'setBiometricAuth should disable biometrics without checking availability',
+      () async {
+        // arrange
+        when(
+          () => mockRepository.setBiometricAuth(enabled: false),
+        ).thenAnswer((_) async => const Right(true));
 
-      // act
-      final result = await usecase.setBiometricAuth(enabled: false);
+        // act
+        final result = await usecase.setBiometricAuth(enabled: false);
 
-      // assert
-      expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (success) => expect(success, true),
-      );
-      verifyNever(() => mockRepository.isBiometricAvailable());
-    });
+        // assert
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Should return Right'),
+          (success) => expect(success, true),
+        );
+        verifyNever(() => mockRepository.isBiometricAvailable());
+      },
+    );
   });
 }
