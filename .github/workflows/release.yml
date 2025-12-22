@@ -14,7 +14,7 @@ jobs:
     name: Validate Release
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -51,7 +51,7 @@ jobs:
         target: [web, android]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Java (for Android)
         if: matrix.target == 'android'
@@ -105,7 +105,7 @@ jobs:
     needs: validate_release
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -159,7 +159,7 @@ jobs:
     environment: production
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download web artifacts
         uses: actions/download-artifact@v3
@@ -191,7 +191,7 @@ jobs:
     environment: production
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download Android artifacts
         uses: actions/download-artifact@v3
@@ -220,7 +220,7 @@ jobs:
     environment: production
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download iOS artifacts
         uses: actions/download-artifact@v3
@@ -249,7 +249,7 @@ jobs:
     needs: [deploy_web_production, deploy_android_production, deploy_ios_production]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
