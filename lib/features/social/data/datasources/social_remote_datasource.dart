@@ -85,11 +85,9 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
   ///
   /// [client] is required for GraphQL operations.
   /// If [logger] is not provided, it falls back to a default logger instance.
-  SocialRemoteDataSourceImpl({
-    required GraphQLClient client,
-    Logger? logger,
-  })  : _client = client,
-        _logger = logger ?? Logger();
+  SocialRemoteDataSourceImpl({required GraphQLClient client, Logger? logger})
+    : _client = client,
+      _logger = logger ?? Logger();
 
   final GraphQLClient _client;
   final Logger _logger;
@@ -106,15 +104,12 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       _logger.d('Fetching user activity for userId: $userId');
 
       final variables = <String, dynamic>{
-        if (userId != null) 'userId': userId,
+        'userId': ?userId,
         'filter': {
           if (type != null) 'type': type.name.toUpperCase(),
-          if (clubId != null) 'clubId': clubId,
+          'clubId': ?clubId,
         },
-        'pagination': {
-          if (limit != null) 'first': limit,
-          if (cursor != null) 'after': cursor,
-        },
+        'pagination': {'first': ?limit, 'after': ?cursor},
       };
 
       // TODO: Add userActivityQuery to GraphQLDocuments
@@ -202,10 +197,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
 
       final variables = <String, dynamic>{
         'clubId': clubId,
-        'pagination': {
-          if (limit != null) 'first': limit,
-          if (cursor != null) 'after': cursor,
-        },
+        'pagination': {'first': ?limit, 'after': ?cursor},
       };
 
       // TODO: Add clubReviewsQuery to GraphQLDocuments
@@ -290,8 +282,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         'input': {
           'clubId': clubId,
           'rating': rating,
-          if (comment != null) 'comment': comment,
-          if (aspects != null) 'aspects': aspects,
+          'comment': ?comment,
+          'aspects': ?aspects,
         },
       };
 
@@ -595,10 +587,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
 
       final variables = <String, dynamic>{
         'filter': {if (unreadOnly ?? false) 'read': false},
-        'pagination': {
-          if (limit != null) 'first': limit,
-          if (cursor != null) 'after': cursor,
-        },
+        'pagination': {'first': ?limit, 'after': ?cursor},
       };
 
       // Execute query with timeout
@@ -732,7 +721,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
         );
       }
 
-      final data = result.data?['markAllNotificationsRead'] as Map<String, dynamic>?;
+      final data =
+          result.data?['markAllNotificationsRead'] as Map<String, dynamic>?;
       if (data?['success'] == true) {
         final count = data?['count'] as int?;
         _logger.i('Successfully marked $count notifications as read');
@@ -790,18 +780,18 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
             },
           )
           .map((result) {
-        if (result.hasException) {
-          throw NetworkException('Subscription error: ${result.exception}');
-        }
-        final data = result.data?['notifications'];
-        if (data == null) {
-          throw const NetworkException(
-            'No notification data received',
-            'NO_DATA',
-          );
-        }
-        return NotificationModel.fromJson(data as Map<String, dynamic>);
-      });
+            if (result.hasException) {
+              throw NetworkException('Subscription error: ${result.exception}');
+            }
+            final data = result.data?['notifications'];
+            if (data == null) {
+              throw const NetworkException(
+                'No notification data received',
+                'NO_DATA',
+              );
+            }
+            return NotificationModel.fromJson(data as Map<String, dynamic>);
+          });
     } on Exception catch (e) {
       _logger.e('Error setting up notifications subscription', error: e);
       throw NetworkException('Failed to subscribe to notifications: $e');
@@ -854,20 +844,20 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
             },
           )
           .map((result) {
-        if (result.hasException) {
-          throw NetworkException('Subscription error: ${result.exception}');
-        }
-        final data = result.data?['clubActivity'] as Map<String, dynamic>?;
-        if (data == null || data['activity'] == null) {
-          throw const NetworkException(
-            'No activity data received',
-            'NO_DATA',
-          );
-        }
-        return ActivityModel.fromJson(
-          data['activity'] as Map<String, dynamic>,
-        );
-      });
+            if (result.hasException) {
+              throw NetworkException('Subscription error: ${result.exception}');
+            }
+            final data = result.data?['clubActivity'] as Map<String, dynamic>?;
+            if (data == null || data['activity'] == null) {
+              throw const NetworkException(
+                'No activity data received',
+                'NO_DATA',
+              );
+            }
+            return ActivityModel.fromJson(
+              data['activity'] as Map<String, dynamic>,
+            );
+          });
     } on Exception catch (e) {
       _logger.e('Error setting up club activity subscription', error: e);
       throw NetworkException('Failed to subscribe to club activity: $e');

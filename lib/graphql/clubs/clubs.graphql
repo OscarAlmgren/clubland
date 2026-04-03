@@ -3,6 +3,7 @@ query Clubs($pagination: PaginationInput) {
     nodes {
       id
       name
+      slug
       description
       location
       website

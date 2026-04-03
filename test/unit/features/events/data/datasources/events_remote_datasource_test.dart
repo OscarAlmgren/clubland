@@ -14,11 +14,13 @@ class MockGraphQLClient extends Mock implements GraphQLClient {}
 
 class MockLogger extends Mock implements Logger {}
 
-class FakeQueryOptions extends Fake implements QueryOptions {}
+// För Options-klasserna: Använd Mock istället för Fake om de klagar,
+// ELLER använd de riktiga klasserna som FallbackValues då de är enkla databehållare.
+class MockQueryOptions extends Mock implements QueryOptions {}
 
-class FakeMutationOptions extends Fake implements MutationOptions {}
+class MockMutationOptions extends Mock implements MutationOptions {}
 
-class FakeSubscriptionOptions extends Fake implements SubscriptionOptions {}
+class MockSubscriptionOptions extends Mock implements SubscriptionOptions {}
 
 void main() {
   late MockGraphQLClient mockClient;
@@ -27,9 +29,11 @@ void main() {
 
   setUpAll(() {
     // Register fallback values for mocktail
-    registerFallbackValue(FakeQueryOptions());
-    registerFallbackValue(FakeMutationOptions());
-    registerFallbackValue(FakeSubscriptionOptions());
+    // Registrera de riktiga klasserna som fallbacks istället för Fakes
+    // Detta fungerar eftersom de har en korrekt '==' implementation.
+    registerFallbackValue(QueryOptions(document: gql('')));
+    registerFallbackValue(MutationOptions(document: gql('')));
+    registerFallbackValue(SubscriptionOptions(document: gql('')));
   });
 
   setUp(() {

@@ -1025,6 +1025,10 @@ type Mutation {
   completePasskeyLogin(clubSlug: String!, userId: String!, credential: PasskeyCredentialInput!): AuthPayload!
   initiatePasskeyRegistration: PasskeyRegistrationInit!
   completePasskeyRegistration(credential: PasskeyCredentialInput!): Boolean!
+  syncUser: User!
+
+  # User Management
+  updateUser(id: ID!, firstName: String, lastName: String, status: UserStatus): User!
 
   # Clubs
   createClub(input: CreateClubInput!): Club!

@@ -273,6 +273,13 @@ const documentNodeQueryClubs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'slug'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'description'),
                         alias: null,
                         arguments: [],
@@ -765,6 +772,7 @@ class Query$Clubs$clubs$nodes {
   Query$Clubs$clubs$nodes({
     required this.id,
     required this.name,
+    required this.slug,
     this.description,
     required this.location,
     this.website,
@@ -778,6 +786,7 @@ class Query$Clubs$clubs$nodes {
   factory Query$Clubs$clubs$nodes.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
     final l$name = json['name'];
+    final l$slug = json['slug'];
     final l$description = json['description'];
     final l$location = json['location'];
     final l$website = json['website'];
@@ -789,6 +798,7 @@ class Query$Clubs$clubs$nodes {
     return Query$Clubs$clubs$nodes(
       id: (l$id as String),
       name: (l$name as String),
+      slug: (l$slug as String),
       description: (l$description as String?),
       location: (l$location as String),
       website: (l$website as String?),
@@ -807,6 +817,8 @@ class Query$Clubs$clubs$nodes {
   final String id;
 
   final String name;
+
+  final String slug;
 
   final String? description;
 
@@ -830,6 +842,8 @@ class Query$Clubs$clubs$nodes {
     _resultData['id'] = l$id;
     final l$name = name;
     _resultData['name'] = l$name;
+    final l$slug = slug;
+    _resultData['slug'] = l$slug;
     final l$description = description;
     _resultData['description'] = l$description;
     final l$location = location;
@@ -853,6 +867,7 @@ class Query$Clubs$clubs$nodes {
   int get hashCode {
     final l$id = id;
     final l$name = name;
+    final l$slug = slug;
     final l$description = description;
     final l$location = location;
     final l$website = website;
@@ -864,6 +879,7 @@ class Query$Clubs$clubs$nodes {
     return Object.hashAll([
       l$id,
       l$name,
+      l$slug,
       l$description,
       l$location,
       l$website,
@@ -891,6 +907,11 @@ class Query$Clubs$clubs$nodes {
     final l$name = name;
     final lOther$name = other.name;
     if (l$name != lOther$name) {
+      return false;
+    }
+    final l$slug = slug;
+    final lOther$slug = other.slug;
+    if (l$slug != lOther$slug) {
       return false;
     }
     final l$description = description;
@@ -954,6 +975,7 @@ abstract class CopyWith$Query$Clubs$clubs$nodes<TRes> {
   TRes call({
     String? id,
     String? name,
+    String? slug,
     String? description,
     String? location,
     String? website,
@@ -979,6 +1001,7 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
   TRes call({
     Object? id = _undefined,
     Object? name = _undefined,
+    Object? slug = _undefined,
     Object? description = _undefined,
     Object? location = _undefined,
     Object? website = _undefined,
@@ -993,6 +1016,9 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
+      slug: slug == _undefined || slug == null
+          ? _instance.slug
+          : (slug as String),
       description: description == _undefined
           ? _instance.description
           : (description as String?),
@@ -1038,6 +1064,7 @@ class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
   call({
     String? id,
     String? name,
+    String? slug,
     String? description,
     String? location,
     String? website,
