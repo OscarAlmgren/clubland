@@ -6,6 +6,7 @@ import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../models/booking_model.dart';
 import '../models/facility_availability_model.dart';
+import '../models/visit_model.dart';
 
 abstract class BookingsRemoteDataSource {
   Future<List<BookingModel>> getUserBookings({
@@ -52,6 +53,21 @@ abstract class BookingsRemoteDataSource {
   Future<BookingModel> checkOutBooking(String bookingId);
 
   Stream<BookingUpdateEvent> subscribeToBookingUpdates(String userId);
+
+  Future<List<VisitModel>> getMyVisits({int? limit, String? cursor});
+
+  Future<VisitModel> recordVisit({
+    required String memberId,
+    required String visitingClubId,
+    List<String>? services,
+    double? cost,
+  });
+
+  Future<VisitModel> checkoutVisit({
+    required String visitId,
+    List<String>? services,
+    double? cost,
+  });
 }
 
 class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
@@ -624,6 +640,170 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       throw app_exceptions.NetworkException.serverError(
         500,
         'Failed to subscribe to booking updates: $e',
+      );
+    }
+  }
+
+  @override
+  Future<List<VisitModel>> getMyVisits({int? limit, String? cursor}) async {
+    _logger.d('Fetching my visits');
+
+    try {
+      final result = await _client.query(
+        QueryOptions(
+          document: documentNodeQueryMyVisits,
+          variables: Variables$Query$MyVisits(
+            pagination: limit != null
+                ? Input$PaginationInput(pageSize: limit, after: cursor)
+                : null,
+          ).toJson(),
+          fetchPolicy: FetchPolicy.cacheAndNetwork,
+        ),
+      );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to fetch visits',
+          'FETCH_FAILED',
+        );
+      }
+
+      final data = result.data?['myVisits'] as Map<String, dynamic>?;
+      if (data == null) return [];
+
+      final nodes = data['nodes'] as List<dynamic>? ?? [];
+      return nodes
+          .map((n) => VisitModel.fromJson(n as Map<String, dynamic>))
+          .toList();
+    } on app_exceptions.NetworkException {
+      rethrow;
+    } on Exception catch (e) {
+      _logger.e('Error fetching visits', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to fetch visits: $e',
+        'UNKNOWN',
+      );
+    }
+  }
+
+  @override
+  Future<VisitModel> recordVisit({
+    required String memberId,
+    required String visitingClubId,
+    List<String>? services,
+    double? cost,
+  }) async {
+    _logger.d('Recording visit to club: $visitingClubId');
+
+    try {
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: documentNodeMutationRecordVisit,
+              variables: Variables$Mutation$RecordVisit(
+                input: Input$RecordVisitInput(
+                  memberId: memberId,
+                  visitingClubId: visitingClubId,
+                  services: services,
+                  cost: cost,
+                ),
+              ).toJson(),
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('RecordVisit mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to record visit',
+          'RECORD_VISIT_FAILED',
+        );
+      }
+
+      final visitData = result.data?['recordVisit'] as Map<String, dynamic>?;
+      if (visitData == null) {
+        throw const app_exceptions.NetworkException(
+          'No visit data returned',
+          'NO_DATA',
+        );
+      }
+
+      _logger.i('Successfully recorded visit to club: $visitingClubId');
+      return VisitModel.fromJson(visitData);
+    } on app_exceptions.NetworkException {
+      rethrow;
+    } on Exception catch (e) {
+      _logger.e('Error recording visit', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to record visit: $e',
+        'UNKNOWN',
+      );
+    }
+  }
+
+  @override
+  Future<VisitModel> checkoutVisit({
+    required String visitId,
+    List<String>? services,
+    double? cost,
+  }) async {
+    _logger.d('Checking out visit: $visitId');
+
+    try {
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: documentNodeMutationCheckOutVisit,
+              variables: Variables$Mutation$CheckOutVisit(
+                input: Input$CheckOutVisitInput(
+                  visitId: visitId,
+                  services: services,
+                  cost: cost,
+                ),
+              ).toJson(),
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('CheckOutVisit mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to checkout visit',
+          'CHECKOUT_VISIT_FAILED',
+        );
+      }
+
+      final visitData =
+          result.data?['checkOutVisit'] as Map<String, dynamic>?;
+      if (visitData == null) {
+        throw const app_exceptions.NetworkException(
+          'No visit data returned',
+          'NO_DATA',
+        );
+      }
+
+      _logger.i('Successfully checked out visit: $visitId');
+      return VisitModel.fromJson(visitData);
+    } on app_exceptions.NetworkException {
+      rethrow;
+    } on Exception catch (e) {
+      _logger.e('Error checking out visit', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to checkout visit: $e',
+        'UNKNOWN',
       );
     }
   }

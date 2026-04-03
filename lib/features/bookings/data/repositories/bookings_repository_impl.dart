@@ -300,9 +300,16 @@ class BookingsRepositoryImpl implements BookingsRepository {
 
   @override
   Future<Either<Failure, List<VisitEntity>>> getUserVisits() async {
-    // Note: This would need to be implemented in the datasource
-    // For now, return an empty list
-    return const Right([]);
+    try {
+      final visits = await _remoteDataSource.getMyVisits();
+      return Right(visits.map((v) => v.toEntity()).toList());
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message, e.code));
+    } on GraphQLException catch (e) {
+      return Left(GraphQLFailure(e.message, e.code));
+    } on Exception catch (e) {
+      return Left(UnknownFailure.unexpected(e.toString()));
+    }
   }
 
   @override
@@ -311,8 +318,8 @@ class BookingsRepositoryImpl implements BookingsRepository {
     String? purpose,
     int? guestCount,
   }) async {
-    // Note: This would need to be implemented in the datasource
-    // For now, return a NotImplementedFailure
+    // memberId must come from auth context — the domain API passes clubId (visitingClubId)
+    // but Input$RecordVisitInput requires memberId. Wire when auth repo provides memberId.
     return Left(UnknownFailure.notImplemented());
   }
 
@@ -322,9 +329,16 @@ class BookingsRepositoryImpl implements BookingsRepository {
     double? rating,
     String? review,
   }) async {
-    // Note: This would need to be implemented in the datasource
-    // For now, return a NotImplementedFailure
-    return Left(UnknownFailure.notImplemented());
+    try {
+      final visit = await _remoteDataSource.checkoutVisit(visitId: visitId);
+      return Right(visit.toEntity());
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message, e.code));
+    } on GraphQLException catch (e) {
+      return Left(GraphQLFailure(e.message, e.code));
+    } on Exception catch (e) {
+      return Left(UnknownFailure.unexpected(e.toString()));
+    }
   }
 
   @override
