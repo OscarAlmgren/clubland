@@ -324,7 +324,21 @@ const documentNodeQueryMyBookings = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'clubId'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'facilityId'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'userId'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -366,6 +380,13 @@ const documentNodeQueryMyBookings = DocumentNode(
                         selectionSet: SelectionSetNode(
                           selections: [
                             FieldNode(
+                              name: NameNode(value: 'id'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
                               name: NameNode(value: 'name'),
                               alias: null,
                               arguments: [],
@@ -396,6 +417,13 @@ const documentNodeQueryMyBookings = DocumentNode(
                         directives: [],
                         selectionSet: SelectionSetNode(
                           selections: [
+                            FieldNode(
+                              name: NameNode(value: 'id'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
                             FieldNode(
                               name: NameNode(value: 'firstName'),
                               alias: null,
@@ -825,7 +853,9 @@ class _CopyWithStubImpl$Query$MyBookings$myBookings<TRes>
 class Query$MyBookings$myBookings$nodes {
   Query$MyBookings$myBookings$nodes({
     required this.id,
+    required this.clubId,
     required this.facilityId,
+    required this.userId,
     required this.startTime,
     required this.endTime,
     required this.status,
@@ -840,7 +870,9 @@ class Query$MyBookings$myBookings$nodes {
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
+    final l$clubId = json['clubId'];
     final l$facilityId = json['facilityId'];
+    final l$userId = json['userId'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
     final l$status = json['status'];
@@ -851,7 +883,9 @@ class Query$MyBookings$myBookings$nodes {
     final l$$__typename = json['__typename'];
     return Query$MyBookings$myBookings$nodes(
       id: (l$id as String),
+      clubId: (l$clubId as String),
       facilityId: (l$facilityId as String),
+      userId: (l$userId as String),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
@@ -873,7 +907,11 @@ class Query$MyBookings$myBookings$nodes {
 
   final String id;
 
+  final String clubId;
+
   final String facilityId;
+
+  final String userId;
 
   final DateTime startTime;
 
@@ -895,8 +933,12 @@ class Query$MyBookings$myBookings$nodes {
     final _resultData = <String, dynamic>{};
     final l$id = id;
     _resultData['id'] = l$id;
+    final l$clubId = clubId;
+    _resultData['clubId'] = l$clubId;
     final l$facilityId = facilityId;
     _resultData['facilityId'] = l$facilityId;
+    final l$userId = userId;
+    _resultData['userId'] = l$userId;
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
@@ -919,7 +961,9 @@ class Query$MyBookings$myBookings$nodes {
   @override
   int get hashCode {
     final l$id = id;
+    final l$clubId = clubId;
     final l$facilityId = facilityId;
+    final l$userId = userId;
     final l$startTime = startTime;
     final l$endTime = endTime;
     final l$status = status;
@@ -930,7 +974,9 @@ class Query$MyBookings$myBookings$nodes {
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
+      l$clubId,
       l$facilityId,
+      l$userId,
       l$startTime,
       l$endTime,
       l$status,
@@ -956,9 +1002,19 @@ class Query$MyBookings$myBookings$nodes {
     if (l$id != lOther$id) {
       return false;
     }
+    final l$clubId = clubId;
+    final lOther$clubId = other.clubId;
+    if (l$clubId != lOther$clubId) {
+      return false;
+    }
     final l$facilityId = facilityId;
     final lOther$facilityId = other.facilityId;
     if (l$facilityId != lOther$facilityId) {
+      return false;
+    }
+    final l$userId = userId;
+    final lOther$userId = other.userId;
+    if (l$userId != lOther$userId) {
       return false;
     }
     final l$startTime = startTime;
@@ -1022,7 +1078,9 @@ abstract class CopyWith$Query$MyBookings$myBookings$nodes<TRes> {
 
   TRes call({
     String? id,
+    String? clubId,
     String? facilityId,
+    String? userId,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
@@ -1048,7 +1106,9 @@ class _CopyWithImpl$Query$MyBookings$myBookings$nodes<TRes>
 
   TRes call({
     Object? id = _undefined,
+    Object? clubId = _undefined,
     Object? facilityId = _undefined,
+    Object? userId = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
     Object? status = _undefined,
@@ -1060,9 +1120,15 @@ class _CopyWithImpl$Query$MyBookings$myBookings$nodes<TRes>
   }) => _then(
     Query$MyBookings$myBookings$nodes(
       id: id == _undefined || id == null ? _instance.id : (id as String),
+      clubId: clubId == _undefined || clubId == null
+          ? _instance.clubId
+          : (clubId as String),
       facilityId: facilityId == _undefined || facilityId == null
           ? _instance.facilityId
           : (facilityId as String),
+      userId: userId == _undefined || userId == null
+          ? _instance.userId
+          : (userId as String),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -1119,7 +1185,9 @@ class _CopyWithStubImpl$Query$MyBookings$myBookings$nodes<TRes>
 
   call({
     String? id,
+    String? clubId,
     String? facilityId,
+    String? userId,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
@@ -1139,6 +1207,7 @@ class _CopyWithStubImpl$Query$MyBookings$myBookings$nodes<TRes>
 
 class Query$MyBookings$myBookings$nodes$facility {
   Query$MyBookings$myBookings$nodes$facility({
+    required this.id,
     required this.name,
     required this.type,
     this.$__typename = 'Facility',
@@ -1147,15 +1216,19 @@ class Query$MyBookings$myBookings$nodes$facility {
   factory Query$MyBookings$myBookings$nodes$facility.fromJson(
     Map<String, dynamic> json,
   ) {
+    final l$id = json['id'];
     final l$name = json['name'];
     final l$type = json['type'];
     final l$$__typename = json['__typename'];
     return Query$MyBookings$myBookings$nodes$facility(
+      id: (l$id as String),
       name: (l$name as String),
       type: (l$type as String),
       $__typename: (l$$__typename as String),
     );
   }
+
+  final String id;
 
   final String name;
 
@@ -1165,6 +1238,8 @@ class Query$MyBookings$myBookings$nodes$facility {
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
@@ -1176,10 +1251,11 @@ class Query$MyBookings$myBookings$nodes$facility {
 
   @override
   int get hashCode {
+    final l$id = id;
     final l$name = name;
     final l$type = type;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$name, l$type, l$$__typename]);
+    return Object.hashAll([l$id, l$name, l$type, l$$__typename]);
   }
 
   @override
@@ -1189,6 +1265,11 @@ class Query$MyBookings$myBookings$nodes$facility {
     }
     if (other is! Query$MyBookings$myBookings$nodes$facility ||
         runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
       return false;
     }
     final l$name = name;
@@ -1228,7 +1309,7 @@ abstract class CopyWith$Query$MyBookings$myBookings$nodes$facility<TRes> {
   factory CopyWith$Query$MyBookings$myBookings$nodes$facility.stub(TRes res) =
       _CopyWithStubImpl$Query$MyBookings$myBookings$nodes$facility;
 
-  TRes call({String? name, String? type, String? $__typename});
+  TRes call({String? id, String? name, String? type, String? $__typename});
 }
 
 class _CopyWithImpl$Query$MyBookings$myBookings$nodes$facility<TRes>
@@ -1245,11 +1326,13 @@ class _CopyWithImpl$Query$MyBookings$myBookings$nodes$facility<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
+    Object? id = _undefined,
     Object? name = _undefined,
     Object? type = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$MyBookings$myBookings$nodes$facility(
+      id: id == _undefined || id == null ? _instance.id : (id as String),
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
@@ -1269,11 +1352,12 @@ class _CopyWithStubImpl$Query$MyBookings$myBookings$nodes$facility<TRes>
 
   TRes _res;
 
-  call({String? name, String? type, String? $__typename}) => _res;
+  call({String? id, String? name, String? type, String? $__typename}) => _res;
 }
 
 class Query$MyBookings$myBookings$nodes$user {
   Query$MyBookings$myBookings$nodes$user({
+    required this.id,
     this.firstName,
     this.lastName,
     this.$__typename = 'User',
@@ -1282,15 +1366,19 @@ class Query$MyBookings$myBookings$nodes$user {
   factory Query$MyBookings$myBookings$nodes$user.fromJson(
     Map<String, dynamic> json,
   ) {
+    final l$id = json['id'];
     final l$firstName = json['firstName'];
     final l$lastName = json['lastName'];
     final l$$__typename = json['__typename'];
     return Query$MyBookings$myBookings$nodes$user(
+      id: (l$id as String),
       firstName: (l$firstName as String?),
       lastName: (l$lastName as String?),
       $__typename: (l$$__typename as String),
     );
   }
+
+  final String id;
 
   final String? firstName;
 
@@ -1300,6 +1388,8 @@ class Query$MyBookings$myBookings$nodes$user {
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
     final l$firstName = firstName;
     _resultData['firstName'] = l$firstName;
     final l$lastName = lastName;
@@ -1311,10 +1401,11 @@ class Query$MyBookings$myBookings$nodes$user {
 
   @override
   int get hashCode {
+    final l$id = id;
     final l$firstName = firstName;
     final l$lastName = lastName;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$firstName, l$lastName, l$$__typename]);
+    return Object.hashAll([l$id, l$firstName, l$lastName, l$$__typename]);
   }
 
   @override
@@ -1324,6 +1415,11 @@ class Query$MyBookings$myBookings$nodes$user {
     }
     if (other is! Query$MyBookings$myBookings$nodes$user ||
         runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
       return false;
     }
     final l$firstName = firstName;
@@ -1363,7 +1459,12 @@ abstract class CopyWith$Query$MyBookings$myBookings$nodes$user<TRes> {
   factory CopyWith$Query$MyBookings$myBookings$nodes$user.stub(TRes res) =
       _CopyWithStubImpl$Query$MyBookings$myBookings$nodes$user;
 
-  TRes call({String? firstName, String? lastName, String? $__typename});
+  TRes call({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$MyBookings$myBookings$nodes$user<TRes>
@@ -1380,11 +1481,13 @@ class _CopyWithImpl$Query$MyBookings$myBookings$nodes$user<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
+    Object? id = _undefined,
     Object? firstName = _undefined,
     Object? lastName = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$MyBookings$myBookings$nodes$user(
+      id: id == _undefined || id == null ? _instance.id : (id as String),
       firstName: firstName == _undefined
           ? _instance.firstName
           : (firstName as String?),
@@ -1404,7 +1507,12 @@ class _CopyWithStubImpl$Query$MyBookings$myBookings$nodes$user<TRes>
 
   TRes _res;
 
-  call({String? firstName, String? lastName, String? $__typename}) => _res;
+  call({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? $__typename,
+  }) => _res;
 }
 
 class Query$MyBookings$myBookings$pageInfo {

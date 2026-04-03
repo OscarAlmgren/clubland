@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -13,7 +11,7 @@ import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_datasource.dart';
 import '../datasources/auth_remote_datasource.dart';
-import '../datasources/hanko_datasource.dart';
+import '../datasources/passkey_service.dart';
 
 /// Implementation of AuthRepository
 class AuthRepositoryImpl implements AuthRepository {
@@ -23,19 +21,18 @@ class AuthRepositoryImpl implements AuthRepository {
     required Logger logger,
     AuthRemoteDataSource? remoteDataSource,
     AuthLocalDataSource? localDataSource,
-    HankoDataSource? hankoDataSource,
   }) : _remoteDataSource = remoteDataSource ??
-           AuthRemoteDataSourceImpl(graphqlClient: GraphQLClientConfig.client, logger: logger),
+           AuthRemoteDataSourceImpl(
+             graphqlClient: GraphQLClientConfig.client,
+             logger: logger,
+             passkeyService: PasskeyService(logger: logger),
+           ),
        _localDataSource = localDataSource ?? AuthLocalDataSourceImpl(),
-       _hankoDataSource =
-           hankoDataSource ??
-           HankoDataSourceImpl(dio: _createConfiguredDio(), logger: logger),
        _secureStorage = secureStorage,
        _logger = logger,
        _authStateController = StreamController<AuthSessionEntity?>.broadcast();
   final AuthRemoteDataSource _remoteDataSource;
   final AuthLocalDataSource _localDataSource;
-  final HankoDataSource _hankoDataSource;
   final SecureStorageService _secureStorage;
   final Logger _logger;
   final StreamController<AuthSessionEntity?> _authStateController;
@@ -77,83 +74,24 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, AuthSessionEntity>> loginWithHanko({
     required String email,
+    required String clubSlug,
   }) async {
     try {
-      _logger.d('Attempting Hanko login for email: $email');
+      _logger.d('Attempting Hanko passkey login for email: $email, clubSlug: $clubSlug');
 
-      // First check if email is registered with Hanko
-      final isRegisteredResult = await _hankoDataSource.isEmailRegistered(
-        email,
-      );
-
-      return isRegisteredResult.fold(Left.new, (isRegistered) async {
-        if (!isRegistered) {
-          return Left(AuthFailure.invalidCredentials());
-        }
-
-        // Initiate Hanko login
-        final initResult = await _hankoDataSource.initiateLogin(email);
-
-        return initResult.fold(Left.new, (hankoResponse) async {
-          // Store Hanko session ID for completion
-          await _secureStorage.saveHankoSessionId(hankoResponse.sessionId);
-
-          // For now, return a mock session with Hanko session ID
-          // In a real implementation, this would wait for user to complete authentication
-          final user = UserEntity(
-            id: 'hanko-pending-${hankoResponse.sessionId}',
-            email: email,
-            status: UserStatus.pending,
-            createdAt: DateTime.now(),
-          );
-
-          final session = AuthSessionEntity(
-            accessToken: 'pending-hanko-auth',
-            refreshToken: 'pending-hanko-refresh',
-            expiresAt: DateTime.now().add(const Duration(minutes: 10)),
-            user: user,
-            hankoSessionId: hankoResponse.sessionId,
-          );
-
-          _logger.i('Hanko login initiated for user: $email');
-          return Right(session);
-        });
-      });
-    } on Exception catch (e, stackTrace) {
-      _logger.e('Hanko login failed', error: e, stackTrace: stackTrace);
-      return Left(AuthFailure.unexpected(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, AuthSessionEntity>> completeHankoAuth({
-    required String sessionId,
-    required String credential,
-  }) async {
-    try {
-      _logger.d('Completing Hanko authentication');
-
-      final result = await _hankoDataSource.completeLogin(
-        sessionId: sessionId,
-        credential: credential,
+      final result = await _remoteDataSource.loginWithHanko(
+        email: email,
+        clubSlug: clubSlug,
       );
 
       return result.fold(Left.new, (session) async {
         await _storeSession(session);
         _authStateController.add(session);
-
-        // Clear the stored Hanko session ID as authentication is complete
-        await _secureStorage.deleteHankoSessionId();
-
-        _logger.i('Hanko authentication completed successfully');
+        _logger.i('Hanko passkey login successful for user: ${session.user.email}');
         return Right(session);
       });
     } on Exception catch (e, stackTrace) {
-      _logger.e(
-        'Hanko auth completion failed',
-        error: e,
-        stackTrace: stackTrace,
-      );
+      _logger.e('Hanko passkey login failed', error: e, stackTrace: stackTrace);
       return Left(AuthFailure.unexpected(e.toString()));
     }
   }
@@ -683,32 +621,6 @@ class AuthRepositoryImpl implements AuthRepository {
     await _localDataSource.clearSession();
     await _secureStorage.deleteAccessToken();
     await _secureStorage.deleteRefreshToken();
-  }
-
-  /// Create configured Dio instance for Hanko
-  static Dio _createConfiguredDio() {
-    final dio = Dio(
-      BaseOptions(
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 30),
-      ),
-    );
-
-    // Add interceptors for logging and error handling
-    dio.interceptors.add(
-      LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-        logPrint: (object) {
-          // Only log in debug mode for security
-          // ignore: avoid_print
-          if (kDebugMode) print(object);
-        },
-      ),
-    );
-
-    return dio;
   }
 
   /// Dispose resources

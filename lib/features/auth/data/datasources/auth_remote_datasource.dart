@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:local_auth/local_auth.dart';
@@ -7,6 +9,7 @@ import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
+import 'passkey_service.dart';
 
 /// Remote data source for authentication
 abstract class AuthRemoteDataSource {
@@ -17,11 +20,7 @@ abstract class AuthRemoteDataSource {
 
   Future<Either<Failure, AuthSessionEntity>> loginWithHanko({
     required String email,
-  });
-
-  Future<Either<Failure, AuthSessionEntity>> completeHankoAuth({
-    required String sessionId,
-    required String credential,
+    required String clubSlug,
   });
 
   Future<Either<Failure, AuthSessionEntity>> register({
@@ -98,13 +97,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({
     required GraphQLClient graphqlClient,
     required Logger logger,
+    required PasskeyService passkeyService,
     LocalAuthentication? localAuth,
   })  : _graphqlClient = graphqlClient,
         _logger = logger,
+        _passkeyService = passkeyService,
         _localAuth = localAuth ?? LocalAuthentication();
 
   final GraphQLClient _graphqlClient;
   final Logger _logger;
+  final PasskeyService _passkeyService;
   final LocalAuthentication _localAuth;
 
   @override
@@ -176,54 +178,131 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<Either<Failure, AuthSessionEntity>> loginWithHanko({
     required String email,
+    required String clubSlug,
   }) async {
-    // TODO(oscaralmgren): Implement Hanko login
-    await Future<void>.delayed(const Duration(seconds: 1));
+    try {
+      _logger.d('Initiating passkey login for email: $email, clubSlug: $clubSlug');
 
-    final user = UserEntity(
-      id: 'user-hanko-123',
-      email: email,
-      firstName: 'Hanko',
-      lastName: 'User',
-      createdAt: DateTime.now(),
-    );
+      // Step 1: Initiate passkey login — get WebAuthn options from backend
+      const initiatePasskeyLoginMutation = r'''
+        mutation InitiatePasskeyLogin($email: String!, $clubSlug: String!) {
+          initiatePasskeyLogin(email: $email, clubSlug: $clubSlug) {
+            options
+            userId
+          }
+        }
+      ''';
 
-    final session = AuthSessionEntity(
-      accessToken: 'mock-hanko-access-token',
-      refreshToken: 'mock-hanko-refresh-token',
-      expiresAt: DateTime.now().add(const Duration(hours: 1)),
-      user: user,
-      hankoSessionId: 'hanko-session-123',
-    );
+      final initiateResult = await _graphqlClient
+          .mutate(
+            MutationOptions(
+              document: gql(initiatePasskeyLoginMutation),
+              variables: {'email': email, 'clubSlug': clubSlug},
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () => throw NetworkException.timeout(),
+          );
 
-    return Right(session);
+      if (initiateResult.hasException) {
+        _logger.e('Passkey login initiation failed: ${initiateResult.exception}');
+        return Left(_handleGraphQLException(initiateResult.exception!));
+      }
+
+      final initiateData = initiateResult.data!['initiatePasskeyLogin'] as Map<String, dynamic>;
+      final optionsRaw = initiateData['options'];
+      final userId = initiateData['userId'] as String;
+
+      // Parse options: backend may return JSON string or JSON object
+      final Map<String, dynamic> options;
+      if (optionsRaw is String) {
+        options = jsonDecode(optionsRaw) as Map<String, dynamic>;
+      } else {
+        options = optionsRaw as Map<String, dynamic>;
+      }
+
+      _logger.d('Passkey login initiated, userId: $userId. Collecting credential from device.');
+
+      // Step 2: Collect WebAuthn credential from device (triggers platform prompt)
+      final credential = await _passkeyService.collectLoginCredential(options);
+
+      // Step 3: Complete passkey login — exchange credential for JWT
+      const completePasskeyLoginMutation = r'''
+        mutation CompletePasskeyLogin($clubSlug: String!, $userId: String!, $credential: PasskeyCredentialInput!) {
+          completePasskeyLogin(clubSlug: $clubSlug, userId: $userId, credential: $credential) {
+            token
+            refreshToken
+            expiresAt
+            user {
+              id
+              clubId
+              email
+              username
+              firstName
+              lastName
+              status
+              roles { name }
+              createdAt
+              updatedAt
+            }
+          }
+        }
+      ''';
+
+      final completeResult = await _graphqlClient
+          .mutate(
+            MutationOptions(
+              document: gql(completePasskeyLoginMutation),
+              variables: {
+                'clubSlug': clubSlug,
+                'userId': userId,
+                'credential': credential,
+              },
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () => throw NetworkException.timeout(),
+          );
+
+      if (completeResult.hasException) {
+        _logger.e('Passkey login completion failed: ${completeResult.exception}');
+        return Left(_handleGraphQLException(completeResult.exception!));
+      }
+
+      final authPayload = completeResult.data!['completePasskeyLogin'] as Map<String, dynamic>;
+      final session = _parseAuthSession(authPayload);
+
+      // Step 4: Sync user record in backend DB
+      await _syncUser();
+
+      _logger.i('Passkey login successful for user: ${session.user.email}');
+      return Right(session);
+    } on AuthFailure catch (f) {
+      // Re-wrap AuthFailure (e.g. passkeyCancelled) as Left
+      return Left(f);
+    } catch (e, stackTrace) {
+      _logger.e('Passkey login error', error: e, stackTrace: stackTrace);
+      return Left(NetworkFailure.serverError(500, e.toString()));
+    }
   }
 
-  @override
-  Future<Either<Failure, AuthSessionEntity>> completeHankoAuth({
-    required String sessionId,
-    required String credential,
-  }) async {
-    // TODO(oscaralmgren): Implement Hanko auth completion
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    final user = UserEntity(
-      id: 'user-hanko-complete-123',
-      email: 'hanko@example.com',
-      firstName: 'Hanko',
-      lastName: 'Complete',
-      createdAt: DateTime.now(),
-    );
-
-    final session = AuthSessionEntity(
-      accessToken: 'mock-hanko-complete-access-token',
-      refreshToken: 'mock-hanko-complete-refresh-token',
-      expiresAt: DateTime.now().add(const Duration(hours: 1)),
-      user: user,
-      hankoSessionId: sessionId,
-    );
-
-    return Right(session);
+  /// Syncs the authenticated user into the backend DB after a successful Hanko login.
+  Future<void> _syncUser() async {
+    try {
+      const syncUserMutation = r'''
+        mutation SyncUser {
+          syncUser { id }
+        }
+      ''';
+      await _graphqlClient.mutate(
+        MutationOptions(document: gql(syncUserMutation)),
+      );
+    } catch (e) {
+      // Non-fatal — log and continue
+      _logger.w('syncUser failed (non-fatal): $e');
+    }
   }
 
   @override

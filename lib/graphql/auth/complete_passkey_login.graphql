@@ -1,0 +1,21 @@
+mutation CompletePasskeyLogin($clubSlug: String!, $userId: String!, $credential: PasskeyCredentialInput!) {
+  completePasskeyLogin(clubSlug: $clubSlug, userId: $userId, credential: $credential) {
+    token
+    refreshToken
+    expiresAt
+    user {
+      id
+      clubId
+      email
+      username
+      firstName
+      lastName
+      status
+      roles {
+        name
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

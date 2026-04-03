@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
 import '../../../../core/graphql/graphql_api.dart';
+import '../models/club_address_model.dart';
 import '../models/club_model.dart';
 import '../models/club_search_result_model.dart';
 
@@ -56,7 +57,8 @@ class ClubReviewModel {
     required this.createdAt,
   });
 
-  factory ClubReviewModel.fromJson(Map<String, dynamic> json) => ClubReviewModel(
+  factory ClubReviewModel.fromJson(Map<String, dynamic> json) =>
+      ClubReviewModel(
         id: json['id'] as String,
         rating: (json['rating'] as num).toDouble(),
         comment: json['comment'] as String,
@@ -72,11 +74,9 @@ class ClubReviewModel {
 }
 
 class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
-  ClubsRemoteDataSourceImpl({
-    required GraphQLClient client,
-    Logger? logger,
-  })  : _client = client,
-        _logger = logger ?? Logger();
+  ClubsRemoteDataSourceImpl({required GraphQLClient client, Logger? logger})
+    : _client = client,
+      _logger = logger ?? Logger();
 
   final GraphQLClient _client;
   final Logger _logger;
@@ -133,7 +133,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       if (nodes == null) {
         throw const app_exceptions.NetworkException(
-            'No clubs data received', 'NO_DATA');
+          'No clubs data received',
+          'NO_DATA',
+        );
       }
 
       return nodes
@@ -145,7 +147,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     } on Exception catch (e) {
       _logger.e('Error fetching clubs', error: e);
       throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to fetch clubs: $e');
+        500,
+        'Failed to fetch clubs: $e',
+      );
     }
   }
 
@@ -173,7 +177,10 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
 
       final clubData = result.data?['club'];
       if (clubData == null) {
-        throw const app_exceptions.NetworkException('Club not found', 'NOT_FOUND');
+        throw const app_exceptions.NetworkException(
+          'Club not found',
+          'NOT_FOUND',
+        );
       }
 
       return ClubModel.fromJson(clubData as Map<String, dynamic>);
@@ -183,7 +190,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     } on Exception catch (e) {
       _logger.e('Error fetching club details', error: e);
       throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to fetch club details: $e');
+        500,
+        'Failed to fetch club details: $e',
+      );
     }
   }
 
@@ -196,36 +205,65 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     int? limit,
     String? cursor,
   }) async {
+    _logger.d('Searching clubs with query: $query');
+
     try {
-      _logger.d('Searching clubs with query: $query');
+      final result = await _client.query(
+        QueryOptions(
+          document: documentNodeQuerySearchClubs,
+          variables: Variables$Query$SearchClubs(
+            query: query,
+            amenities: amenities,
+            pagination: limit != null
+                ? Input$PaginationInput(pageSize: limit)
+                : null,
+          ).toJson(),
+          fetchPolicy: FetchPolicy.cacheAndNetwork,
+        ),
+      );
 
-      // TODO: Implement searchClubs GraphQL operation when backend is ready
-      // For now, fetch all clubs and filter locally
-      final clubs = await getClubs(limit: limit, cursor: cursor);
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to search clubs',
+          'SEARCH_FAILED',
+        );
+      }
 
-      final searchResults = clubs
-          .where((club) =>
-              club.name.toLowerCase().contains(query.toLowerCase()) ||
-              club.description.toLowerCase().contains(query.toLowerCase()))
-          .map((club) => ClubSearchResultModel(
-                id: club.id,
-                name: club.name,
-                slug: club.slug,
-                address: club.address,
-                description: club.description,
-                logo: club.logo,
-                coverImage: club.coverImage,
-              ))
-          .toList();
+      final data =
+          result.data?['searchClubs'] as Map<String, dynamic>?;
+      if (data == null) return [];
 
-      return searchResults;
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error searching clubs', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+      final nodes = data['nodes'] as List<dynamic>? ?? [];
+      return nodes.map((n) {
+        final m = n as Map<String, dynamic>;
+        // Backend Club.location is a flat String; build minimal address from it
+        final location = m['location'] as String? ?? '';
+        return ClubSearchResultModel(
+          id: m['id'] as String,
+          name: m['name'] as String,
+          slug: m['slug'] as String? ?? '',
+          description: m['description'] as String?,
+          logo: m['logo'] as String?,
+          address: ClubAddressModel(
+            street: '',
+            city: location,
+            state: '',
+            zipCode: '',
+            country: '',
+          ),
+          distance: (m['distance'] as num?)?.toDouble(),
+          relevanceScore: (m['relevanceScore'] as num?)?.toDouble(),
+        );
+      }).toList();
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error searching clubs', error: e);
-      throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to search clubs: $e');
+      throw app_exceptions.NetworkException(
+        'Failed to search clubs: $e',
+        'UNKNOWN',
+      );
     }
   }
 
@@ -267,10 +305,8 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
       final variables = <String, dynamic>{
         'latitude': latitude,
         'longitude': longitude,
-        if (radius != null) 'radius': radius,
-        'pagination': {
-          'first': limit ?? 20,
-        },
+        'radius': ?radius,
+        'pagination': {'first': limit ?? 20},
       };
 
       // Execute query with direct client call
@@ -310,7 +346,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     } on Exception catch (e) {
       _logger.e('Error fetching nearby clubs', error: e);
       throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to fetch nearby clubs: $e');
+        500,
+        'Failed to fetch nearby clubs: $e',
+      );
     }
   }
 
@@ -352,9 +390,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
       ''';
 
       final variables = <String, dynamic>{
-        'pagination': {
-          'first': limit ?? 10,
-        },
+        'pagination': {'first': limit ?? 10},
       };
 
       // Execute query with direct client call
@@ -394,7 +430,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     } on Exception catch (e) {
       _logger.e('Error fetching featured clubs', error: e);
       throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to fetch featured clubs: $e');
+        500,
+        'Failed to fetch featured clubs: $e',
+      );
     }
   }
 
@@ -409,26 +447,53 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     } on Exception catch (e) {
       _logger.e('Error fetching favorite clubs', error: e);
       throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to fetch favorite clubs: $e');
+        500,
+        'Failed to fetch favorite clubs: $e',
+      );
     }
   }
 
   @override
   Future<ClubModel> toggleFavoriteClub(String clubId) async {
-    try {
-      _logger.d('Toggling favorite for club: $clubId');
+    _logger.d('Toggling favorite for club: $clubId');
 
-      // TODO: Implement toggleFavoriteClub mutation when backend is ready
-      // For now, just return the club without modification
-      _logger.w('toggleFavoriteClub not yet implemented in backend - returning club');
+    try {
+      final result = await _client.mutate(
+        MutationOptions(
+          document: documentNodeMutationToggleFavoriteClub,
+          variables: Variables$Mutation$ToggleFavoriteClub(
+            clubId: clubId,
+          ).toJson(),
+        ),
+      );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to toggle favorite',
+          'TOGGLE_FAILED',
+        );
+      }
+
+      final data =
+          result.data?['toggleFavoriteClub'] as Map<String, dynamic>?;
+      if (data != null && data['success'] == false) {
+        throw app_exceptions.NetworkException(
+          (data['message'] as String?) ?? 'Failed to toggle favorite',
+          'TOGGLE_FAILED',
+        );
+      }
+
+      _logger.i('Successfully toggled favorite for club: $clubId');
       return getClubById(clubId);
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error toggling favorite', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error toggling favorite', error: e);
-      throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to toggle favorite: $e');
+      throw app_exceptions.NetworkException(
+        'Failed to toggle favorite: $e',
+        'UNKNOWN',
+      );
     }
   }
 
@@ -483,7 +548,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     } on Exception catch (e) {
       _logger.e('Error checking in to club', error: e);
       throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to check in: $e');
+        500,
+        'Failed to check in: $e',
+      );
     }
   }
 
@@ -493,20 +560,52 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     int? limit,
     String? cursor,
   }) async {
-    try {
-      _logger.d('Fetching reviews for club: $clubId');
+    _logger.d('Fetching reviews for club: $clubId');
 
-      // TODO: Implement getClubReviews query when backend is ready
-      // For now, return empty list
-      _logger.w('getClubReviews not yet implemented in backend - returning empty list');
-      return [];
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error fetching reviews', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+    try {
+      final result = await _client.query(
+        QueryOptions(
+          document: documentNodeQueryClubReviews,
+          variables: Variables$Query$ClubReviews(
+            clubId: clubId,
+            pagination: limit != null
+                ? Input$PaginationInput(pageSize: limit)
+                : null,
+          ).toJson(),
+          fetchPolicy: FetchPolicy.cacheAndNetwork,
+        ),
+      );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to fetch reviews',
+          'FETCH_FAILED',
+        );
+      }
+
+      final data = result.data?['clubReviews'] as Map<String, dynamic>?;
+      if (data == null) return [];
+
+      final nodes = data['nodes'] as List<dynamic>? ?? [];
+      return nodes.map((n) {
+        final m = n as Map<String, dynamic>;
+        return ClubReviewModel(
+          id: m['id'] as String,
+          rating: (m['rating'] as num).toDouble(),
+          comment: m['comment'] as String? ?? '',
+          author: m['author'] as String? ?? '',
+          createdAt: DateTime.parse(m['createdAt'] as String),
+        );
+      }).toList();
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error fetching reviews', error: e);
-      throw app_exceptions.NetworkException.serverError(
-          500, 'Failed to fetch reviews: $e');
+      throw app_exceptions.NetworkException(
+        'Failed to fetch reviews: $e',
+        'UNKNOWN',
+      );
     }
   }
 }
@@ -536,16 +635,16 @@ class ClubFilter {
   });
 
   Map<String, dynamic> toJson() => {
-        if (city != null) 'city': city,
-        if (state != null) 'state': state,
-        if (amenities != null) 'amenities': amenities,
-        if (featured != null) 'featured': featured,
-        if (favorited != null) 'favorited': favorited,
-        if (location != null) 'location': location!.toJson(),
-        if (radius != null) 'radius': radius,
-        if (minRating != null) 'minRating': minRating,
-        if (isPublic != null) 'isPublic': isPublic,
-      };
+    if (city != null) 'city': city,
+    if (state != null) 'state': state,
+    if (amenities != null) 'amenities': amenities,
+    if (featured != null) 'featured': featured,
+    if (favorited != null) 'favorited': favorited,
+    if (location != null) 'location': location!.toJson(),
+    if (radius != null) 'radius': radius,
+    if (minRating != null) 'minRating': minRating,
+    if (isPublic != null) 'isPublic': isPublic,
+  };
 }
 
 enum ClubSortField { name, rating, distance, memberCount, createdAt }
@@ -559,9 +658,9 @@ class ClubSort {
   const ClubSort({required this.field, this.direction = SortDirection.asc});
 
   Map<String, dynamic> toJson() => {
-        'field': field.name.toUpperCase(),
-        'direction': direction.name.toUpperCase(),
-      };
+    'field': field.name.toUpperCase(),
+    'direction': direction.name.toUpperCase(),
+  };
 }
 
 class LocationInput {
@@ -571,7 +670,7 @@ class LocationInput {
   const LocationInput({required this.latitude, required this.longitude});
 
   Map<String, dynamic> toJson() => {
-        'latitude': latitude,
-        'longitude': longitude,
-      };
+    'latitude': latitude,
+    'longitude': longitude,
+  };
 }

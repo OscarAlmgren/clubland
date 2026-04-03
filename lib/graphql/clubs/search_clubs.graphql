@@ -15,8 +15,10 @@ query SearchClubs(
     nodes {
       id
       name
+      slug
       description
       location
+      logo
       distance
       relevanceScore
     }

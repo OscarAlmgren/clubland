@@ -4,7 +4,6 @@ import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/core/storage/secure_storage.dart';
 import 'package:clubland/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:clubland/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 import 'package:clubland/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
@@ -17,8 +16,6 @@ class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
 
 class MockAuthLocalDataSource extends Mock implements AuthLocalDataSource {}
 
-class MockHankoDataSource extends Mock implements HankoDataSource {}
-
 class MockSecureStorageService extends Mock implements SecureStorageService {}
 
 class MockLogger extends Mock implements Logger {}
@@ -27,14 +24,12 @@ void main() {
   late AuthRepositoryImpl repository;
   late MockAuthRemoteDataSource mockRemoteDataSource;
   late MockAuthLocalDataSource mockLocalDataSource;
-  late MockHankoDataSource mockHankoDataSource;
   late MockSecureStorageService mockSecureStorage;
   late MockLogger mockLogger;
 
   setUp(() {
     mockRemoteDataSource = MockAuthRemoteDataSource();
     mockLocalDataSource = MockAuthLocalDataSource();
-    mockHankoDataSource = MockHankoDataSource();
     mockSecureStorage = MockSecureStorageService();
     mockLogger = MockLogger();
 
@@ -43,7 +38,6 @@ void main() {
       logger: mockLogger,
       remoteDataSource: mockRemoteDataSource,
       localDataSource: mockLocalDataSource,
-      hankoDataSource: mockHankoDataSource,
     );
 
     // Setup common stubs
@@ -216,81 +210,18 @@ void main() {
 
     group('loginWithHanko', () {
       const testEmail = 'test@example.com';
-      const testSessionId = 'hanko_session_123';
-      final testHankoResponse = HankoAuthResponse(
-        sessionId: testSessionId,
-        status: 'pending',
-      );
+      const testClubSlug = 'test-club';
 
       test(
-        'should return pending AuthSessionEntity when Hanko login is initiated',
+        'should return AuthSessionEntity when passkey login succeeds',
         () async {
           // arrange
           when(
-            () => mockHankoDataSource.isEmailRegistered(testEmail),
-          ).thenAnswer((_) async => const Right<Failure, bool>(true));
-          when(() => mockHankoDataSource.initiateLogin(testEmail)).thenAnswer(
-            (_) async => Right<Failure, HankoAuthResponse>(testHankoResponse),
-          );
-          when(
-            () => mockSecureStorage.saveHankoSessionId(testSessionId),
-          ).thenAnswer((_) async {});
-
-          // act
-          final result = await repository.loginWithHanko(email: testEmail);
-
-          // assert
-          expect(result.isRight(), true);
-          result.fold((failure) => fail('Should return Right'), (session) {
-            expect(session.user.email, testEmail);
-            expect(session.user.status, UserStatus.pending);
-            expect(session.hankoSessionId, testSessionId);
-            expect(session.accessToken, 'pending-hanko-auth');
-          });
-          verify(
-            () => mockHankoDataSource.isEmailRegistered(testEmail),
-          ).called(1);
-          verify(() => mockHankoDataSource.initiateLogin(testEmail)).called(1);
-          verify(
-            () => mockSecureStorage.saveHankoSessionId(testSessionId),
-          ).called(1);
-        },
-      );
-
-      test('should return AuthFailure when email is not registered', () async {
-        // arrange
-        when(
-          () => mockHankoDataSource.isEmailRegistered(testEmail),
-        ).thenAnswer((_) async => const Right<Failure, bool>(false));
-
-        // act
-        final result = await repository.loginWithHanko(email: testEmail);
-
-        // assert
-        expect(result.isLeft(), true);
-        result.fold((failure) {
-          expect(failure, isA<AuthFailure>());
-          expect(failure.code, 'INVALID_CREDENTIALS');
-        }, (_) => fail('Should return Left'));
-      });
-    });
-
-    group('completeHankoAuth', () {
-      const testSessionId = 'hanko_session_123';
-      const testCredential = 'credential_token';
-
-      test(
-        'should return AuthSessionEntity when Hanko auth completes',
-        () async {
-          // arrange
-          when(
-            () => mockHankoDataSource.completeLogin(
-              sessionId: testSessionId,
-              credential: testCredential,
+            () => mockRemoteDataSource.loginWithHanko(
+              email: testEmail,
+              clubSlug: testClubSlug,
             ),
-          ).thenAnswer(
-            (_) async => Right<Failure, AuthSessionEntity>(testSession),
-          );
+          ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
           when(
             () => mockLocalDataSource.storeSession(any()),
           ).thenAnswer((_) async => const Right<Failure, void>(null));
@@ -300,14 +231,11 @@ void main() {
           when(
             () => mockSecureStorage.storeRefreshToken(any()),
           ).thenAnswer((_) async {});
-          when(
-            () => mockSecureStorage.deleteHankoSessionId(),
-          ).thenAnswer((_) async {});
 
           // act
-          final result = await repository.completeHankoAuth(
-            sessionId: testSessionId,
-            credential: testCredential,
+          final result = await repository.loginWithHanko(
+            email: testEmail,
+            clubSlug: testClubSlug,
           );
 
           // assert
@@ -315,9 +243,37 @@ void main() {
           result.fold((failure) => fail('Should return Right'), (session) {
             expect(session.accessToken, 'test_access_token');
           });
-          verify(() => mockSecureStorage.deleteHankoSessionId()).called(1);
+          verify(
+            () => mockRemoteDataSource.loginWithHanko(
+              email: testEmail,
+              clubSlug: testClubSlug,
+            ),
+          ).called(1);
         },
       );
+
+      test('should return AuthFailure when passkey login fails', () async {
+        // arrange
+        when(
+          () => mockRemoteDataSource.loginWithHanko(
+            email: testEmail,
+            clubSlug: testClubSlug,
+          ),
+        ).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
+
+        // act
+        final result = await repository.loginWithHanko(
+          email: testEmail,
+          clubSlug: testClubSlug,
+        );
+
+        // assert
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<AuthFailure>());
+          expect(failure.code, 'INVALID_CREDENTIALS');
+        }, (_) => fail('Should return Left'));
+      });
     });
 
     group('register', () {

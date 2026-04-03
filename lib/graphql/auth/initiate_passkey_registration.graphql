@@ -1,0 +1,6 @@
+mutation InitiatePasskeyRegistration {
+  initiatePasskeyRegistration {
+    options
+    userId
+  }
+}

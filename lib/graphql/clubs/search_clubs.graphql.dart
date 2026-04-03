@@ -460,6 +460,13 @@ const documentNodeQuerySearchClubs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'slug'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'description'),
                         alias: null,
                         arguments: [],
@@ -468,6 +475,13 @@ const documentNodeQuerySearchClubs = DocumentNode(
                       ),
                       FieldNode(
                         name: NameNode(value: 'location'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'logo'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -880,8 +894,10 @@ class Query$SearchClubs$searchClubs$nodes {
   Query$SearchClubs$searchClubs$nodes({
     required this.id,
     required this.name,
+    required this.slug,
     this.description,
     required this.location,
+    this.logo,
     this.distance,
     this.relevanceScore,
     this.$__typename = 'Club',
@@ -892,16 +908,20 @@ class Query$SearchClubs$searchClubs$nodes {
   ) {
     final l$id = json['id'];
     final l$name = json['name'];
+    final l$slug = json['slug'];
     final l$description = json['description'];
     final l$location = json['location'];
+    final l$logo = json['logo'];
     final l$distance = json['distance'];
     final l$relevanceScore = json['relevanceScore'];
     final l$$__typename = json['__typename'];
     return Query$SearchClubs$searchClubs$nodes(
       id: (l$id as String),
       name: (l$name as String),
+      slug: (l$slug as String),
       description: (l$description as String?),
       location: (l$location as String),
+      logo: (l$logo as String?),
       distance: (l$distance as num?)?.toDouble(),
       relevanceScore: (l$relevanceScore as num?)?.toDouble(),
       $__typename: (l$$__typename as String),
@@ -912,9 +932,13 @@ class Query$SearchClubs$searchClubs$nodes {
 
   final String name;
 
+  final String slug;
+
   final String? description;
 
   final String location;
+
+  final String? logo;
 
   final double? distance;
 
@@ -928,10 +952,14 @@ class Query$SearchClubs$searchClubs$nodes {
     _resultData['id'] = l$id;
     final l$name = name;
     _resultData['name'] = l$name;
+    final l$slug = slug;
+    _resultData['slug'] = l$slug;
     final l$description = description;
     _resultData['description'] = l$description;
     final l$location = location;
     _resultData['location'] = l$location;
+    final l$logo = logo;
+    _resultData['logo'] = l$logo;
     final l$distance = distance;
     _resultData['distance'] = l$distance;
     final l$relevanceScore = relevanceScore;
@@ -945,16 +973,20 @@ class Query$SearchClubs$searchClubs$nodes {
   int get hashCode {
     final l$id = id;
     final l$name = name;
+    final l$slug = slug;
     final l$description = description;
     final l$location = location;
+    final l$logo = logo;
     final l$distance = distance;
     final l$relevanceScore = relevanceScore;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
       l$name,
+      l$slug,
       l$description,
       l$location,
+      l$logo,
       l$distance,
       l$relevanceScore,
       l$$__typename,
@@ -980,6 +1012,11 @@ class Query$SearchClubs$searchClubs$nodes {
     if (l$name != lOther$name) {
       return false;
     }
+    final l$slug = slug;
+    final lOther$slug = other.slug;
+    if (l$slug != lOther$slug) {
+      return false;
+    }
     final l$description = description;
     final lOther$description = other.description;
     if (l$description != lOther$description) {
@@ -988,6 +1025,11 @@ class Query$SearchClubs$searchClubs$nodes {
     final l$location = location;
     final lOther$location = other.location;
     if (l$location != lOther$location) {
+      return false;
+    }
+    final l$logo = logo;
+    final lOther$logo = other.logo;
+    if (l$logo != lOther$logo) {
       return false;
     }
     final l$distance = distance;
@@ -1029,8 +1071,10 @@ abstract class CopyWith$Query$SearchClubs$searchClubs$nodes<TRes> {
   TRes call({
     String? id,
     String? name,
+    String? slug,
     String? description,
     String? location,
+    String? logo,
     double? distance,
     double? relevanceScore,
     String? $__typename,
@@ -1050,8 +1094,10 @@ class _CopyWithImpl$Query$SearchClubs$searchClubs$nodes<TRes>
   TRes call({
     Object? id = _undefined,
     Object? name = _undefined,
+    Object? slug = _undefined,
     Object? description = _undefined,
     Object? location = _undefined,
+    Object? logo = _undefined,
     Object? distance = _undefined,
     Object? relevanceScore = _undefined,
     Object? $__typename = _undefined,
@@ -1061,12 +1107,16 @@ class _CopyWithImpl$Query$SearchClubs$searchClubs$nodes<TRes>
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
+      slug: slug == _undefined || slug == null
+          ? _instance.slug
+          : (slug as String),
       description: description == _undefined
           ? _instance.description
           : (description as String?),
       location: location == _undefined || location == null
           ? _instance.location
           : (location as String),
+      logo: logo == _undefined ? _instance.logo : (logo as String?),
       distance: distance == _undefined
           ? _instance.distance
           : (distance as double?),
@@ -1089,8 +1139,10 @@ class _CopyWithStubImpl$Query$SearchClubs$searchClubs$nodes<TRes>
   call({
     String? id,
     String? name,
+    String? slug,
     String? description,
     String? location,
+    String? logo,
     double? distance,
     double? relevanceScore,
     String? $__typename,

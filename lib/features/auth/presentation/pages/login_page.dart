@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/route_paths.dart';
 import '../../../../core/design_system/design_system.dart';
 import '../../../../core/design_system/theme/app_sizing.dart';
 import '../controllers/auth_controller.dart';
@@ -231,7 +233,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
   }
 
-  Future<void> _handleHankoLogin() async {
+  void _handleHankoLogin() {
     if (_emailController.text.trim().isEmpty) {
       AppSnackBar.showError(
         context,
@@ -240,8 +242,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       return;
     }
 
-    await ref
-        .read(authControllerProvider.notifier)
-        .loginWithHanko(email: _emailController.text.trim());
+    context.push(
+      RoutePaths.clubSelection,
+      extra: {'email': _emailController.text.trim()},
+    );
   }
 }

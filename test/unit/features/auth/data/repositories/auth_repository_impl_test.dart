@@ -1,5 +1,4 @@
 import 'package:clubland/core/errors/failures.dart';
-import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 import 'package:clubland/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
@@ -15,7 +14,6 @@ void main() {
   late AuthRepositoryImpl repository;
   late MockAuthRemoteDataSource mockRemoteDataSource;
   late MockAuthLocalDataSource mockLocalDataSource;
-  late MockHankoDataSource mockHankoDataSource;
   late MockSecureStorageService mockSecureStorageService;
   late Logger mockLogger;
 
@@ -51,14 +49,12 @@ void main() {
   setUp(() {
     mockRemoteDataSource = MockAuthRemoteDataSource();
     mockLocalDataSource = MockAuthLocalDataSource();
-    mockHankoDataSource = MockHankoDataSource();
     mockSecureStorageService = MockSecureStorageService();
     mockLogger = Logger(level: Level.off);
 
     repository = AuthRepositoryImpl(
       remoteDataSource: mockRemoteDataSource,
       localDataSource: mockLocalDataSource,
-      hankoDataSource: mockHankoDataSource,
       secureStorage: mockSecureStorageService,
       logger: mockLogger,
     );
@@ -168,47 +164,29 @@ void main() {
     });
 
     group('loginWithHanko', () {
-      test('should return session when Hanko login is successful', () async {
-        // Mock Hanko email check
+      test('should return session when passkey login is successful', () async {
+        // Mock remote datasource returning session
         when(
-          () => mockHankoDataSource.isEmailRegistered(any()),
-        ).thenAnswer((_) async => const Right<Failure, bool>(true));
-
-        // Mock Hanko login initiation
-        when(() => mockHankoDataSource.initiateLogin(any())).thenAnswer(
-          (_) async => const Right(
-            HankoAuthResponse(sessionId: 'test-session-id', status: 'pending'),
+          () => mockRemoteDataSource.loginWithHanko(
+            email: any(named: 'email'),
+            clubSlug: any(named: 'clubSlug'),
           ),
-        );
-
-        // Mock Hanko login success
-        when(
-          () => mockRemoteDataSource.loginWithHanko(email: any(named: 'email')),
-        ).thenAnswer(
-          (_) async => Right<Failure, AuthSessionEntity>(testSession),
-        );
+        ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(testSession));
 
         // Mock local storage operations
         when(
           () => mockLocalDataSource.storeSession(any()),
         ).thenAnswer((_) async {});
         when(
-          () => mockLocalDataSource.storeUser(any()),
-        ).thenAnswer((_) async {});
-
-        // Mock secure storage operations
-        when(
           () => mockSecureStorageService.storeAccessToken(any()),
         ).thenAnswer((_) async {});
         when(
           () => mockSecureStorageService.storeRefreshToken(any()),
         ).thenAnswer((_) async {});
-        when(
-          () => mockSecureStorageService.saveHankoSessionId(any()),
-        ).thenAnswer((_) async {});
 
         final result = await repository.loginWithHanko(
           email: 'test@example.com',
+          clubSlug: 'test-club',
         );
 
         expect(result.isRight(), true);
@@ -216,20 +194,15 @@ void main() {
           (failure) => fail('Expected success but got failure: $failure'),
           (session) {
             expect(session.user.email, 'test@example.com');
-            expect(session.accessToken, 'pending-hanko-auth');
-            expect(session.refreshToken, 'pending-hanko-refresh');
-            expect(session.user.status, UserStatus.pending);
+            expect(session.accessToken, 'test-access-token');
           },
         );
 
         verify(
-          () => mockHankoDataSource.isEmailRegistered('test@example.com'),
-        ).called(1);
-        verify(
-          () => mockHankoDataSource.initiateLogin('test@example.com'),
-        ).called(1);
-        verify(
-          () => mockSecureStorageService.saveHankoSessionId('test-session-id'),
+          () => mockRemoteDataSource.loginWithHanko(
+            email: 'test@example.com',
+            clubSlug: 'test-club',
+          ),
         ).called(1);
       });
     });

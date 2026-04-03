@@ -1,5 +1,6 @@
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:clubland/features/auth/data/datasources/passkey_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:local_auth/local_auth.dart';
@@ -12,10 +13,13 @@ class MockLogger extends Mock implements Logger {}
 
 class MockLocalAuthentication extends Mock implements LocalAuthentication {}
 
+class MockPasskeyService extends Mock implements PasskeyService {}
+
 void main() {
   late MockGraphQLClient mockGraphQLClient;
   late MockLogger mockLogger;
   late MockLocalAuthentication mockLocalAuth;
+  late MockPasskeyService mockPasskeyService;
   late AuthRemoteDataSourceImpl dataSource;
 
   setUpAll(() {
@@ -27,10 +31,12 @@ void main() {
     mockGraphQLClient = MockGraphQLClient();
     mockLogger = MockLogger();
     mockLocalAuth = MockLocalAuthentication();
+    mockPasskeyService = MockPasskeyService();
     dataSource = AuthRemoteDataSourceImpl(
       graphqlClient: mockGraphQLClient,
       logger: mockLogger,
       localAuth: mockLocalAuth,
+      passkeyService: mockPasskeyService,
     );
   });
 

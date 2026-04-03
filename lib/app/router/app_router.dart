@@ -4,8 +4,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/providers/core_providers.dart';
 import '../../features/auth/presentation/controllers/auth_controller.dart';
+import '../../features/auth/presentation/pages/club_selection_page.dart';
+import '../../features/auth/presentation/pages/hanko_auth_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/profile/presentation/pages/edit_profile_page.dart';
 import '../../features/bookings/presentation/pages/bookings_page.dart';
 import '../../features/clubs/presentation/pages/clubs_page.dart';
 import '../../features/events/presentation/pages/event_details_page.dart';
@@ -56,7 +59,9 @@ GoRouter appRouter(Ref ref) {
         final isAuthenticated = authState.value != null;
         final isLoginRoute =
             state.matchedLocation == RoutePaths.login ||
-            state.matchedLocation == RoutePaths.register;
+            state.matchedLocation == RoutePaths.register ||
+            state.matchedLocation == RoutePaths.clubSelection ||
+            state.matchedLocation == RoutePaths.hankoAuth;
 
         // If authenticated and on login/register, redirect to home
         if (isAuthenticated && isLoginRoute) {
@@ -91,6 +96,25 @@ GoRouter appRouter(Ref ref) {
         name: 'register',
         builder: (context, state) => const RegisterPage(),
       ),
+      GoRoute(
+        path: RoutePaths.clubSelection,
+        name: 'clubSelection',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final email = extra?['email'] as String? ?? '';
+          return ClubSelectionPage(email: email);
+        },
+      ),
+      GoRoute(
+        path: RoutePaths.hankoAuth,
+        name: 'hankoAuth',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final email = extra?['email'] as String? ?? '';
+          final clubSlug = extra?['clubSlug'] as String? ?? '';
+          return HankoAuthPage(email: email, clubSlug: clubSlug);
+        },
+      ),
 
       // Main app routes with bottom navigation
       ShellRoute(
@@ -124,6 +148,13 @@ GoRouter appRouter(Ref ref) {
         path: RoutePaths.settings,
         name: 'settings',
         builder: (context, state) => const ProfileSettingsPage(),
+      ),
+
+      // Edit profile route
+      GoRoute(
+        path: RoutePaths.profileEdit,
+        name: 'profileEdit',
+        builder: (context, state) => const EditProfilePage(),
       ),
 
       // Events routes (outside main navigation)

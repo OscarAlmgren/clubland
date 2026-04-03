@@ -121,6 +121,12 @@ class AuthFailure extends Failure {
   factory AuthFailure.hankoError(String message) =>
       AuthFailure('Hanko authentication error: $message', 'HANKO_ERROR');
 
+  /// Factory constructor for when the user cancels a passkey prompt.
+  factory AuthFailure.passkeyCancelled() => const AuthFailure(
+    'Passkey authentication was cancelled',
+    'PASSKEY_CANCELLED',
+  );
+
   /// Factory constructor for token refresh failure.
   factory AuthFailure.tokenRefreshFailed() => const AuthFailure(
     'Failed to refresh authentication token',

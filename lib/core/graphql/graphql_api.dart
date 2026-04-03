@@ -40,6 +40,18 @@ export '../../graphql/auth/logout.graphql.dart';
 export '../../graphql/auth/refresh_token.graphql.dart';
 export '../../graphql/auth/register.graphql.dart';
 // =================================================================
+// BOOKING OPERATIONS
+// =================================================================
+export '../../graphql/bookings/booking.graphql.dart';
+export '../../graphql/bookings/bookings.graphql.dart';
+export '../../graphql/bookings/my_bookings.graphql.dart';
+export '../../graphql/bookings/create_booking.graphql.dart';
+export '../../graphql/bookings/update_booking.graphql.dart';
+export '../../graphql/bookings/cancel_booking.graphql.dart';
+export '../../graphql/bookings/confirm_booking.graphql.dart';
+export '../../graphql/bookings/check_in_booking.graphql.dart';
+export '../../graphql/bookings/check_out_booking.graphql.dart';
+// =================================================================
 // VISIT OPERATIONS
 // =================================================================
 export '../../graphql/bookings/checkout_visit.graphql.dart';
@@ -58,6 +70,9 @@ export '../../graphql/bookings/visits.graphql.dart';
 // =================================================================
 export '../../graphql/clubs/club.graphql.dart';
 export '../../graphql/clubs/my_club.graphql.dart';
+export '../../graphql/clubs/search_clubs.graphql.dart';
+export '../../graphql/clubs/toggle_favorite.graphql.dart';
+export '../../graphql/clubs/get_club_reviews.graphql.dart';
 // =================================================================
 // USER PROFILE OPERATIONS
 // =================================================================

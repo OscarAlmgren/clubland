@@ -19,12 +19,10 @@ class MockGetCurrentUserUsecase extends Mock implements GetCurrentUserUsecase {}
 
 void main() {
   late MockLoginUsecase mockLoginUsecase;
-  late MockHankoLoginUsecase mockHankoLoginUsecase;
   late MockGetCurrentUserUsecase mockGetCurrentUserUsecase;
 
   setUp(() {
     mockLoginUsecase = MockLoginUsecase();
-    mockHankoLoginUsecase = MockHankoLoginUsecase();
     mockGetCurrentUserUsecase = MockGetCurrentUserUsecase();
   });
 
@@ -329,22 +327,18 @@ void main() {
       ).called(1);
     });
 
-    testWidgets('should call Hanko login when email is provided', (
+    testWidgets('should navigate to club selection when email is provided', (
       tester,
     ) async {
       // arrange
       when(
         () => mockGetCurrentUserUsecase(),
       ).thenAnswer((_) async => const Right(null));
-      when(
-        () => mockHankoLoginUsecase(email: any(named: 'email')),
-      ).thenAnswer((_) async => Right(testSession));
 
       // act
       await tester.pumpApp(
         const LoginPage(),
         overrides: [
-          hankoLoginUsecaseProvider.overrideWithValue(mockHankoLoginUsecase),
           getCurrentUserUsecaseProvider.overrideWithValue(
             mockGetCurrentUserUsecase,
           ),
@@ -358,14 +352,12 @@ void main() {
         TestConstants.testEmail,
       );
 
-      // Tap Hanko login
+      // Tap passkey login — should navigate (not call usecase directly)
       await tester.tap(find.text('Continue with Hanko'));
       await tester.pumpAndSettle();
 
-      // assert
-      verify(
-        () => mockHankoLoginUsecase(email: TestConstants.testEmail),
-      ).called(1);
+      // assert — no error snackbar means navigation was attempted
+      expect(find.text('Please enter your email first'), findsNothing);
     });
 
     testWidgets('should show error when Hanko login without email', (

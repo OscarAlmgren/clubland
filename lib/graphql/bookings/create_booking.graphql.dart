@@ -265,6 +265,13 @@ const documentNodeMutationCreateBooking = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
+                  name: NameNode(value: 'clubId'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
                   name: NameNode(value: 'facilityId'),
                   alias: null,
                   arguments: [],
@@ -307,19 +314,19 @@ const documentNodeMutationCreateBooking = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'participants'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
                   name: NameNode(value: 'facility'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: SelectionSetNode(
                     selections: [
+                      FieldNode(
+                        name: NameNode(value: 'id'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
                       FieldNode(
                         name: NameNode(value: 'name'),
                         alias: null,
@@ -470,13 +477,13 @@ extension ClientExtension$Mutation$CreateBooking on graphql.GraphQLClient {
 class Mutation$CreateBooking$createBooking {
   Mutation$CreateBooking$createBooking({
     required this.id,
+    required this.clubId,
     required this.facilityId,
     required this.userId,
     required this.startTime,
     required this.endTime,
     required this.status,
     this.notes,
-    required this.participants,
     this.facility,
     required this.createdAt,
     this.$__typename = 'Booking',
@@ -486,27 +493,25 @@ class Mutation$CreateBooking$createBooking {
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
+    final l$clubId = json['clubId'];
     final l$facilityId = json['facilityId'];
     final l$userId = json['userId'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
     final l$status = json['status'];
     final l$notes = json['notes'];
-    final l$participants = json['participants'];
     final l$facility = json['facility'];
     final l$createdAt = json['createdAt'];
     final l$$__typename = json['__typename'];
     return Mutation$CreateBooking$createBooking(
       id: (l$id as String),
+      clubId: (l$clubId as String),
       facilityId: (l$facilityId as String),
       userId: (l$userId as String),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
       notes: (l$notes as String?),
-      participants: (l$participants as List<dynamic>)
-          .map((e) => (e as String))
-          .toList(),
       facility: l$facility == null
           ? null
           : Mutation$CreateBooking$createBooking$facility.fromJson(
@@ -518,6 +523,8 @@ class Mutation$CreateBooking$createBooking {
   }
 
   final String id;
+
+  final String clubId;
 
   final String facilityId;
 
@@ -531,8 +538,6 @@ class Mutation$CreateBooking$createBooking {
 
   final String? notes;
 
-  final List<String> participants;
-
   final Mutation$CreateBooking$createBooking$facility? facility;
 
   final DateTime createdAt;
@@ -543,6 +548,8 @@ class Mutation$CreateBooking$createBooking {
     final _resultData = <String, dynamic>{};
     final l$id = id;
     _resultData['id'] = l$id;
+    final l$clubId = clubId;
+    _resultData['clubId'] = l$clubId;
     final l$facilityId = facilityId;
     _resultData['facilityId'] = l$facilityId;
     final l$userId = userId;
@@ -555,8 +562,6 @@ class Mutation$CreateBooking$createBooking {
     _resultData['status'] = toJson$Enum$BookingStatus(l$status);
     final l$notes = notes;
     _resultData['notes'] = l$notes;
-    final l$participants = participants;
-    _resultData['participants'] = l$participants.map((e) => e).toList();
     final l$facility = facility;
     _resultData['facility'] = l$facility?.toJson();
     final l$createdAt = createdAt;
@@ -569,25 +574,25 @@ class Mutation$CreateBooking$createBooking {
   @override
   int get hashCode {
     final l$id = id;
+    final l$clubId = clubId;
     final l$facilityId = facilityId;
     final l$userId = userId;
     final l$startTime = startTime;
     final l$endTime = endTime;
     final l$status = status;
     final l$notes = notes;
-    final l$participants = participants;
     final l$facility = facility;
     final l$createdAt = createdAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
+      l$clubId,
       l$facilityId,
       l$userId,
       l$startTime,
       l$endTime,
       l$status,
       l$notes,
-      Object.hashAll(l$participants.map((v) => v)),
       l$facility,
       l$createdAt,
       l$$__typename,
@@ -606,6 +611,11 @@ class Mutation$CreateBooking$createBooking {
     final l$id = id;
     final lOther$id = other.id;
     if (l$id != lOther$id) {
+      return false;
+    }
+    final l$clubId = clubId;
+    final lOther$clubId = other.clubId;
+    if (l$clubId != lOther$clubId) {
       return false;
     }
     final l$facilityId = facilityId;
@@ -637,18 +647,6 @@ class Mutation$CreateBooking$createBooking {
     final lOther$notes = other.notes;
     if (l$notes != lOther$notes) {
       return false;
-    }
-    final l$participants = participants;
-    final lOther$participants = other.participants;
-    if (l$participants.length != lOther$participants.length) {
-      return false;
-    }
-    for (int i = 0; i < l$participants.length; i++) {
-      final l$participants$entry = l$participants[i];
-      final lOther$participants$entry = lOther$participants[i];
-      if (l$participants$entry != lOther$participants$entry) {
-        return false;
-      }
     }
     final l$facility = facility;
     final lOther$facility = other.facility;
@@ -688,13 +686,13 @@ abstract class CopyWith$Mutation$CreateBooking$createBooking<TRes> {
 
   TRes call({
     String? id,
+    String? clubId,
     String? facilityId,
     String? userId,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
     String? notes,
-    List<String>? participants,
     Mutation$CreateBooking$createBooking$facility? facility,
     DateTime? createdAt,
     String? $__typename,
@@ -717,19 +715,22 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
 
   TRes call({
     Object? id = _undefined,
+    Object? clubId = _undefined,
     Object? facilityId = _undefined,
     Object? userId = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
     Object? status = _undefined,
     Object? notes = _undefined,
-    Object? participants = _undefined,
     Object? facility = _undefined,
     Object? createdAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CreateBooking$createBooking(
       id: id == _undefined || id == null ? _instance.id : (id as String),
+      clubId: clubId == _undefined || clubId == null
+          ? _instance.clubId
+          : (clubId as String),
       facilityId: facilityId == _undefined || facilityId == null
           ? _instance.facilityId
           : (facilityId as String),
@@ -746,9 +747,6 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
           ? _instance.status
           : (status as Enum$BookingStatus),
       notes: notes == _undefined ? _instance.notes : (notes as String?),
-      participants: participants == _undefined || participants == null
-          ? _instance.participants
-          : (participants as List<String>),
       facility: facility == _undefined
           ? _instance.facility
           : (facility as Mutation$CreateBooking$createBooking$facility?),
@@ -782,13 +780,13 @@ class _CopyWithStubImpl$Mutation$CreateBooking$createBooking<TRes>
 
   call({
     String? id,
+    String? clubId,
     String? facilityId,
     String? userId,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
     String? notes,
-    List<String>? participants,
     Mutation$CreateBooking$createBooking$facility? facility,
     DateTime? createdAt,
     String? $__typename,
@@ -800,6 +798,7 @@ class _CopyWithStubImpl$Mutation$CreateBooking$createBooking<TRes>
 
 class Mutation$CreateBooking$createBooking$facility {
   Mutation$CreateBooking$createBooking$facility({
+    required this.id,
     required this.name,
     required this.type,
     this.$__typename = 'Facility',
@@ -808,15 +807,19 @@ class Mutation$CreateBooking$createBooking$facility {
   factory Mutation$CreateBooking$createBooking$facility.fromJson(
     Map<String, dynamic> json,
   ) {
+    final l$id = json['id'];
     final l$name = json['name'];
     final l$type = json['type'];
     final l$$__typename = json['__typename'];
     return Mutation$CreateBooking$createBooking$facility(
+      id: (l$id as String),
       name: (l$name as String),
       type: (l$type as String),
       $__typename: (l$$__typename as String),
     );
   }
+
+  final String id;
 
   final String name;
 
@@ -826,6 +829,8 @@ class Mutation$CreateBooking$createBooking$facility {
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
@@ -837,10 +842,11 @@ class Mutation$CreateBooking$createBooking$facility {
 
   @override
   int get hashCode {
+    final l$id = id;
     final l$name = name;
     final l$type = type;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$name, l$type, l$$__typename]);
+    return Object.hashAll([l$id, l$name, l$type, l$$__typename]);
   }
 
   @override
@@ -850,6 +856,11 @@ class Mutation$CreateBooking$createBooking$facility {
     }
     if (other is! Mutation$CreateBooking$createBooking$facility ||
         runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
       return false;
     }
     final l$name = name;
@@ -890,7 +901,7 @@ abstract class CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> {
     TRes res,
   ) = _CopyWithStubImpl$Mutation$CreateBooking$createBooking$facility;
 
-  TRes call({String? name, String? type, String? $__typename});
+  TRes call({String? id, String? name, String? type, String? $__typename});
 }
 
 class _CopyWithImpl$Mutation$CreateBooking$createBooking$facility<TRes>
@@ -907,11 +918,13 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking$facility<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
+    Object? id = _undefined,
     Object? name = _undefined,
     Object? type = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CreateBooking$createBooking$facility(
+      id: id == _undefined || id == null ? _instance.id : (id as String),
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
@@ -931,5 +944,5 @@ class _CopyWithStubImpl$Mutation$CreateBooking$createBooking$facility<TRes>
 
   TRes _res;
 
-  call({String? name, String? type, String? $__typename}) => _res;
+  call({String? id, String? name, String? type, String? $__typename}) => _res;
 }

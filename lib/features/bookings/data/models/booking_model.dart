@@ -44,29 +44,60 @@ class BookingModel extends Equatable {
       id: json['id'] as String,
       startTime: DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
-      status: BookingStatus.values.firstWhere(
-        (status) => status.name == json['status'],
-        orElse: () => BookingStatus.pending,
-      ),
+      status: _parseStatus(json['status'] as String?),
       notes: json['notes'] as String?,
-      club: ClubSummary.fromJson(json['club'] as Map<String, dynamic>),
-      facility: FacilitySummary.fromJson(json['facility'] as Map<String, dynamic>),
-      user: UserSummary.fromJson(json['user'] as Map<String, dynamic>),
-      participants: (json['participants'] as List<dynamic>?)
-              ?.map((p) => BookingParticipant.fromJson(p as Map<String, dynamic>))
-              .toList() ??
-          [],
+      // Backend returns clubId scalar — no nested club relation in schema
+      club: ClubSummary(
+        id: (json['clubId'] as String?) ?? '',
+        name: '',
+      ),
+      facility: json['facility'] != null
+          ? FacilitySummary.fromJson(json['facility'] as Map<String, dynamic>)
+          : FacilitySummary(
+              id: (json['facilityId'] as String?) ?? '',
+              name: '',
+            ),
+      user: json['user'] != null
+          ? UserSummary.fromJson(json['user'] as Map<String, dynamic>)
+          : UserSummary(
+              id: (json['userId'] as String?) ?? '',
+              firstName: '',
+              lastName: '',
+            ),
       payment: json['payment'] != null
           ? BookingPayment.fromJson(json['payment'] as Map<String, dynamic>)
           : null,
+      // Backend returns flat cancellationReason/cancelledAt fields, not nested object
       cancellation: json['cancellation'] != null
           ? BookingCancellation.fromJson(json['cancellation'] as Map<String, dynamic>)
-          : null,
+          : json['cancellationReason'] != null
+              ? BookingCancellation(
+                  reason: json['cancellationReason'] as String,
+                  cancelledAt: json['cancelledAt'] != null
+                      ? DateTime.parse(json['cancelledAt'] as String)
+                      : DateTime.now(),
+                )
+              : null,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'] as String)
           : null,
     );
+  }
+
+  static BookingStatus _parseStatus(String? value) {
+    switch (value?.toUpperCase()) {
+      case 'CONFIRMED':
+        return BookingStatus.confirmed;
+      case 'CANCELLED':
+        return BookingStatus.cancelled;
+      case 'COMPLETED':
+        return BookingStatus.completed;
+      case 'NO_SHOW':
+        return BookingStatus.noShow;
+      default:
+        return BookingStatus.pending;
+    }
   }
 
   Map<String, dynamic> toJson() {

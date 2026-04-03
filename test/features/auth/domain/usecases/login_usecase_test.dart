@@ -206,26 +206,38 @@ void main() {
     test('should trim and lowercase email before calling repository', () async {
       // arrange
       when(
-        () => mockRepository.loginWithHanko(email: any(named: 'email')),
+        () => mockRepository.loginWithHanko(
+          email: any(named: 'email'),
+          clubSlug: any(named: 'clubSlug'),
+        ),
       ).thenAnswer((_) async => Right(testSession));
 
       // act
-      await usecase(email: ' Test@Example.COM ');
+      await usecase(email: ' Test@Example.COM ', clubSlug: 'test-club');
 
       // assert
       verify(
-        () => mockRepository.loginWithHanko(email: 'test@example.com'),
+        () => mockRepository.loginWithHanko(
+          email: 'test@example.com',
+          clubSlug: 'test-club',
+        ),
       ).called(1);
     });
 
     test('should return AuthSessionEntity when Hanko login succeeds', () async {
       // arrange
       when(
-        () => mockRepository.loginWithHanko(email: any(named: 'email')),
+        () => mockRepository.loginWithHanko(
+          email: any(named: 'email'),
+          clubSlug: any(named: 'clubSlug'),
+        ),
       ).thenAnswer((_) async => Right(testSession));
 
       // act
-      final result = await usecase(email: 'test@example.com');
+      final result = await usecase(
+        email: 'test@example.com',
+        clubSlug: 'test-club',
+      );
 
       // assert
       expect(result.isRight(), true);
@@ -236,7 +248,7 @@ void main() {
 
     test('should return ValidationFailure when email is empty', () async {
       // act
-      final result = await usecase(email: '');
+      final result = await usecase(email: '', clubSlug: 'test-club');
 
       // assert
       expect(result.isLeft(), true);
@@ -245,7 +257,10 @@ void main() {
         expect(failure.code, 'INVALID_EMAIL');
       }, (_) => fail('Should return Left'));
       verifyNever(
-        () => mockRepository.loginWithHanko(email: any(named: 'email')),
+        () => mockRepository.loginWithHanko(
+          email: any(named: 'email'),
+          clubSlug: any(named: 'clubSlug'),
+        ),
       );
     });
 
@@ -253,7 +268,10 @@ void main() {
       'should return ValidationFailure when email format is invalid',
       () async {
         // act
-        final result = await usecase(email: 'invalid-email');
+        final result = await usecase(
+          email: 'invalid-email',
+          clubSlug: 'test-club',
+        );
 
         // assert
         expect(result.isLeft(), true);
@@ -264,65 +282,19 @@ void main() {
       },
     );
 
-    group('completeAuth', () {
-      test(
-        'should return AuthSessionEntity when completion succeeds',
-        () async {
-          // arrange
-          when(
-            () => mockRepository.completeHankoAuth(
-              sessionId: 'session123',
-              credential: 'credential',
-            ),
-          ).thenAnswer((_) async => Right(testSession));
-
-          // act
-          final result = await usecase.completeAuth(
-            sessionId: 'session123',
-            credential: 'credential',
-          );
-
-          // assert
-          expect(result.isRight(), true);
-          result.fold(
-            (failure) => fail('Should return Right'),
-            (session) => expect(session.accessToken, 'test_access_token'),
-          );
-        },
+    test('should return ValidationFailure when clubSlug is empty', () async {
+      // act
+      final result = await usecase(
+        email: 'test@example.com',
+        clubSlug: '',
       );
 
-      test('should return ValidationFailure when sessionId is empty', () async {
-        // act
-        final result = await usecase.completeAuth(
-          sessionId: '',
-          credential: 'credential',
-        );
-
-        // assert
-        expect(result.isLeft(), true);
-        result.fold((failure) {
-          expect(failure, isA<ValidationFailure>());
-          expect(failure.code, 'FIELD_REQUIRED');
-        }, (_) => fail('Should return Left'));
-      });
-
-      test(
-        'should return ValidationFailure when credential is empty',
-        () async {
-          // act
-          final result = await usecase.completeAuth(
-            sessionId: 'session123',
-            credential: '',
-          );
-
-          // assert
-          expect(result.isLeft(), true);
-          result.fold((failure) {
-            expect(failure, isA<ValidationFailure>());
-            expect(failure.code, 'FIELD_REQUIRED');
-          }, (_) => fail('Should return Left'));
-        },
-      );
+      // assert
+      expect(result.isLeft(), true);
+      result.fold((failure) {
+        expect(failure, isA<ValidationFailure>());
+        expect(failure.code, 'FIELD_REQUIRED');
+      }, (_) => fail('Should return Left'));
     });
   });
 

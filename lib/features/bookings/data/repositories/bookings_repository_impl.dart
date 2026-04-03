@@ -180,27 +180,42 @@ class BookingsRepositoryImpl implements BookingsRepository {
   Future<Either<Failure, BookingEntity>> confirmBooking(
     String bookingId,
   ) async {
-    // Note: This would need to be implemented in the datasource
-    // For now, return a NotImplementedFailure
-    return Left(UnknownFailure.notImplemented());
+    try {
+      final booking = await _remoteDataSource.confirmBooking(bookingId);
+      return Right(_convertModelToEntity(booking));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message, e.code));
+    } on Exception catch (e) {
+      return Left(UnknownFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, BookingEntity>> checkInBooking(
     String bookingId,
   ) async {
-    // Note: This would need to be implemented in the datasource
-    // For now, return a NotImplementedFailure
-    return Left(UnknownFailure.notImplemented());
+    try {
+      final booking = await _remoteDataSource.checkInBooking(bookingId);
+      return Right(_convertModelToEntity(booking));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message, e.code));
+    } on Exception catch (e) {
+      return Left(UnknownFailure.unexpected(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, BookingEntity>> checkOutBooking(
     String bookingId,
   ) async {
-    // Note: This would need to be implemented in the datasource
-    // For now, return a NotImplementedFailure
-    return Left(UnknownFailure.notImplemented());
+    try {
+      final booking = await _remoteDataSource.checkOutBooking(bookingId);
+      return Right(_convertModelToEntity(booking));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message, e.code));
+    } on Exception catch (e) {
+      return Left(UnknownFailure.unexpected(e.toString()));
+    }
   }
 
   @override

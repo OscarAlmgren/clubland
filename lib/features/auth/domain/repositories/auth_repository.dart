@@ -12,15 +12,13 @@ abstract class AuthRepository {
     required String password,
   });
 
-  /// Login with Hanko (passwordless)
+  /// Login with Hanko passkey (passwordless).
+  ///
+  /// Initiates the WebAuthn flow via the backend, collects the device credential,
+  /// and exchanges it for a JWT session in one call.
   Future<Either<Failure, AuthSessionEntity>> loginWithHanko({
     required String email,
-  });
-
-  /// Complete Hanko authentication
-  Future<Either<Failure, AuthSessionEntity>> completeHankoAuth({
-    required String sessionId,
-    required String credential,
+    required String clubSlug,
   });
 
   /// Refresh authentication token

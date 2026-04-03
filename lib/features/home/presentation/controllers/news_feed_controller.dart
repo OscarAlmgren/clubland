@@ -1,9 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../../events/domain/entities/event_entity.dart';
 import '../../domain/entities/lunch_menu_entity.dart';
 import '../../domain/entities/news_feed_item_entity.dart';
 import '../../domain/entities/news_post_entity.dart';
+import '../providers/home_providers.dart';
 
 part 'news_feed_controller.g.dart';
 
@@ -12,9 +14,18 @@ part 'news_feed_controller.g.dart';
 class NewsFeedController extends _$NewsFeedController {
   @override
   Future<List<NewsFeedItemEntity>> build() async {
-    // TODO: Implement full data layer (repository/datasource) when backend API is ready
-    // For now, returning mock data directly
-    return _getMockNewsFeedItems();
+    final user = ref.watch(authControllerProvider).value;
+    if (user == null || user.clubId == null) {
+      return _getMockNewsFeedItems();
+    }
+
+    final repo = ref.read(homeFeedRepositoryProvider);
+    final result = await repo.getFeed(clubId: user.clubId!);
+
+    return result.fold(
+      (_) => _getMockNewsFeedItems(),
+      (items) => items.isEmpty ? _getMockNewsFeedItems() : items,
+    );
   }
 
   /// Get mock news feed items for demonstration

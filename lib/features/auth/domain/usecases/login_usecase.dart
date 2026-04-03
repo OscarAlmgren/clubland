@@ -62,56 +62,32 @@ class LoginUsecase {
   }
 }
 
-/// Hanko login use case
+/// Hanko login use case — performs the full passkey flow in one call.
 class HankoLoginUsecase {
   /// Constructs a [HankoLoginUsecase]
   HankoLoginUsecase(this._repository);
   final AuthRepository _repository;
 
-  /// Initiate Hanko login
+  /// Execute full Hanko passkey login (initiate → device prompt → complete).
   Future<Either<Failure, AuthSessionEntity>> call({
     required String email,
+    required String clubSlug,
   }) async {
-    // Validate email
-    final emailValidation = _validateEmail(email);
-    if (emailValidation != null) {
-      return Left(ValidationFailure.invalidEmail());
-    }
-
-    // Execute Hanko login
-    return _repository.loginWithHanko(email: email.trim().toLowerCase());
-  }
-
-  /// Complete Hanko authentication
-  Future<Either<Failure, AuthSessionEntity>> completeAuth({
-    required String sessionId,
-    required String credential,
-  }) async {
-    if (sessionId.isEmpty) {
-      return Left(ValidationFailure.fieldRequired('Session ID'));
-    }
-
-    if (credential.isEmpty) {
-      return Left(ValidationFailure.fieldRequired('Credential'));
-    }
-
-    return _repository.completeHankoAuth(
-      sessionId: sessionId,
-      credential: credential,
-    );
-  }
-
-  String? _validateEmail(String email) {
-    if (email.isEmpty) return 'Email is required';
+    if (email.isEmpty) return Left(ValidationFailure.invalidEmail());
 
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
-    if (!emailRegex.hasMatch(email)) {
-      return 'Invalid email format';
+    if (!emailRegex.hasMatch(email)) return Left(ValidationFailure.invalidEmail());
+
+    if (clubSlug.isEmpty) {
+      return Left(ValidationFailure.fieldRequired('Club'));
     }
 
-    return null;
+    return _repository.loginWithHanko(
+      email: email.trim().toLowerCase(),
+      clubSlug: clubSlug,
+    );
   }
 }
 

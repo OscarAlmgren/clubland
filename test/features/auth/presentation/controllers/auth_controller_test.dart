@@ -300,7 +300,10 @@ void main() {
           () => mockGetCurrentUserUsecase(),
         ).thenAnswer((_) async => const Right(null));
         when(
-          () => mockHankoLoginUsecase(email: any(named: 'email')),
+          () => mockHankoLoginUsecase(
+            email: any(named: 'email'),
+            clubSlug: any(named: 'clubSlug'),
+          ),
         ).thenAnswer((_) async => Right(testSession));
 
         final container = makeProviderContainer();
@@ -308,13 +311,19 @@ void main() {
 
         // act
         final controller = container.read(authControllerProvider.notifier);
-        await controller.loginWithHanko(email: 'test@example.com');
+        await controller.loginWithHanko(
+          email: 'test@example.com',
+          clubSlug: 'test-club',
+        );
 
         // assert
         final state = container.read(authControllerProvider);
         expect(state.value, testUser);
         verify(
-          () => mockHankoLoginUsecase(email: 'test@example.com'),
+          () => mockHankoLoginUsecase(
+            email: 'test@example.com',
+            clubSlug: 'test-club',
+          ),
         ).called(1);
 
         // cleanup
@@ -327,7 +336,10 @@ void main() {
           () => mockGetCurrentUserUsecase(),
         ).thenAnswer((_) async => const Right(null));
         when(
-          () => mockHankoLoginUsecase(email: any(named: 'email')),
+          () => mockHankoLoginUsecase(
+            email: any(named: 'email'),
+            clubSlug: any(named: 'clubSlug'),
+          ),
         ).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
 
         final container = makeProviderContainer();
@@ -335,43 +347,14 @@ void main() {
 
         // act
         final controller = container.read(authControllerProvider.notifier);
-        await controller.loginWithHanko(email: 'test@example.com');
-
-        // assert
-        final state = container.read(authControllerProvider);
-        expect(state.hasError, true);
-
-        // cleanup
-        container.dispose();
-      });
-    });
-
-    group('completeHankoAuth', () {
-      test('should update state with user on successful completion', () async {
-        // arrange
-        when(
-          () => mockGetCurrentUserUsecase(),
-        ).thenAnswer((_) async => const Right(null));
-        when(
-          () => mockHankoLoginUsecase.completeAuth(
-            sessionId: any(named: 'sessionId'),
-            credential: any(named: 'credential'),
-          ),
-        ).thenAnswer((_) async => Right(testSession));
-
-        final container = makeProviderContainer();
-        await container.read(authControllerProvider.future);
-
-        // act
-        final controller = container.read(authControllerProvider.notifier);
-        await controller.completeHankoAuth(
-          sessionId: 'session123',
-          credential: 'credential',
+        await controller.loginWithHanko(
+          email: 'test@example.com',
+          clubSlug: 'test-club',
         );
 
         // assert
         final state = container.read(authControllerProvider);
-        expect(state.value, testUser);
+        expect(state.hasError, true);
 
         // cleanup
         container.dispose();

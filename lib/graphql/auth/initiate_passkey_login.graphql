@@ -1,0 +1,6 @@
+mutation InitiatePasskeyLogin($email: String!, $clubSlug: String!) {
+  initiatePasskeyLogin(email: $email, clubSlug: $clubSlug) {
+    options
+    userId
+  }
+}

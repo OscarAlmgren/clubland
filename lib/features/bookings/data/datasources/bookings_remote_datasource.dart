@@ -2,6 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../models/booking_model.dart';
 import '../models/facility_availability_model.dart';
@@ -44,6 +45,12 @@ abstract class BookingsRemoteDataSource {
     String? reason,
   });
 
+  Future<BookingModel> confirmBooking(String bookingId);
+
+  Future<BookingModel> checkInBooking(String bookingId);
+
+  Future<BookingModel> checkOutBooking(String bookingId);
+
   Stream<BookingUpdateEvent> subscribeToBookingUpdates(String userId);
 }
 
@@ -65,196 +72,92 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
   }) async {
     _logger.d('Fetching user bookings with status: $status');
 
-    // TODO: Backend bookings schema not yet implemented
-    // Return empty list until backend API is ready
-    _logger.w(
-      'Bookings API not yet implemented in backend, returning empty list',
-    );
-    return [];
-
-    /*
-    // This code will be uncommented when backend bookings schema is available
     try {
-      final variables = <String, dynamic>{
-        'filter': {
-          if (status != null) 'status': status.name.toUpperCase(),
-          if (startDate != null) 'startDate': startDate.toIso8601String(),
-          if (endDate != null) 'endDate': endDate.toIso8601String(),
-        },
-        'pagination': {
-          if (limit != null) 'first': limit,
-          if (cursor != null) 'after': cursor,
-        },
-      };
-
-      const query = r'''
-        query UserBookings($filter: BookingFilterInput, $pagination: PaginationInput) {
-          myBookings(filter: $filter, pagination: $pagination) {
-            nodes {
-              id
-              startTime
-              endTime
-              status
-              notes
-              createdAt
-              club { id name logo }
-              facility { id name }
-            }
-            pageInfo { hasNextPage totalCount }
-          }
-        }
-      ''';
-
       final result = await _client.query(
         QueryOptions(
-          document: gql(query),
-          variables: variables,
+          document: documentNodeQueryMyBookings,
+          variables: Variables$Query$MyBookings(
+            filter: Input$BookingFilterInput(
+              status: _toEnumBookingStatus(status),
+              startDate: startDate,
+              endDate: endDate,
+            ),
+            pagination: limit != null
+                ? Input$PaginationInput(pageSize: limit, after: cursor)
+                : null,
+          ).toJson(),
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
 
       if (result.hasException) {
-        throw app_exceptions.NetworkException.serverError(
-          500,
+        throw app_exceptions.NetworkException(
           result.exception?.graphqlErrors.firstOrNull?.message ??
-            'Failed to fetch bookings',
+              'Failed to fetch bookings',
+          'FETCH_FAILED',
         );
       }
 
-      final data = result.data?['myBookings'];
-      if (data == null) {
-        throw const app_exceptions.NetworkException(
-          'No bookings data received',
-          'NO_DATA',
-        );
-      }
+      final data = result.data?['myBookings'] as Map<String, dynamic>?;
+      if (data == null) return [];
 
-      final nodes = data['nodes'] as List<dynamic>?;
-      if (nodes == null) {
-        return [];
-      }
-
+      final nodes = data['nodes'] as List<dynamic>? ?? [];
       return nodes
-          .map((node) => BookingModel.fromJson(node as Map<String, dynamic>))
+          .map((n) => BookingModel.fromJson(n as Map<String, dynamic>))
           .toList();
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error fetching bookings', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error fetching bookings', error: e);
-      throw app_exceptions.NetworkException.serverError(
-        500,
+      throw app_exceptions.NetworkException(
         'Failed to fetch bookings: $e',
+        'UNKNOWN',
       );
     }
-    */
   }
 
   @override
   Future<BookingModel> getBookingById(String bookingId) async {
+    _logger.d('Fetching booking details for ID: $bookingId');
+
     try {
-      _logger.d('Fetching booking details for ID: $bookingId');
-
-      // TODO: Add bookingDetailsQuery to GraphQLDocuments when backend schema is available
-      const query = r'''
-        query BookingDetails($id: ID!) {
-          booking(id: $id) {
-            id
-            startTime
-            endTime
-            status
-            notes
-            createdAt
-            updatedAt
-            club {
-              id
-              name
-              logo
-              address {
-                street
-                city
-                state
-              }
-            }
-            facility {
-              id
-              name
-              description
-              capacity
-              images
-            }
-            user {
-              id
-              firstName
-              lastName
-              avatar
-            }
-            participants {
-              id
-              user {
-                id
-                firstName
-                lastName
-                avatar
-              }
-              role
-              status
-            }
-            payment {
-              id
-              amount
-              currency
-              status
-              method
-            }
-            cancellation {
-              reason
-              cancelledAt
-              refundAmount
-            }
-          }
-        }
-      ''';
-
-      // Execute query with timeout
       final result = await _client
           .query(
             QueryOptions(
-              document: gql(query),
-              variables: {'id': bookingId},
-              fetchPolicy: FetchPolicy.cacheAndNetwork,
+              document: documentNodeQueryBooking,
+              variables: Variables$Query$Booking(id: bookingId).toJson(),
+              fetchPolicy: FetchPolicy.networkOnly,
             ),
           )
           .timeout(
             const Duration(seconds: 10),
             onTimeout: () {
-              _logger.w('BookingDetails query timeout');
+              _logger.w('Booking query timeout');
               throw app_exceptions.NetworkException.timeout();
             },
           );
 
       if (result.hasException) {
-        throw app_exceptions.NetworkException.serverError(
-          500,
+        throw app_exceptions.NetworkException(
           result.exception?.graphqlErrors.firstOrNull?.message ??
-              'Failed to fetch booking details',
+              'Failed to fetch booking',
+          'FETCH_FAILED',
         );
       }
 
-      final bookingData = result.data?['booking'];
+      final bookingData = result.data?['booking'] as Map<String, dynamic>?;
       if (bookingData == null) {
         throw app_exceptions.NetworkException.notFound();
       }
 
-      return BookingModel.fromJson(bookingData as Map<String, dynamic>);
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error fetching booking details', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+      return BookingModel.fromJson(bookingData);
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
-      _logger.e('Error fetching booking details', error: e);
-      throw app_exceptions.NetworkException.serverError(
-        500,
-        'Failed to fetch booking details: $e',
+      _logger.e('Error fetching booking', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to fetch booking: $e',
+        'UNKNOWN',
       );
     }
   }
@@ -349,43 +252,23 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     String? notes,
     List<String>? participantIds,
   }) async {
+    _logger.d('Creating booking for facility: $facilityId');
+
     try {
-      _logger.d('Creating booking for facility: $facilityId');
-
-      final variables = {
-        'input': {
-          'facilityId': facilityId,
-          'startTime': startTime.toIso8601String(),
-          'endTime': endTime.toIso8601String(),
-          if (notes != null) 'notes': notes,
-          if (participantIds != null && participantIds.isNotEmpty)
-            'participantIds': participantIds,
-        },
-      };
-
-      // TODO: Add createBookingMutation to GraphQLDocuments when backend schema is available
-      const mutation = r'''
-        mutation CreateBooking($input: CreateBookingInput!) {
-          createBooking(input: $input) {
-            booking {
-              id
-              startTime
-              endTime
-              status
-              notes
-              club { id name logo }
-              facility { id name }
-            }
-            success
-            message
-          }
-        }
-      ''';
-
-      // Execute mutation with timeout
       final result = await _client
           .mutate(
-            MutationOptions(document: gql(mutation), variables: variables),
+            MutationOptions(
+              document: documentNodeMutationCreateBooking,
+              variables: Variables$Mutation$CreateBooking(
+                input: Input$CreateBookingInput(
+                  facilityId: facilityId,
+                  startTime: startTime,
+                  endTime: endTime,
+                  notes: notes,
+                  participants: participantIds,
+                ),
+              ).toJson(),
+            ),
           )
           .timeout(
             const Duration(seconds: 20),
@@ -396,39 +279,32 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           );
 
       if (result.hasException) {
-        throw app_exceptions.NetworkException.serverError(
-          500,
+        throw app_exceptions.NetworkException(
           result.exception?.graphqlErrors.firstOrNull?.message ??
               'Failed to create booking',
-        );
-      }
-
-      final data = result.data?['createBooking'] as Map<String, dynamic>?;
-      if (data == null || data['success'] != true) {
-        throw app_exceptions.NetworkException(
-          (data?['message'] as String?) ?? 'Failed to create booking',
           'CREATE_FAILED',
         );
       }
 
-      final bookingData = data['booking'] as Map<String, dynamic>?;
-      if (bookingData == null) {
+      final createdData =
+          result.data?['createBooking'] as Map<String, dynamic>?;
+      final createdId = createdData?['id'] as String?;
+      if (createdId == null) {
         throw const app_exceptions.NetworkException(
-          'No booking data received',
+          'No booking ID in create response',
           'NO_DATA',
         );
       }
 
-      _logger.i('Successfully created booking: ${bookingData['id']}');
-      return BookingModel.fromJson(bookingData);
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error creating booking', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+      _logger.i('Successfully created booking: $createdId');
+      return getBookingById(createdId);
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error creating booking', error: e);
-      throw app_exceptions.NetworkException.serverError(
-        500,
+      throw app_exceptions.NetworkException(
         'Failed to create booking: $e',
+        'UNKNOWN',
       );
     }
   }
@@ -441,39 +317,23 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     String? notes,
     List<String>? participantIds,
   }) async {
+    _logger.d('Updating booking: $bookingId');
+
     try {
-      _logger.d('Updating booking: $bookingId');
-
-      final variables = {
-        'bookingId': bookingId,
-        'input': {
-          if (startTime != null) 'startTime': startTime.toIso8601String(),
-          if (endTime != null) 'endTime': endTime.toIso8601String(),
-          if (notes != null) 'notes': notes,
-          if (participantIds != null) 'participantIds': participantIds,
-        },
-      };
-
-      // TODO: Add updateBookingMutation to GraphQLDocuments when backend schema is available
-      const mutation = r'''
-        mutation UpdateBooking($bookingId: ID!, $input: UpdateBookingInput!) {
-          updateBooking(bookingId: $bookingId, input: $input) {
-            booking {
-              id
-              startTime
-              endTime
-              notes
-            }
-            success
-            message
-          }
-        }
-      ''';
-
-      // Execute mutation with timeout
       final result = await _client
           .mutate(
-            MutationOptions(document: gql(mutation), variables: variables),
+            MutationOptions(
+              document: documentNodeMutationUpdateBooking,
+              variables: Variables$Mutation$UpdateBooking(
+                id: bookingId,
+                input: Input$UpdateBookingInput(
+                  startTime: startTime,
+                  endTime: endTime,
+                  notes: notes,
+                  participants: participantIds,
+                ),
+              ).toJson(),
+            ),
           )
           .timeout(
             const Duration(seconds: 20),
@@ -484,39 +344,22 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           );
 
       if (result.hasException) {
-        throw app_exceptions.NetworkException.serverError(
-          500,
+        throw app_exceptions.NetworkException(
           result.exception?.graphqlErrors.firstOrNull?.message ??
               'Failed to update booking',
-        );
-      }
-
-      final data = result.data?['updateBooking'] as Map<String, dynamic>?;
-      if (data == null || data['success'] != true) {
-        throw app_exceptions.NetworkException(
-          (data?['message'] as String?) ?? 'Failed to update booking',
           'UPDATE_FAILED',
         );
       }
 
-      final bookingData = data['booking'] as Map<String, dynamic>?;
-      if (bookingData == null) {
-        throw const app_exceptions.NetworkException(
-          'No booking data received',
-          'NO_DATA',
-        );
-      }
-
       _logger.i('Successfully updated booking: $bookingId');
-      return BookingModel.fromJson(bookingData);
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error updating booking', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+      return getBookingById(bookingId);
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
       _logger.e('Error updating booking', error: e);
-      throw app_exceptions.NetworkException.serverError(
-        500,
+      throw app_exceptions.NetworkException(
         'Failed to update booking: $e',
+        'UNKNOWN',
       );
     }
   }
@@ -526,37 +369,18 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     required String bookingId,
     String? reason,
   }) async {
+    _logger.d('Cancelling booking: $bookingId');
+
     try {
-      _logger.d('Cancelling booking: $bookingId');
-
-      final variables = {
-        'bookingId': bookingId,
-        if (reason != null) 'reason': reason,
-      };
-
-      // TODO: Add cancelBookingMutation to GraphQLDocuments when backend schema is available
-      const mutation = r'''
-        mutation CancelBooking($bookingId: ID!, $reason: String) {
-          cancelBooking(bookingId: $bookingId, reason: $reason) {
-            booking {
-              id
-              status
-              cancellation {
-                reason
-                cancelledAt
-                refundAmount
-              }
-            }
-            success
-            message
-          }
-        }
-      ''';
-
-      // Execute mutation with timeout
       final result = await _client
           .mutate(
-            MutationOptions(document: gql(mutation), variables: variables),
+            MutationOptions(
+              document: documentNodeMutationCancelBooking,
+              variables: Variables$Mutation$CancelBooking(
+                bookingId: bookingId,
+                reason: reason,
+              ).toJson(),
+            ),
           )
           .timeout(
             const Duration(seconds: 20),
@@ -567,40 +391,168 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           );
 
       if (result.hasException) {
-        throw app_exceptions.NetworkException.serverError(
-          500,
+        throw app_exceptions.NetworkException(
           result.exception?.graphqlErrors.firstOrNull?.message ??
               'Failed to cancel booking',
-        );
-      }
-
-      final data = result.data?['cancelBooking'] as Map<String, dynamic>?;
-      if (data == null || data['success'] != true) {
-        throw app_exceptions.NetworkException(
-          (data?['message'] as String?) ?? 'Failed to cancel booking',
           'CANCEL_FAILED',
         );
       }
 
-      final bookingData = data['booking'] as Map<String, dynamic>?;
-      if (bookingData == null) {
-        throw const app_exceptions.NetworkException(
-          'No booking data received',
-          'NO_DATA',
+      _logger.i('Successfully cancelled booking: $bookingId');
+      return getBookingById(bookingId);
+    } on app_exceptions.NetworkException {
+      rethrow;
+    } on Exception catch (e) {
+      _logger.e('Error cancelling booking', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to cancel booking: $e',
+        'UNKNOWN',
+      );
+    }
+  }
+
+  @override
+  Future<BookingModel> confirmBooking(String bookingId) async {
+    _logger.d('Confirming booking: $bookingId');
+
+    try {
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: documentNodeMutationConfirmBooking,
+              variables:
+                  Variables$Mutation$ConfirmBooking(bookingId: bookingId)
+                      .toJson(),
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('ConfirmBooking mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to confirm booking',
+          'CONFIRM_FAILED',
         );
       }
 
-      _logger.i('Successfully cancelled booking: $bookingId');
-      return BookingModel.fromJson(bookingData);
-    } on app_exceptions.GraphQLException catch (e) {
-      _logger.e('GraphQL error cancelling booking', error: e);
-      throw app_exceptions.NetworkException.serverError(500, e.toString());
+      _logger.i('Successfully confirmed booking: $bookingId');
+      return getBookingById(bookingId);
+    } on app_exceptions.NetworkException {
+      rethrow;
     } on Exception catch (e) {
-      _logger.e('Error cancelling booking', error: e);
-      throw app_exceptions.NetworkException.serverError(
-        500,
-        'Failed to cancel booking: $e',
+      _logger.e('Error confirming booking', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to confirm booking: $e',
+        'UNKNOWN',
       );
+    }
+  }
+
+  @override
+  Future<BookingModel> checkInBooking(String bookingId) async {
+    _logger.d('Checking in booking: $bookingId');
+
+    try {
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: documentNodeMutationCheckInBooking,
+              variables:
+                  Variables$Mutation$CheckInBooking(bookingId: bookingId)
+                      .toJson(),
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('CheckInBooking mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to check in booking',
+          'CHECK_IN_FAILED',
+        );
+      }
+
+      _logger.i('Successfully checked in booking: $bookingId');
+      return getBookingById(bookingId);
+    } on app_exceptions.NetworkException {
+      rethrow;
+    } on Exception catch (e) {
+      _logger.e('Error checking in booking', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to check in booking: $e',
+        'UNKNOWN',
+      );
+    }
+  }
+
+  @override
+  Future<BookingModel> checkOutBooking(String bookingId) async {
+    _logger.d('Checking out booking: $bookingId');
+
+    try {
+      final result = await _client
+          .mutate(
+            MutationOptions(
+              document: documentNodeMutationCheckOutBooking,
+              variables:
+                  Variables$Mutation$CheckOutBooking(bookingId: bookingId)
+                      .toJson(),
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('CheckOutBooking mutation timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
+
+      if (result.hasException) {
+        throw app_exceptions.NetworkException(
+          result.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to check out booking',
+          'CHECK_OUT_FAILED',
+        );
+      }
+
+      _logger.i('Successfully checked out booking: $bookingId');
+      return getBookingById(bookingId);
+    } on app_exceptions.NetworkException {
+      rethrow;
+    } on Exception catch (e) {
+      _logger.e('Error checking out booking', error: e);
+      throw app_exceptions.NetworkException(
+        'Failed to check out booking: $e',
+        'UNKNOWN',
+      );
+    }
+  }
+
+  Enum$BookingStatus? _toEnumBookingStatus(BookingStatus? status) {
+    if (status == null) return null;
+    switch (status) {
+      case BookingStatus.confirmed:
+        return Enum$BookingStatus.CONFIRMED;
+      case BookingStatus.pending:
+        return Enum$BookingStatus.PENDING;
+      case BookingStatus.cancelled:
+        return Enum$BookingStatus.CANCELLED;
+      case BookingStatus.completed:
+        return Enum$BookingStatus.COMPLETED;
+      case BookingStatus.noShow:
+        return Enum$BookingStatus.NO_SHOW;
     }
   }
 

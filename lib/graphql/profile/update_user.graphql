@@ -1,0 +1,13 @@
+mutation UpdateUser($id: ID!, $firstName: String, $lastName: String) {
+  updateUser(id: $id, firstName: $firstName, lastName: $lastName) {
+    id
+    clubId
+    email
+    username
+    firstName
+    lastName
+    status
+    createdAt
+    updatedAt
+  }
+}

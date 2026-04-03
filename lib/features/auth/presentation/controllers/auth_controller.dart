@@ -1,6 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/error_handler.dart';
+import '../../../../core/errors/failures.dart';
 import '../../../../core/performance/performance_monitor.dart';
 import '../../../../core/providers/core_providers.dart';
 import '../../domain/entities/auth_session_entity.dart';
@@ -121,65 +123,40 @@ class AuthController extends _$AuthController {
     }
   }
 
-  /// Login with Hanko (passwordless)
-  Future<void> loginWithHanko({required String email}) async {
-    state = const AsyncLoading();
-
-    try {
-      final hankoLoginUsecase = ref.read(hankoLoginUsecaseProvider);
-      final result = await hankoLoginUsecase(email: email);
-
-      result.fold(
-        (failure) {
-          state = AsyncError(failure, StackTrace.current);
-          ErrorHandler.showErrorToUser(failure);
-        },
-        (session) {
-          state = AsyncData(session.user);
-          _onLoginSuccess(session);
-        },
-      );
-    } on Object catch (error, stackTrace) {
-      // FIX: Explicitly catch Object
-      // Handle any unexpected errors (e.g., type errors, network issues)
-      state = AsyncError(error, stackTrace);
-
-      // Show user-friendly error message
-      ErrorHandler.showMessage(
-        'Hanko authentication is currently unavailable. Please try the standard login.',
-        isError: true,
-      );
-    }
-  }
-
-  /// Complete Hanko authentication
-  Future<void> completeHankoAuth({
-    required String sessionId,
-    required String credential,
+  /// Login with Hanko passkey (passwordless).
+  ///
+  /// Returns the raw [Either] so the calling page can inspect failure codes
+  /// (e.g. [PASSKEY_CANCELLED]) and handle navigation itself.
+  Future<Either<Failure, AuthSessionEntity>> loginWithHanko({
+    required String email,
+    required String clubSlug,
   }) async {
-    state = const AsyncLoading();
-
     try {
       final hankoLoginUsecase = ref.read(hankoLoginUsecaseProvider);
-      final result = await hankoLoginUsecase.completeAuth(
-        sessionId: sessionId,
-        credential: credential,
+      final result = await hankoLoginUsecase(
+        email: email,
+        clubSlug: clubSlug,
       );
 
       result.fold(
         (failure) {
-          state = AsyncError(failure, StackTrace.current);
-          ErrorHandler.showErrorToUser(failure);
+          // Only surface non-cancellation errors to the state
+          if (failure.code != 'PASSKEY_CANCELLED') {
+            state = AsyncError(failure, StackTrace.current);
+          }
         },
         (session) {
           state = AsyncData(session.user);
           _onLoginSuccess(session);
         },
       );
-    } on Exception catch (e, stackTrace) {
-      state = AsyncError(e, stackTrace);
-      final failure = ErrorHandler.handleException(e);
-      ErrorHandler.showErrorToUser(failure);
+
+      return result;
+    } on Object catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      return Left(
+        AuthFailure('Passkey authentication failed', 'PASSKEY_ERROR'),
+      );
     }
   }
 

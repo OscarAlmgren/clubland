@@ -2,16 +2,20 @@ query MyBookings($filter: BookingFilterInput, $pagination: PaginationInput) {
   myBookings(filter: $filter, pagination: $pagination) {
     nodes {
       id
+      clubId
       facilityId
+      userId
       startTime
       endTime
       status
       notes
       facility {
+        id
         name
         type
       }
       user {
+        id
         firstName
         lastName
       }

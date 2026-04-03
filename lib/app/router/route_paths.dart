@@ -13,6 +13,15 @@ class RoutePaths {
   /// Path for the forgotten password recovery screen.
   static const String forgotPassword = '/forgot-password';
 
+  /// Path for editing the user's profile.
+  static const String profileEdit = '/profile/edit';
+
+  /// Path for club selection before passkey login.
+  static const String clubSelection = '/club-selection';
+
+  /// Path for Hanko passkey authentication flow.
+  static const String hankoAuth = '/hanko-auth';
+
   // Main app routes
   /// The root path for the main application home screen.
   static const String home = '/';
