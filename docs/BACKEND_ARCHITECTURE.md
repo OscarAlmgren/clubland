@@ -2,351 +2,198 @@
 
 ## Executive Summary
 
-The Clubland Backend is a comprehensive microservices-based system built for managing private blockchain-based reciprocal club memberships. The system leverages Hyperledger Fabric for immutable transaction records and provides a multi-tenant architecture supporting multiple clubs with cross-club reciprocal agreements.
+The Clubland Backend is a **unified Go monolith** for managing blockchain-based reciprocal club memberships. It provides a multi-tenant architecture with club-based data isolation, a GraphQL API (187 resolvers), and Hyperledger Fabric integration for immutable audit trails.
+
+**Status: 100% complete as of 2026-03-29** — all phases including security hardening, blockchain metrics, TLS, and pilot preparation are done.
 
 ## System Overview
 
 ### Architecture Paradigm
 
-- **Microservices Architecture**: Loosely coupled services with domain-specific responsibilities
-- **Event-Driven Communication**: NATS message bus for asynchronous inter-service communication
-- **Multi-Tenant Design**: Club-based data partitioning with tenant-aware authorization
-- **Blockchain Integration**: Hyperledger Fabric for immutable audit trails and cross-club transactions
-- **API-First Design**: GraphQL gateway with RESTful service endpoints
+- **Monolith Architecture**: Single Go binary with domain-separated internal modules
+- **Event-Driven (Internal)**: Internal EventBus for asynchronous cross-module communication
+- **Multi-Tenant Design**: Club-based data partitioning with row-level security (RLS)
+- **Blockchain Integration**: Hyperledger Fabric 2.5 for immutable audit trails and cross-club transactions
+- **API-First Design**: GraphQL (76 Queries, 100 Mutations) + REST handlers for ops/identity/membership
 
 ### Core Principles
 
-1. **Domain Isolation**: Each service owns its data and business logic
-2. **Fail-Fast**: Comprehensive input validation and error handling
-3. **Observability**: Structured logging, metrics, and distributed tracing
-4. **Security by Design**: Multi-layer security with JWT, RBAC, and tenant isolation
-5. **Scalability**: Horizontal scaling with stateless services and connection pooling
+1. **Strict Isolation**: Every repository call uses `clubID` from context — no cross-tenant data leaks
+2. **Blockchain Integration**: All blockchain interactions go through `internal/modules/blockchain` → `shared/fabric` gateway
+3. **Event-Driven**: Internal `EventBus` for cross-module communication (keeps monolith decoupled)
+4. **Error Handling**: `internal/shared/errors` — never return raw Go errors to the GraphQL layer
+5. **Chaincode Determinism**: All chaincode timestamps use `ctx.GetStub().GetTxTimestamp()`, never `time.Now()`
 
-## Service Architecture
-
-### Service Catalog
-
-| Service | Status | Purpose | Technology Stack |
-|---------|---------|---------|------------------|
-| **API Gateway** | 🟡 95% | GraphQL/REST entry point, advanced middleware | Go, gqlgen, GraphQL, Prometheus |
-| **Auth Service** | 🟡 90% | Multi-tenant authentication, RBAC, Hanko integration | Go, JWT, bcrypt, WebAuthn |
-| **Member Service** | 🟢 100% | Comprehensive member management, profiles, lifecycle | Go, gRPC, PostgreSQL, GORM, 25+ Metrics |
-| **Reciprocal Service** | 🟢 95% | Cross-club agreements, visit verification | Go, gRPC, Blockchain |
-| **Blockchain Service** | 🟢 95% | Hyperledger Fabric integration | Go, Fabric SDK |
-| **Notification Service** | 🟢 95% | Multi-channel notifications | Go, Templates, SMTP/SMS |
-| **Analytics Service** | 🟢 100% | Usage analytics, reporting, external integrations | Go, Time-series DB, S3 |
-| **Governance Service** | 🟢 95% | Network governance, voting | Go, Smart Contracts |
-
-**Legend**: 🟢 Production Ready, 🟡 Near Complete, 🔴 In Development
-
-**Overall Status**: **89% Production Ready** - 6 of 8 services fully complete
-
-### Service Interaction Model
+## Module Architecture
 
 ```text
-┌─────────────────────────────────────────────────────────────────────┐
-│                            Client Layer                             │
-├─────────────────────────────────────────────────────────────────────┤
-│  Web App        Mobile App       Admin Portal      Third-party APIs │
-└─────────────────┬───────────────────────────────────────────────────┘
-                  │ HTTP/GraphQL/WebSocket
-┌─────────────────▼───────────────────────────────────────────────────┐
-│                        API Gateway Layer                            │
-├─────────────────────────────────────────────────────────────────────┤
-│ • GraphQL Schema Stitching   • Authentication Middleware            │
-│ • Rate Limiting              • Request/Response Transformation      │
-│ • Load Balancing             • CORS & Security Headers              │
-└─────────────────┬───────────────────────────────────────────────────┘
-                  │ gRPC/HTTP
-┌─────────────────▼───────────────────────────────────────────────────┐
-│                      Business Services Layer                        │
-├─────────────────────────────────────────────────────────────────────┤
-│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐     │
-│ │    Auth     │ │   Member    │ │ Reciprocal  │ │ Blockchain  │     │
-│ │   Service   │ │   Service   │ │   Service   │ │   Service   │     │
-│ └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘     │
-│                                                                     │
-│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐     │
-│ │Notification │ │ Analytics   │ │ Governance  │ │   Future    │     │
-│ │   Service   │ │   Service   │ │   Service   │ │   Services  │     │
-│ └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘     │
-└─────────────────┬───────────────────────────────────────────────────┘
-                  │ NATS Event Bus
-┌─────────────────▼───────────────────────────────────────────────────┐
-│                      Infrastructure Layer                           │
-├─────────────────────────────────────────────────────────────────────┤
-│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐     │
-│ │ PostgreSQL  │ │    NATS     │ │ Hyperledger │ │  Prometheus │     │
-│ │  Databases  │ │  Msg. Bus   │ │   Fabric    │ │ & Grafana   │     │
-│ └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘     │
-└─────────────────────────────────────────────────────────────────────┘
+reciprocal-clubs-backend/
+├── cmd/platform/          # App entry point
+├── config/                # YAML configs (config.yaml, config.production.yaml, config.pilot.yaml)
+├── chaincode/             # Smart contracts (reciprocal-clubs Go contract)
+├── internal/
+│   ├── api/               # REST handlers (Identity, Membership, Ops)
+│   ├── graphql/           # Resolvers & Schema (76 Queries, 100 Mutations)
+│   ├── modules/           # Domain logic
+│   │   ├── identity/      # User management, auth, RBAC
+│   │   ├── membership/    # Member lifecycle, profiles
+│   │   ├── operations/    # Bookings, visits, reciprocal agreements
+│   │   ├── platform/      # Club management, news, events, lunch menus
+│   │   └── blockchain/    # Fabric service, LOI workflows, reconciliation
+│   └── shared/            # Shared infra
+│       ├── database/      # PostgreSQL 16 with RLS
+│       ├── eventbus/      # Internal EventBus
+│       ├── fabric/        # Hyperledger Fabric Gateway SDK client
+│       ├── scheduler/     # Cron scheduler
+│       └── monitoring/    # Prometheus metrics
+├── fabric/                # Fabric network config & crypto-material
+├── k3s/                   # K8s manifests (00-12: Postgres → Fabric Lifecycle → Monitoring → Network Policies)
+└── scripts/               # Management scripts
 ```
 
 ## Communication Architecture
 
 ### Protocol Stack
 
-**Communication Protocols**:
+- **Client ↔ Backend**: GraphQL over HTTP/HTTPS + WebSocket subscriptions
+- **Backend ↔ Database**: PostgreSQL 16 native protocol (RLS enforced)
+- **Backend ↔ Fabric**: Hyperledger Fabric Gateway SDK (gRPC to peer/orderer)
+- **Internal modules**: In-process calls + internal EventBus
 
-- **Client ↔ API Gateway**: GraphQL over HTTP/HTTPS + WebSocket subscriptions
-- **Gateway ↔ Services**: gRPC (Protocol Buffers)
-- **Services ↔ Database**: PostgreSQL native protocol
-- **Services ↔ Message Bus**: NATS protocol
-- **Blockchain Integration**: Hyperledger Fabric SDK
+### Internal Event-Driven Architecture
 
-**Key Integration Patterns**:
+The monolith uses an internal **EventBus** for cross-module communication instead of an external message broker. This keeps modules decoupled while avoiding network hops.
 
-1. **Synchronous**: gRPC for real-time operations (member lookup, authentication)
-2. **Asynchronous**: NATS for event broadcasting and saga orchestration
-3. **Real-time**: WebSocket subscriptions for live updates (notifications, visit status)
-
-### Event-Driven Architecture
-
-**NATS Message Bus Configuration**:
-
-```yaml
-Event Categories:
-  - Domain Events: Business logic changes (member.created, visit.recorded)
-  - Integration Events: Cross-service coordination (payment.processed)
-  - System Events: Infrastructure notifications (service.started, error.occurred)
-
-Message Patterns:
-  - Publish/Subscribe: Broadcast notifications to multiple subscribers
-  - Request/Reply: Synchronous-style communication over async transport
-  - Queue Groups: Load balancing across service instances
+```text
+                  ┌─────────────────┐
+   Flutter App ──→│   GraphQL API   │
+                  │  (187 resolvers)│
+                  └────────┬────────┘
+                           │ in-process
+              ┌────────────┼───────────────┐
+              ▼            ▼               ▼
+     ┌──────────────┐ ┌──────────┐ ┌────────────┐
+     │   identity   │ │membership│ │ operations │
+     │   module     │ │ module   │ │  module    │
+     └──────┬───────┘ └────┬─────┘ └─────┬──────┘
+            │              │             │
+            └──────────────┼─────────────┘
+                     EventBus (internal)
+                           │
+                    ┌──────▼──────┐
+                    │ blockchain  │
+                    │  module     │
+                    └──────┬──────┘
+                           │ Fabric Gateway SDK
+                    ┌──────▼──────┐
+                    │ Hyperledger │
+                    │   Fabric    │
+                    └─────────────┘
 ```
 
 ## Technology Stack
 
-### Backend Services
+### Backend
 
-- **Language**: Go 1.21+ with modern concurrency patterns
-- **API Gateway**: GraphQL with gqlgen schema-first development
-- **Authentication**: Hanko WebAuthn service + JWT tokens
-- **Database**: PostgreSQL 15+ with multi-tenant row-level security
-- **Caching**: Redis clusters for sessions and performance
-- **Messaging**: NATS JetStream for event-driven architecture
-- **Blockchain**: Hyperledger Fabric for immutable audit trails
+- **Language**: Go 1.26.1
+- **API**: GraphQL with gqlgen (schema-first), REST for ops/identity/membership
+- **Authentication**: Hanko (OIDC / passkeys) — backend validates JWTs issued by Hanko
+- **Database**: PostgreSQL 16 with multi-tenant row-level security (RLS)
+- **Blockchain**: Hyperledger Fabric 2.5 (CCAAS chaincode on K3s)
+- **Monitoring**: Prometheus metrics (25+ per module)
 
 ### Infrastructure
 
-- **Containers**: Docker/Podman with distroless base images
-- **Orchestration**: Kubernetes with horizontal pod autoscaling
-- **Monitoring**: Prometheus, Grafana, Jaeger for observability
-- **Security**: TLS 1.3, mTLS service mesh, encrypted storage
+- **Containers**: Podman (local dev), distroless images
+- **Orchestration**: K3s (lightweight Kubernetes)
+- **Monitoring**: Prometheus + Grafana
+- **Security**: TLS 1.3, MSPID access control, network policies
 
 ## Data Architecture
 
 ### Multi-Tenant Database Design
 
-**Data Partitioning Strategy**:
-
-- Club-based data isolation with tenant ID in all entities
-- Row-level security policies for data separation
-- Shared reference data (countries, currencies)
-
-**Consistency Models**:
-
-- **Strong Consistency**: Within service boundaries via ACID transactions
-- **Eventual Consistency**: Cross-service via event sourcing
-- **Immutable Audit Trail**: Blockchain integration for critical operations
-
-### Service Data Ownership
+All entities carry `club_id` for tenant isolation. PostgreSQL RLS policies enforce this at the database level:
 
 ```sql
--- Member Service Example
+-- Example: club-isolated members table
 CREATE TABLE members (
-    id SERIAL PRIMARY KEY,
-    club_id INTEGER NOT NULL, -- Tenant isolation
-    member_number VARCHAR(50) UNIQUE NOT NULL,
-    membership_type membership_type_enum DEFAULT 'REGULAR',
-    status member_status_enum DEFAULT 'ACTIVE',
-    blockchain_identity VARCHAR(255),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    club_id UUID NOT NULL REFERENCES clubs(id),  -- Tenant isolation (UUID, not integer)
+    ...
 );
 
--- Multi-tenant isolation policy
+-- RLS policy enforced by backend context
 CREATE POLICY tenant_isolation ON members
 FOR ALL TO authenticated_user
-USING (club_id = current_setting('app.current_tenant_id'));
+USING (club_id = current_setting('app.current_club_id')::uuid);
 ```
+
+**Important**: Club ID is always a UUID string (e.g. `550e8400-e29b-41d4-a716-446655440001`) — never an integer.
+
+### Consistency Models
+
+- **Strong Consistency**: Within module boundaries via ACID transactions on PostgreSQL
+- **Eventual Consistency**: Cross-module via internal EventBus
+- **Immutable Audit Trail**: Hyperledger Fabric for critical operations (LOI, cross-club visits)
 
 ## Performance & Scalability
 
 ### Performance Targets
 
-| Component | Latency (P95) | Throughput | Availability |
-|-----------|---------------|------------|--------------|
-| API Gateway | < 100ms | 10k req/s | 99.95% |
-| Auth Service | < 50ms | 5k req/s | 99.99% |
-| Member Service | < 200ms | 2k req/s | 99.9% |
-| Database | < 10ms | 50k ops/s | 99.95% |
-| Message Bus | < 5ms | 100k msg/s | 99.9% |
-
-### Scaling Strategies
-
-**Horizontal Scaling**:
-
-- Kubernetes HPA with custom metrics
-- Database read replicas and connection pooling
-- Redis clustering for sessions and cache
-- CDN integration for static assets
-- Message bus clustering with NATS
-
-**Resource Management**:
-
-```yaml
-Resource Limits (per service):
-  Memory: 512Mi - 2Gi
-  CPU: 250m - 1000m
-  Replicas: 3-10 (auto-scaling)
-
-Health Checks:
-  /health: Kubernetes liveness probe
-  /ready: Kubernetes readiness probe
-  /metrics: Prometheus scraping endpoint
-```
-
-## Monitoring & Observability
-
-### Metrics Collection
-
-**Prometheus Metrics (25+ per service)**:
-
-- Request rates, latencies, and error rates
-- Business metrics (registrations, visits, transactions)
-- Infrastructure metrics (memory, CPU, connections)
-- Custom domain metrics (blockchain confirmations, notification delivery)
-
-### Logging Strategy
-
-**Structured Logging**:
-
-```json
-{
-  "timestamp": "2024-09-25T10:00:00Z",
-  "level": "info",
-  "service": "member-service",
-  "tenant_id": "club_123",
-  "correlation_id": "req_abc123",
-  "message": "Member registration completed",
-  "member_id": "mem_456",
-  "duration_ms": 234
-}
-```
-
-### Distributed Tracing
-
-**Jaeger Integration**:
-
-- Request correlation across services
-- Performance bottleneck identification
-- Error propagation tracking
-- Business transaction tracing
+| Component | Latency (P95) | Notes |
+|-----------|---------------|-------|
+| GraphQL API | < 100ms | Most queries |
+| Auth (JWT validation) | < 50ms | Via Hanko |
+| Database queries | < 10ms | With RLS |
+| Blockchain operations | < 2s | Fabric commit latency |
 
 ## Security Architecture
 
-### Multi-Layer Security
+### Implemented Controls
 
-```text
-Internet → CDN → WAF → Load Balancer → API Gateway → Services
-                                          ↓
-                             JWT + RBAC + Multi-tenant Isolation
-                                          ↓
-                             Encrypted Database + Blockchain Audit
-```
-
-### Security Controls
-
-**Network Security**:
-
-- TLS 1.3 for external communication
-- mTLS for inter-service communication
-- Network policies and service mesh
-
-**Data Protection**:
-
-- PostgreSQL TDE (Transparent Data Encryption)
-- Field-level encryption for PII
-- Secure key management with HashiCorp Vault
-
-**Access Control**:
-
-- JWT tokens with RS256 signing
-- Role-based access control (RBAC)
-- Tenant-aware authorization
-- API rate limiting with multiple tiers
+- **Phase 6-7 Complete**: CouchDB injection fix, MSPID access control, TLS, network policies
+- JWT validation (RS256, issued by Hanko)
+- Role-based access control (RBAC) per club
+- Club-ID isolation enforced at every repository call
+- PostgreSQL RLS as second line of defense
+- Prometheus monitoring with alert rules
 
 ## Deployment Architecture
 
-### Container Strategy
+### Environments
 
-**Multi-environment Deployment**:
+| Environment | Endpoint | Notes |
+|-------------|----------|-------|
+| **Development** | `http://192.168.0.170:30080/graphql` | K3s on local Henrybook server |
+| **Production** | `https://api.clubland.com/graphql` | K3s cloud |
 
-```yaml
-# Production Configuration Example
-services:
-  member-service:
-    image: clubland/member-service:v1.2.0
-    environment:
-      - ENVIRONMENT=production
-      - DB_HOST=postgres-cluster.internal
-      - NATS_URL=nats://nats-cluster:4222
-      - BLOCKCHAIN_URL=fabric-peer:7051
-    resources:
-      limits:
-        memory: 1Gi
-        cpu: 500m
-      requests:
-        memory: 512Mi
-        cpu: 250m
-    replicas: 3
-```
+### Key Operational Scripts
 
-### Environment Management
+| Script | Purpose |
+| :--- | :--- |
+| `scripts/k3s-fabric-bootstrap.sh [up\|down\|status]` | Bootstrap / teardown Fabric network on K3s |
+| `scripts/pilot-health-check.sh [--smoke]` | Pre-pilot ops check |
+| `scripts/build-and-push-chaincode.sh` | Build and push chaincode Docker image |
+| `scripts/db-start-podman.sh` | Start PostgreSQL locally |
+| `scripts/hanko-start-podman.sh` | Start Hanko locally |
 
-**Configuration Management**:
+## Implementation Status
 
-```go
-type Config struct {
-    Environment   string `env:"ENVIRONMENT" envDefault:"development"`
-    Database      DatabaseConfig
-    NATS          NATSConfig
-    Blockchain    BlockchainConfig
-    Auth          AuthConfig
-    Monitoring    MonitoringConfig
-}
-```
+**All phases complete as of 2026-03-29:**
 
-## Future Architecture Considerations
+| Component | Status | Notes |
+| :--- | :--- | :--- |
+| **GraphQL API** | ✅ 100% | All 187 resolvers (76 Queries, 100 Mutations) |
+| **Multi-Tenancy** | ✅ 100% | RLS + Club-ID isolation verified |
+| **Blockchain Module** | ✅ 100% | Phases 1-5 done, CCAAS on K3s |
+| **Security & Hardening** | ✅ 100% | Phase 6-7: CouchDB fix, MSPID, TLS |
+| **Observability** | ✅ 100% | Prometheus, scheduler, reconciliation |
+| **Pilot Prep** | ✅ 100% | Network policies, monitoring alerts |
 
-### Planned Enhancements
+## Next Steps for Flutter Integration
 
-**Short-term (3-6 months)**:
-
-- Complete Auth Service advanced features (MFA, password recovery)
-- Enhanced analytics with real-time ML predictions
-- Advanced monitoring with custom dashboards
-- API Gateway optimization and caching improvements
-
-**Medium-term (6-12 months)**:
-
-- Service mesh migration (Istio/Linkerd)
-- Event sourcing implementation
-- Advanced blockchain features (private data collections)
-- Multi-region deployment strategy
-
-**Long-term (12+ months)**:
-
-- Microservice decomposition (if needed based on scale)
-- Event streaming with Apache Kafka
-- Advanced AI/ML integration
-- Global CDN and edge computing
-
-## Next Steps
-
-1. **Review**: [GraphQL Integration Guide](./GRAPHQL_INTEGRATION.md) for API details
-2. **Implement**: [Authentication & Security](./AUTHENTICATION_SECURITY.md) for user management
-3. **Build**: [Business Process Integration](./BUSINESS_PROCESSES.md) for workflows
-4. **Deploy**: [Testing & Deployment](./TESTING_DEPLOYMENT.md) for production readiness
+1. **Read**: [BACKEND_QUICK_START.md](./BACKEND_QUICK_START.md) to connect your dev environment
+2. **Reference**: [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) for GraphQL schema and operations
+3. **Auth flow**: App authenticates via Hanko → receives JWT → sends as `Authorization: Bearer <token>` header
+4. **Schema source**: `reciprocal-clubs-backend/internal/graphql/schema/` is the source of truth

@@ -1,26 +1,28 @@
 # Clubland Authentication - Complete Implementation Guide
 
-**Status**: Phase 1 Complete - Production Ready
-**Backend**: API Gateway at `http://192.168.0.170:30080`
-**Last Updated**: 2025-11-12
+**Status**: Backend Auth Complete — Flutter Integration Required
+**Backend**: `http://192.168.0.170:30080` (dev), `https://api.clubland.com` (prod)
+**Last Updated**: 2026-03-29
 
 ---
 
 ## Overview
 
-Clubland implements a secure, modern authentication system with two phases:
+Clubland uses **Hanko** for authentication (OIDC / passkeys / WebAuthn). The backend validates Hanko-issued JWTs — it does not issue its own tokens.
 
-**Phase 1 (CURRENT - Implemented)**:
-- Primary: Email/Password authentication via GraphQL
-- Convenience: Local biometric unlock (Face ID/Touch ID/Fingerprint)
-- Security: JWT tokens, secure storage, encryption at rest
+**Current Backend Auth (Live)**:
 
-**Phase 2 (PLANNED)**:
-- Primary: Passkey/WebAuthn authentication (hardware-backed)
-- Fallback: Email/Password
-- Enhanced: True passwordless experience
+- Primary: Hanko OIDC / passkeys (hardware-backed WebAuthn)
+- Token: JWT issued by Hanko, validated by the backend on every GraphQL request
+- Multi-tenant: `clubId` extracted from JWT claims for RLS enforcement
 
-This guide focuses on **Phase 1** - what is implemented NOW and ready for production.
+**Flutter App Auth Layer**:
+
+- Biometric unlock: Local biometric (Face ID/Touch ID/Fingerprint) to unlock cached Hanko token
+- Storage: FlutterSecureStorage (Keychain/KeyStore) for JWT token
+- Encryption: AES-256 for sensitive local data
+
+**Integration Note**: The Flutter app must authenticate through Hanko (not directly via email/password GraphQL mutation). After Hanko OIDC flow completes, the JWT is stored and sent as `Authorization: Bearer <token>` on all GraphQL requests.
 
 ---
 
@@ -675,6 +677,7 @@ The backend issues JWT tokens with the following structure:
 ```
 
 **Token Usage**:
+
 - Stored in FlutterSecureStorage (Keychain on iOS, KeyStore on Android)
 - Automatically added to GraphQL requests via AuthLink
 - Refreshed automatically on 401 errors
@@ -762,6 +765,7 @@ class SecureStorage {
 ```
 
 **Security Features**:
+
 - **iOS**: Keychain with `first_unlock` accessibility (accessible after first device unlock)
 - **Android**: EncryptedSharedPreferences (AES-256-GCM encryption)
 - **Credentials**: Never stored in plain text
@@ -821,6 +825,7 @@ class AuthLink extends Link {
 **Club Isolation**:
 
 Every authenticated request includes `clubId` in the JWT. The backend enforces:
+
 - Users can only access data for their assigned club
 - Cross-club data access is forbidden
 - Admin operations are scoped to the user's club
@@ -840,6 +845,7 @@ query GetMembers {
 ```
 
 **Backend Validation** (automatic):
+
 ```go
 // Middleware extracts clubId from JWT
 func ClubIsolationMiddleware(c *gin.Context) {
@@ -859,6 +865,7 @@ SELECT * FROM members WHERE club_id = $1 AND id = $2
 ### Prerequisites
 
 1. **Flutter Environment**:
+
    ```bash
    flutter --version  # Requires 3.37.0+
    dart --version     # Requires 3.10.0+
@@ -912,6 +919,7 @@ flutter run --target lib/simple_main.dart
 #### 3. Test Login Flow
 
 **Step 1: Login with Email/Password**
+
 1. Open app
 2. Enter test credentials:
    - Email: `test@example.com` (get from backend team)
@@ -920,6 +928,7 @@ flutter run --target lib/simple_main.dart
 4. **Expected**: Successful login → Navigate to home
 
 **Step 2: Enable Biometric Unlock**
+
 1. After login, go to Profile/Settings
 2. Find "Biometric Authentication" toggle
 3. Enable it
@@ -928,6 +937,7 @@ flutter run --target lib/simple_main.dart
 6. **Expected**: "Biometric unlock enabled" confirmation
 
 **Step 3: Test Biometric Login**
+
 1. Logout from app
 2. Close app completely
 3. Reopen app
@@ -1047,6 +1057,7 @@ open coverage/html/index.html
 ### Testing Strategy
 
 **Unit Tests** (`test/unit/features/auth/`):
+
 ```dart
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -1371,12 +1382,14 @@ class LoginPage extends ConsumerWidget {
 ### Implementation Timeline
 
 **Backend Coordination** (2-4 hours):
+
 - [ ] Confirm WebAuthn API availability
 - [ ] Get exact GraphQL schema for passkey operations
 - [ ] Test passkey registration/login from Postman
 - [ ] Document backend requirements
 
 **Flutter Implementation** (8-12 hours):
+
 - [ ] Add `passkeys` package to pubspec.yaml
 - [ ] Create `PasskeyDataSource` with registration/login methods
 - [ ] Update `AuthRepository` to support passkey flows
@@ -1385,6 +1398,7 @@ class LoginPage extends ConsumerWidget {
 - [ ] Update `AuthController` with passkey methods
 
 **Testing** (4-6 hours):
+
 - [ ] Test registration on iOS
 - [ ] Test registration on Android
 - [ ] Test login on iOS
@@ -1398,11 +1412,13 @@ class LoginPage extends ConsumerWidget {
 ### Migration Strategy
 
 **For Existing Users**:
+
 1. Prompt to "upgrade" to passkey on next login
 2. Keep email/password as fallback
 3. Allow users to disable passkey and revert to password
 
 **For New Users**:
+
 1. Check device capability
 2. If passkey available → Register with passkey
 3. If not available → Fall back to password
@@ -1417,11 +1433,13 @@ class LoginPage extends ConsumerWidget {
 #### "Cannot connect to backend"
 
 **Symptoms**:
+
 - Login fails immediately
 - Network timeout errors
 - GraphQL connection refused
 
 **Diagnosis**:
+
 ```bash
 # Test network connectivity
 ping 192.168.0.170
@@ -1436,10 +1454,12 @@ curl -X POST http://192.168.0.170:30080/graphql \
 ```
 
 **Solutions**:
+
 1. Verify device is on same WiFi as backend (192.168.0.170)
 2. Check backend is running and healthy
 3. Verify firewall allows connections on port 30080
 4. Check API constants in code:
+
    ```dart
    // lib/core/constants/api_constants.dart
    static const baseUrl = 'http://192.168.0.170:30080';
@@ -1448,17 +1468,21 @@ curl -X POST http://192.168.0.170:30080/graphql \
 #### "Invalid credentials" / Authentication Errors
 
 **Symptoms**:
+
 - Login returns 401 or "Invalid email/password"
 - Registration fails with user already exists
 
 **Solutions**:
+
 1. Verify test credentials with backend team
 2. Check user exists in backend database:
+
    ```bash
    curl http://192.168.0.170:30080/graphql \
      -H "Content-Type: application/json" \
      -d '{"query": "{ users { email } }"}'
    ```
+
 3. Check backend logs for authentication errors
 4. Ensure clubId is valid if registering
 
@@ -1467,10 +1491,12 @@ curl -X POST http://192.168.0.170:30080/graphql \
 #### "Biometric authentication not available"
 
 **Symptoms**:
+
 - Biometric toggle is disabled/grayed out
 - "Device doesn't support biometrics" error
 
 **Solutions**:
+
 1. Verify device has biometric hardware:
    - iOS: Face ID or Touch ID
    - Android: Fingerprint or Face unlock
@@ -1485,16 +1511,20 @@ curl -X POST http://192.168.0.170:30080/graphql \
 #### "Biometric authentication failed"
 
 **Symptoms**:
+
 - Biometric prompt appears but login fails
 - "Authentication failed" after successful biometric
 
 **Solutions**:
+
 1. Ensure credentials were stored during initial login
 2. Check secure storage has biometric credentials:
+
    ```dart
    final creds = await SecureStorage().getBiometricCredentials();
    print('Stored: ${creds != null}');
    ```
+
 3. Disable and re-enable biometric auth
 4. Clear app data and re-login with "Enable biometrics"
 
@@ -1503,11 +1533,14 @@ curl -X POST http://192.168.0.170:30080/graphql \
 #### "GraphQL schema mismatch"
 
 **Symptoms**:
+
 - Build errors with GraphQL generated code
 - Mutations return unexpected fields
 
 **Solutions**:
+
 1. Update GraphQL schema from backend:
+
    ```bash
    # Download latest schema
    curl http://192.168.0.170:30080/graphql \
@@ -1517,6 +1550,7 @@ curl -X POST http://192.168.0.170:30080/graphql \
    ```
 
 2. Regenerate GraphQL code:
+
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```
@@ -1526,23 +1560,28 @@ curl -X POST http://192.168.0.170:30080/graphql \
 #### "Token expired" / 401 Errors
 
 **Symptoms**:
+
 - Authenticated requests fail with 401
 - "Token expired" error messages
 
 **Solutions**:
+
 1. Verify automatic token refresh is working:
+
    ```dart
    // Check auth link in graphql_links.dart
    // Should automatically call refreshToken mutation on 401
    ```
 
 2. Manual refresh test:
+
    ```dart
    final repository = ref.read(authRepositoryProvider);
    await repository.refreshToken();
    ```
 
 3. If refresh fails, re-login:
+
    ```dart
    await ref.read(authControllerProvider.notifier).logout();
    // User must login again
@@ -1553,10 +1592,12 @@ curl -X POST http://192.168.0.170:30080/graphql \
 #### "Provider not found"
 
 **Symptoms**:
+
 - Build errors: "Provider not found"
 - Missing `.g.dart` files
 
 **Solutions**:
+
 ```bash
 # Clean build cache
 flutter clean
@@ -1572,11 +1613,14 @@ dart run build_runner build --delete-conflicting-outputs
 #### "Riverpod errors"
 
 **Symptoms**:
+
 - "Could not find _$ControllerName"
 - Riverpod provider errors
 
 **Solutions**:
+
 1. Ensure `@riverpod` annotation is present:
+
    ```dart
    @riverpod
    class MyController extends _$MyController {
@@ -1585,11 +1629,13 @@ dart run build_runner build --delete-conflicting-outputs
    ```
 
 2. Ensure part statement is present:
+
    ```dart
    part 'my_controller.g.dart';
    ```
 
 3. Regenerate code:
+
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```
@@ -1599,13 +1645,16 @@ dart run build_runner build --delete-conflicting-outputs
 #### iOS: "Keychain access denied"
 
 **Solutions**:
+
 1. Check Info.plist has biometric usage description:
+
    ```xml
    <key>NSFaceIDUsageDescription</key>
    <string>We use Face ID to securely authenticate you</string>
    ```
 
 2. Clean and rebuild:
+
    ```bash
    cd ios
    pod deintegrate
@@ -1618,12 +1667,15 @@ dart run build_runner build --delete-conflicting-outputs
 #### Android: "KeyStore exception"
 
 **Solutions**:
+
 1. Check AndroidManifest.xml has biometric permission:
+
    ```xml
    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
    ```
 
 2. Verify minSdkVersion >= 23:
+
    ```gradle
    android {
      defaultConfig {
@@ -1633,6 +1685,7 @@ dart run build_runner build --delete-conflicting-outputs
    ```
 
 3. Clear app data and reinstall:
+
    ```bash
    flutter clean
    flutter run
@@ -1654,6 +1707,7 @@ static bool get enableLogging => true;
 #### Network Traffic Inspection
 
 **iOS**:
+
 ```bash
 # Install Charles Proxy or Proxyman
 # Configure iOS device to use proxy
@@ -1661,6 +1715,7 @@ static bool get enableLogging => true;
 ```
 
 **Android**:
+
 ```bash
 # Use Android Studio Network Profiler
 # Or install Charles Proxy
@@ -1689,6 +1744,7 @@ Future<void> debugPrintSecureStorage() async {
 ### Phase 1 Status: ✅ Production Ready
 
 **Implemented Features**:
+
 - ✅ Email/Password authentication via GraphQL
 - ✅ User registration via GraphQL
 - ✅ JWT token management with auto-refresh
@@ -1700,6 +1756,7 @@ Future<void> debugPrintSecureStorage() async {
 - ✅ Backend health check utilities
 
 **Security Features**:
+
 - ✅ TLS/HTTPS for all API communication
 - ✅ JWT tokens signed with RS256
 - ✅ Tokens stored in secure storage (AES-256)
@@ -1708,6 +1765,7 @@ Future<void> debugPrintSecureStorage() async {
 - ✅ Secure logout (clears all credentials)
 
 **Sufficient For**:
+
 - ✅ Development and testing
 - ✅ Internal beta testing
 - ✅ Soft launch / MVP release
@@ -1716,6 +1774,7 @@ Future<void> debugPrintSecureStorage() async {
 ### Phase 2 Roadmap: Passkey/WebAuthn
 
 **Planned Features**:
+
 - 🔄 Passkey registration (WebAuthn/FIDO2)
 - 🔄 Passkey login (hardware-backed)
 - 🔄 Device management UI
@@ -1723,6 +1782,7 @@ Future<void> debugPrintSecureStorage() async {
 - 🔄 Email/password as fallback
 
 **Benefits**:
+
 - 🔄 Phishing-resistant authentication
 - 🔄 Passwordless user experience
 - 🔄 Industry-standard security
@@ -1755,6 +1815,7 @@ flutter run --target lib/simple_main.dart
 ### Support
 
 For issues or questions:
+
 1. Check troubleshooting section above
 2. Review code comments in authentication files
 3. Test backend connectivity with health check utility

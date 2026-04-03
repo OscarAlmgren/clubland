@@ -4,7 +4,7 @@ Get connected to the Clubland backend in under 10 minutes.
 
 ## Overview
 
-This guide covers the essential steps to connect your Flutter app to the Clubland backend GraphQL API. For detailed API operations and advanced features, see [BACKEND_INTEGRATION_GUIDE.md](./BACKEND_INTEGRATION_GUIDE.md).
+This guide covers the essential steps to connect your Flutter app to the Clubland backend GraphQL API. The backend is a **unified Go monolith** (not microservices) with 187 GraphQL resolvers, Hanko auth, and Hyperledger Fabric integration. For detailed API operations and advanced features, see [BACKEND_INTEGRATION_GUIDE.md](./BACKEND_INTEGRATION_GUIDE.md).
 
 ## Prerequisites
 
@@ -46,20 +46,20 @@ curl http://192.168.0.170:30080/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "healthy",
-  "timestamp": "2025-11-12T10:00:00Z",
+  "timestamp": "2026-01-01T10:00:00Z",
   "version": "v0.1.1",
   "services": {
     "database": "healthy",
-    "redis": "healthy",
-    "nats": "healthy"
+    "fabric": "healthy"
   }
 }
 ```
 
-2. **Test GraphQL Endpoint**
+1. **Test GraphQL Endpoint**
 
 ```bash
 # Simple GraphQL query test
@@ -69,6 +69,7 @@ curl -X POST http://192.168.0.170:30080/graphql \
 ```
 
 Expected response:
+
 ```json
 {
   "data": {
@@ -77,14 +78,16 @@ Expected response:
 }
 ```
 
-3. **Access GraphiQL Playground** (Development Only)
+1. **Access GraphiQL Playground** (Development Only)
 
 Open in browser:
+
 ```
 http://192.168.0.170:30080/graphql
 ```
 
 Test a sample query:
+
 ```graphql
 query TestConnection {
   __type(name: "Query") {
@@ -152,6 +155,7 @@ final GraphQLClient graphQLClient = GraphQLClient(
 The app uses `graphql_codegen` for type-safe GraphQL operations:
 
 **GraphQL Operation File** (`lib/graphql/auth/login.graphql`):
+
 ```graphql
 mutation Login($email: String!, $password: String!) {
   login(input: { email: $email, password: $password }) {
@@ -169,6 +173,7 @@ mutation Login($email: String!, $password: String!) {
 ```
 
 **Generated Code Usage**:
+
 ```dart
 import 'package:clubland/core/graphql/graphql_api.dart';
 
@@ -393,22 +398,26 @@ While the app is running:
 **Solutions**:
 
 1. **Verify WiFi connectivity**
+
    ```bash
    ping 192.168.0.170
    ```
 
 2. **Check backend is running**
+
    ```bash
    curl http://192.168.0.170:30080/health
    ```
 
 3. **Increase timeout values**
+
    ```bash
    flutter run --dart-define=CONNECT_TIMEOUT=30000 \
                --dart-define=RECEIVE_TIMEOUT=60000
    ```
 
 4. **Check firewall settings**
+
    ```bash
    # Ensure port 30080 is accessible
    telnet 192.168.0.170 30080
@@ -421,23 +430,27 @@ While the app is running:
 **Solutions**:
 
 1. **Test in GraphiQL Playground**
-   ```
+
+   ```text
    http://192.168.0.170:30080/graphql
    ```
 
 2. **Verify authentication token**
+
    ```dart
    final token = await secureStorage.read(key: 'auth_token');
    print('Token: $token');
    ```
 
 3. **Clear app data and reinstall**
+
    ```bash
    adb uninstall com.reciprocalclubs.clubland
    flutter run -d "Pixel 8"
    ```
 
 4. **Check GraphQL operation syntax**
+
    ```bash
    # Regenerate GraphQL code
    dart run build_runner build --delete-conflicting-outputs
@@ -450,12 +463,14 @@ While the app is running:
 **Solutions**:
 
 1. **Test WebSocket endpoint**
+
    ```bash
    # Install wscat if needed: npm install -g wscat
    wscat -c ws://192.168.0.170:30080/graphql
    ```
 
 2. **Verify WebSocket link configuration** in `graphql_client.dart`:
+
    ```dart
    final wsLink = WebSocketLink(
      'ws://192.168.0.170:30080/graphql',
@@ -467,9 +482,10 @@ While the app is running:
    ```
 
 3. **Check backend WebSocket support**
+
    ```bash
-   # Verify API Gateway WebSocket configuration
-   kubectl logs -n reciprocal-clubs deployment/api-gateway
+   # Verify platform pod WebSocket configuration (K3s)
+   kubectl logs -n reciprocal-clubs deployment/platform
    ```
 
 ### Code Generation Issues
@@ -497,12 +513,14 @@ dart run build_runner build --delete-conflicting-outputs
 **Solutions**:
 
 1. **Use release build for performance testing**
+
    ```bash
    flutter build apk --release
    adb install build/app/outputs/flutter-apk/app-release.apk
    ```
 
 2. **Check network latency**
+
    ```bash
    # Test GraphQL query performance
    time curl -X POST http://192.168.0.170:30080/graphql \
@@ -511,12 +529,16 @@ dart run build_runner build --delete-conflicting-outputs
    ```
 
 3. **Monitor backend load**
+
    ```bash
-   # Check server resource usage
+   # Check server resource usage (K3s)
    kubectl top pods -n reciprocal-clubs
+   # Or check Prometheus metrics endpoint
+   curl http://192.168.0.170:30080/metrics
    ```
 
 4. **Enable Flutter performance overlay**
+
    ```dart
    MaterialApp(
      showPerformanceOverlay: true,
@@ -605,7 +627,7 @@ adb shell pm clear com.reciprocalclubs.clubland
 **Local Network (Henrybook Server)**
 
 | Operation | Target Latency | Notes |
-|-----------|----------------|-------|
+| --- | --- | --- |
 | Health Check | < 50ms | Simple HTTP request |
 | GraphQL Query | < 500ms | Average query with joins |
 | Mutation | < 1s | Including database writes |
@@ -615,7 +637,7 @@ adb shell pm clear com.reciprocalclubs.clubland
 **Cloud Deployment**
 
 | Operation | Target Latency | Notes |
-|-----------|----------------|-------|
+| --- | --- | --- |
 | Health Check | < 200ms | Include CDN latency |
 | GraphQL Query | < 1s | Network + processing |
 | Mutation | < 2s | Network + database writes |
@@ -626,6 +648,7 @@ adb shell pm clear com.reciprocalclubs.clubland
 ### For API Operations
 
 See [BACKEND_INTEGRATION_GUIDE.md](./BACKEND_INTEGRATION_GUIDE.md) for:
+
 - Complete GraphQL schema reference
 - All available queries, mutations, and subscriptions
 - Authentication and authorization patterns
@@ -637,6 +660,7 @@ See [BACKEND_INTEGRATION_GUIDE.md](./BACKEND_INTEGRATION_GUIDE.md) for:
 ### For Architecture Details
 
 See [BACKEND_ARCHITECTURE.md](./BACKEND_ARCHITECTURE.md) for:
+
 - Service architecture overview
 - Technology stack details
 - Deployment strategies
@@ -661,6 +685,7 @@ You're now ready to develop with the Clubland backend! Here's what you've set up
 - Device testing workflow
 
 **Quick Start Command:**
+
 ```bash
 flutter run -d "Pixel 8"
 ```

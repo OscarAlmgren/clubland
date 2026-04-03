@@ -2,91 +2,93 @@
 
 ## Overview
 
-This is the master guide for integrating with the Reciprocal Clubs Backend system. The documentation is organized into focused sections for different aspects of backend integration.
+This is the master guide for integrating with the Reciprocal Clubs Backend. The backend is a **unified Go monolith** (not microservices) with a GraphQL API of 187 resolvers, Hyperledger Fabric integration, and Hanko-based authentication.
+
+**Backend status: 100% complete as of 2026-03-29.**
 
 ## Document Structure
 
 ### 1. [Architecture Overview](./BACKEND_ARCHITECTURE.md)
 
-- System architecture and microservices overview
-- Service catalog and implementation status
-- Communication patterns and protocols
-- Multi-tenant design principles
+- Monolith architecture and internal module structure
+- Communication patterns (GraphQL, EventBus, Fabric)
+- Multi-tenant design with RLS
+- Deployment on K3s
 
-### 2. [GraphQL API Reference](./GRAPHQL_INTEGRATION.md)
+### 2. [API Documentation](./API_DOCUMENTATION.md)
 
 - GraphQL schema and operations
 - Authentication and authorization
 - Real-time subscriptions
 - Flutter client integration patterns
 
-### 3. [Authentication & Security](./AUTHENTICATION_SECURITY.md)
+### 3. [Quick Start](./BACKEND_QUICK_START.md)
 
-- Hanko passwordless authentication
-- JWT token management
-- Security architecture and controls
-- Multi-factor authentication flows
+- Connect to the development backend in minutes
+- Environment configuration
+- Testing connectivity
 
-### 4. [Data Architecture](./DATA_ARCHITECTURE.md)
+### 4. [Flutter GraphQL Guide](./FLUTTER_GRAPHQL_GUIDE.md)
 
-- Multi-tenant database design
-- Event-driven architecture
-- Blockchain integration patterns
-- Data consistency models
+- Type-safe GraphQL operations with `graphql_codegen`
+- Riverpod state management integration
+- Real-time subscriptions
 
-### 5. [Business Process Integration](./BUSINESS_PROCESSES.md)
+### 5. [Authentication Complete Guide](./AUTHENTICATION_COMPLETE_GUIDE.md)
 
-- Critical business workflows
-- Service orchestration patterns
-- Saga transaction management
-- Cross-service communication
+- Hanko OIDC / passkeys flow
+- JWT token management in Flutter
+- Biometric auth integration
 
-### 6. [Flutter Integration Guide](./FLUTTER_INTEGRATION.md)
+### 6. [Events & RSVP](./EVENTS_RSVP_COMPLETE_GUIDE.md)
 
-- Clean architecture implementation
-- Riverpod state management
-- GraphQL client setup
-- Real-time features implementation
+- Event queries and mutations
+- RSVP workflows
 
-### 7. [Testing & Deployment](./TESTING_DEPLOYMENT.md)
+### 7. [News Feed Implementation](./BACKEND_NEWSFEED_IMPLEMENTATION_GUIDE.md)
 
-- Testing strategies and frameworks
-- CI/CD pipeline setup
-- Production deployment patterns
-- Monitoring and observability
+- Unified feed (news posts, events, lunch menus)
+- GraphQL types, queries, pagination
 
 ## Quick Start
 
 For developers new to the platform:
 
-1. **Start with**: [Architecture Overview](./BACKEND_ARCHITECTURE.md) to understand the system
-2. **Then read**: [GraphQL API Reference](./GRAPHQL_INTEGRATION.md) for API integration
-3. **Implement**: [Authentication & Security](./AUTHENTICATION_SECURITY.md) for user authentication
-4. **Build features**: [Business Process Integration](./BUSINESS_PROCESSES.md) for workflows
+1. **Start with**: [Architecture Overview](./BACKEND_ARCHITECTURE.md) to understand the monolith
+2. **Connect**: [Quick Start](./BACKEND_QUICK_START.md) to verify your dev environment
+3. **Build**: [API Documentation](./API_DOCUMENTATION.md) for GraphQL operations
+4. **Auth**: [Authentication Complete Guide](./AUTHENTICATION_COMPLETE_GUIDE.md) for Hanko flow
 
 ## API Endpoints
 
-- **Production**: `https://api.clubland.com/graphql`
-- **Staging**: `https://staging-api.clubland.com/graphql`
-- **Development**: `https://dev-api.clubland.com/graphql`
+| Environment | GraphQL | WebSocket |
+| --- | --- | --- |
+| **Development** | `http://192.168.0.170:30080/graphql` | `ws://192.168.0.170:30080/graphql` |
+| **Production** | `https://api.clubland.com/graphql` | `wss://api.clubland.com/graphql` |
 
-## Support
+## Schema Source of Truth
 
-- Technical questions: Review the specific integration guides
-- Issues: Check [Testing & Deployment](./TESTING_DEPLOYMENT.md) for troubleshooting
-- Architecture decisions: See [Architecture Overview](./BACKEND_ARCHITECTURE.md)
+The GraphQL schema lives in the backend repo:
+
+```text
+reciprocal-clubs-backend/internal/graphql/schema/
+```
+
+When the backend schema changes, regenerate Flutter types:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
 
 ## Implementation Status
 
-The backend system is **89% production-ready** with all core services implemented:
+The backend is **100% production-ready** (all phases complete, 2026-03-29):
 
-- ✅ **Member Service** (100%): Complete CRUD operations
-- ✅ **Analytics Service** (100%): Full ML and external integrations
-- ✅ **API Gateway** (95%): GraphQL with advanced security
-- ✅ **Reciprocal Service** (95%): Agreement management with blockchain
-- ✅ **Blockchain Service** (95%): Hyperledger Fabric integration
-- ✅ **Notification Service** (95%): Multi-channel notifications
-- ✅ **Governance Service** (95%): Voting and proposal systems
-- 🟡 **Auth Service** (90%): Core complete, advanced features in progress
+- ✅ **GraphQL API** (187 resolvers): All queries, mutations, and subscriptions live
+- ✅ **Multi-Tenancy**: RLS and Club-ID isolation verified
+- ✅ **Blockchain Module**: CCAAS chaincode deployed on K3s, full audit trail
+- ✅ **Security Hardening**: CouchDB injection fix, MSPID access control, TLS
+- ✅ **Observability**: Prometheus metrics, cron scheduler, bidirectional reconciliation
+- ✅ **Pilot Prep**: Network policies, monitoring alerts, pilot checklist done
 
-Last Updated: September 2025
+Last Updated: 2026-03-29
