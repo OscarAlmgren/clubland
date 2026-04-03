@@ -9,10 +9,12 @@ completedColumns:
 
 ## Backlog
 
-- [testa-hanko-passkeys](tasks/testa-hanko-passkeys.md)
-
 ## Todo
 
+- [testa-hanko-passkeys](tasks/testa-hanko-passkeys.md)
+
 ## In Progress
+
+## Testing
 
 ## Done
