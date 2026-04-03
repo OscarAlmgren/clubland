@@ -15,6 +15,43 @@ AI instructions for Claude Code working with this repository.
 - Drift (structured data) + SharedPreferences (simple data)
 - ARB-based i18n (English, Swedish)
 
+## 🤖 AI Workflow (lean-ctx)
+
+Use **lean-ctx** MCP tools to save tokens. **Always** use these instead of standard commands when possible:
+
+| Tool | Replaces | Use Case |
+| :--- | :--- | :--- |
+| `ctx_read` | `Read` | Reading files for editing (`full`) or API surface only (`map`). |
+| `ctx_shell` | `Bash` | Running `flutter`, `dart`, or `git` commands. |
+| `ctx_tree` | `ls`/`find` | Exploring directory structure. |
+| `ctx_search` | `Grep` | Finding specific code patterns across the codebase. |
+
+### Session Protocol (run automatically, no prompting needed)
+
+**At the start of every conversation:**
+
+1. `ctx_session load` — restore prior session context (findings, decisions, task)
+2. `ctx_overview <task>` — get a task-relevant project map before reading files
+
+**During work:**
+
+- `ctx_session finding "file:line — summary"` — record key discoveries as you make them
+- `ctx_session decision "summary"` — record any architectural choices made
+- `ctx_compress` — call proactively when context grows large, before it becomes a problem
+
+**At natural stopping points:**
+
+- `ctx_session save` — persist session state so the next conversation can restore it
+
+### Read Modes
+
+| Mode | When to use |
+| :--- | :--- |
+| `full` | Files you are about to edit — gets cached, re-reads are ~13 tokens |
+| `map` | Files you need for context only — exports + dependencies, not bodies |
+| `signatures` | When you only need function signatures |
+| `lines:N-M` | When you know the exact range needed |
+
 ## Quick Setup
 
 ```bash
@@ -275,7 +312,7 @@ test('test name', () async {
 
 ## Authentication & Security
 
-- **Primary auth**: Local biometric + JWT tokens
+- **Primary auth**: Hanko (OIDC / passkeys) — the app authenticates via Hanko; the backend validates JWTs
 - **Storage**: FlutterSecureStorage for tokens (Keychain/KeyStore)
 - **Encryption**: AES-256 for sensitive data
 - **Never log**: Tokens, passwords, PII
