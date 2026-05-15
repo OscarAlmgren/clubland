@@ -896,7 +896,7 @@ class Query$SearchClubs$searchClubs$nodes {
     required this.name,
     required this.slug,
     this.description,
-    required this.location,
+    this.location,
     this.logo,
     this.distance,
     this.relevanceScore,
@@ -920,7 +920,7 @@ class Query$SearchClubs$searchClubs$nodes {
       name: (l$name as String),
       slug: (l$slug as String),
       description: (l$description as String?),
-      location: (l$location as String),
+      location: (l$location as String?),
       logo: (l$logo as String?),
       distance: (l$distance as num?)?.toDouble(),
       relevanceScore: (l$relevanceScore as num?)?.toDouble(),
@@ -936,7 +936,7 @@ class Query$SearchClubs$searchClubs$nodes {
 
   final String? description;
 
-  final String location;
+  final String? location;
 
   final String? logo;
 
@@ -1113,9 +1113,9 @@ class _CopyWithImpl$Query$SearchClubs$searchClubs$nodes<TRes>
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      location: location == _undefined || location == null
+      location: location == _undefined
           ? _instance.location
-          : (location as String),
+          : (location as String?),
       logo: logo == _undefined ? _instance.logo : (logo as String?),
       distance: distance == _undefined
           ? _instance.distance
@@ -1152,7 +1152,7 @@ class _CopyWithStubImpl$Query$SearchClubs$searchClubs$nodes<TRes>
 class Query$SearchClubs$searchClubs$pageInfo {
   Query$SearchClubs$searchClubs$pageInfo({
     required this.hasNextPage,
-    this.totalCount,
+    required this.totalCount,
     this.$__typename = 'PageInfo',
   });
 
@@ -1164,14 +1164,14 @@ class Query$SearchClubs$searchClubs$pageInfo {
     final l$$__typename = json['__typename'];
     return Query$SearchClubs$searchClubs$pageInfo(
       hasNextPage: (l$hasNextPage as bool),
-      totalCount: (l$totalCount as int?),
+      totalCount: (l$totalCount as int),
       $__typename: (l$$__typename as String),
     );
   }
 
   final bool hasNextPage;
 
-  final int? totalCount;
+  final int totalCount;
 
   final String $__typename;
 
@@ -1265,9 +1265,9 @@ class _CopyWithImpl$Query$SearchClubs$searchClubs$pageInfo<TRes>
       hasNextPage: hasNextPage == _undefined || hasNextPage == null
           ? _instance.hasNextPage
           : (hasNextPage as bool),
-      totalCount: totalCount == _undefined
+      totalCount: totalCount == _undefined || totalCount == null
           ? _instance.totalCount
-          : (totalCount as int?),
+          : (totalCount as int),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),

@@ -1,73 +1,48 @@
+# GENERATED FILE — do not edit by hand.
+# Produced by scripts/export-graphql-schema.sh from internal/graphql/schema/*.graphql.
+# This is the canonical merged GraphQL SDL for the Clubland API.
+
+# --- internal/graphql/schema/base.graphql ---
+# Base Schema - Root types for Query, Mutation, and Subscription
+# All domain-specific operations extend these base types
+
+type Query {
+  _empty: String  # Placeholder field required by GraphQL spec
+}
+
+type Mutation {
+  _empty: String  # Placeholder field required by GraphQL spec
+}
+
+type Subscription {
+  _empty: String  # Placeholder field required by GraphQL spec
+}
+
+# --- internal/graphql/schema/common.graphql ---
+# Common scalar and shared types used across all schemas
+
 scalar Time
+scalar DateTime
+scalar JSON
 
-# Authentication types
-type User {
-  id: ID!
-  clubId: ID!
-  email: String!
-  username: String!
-  firstName: String
-  lastName: String
-  status: UserStatus!
-  roles: [String!]!
-  permissions: [String!]!
-  createdAt: Time!
-  updatedAt: Time!
+# Pagination using offset-based approach
+input PaginationInput {
+  page: Int = 1
+  pageSize: Int = 10
+  limit: Int
+  offset: Int
 }
 
-enum UserStatus {
-  ACTIVE
-  INACTIVE
-  SUSPENDED
-  PENDING_VERIFICATION
+type PageInfo {
+  page: Int!
+  pageSize: Int!
+  total: Int!
+  totalPages: Int!
+  hasNextPage: Boolean!
+  hasPrevPage: Boolean!
 }
 
-type AuthPayload {
-  token: String!
-  refreshToken: String!
-  user: User!
-  expiresAt: Time!
-}
-
-# Member types
-type Member {
-  id: ID!
-  clubId: ID!
-  userId: ID!
-  memberNumber: String!
-  membershipType: MembershipType!
-  status: MemberStatus!
-  blockchainIdentity: String
-  profile: MemberProfile
-  joinedAt: Time!
-  createdAt: Time!
-  updatedAt: Time!
-}
-
-enum MembershipType {
-  REGULAR
-  PREMIUM
-  LIFETIME
-  CORPORATE
-}
-
-enum MemberStatus {
-  ACTIVE
-  INACTIVE
-  SUSPENDED
-  PENDING
-}
-
-type MemberProfile {
-  firstName: String!
-  lastName: String!
-  dateOfBirth: Time
-  phoneNumber: String
-  address: Address
-  emergencyContact: EmergencyContact
-  preferences: MemberPreferences
-}
-
+# Address types used by multiple domains
 type Address {
   street: String!
   city: String!
@@ -76,282 +51,24 @@ type Address {
   country: String!
 }
 
-type EmergencyContact {
-  name: String!
-  relationship: String!
-  phoneNumber: String!
+input AddressInput {
+  street: String!
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
 }
 
-type MemberPreferences {
-  emailNotifications: Boolean!
-  smsNotifications: Boolean!
-  pushNotifications: Boolean!
-  marketingEmails: Boolean!
-}
+# --- internal/graphql/schema/analytics.graphql ---
+# Analytics, Reporting, and Metrics Schema
+# Includes detailed event tracking, time-series metrics, and external integrations
 
-# Club types
-type Club {
-  id: ID!
-  name: String!
-  slug: String!
-  description: String
-  location: String!
-  website: String
-  logo: String
-  coverImage: String
-  address: String
-  contactEmail: String
-  contactPhone: String
-  status: ClubStatus!
-  settings: ClubSettings
-  facilities: [Facility!]!
-  distance: Float
-  relevanceScore: Float
-  createdAt: Time!
-  updatedAt: Time!
-}
-
-enum ClubStatus {
-  ACTIVE
-  INACTIVE
-  SUSPENDED
-}
-
-type ClubSettings {
-  allowReciprocal: Boolean!
-  requireApproval: Boolean!
-  maxVisitsPerMonth: Int!
-  reciprocalFee: Float
-  enablePasskeyAuth: Boolean
-  requirePasskeyAuth: Boolean
-  sessionTimeoutMinutes: Int
-  maxFailedAttempts: Int
-  lockoutDurationMinutes: Int
-  enableAuditLogging: Boolean
-}
-
-# Facility and Booking types
-type Facility {
-  id: ID!
-  clubId: ID!
-  name: String!
-  description: String
-  type: String!
-  capacity: Int!
-  amenities: [String!]!
-  status: FacilityStatus!
-  minBookingDuration: Int!
-  maxBookingDuration: Int!
-  advanceBookingDays: Int!
-  cancellationDeadline: Int!
-  operatingHours: String
-  maintenanceSlots: String
-  createdAt: Time!
-  updatedAt: Time!
-}
-
-enum FacilityStatus {
-  AVAILABLE
-  UNAVAILABLE
-  MAINTENANCE
-  RESERVED
-}
-
-type Booking {
-  id: ID!
-  clubId: ID!
-  facilityId: ID!
-  userId: ID!
-  startTime: Time!
-  endTime: Time!
-  status: BookingStatus!
-  notes: String
-  participants: [ID!]!
-  blockchainTxId: String
-  cancellationReason: String
-  confirmedAt: Time
-  confirmedBy: ID
-  cancelledAt: Time
-  cancelledBy: ID
-  checkedInAt: Time
-  checkedOutAt: Time
-  createdAt: Time!
-  updatedAt: Time!
-  facility: Facility
-  user: User
-
-  # Restaurant reservation fields (optional)
-  partySize: Int
-  mealType: String
-  dietaryRestrictions: [String!]
-  specialRequests: String
-  tablePreference: String
-
-  # Event booking fields (optional)
-  eventType: String
-  serviceAddons: [String!]
-  guestCount: Int
-}
-
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  CANCELLED
-  COMPLETED
-  NO_SHOW
-}
-
-type TimeSlot {
-  startTime: Time!
-  endTime: Time!
-  available: Boolean!
-  reason: String
-}
-
-type BookingStatistics {
-  totalBookings: Int!
-  confirmedBookings: Int!
-  cancelledBookings: Int!
-  completedBookings: Int!
-  noShowBookings: Int!
-  averageBookingDuration: Float!
-}
-
-type FacilityUtilization {
-  facilityId: ID!
-  facilityName: String!
-  totalHours: Float!
-  bookedHours: Float!
-  utilizationPercentage: Float!
-  totalBookings: Int!
-}
-
-# Reciprocal types
-type ReciprocalAgreement {
-  id: ID!
-  clubId: ID!
-  partnerClubId: ID!
-  status: AgreementStatus!
-  terms: AgreementTerms!
-  effectiveDate: Time!
-  expirationDate: Time
-  createdAt: Time!
-  updatedAt: Time!
-}
-
-enum AgreementStatus {
-  PENDING
-  APPROVED
-  ACTIVE
-  SUSPENDED
-  EXPIRED
-  REJECTED
-}
-
-type AgreementTerms {
-  maxVisitsPerMonth: Int!
-  reciprocalFee: Float
-  blackoutDates: [Time!]
-  specialConditions: String
-}
-
-type Visit {
-  id: ID!
-  memberId: ID!
-  clubId: ID!
-  visitingClubId: ID!
-  status: VisitStatus!
-  checkInTime: Time!
-  checkedInAt: Time!
-  checkOutTime: Time
-  services: [String!]
-  cost: Float
-  verified: Boolean!
-  blockchainTxId: String
-  createdAt: Time!
-  club: Club
-}
-
-enum VisitStatus {
-  CHECKED_IN
-  CHECKED_OUT
-  CANCELLED
-  NO_SHOW
-}
-
-# Notification types
-type Notification {
-  id: ID!
-  userId: ID!
-  type: NotificationType!
-  title: String!
-  message: String!
-  status: NotificationStatus!
-  channels: [NotificationChannel!]!
-  scheduledAt: Time
-  sentAt: Time
-  readAt: Time
-  createdAt: Time!
-}
-
-enum NotificationType {
-  SYSTEM
-  MEMBERSHIP
-  RECIPROCAL
-  VISIT
-  BILLING
-  SECURITY
-}
-
-enum NotificationStatus {
-  PENDING
-  SENT
-  DELIVERED
-  READ
-  FAILED
-}
-
-enum NotificationChannel {
-  EMAIL
-  SMS
-  PUSH
-  IN_APP
-}
-
-# Blockchain types
-type Transaction {
-  id: ID!
-  type: TransactionType!
-  chaincode: String!
-  function: String!
-  args: [String!]!
-  status: TransactionStatus!
-  txId: String
-  blockNumber: Int
-  timestamp: Time
-  error: String
-  createdAt: Time!
-}
-
-enum TransactionType {
-  MEMBER_REGISTRATION
-  VISIT_RECORD
-  AGREEMENT_CREATION
-  PAYMENT_RECORD
-}
-
-enum TransactionStatus {
-  PENDING
-  SUBMITTED
-  CONFIRMED
-  FAILED
-}
-
-# Analytics types
+# High-level Analytics (aggregated views)
 type Analytics {
   visits: VisitAnalytics!
   members: MemberAnalytics!
   reciprocals: ReciprocalAnalytics!
+  bookings: BookingAnalytics
 }
 
 type VisitAnalytics {
@@ -367,7 +84,8 @@ type MonthlyVisit {
 }
 
 type ClubVisitCount {
-  club: Club!
+  clubId: ID!
+  clubName: String!
   count: Int!
 }
 
@@ -379,7 +97,7 @@ type MemberAnalytics {
 }
 
 type MembershipTypeCount {
-  type: MembershipType!
+  type: String!
   count: Int!
 }
 
@@ -390,181 +108,420 @@ type ReciprocalAnalytics {
   monthlyReciprocalUsage: [MonthlyVisit!]!
 }
 
-# Governance types
-type Proposal {
-  id: ID!
-  title: String!
-  description: String!
-  type: ProposalType!
-  status: ProposalStatus!
-  proposer: User!
-  votes: [Vote!]!
-  votingDeadline: Time!
-  createdAt: Time!
+type BookingAnalytics {
+  totalBookings: Int!
+  upcomingBookings: Int!
+  completedBookings: Int!
+  cancelledBookings: Int!
+  utilizationRate: Float!
+  topFacilities: [FacilityBookingCount!]!
 }
 
-enum ProposalType {
-  AGREEMENT_CHANGE
-  POLICY_UPDATE
-  FEE_ADJUSTMENT
-  SYSTEM_UPGRADE
+type FacilityBookingCount {
+  facilityId: ID!
+  facilityName: String!
+  count: Int!
 }
 
-enum ProposalStatus {
-  DRAFT
-  VOTING
-  PASSED
-  REJECTED
-  IMPLEMENTED
-}
-
-type Vote {
-  id: ID!
-  proposalId: ID!
-  voter: User!
-  choice: VoteChoice!
-  comment: String
-  createdAt: Time!
-}
-
-enum VoteChoice {
-  YES
-  NO
-  ABSTAIN
-}
-
-# Event and RSVP types
-type Event {
+# Detailed Event Tracking
+type AnalyticsEvent {
   id: ID!
   clubId: ID!
-  title: String!
-  description: String
-  eventType: String
-  startTime: Time!
-  endTime: Time!
-  location: String
-  imageUrl: String
-  capacity: Int
-  currentAttendees: Int
-  availableSpots: Int
-  tentativeCount: Int
-  waitlistCount: Int
-  guestPolicy: String
-  maxGuestsPerMember: Int
-  requiresApproval: Boolean
-  requiresPayment: Boolean
-  price: Float
-  cancellationDeadline: Time
-  freeCancellationDays: Int
-  cancellationFeePercentage: Float
-  allowsSubgroupPriority: Boolean
-  fullHouseExclusive: Boolean
-  rsvpDeadline: Time
-  subgroupId: ID
-  organizerName: String
-  contactEmail: String
-  contactPhone: String
-  paymentInstructions: String
-  createdAt: Time!
-  updatedAt: Time!
+  userId: ID
+  eventType: EventType!
+  eventName: String!
+  properties: JSON
+  sessionId: String
+  ipAddress: String
+  userAgent: String
+  referrer: String
+  source: String
+  medium: String
+  campaign: String
+  timestamp: Time!
 }
 
-type RSVP {
-  id: ID!
-  eventId: ID!
-  userId: ID!
-  memberId: ID!
-  clubId: ID!
-  response: String
-  rsvpType: String
-  priority: Int
-  attendanceCount: Int
-  guestNames: [String!]
-  dietaryRestrictions: [String!]
-  seatingPreferences: String
-  specialRequests: String
-  status: RSVPStatus!
-  paymentRequired: Boolean
-  paymentVerified: Boolean
-  paymentAmount: Float
-  cancellationFee: Float
-  feeWaived: Boolean
-  waitlistPosition: Int
-  rsvpedAt: Time
-  cancelledAt: Time
-  cancellationReason: String
-  approvedBy: ID
-  approvedAt: Time
-  declineReason: String
-  guestCount: Int
-  notes: String
-  createdAt: Time!
-  updatedAt: Time!
-  event: Event
+enum EventType {
+  USER_LOGIN
+  USER_REGISTERED
+  BOOKING_CREATED
+  VISIT_CHECKED_IN
+  VISIT_CHECKED_OUT
+  PROPOSAL_CREATED
+  VOTE_CAST
+  CUSTOM
 }
 
-enum RSVPStatus {
-  PENDING
-  CONFIRMED
-  TENTATIVE
-  DECLINED
-  WAITLIST
-  CANCELLED
+input TrackEventInput {
+  eventType: EventType!
+  eventName: String!
+  properties: JSON
+  sessionId: String
+  ipAddress: String
+  userAgent: String
+  referrer: String
+  source: String
+  medium: String
+  campaign: String
 }
 
-type RSVPEligibility {
-  eligible: Boolean!
-  reason: String
-  memberInGoodStanding: Boolean
-  hasOutstandingDebt: Boolean
-  debtAmount: Float
-  wouldBeWaitlisted: Boolean
-  estimatedWaitlistPosition: Int
-  availableSpots: Int
-  priority: Int
-  requiresApproval: Boolean
-  isSubgroupMember: Boolean
-  requiresPayment: Boolean
-  price: Float
-}
-
-type Subgroup {
+# Time-Series Metrics
+type Metric {
   id: ID!
   clubId: ID!
   name: String!
-  description: String
-  memberCount: Int!
-  isActive: Boolean
-  organizerId: ID
-  organizerName: String
+  value: Float!
+  unit: String
+  dimensions: JSON
+  aggregationType: AggregationType!
+  timestamp: Time!
 }
 
-# Review types
-type Review {
+enum AggregationType {
+  GAUGE
+  COUNTER
+  HISTOGRAM
+}
+
+input RecordMetricInput {
+  name: String!
+  value: Float!
+  unit: String
+  dimensions: JSON
+  aggregationType: AggregationType!
+}
+
+type MetricDataPoint {
+  name: String!
+  value: Float!
+  dimensions: JSON
+  timestamp: Time!
+}
+
+type MetricSeries {
+  name: String!
+  dataPoints: [MetricDataPoint!]!
+  aggregationType: AggregationType!
+}
+
+# Reports
+type Report {
   id: ID!
   clubId: ID!
-  userId: ID!
-  rating: Float!
-  comment: String
-  author: String
+  name: String!
+  type: ReportType!
+  status: ReportStatus!
+  startDate: Time!
+  endDate: Time!
+  parameters: JSON
+  data: JSON
+  summary: JSON
+  generatedBy: ID!
+  fileURL: String
+  createdAt: Time!
+  completedAt: Time
+}
+
+enum ReportType {
+  USAGE
+  ENGAGEMENT
+  FINANCIAL
+  MEMBERSHIP
+  OPERATIONAL
+  CUSTOM
+}
+
+enum ReportStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum ExportFormat {
+  JSON
+  CSV
+  EXCEL
+  PDF
+}
+
+input GenerateReportInput {
+  name: String!
+  type: ReportType!
+  startDate: Time!
+  endDate: Time!
+  parameters: JSON
+}
+
+input CompleteReportInput {
+  data: JSON!
+  summary: JSON!
+  fileURL: String
+}
+
+# Dashboards
+type Dashboard {
+  id: ID!
+  clubId: ID!
+  name: String!
+  layout: JSON
+  widgets: [DashboardWidget!]!
+  isPublic: Boolean!
+  createdBy: ID!
+  sharedWith: [ID!]
   createdAt: Time!
   updatedAt: Time!
 }
 
-# CheckIn response type
-type CheckInResponse {
-  success: Boolean!
-  message: String
-  visit: Visit
+type DashboardWidget {
+  type: String!
+  title: String!
+  config: JSON!
 }
 
-# CancelRSVP response type
-type CancelRSVPResponse {
-  success: Boolean!
-  message: String
-  cancellationFee: Float
-  refundAmount: Float
-  feeWaived: Boolean
+input CreateDashboardInput {
+  name: String!
+  layout: JSON
+  widgets: [DashboardWidgetInput!]!
+  isPublic: Boolean = false
+  sharedWith: [ID!]
+}
+
+input DashboardWidgetInput {
+  type: String!
+  title: String!
+  config: JSON!
+}
+
+input UpdateDashboardInput {
+  name: String
+  layout: JSON
+  widgets: [DashboardWidgetInput!]
+  isPublic: Boolean
+  sharedWith: [ID!]
+}
+
+# External Integrations (Google Analytics, Mixpanel, Segment, etc.)
+type ExternalIntegration {
+  id: ID!
+  clubId: ID!
+  name: String!
+  provider: IntegrationProvider!
+  config: JSON
+  isActive: Boolean!
+  lastSyncedAt: Time
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum IntegrationProvider {
+  GOOGLE_ANALYTICS
+  MIXPANEL
+  SEGMENT
+  AMPLITUDE
+  CUSTOM
+}
+
+input CreateIntegrationInput {
+  name: String!
+  provider: IntegrationProvider!
+  apiKey: String!
+  config: JSON
+}
+
+input UpdateIntegrationInput {
+  name: String
+  apiKey: String
+  config: JSON
+  isActive: Boolean
+}
+
+# Pagination
+type AnalyticsEventConnection {
+  nodes: [AnalyticsEvent!]!
+  pageInfo: PageInfo!
+}
+
+type ReportConnection {
+  nodes: [Report!]!
+  pageInfo: PageInfo!
+}
+
+type DashboardConnection {
+  nodes: [Dashboard!]!
+  pageInfo: PageInfo!
+}
+
+extend type Query {
+  # High-level Analytics
+  analytics(startDate: Time, endDate: Time): Analytics!
+
+  # Event Tracking
+  analyticsEvents(
+    pagination: PaginationInput
+    eventType: EventType
+    startDate: Time
+    endDate: Time
+  ): AnalyticsEventConnection!
+
+  analyticsEventsByType(
+    eventType: EventType!
+    startDate: Time!
+    endDate: Time!
+  ): [AnalyticsEvent!]!
+
+  # Metrics
+  metrics(
+    name: String!
+    startDate: Time!
+    endDate: Time!
+  ): [Metric!]!
+
+  latestMetricValue(name: String!): Metric
+
+  metricSeries(
+    names: [String!]!
+    startDate: Time!
+    endDate: Time!
+  ): [MetricSeries!]!
+
+  # Reports
+  reports(
+    pagination: PaginationInput
+    type: ReportType
+    status: ReportStatus
+  ): ReportConnection!
+
+  report(id: ID!): Report
+
+  # Dashboards
+  dashboards(pagination: PaginationInput): DashboardConnection!
+  dashboard(id: ID!): Dashboard
+
+  # Integrations
+  externalIntegrations: [ExternalIntegration!]!
+  externalIntegration(id: ID!): ExternalIntegration
+}
+
+extend type Mutation {
+  # Event Tracking
+  trackEvent(input: TrackEventInput!): AnalyticsEvent!
+
+  # Metrics
+  recordMetric(input: RecordMetricInput!): Metric!
+
+  # Reports
+  generateReport(input: GenerateReportInput!): Report!
+  completeReport(id: ID!, input: CompleteReportInput!): Report!
+  exportReport(reportId: ID!, format: ExportFormat!): String!
+
+  # Dashboards
+  createDashboard(input: CreateDashboardInput!): Dashboard!
+  updateDashboard(id: ID!, input: UpdateDashboardInput!): Dashboard!
+  deleteDashboard(id: ID!): Boolean!
+
+  # Integrations
+  createExternalIntegration(input: CreateIntegrationInput!): ExternalIntegration!
+  updateExternalIntegration(id: ID!, input: UpdateIntegrationInput!): ExternalIntegration!
+  deleteExternalIntegration(id: ID!): Boolean!
+  syncExternalIntegration(id: ID!): Boolean!
+}
+
+# --- internal/graphql/schema/auth.graphql ---
+# Authentication and User Management Schema
+# Supports Hanko passkey/passwordless authentication with JWT/JWKS
+
+type User {
+  id: ID!
+  clubId: ID!
+  email: String!
+  username: String
+  firstName: String
+  lastName: String
+  status: UserStatus!
+  roles: [Role!]!
+  createdAt: Time!
+  updatedAt: Time!
+  lastLoginAt: Time
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  LOCKED
+  PENDING_VERIFICATION
+}
+
+type Role {
+  id: ID!
+  name: String!
+  description: String
+  permissions: [Permission!]!
+}
+
+type Permission {
+  id: ID!
+  resource: String!
+  action: String!
+  description: String
+}
+
+type AuthPayload {
+  token: String!
+  refreshToken: String!
+  user: User!
+  expiresAt: Time!
+}
+
+# Passkey Authentication Types (Hanko WebAuthn)
+type PasskeyOptions {
+  challenge: String!
+  timeout: Int!
+  rpId: String
+  userVerification: String
+  attestation: String
+  extensions: JSON
+}
+
+input PasskeyCredentialInput {
+  id: String!
+  rawId: String!
+  type: String!
+  response: JSON!  # WebAuthn credential response
+}
+
+type PasskeyRegistrationInit {
+  options: JSON!  # WebAuthn PublicKeyCredentialCreationOptions
+  userId: String!
+}
+
+type PasskeyLoginInit {
+  options: JSON!  # WebAuthn PublicKeyCredentialRequestOptions
+  userId: String
+}
+
+# Session Management
+type Session {
+  id: ID!
+  userId: ID!
+  token: String!
+  deviceInfo: String
+  ipAddress: String
+  expiresAt: Time!
+  createdAt: Time!
+}
+
+# Audit Log
+type AuditLog {
+  id: ID!
+  userId: ID
+  action: String!
+  resource: String!
+  details: JSON
+  ipAddress: String
+  userAgent: String
+  timestamp: Time!
 }
 
 # Input types
@@ -575,273 +532,731 @@ input LoginInput {
 
 input RegisterInput {
   email: String!
-  password: String!
-  username: String!
-  clubId: ID!
+  username: String
   firstName: String!
   lastName: String!
+  password: String
 }
 
-# Passkey Authentication Types
-type PasskeyOptions {
-  challenge: String!
-  timeout: Int!
-  rpId: String
-  userVerification: String
-  attestation: String
-  extensions: String  # JSON string
+extend type Query {
+  # Authentication
+  me: User
+
+  # Users
+  users(pagination: PaginationInput, status: UserStatus): [User!]!
+  user(id: ID!): User
+
+  # Roles & Permissions
+  roles: [Role!]!
+  role(id: ID!): Role
+  permissions: [Permission!]!
+
+  # Sessions
+  activeSessions: [Session!]!
+
+  # Audit
+  auditLogs(pagination: PaginationInput, userId: ID, action: String): [AuditLog!]!
 }
 
-input PasskeyCredentialInput {
-  id: String!
-  rawId: String!
-  type: String!
-  response: String!  # JSON string of credential response
+extend type Mutation {
+  # Traditional Authentication (optional, primarily using Hanko)
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+  refreshToken(refreshToken: String!): AuthPayload!
+  logout: Boolean!
+
+  # Passkey Authentication (Hanko integration)
+  initiatePasskeyLogin(email: String!, clubSlug: String!): PasskeyLoginInit!
+  completePasskeyLogin(clubSlug: String!, userId: String!, credential: PasskeyCredentialInput!): AuthPayload!
+  initiatePasskeyRegistration: PasskeyRegistrationInit!
+  completePasskeyRegistration(credential: PasskeyCredentialInput!): Boolean!
+
+  # Hanko User Sync (called after login to ensure user exists in our DB)
+  syncUser: User!
+
+  # User Management
+  updateUser(id: ID!, firstName: String, lastName: String, status: UserStatus): User!
+  suspendUser(id: ID!, reason: String!): User!
+  deleteUser(id: ID!): Boolean!
+
+  # Role Management
+  createRole(name: String!, description: String, permissionIds: [ID!]!): Role!
+  updateRole(id: ID!, name: String, description: String, permissionIds: [ID!]): Role!
+  assignUserRole(userId: ID!, roleId: ID!): User!
+  removeUserRole(userId: ID!, roleId: ID!): User!
+
+  # Session Management
+  terminateSession(sessionId: ID!): Boolean!
+  terminateAllSessions: Boolean!
 }
 
-type PasskeyRegistrationInit {
-  options: String!  # JSON string of WebAuthn PublicKeyCredentialCreationOptions
-  userId: String!
+# --- internal/graphql/schema/blockchain.graphql ---
+# Blockchain types for reciprocal club visit and LOI tracking
+
+enum TransactionStatus {
+  PENDING
+  SUBMITTED
+  CONFIRMED
+  FAILED
 }
 
-type PasskeyLoginInit {
-  options: String!  # JSON string of WebAuthn PublicKeyCredentialRequestOptions
-  userId: String!
+enum LOIStatus {
+  PENDING
+  APPROVED
+  ACTIVE
+  USED
+  EXPIRED
+  DECLINED
 }
 
-input CreateMemberInput {
-  userId: ID!
-  membershipType: MembershipType!
-  profile: MemberProfileInput!
+enum DeliveryMethod {
+  EMAIL
+  API
+  QR_CODE
+  ALL
 }
 
-input MemberProfileInput {
-  firstName: String!
-  lastName: String!
-  dateOfBirth: Time
-  phoneNumber: String
-  address: AddressInput
-  emergencyContact: EmergencyContactInput
-  preferences: MemberPreferencesInput
+type BlockchainTransaction {
+  id: ID!
+  entityType: String!
+  entityId: String!
+  txId: String!
+  status: TransactionStatus!
+  submittedAt: Time!
+  confirmedAt: Time
+  blockNumber: Int
+  error: String
 }
 
-input AddressInput {
-  street: String!
-  city: String!
-  state: String!
-  postalCode: String!
-  country: String!
+type LOI {
+  id: ID!
+  memberId: Int!
+  homeClubId: String!
+  visitingClubId: String!
+  purpose: String!
+  requestedDate: Time!
+  issuedDate: Time!
+  expiryDate: Time!
+  durationDays: Int!
+  status: LOIStatus!
+  blockchainTxId: String
+  approvedBy: String
+  approvedAt: Time
+  guestCount: Int!
 }
 
-input EmergencyContactInput {
-  name: String!
-  relationship: String!
-  phoneNumber: String!
-}
-
-input MemberPreferencesInput {
-  emailNotifications: Boolean!
-  smsNotifications: Boolean!
-  pushNotifications: Boolean!
-  marketingEmails: Boolean!
-}
-
-input CreateReciprocalAgreementInput {
-  partnerClubId: ID!
-  terms: AgreementTermsInput!
-  effectiveDate: Time!
-  expirationDate: Time
-}
-
-input AgreementTermsInput {
-  maxVisitsPerMonth: Int!
-  reciprocalFee: Float
-  blackoutDates: [Time!]
-  specialConditions: String
-}
-
-input RecordVisitInput {
-  memberId: ID!
-  visitingClubId: ID!
-  services: [String!]
-  cost: Float
-}
-
-input CheckOutVisitInput {
-  visitId: ID!
-  services: [String!]
-  cost: Float
-}
-
-input CreateNotificationInput {
-  userIds: [ID!]!
-  type: NotificationType!
-  title: String!
+type LOIVerification {
+  valid: Boolean!
+  status: String!
   message: String!
-  channels: [NotificationChannel!]!
-  scheduledAt: Time
+  facilitiesPermitted: [String!]
+  restrictions: [String!]
 }
 
-input CreateProposalInput {
-  title: String!
-  description: String!
-  type: ProposalType!
-  votingDeadline: Time!
+input IssueLOIInput {
+  memberId: Int!
+  homeClubId: String!
+  visitingClubId: String!
+  purpose: String!
+  requestedDate: Time!
+  durationDays: Int!
+  guestCount: Int
 }
 
-input CastVoteInput {
-  proposalId: ID!
-  choice: VoteChoice!
-  comment: String
+extend type Query {
+  loi(id: ID!): LOI
+  verifyLOI(id: ID!): LOIVerification
+  blockchainTransaction(entityType: String!, entityId: String!): BlockchainTransaction
+  visitBlockchainStatus(visitId: ID!): BlockchainTransaction
 }
 
-# Facility input types
+extend type Mutation {
+  issueLOI(input: IssueLOIInput!): LOI
+  approveLOI(id: ID!, approverID: String!): LOI
+  declineLOI(id: ID!, reason: String!): LOI
+}
+
+# --- internal/graphql/schema/booking.graphql ---
+# Booking and Facility Management Schema
+# Includes facility bookings, restaurant reservations, and event RSVPs
+
+# Facilities
+type Facility {
+  id: ID!
+  clubId: ID!
+  name: String!
+  description: String
+  type: FacilityType!
+  capacity: Int!
+  amenities: [String!]!
+  location: String
+  images: [String!]
+  operatingHours: JSON
+  bookingRules: BookingRules
+  isActive: Boolean!
+  requiresApproval: Boolean!
+  bookingFee: Float
+  currency: String
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum FacilityType {
+  CONFERENCE_ROOM
+  BANQUET_HALL
+  TENNIS_COURT
+  GOLF_COURSE
+  POOL
+  GYM
+  SPA
+  LIBRARY
+  LOUNGE
+  OTHER
+}
+
+type BookingRules {
+  minAdvanceBooking: Int  # hours
+  maxAdvanceBooking: Int  # days
+  minDuration: Int  # minutes
+  maxDuration: Int  # minutes
+  cancellationPolicy: String
+  refundPolicy: String
+  requiresDeposit: Boolean!
+  depositAmount: Float
+}
+
+input BookingRulesInput {
+  minAdvanceBooking: Int
+  maxAdvanceBooking: Int
+  minDuration: Int
+  maxDuration: Int
+  cancellationPolicy: String
+  refundPolicy: String
+  requiresDeposit: Boolean!
+  depositAmount: Float
+}
+
+# Facility Bookings
+type FacilityBooking {
+  id: ID!
+  clubId: ID!
+  facilityId: ID!
+  memberId: ID!
+  startTime: Time!
+  endTime: Time!
+  status: BookingStatus!
+  purpose: String
+  guestCount: Int
+  specialRequests: String
+  totalCost: Float
+  currency: String
+  paymentStatus: PaymentStatus!
+  checkInTime: Time
+  checkOutTime: Time
+  cancellationReason: String
+  cancelledAt: Time
+  createdAt: Time!
+  updatedAt: Time!
+  facility: Facility
+  member: Member
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+}
+
+# Restaurants
+type Restaurant {
+  id: ID!
+  clubId: ID!
+  name: String!
+  description: String
+  cuisine: [String!]!
+  dressCode: String
+  capacity: Int!
+  images: [String!]
+  openingHours: JSON
+  menuURL: String
+  contactPhone: String
+  contactEmail: String
+  reservationRules: ReservationRules
+  isActive: Boolean!
+  requiresReservation: Boolean!
+  averageRating: Float
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+type ReservationRules {
+  minAdvanceReservation: Int  # hours
+  maxAdvanceReservation: Int  # days
+  minPartySize: Int
+  maxPartySize: Int
+  cancellationPolicy: String
+  noShowPolicy: String
+  requiresDepositForLargeGroups: Boolean!
+  largeGroupThreshold: Int
+}
+
+input ReservationRulesInput {
+  minAdvanceReservation: Int
+  maxAdvanceReservation: Int
+  minPartySize: Int
+  maxPartySize: Int
+  cancellationPolicy: String
+  noShowPolicy: String
+  requiresDepositForLargeGroups: Boolean!
+  largeGroupThreshold: Int
+}
+
+# Restaurant Reservations
+type RestaurantReservation {
+  id: ID!
+  clubId: ID!
+  restaurantId: ID!
+  memberId: ID!
+  reservationTime: Time!
+  partySize: Int!
+  status: ReservationStatus!
+  specialRequests: String
+  dietaryRestrictions: [String!]
+  seatingPreference: String
+  confirmationCode: String
+  checkInTime: Time
+  totalSpent: Float
+  currency: String
+  rating: Int
+  feedback: String
+  cancellationReason: String
+  cancelledAt: Time
+  createdAt: Time!
+  updatedAt: Time!
+  restaurant: Restaurant
+  member: Member
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  SEATED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+# Events
+type Event {
+  id: ID!
+  clubId: ID!
+  name: String!
+  description: String
+  type: ClubEventType!
+  startTime: Time!
+  endTime: Time!
+  location: String
+  capacity: Int!
+  currentAttendees: Int!
+  images: [String!]
+  registrationDeadline: Time
+  registrationFee: Float
+  currency: String
+  isPublic: Boolean!
+  requiresApproval: Boolean!
+  dressCode: String
+  agenda: String
+  organizer: String
+  contactEmail: String
+  status: EventStatus!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum ClubEventType {
+  SOCIAL
+  NETWORKING
+  EDUCATIONAL
+  SPORTING
+  CULTURAL
+  FUNDRAISING
+  MEETING
+  OTHER
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  REGISTRATION_OPEN
+  REGISTRATION_CLOSED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+# Event RSVPs
+type EventRSVP {
+  id: ID!
+  clubId: ID!
+  eventId: ID!
+  memberId: ID!
+  status: RSVPStatus!
+  guestCount: Int!
+  dietaryRestrictions: [String!]
+  specialRequests: String
+  paymentStatus: PaymentStatus!
+  checkInTime: Time
+  feedbackRating: Int
+  feedbackComments: String
+  cancellationReason: String
+  cancelledAt: Time
+  createdAt: Time!
+  updatedAt: Time!
+  event: Event
+  member: Member
+}
+
+enum RSVPStatus {
+  PENDING
+  CONFIRMED
+  WAITLISTED
+  ATTENDED
+  NO_SHOW
+  CANCELLED
+}
+
+# Input types
 input CreateFacilityInput {
   name: String!
   description: String
-  type: String!
+  type: FacilityType!
   capacity: Int!
-  amenities: [String!]
-  minBookingDuration: Int
-  maxBookingDuration: Int
-  advanceBookingDays: Int
-  cancellationDeadline: Int
-  operatingHours: String
+  amenities: [String!]!
+  location: String
+  images: [String!]
+  operatingHours: JSON
+  bookingRules: BookingRulesInput
+  requiresApproval: Boolean = false
+  bookingFee: Float
+  currency: String
 }
 
 input UpdateFacilityInput {
   name: String
   description: String
-  type: String
+  type: FacilityType
   capacity: Int
   amenities: [String!]
-  status: FacilityStatus
-  minBookingDuration: Int
-  maxBookingDuration: Int
-  advanceBookingDays: Int
-  cancellationDeadline: Int
-  operatingHours: String
+  location: String
+  images: [String!]
+  operatingHours: JSON
+  bookingRules: BookingRulesInput
+  isActive: Boolean
+  requiresApproval: Boolean
+  bookingFee: Float
+  currency: String
 }
 
-input FacilityFilterInput {
-  type: String
-  status: FacilityStatus
-}
-
-# Booking input types
 input CreateBookingInput {
   facilityId: ID!
   startTime: Time!
   endTime: Time!
-  notes: String
-  participants: [ID!]
-
-  # Restaurant reservation fields (optional)
-  partySize: Int
-  mealType: String
-  dietaryRestrictions: [String!]
-  specialRequests: String
-  tablePreference: String
-
-  # Event booking fields (optional)
-  eventType: String
-  serviceAddons: [String!]
+  purpose: String
   guestCount: Int
+  specialRequests: String
 }
 
 input UpdateBookingInput {
   startTime: Time
   endTime: Time
-  notes: String
-  participants: [ID!]
-
-  # Restaurant reservation fields (optional)
-  partySize: Int
-  mealType: String
-  dietaryRestrictions: [String!]
-  specialRequests: String
-  tablePreference: String
-
-  # Event booking fields (optional)
-  eventType: String
-  serviceAddons: [String!]
+  purpose: String
   guestCount: Int
+  specialRequests: String
 }
 
-input BookingFilterInput {
-  status: BookingStatus
-  startDate: Time
-  endDate: Time
-  facilityId: ID
-  userId: ID
-}
-
-input ClubFilterInput {
-  search: String
-  city: String
-  status: ClubStatus
-  amenities: [String!]
-}
-
-input CreateClubInput {
+input CreateRestaurantInput {
   name: String!
-  slug: String!
   description: String
-  location: String!
-  website: String
-  contactEmail: String
+  cuisine: [String!]!
+  dressCode: String
+  capacity: Int!
+  images: [String!]
+  openingHours: JSON
+  menuURL: String
   contactPhone: String
-  address: String
-  settings: ClubSettingsInput
+  contactEmail: String
+  reservationRules: ReservationRulesInput
+  requiresReservation: Boolean = true
 }
 
-input UpdateClubInput {
+input UpdateRestaurantInput {
   name: String
   description: String
-  location: String
-  website: String
-  contactEmail: String
+  cuisine: [String!]
+  dressCode: String
+  capacity: Int
+  images: [String!]
+  openingHours: JSON
+  menuURL: String
   contactPhone: String
-  address: String
-  settings: ClubSettingsInput
-  status: ClubStatus
+  contactEmail: String
+  reservationRules: ReservationRulesInput
+  isActive: Boolean
+  requiresReservation: Boolean
 }
 
-input ClubSettingsInput {
-  allowReciprocal: Boolean
-  requireApproval: Boolean
-  maxVisitsPerMonth: Int
-  reciprocalFee: Float
-  enablePasskeyAuth: Boolean
-  requirePasskeyAuth: Boolean
-  sessionTimeoutMinutes: Int
-  maxFailedAttempts: Int
-  lockoutDurationMinutes: Int
-  enableAuditLogging: Boolean
+input CreateReservationInput {
+  restaurantId: ID!
+  reservationTime: Time!
+  partySize: Int!
+  specialRequests: String
+  dietaryRestrictions: [String!]
+  seatingPreference: String
 }
 
-# Event and RSVP input types
+input UpdateReservationInput {
+  reservationTime: Time
+  partySize: Int
+  specialRequests: String
+  dietaryRestrictions: [String!]
+  seatingPreference: String
+}
+
+input CreateEventInput {
+  name: String!
+  description: String
+  type: ClubEventType!
+  startTime: Time!
+  endTime: Time!
+  location: String
+  capacity: Int!
+  images: [String!]
+  registrationDeadline: Time
+  registrationFee: Float
+  currency: String
+  isPublic: Boolean = true
+  requiresApproval: Boolean = false
+  dressCode: String
+  agenda: String
+  organizer: String
+  contactEmail: String
+}
+
+input UpdateEventInput {
+  name: String
+  description: String
+  type: EventType
+  startTime: Time
+  endTime: Time
+  location: String
+  capacity: Int
+  images: [String!]
+  registrationDeadline: Time
+  registrationFee: Float
+  currency: String
+  isPublic: Boolean
+  requiresApproval: Boolean
+  dressCode: String
+  agenda: String
+  organizer: String
+  contactEmail: String
+  status: EventStatus
+}
+
 input CreateRSVPInput {
-  guestCount: Int
-  notes: String
+  eventId: ID!
+  guestCount: Int = 1
+  dietaryRestrictions: [String!]
+  specialRequests: String
 }
 
 input UpdateRSVPInput {
-  status: RSVPStatus
   guestCount: Int
-  notes: String
+  dietaryRestrictions: [String!]
+  specialRequests: String
 }
 
-input EventFilterInput {
-  startDate: Time
-  endDate: Time
-  eventType: String
+# Pagination
+type FacilityConnection {
+  nodes: [Facility!]!
+  pageInfo: PageInfo!
 }
 
-input EventFilters {
-  startDate: Time
-  endDate: Time
-  eventType: String
+type BookingConnection {
+  nodes: [FacilityBooking!]!
+  pageInfo: PageInfo!
+}
+
+type RestaurantConnection {
+  nodes: [Restaurant!]!
+  pageInfo: PageInfo!
+}
+
+type ReservationConnection {
+  nodes: [RestaurantReservation!]!
+  pageInfo: PageInfo!
+}
+
+type EventConnection {
+  nodes: [Event!]!
+  pageInfo: PageInfo!
+}
+
+type RSVPConnection {
+  nodes: [EventRSVP!]!
+  pageInfo: PageInfo!
+}
+
+extend type Query {
+  # Facilities
+  facilities(pagination: PaginationInput, type: FacilityType, isActive: Boolean): FacilityConnection!
+  facility(id: ID!): Facility
+  availableFacilities(type: FacilityType, startTime: Time!, endTime: Time!): [Facility!]!
+
+  # Facility Bookings
+  facilityBookings(pagination: PaginationInput, status: BookingStatus, startDate: Time, endDate: Time): BookingConnection!
+  facilityBooking(id: ID!): FacilityBooking
+  myFacilityBookings(pagination: PaginationInput, status: BookingStatus): BookingConnection!
+
+  # Restaurants
+  restaurants(pagination: PaginationInput, isActive: Boolean, cuisine: String): RestaurantConnection!
+  restaurant(id: ID!): Restaurant
+
+  # Restaurant Reservations
+  restaurantReservations(pagination: PaginationInput, status: ReservationStatus, date: Time): ReservationConnection!
+  restaurantReservation(id: ID!): RestaurantReservation
+  myRestaurantReservations(pagination: PaginationInput, status: ReservationStatus): ReservationConnection!
+  availableReservationSlots(restaurantId: ID!, date: Time!, partySize: Int!): [Time!]!
+
+  # Events
+  events(pagination: PaginationInput, status: EventStatus, type: EventType, startDate: Time, endDate: Time): EventConnection!
+  event(id: ID!): Event
+  upcomingEvents(limit: Int = 10): [Event!]!
+
+  # Event RSVPs
+  eventRSVPs(eventId: ID!, pagination: PaginationInput, status: RSVPStatus): RSVPConnection!
+  eventRSVP(id: ID!): EventRSVP
+  myEventRSVPs(pagination: PaginationInput, status: RSVPStatus): RSVPConnection!
+}
+
+extend type Mutation {
+  # Facility Management
+  createFacility(input: CreateFacilityInput!): Facility!
+  updateFacility(id: ID!, input: UpdateFacilityInput!): Facility!
+  deleteFacility(id: ID!): Boolean!
+
+  # Facility Bookings
+  createFacilityBooking(input: CreateBookingInput!): FacilityBooking!
+  updateFacilityBooking(id: ID!, input: UpdateBookingInput!): FacilityBooking!
+  confirmFacilityBooking(id: ID!): FacilityBooking!
+  cancelFacilityBooking(id: ID!, reason: String!): FacilityBooking!
+  checkInFacilityBooking(id: ID!): FacilityBooking!
+  checkOutFacilityBooking(id: ID!): FacilityBooking!
+
+  # Restaurant Management
+  createRestaurant(input: CreateRestaurantInput!): Restaurant!
+  updateRestaurant(id: ID!, input: UpdateRestaurantInput!): Restaurant!
+  deleteRestaurant(id: ID!): Boolean!
+
+  # Restaurant Reservations
+  createRestaurantReservation(input: CreateReservationInput!): RestaurantReservation!
+  updateRestaurantReservation(id: ID!, input: UpdateReservationInput!): RestaurantReservation!
+  confirmRestaurantReservation(id: ID!): RestaurantReservation!
+  cancelRestaurantReservation(id: ID!, reason: String!): RestaurantReservation!
+  checkInRestaurantReservation(id: ID!): RestaurantReservation!
+  completeRestaurantReservation(id: ID!, totalSpent: Float, rating: Int, feedback: String): RestaurantReservation!
+
+  # Event Management
+  createEvent(input: CreateEventInput!): Event!
+  updateEvent(id: ID!, input: UpdateEventInput!): Event!
+  publishEvent(id: ID!): Event!
+  cancelEvent(id: ID!, reason: String!): Event!
+  deleteEvent(id: ID!): Boolean!
+
+  # Event RSVPs
+  createEventRSVP(input: CreateRSVPInput!): EventRSVP!
+  updateEventRSVP(id: ID!, input: UpdateRSVPInput!): EventRSVP!
+  confirmEventRSVP(id: ID!): EventRSVP!
+  cancelEventRSVP(id: ID!, reason: String!): EventRSVP!
+  checkInEventRSVP(id: ID!): EventRSVP!
+  submitEventFeedback(id: ID!, rating: Int!, comments: String): EventRSVP!
+}
+
+extend type Subscription {
+  # Real-time booking updates
+  facilityBookingCreated(facilityId: ID!): FacilityBooking!
+  restaurantReservationCreated(restaurantId: ID!): RestaurantReservation!
+  eventRSVPCreated(eventId: ID!): EventRSVP!
+}
+
+# --- internal/graphql/schema/clubs.graphql ---
+# Club Discovery and Reviews Schema
+# Exposes the Club domain (already in internal/modules/identity/domain) as a
+# first-class GraphQL surface for discovery, favorites, reviews, and check-in.
+
+# Extend the lightweight Club from member.graphql with full domain fields.
+extend type Club {
+  description: String
+  location: String
+  logoURL: String
+  status: ClubStatus!
+  settings: ClubSettings!
+  isFeatured: Boolean!
+  latitude: Float
+  longitude: Float
+  contactEmail: String
+  contactPhone: String
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+enum ClubStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+type ClubSettings {
+  allowReciprocal: Boolean!
+  requireApproval: Boolean!
+  maxVisitsPerMonth: Int!
+  sessionTimeoutMinutes: Int!
+  enableAuditLogging: Boolean!
+}
+
+type ClubConnection {
+  nodes: [Club!]!
+  pageInfo: PageInfo!
+}
+
+type ClubReview {
+  id: ID!
+  clubId: ID!
+  rating: Int!
+  comment: String
+  author: String
+  createdAt: Time!
+}
+
+type ClubReviewConnection {
+  nodes: [ClubReview!]!
+  pageInfo: PageInfo!
+}
+
+input ClubFilterInput {
+  status: ClubStatus
+  search: String
+  isFeatured: Boolean
 }
 
 input LocationInput {
@@ -849,33 +1264,895 @@ input LocationInput {
   longitude: Float!
 }
 
+type CheckInToClubResult {
+  success: Boolean!
+  message: String
+  visit: Visit
+}
+
+type ToggleFavoriteClubResult {
+  success: Boolean!
+  message: String
+  club: Club!
+}
+
+extend type Query {
+  # Club Discovery
+  clubs(pagination: PaginationInput, filter: ClubFilterInput): ClubConnection!
+  club(id: ID!): Club
+  myClub: Club
+  searchClubs(
+    query: String!
+    location: LocationInput
+    radius: Float
+    amenities: [String!]
+    pagination: PaginationInput
+  ): ClubConnection!
+
+  # Reviews
+  clubReviews(clubId: ID!, pagination: PaginationInput): ClubReviewConnection!
+}
+
+extend type Mutation {
+  toggleFavoriteClub(clubId: ID!): ToggleFavoriteClubResult!
+  checkInToClub(clubId: ID!): CheckInToClubResult!
+}
+
+# --- internal/graphql/schema/compat.graphql ---
+# Compatibility / additional types and operations to satisfy frontend
+# expectations that aren't covered by the per-domain schema files.
+#
+# Resolver implementations are stubs (panic "not implemented") for now;
+# the GraphQL contract is complete so client codegen succeeds.
+
+# === Enums ===
+
+enum FacilityStatus {
+  AVAILABLE
+  UNAVAILABLE
+  MAINTENANCE
+}
+
+# === Field additions on existing types ===
+
+extend type User {
+  permissions: [Permission!]!
+}
+
+extend type Visit {
+  clubId: ID!
+  visitingClubId: ID!
+  services: [String!]
+  cost: Float
+  verified: Boolean
+  blockchainTxId: String
+  checkedInAt: Time
+  checkedOutAt: Time
+  club: Club
+}
+
+extend type Member {
+  profile: MemberProfile
+  blockchainIdentity: BlockchainIdentity
+  username: String
+}
+
+extend type Club {
+  logo: String
+  distance: Float
+  relevanceScore: Float
+  userRelation: ClubUserRelation
+}
+
+extend type ClubSettings {
+  reciprocalFee: Float
+}
+
+extend type Facility {
+  status: FacilityStatus!
+  minBookingDuration: Int
+  maxBookingDuration: Int
+  advanceBookingDays: Int
+  cancellationDeadline: Int
+}
+
+extend type Event {
+  title: String!
+  eventType: ClubEventType!
+  imageUrl: String
+  availableSpots: Int
+  tentativeCount: Int
+  waitlistCount: Int
+  guestPolicy: String
+  maxGuestsPerMember: Int
+  requiresPayment: Boolean
+  price: Float
+  cancellationDeadline: Time
+  freeCancellationDays: Int
+  cancellationFeePercentage: Float
+  allowsSubgroupPriority: Boolean
+  fullHouseExclusive: Boolean
+  rsvpDeadline: Time
+  subgroupId: ID
+  organizerName: String
+  contactPhone: String
+  paymentInstructions: String
+}
+
+extend type EventRSVP {
+  response: String
+  rsvpType: String
+  priority: String
+  attendanceCount: Int
+  guestNames: [String!]
+  seatingPreferences: String
+  paymentRequired: Boolean
+  paymentVerified: Boolean
+  paymentAmount: Float
+  cancellationFee: Float
+  feeWaived: Boolean
+  waitlistPosition: Int
+  rsvpedAt: Time
+  approvedBy: ID
+  approvedAt: Time
+  declineReason: String
+}
+
+extend type ReciprocalAgreement {
+  clubId: ID!
+  partnerClubId: ID!
+  effectiveDate: Time
+  expirationDate: Time
+  partnerClub: Club
+  agreementTerms: AgreementTerms
+}
+
+extend type Notification {
+  type: String!
+  message: String!
+  channels: [NotificationChannel!]
+  scheduledAt: Time
+}
+
+extend type BlockchainTransaction {
+  type: String!
+  chaincode: String
+  function: String
+  args: [String!]
+  timestamp: Time
+  createdAt: Time
+}
+
+extend type Vote {
+  choice: VoteChoice!
+}
+
+extend type ClubVisitCount {
+  club: Club
+}
+
+extend type PageInfo {
+  totalCount: Int!
+}
+
+# === New supporting types ===
+
+type MemberProfile {
+  bio: String
+  avatar: String
+  interests: [String!]
+}
+
+type BlockchainIdentity {
+  did: String
+  walletAddress: String
+  verified: Boolean!
+}
+
+type ClubUserRelation {
+  favorited: Boolean!
+  isMember: Boolean!
+  lastVisitedAt: Time
+}
+
+type AgreementTerms {
+  maxVisitsPerMonth: Int
+  reciprocalFee: Float
+  blackoutDates: [String!]
+  specialConditions: String
+}
+
+type BookingStatistics {
+  totalBookings: Int!
+  upcomingBookings: Int!
+  completedBookings: Int!
+  cancelledBookings: Int!
+  confirmedBookings: Int!
+  noShowBookings: Int!
+  averageBookingDuration: Float!
+}
+
+type AvailabilitySlot {
+  startTime: Time!
+  endTime: Time!
+  available: Boolean!
+  reason: String
+}
+
+type FacilityBookingConnection {
+  nodes: [FacilityBooking!]!
+  pageInfo: PageInfo!
+}
+
+type CancelRSVPResult {
+  success: Boolean!
+  message: String
+  cancellationFee: Float
+  refundAmount: Float
+  feeWaived: Boolean
+}
+
+# === New input types ===
+
+input RecordVisitInput {
+  memberId: ID!
+  visitingClubId: ID!
+  agreementId: ID
+  purpose: String
+  services: [String!]
+  cost: Float
+}
+
+input CheckOutVisitInput {
+  visitId: ID!
+  facilitiesUsed: [String!]
+  notes: String
+  services: [String!]
+  cost: Float
+}
+
+input FacilityFilterInput {
+  type: FacilityType
+  isActive: Boolean
+  status: FacilityStatus
+  search: String
+}
+
+input EventFilters {
+  status: EventStatus
+  type: ClubEventType
+  startDate: Time
+  endDate: Time
+}
+
+input CreateReciprocalAgreementInput {
+  partnerClubId: ID!
+  agreementType: AgreementType!
+  effectiveDate: Time
+  expirationDate: Time
+  terms: AgreementTermsInput
+  notes: String
+}
+
+input AgreementTermsInput {
+  maxVisitsPerMonth: Int
+  reciprocalFee: Float
+  blackoutDates: [String!]
+  specialConditions: String
+}
+
+# === Queries ===
+
+extend type Query {
+  # Booking discovery
+  availableSlots(facilityId: ID!, date: Time!, slotDuration: Int): [AvailabilitySlot!]!
+  bookingStatistics(startDate: Time, endDate: Time): BookingStatistics!
+  upcomingBookings(days: Int, pagination: PaginationInput): FacilityBookingConnection!
+  checkAvailability(facilityId: ID!, startTime: Time!, endTime: Time!, excludeBookingId: ID): Boolean!
+  myVisits(pagination: PaginationInput, status: VisitStatus): VisitConnection!
+
+  # Events
+  findingFriendsSubgroups(eventId: ID, clubId: ID): [String!]!
+  checkRSVPEligibility(eventId: ID!, memberId: ID): Boolean!
+
+  # Facilities
+  facilityTypes: [FacilityType!]!
+}
+
+# === Mutations ===
+
+extend type Mutation {
+  recordVisit(input: RecordVisitInput!): Visit!
+  checkOutVisit(input: CheckOutVisitInput!): Visit!
+
+  # Reciprocal agreement lifecycle (frontend-facing names; backend has
+  # similar mutations under different names — these are stub aliases).
+  approveReciprocalAgreement(id: ID!): ReciprocalAgreement!
+  rejectReciprocalAgreement(id: ID!, reason: String!): ReciprocalAgreement!
+  suspendReciprocalAgreement(id: ID!, reason: String!): ReciprocalAgreement!
+}
+
+# === Subscriptions ===
+
+extend type Subscription {
+  bookingUpdates(clubId: ID, userId: ID): FacilityBooking!
+  proposalUpdated(proposalId: ID!): Proposal!
+  voteReceived(proposalId: ID!): Vote!
+  transactionStatusChanged(txId: ID): BlockchainTransaction!
+  visitStatusChanged(visitId: ID, clubId: ID): Visit!
+}
+
+# --- internal/graphql/schema/governance.graphql ---
+# Governance and Voting Schema
+# Includes proposals, voting mechanisms, and policy management
+
+type Proposal {
+  id: ID!
+  clubId: ID!
+  title: String!
+  description: String!
+  type: ProposalType!
+  category: String
+  status: ProposalStatus!
+  proposerId: ID!
+  votingStartTime: Time!
+  votingEndTime: Time!
+  votingMethod: VotingMethod!
+  quorumRequired: Int!
+  approvalThreshold: Float!
+  totalVotes: Int!
+  votesYay: Int!
+  votesNay: Int!
+  votesAbstain: Int!
+  attachments: [String!]
+  notes: String
+  resolutionNotes: String
+  createdAt: Time!
+  updatedAt: Time!
+  proposer: Member
+  votes: [Vote!]!
+}
+
+enum ProposalType {
+  POLICY_CHANGE
+  BUDGET_APPROVAL
+  MEMBERSHIP_RULE
+  FACILITY_MODIFICATION
+  EVENT_APPROVAL
+  BOARD_ELECTION
+  CONSTITUTIONAL_AMENDMENT
+  OTHER
+}
+
+enum ProposalStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  VOTING_OPEN
+  VOTING_CLOSED
+  APPROVED
+  REJECTED
+  WITHDRAWN
+  EXPIRED
+}
+
+enum VotingMethod {
+  SIMPLE_MAJORITY      # > 50%
+  ABSOLUTE_MAJORITY    # >= 50%
+  TWO_THIRDS_MAJORITY  # >= 66.67%
+  THREE_QUARTERS       # >= 75%
+  UNANIMOUS            # 100%
+  WEIGHTED             # Based on membership tier/shares
+  RANKED_CHOICE        # Multi-candidate elections
+}
+
+type Vote {
+  id: ID!
+  clubId: ID!
+  proposalId: ID!
+  voterId: ID!
+  voteValue: VoteChoice!
+  weight: Int!
+  comments: String
+  isAnonymous: Boolean!
+  castAt: Time!
+  createdAt: Time!
+  proposal: Proposal
+  voter: Member
+}
+
+enum VoteChoice {
+  YAY
+  NAY
+  ABSTAIN
+}
+
+type Policy {
+  id: ID!
+  clubId: ID!
+  name: String!
+  description: String
+  category: PolicyCategory!
+  content: String!
+  version: String!
+  effectiveDate: Time!
+  expiryDate: Time
+  isActive: Boolean!
+  requiresAcknowledgment: Boolean!
+  approvedBy: ID
+  approvalDate: Time
+  relatedProposalId: ID
+  attachments: [String!]
+  createdAt: Time!
+  updatedAt: Time!
+  relatedProposal: Proposal
+}
+
+enum PolicyCategory {
+  MEMBERSHIP
+  CONDUCT
+  FACILITY_USAGE
+  FINANCIAL
+  GOVERNANCE
+  PRIVACY
+  SAFETY
+  OTHER
+}
+
+type PolicyAcknowledgment {
+  id: ID!
+  clubId: ID!
+  policyId: ID!
+  memberId: ID!
+  acknowledgedAt: Time!
+  ipAddress: String
+  createdAt: Time!
+  policy: Policy
+  member: Member
+}
+
+type VotingEligibility {
+  memberId: ID!
+  isEligible: Boolean!
+  reason: String
+  voteWeight: Int!
+}
+
+# Input types
+input CreateProposalInput {
+  title: String!
+  description: String!
+  type: ProposalType!
+  category: String
+  votingStartTime: Time!
+  votingEndTime: Time!
+  votingMethod: VotingMethod = SIMPLE_MAJORITY
+  quorumRequired: Int!
+  approvalThreshold: Float = 0.5
+  attachments: [String!]
+  notes: String
+}
+
+input UpdateProposalInput {
+  title: String
+  description: String
+  category: String
+  votingStartTime: Time
+  votingEndTime: Time
+  votingMethod: VotingMethod
+  quorumRequired: Int
+  approvalThreshold: Float
+  attachments: [String!]
+  notes: String
+  resolutionNotes: String
+}
+
+input CastVoteInput {
+  proposalId: ID!
+  voteValue: VoteChoice!
+  comments: String
+  isAnonymous: Boolean = false
+}
+
+input CreatePolicyInput {
+  name: String!
+  description: String
+  category: PolicyCategory!
+  content: String!
+  version: String!
+  effectiveDate: Time!
+  expiryDate: Time
+  requiresAcknowledgment: Boolean = false
+  attachments: [String!]
+}
+
+input UpdatePolicyInput {
+  name: String
+  description: String
+  category: PolicyCategory
+  content: String
+  version: String
+  effectiveDate: Time
+  expiryDate: Time
+  isActive: Boolean
+  requiresAcknowledgment: Boolean
+  attachments: [String!]
+}
+
 # Pagination
-input PaginationInput {
-  page: Int = 1
-  pageSize: Int = 10
-  first: Int
-  after: String
+type ProposalConnection {
+  nodes: [Proposal!]!
+  pageInfo: PageInfo!
 }
 
-type PageInfo {
-  page: Int!
-  pageSize: Int!
+type VoteConnection {
+  nodes: [Vote!]!
+  pageInfo: PageInfo!
+}
+
+type PolicyConnection {
+  nodes: [Policy!]!
+  pageInfo: PageInfo!
+}
+
+type PolicyAcknowledgmentConnection {
+  nodes: [PolicyAcknowledgment!]!
+  pageInfo: PageInfo!
+}
+
+# Statistics
+type ProposalStats {
   total: Int!
-  totalPages: Int!
-  hasNextPage: Boolean!
-  hasPrevPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
-  totalCount: Int
+  draft: Int!
+  voting: Int!
+  approved: Int!
+  rejected: Int!
+  participationRate: Float!
 }
 
+type VotingStats {
+  totalEligibleVoters: Int!
+  totalVotesCast: Int!
+  votesYay: Int!
+  votesNay: Int!
+  votesAbstain: Int!
+  participationRate: Float!
+  currentStatus: String!
+  quorumMet: Boolean!
+  willPass: Boolean
+}
+
+extend type Query {
+  # Proposals
+  proposals(pagination: PaginationInput, status: ProposalStatus, type: ProposalType): ProposalConnection!
+  proposal(id: ID!): Proposal
+  activeProposals: [Proposal!]!
+  myProposals(pagination: PaginationInput, status: ProposalStatus): ProposalConnection!
+  proposalStats: ProposalStats!
+
+  # Voting
+  votes(proposalId: ID!, pagination: PaginationInput): VoteConnection!
+  myVote(proposalId: ID!): Vote
+  myVotes(pagination: PaginationInput): VoteConnection!
+  votingEligibility(proposalId: ID!, memberId: ID): VotingEligibility!
+  votingStats(proposalId: ID!): VotingStats!
+
+  # Policies
+  policies(pagination: PaginationInput, category: PolicyCategory, isActive: Boolean): PolicyConnection!
+  policy(id: ID!): Policy
+  activePolicies(category: PolicyCategory): [Policy!]!
+  policiesRequiringAcknowledgment: [Policy!]!
+
+  # Policy Acknowledgments
+  policyAcknowledgments(policyId: ID!, pagination: PaginationInput): PolicyAcknowledgmentConnection!
+  myPolicyAcknowledgments(pagination: PaginationInput): PolicyAcknowledgmentConnection!
+  unacknowledgedPolicies: [Policy!]!
+}
+
+extend type Mutation {
+  # Proposal Management
+  createProposal(input: CreateProposalInput!): Proposal!
+  updateProposal(id: ID!, input: UpdateProposalInput!): Proposal!
+  submitProposal(id: ID!): Proposal!
+  withdrawProposal(id: ID!, reason: String!): Proposal!
+  approveProposalForVoting(id: ID!): Proposal!
+  closeProposalVoting(id: ID!): Proposal!
+  deleteProposal(id: ID!): Boolean!
+
+  # Voting
+  castVote(input: CastVoteInput!): Vote!
+  updateVote(id: ID!, voteValue: VoteChoice!, comments: String): Vote!
+  deleteVote(id: ID!): Boolean!
+
+  # Policy Management
+  createPolicy(input: CreatePolicyInput!): Policy!
+  updatePolicy(id: ID!, input: UpdatePolicyInput!): Policy!
+  activatePolicy(id: ID!): Policy!
+  deactivatePolicy(id: ID!, reason: String!): Policy!
+  deletePolicy(id: ID!): Boolean!
+
+  # Policy Acknowledgments
+  acknowledgePolicy(policyId: ID!): PolicyAcknowledgment!
+  bulkAcknowledgePolicies(policyIds: [ID!]!): [PolicyAcknowledgment!]!
+}
+
+extend type Subscription {
+  # Real-time governance updates
+  proposalCreated(clubId: ID!): Proposal!
+  proposalStatusChanged(proposalId: ID!): Proposal!
+  voteCast(proposalId: ID!): Vote!
+  votingClosed(proposalId: ID!): Proposal!
+  policyUpdated(clubId: ID!): Policy!
+}
+
+# --- internal/graphql/schema/member.graphql ---
+# Member Management and Reciprocal Agreements Schema
+# Includes member profiles, agreements, and visit tracking
+
+type Member {
+  id: ID!
+  clubId: ID!
+  memberNumber: String!
+  userId: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  dateOfBirth: Time
+  address: Address
+  emergencyContact: EmergencyContact
+  membershipType: String!
+  status: MemberStatus!
+  joinedDate: Time!
+  expiryDate: Time
+  preferences: MemberPreferences
+  notes: String
+  createdAt: Time!
+  updatedAt: Time!
+  user: User
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  EXPIRED
+  PENDING
+}
+
+type EmergencyContact {
+  name: String!
+  relationship: String!
+  phone: String!
+  email: String
+}
+
+input EmergencyContactInput {
+  name: String!
+  relationship: String!
+  phone: String!
+  email: String
+}
+
+type MemberPreferences {
+  receiveNewsletter: Boolean!
+  receivePromotions: Boolean!
+  allowDataSharing: Boolean!
+  preferredLanguage: String
+  dietaryRestrictions: [String!]
+  interests: [String!]
+}
+
+input MemberPreferencesInput {
+  receiveNewsletter: Boolean
+  receivePromotions: Boolean
+  allowDataSharing: Boolean
+  preferredLanguage: String
+  dietaryRestrictions: [String!]
+  interests: [String!]
+}
+
+# Reciprocal Agreements
+type ReciprocalAgreement {
+  id: ID!
+  initiatingClubId: ID!
+  reciprocatingClubId: ID!
+  status: AgreementStatus!
+  agreementType: AgreementType!
+  startDate: Time!
+  endDate: Time
+  terms: String
+  maxVisitsPerYear: Int
+  maxVisitDuration: Int
+  allowedFacilities: [String!]
+  costSharing: CostSharing
+  requiresPreApproval: Boolean!
+  notes: String
+  createdAt: Time!
+  updatedAt: Time!
+  initiatingClub: Club
+  reciprocatingClub: Club
+}
+
+enum AgreementStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ACTIVE
+  SUSPENDED
+  EXPIRED
+  CANCELLED
+}
+
+enum AgreementType {
+  BILATERAL
+  MULTILATERAL
+  NETWORK
+  TEMPORARY
+}
+
+type CostSharing {
+  guestFeeCovered: Boolean!
+  facilityFeesCovered: Boolean!
+  foodBeverageCovered: Boolean!
+  percentageCovered: Int
+  maxAmountCovered: Float
+  currency: String!
+}
+
+input CostSharingInput {
+  guestFeeCovered: Boolean!
+  facilityFeesCovered: Boolean!
+  foodBeverageCovered: Boolean!
+  percentageCovered: Int
+  maxAmountCovered: Float
+  currency: String!
+}
+
+# Visit Tracking
+type Visit {
+  id: ID!
+  memberId: ID!
+  memberClubId: ID!
+  hostClubId: ID!
+  agreementId: ID
+  checkInTime: Time!
+  checkOutTime: Time
+  status: VisitStatus!
+  guestCount: Int!
+  purpose: String
+  facilitiesUsed: [String!]
+  costs: VisitCosts
+  notes: String
+  qrCode: String
+  verificationCode: String
+  createdAt: Time!
+  updatedAt: Time!
+  member: Member
+  memberClub: Club
+  hostClub: Club
+  agreement: ReciprocalAgreement
+}
+
+enum VisitStatus {
+  PLANNED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+type VisitCosts {
+  guestFee: Float
+  facilityFees: Float
+  foodBeverage: Float
+  other: Float
+  total: Float!
+  currency: String!
+  paidBy: String
+  paidAt: Time
+}
+
+input VisitCostsInput {
+  guestFee: Float
+  facilityFees: Float
+  foodBeverage: Float
+  other: Float
+  total: Float!
+  currency: String!
+  paidBy: String
+  paidAt: Time
+}
+
+# Club Info (lightweight type for member context)
+type Club {
+  id: ID!
+  name: String!
+  slug: String!
+  address: Address
+  phone: String
+  email: String
+  website: String
+}
+
+# Input types
+input CreateMemberInput {
+  memberNumber: String!
+  userId: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: String
+  dateOfBirth: Time
+  address: AddressInput
+  emergencyContact: EmergencyContactInput
+  membershipType: String!
+  expiryDate: Time
+  preferences: MemberPreferencesInput
+  notes: String
+}
+
+input UpdateMemberInput {
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  dateOfBirth: Time
+  address: AddressInput
+  emergencyContact: EmergencyContactInput
+  membershipType: String
+  expiryDate: Time
+  preferences: MemberPreferencesInput
+  notes: String
+}
+
+input CreateAgreementInput {
+  reciprocatingClubId: ID!
+  agreementType: AgreementType!
+  startDate: Time!
+  endDate: Time
+  terms: String
+  maxVisitsPerYear: Int
+  maxVisitDuration: Int
+  allowedFacilities: [String!]
+  costSharing: CostSharingInput
+  requiresPreApproval: Boolean = false
+  notes: String
+}
+
+input UpdateAgreementInput {
+  status: AgreementStatus
+  endDate: Time
+  terms: String
+  maxVisitsPerYear: Int
+  maxVisitDuration: Int
+  allowedFacilities: [String!]
+  costSharing: CostSharingInput
+  requiresPreApproval: Boolean
+  notes: String
+}
+
+input CheckInInput {
+  hostClubId: ID!
+  agreementId: ID
+  guestCount: Int = 1
+  purpose: String
+  notes: String
+}
+
+input CheckOutInput {
+  costs: VisitCostsInput
+  facilitiesUsed: [String!]
+  notes: String
+}
+
+# Pagination
 type MemberConnection {
   nodes: [Member!]!
   pageInfo: PageInfo!
 }
 
-type ReciprocalAgreementConnection {
+type AgreementConnection {
   nodes: [ReciprocalAgreement!]!
   pageInfo: PageInfo!
 }
@@ -885,224 +2162,232 @@ type VisitConnection {
   pageInfo: PageInfo!
 }
 
+extend type Query {
+  # Members
+  members(pagination: PaginationInput, status: MemberStatus, search: String): MemberConnection!
+  member(id: ID!): Member
+  memberByNumber(memberNumber: String!): Member
+  memberByEmail(email: String!): Member
+
+  # Reciprocal Agreements
+  reciprocalAgreements(pagination: PaginationInput, status: AgreementStatus): AgreementConnection!
+  reciprocalAgreement(id: ID!): ReciprocalAgreement
+  agreementsByClub(clubId: ID!, status: AgreementStatus): [ReciprocalAgreement!]!
+
+  # Visits
+  visits(pagination: PaginationInput, status: VisitStatus, startDate: Time, endDate: Time): VisitConnection!
+  visit(id: ID!): Visit
+  visitsByMember(memberId: ID!, pagination: PaginationInput): VisitConnection!
+  visitsByClub(clubId: ID!, asHost: Boolean = true, pagination: PaginationInput): VisitConnection!
+  activeVisits: [Visit!]!
+}
+
+extend type Mutation {
+  # Member Management
+  createMember(input: CreateMemberInput!): Member!
+  updateMember(id: ID!, input: UpdateMemberInput!): Member!
+  suspendMember(id: ID!, reason: String!): Member!
+  reactivateMember(id: ID!): Member!
+  deleteMember(id: ID!): Boolean!
+  renewMembership(id: ID!, expiryDate: Time!): Member!
+
+  # Agreement Management
+  createReciprocalAgreement(input: CreateAgreementInput!): ReciprocalAgreement!
+  updateReciprocalAgreement(id: ID!, input: UpdateAgreementInput!): ReciprocalAgreement!
+  activateAgreement(id: ID!): ReciprocalAgreement!
+  suspendAgreement(id: ID!, reason: String!): ReciprocalAgreement!
+  cancelAgreement(id: ID!, reason: String!): ReciprocalAgreement!
+
+  # Visit Management
+  checkIn(input: CheckInInput!): Visit!
+  checkOut(visitId: ID!, input: CheckOutInput!): Visit!
+  cancelVisit(visitId: ID!, reason: String!): Visit!
+  generateVisitQRCode(visitId: ID!): String!
+  verifyVisit(qrCode: String!): Visit
+}
+
+extend type Subscription {
+  # Real-time visit notifications
+  visitCheckedIn(clubId: ID!): Visit!
+  visitCheckedOut(clubId: ID!): Visit!
+}
+
+# --- internal/graphql/schema/notification.graphql ---
+# Notification Management Schema
+# Includes templates, preferences, and multi-channel delivery
+
+type Notification {
+  id: ID!
+  clubId: ID!
+  userId: ID!
+  channel: NotificationChannel!
+  priority: NotificationPriority!
+  status: NotificationStatus!
+  title: String!
+  body: String!
+  templateId: ID
+  templateData: JSON
+  scheduledFor: Time
+  expiresAt: Time
+  sentAt: Time
+  deliveredAt: Time
+  readAt: Time
+  createdAt: Time!
+  updatedAt: Time!
+  template: NotificationTemplate
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+  WEBHOOK
+}
+
+enum NotificationPriority {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+  READ
+}
+
+# Notification Templates
+type NotificationTemplate {
+  id: ID!
+  clubId: ID!
+  name: String!
+  channel: NotificationChannel!
+  bodyTemplate: String!
+  htmlTemplate: String
+  variables: [String!]!
+  isActive: Boolean!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+input CreateNotificationTemplateInput {
+  name: String!
+  channel: NotificationChannel!
+  bodyTemplate: String!
+  htmlTemplate: String
+  variables: [String!]!
+}
+
+input UpdateNotificationTemplateInput {
+  name: String
+  bodyTemplate: String
+  htmlTemplate: String
+  variables: [String!]
+  isActive: Boolean
+}
+
+# User Notification Preferences
+type NotificationPreference {
+  id: ID!
+  clubId: ID!
+  userId: ID!
+  emailEnabled: Boolean!
+  smsEnabled: Boolean!
+  pushEnabled: Boolean!
+  inAppEnabled: Boolean!
+  quietHoursEnabled: Boolean!
+  quietHoursStart: String
+  quietHoursEnd: String
+  digestEnabled: Boolean!
+  digestFrequency: String
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+input UpdateNotificationPreferenceInput {
+  emailEnabled: Boolean
+  smsEnabled: Boolean
+  pushEnabled: Boolean
+  inAppEnabled: Boolean
+  quietHoursEnabled: Boolean
+  quietHoursStart: String
+  quietHoursEnd: String
+  digestEnabled: Boolean
+  digestFrequency: String
+}
+
+# Input types
+input SendNotificationInput {
+  userId: ID!
+  channel: NotificationChannel!
+  priority: NotificationPriority = NORMAL
+  title: String!
+  body: String!
+  templateId: ID
+  templateData: JSON
+  scheduledFor: Time
+  expiresAt: Time
+}
+
+input BulkNotificationInput {
+  userIds: [ID!]!
+  channel: NotificationChannel!
+  priority: NotificationPriority = NORMAL
+  title: String!
+  body: String!
+  templateId: ID
+  templateData: JSON
+}
+
+# Pagination
 type NotificationConnection {
   nodes: [Notification!]!
   pageInfo: PageInfo!
 }
 
-type ProposalConnection {
-  nodes: [Proposal!]!
+type NotificationTemplateConnection {
+  nodes: [NotificationTemplate!]!
   pageInfo: PageInfo!
 }
 
-type BookingConnection {
-  nodes: [Booking!]!
-  pageInfo: PageInfo!
-}
-
-type ClubConnection {
-  nodes: [Club!]!
-  pageInfo: PageInfo!
-}
-
-type FacilityConnection {
-  nodes: [Facility!]!
-  pageInfo: PageInfo!
-}
-
-type EventEdge {
-  node: Event!
-  cursor: String!
-}
-
-type EventConnection {
-  nodes: [Event!]!
-  edges: [EventEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type RSVPEdge {
-  node: RSVP!
-  cursor: String!
-}
-
-type RSVPConnection {
-  nodes: [RSVP!]!
-  edges: [RSVPEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type ReviewConnection {
-  nodes: [Review!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-# Root types
-type Query {
-  # Authentication
-  me: User
-  
-  # Members
-  members(pagination: PaginationInput, status: MemberStatus): MemberConnection!
-  member(id: ID!): Member
-  memberByNumber(memberNumber: String!): Member
-  
-  # Clubs
-  clubs(filter: ClubFilterInput, pagination: PaginationInput): ClubConnection!
-  club(id: ID, slug: String): Club
-  myClub: Club
-  featuredClubs(pagination: PaginationInput): ClubConnection!
-  nearbyClubs(latitude: Float!, longitude: Float!, radius: Float, pagination: PaginationInput): ClubConnection!
-  searchClubs(query: String!, location: LocationInput, radius: Float, amenities: [String!], pagination: PaginationInput): ClubConnection!
-  clubReviews(clubId: ID!, pagination: PaginationInput): ReviewConnection!
-
-  # Facilities
-  facilities(filter: FacilityFilterInput, pagination: PaginationInput): FacilityConnection!
-  facility(id: ID!): Facility
-  facilityTypes: [String!]!
-
-  # Bookings
-  bookings(filter: BookingFilterInput, pagination: PaginationInput): BookingConnection!
-  booking(id: ID!): Booking
-  myBookings(filter: BookingFilterInput, pagination: PaginationInput): BookingConnection!
-  upcomingBookings(days: Int, pagination: PaginationInput): BookingConnection!
-  facilityBookings(facilityId: ID!, startDate: Time!, endDate: Time!, pagination: PaginationInput): BookingConnection!
-
-  # Availability
-  checkAvailability(facilityId: ID!, startTime: Time!, endTime: Time!, excludeBookingId: ID): Boolean!
-  availableSlots(facilityId: ID!, date: Time!, slotDuration: Int!): [TimeSlot!]!
-
-  # Statistics
-  bookingStatistics(startDate: Time!, endDate: Time!): BookingStatistics!
-  facilityUtilization(facilityId: ID!, startDate: Time!, endDate: Time!): FacilityUtilization!
-  
-  # Reciprocal agreements
-  reciprocalAgreements(pagination: PaginationInput, status: AgreementStatus): ReciprocalAgreementConnection!
-  reciprocalAgreement(id: ID!): ReciprocalAgreement
-  
-  # Visits
-  visits(pagination: PaginationInput, status: VisitStatus): VisitConnection!
-  visit(id: ID!): Visit
-  myVisits(pagination: PaginationInput): VisitConnection!
-  
+extend type Query {
   # Notifications
-  notifications(pagination: PaginationInput, unreadOnly: Boolean = false): NotificationConnection!
+  notifications(pagination: PaginationInput, status: NotificationStatus, unreadOnly: Boolean = false): NotificationConnection!
   notification(id: ID!): Notification
+  pendingNotifications(limit: Int = 10): [Notification!]!
   unreadNotificationCount: Int!
-  
-  # Analytics
-  analytics(startDate: Time, endDate: Time): Analytics!
-  
-  # Governance
-  proposals(pagination: PaginationInput, status: ProposalStatus): ProposalConnection!
-  proposal(id: ID!): Proposal
-  myVotes(proposalId: ID): [Vote!]!
-  
-  # Events/RSVPs
-  events(clubId: ID, filter: EventFilterInput, filters: EventFilters, pagination: PaginationInput): EventConnection!
-  event(id: ID!): Event
-  myRSVPs(clubId: ID, status: [RSVPStatus!], pagination: PaginationInput): RSVPConnection!
-  checkRSVPEligibility(eventId: ID!, memberId: ID!): RSVPEligibility!
-  findingFriendsSubgroups(clubId: ID!): [Subgroup!]!
-  
-  # Blockchain
-  transactions(pagination: PaginationInput, status: TransactionStatus): [Transaction!]!
-  transaction(id: ID!): Transaction
+
+  # Templates
+  notificationTemplates(pagination: PaginationInput, channel: NotificationChannel): NotificationTemplateConnection!
+  notificationTemplate(id: ID!): NotificationTemplate
+
+  # Preferences
+  notificationPreferences: NotificationPreference
+  userNotificationPreferences(userId: ID!): NotificationPreference
 }
 
-type Mutation {
-  # Authentication
-  login(input: LoginInput!): AuthPayload!
-  register(input: RegisterInput!): AuthPayload!
-  refreshToken(refreshToken: String!): AuthPayload!
-  logout: Boolean!
-
-  # Passkey Authentication
-  initiatePasskeyLogin(email: String!, clubSlug: String!): PasskeyLoginInit!
-  completePasskeyLogin(clubSlug: String!, userId: String!, credential: PasskeyCredentialInput!): AuthPayload!
-  initiatePasskeyRegistration: PasskeyRegistrationInit!
-  completePasskeyRegistration(credential: PasskeyCredentialInput!): Boolean!
-  syncUser: User!
-
-  # User Management
-  updateUser(id: ID!, firstName: String, lastName: String, status: UserStatus): User!
-
-  # Clubs
-  createClub(input: CreateClubInput!): Club!
-  updateClub(clubId: ID!, input: UpdateClubInput!): Club!
-  checkInToClub(clubId: ID!): CheckInResponse!
-  toggleFavoriteClub(clubId: ID!): Boolean!
-
-  # Members
-  createMember(input: CreateMemberInput!): Member!
-  updateMember(id: ID!, input: MemberProfileInput!): Member!
-  suspendMember(id: ID!, reason: String): Member!
-  reactivateMember(id: ID!): Member!
-
-  # Facilities
-  createFacility(input: CreateFacilityInput!): Facility!
-  updateFacility(id: ID!, input: UpdateFacilityInput!): Facility!
-  deleteFacility(id: ID!): Boolean!
-
-  # Bookings
-  createBooking(input: CreateBookingInput!): Booking!
-  updateBooking(id: ID!, input: UpdateBookingInput!): Booking!
-  cancelBooking(bookingId: ID!, reason: String): Booking!
-  confirmBooking(bookingId: ID!): Booking!
-  completeBooking(bookingId: ID!): Booking!
-  markBookingNoShow(bookingId: ID!): Booking!
-  checkInBooking(bookingId: ID!): Booking!
-  checkOutBooking(bookingId: ID!): Booking!
-  
-  # Reciprocal agreements
-  createReciprocalAgreement(input: CreateReciprocalAgreementInput!): ReciprocalAgreement!
-  approveReciprocalAgreement(id: ID!): ReciprocalAgreement!
-  rejectReciprocalAgreement(id: ID!, reason: String): ReciprocalAgreement!
-  suspendReciprocalAgreement(id: ID!, reason: String): ReciprocalAgreement!
-  
-  # Visits
-  recordVisit(input: RecordVisitInput!): Visit!
-  checkOutVisit(input: CheckOutVisitInput!): Visit!
-  cancelVisit(id: ID!, reason: String): Visit!
-  verifyVisit(id: ID!): Visit!
-  
+extend type Mutation {
   # Notifications
-  createNotification(input: CreateNotificationInput!): Notification!
+  sendNotification(input: SendNotificationInput!): Notification!
+  sendBulkNotifications(input: BulkNotificationInput!): [Notification!]!
   markNotificationRead(id: ID!): Notification!
   markAllNotificationsRead: Boolean!
-  
-  # Governance
-  createProposal(input: CreateProposalInput!): Proposal!
-  castVote(input: CastVoteInput!): Vote!
-  finalizeProposal(id: ID!): Proposal!
-  
-  # Events/RSVPs
-  createRSVP(eventId: ID!, input: CreateRSVPInput!): RSVP!
-  updateRSVP(id: ID!, input: UpdateRSVPInput!): RSVP!
-  cancelRSVP(id: ID!): CancelRSVPResponse!
-  
-  # System
-  syncBlockchainData: Boolean!
-  generateAnalyticsReport(startDate: Time!, endDate: Time!): String!
+
+  # Templates
+  createNotificationTemplate(input: CreateNotificationTemplateInput!): NotificationTemplate!
+  updateNotificationTemplate(id: ID!, input: UpdateNotificationTemplateInput!): NotificationTemplate!
+  deleteNotificationTemplate(id: ID!): Boolean!
+
+  # Preferences
+  updateNotificationPreferences(input: UpdateNotificationPreferenceInput!): NotificationPreference!
 }
 
-type Subscription {
-  # Notifications
+extend type Subscription {
+  # Real-time notification delivery
   notificationReceived: Notification!
-
-  # Bookings
-  bookingUpdates(userId: ID): Booking!
-
-  # Visits
-  visitStatusChanged(clubId: ID): Visit!
-
-  # Governance
-  proposalUpdated(proposalId: ID): Proposal!
-  voteReceived(proposalId: ID): Vote!
-
-  # Blockchain
-  transactionStatusChanged: Transaction!
 }
+

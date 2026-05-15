@@ -2,12 +2,17 @@ mutation CastVote($input: CastVoteInput!) {
   castVote(input: $input) {
     id
     proposalId
+    voterId
+    voteValue
+    weight
+    comments
+    isAnonymous
+    castAt
+    createdAt
     voter {
       id
-      username
+      firstName
+      lastName
     }
-    choice
-    comment
-    createdAt
   }
 }

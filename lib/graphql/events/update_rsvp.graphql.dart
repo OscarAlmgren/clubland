@@ -113,29 +113,29 @@ class _CopyWithStubImpl$Variables$Mutation$UpdateRSVP<TRes>
 
 class Mutation$UpdateRSVP {
   Mutation$UpdateRSVP({
-    required this.updateRSVP,
+    required this.updateEventRSVP,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$UpdateRSVP.fromJson(Map<String, dynamic> json) {
-    final l$updateRSVP = json['updateRSVP'];
+    final l$updateEventRSVP = json['updateEventRSVP'];
     final l$$__typename = json['__typename'];
     return Mutation$UpdateRSVP(
-      updateRSVP: Mutation$UpdateRSVP$updateRSVP.fromJson(
-        (l$updateRSVP as Map<String, dynamic>),
+      updateEventRSVP: Mutation$UpdateRSVP$updateEventRSVP.fromJson(
+        (l$updateEventRSVP as Map<String, dynamic>),
       ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$UpdateRSVP$updateRSVP updateRSVP;
+  final Mutation$UpdateRSVP$updateEventRSVP updateEventRSVP;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$updateRSVP = updateRSVP;
-    _resultData['updateRSVP'] = l$updateRSVP.toJson();
+    final l$updateEventRSVP = updateEventRSVP;
+    _resultData['updateEventRSVP'] = l$updateEventRSVP.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -143,9 +143,9 @@ class Mutation$UpdateRSVP {
 
   @override
   int get hashCode {
-    final l$updateRSVP = updateRSVP;
+    final l$updateEventRSVP = updateEventRSVP;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$updateRSVP, l$$__typename]);
+    return Object.hashAll([l$updateEventRSVP, l$$__typename]);
   }
 
   @override
@@ -156,9 +156,9 @@ class Mutation$UpdateRSVP {
     if (other is! Mutation$UpdateRSVP || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$updateRSVP = updateRSVP;
-    final lOther$updateRSVP = other.updateRSVP;
-    if (l$updateRSVP != lOther$updateRSVP) {
+    final l$updateEventRSVP = updateEventRSVP;
+    final lOther$updateEventRSVP = other.updateEventRSVP;
+    if (l$updateEventRSVP != lOther$updateEventRSVP) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -184,8 +184,11 @@ abstract class CopyWith$Mutation$UpdateRSVP<TRes> {
   factory CopyWith$Mutation$UpdateRSVP.stub(TRes res) =
       _CopyWithStubImpl$Mutation$UpdateRSVP;
 
-  TRes call({Mutation$UpdateRSVP$updateRSVP? updateRSVP, String? $__typename});
-  CopyWith$Mutation$UpdateRSVP$updateRSVP<TRes> get updateRSVP;
+  TRes call({
+    Mutation$UpdateRSVP$updateEventRSVP? updateEventRSVP,
+    String? $__typename,
+  });
+  CopyWith$Mutation$UpdateRSVP$updateEventRSVP<TRes> get updateEventRSVP;
 }
 
 class _CopyWithImpl$Mutation$UpdateRSVP<TRes>
@@ -199,24 +202,24 @@ class _CopyWithImpl$Mutation$UpdateRSVP<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? updateRSVP = _undefined,
+    Object? updateEventRSVP = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$UpdateRSVP(
-      updateRSVP: updateRSVP == _undefined || updateRSVP == null
-          ? _instance.updateRSVP
-          : (updateRSVP as Mutation$UpdateRSVP$updateRSVP),
+      updateEventRSVP: updateEventRSVP == _undefined || updateEventRSVP == null
+          ? _instance.updateEventRSVP
+          : (updateEventRSVP as Mutation$UpdateRSVP$updateEventRSVP),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$UpdateRSVP$updateRSVP<TRes> get updateRSVP {
-    final local$updateRSVP = _instance.updateRSVP;
-    return CopyWith$Mutation$UpdateRSVP$updateRSVP(
-      local$updateRSVP,
-      (e) => call(updateRSVP: e),
+  CopyWith$Mutation$UpdateRSVP$updateEventRSVP<TRes> get updateEventRSVP {
+    final local$updateEventRSVP = _instance.updateEventRSVP;
+    return CopyWith$Mutation$UpdateRSVP$updateEventRSVP(
+      local$updateEventRSVP,
+      (e) => call(updateEventRSVP: e),
     );
   }
 }
@@ -227,11 +230,13 @@ class _CopyWithStubImpl$Mutation$UpdateRSVP<TRes>
 
   TRes _res;
 
-  call({Mutation$UpdateRSVP$updateRSVP? updateRSVP, String? $__typename}) =>
-      _res;
+  call({
+    Mutation$UpdateRSVP$updateEventRSVP? updateEventRSVP,
+    String? $__typename,
+  }) => _res;
 
-  CopyWith$Mutation$UpdateRSVP$updateRSVP<TRes> get updateRSVP =>
-      CopyWith$Mutation$UpdateRSVP$updateRSVP.stub(_res);
+  CopyWith$Mutation$UpdateRSVP$updateEventRSVP<TRes> get updateEventRSVP =>
+      CopyWith$Mutation$UpdateRSVP$updateEventRSVP.stub(_res);
 }
 
 const documentNodeMutationUpdateRSVP = DocumentNode(
@@ -260,7 +265,7 @@ const documentNodeMutationUpdateRSVP = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'updateRSVP'),
+            name: NameNode(value: 'updateEventRSVP'),
             alias: null,
             arguments: [
               ArgumentNode(
@@ -304,6 +309,41 @@ const documentNodeMutationUpdateRSVP = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
+                  name: NameNode(value: 'status'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'guestCount'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'dietaryRestrictions'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'specialRequests'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'paymentStatus'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
                   name: NameNode(value: 'response'),
                   alias: null,
                   arguments: [],
@@ -339,28 +379,7 @@ const documentNodeMutationUpdateRSVP = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'dietaryRestrictions'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
                   name: NameNode(value: 'seatingPreferences'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'specialRequests'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'status'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -572,21 +591,23 @@ extension ClientExtension$Mutation$UpdateRSVP on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$UpdateRSVP$updateRSVP {
-  Mutation$UpdateRSVP$updateRSVP({
+class Mutation$UpdateRSVP$updateEventRSVP {
+  Mutation$UpdateRSVP$updateEventRSVP({
     required this.id,
     required this.eventId,
     required this.memberId,
     required this.clubId,
+    required this.status,
+    required this.guestCount,
+    this.dietaryRestrictions,
+    this.specialRequests,
+    required this.paymentStatus,
     this.response,
     this.rsvpType,
     this.priority,
     this.attendanceCount,
     this.guestNames,
-    this.dietaryRestrictions,
     this.seatingPreferences,
-    this.specialRequests,
-    required this.status,
     this.paymentRequired,
     this.paymentVerified,
     this.paymentAmount,
@@ -600,23 +621,27 @@ class Mutation$UpdateRSVP$updateRSVP {
     this.approvedBy,
     this.approvedAt,
     this.declineReason,
-    this.$__typename = 'RSVP',
+    this.$__typename = 'EventRSVP',
   });
 
-  factory Mutation$UpdateRSVP$updateRSVP.fromJson(Map<String, dynamic> json) {
+  factory Mutation$UpdateRSVP$updateEventRSVP.fromJson(
+    Map<String, dynamic> json,
+  ) {
     final l$id = json['id'];
     final l$eventId = json['eventId'];
     final l$memberId = json['memberId'];
     final l$clubId = json['clubId'];
+    final l$status = json['status'];
+    final l$guestCount = json['guestCount'];
+    final l$dietaryRestrictions = json['dietaryRestrictions'];
+    final l$specialRequests = json['specialRequests'];
+    final l$paymentStatus = json['paymentStatus'];
     final l$response = json['response'];
     final l$rsvpType = json['rsvpType'];
     final l$priority = json['priority'];
     final l$attendanceCount = json['attendanceCount'];
     final l$guestNames = json['guestNames'];
-    final l$dietaryRestrictions = json['dietaryRestrictions'];
     final l$seatingPreferences = json['seatingPreferences'];
-    final l$specialRequests = json['specialRequests'];
-    final l$status = json['status'];
     final l$paymentRequired = json['paymentRequired'];
     final l$paymentVerified = json['paymentVerified'];
     final l$paymentAmount = json['paymentAmount'];
@@ -631,24 +656,26 @@ class Mutation$UpdateRSVP$updateRSVP {
     final l$approvedAt = json['approvedAt'];
     final l$declineReason = json['declineReason'];
     final l$$__typename = json['__typename'];
-    return Mutation$UpdateRSVP$updateRSVP(
+    return Mutation$UpdateRSVP$updateEventRSVP(
       id: (l$id as String),
       eventId: (l$eventId as String),
       memberId: (l$memberId as String),
       clubId: (l$clubId as String),
+      status: fromJson$Enum$RSVPStatus((l$status as String)),
+      guestCount: (l$guestCount as int),
+      dietaryRestrictions: (l$dietaryRestrictions as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList(),
+      specialRequests: (l$specialRequests as String?),
+      paymentStatus: fromJson$Enum$PaymentStatus((l$paymentStatus as String)),
       response: (l$response as String?),
       rsvpType: (l$rsvpType as String?),
-      priority: (l$priority as int?),
+      priority: (l$priority as String?),
       attendanceCount: (l$attendanceCount as int?),
       guestNames: (l$guestNames as List<dynamic>?)
           ?.map((e) => (e as String))
           .toList(),
-      dietaryRestrictions: (l$dietaryRestrictions as List<dynamic>?)
-          ?.map((e) => (e as String))
-          .toList(),
       seatingPreferences: (l$seatingPreferences as String?),
-      specialRequests: (l$specialRequests as String?),
-      status: fromJson$Enum$RSVPStatus((l$status as String)),
       paymentRequired: (l$paymentRequired as bool?),
       paymentVerified: (l$paymentVerified as bool?),
       paymentAmount: (l$paymentAmount as num?)?.toDouble(),
@@ -680,23 +707,27 @@ class Mutation$UpdateRSVP$updateRSVP {
 
   final String clubId;
 
+  final Enum$RSVPStatus status;
+
+  final int guestCount;
+
+  final List<String>? dietaryRestrictions;
+
+  final String? specialRequests;
+
+  final Enum$PaymentStatus paymentStatus;
+
   final String? response;
 
   final String? rsvpType;
 
-  final int? priority;
+  final String? priority;
 
   final int? attendanceCount;
 
   final List<String>? guestNames;
 
-  final List<String>? dietaryRestrictions;
-
   final String? seatingPreferences;
-
-  final String? specialRequests;
-
-  final Enum$RSVPStatus status;
 
   final bool? paymentRequired;
 
@@ -736,6 +767,18 @@ class Mutation$UpdateRSVP$updateRSVP {
     _resultData['memberId'] = l$memberId;
     final l$clubId = clubId;
     _resultData['clubId'] = l$clubId;
+    final l$status = status;
+    _resultData['status'] = toJson$Enum$RSVPStatus(l$status);
+    final l$guestCount = guestCount;
+    _resultData['guestCount'] = l$guestCount;
+    final l$dietaryRestrictions = dietaryRestrictions;
+    _resultData['dietaryRestrictions'] = l$dietaryRestrictions
+        ?.map((e) => e)
+        .toList();
+    final l$specialRequests = specialRequests;
+    _resultData['specialRequests'] = l$specialRequests;
+    final l$paymentStatus = paymentStatus;
+    _resultData['paymentStatus'] = toJson$Enum$PaymentStatus(l$paymentStatus);
     final l$response = response;
     _resultData['response'] = l$response;
     final l$rsvpType = rsvpType;
@@ -746,16 +789,8 @@ class Mutation$UpdateRSVP$updateRSVP {
     _resultData['attendanceCount'] = l$attendanceCount;
     final l$guestNames = guestNames;
     _resultData['guestNames'] = l$guestNames?.map((e) => e).toList();
-    final l$dietaryRestrictions = dietaryRestrictions;
-    _resultData['dietaryRestrictions'] = l$dietaryRestrictions
-        ?.map((e) => e)
-        .toList();
     final l$seatingPreferences = seatingPreferences;
     _resultData['seatingPreferences'] = l$seatingPreferences;
-    final l$specialRequests = specialRequests;
-    _resultData['specialRequests'] = l$specialRequests;
-    final l$status = status;
-    _resultData['status'] = toJson$Enum$RSVPStatus(l$status);
     final l$paymentRequired = paymentRequired;
     _resultData['paymentRequired'] = l$paymentRequired;
     final l$paymentVerified = paymentVerified;
@@ -793,15 +828,17 @@ class Mutation$UpdateRSVP$updateRSVP {
     final l$eventId = eventId;
     final l$memberId = memberId;
     final l$clubId = clubId;
+    final l$status = status;
+    final l$guestCount = guestCount;
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final l$specialRequests = specialRequests;
+    final l$paymentStatus = paymentStatus;
     final l$response = response;
     final l$rsvpType = rsvpType;
     final l$priority = priority;
     final l$attendanceCount = attendanceCount;
     final l$guestNames = guestNames;
-    final l$dietaryRestrictions = dietaryRestrictions;
     final l$seatingPreferences = seatingPreferences;
-    final l$specialRequests = specialRequests;
-    final l$status = status;
     final l$paymentRequired = paymentRequired;
     final l$paymentVerified = paymentVerified;
     final l$paymentAmount = paymentAmount;
@@ -821,17 +858,19 @@ class Mutation$UpdateRSVP$updateRSVP {
       l$eventId,
       l$memberId,
       l$clubId,
+      l$status,
+      l$guestCount,
+      l$dietaryRestrictions == null
+          ? null
+          : Object.hashAll(l$dietaryRestrictions.map((v) => v)),
+      l$specialRequests,
+      l$paymentStatus,
       l$response,
       l$rsvpType,
       l$priority,
       l$attendanceCount,
       l$guestNames == null ? null : Object.hashAll(l$guestNames.map((v) => v)),
-      l$dietaryRestrictions == null
-          ? null
-          : Object.hashAll(l$dietaryRestrictions.map((v) => v)),
       l$seatingPreferences,
-      l$specialRequests,
-      l$status,
       l$paymentRequired,
       l$paymentVerified,
       l$paymentAmount,
@@ -854,7 +893,7 @@ class Mutation$UpdateRSVP$updateRSVP {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$UpdateRSVP$updateRSVP ||
+    if (other is! Mutation$UpdateRSVP$updateEventRSVP ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -876,6 +915,42 @@ class Mutation$UpdateRSVP$updateRSVP {
     final l$clubId = clubId;
     final lOther$clubId = other.clubId;
     if (l$clubId != lOther$clubId) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (l$guestCount != lOther$guestCount) {
+      return false;
+    }
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final lOther$dietaryRestrictions = other.dietaryRestrictions;
+    if (l$dietaryRestrictions != null && lOther$dietaryRestrictions != null) {
+      if (l$dietaryRestrictions.length != lOther$dietaryRestrictions.length) {
+        return false;
+      }
+      for (int i = 0; i < l$dietaryRestrictions.length; i++) {
+        final l$dietaryRestrictions$entry = l$dietaryRestrictions[i];
+        final lOther$dietaryRestrictions$entry = lOther$dietaryRestrictions[i];
+        if (l$dietaryRestrictions$entry != lOther$dietaryRestrictions$entry) {
+          return false;
+        }
+      }
+    } else if (l$dietaryRestrictions != lOther$dietaryRestrictions) {
+      return false;
+    }
+    final l$specialRequests = specialRequests;
+    final lOther$specialRequests = other.specialRequests;
+    if (l$specialRequests != lOther$specialRequests) {
+      return false;
+    }
+    final l$paymentStatus = paymentStatus;
+    final lOther$paymentStatus = other.paymentStatus;
+    if (l$paymentStatus != lOther$paymentStatus) {
       return false;
     }
     final l$response = response;
@@ -914,35 +989,9 @@ class Mutation$UpdateRSVP$updateRSVP {
     } else if (l$guestNames != lOther$guestNames) {
       return false;
     }
-    final l$dietaryRestrictions = dietaryRestrictions;
-    final lOther$dietaryRestrictions = other.dietaryRestrictions;
-    if (l$dietaryRestrictions != null && lOther$dietaryRestrictions != null) {
-      if (l$dietaryRestrictions.length != lOther$dietaryRestrictions.length) {
-        return false;
-      }
-      for (int i = 0; i < l$dietaryRestrictions.length; i++) {
-        final l$dietaryRestrictions$entry = l$dietaryRestrictions[i];
-        final lOther$dietaryRestrictions$entry = lOther$dietaryRestrictions[i];
-        if (l$dietaryRestrictions$entry != lOther$dietaryRestrictions$entry) {
-          return false;
-        }
-      }
-    } else if (l$dietaryRestrictions != lOther$dietaryRestrictions) {
-      return false;
-    }
     final l$seatingPreferences = seatingPreferences;
     final lOther$seatingPreferences = other.seatingPreferences;
     if (l$seatingPreferences != lOther$seatingPreferences) {
-      return false;
-    }
-    final l$specialRequests = specialRequests;
-    final lOther$specialRequests = other.specialRequests;
-    if (l$specialRequests != lOther$specialRequests) {
-      return false;
-    }
-    final l$status = status;
-    final lOther$status = other.status;
-    if (l$status != lOther$status) {
       return false;
     }
     final l$paymentRequired = paymentRequired;
@@ -1019,35 +1068,39 @@ class Mutation$UpdateRSVP$updateRSVP {
   }
 }
 
-extension UtilityExtension$Mutation$UpdateRSVP$updateRSVP
-    on Mutation$UpdateRSVP$updateRSVP {
-  CopyWith$Mutation$UpdateRSVP$updateRSVP<Mutation$UpdateRSVP$updateRSVP>
-  get copyWith => CopyWith$Mutation$UpdateRSVP$updateRSVP(this, (i) => i);
+extension UtilityExtension$Mutation$UpdateRSVP$updateEventRSVP
+    on Mutation$UpdateRSVP$updateEventRSVP {
+  CopyWith$Mutation$UpdateRSVP$updateEventRSVP<
+    Mutation$UpdateRSVP$updateEventRSVP
+  >
+  get copyWith => CopyWith$Mutation$UpdateRSVP$updateEventRSVP(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$UpdateRSVP$updateRSVP<TRes> {
-  factory CopyWith$Mutation$UpdateRSVP$updateRSVP(
-    Mutation$UpdateRSVP$updateRSVP instance,
-    TRes Function(Mutation$UpdateRSVP$updateRSVP) then,
-  ) = _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP;
+abstract class CopyWith$Mutation$UpdateRSVP$updateEventRSVP<TRes> {
+  factory CopyWith$Mutation$UpdateRSVP$updateEventRSVP(
+    Mutation$UpdateRSVP$updateEventRSVP instance,
+    TRes Function(Mutation$UpdateRSVP$updateEventRSVP) then,
+  ) = _CopyWithImpl$Mutation$UpdateRSVP$updateEventRSVP;
 
-  factory CopyWith$Mutation$UpdateRSVP$updateRSVP.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$UpdateRSVP$updateRSVP;
+  factory CopyWith$Mutation$UpdateRSVP$updateEventRSVP.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$UpdateRSVP$updateEventRSVP;
 
   TRes call({
     String? id,
     String? eventId,
     String? memberId,
     String? clubId,
+    Enum$RSVPStatus? status,
+    int? guestCount,
+    List<String>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$PaymentStatus? paymentStatus,
     String? response,
     String? rsvpType,
-    int? priority,
+    String? priority,
     int? attendanceCount,
     List<String>? guestNames,
-    List<String>? dietaryRestrictions,
     String? seatingPreferences,
-    String? specialRequests,
-    Enum$RSVPStatus? status,
     bool? paymentRequired,
     bool? paymentVerified,
     double? paymentAmount,
@@ -1065,13 +1118,13 @@ abstract class CopyWith$Mutation$UpdateRSVP$updateRSVP<TRes> {
   });
 }
 
-class _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
-    implements CopyWith$Mutation$UpdateRSVP$updateRSVP<TRes> {
-  _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP(this._instance, this._then);
+class _CopyWithImpl$Mutation$UpdateRSVP$updateEventRSVP<TRes>
+    implements CopyWith$Mutation$UpdateRSVP$updateEventRSVP<TRes> {
+  _CopyWithImpl$Mutation$UpdateRSVP$updateEventRSVP(this._instance, this._then);
 
-  final Mutation$UpdateRSVP$updateRSVP _instance;
+  final Mutation$UpdateRSVP$updateEventRSVP _instance;
 
-  final TRes Function(Mutation$UpdateRSVP$updateRSVP) _then;
+  final TRes Function(Mutation$UpdateRSVP$updateEventRSVP) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -1080,15 +1133,17 @@ class _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
     Object? eventId = _undefined,
     Object? memberId = _undefined,
     Object? clubId = _undefined,
+    Object? status = _undefined,
+    Object? guestCount = _undefined,
+    Object? dietaryRestrictions = _undefined,
+    Object? specialRequests = _undefined,
+    Object? paymentStatus = _undefined,
     Object? response = _undefined,
     Object? rsvpType = _undefined,
     Object? priority = _undefined,
     Object? attendanceCount = _undefined,
     Object? guestNames = _undefined,
-    Object? dietaryRestrictions = _undefined,
     Object? seatingPreferences = _undefined,
-    Object? specialRequests = _undefined,
-    Object? status = _undefined,
     Object? paymentRequired = _undefined,
     Object? paymentVerified = _undefined,
     Object? paymentAmount = _undefined,
@@ -1104,7 +1159,7 @@ class _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
     Object? declineReason = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$UpdateRSVP$updateRSVP(
+    Mutation$UpdateRSVP$updateEventRSVP(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       eventId: eventId == _undefined || eventId == null
           ? _instance.eventId
@@ -1115,6 +1170,21 @@ class _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
+      status: status == _undefined || status == null
+          ? _instance.status
+          : (status as Enum$RSVPStatus),
+      guestCount: guestCount == _undefined || guestCount == null
+          ? _instance.guestCount
+          : (guestCount as int),
+      dietaryRestrictions: dietaryRestrictions == _undefined
+          ? _instance.dietaryRestrictions
+          : (dietaryRestrictions as List<String>?),
+      specialRequests: specialRequests == _undefined
+          ? _instance.specialRequests
+          : (specialRequests as String?),
+      paymentStatus: paymentStatus == _undefined || paymentStatus == null
+          ? _instance.paymentStatus
+          : (paymentStatus as Enum$PaymentStatus),
       response: response == _undefined
           ? _instance.response
           : (response as String?),
@@ -1123,25 +1193,16 @@ class _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
           : (rsvpType as String?),
       priority: priority == _undefined
           ? _instance.priority
-          : (priority as int?),
+          : (priority as String?),
       attendanceCount: attendanceCount == _undefined
           ? _instance.attendanceCount
           : (attendanceCount as int?),
       guestNames: guestNames == _undefined
           ? _instance.guestNames
           : (guestNames as List<String>?),
-      dietaryRestrictions: dietaryRestrictions == _undefined
-          ? _instance.dietaryRestrictions
-          : (dietaryRestrictions as List<String>?),
       seatingPreferences: seatingPreferences == _undefined
           ? _instance.seatingPreferences
           : (seatingPreferences as String?),
-      specialRequests: specialRequests == _undefined
-          ? _instance.specialRequests
-          : (specialRequests as String?),
-      status: status == _undefined || status == null
-          ? _instance.status
-          : (status as Enum$RSVPStatus),
       paymentRequired: paymentRequired == _undefined
           ? _instance.paymentRequired
           : (paymentRequired as bool?),
@@ -1188,9 +1249,9 @@ class _CopyWithImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
-    implements CopyWith$Mutation$UpdateRSVP$updateRSVP<TRes> {
-  _CopyWithStubImpl$Mutation$UpdateRSVP$updateRSVP(this._res);
+class _CopyWithStubImpl$Mutation$UpdateRSVP$updateEventRSVP<TRes>
+    implements CopyWith$Mutation$UpdateRSVP$updateEventRSVP<TRes> {
+  _CopyWithStubImpl$Mutation$UpdateRSVP$updateEventRSVP(this._res);
 
   TRes _res;
 
@@ -1199,15 +1260,17 @@ class _CopyWithStubImpl$Mutation$UpdateRSVP$updateRSVP<TRes>
     String? eventId,
     String? memberId,
     String? clubId,
+    Enum$RSVPStatus? status,
+    int? guestCount,
+    List<String>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$PaymentStatus? paymentStatus,
     String? response,
     String? rsvpType,
-    int? priority,
+    String? priority,
     int? attendanceCount,
     List<String>? guestNames,
-    List<String>? dietaryRestrictions,
     String? seatingPreferences,
-    String? specialRequests,
-    Enum$RSVPStatus? status,
     bool? paymentRequired,
     bool? paymentVerified,
     double? paymentAmount,

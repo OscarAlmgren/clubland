@@ -436,7 +436,7 @@ extension ClientExtension$Mutation$InitiatePasskeyLogin
 class Mutation$InitiatePasskeyLogin$initiatePasskeyLogin {
   Mutation$InitiatePasskeyLogin$initiatePasskeyLogin({
     required this.options,
-    required this.userId,
+    this.userId,
     this.$__typename = 'PasskeyLoginInit',
   });
 
@@ -447,15 +447,15 @@ class Mutation$InitiatePasskeyLogin$initiatePasskeyLogin {
     final l$userId = json['userId'];
     final l$$__typename = json['__typename'];
     return Mutation$InitiatePasskeyLogin$initiatePasskeyLogin(
-      options: (l$options as String),
-      userId: (l$userId as String),
+      options: (l$options as dynamic),
+      userId: (l$userId as String?),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final String options;
+  final dynamic options;
 
-  final String userId;
+  final String? userId;
 
   final String $__typename;
 
@@ -529,7 +529,7 @@ abstract class CopyWith$Mutation$InitiatePasskeyLogin$initiatePasskeyLogin<
     TRes res,
   ) = _CopyWithStubImpl$Mutation$InitiatePasskeyLogin$initiatePasskeyLogin;
 
-  TRes call({String? options, String? userId, String? $__typename});
+  TRes call({dynamic? options, String? userId, String? $__typename});
 }
 
 class _CopyWithImpl$Mutation$InitiatePasskeyLogin$initiatePasskeyLogin<TRes>
@@ -554,10 +554,8 @@ class _CopyWithImpl$Mutation$InitiatePasskeyLogin$initiatePasskeyLogin<TRes>
     Mutation$InitiatePasskeyLogin$initiatePasskeyLogin(
       options: options == _undefined || options == null
           ? _instance.options
-          : (options as String),
-      userId: userId == _undefined || userId == null
-          ? _instance.userId
-          : (userId as String),
+          : (options as dynamic),
+      userId: userId == _undefined ? _instance.userId : (userId as String?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -574,5 +572,5 @@ class _CopyWithStubImpl$Mutation$InitiatePasskeyLogin$initiatePasskeyLogin<TRes>
 
   TRes _res;
 
-  call({String? options, String? userId, String? $__typename}) => _res;
+  call({dynamic? options, String? userId, String? $__typename}) => _res;
 }

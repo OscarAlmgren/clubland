@@ -329,13 +329,13 @@ class Mutation$InitiatePasskeyRegistration$initiatePasskeyRegistration {
     final l$userId = json['userId'];
     final l$$__typename = json['__typename'];
     return Mutation$InitiatePasskeyRegistration$initiatePasskeyRegistration(
-      options: (l$options as String),
+      options: (l$options as dynamic),
       userId: (l$userId as String),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final String options;
+  final dynamic options;
 
   final String userId;
 
@@ -416,7 +416,7 @@ abstract class CopyWith$Mutation$InitiatePasskeyRegistration$initiatePasskeyRegi
     TRes res,
   ) = _CopyWithStubImpl$Mutation$InitiatePasskeyRegistration$initiatePasskeyRegistration;
 
-  TRes call({String? options, String? userId, String? $__typename});
+  TRes call({dynamic? options, String? userId, String? $__typename});
 }
 
 class _CopyWithImpl$Mutation$InitiatePasskeyRegistration$initiatePasskeyRegistration<
@@ -449,7 +449,7 @@ class _CopyWithImpl$Mutation$InitiatePasskeyRegistration$initiatePasskeyRegistra
     Mutation$InitiatePasskeyRegistration$initiatePasskeyRegistration(
       options: options == _undefined || options == null
           ? _instance.options
-          : (options as String),
+          : (options as dynamic),
       userId: userId == _undefined || userId == null
           ? _instance.userId
           : (userId as String),
@@ -473,5 +473,5 @@ class _CopyWithStubImpl$Mutation$InitiatePasskeyRegistration$initiatePasskeyRegi
 
   TRes _res;
 
-  call({String? options, String? userId, String? $__typename}) => _res;
+  call({dynamic? options, String? userId, String? $__typename}) => _res;
 }

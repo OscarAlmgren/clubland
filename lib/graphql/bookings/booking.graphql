@@ -1,39 +1,28 @@
 query Booking($id: ID!) {
-  booking(id: $id) {
+  facilityBooking(id: $id) {
     id
+    clubId
     facilityId
-    userId
+    memberId
     facility {
       id
       name
       type
       capacity
     }
-    user {
-      id
-      firstName
-      lastName
-      email
-    }
     startTime
     endTime
     status
-    notes
-    participants
-    partySize
-    mealType
-    dietaryRestrictions
-    specialRequests
-    tablePreference
-    eventType
+    purpose
     guestCount
-    serviceAddons
+    specialRequests
+    totalCost
+    currency
+    paymentStatus
+    checkInTime
+    checkOutTime
     cancellationReason
-    confirmedAt
-    confirmedBy
     cancelledAt
-    checkedInAt
-    checkedOutAt
     createdAt
     updatedAt
   }

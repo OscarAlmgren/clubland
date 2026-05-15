@@ -1,8 +1,7 @@
 mutation ConfirmBooking($bookingId: ID!) {
-  confirmBooking(bookingId: $bookingId) {
+  confirmFacilityBooking(id: $bookingId) {
     id
     status
-    confirmedAt
-    confirmedBy
+    updatedAt
   }
 }

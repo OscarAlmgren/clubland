@@ -433,7 +433,7 @@ class Subscription$BookingUpdates$bookingUpdates {
     this.facility,
     required this.startTime,
     required this.endTime,
-    this.$__typename = 'Booking',
+    this.$__typename = 'FacilityBooking',
   });
 
   factory Subscription$BookingUpdates$bookingUpdates.fromJson(

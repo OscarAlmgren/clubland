@@ -1,10 +1,13 @@
+import '../../schema/schema.graphql.dart';
 import 'dart:async';
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
 
 class Variables$Mutation$CancelRSVP {
-  factory Variables$Mutation$CancelRSVP({required String id}) =>
-      Variables$Mutation$CancelRSVP._({r'id': id});
+  factory Variables$Mutation$CancelRSVP({
+    required String id,
+    required String reason,
+  }) => Variables$Mutation$CancelRSVP._({r'id': id, r'reason': reason});
 
   Variables$Mutation$CancelRSVP._(this._$data);
 
@@ -12,6 +15,8 @@ class Variables$Mutation$CancelRSVP {
     final result$data = <String, dynamic>{};
     final l$id = data['id'];
     result$data['id'] = (l$id as String);
+    final l$reason = data['reason'];
+    result$data['reason'] = (l$reason as String);
     return Variables$Mutation$CancelRSVP._(result$data);
   }
 
@@ -19,10 +24,14 @@ class Variables$Mutation$CancelRSVP {
 
   String get id => (_$data['id'] as String);
 
+  String get reason => (_$data['reason'] as String);
+
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
     final l$id = id;
     result$data['id'] = l$id;
+    final l$reason = reason;
+    result$data['reason'] = l$reason;
     return result$data;
   }
 
@@ -43,13 +52,19 @@ class Variables$Mutation$CancelRSVP {
     if (l$id != lOther$id) {
       return false;
     }
+    final l$reason = reason;
+    final lOther$reason = other.reason;
+    if (l$reason != lOther$reason) {
+      return false;
+    }
     return true;
   }
 
   @override
   int get hashCode {
     final l$id = id;
-    return Object.hashAll([l$id]);
+    final l$reason = reason;
+    return Object.hashAll([l$id, l$reason]);
   }
 }
 
@@ -62,7 +77,7 @@ abstract class CopyWith$Variables$Mutation$CancelRSVP<TRes> {
   factory CopyWith$Variables$Mutation$CancelRSVP.stub(TRes res) =
       _CopyWithStubImpl$Variables$Mutation$CancelRSVP;
 
-  TRes call({String? id});
+  TRes call({String? id, String? reason});
 }
 
 class _CopyWithImpl$Variables$Mutation$CancelRSVP<TRes>
@@ -75,10 +90,11 @@ class _CopyWithImpl$Variables$Mutation$CancelRSVP<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? id = _undefined}) => _then(
+  TRes call({Object? id = _undefined, Object? reason = _undefined}) => _then(
     Variables$Mutation$CancelRSVP._({
       ..._instance._$data,
       if (id != _undefined && id != null) 'id': (id as String),
+      if (reason != _undefined && reason != null) 'reason': (reason as String),
     }),
   );
 }
@@ -89,34 +105,34 @@ class _CopyWithStubImpl$Variables$Mutation$CancelRSVP<TRes>
 
   TRes _res;
 
-  call({String? id}) => _res;
+  call({String? id, String? reason}) => _res;
 }
 
 class Mutation$CancelRSVP {
   Mutation$CancelRSVP({
-    required this.cancelRSVP,
+    required this.cancelEventRSVP,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$CancelRSVP.fromJson(Map<String, dynamic> json) {
-    final l$cancelRSVP = json['cancelRSVP'];
+    final l$cancelEventRSVP = json['cancelEventRSVP'];
     final l$$__typename = json['__typename'];
     return Mutation$CancelRSVP(
-      cancelRSVP: Mutation$CancelRSVP$cancelRSVP.fromJson(
-        (l$cancelRSVP as Map<String, dynamic>),
+      cancelEventRSVP: Mutation$CancelRSVP$cancelEventRSVP.fromJson(
+        (l$cancelEventRSVP as Map<String, dynamic>),
       ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$CancelRSVP$cancelRSVP cancelRSVP;
+  final Mutation$CancelRSVP$cancelEventRSVP cancelEventRSVP;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$cancelRSVP = cancelRSVP;
-    _resultData['cancelRSVP'] = l$cancelRSVP.toJson();
+    final l$cancelEventRSVP = cancelEventRSVP;
+    _resultData['cancelEventRSVP'] = l$cancelEventRSVP.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -124,9 +140,9 @@ class Mutation$CancelRSVP {
 
   @override
   int get hashCode {
-    final l$cancelRSVP = cancelRSVP;
+    final l$cancelEventRSVP = cancelEventRSVP;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$cancelRSVP, l$$__typename]);
+    return Object.hashAll([l$cancelEventRSVP, l$$__typename]);
   }
 
   @override
@@ -137,9 +153,9 @@ class Mutation$CancelRSVP {
     if (other is! Mutation$CancelRSVP || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$cancelRSVP = cancelRSVP;
-    final lOther$cancelRSVP = other.cancelRSVP;
-    if (l$cancelRSVP != lOther$cancelRSVP) {
+    final l$cancelEventRSVP = cancelEventRSVP;
+    final lOther$cancelEventRSVP = other.cancelEventRSVP;
+    if (l$cancelEventRSVP != lOther$cancelEventRSVP) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -165,8 +181,11 @@ abstract class CopyWith$Mutation$CancelRSVP<TRes> {
   factory CopyWith$Mutation$CancelRSVP.stub(TRes res) =
       _CopyWithStubImpl$Mutation$CancelRSVP;
 
-  TRes call({Mutation$CancelRSVP$cancelRSVP? cancelRSVP, String? $__typename});
-  CopyWith$Mutation$CancelRSVP$cancelRSVP<TRes> get cancelRSVP;
+  TRes call({
+    Mutation$CancelRSVP$cancelEventRSVP? cancelEventRSVP,
+    String? $__typename,
+  });
+  CopyWith$Mutation$CancelRSVP$cancelEventRSVP<TRes> get cancelEventRSVP;
 }
 
 class _CopyWithImpl$Mutation$CancelRSVP<TRes>
@@ -180,24 +199,24 @@ class _CopyWithImpl$Mutation$CancelRSVP<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? cancelRSVP = _undefined,
+    Object? cancelEventRSVP = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CancelRSVP(
-      cancelRSVP: cancelRSVP == _undefined || cancelRSVP == null
-          ? _instance.cancelRSVP
-          : (cancelRSVP as Mutation$CancelRSVP$cancelRSVP),
+      cancelEventRSVP: cancelEventRSVP == _undefined || cancelEventRSVP == null
+          ? _instance.cancelEventRSVP
+          : (cancelEventRSVP as Mutation$CancelRSVP$cancelEventRSVP),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$CancelRSVP$cancelRSVP<TRes> get cancelRSVP {
-    final local$cancelRSVP = _instance.cancelRSVP;
-    return CopyWith$Mutation$CancelRSVP$cancelRSVP(
-      local$cancelRSVP,
-      (e) => call(cancelRSVP: e),
+  CopyWith$Mutation$CancelRSVP$cancelEventRSVP<TRes> get cancelEventRSVP {
+    final local$cancelEventRSVP = _instance.cancelEventRSVP;
+    return CopyWith$Mutation$CancelRSVP$cancelEventRSVP(
+      local$cancelEventRSVP,
+      (e) => call(cancelEventRSVP: e),
     );
   }
 }
@@ -208,11 +227,13 @@ class _CopyWithStubImpl$Mutation$CancelRSVP<TRes>
 
   TRes _res;
 
-  call({Mutation$CancelRSVP$cancelRSVP? cancelRSVP, String? $__typename}) =>
-      _res;
+  call({
+    Mutation$CancelRSVP$cancelEventRSVP? cancelEventRSVP,
+    String? $__typename,
+  }) => _res;
 
-  CopyWith$Mutation$CancelRSVP$cancelRSVP<TRes> get cancelRSVP =>
-      CopyWith$Mutation$CancelRSVP$cancelRSVP.stub(_res);
+  CopyWith$Mutation$CancelRSVP$cancelEventRSVP<TRes> get cancelEventRSVP =>
+      CopyWith$Mutation$CancelRSVP$cancelEventRSVP.stub(_res);
 }
 
 const documentNodeMutationCancelRSVP = DocumentNode(
@@ -227,31 +248,55 @@ const documentNodeMutationCancelRSVP = DocumentNode(
           defaultValue: DefaultValueNode(value: null),
           directives: [],
         ),
+        VariableDefinitionNode(
+          variable: VariableNode(name: NameNode(value: 'reason')),
+          type: NamedTypeNode(name: NameNode(value: 'String'), isNonNull: true),
+          defaultValue: DefaultValueNode(value: null),
+          directives: [],
+        ),
       ],
       directives: [],
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'cancelRSVP'),
+            name: NameNode(value: 'cancelEventRSVP'),
             alias: null,
             arguments: [
               ArgumentNode(
                 name: NameNode(value: 'id'),
                 value: VariableNode(name: NameNode(value: 'id')),
               ),
+              ArgumentNode(
+                name: NameNode(value: 'reason'),
+                value: VariableNode(name: NameNode(value: 'reason')),
+              ),
             ],
             directives: [],
             selectionSet: SelectionSetNode(
               selections: [
                 FieldNode(
-                  name: NameNode(value: 'success'),
+                  name: NameNode(value: 'id'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'message'),
+                  name: NameNode(value: 'status'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'cancellationReason'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'cancelledAt'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -259,13 +304,6 @@ const documentNodeMutationCancelRSVP = DocumentNode(
                 ),
                 FieldNode(
                   name: NameNode(value: 'cancellationFee'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'refundAmount'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -393,40 +431,49 @@ extension ClientExtension$Mutation$CancelRSVP on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$CancelRSVP$cancelRSVP {
-  Mutation$CancelRSVP$cancelRSVP({
-    required this.success,
-    this.message,
+class Mutation$CancelRSVP$cancelEventRSVP {
+  Mutation$CancelRSVP$cancelEventRSVP({
+    required this.id,
+    required this.status,
+    this.cancellationReason,
+    this.cancelledAt,
     this.cancellationFee,
-    this.refundAmount,
     this.feeWaived,
-    this.$__typename = 'CancelRSVPResponse',
+    this.$__typename = 'EventRSVP',
   });
 
-  factory Mutation$CancelRSVP$cancelRSVP.fromJson(Map<String, dynamic> json) {
-    final l$success = json['success'];
-    final l$message = json['message'];
+  factory Mutation$CancelRSVP$cancelEventRSVP.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final l$id = json['id'];
+    final l$status = json['status'];
+    final l$cancellationReason = json['cancellationReason'];
+    final l$cancelledAt = json['cancelledAt'];
     final l$cancellationFee = json['cancellationFee'];
-    final l$refundAmount = json['refundAmount'];
     final l$feeWaived = json['feeWaived'];
     final l$$__typename = json['__typename'];
-    return Mutation$CancelRSVP$cancelRSVP(
-      success: (l$success as bool),
-      message: (l$message as String?),
+    return Mutation$CancelRSVP$cancelEventRSVP(
+      id: (l$id as String),
+      status: fromJson$Enum$RSVPStatus((l$status as String)),
+      cancellationReason: (l$cancellationReason as String?),
+      cancelledAt: l$cancelledAt == null
+          ? null
+          : DateTime.parse((l$cancelledAt as String)),
       cancellationFee: (l$cancellationFee as num?)?.toDouble(),
-      refundAmount: (l$refundAmount as num?)?.toDouble(),
       feeWaived: (l$feeWaived as bool?),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final bool success;
+  final String id;
 
-  final String? message;
+  final Enum$RSVPStatus status;
+
+  final String? cancellationReason;
+
+  final DateTime? cancelledAt;
 
   final double? cancellationFee;
-
-  final double? refundAmount;
 
   final bool? feeWaived;
 
@@ -434,14 +481,16 @@ class Mutation$CancelRSVP$cancelRSVP {
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$success = success;
-    _resultData['success'] = l$success;
-    final l$message = message;
-    _resultData['message'] = l$message;
+    final l$id = id;
+    _resultData['id'] = l$id;
+    final l$status = status;
+    _resultData['status'] = toJson$Enum$RSVPStatus(l$status);
+    final l$cancellationReason = cancellationReason;
+    _resultData['cancellationReason'] = l$cancellationReason;
+    final l$cancelledAt = cancelledAt;
+    _resultData['cancelledAt'] = l$cancelledAt?.toIso8601String();
     final l$cancellationFee = cancellationFee;
     _resultData['cancellationFee'] = l$cancellationFee;
-    final l$refundAmount = refundAmount;
-    _resultData['refundAmount'] = l$refundAmount;
     final l$feeWaived = feeWaived;
     _resultData['feeWaived'] = l$feeWaived;
     final l$$__typename = $__typename;
@@ -451,17 +500,19 @@ class Mutation$CancelRSVP$cancelRSVP {
 
   @override
   int get hashCode {
-    final l$success = success;
-    final l$message = message;
+    final l$id = id;
+    final l$status = status;
+    final l$cancellationReason = cancellationReason;
+    final l$cancelledAt = cancelledAt;
     final l$cancellationFee = cancellationFee;
-    final l$refundAmount = refundAmount;
     final l$feeWaived = feeWaived;
     final l$$__typename = $__typename;
     return Object.hashAll([
-      l$success,
-      l$message,
+      l$id,
+      l$status,
+      l$cancellationReason,
+      l$cancelledAt,
       l$cancellationFee,
-      l$refundAmount,
       l$feeWaived,
       l$$__typename,
     ]);
@@ -472,28 +523,33 @@ class Mutation$CancelRSVP$cancelRSVP {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$CancelRSVP$cancelRSVP ||
+    if (other is! Mutation$CancelRSVP$cancelEventRSVP ||
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$success = success;
-    final lOther$success = other.success;
-    if (l$success != lOther$success) {
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
       return false;
     }
-    final l$message = message;
-    final lOther$message = other.message;
-    if (l$message != lOther$message) {
+    final l$status = status;
+    final lOther$status = other.status;
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$cancellationReason = cancellationReason;
+    final lOther$cancellationReason = other.cancellationReason;
+    if (l$cancellationReason != lOther$cancellationReason) {
+      return false;
+    }
+    final l$cancelledAt = cancelledAt;
+    final lOther$cancelledAt = other.cancelledAt;
+    if (l$cancelledAt != lOther$cancelledAt) {
       return false;
     }
     final l$cancellationFee = cancellationFee;
     final lOther$cancellationFee = other.cancellationFee;
     if (l$cancellationFee != lOther$cancellationFee) {
-      return false;
-    }
-    final l$refundAmount = refundAmount;
-    final lOther$refundAmount = other.refundAmount;
-    if (l$refundAmount != lOther$refundAmount) {
       return false;
     }
     final l$feeWaived = feeWaived;
@@ -510,60 +566,67 @@ class Mutation$CancelRSVP$cancelRSVP {
   }
 }
 
-extension UtilityExtension$Mutation$CancelRSVP$cancelRSVP
-    on Mutation$CancelRSVP$cancelRSVP {
-  CopyWith$Mutation$CancelRSVP$cancelRSVP<Mutation$CancelRSVP$cancelRSVP>
-  get copyWith => CopyWith$Mutation$CancelRSVP$cancelRSVP(this, (i) => i);
+extension UtilityExtension$Mutation$CancelRSVP$cancelEventRSVP
+    on Mutation$CancelRSVP$cancelEventRSVP {
+  CopyWith$Mutation$CancelRSVP$cancelEventRSVP<
+    Mutation$CancelRSVP$cancelEventRSVP
+  >
+  get copyWith => CopyWith$Mutation$CancelRSVP$cancelEventRSVP(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$CancelRSVP$cancelRSVP<TRes> {
-  factory CopyWith$Mutation$CancelRSVP$cancelRSVP(
-    Mutation$CancelRSVP$cancelRSVP instance,
-    TRes Function(Mutation$CancelRSVP$cancelRSVP) then,
-  ) = _CopyWithImpl$Mutation$CancelRSVP$cancelRSVP;
+abstract class CopyWith$Mutation$CancelRSVP$cancelEventRSVP<TRes> {
+  factory CopyWith$Mutation$CancelRSVP$cancelEventRSVP(
+    Mutation$CancelRSVP$cancelEventRSVP instance,
+    TRes Function(Mutation$CancelRSVP$cancelEventRSVP) then,
+  ) = _CopyWithImpl$Mutation$CancelRSVP$cancelEventRSVP;
 
-  factory CopyWith$Mutation$CancelRSVP$cancelRSVP.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$CancelRSVP$cancelRSVP;
+  factory CopyWith$Mutation$CancelRSVP$cancelEventRSVP.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$CancelRSVP$cancelEventRSVP;
 
   TRes call({
-    bool? success,
-    String? message,
+    String? id,
+    Enum$RSVPStatus? status,
+    String? cancellationReason,
+    DateTime? cancelledAt,
     double? cancellationFee,
-    double? refundAmount,
     bool? feeWaived,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Mutation$CancelRSVP$cancelRSVP<TRes>
-    implements CopyWith$Mutation$CancelRSVP$cancelRSVP<TRes> {
-  _CopyWithImpl$Mutation$CancelRSVP$cancelRSVP(this._instance, this._then);
+class _CopyWithImpl$Mutation$CancelRSVP$cancelEventRSVP<TRes>
+    implements CopyWith$Mutation$CancelRSVP$cancelEventRSVP<TRes> {
+  _CopyWithImpl$Mutation$CancelRSVP$cancelEventRSVP(this._instance, this._then);
 
-  final Mutation$CancelRSVP$cancelRSVP _instance;
+  final Mutation$CancelRSVP$cancelEventRSVP _instance;
 
-  final TRes Function(Mutation$CancelRSVP$cancelRSVP) _then;
+  final TRes Function(Mutation$CancelRSVP$cancelEventRSVP) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? success = _undefined,
-    Object? message = _undefined,
+    Object? id = _undefined,
+    Object? status = _undefined,
+    Object? cancellationReason = _undefined,
+    Object? cancelledAt = _undefined,
     Object? cancellationFee = _undefined,
-    Object? refundAmount = _undefined,
     Object? feeWaived = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$CancelRSVP$cancelRSVP(
-      success: success == _undefined || success == null
-          ? _instance.success
-          : (success as bool),
-      message: message == _undefined ? _instance.message : (message as String?),
+    Mutation$CancelRSVP$cancelEventRSVP(
+      id: id == _undefined || id == null ? _instance.id : (id as String),
+      status: status == _undefined || status == null
+          ? _instance.status
+          : (status as Enum$RSVPStatus),
+      cancellationReason: cancellationReason == _undefined
+          ? _instance.cancellationReason
+          : (cancellationReason as String?),
+      cancelledAt: cancelledAt == _undefined
+          ? _instance.cancelledAt
+          : (cancelledAt as DateTime?),
       cancellationFee: cancellationFee == _undefined
           ? _instance.cancellationFee
           : (cancellationFee as double?),
-      refundAmount: refundAmount == _undefined
-          ? _instance.refundAmount
-          : (refundAmount as double?),
       feeWaived: feeWaived == _undefined
           ? _instance.feeWaived
           : (feeWaived as bool?),
@@ -574,17 +637,18 @@ class _CopyWithImpl$Mutation$CancelRSVP$cancelRSVP<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$CancelRSVP$cancelRSVP<TRes>
-    implements CopyWith$Mutation$CancelRSVP$cancelRSVP<TRes> {
-  _CopyWithStubImpl$Mutation$CancelRSVP$cancelRSVP(this._res);
+class _CopyWithStubImpl$Mutation$CancelRSVP$cancelEventRSVP<TRes>
+    implements CopyWith$Mutation$CancelRSVP$cancelEventRSVP<TRes> {
+  _CopyWithStubImpl$Mutation$CancelRSVP$cancelEventRSVP(this._res);
 
   TRes _res;
 
   call({
-    bool? success,
-    String? message,
+    String? id,
+    Enum$RSVPStatus? status,
+    String? cancellationReason,
+    DateTime? cancelledAt,
     double? cancellationFee,
-    double? refundAmount,
     bool? feeWaived,
     String? $__typename,
   }) => _res;

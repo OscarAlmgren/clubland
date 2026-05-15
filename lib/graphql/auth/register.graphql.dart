@@ -835,7 +835,7 @@ class Mutation$Register$register$user {
     required this.id,
     required this.clubId,
     required this.email,
-    required this.username,
+    this.username,
     this.firstName,
     this.lastName,
     required this.status,
@@ -863,13 +863,23 @@ class Mutation$Register$register$user {
       id: (l$id as String),
       clubId: (l$clubId as String),
       email: (l$email as String),
-      username: (l$username as String),
+      username: (l$username as String?),
       firstName: (l$firstName as String?),
       lastName: (l$lastName as String?),
       status: fromJson$Enum$UserStatus((l$status as String)),
-      roles: (l$roles as List<dynamic>).map((e) => (e as String)).toList(),
+      roles: (l$roles as List<dynamic>)
+          .map(
+            (e) => Mutation$Register$register$user$roles.fromJson(
+              (e as Map<String, dynamic>),
+            ),
+          )
+          .toList(),
       permissions: (l$permissions as List<dynamic>)
-          .map((e) => (e as String))
+          .map(
+            (e) => Mutation$Register$register$user$permissions.fromJson(
+              (e as Map<String, dynamic>),
+            ),
+          )
           .toList(),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
@@ -883,7 +893,7 @@ class Mutation$Register$register$user {
 
   final String email;
 
-  final String username;
+  final String? username;
 
   final String? firstName;
 
@@ -891,9 +901,9 @@ class Mutation$Register$register$user {
 
   final Enum$UserStatus status;
 
-  final List<String> roles;
+  final List<Mutation$Register$register$user$roles> roles;
 
-  final List<String> permissions;
+  final List<Mutation$Register$register$user$permissions> permissions;
 
   final DateTime createdAt;
 
@@ -918,9 +928,9 @@ class Mutation$Register$register$user {
     final l$status = status;
     _resultData['status'] = toJson$Enum$UserStatus(l$status);
     final l$roles = roles;
-    _resultData['roles'] = l$roles.map((e) => e).toList();
+    _resultData['roles'] = l$roles.map((e) => e.toJson()).toList();
     final l$permissions = permissions;
-    _resultData['permissions'] = l$permissions.map((e) => e).toList();
+    _resultData['permissions'] = l$permissions.map((e) => e.toJson()).toList();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -1070,12 +1080,32 @@ abstract class CopyWith$Mutation$Register$register$user<TRes> {
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
-    List<String>? permissions,
+    List<Mutation$Register$register$user$roles>? roles,
+    List<Mutation$Register$register$user$permissions>? permissions,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
+  TRes roles(
+    Iterable<Mutation$Register$register$user$roles> Function(
+      Iterable<
+        CopyWith$Mutation$Register$register$user$roles<
+          Mutation$Register$register$user$roles
+        >
+      >,
+    )
+    _fn,
+  );
+  TRes permissions(
+    Iterable<Mutation$Register$register$user$permissions> Function(
+      Iterable<
+        CopyWith$Mutation$Register$register$user$permissions<
+          Mutation$Register$register$user$permissions
+        >
+      >,
+    )
+    _fn,
+  );
 }
 
 class _CopyWithImpl$Mutation$Register$register$user<TRes>
@@ -1110,9 +1140,9 @@ class _CopyWithImpl$Mutation$Register$register$user<TRes>
       email: email == _undefined || email == null
           ? _instance.email
           : (email as String),
-      username: username == _undefined || username == null
+      username: username == _undefined
           ? _instance.username
-          : (username as String),
+          : (username as String?),
       firstName: firstName == _undefined
           ? _instance.firstName
           : (firstName as String?),
@@ -1124,10 +1154,10 @@ class _CopyWithImpl$Mutation$Register$register$user<TRes>
           : (status as Enum$UserStatus),
       roles: roles == _undefined || roles == null
           ? _instance.roles
-          : (roles as List<String>),
+          : (roles as List<Mutation$Register$register$user$roles>),
       permissions: permissions == _undefined || permissions == null
           ? _instance.permissions
-          : (permissions as List<String>),
+          : (permissions as List<Mutation$Register$register$user$permissions>),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -1138,6 +1168,41 @@ class _CopyWithImpl$Mutation$Register$register$user<TRes>
           ? _instance.$__typename
           : ($__typename as String),
     ),
+  );
+
+  TRes roles(
+    Iterable<Mutation$Register$register$user$roles> Function(
+      Iterable<
+        CopyWith$Mutation$Register$register$user$roles<
+          Mutation$Register$register$user$roles
+        >
+      >,
+    )
+    _fn,
+  ) => call(
+    roles: _fn(
+      _instance.roles.map(
+        (e) => CopyWith$Mutation$Register$register$user$roles(e, (i) => i),
+      ),
+    ).toList(),
+  );
+
+  TRes permissions(
+    Iterable<Mutation$Register$register$user$permissions> Function(
+      Iterable<
+        CopyWith$Mutation$Register$register$user$permissions<
+          Mutation$Register$register$user$permissions
+        >
+      >,
+    )
+    _fn,
+  ) => call(
+    permissions: _fn(
+      _instance.permissions.map(
+        (e) =>
+            CopyWith$Mutation$Register$register$user$permissions(e, (i) => i),
+      ),
+    ).toList(),
   );
 }
 
@@ -1155,10 +1220,170 @@ class _CopyWithStubImpl$Mutation$Register$register$user<TRes>
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
-    List<String>? permissions,
+    List<Mutation$Register$register$user$roles>? roles,
+    List<Mutation$Register$register$user$permissions>? permissions,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;
+
+  roles(_fn) => _res;
+
+  permissions(_fn) => _res;
+}
+
+class Mutation$Register$register$user$roles {
+  Mutation$Register$register$user$roles();
+
+  factory Mutation$Register$register$user$roles.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return Mutation$Register$register$user$roles();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Mutation$Register$register$user$roles ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$Register$register$user$roles
+    on Mutation$Register$register$user$roles {
+  CopyWith$Mutation$Register$register$user$roles<
+    Mutation$Register$register$user$roles
+  >
+  get copyWith =>
+      CopyWith$Mutation$Register$register$user$roles(this, (i) => i);
+}
+
+abstract class CopyWith$Mutation$Register$register$user$roles<TRes> {
+  factory CopyWith$Mutation$Register$register$user$roles(
+    Mutation$Register$register$user$roles instance,
+    TRes Function(Mutation$Register$register$user$roles) then,
+  ) = _CopyWithImpl$Mutation$Register$register$user$roles;
+
+  factory CopyWith$Mutation$Register$register$user$roles.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$Register$register$user$roles;
+
+  TRes call();
+}
+
+class _CopyWithImpl$Mutation$Register$register$user$roles<TRes>
+    implements CopyWith$Mutation$Register$register$user$roles<TRes> {
+  _CopyWithImpl$Mutation$Register$register$user$roles(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$Register$register$user$roles _instance;
+
+  final TRes Function(Mutation$Register$register$user$roles) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call() => _then(Mutation$Register$register$user$roles());
+}
+
+class _CopyWithStubImpl$Mutation$Register$register$user$roles<TRes>
+    implements CopyWith$Mutation$Register$register$user$roles<TRes> {
+  _CopyWithStubImpl$Mutation$Register$register$user$roles(this._res);
+
+  TRes _res;
+
+  call() => _res;
+}
+
+class Mutation$Register$register$user$permissions {
+  Mutation$Register$register$user$permissions();
+
+  factory Mutation$Register$register$user$permissions.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return Mutation$Register$register$user$permissions();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Mutation$Register$register$user$permissions ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$Register$register$user$permissions
+    on Mutation$Register$register$user$permissions {
+  CopyWith$Mutation$Register$register$user$permissions<
+    Mutation$Register$register$user$permissions
+  >
+  get copyWith =>
+      CopyWith$Mutation$Register$register$user$permissions(this, (i) => i);
+}
+
+abstract class CopyWith$Mutation$Register$register$user$permissions<TRes> {
+  factory CopyWith$Mutation$Register$register$user$permissions(
+    Mutation$Register$register$user$permissions instance,
+    TRes Function(Mutation$Register$register$user$permissions) then,
+  ) = _CopyWithImpl$Mutation$Register$register$user$permissions;
+
+  factory CopyWith$Mutation$Register$register$user$permissions.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$Register$register$user$permissions;
+
+  TRes call();
+}
+
+class _CopyWithImpl$Mutation$Register$register$user$permissions<TRes>
+    implements CopyWith$Mutation$Register$register$user$permissions<TRes> {
+  _CopyWithImpl$Mutation$Register$register$user$permissions(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$Register$register$user$permissions _instance;
+
+  final TRes Function(Mutation$Register$register$user$permissions) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call() => _then(Mutation$Register$register$user$permissions());
+}
+
+class _CopyWithStubImpl$Mutation$Register$register$user$permissions<TRes>
+    implements CopyWith$Mutation$Register$register$user$permissions<TRes> {
+  _CopyWithStubImpl$Mutation$Register$register$user$permissions(this._res);
+
+  TRes _res;
+
+  call() => _res;
 }

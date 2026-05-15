@@ -1,3 +1,4 @@
+import '../../schema/schema.graphql.dart';
 import 'dart:async';
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -13,20 +14,22 @@ class Query$FacilityTypes {
     final l$$__typename = json['__typename'];
     return Query$FacilityTypes(
       facilityTypes: (l$facilityTypes as List<dynamic>)
-          .map((e) => (e as String))
+          .map((e) => fromJson$Enum$FacilityType((e as String)))
           .toList(),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final List<String> facilityTypes;
+  final List<Enum$FacilityType> facilityTypes;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
     final l$facilityTypes = facilityTypes;
-    _resultData['facilityTypes'] = l$facilityTypes.map((e) => e).toList();
+    _resultData['facilityTypes'] = l$facilityTypes
+        .map((e) => toJson$Enum$FacilityType(e))
+        .toList();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -85,7 +88,7 @@ abstract class CopyWith$Query$FacilityTypes<TRes> {
   factory CopyWith$Query$FacilityTypes.stub(TRes res) =
       _CopyWithStubImpl$Query$FacilityTypes;
 
-  TRes call({List<String>? facilityTypes, String? $__typename});
+  TRes call({List<Enum$FacilityType>? facilityTypes, String? $__typename});
 }
 
 class _CopyWithImpl$Query$FacilityTypes<TRes>
@@ -105,7 +108,7 @@ class _CopyWithImpl$Query$FacilityTypes<TRes>
     Query$FacilityTypes(
       facilityTypes: facilityTypes == _undefined || facilityTypes == null
           ? _instance.facilityTypes
-          : (facilityTypes as List<String>),
+          : (facilityTypes as List<Enum$FacilityType>),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -119,7 +122,7 @@ class _CopyWithStubImpl$Query$FacilityTypes<TRes>
 
   TRes _res;
 
-  call({List<String>? facilityTypes, String? $__typename}) => _res;
+  call({List<Enum$FacilityType>? facilityTypes, String? $__typename}) => _res;
 }
 
 const documentNodeQueryFacilityTypes = DocumentNode(

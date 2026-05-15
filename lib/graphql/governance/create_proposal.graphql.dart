@@ -295,7 +295,49 @@ const documentNodeMutationCreateProposal = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'votingDeadline'),
+                  name: NameNode(value: 'category'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votingMethod'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votingStartTime'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votingEndTime'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'quorumRequired'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'approvalThreshold'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'createdAt'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -424,7 +466,13 @@ class Mutation$CreateProposal$createProposal {
     required this.description,
     required this.type,
     required this.status,
-    required this.votingDeadline,
+    this.category,
+    required this.votingMethod,
+    required this.votingStartTime,
+    required this.votingEndTime,
+    required this.quorumRequired,
+    required this.approvalThreshold,
+    required this.createdAt,
     this.$__typename = 'Proposal',
   });
 
@@ -436,7 +484,13 @@ class Mutation$CreateProposal$createProposal {
     final l$description = json['description'];
     final l$type = json['type'];
     final l$status = json['status'];
-    final l$votingDeadline = json['votingDeadline'];
+    final l$category = json['category'];
+    final l$votingMethod = json['votingMethod'];
+    final l$votingStartTime = json['votingStartTime'];
+    final l$votingEndTime = json['votingEndTime'];
+    final l$quorumRequired = json['quorumRequired'];
+    final l$approvalThreshold = json['approvalThreshold'];
+    final l$createdAt = json['createdAt'];
     final l$$__typename = json['__typename'];
     return Mutation$CreateProposal$createProposal(
       id: (l$id as String),
@@ -444,7 +498,13 @@ class Mutation$CreateProposal$createProposal {
       description: (l$description as String),
       type: fromJson$Enum$ProposalType((l$type as String)),
       status: fromJson$Enum$ProposalStatus((l$status as String)),
-      votingDeadline: DateTime.parse((l$votingDeadline as String)),
+      category: (l$category as String?),
+      votingMethod: fromJson$Enum$VotingMethod((l$votingMethod as String)),
+      votingStartTime: DateTime.parse((l$votingStartTime as String)),
+      votingEndTime: DateTime.parse((l$votingEndTime as String)),
+      quorumRequired: (l$quorumRequired as int),
+      approvalThreshold: (l$approvalThreshold as num).toDouble(),
+      createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -459,7 +519,19 @@ class Mutation$CreateProposal$createProposal {
 
   final Enum$ProposalStatus status;
 
-  final DateTime votingDeadline;
+  final String? category;
+
+  final Enum$VotingMethod votingMethod;
+
+  final DateTime votingStartTime;
+
+  final DateTime votingEndTime;
+
+  final int quorumRequired;
+
+  final double approvalThreshold;
+
+  final DateTime createdAt;
 
   final String $__typename;
 
@@ -475,8 +547,20 @@ class Mutation$CreateProposal$createProposal {
     _resultData['type'] = toJson$Enum$ProposalType(l$type);
     final l$status = status;
     _resultData['status'] = toJson$Enum$ProposalStatus(l$status);
-    final l$votingDeadline = votingDeadline;
-    _resultData['votingDeadline'] = l$votingDeadline.toIso8601String();
+    final l$category = category;
+    _resultData['category'] = l$category;
+    final l$votingMethod = votingMethod;
+    _resultData['votingMethod'] = toJson$Enum$VotingMethod(l$votingMethod);
+    final l$votingStartTime = votingStartTime;
+    _resultData['votingStartTime'] = l$votingStartTime.toIso8601String();
+    final l$votingEndTime = votingEndTime;
+    _resultData['votingEndTime'] = l$votingEndTime.toIso8601String();
+    final l$quorumRequired = quorumRequired;
+    _resultData['quorumRequired'] = l$quorumRequired;
+    final l$approvalThreshold = approvalThreshold;
+    _resultData['approvalThreshold'] = l$approvalThreshold;
+    final l$createdAt = createdAt;
+    _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -489,7 +573,13 @@ class Mutation$CreateProposal$createProposal {
     final l$description = description;
     final l$type = type;
     final l$status = status;
-    final l$votingDeadline = votingDeadline;
+    final l$category = category;
+    final l$votingMethod = votingMethod;
+    final l$votingStartTime = votingStartTime;
+    final l$votingEndTime = votingEndTime;
+    final l$quorumRequired = quorumRequired;
+    final l$approvalThreshold = approvalThreshold;
+    final l$createdAt = createdAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
@@ -497,7 +587,13 @@ class Mutation$CreateProposal$createProposal {
       l$description,
       l$type,
       l$status,
-      l$votingDeadline,
+      l$category,
+      l$votingMethod,
+      l$votingStartTime,
+      l$votingEndTime,
+      l$quorumRequired,
+      l$approvalThreshold,
+      l$createdAt,
       l$$__typename,
     ]);
   }
@@ -536,9 +632,39 @@ class Mutation$CreateProposal$createProposal {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$votingDeadline = votingDeadline;
-    final lOther$votingDeadline = other.votingDeadline;
-    if (l$votingDeadline != lOther$votingDeadline) {
+    final l$category = category;
+    final lOther$category = other.category;
+    if (l$category != lOther$category) {
+      return false;
+    }
+    final l$votingMethod = votingMethod;
+    final lOther$votingMethod = other.votingMethod;
+    if (l$votingMethod != lOther$votingMethod) {
+      return false;
+    }
+    final l$votingStartTime = votingStartTime;
+    final lOther$votingStartTime = other.votingStartTime;
+    if (l$votingStartTime != lOther$votingStartTime) {
+      return false;
+    }
+    final l$votingEndTime = votingEndTime;
+    final lOther$votingEndTime = other.votingEndTime;
+    if (l$votingEndTime != lOther$votingEndTime) {
+      return false;
+    }
+    final l$quorumRequired = quorumRequired;
+    final lOther$quorumRequired = other.quorumRequired;
+    if (l$quorumRequired != lOther$quorumRequired) {
+      return false;
+    }
+    final l$approvalThreshold = approvalThreshold;
+    final lOther$approvalThreshold = other.approvalThreshold;
+    if (l$approvalThreshold != lOther$approvalThreshold) {
+      return false;
+    }
+    final l$createdAt = createdAt;
+    final lOther$createdAt = other.createdAt;
+    if (l$createdAt != lOther$createdAt) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -574,7 +700,13 @@ abstract class CopyWith$Mutation$CreateProposal$createProposal<TRes> {
     String? description,
     Enum$ProposalType? type,
     Enum$ProposalStatus? status,
-    DateTime? votingDeadline,
+    String? category,
+    Enum$VotingMethod? votingMethod,
+    DateTime? votingStartTime,
+    DateTime? votingEndTime,
+    int? quorumRequired,
+    double? approvalThreshold,
+    DateTime? createdAt,
     String? $__typename,
   });
 }
@@ -598,7 +730,13 @@ class _CopyWithImpl$Mutation$CreateProposal$createProposal<TRes>
     Object? description = _undefined,
     Object? type = _undefined,
     Object? status = _undefined,
-    Object? votingDeadline = _undefined,
+    Object? category = _undefined,
+    Object? votingMethod = _undefined,
+    Object? votingStartTime = _undefined,
+    Object? votingEndTime = _undefined,
+    Object? quorumRequired = _undefined,
+    Object? approvalThreshold = _undefined,
+    Object? createdAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CreateProposal$createProposal(
@@ -615,9 +753,28 @@ class _CopyWithImpl$Mutation$CreateProposal$createProposal<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$ProposalStatus),
-      votingDeadline: votingDeadline == _undefined || votingDeadline == null
-          ? _instance.votingDeadline
-          : (votingDeadline as DateTime),
+      category: category == _undefined
+          ? _instance.category
+          : (category as String?),
+      votingMethod: votingMethod == _undefined || votingMethod == null
+          ? _instance.votingMethod
+          : (votingMethod as Enum$VotingMethod),
+      votingStartTime: votingStartTime == _undefined || votingStartTime == null
+          ? _instance.votingStartTime
+          : (votingStartTime as DateTime),
+      votingEndTime: votingEndTime == _undefined || votingEndTime == null
+          ? _instance.votingEndTime
+          : (votingEndTime as DateTime),
+      quorumRequired: quorumRequired == _undefined || quorumRequired == null
+          ? _instance.quorumRequired
+          : (quorumRequired as int),
+      approvalThreshold:
+          approvalThreshold == _undefined || approvalThreshold == null
+          ? _instance.approvalThreshold
+          : (approvalThreshold as double),
+      createdAt: createdAt == _undefined || createdAt == null
+          ? _instance.createdAt
+          : (createdAt as DateTime),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -637,7 +794,13 @@ class _CopyWithStubImpl$Mutation$CreateProposal$createProposal<TRes>
     String? description,
     Enum$ProposalType? type,
     Enum$ProposalStatus? status,
-    DateTime? votingDeadline,
+    String? category,
+    Enum$VotingMethod? votingMethod,
+    DateTime? votingStartTime,
+    DateTime? votingEndTime,
+    int? quorumRequired,
+    double? approvalThreshold,
+    DateTime? createdAt,
     String? $__typename,
   }) => _res;
 }

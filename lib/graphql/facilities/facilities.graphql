@@ -1,5 +1,9 @@
-query Facilities($filter: FacilityFilterInput, $pagination: PaginationInput) {
-  facilities(filter: $filter, pagination: $pagination) {
+query Facilities(
+  $pagination: PaginationInput
+  $type: FacilityType
+  $isActive: Boolean
+) {
+  facilities(pagination: $pagination, type: $type, isActive: $isActive) {
     nodes {
       id
       clubId

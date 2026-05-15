@@ -822,7 +822,7 @@ class Query$Notifications$notifications$nodes {
     required this.title,
     required this.message,
     required this.status,
-    required this.channels,
+    this.channels,
     this.scheduledAt,
     this.sentAt,
     this.readAt,
@@ -848,12 +848,12 @@ class Query$Notifications$notifications$nodes {
     return Query$Notifications$notifications$nodes(
       id: (l$id as String),
       userId: (l$userId as String),
-      type: fromJson$Enum$NotificationType((l$type as String)),
+      type: (l$type as String),
       title: (l$title as String),
       message: (l$message as String),
       status: fromJson$Enum$NotificationStatus((l$status as String)),
-      channels: (l$channels as List<dynamic>)
-          .map((e) => fromJson$Enum$NotificationChannel((e as String)))
+      channels: (l$channels as List<dynamic>?)
+          ?.map((e) => fromJson$Enum$NotificationChannel((e as String)))
           .toList(),
       scheduledAt: l$scheduledAt == null
           ? null
@@ -869,7 +869,7 @@ class Query$Notifications$notifications$nodes {
 
   final String userId;
 
-  final Enum$NotificationType type;
+  final String type;
 
   final String title;
 
@@ -877,7 +877,7 @@ class Query$Notifications$notifications$nodes {
 
   final Enum$NotificationStatus status;
 
-  final List<Enum$NotificationChannel> channels;
+  final List<Enum$NotificationChannel>? channels;
 
   final DateTime? scheduledAt;
 
@@ -896,7 +896,7 @@ class Query$Notifications$notifications$nodes {
     final l$userId = userId;
     _resultData['userId'] = l$userId;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$NotificationType(l$type);
+    _resultData['type'] = l$type;
     final l$title = title;
     _resultData['title'] = l$title;
     final l$message = message;
@@ -905,7 +905,7 @@ class Query$Notifications$notifications$nodes {
     _resultData['status'] = toJson$Enum$NotificationStatus(l$status);
     final l$channels = channels;
     _resultData['channels'] = l$channels
-        .map((e) => toJson$Enum$NotificationChannel(e))
+        ?.map((e) => toJson$Enum$NotificationChannel(e))
         .toList();
     final l$scheduledAt = scheduledAt;
     _resultData['scheduledAt'] = l$scheduledAt?.toIso8601String();
@@ -941,7 +941,7 @@ class Query$Notifications$notifications$nodes {
       l$title,
       l$message,
       l$status,
-      Object.hashAll(l$channels.map((v) => v)),
+      l$channels == null ? null : Object.hashAll(l$channels.map((v) => v)),
       l$scheduledAt,
       l$sentAt,
       l$readAt,
@@ -991,15 +991,19 @@ class Query$Notifications$notifications$nodes {
     }
     final l$channels = channels;
     final lOther$channels = other.channels;
-    if (l$channels.length != lOther$channels.length) {
-      return false;
-    }
-    for (int i = 0; i < l$channels.length; i++) {
-      final l$channels$entry = l$channels[i];
-      final lOther$channels$entry = lOther$channels[i];
-      if (l$channels$entry != lOther$channels$entry) {
+    if (l$channels != null && lOther$channels != null) {
+      if (l$channels.length != lOther$channels.length) {
         return false;
       }
+      for (int i = 0; i < l$channels.length; i++) {
+        final l$channels$entry = l$channels[i];
+        final lOther$channels$entry = lOther$channels[i];
+        if (l$channels$entry != lOther$channels$entry) {
+          return false;
+        }
+      }
+    } else if (l$channels != lOther$channels) {
+      return false;
     }
     final l$scheduledAt = scheduledAt;
     final lOther$scheduledAt = other.scheduledAt;
@@ -1051,7 +1055,7 @@ abstract class CopyWith$Query$Notifications$notifications$nodes<TRes> {
   TRes call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
+    String? type,
     String? title,
     String? message,
     Enum$NotificationStatus? status,
@@ -1098,7 +1102,7 @@ class _CopyWithImpl$Query$Notifications$notifications$nodes<TRes>
           : (userId as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$NotificationType),
+          : (type as String),
       title: title == _undefined || title == null
           ? _instance.title
           : (title as String),
@@ -1108,9 +1112,9 @@ class _CopyWithImpl$Query$Notifications$notifications$nodes<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$NotificationStatus),
-      channels: channels == _undefined || channels == null
+      channels: channels == _undefined
           ? _instance.channels
-          : (channels as List<Enum$NotificationChannel>),
+          : (channels as List<Enum$NotificationChannel>?),
       scheduledAt: scheduledAt == _undefined
           ? _instance.scheduledAt
           : (scheduledAt as DateTime?),
@@ -1135,7 +1139,7 @@ class _CopyWithStubImpl$Query$Notifications$notifications$nodes<TRes>
   call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
+    String? type,
     String? title,
     String? message,
     Enum$NotificationStatus? status,

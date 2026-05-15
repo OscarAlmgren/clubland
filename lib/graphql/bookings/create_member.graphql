@@ -6,14 +6,11 @@ mutation CreateMember($input: CreateMemberInput!) {
     memberNumber
     membershipType
     status
-    blockchainIdentity
-    profile {
-      firstName
-      lastName
-      dateOfBirth
-      phoneNumber
-    }
-    joinedAt
+    firstName
+    lastName
+    email
+    phone
+    joinedDate
     createdAt
     updatedAt
   }

@@ -6,10 +6,10 @@ import 'package:graphql/client.dart' as graphql;
 class Variables$Mutation$CancelBooking {
   factory Variables$Mutation$CancelBooking({
     required String bookingId,
-    String? reason,
+    required String reason,
   }) => Variables$Mutation$CancelBooking._({
     r'bookingId': bookingId,
-    if (reason != null) r'reason': reason,
+    r'reason': reason,
   });
 
   Variables$Mutation$CancelBooking._(this._$data);
@@ -18,10 +18,8 @@ class Variables$Mutation$CancelBooking {
     final result$data = <String, dynamic>{};
     final l$bookingId = data['bookingId'];
     result$data['bookingId'] = (l$bookingId as String);
-    if (data.containsKey('reason')) {
-      final l$reason = data['reason'];
-      result$data['reason'] = (l$reason as String?);
-    }
+    final l$reason = data['reason'];
+    result$data['reason'] = (l$reason as String);
     return Variables$Mutation$CancelBooking._(result$data);
   }
 
@@ -29,16 +27,14 @@ class Variables$Mutation$CancelBooking {
 
   String get bookingId => (_$data['bookingId'] as String);
 
-  String? get reason => (_$data['reason'] as String?);
+  String get reason => (_$data['reason'] as String);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
     final l$bookingId = bookingId;
     result$data['bookingId'] = l$bookingId;
-    if (_$data.containsKey('reason')) {
-      final l$reason = reason;
-      result$data['reason'] = l$reason;
-    }
+    final l$reason = reason;
+    result$data['reason'] = l$reason;
     return result$data;
   }
 
@@ -61,9 +57,6 @@ class Variables$Mutation$CancelBooking {
     }
     final l$reason = reason;
     final lOther$reason = other.reason;
-    if (_$data.containsKey('reason') != other._$data.containsKey('reason')) {
-      return false;
-    }
     if (l$reason != lOther$reason) {
       return false;
     }
@@ -74,10 +67,7 @@ class Variables$Mutation$CancelBooking {
   int get hashCode {
     final l$bookingId = bookingId;
     final l$reason = reason;
-    return Object.hashAll([
-      l$bookingId,
-      _$data.containsKey('reason') ? l$reason : const {},
-    ]);
+    return Object.hashAll([l$bookingId, l$reason]);
   }
 }
 
@@ -109,7 +99,8 @@ class _CopyWithImpl$Variables$Mutation$CancelBooking<TRes>
           ..._instance._$data,
           if (bookingId != _undefined && bookingId != null)
             'bookingId': (bookingId as String),
-          if (reason != _undefined) 'reason': (reason as String?),
+          if (reason != _undefined && reason != null)
+            'reason': (reason as String),
         }),
       );
 }
@@ -125,29 +116,30 @@ class _CopyWithStubImpl$Variables$Mutation$CancelBooking<TRes>
 
 class Mutation$CancelBooking {
   Mutation$CancelBooking({
-    required this.cancelBooking,
+    required this.cancelFacilityBooking,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$CancelBooking.fromJson(Map<String, dynamic> json) {
-    final l$cancelBooking = json['cancelBooking'];
+    final l$cancelFacilityBooking = json['cancelFacilityBooking'];
     final l$$__typename = json['__typename'];
     return Mutation$CancelBooking(
-      cancelBooking: Mutation$CancelBooking$cancelBooking.fromJson(
-        (l$cancelBooking as Map<String, dynamic>),
-      ),
+      cancelFacilityBooking:
+          Mutation$CancelBooking$cancelFacilityBooking.fromJson(
+            (l$cancelFacilityBooking as Map<String, dynamic>),
+          ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$CancelBooking$cancelBooking cancelBooking;
+  final Mutation$CancelBooking$cancelFacilityBooking cancelFacilityBooking;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$cancelBooking = cancelBooking;
-    _resultData['cancelBooking'] = l$cancelBooking.toJson();
+    final l$cancelFacilityBooking = cancelFacilityBooking;
+    _resultData['cancelFacilityBooking'] = l$cancelFacilityBooking.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -155,9 +147,9 @@ class Mutation$CancelBooking {
 
   @override
   int get hashCode {
-    final l$cancelBooking = cancelBooking;
+    final l$cancelFacilityBooking = cancelFacilityBooking;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$cancelBooking, l$$__typename]);
+    return Object.hashAll([l$cancelFacilityBooking, l$$__typename]);
   }
 
   @override
@@ -168,9 +160,9 @@ class Mutation$CancelBooking {
     if (other is! Mutation$CancelBooking || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$cancelBooking = cancelBooking;
-    final lOther$cancelBooking = other.cancelBooking;
-    if (l$cancelBooking != lOther$cancelBooking) {
+    final l$cancelFacilityBooking = cancelFacilityBooking;
+    final lOther$cancelFacilityBooking = other.cancelFacilityBooking;
+    if (l$cancelFacilityBooking != lOther$cancelFacilityBooking) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -197,10 +189,11 @@ abstract class CopyWith$Mutation$CancelBooking<TRes> {
       _CopyWithStubImpl$Mutation$CancelBooking;
 
   TRes call({
-    Mutation$CancelBooking$cancelBooking? cancelBooking,
+    Mutation$CancelBooking$cancelFacilityBooking? cancelFacilityBooking,
     String? $__typename,
   });
-  CopyWith$Mutation$CancelBooking$cancelBooking<TRes> get cancelBooking;
+  CopyWith$Mutation$CancelBooking$cancelFacilityBooking<TRes>
+  get cancelFacilityBooking;
 }
 
 class _CopyWithImpl$Mutation$CancelBooking<TRes>
@@ -214,24 +207,27 @@ class _CopyWithImpl$Mutation$CancelBooking<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? cancelBooking = _undefined,
+    Object? cancelFacilityBooking = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CancelBooking(
-      cancelBooking: cancelBooking == _undefined || cancelBooking == null
-          ? _instance.cancelBooking
-          : (cancelBooking as Mutation$CancelBooking$cancelBooking),
+      cancelFacilityBooking:
+          cancelFacilityBooking == _undefined || cancelFacilityBooking == null
+          ? _instance.cancelFacilityBooking
+          : (cancelFacilityBooking
+                as Mutation$CancelBooking$cancelFacilityBooking),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$CancelBooking$cancelBooking<TRes> get cancelBooking {
-    final local$cancelBooking = _instance.cancelBooking;
-    return CopyWith$Mutation$CancelBooking$cancelBooking(
-      local$cancelBooking,
-      (e) => call(cancelBooking: e),
+  CopyWith$Mutation$CancelBooking$cancelFacilityBooking<TRes>
+  get cancelFacilityBooking {
+    final local$cancelFacilityBooking = _instance.cancelFacilityBooking;
+    return CopyWith$Mutation$CancelBooking$cancelFacilityBooking(
+      local$cancelFacilityBooking,
+      (e) => call(cancelFacilityBooking: e),
     );
   }
 }
@@ -243,12 +239,13 @@ class _CopyWithStubImpl$Mutation$CancelBooking<TRes>
   TRes _res;
 
   call({
-    Mutation$CancelBooking$cancelBooking? cancelBooking,
+    Mutation$CancelBooking$cancelFacilityBooking? cancelFacilityBooking,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Mutation$CancelBooking$cancelBooking<TRes> get cancelBooking =>
-      CopyWith$Mutation$CancelBooking$cancelBooking.stub(_res);
+  CopyWith$Mutation$CancelBooking$cancelFacilityBooking<TRes>
+  get cancelFacilityBooking =>
+      CopyWith$Mutation$CancelBooking$cancelFacilityBooking.stub(_res);
 }
 
 const documentNodeMutationCancelBooking = DocumentNode(
@@ -265,10 +262,7 @@ const documentNodeMutationCancelBooking = DocumentNode(
         ),
         VariableDefinitionNode(
           variable: VariableNode(name: NameNode(value: 'reason')),
-          type: NamedTypeNode(
-            name: NameNode(value: 'String'),
-            isNonNull: false,
-          ),
+          type: NamedTypeNode(name: NameNode(value: 'String'), isNonNull: true),
           defaultValue: DefaultValueNode(value: null),
           directives: [],
         ),
@@ -277,11 +271,11 @@ const documentNodeMutationCancelBooking = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'cancelBooking'),
+            name: NameNode(value: 'cancelFacilityBooking'),
             alias: null,
             arguments: [
               ArgumentNode(
-                name: NameNode(value: 'bookingId'),
+                name: NameNode(value: 'id'),
                 value: VariableNode(name: NameNode(value: 'bookingId')),
               ),
               ArgumentNode(
@@ -436,16 +430,16 @@ extension ClientExtension$Mutation$CancelBooking on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$CancelBooking$cancelBooking {
-  Mutation$CancelBooking$cancelBooking({
+class Mutation$CancelBooking$cancelFacilityBooking {
+  Mutation$CancelBooking$cancelFacilityBooking({
     required this.id,
     required this.status,
     this.cancellationReason,
     this.cancelledAt,
-    this.$__typename = 'Booking',
+    this.$__typename = 'FacilityBooking',
   });
 
-  factory Mutation$CancelBooking$cancelBooking.fromJson(
+  factory Mutation$CancelBooking$cancelFacilityBooking.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
@@ -453,7 +447,7 @@ class Mutation$CancelBooking$cancelBooking {
     final l$cancellationReason = json['cancellationReason'];
     final l$cancelledAt = json['cancelledAt'];
     final l$$__typename = json['__typename'];
-    return Mutation$CancelBooking$cancelBooking(
+    return Mutation$CancelBooking$cancelFacilityBooking(
       id: (l$id as String),
       status: fromJson$Enum$BookingStatus((l$status as String)),
       cancellationReason: (l$cancellationReason as String?),
@@ -510,7 +504,7 @@ class Mutation$CancelBooking$cancelBooking {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$CancelBooking$cancelBooking ||
+    if (other is! Mutation$CancelBooking$cancelFacilityBooking ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -543,22 +537,23 @@ class Mutation$CancelBooking$cancelBooking {
   }
 }
 
-extension UtilityExtension$Mutation$CancelBooking$cancelBooking
-    on Mutation$CancelBooking$cancelBooking {
-  CopyWith$Mutation$CancelBooking$cancelBooking<
-    Mutation$CancelBooking$cancelBooking
+extension UtilityExtension$Mutation$CancelBooking$cancelFacilityBooking
+    on Mutation$CancelBooking$cancelFacilityBooking {
+  CopyWith$Mutation$CancelBooking$cancelFacilityBooking<
+    Mutation$CancelBooking$cancelFacilityBooking
   >
-  get copyWith => CopyWith$Mutation$CancelBooking$cancelBooking(this, (i) => i);
+  get copyWith =>
+      CopyWith$Mutation$CancelBooking$cancelFacilityBooking(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$CancelBooking$cancelBooking<TRes> {
-  factory CopyWith$Mutation$CancelBooking$cancelBooking(
-    Mutation$CancelBooking$cancelBooking instance,
-    TRes Function(Mutation$CancelBooking$cancelBooking) then,
-  ) = _CopyWithImpl$Mutation$CancelBooking$cancelBooking;
+abstract class CopyWith$Mutation$CancelBooking$cancelFacilityBooking<TRes> {
+  factory CopyWith$Mutation$CancelBooking$cancelFacilityBooking(
+    Mutation$CancelBooking$cancelFacilityBooking instance,
+    TRes Function(Mutation$CancelBooking$cancelFacilityBooking) then,
+  ) = _CopyWithImpl$Mutation$CancelBooking$cancelFacilityBooking;
 
-  factory CopyWith$Mutation$CancelBooking$cancelBooking.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$CancelBooking$cancelBooking;
+  factory CopyWith$Mutation$CancelBooking$cancelFacilityBooking.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$CancelBooking$cancelFacilityBooking;
 
   TRes call({
     String? id,
@@ -569,16 +564,16 @@ abstract class CopyWith$Mutation$CancelBooking$cancelBooking<TRes> {
   });
 }
 
-class _CopyWithImpl$Mutation$CancelBooking$cancelBooking<TRes>
-    implements CopyWith$Mutation$CancelBooking$cancelBooking<TRes> {
-  _CopyWithImpl$Mutation$CancelBooking$cancelBooking(
+class _CopyWithImpl$Mutation$CancelBooking$cancelFacilityBooking<TRes>
+    implements CopyWith$Mutation$CancelBooking$cancelFacilityBooking<TRes> {
+  _CopyWithImpl$Mutation$CancelBooking$cancelFacilityBooking(
     this._instance,
     this._then,
   );
 
-  final Mutation$CancelBooking$cancelBooking _instance;
+  final Mutation$CancelBooking$cancelFacilityBooking _instance;
 
-  final TRes Function(Mutation$CancelBooking$cancelBooking) _then;
+  final TRes Function(Mutation$CancelBooking$cancelFacilityBooking) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -589,7 +584,7 @@ class _CopyWithImpl$Mutation$CancelBooking$cancelBooking<TRes>
     Object? cancelledAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$CancelBooking$cancelBooking(
+    Mutation$CancelBooking$cancelFacilityBooking(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       status: status == _undefined || status == null
           ? _instance.status
@@ -607,9 +602,9 @@ class _CopyWithImpl$Mutation$CancelBooking$cancelBooking<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$CancelBooking$cancelBooking<TRes>
-    implements CopyWith$Mutation$CancelBooking$cancelBooking<TRes> {
-  _CopyWithStubImpl$Mutation$CancelBooking$cancelBooking(this._res);
+class _CopyWithStubImpl$Mutation$CancelBooking$cancelFacilityBooking<TRes>
+    implements CopyWith$Mutation$CancelBooking$cancelFacilityBooking<TRes> {
+  _CopyWithStubImpl$Mutation$CancelBooking$cancelFacilityBooking(this._res);
 
   TRes _res;
 

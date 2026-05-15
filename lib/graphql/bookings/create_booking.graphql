@@ -1,13 +1,14 @@
 mutation CreateBooking($input: CreateBookingInput!) {
-  createBooking(input: $input) {
+  createFacilityBooking(input: $input) {
     id
     clubId
     facilityId
-    userId
+    memberId
     startTime
     endTime
     status
-    notes
+    purpose
+    guestCount
     facility {
       id
       name

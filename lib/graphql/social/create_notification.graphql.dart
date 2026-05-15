@@ -5,7 +5,7 @@ import 'package:graphql/client.dart' as graphql;
 
 class Variables$Mutation$CreateNotification {
   factory Variables$Mutation$CreateNotification({
-    required Input$CreateNotificationInput input,
+    required Input$SendNotificationInput input,
   }) => Variables$Mutation$CreateNotification._({r'input': input});
 
   Variables$Mutation$CreateNotification._(this._$data);
@@ -15,7 +15,7 @@ class Variables$Mutation$CreateNotification {
   ) {
     final result$data = <String, dynamic>{};
     final l$input = data['input'];
-    result$data['input'] = Input$CreateNotificationInput.fromJson(
+    result$data['input'] = Input$SendNotificationInput.fromJson(
       (l$input as Map<String, dynamic>),
     );
     return Variables$Mutation$CreateNotification._(result$data);
@@ -23,8 +23,8 @@ class Variables$Mutation$CreateNotification {
 
   Map<String, dynamic> _$data;
 
-  Input$CreateNotificationInput get input =>
-      (_$data['input'] as Input$CreateNotificationInput);
+  Input$SendNotificationInput get input =>
+      (_$data['input'] as Input$SendNotificationInput);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
@@ -72,7 +72,7 @@ abstract class CopyWith$Variables$Mutation$CreateNotification<TRes> {
   factory CopyWith$Variables$Mutation$CreateNotification.stub(TRes res) =
       _CopyWithStubImpl$Variables$Mutation$CreateNotification;
 
-  TRes call({Input$CreateNotificationInput? input});
+  TRes call({Input$SendNotificationInput? input});
 }
 
 class _CopyWithImpl$Variables$Mutation$CreateNotification<TRes>
@@ -92,7 +92,7 @@ class _CopyWithImpl$Variables$Mutation$CreateNotification<TRes>
     Variables$Mutation$CreateNotification._({
       ..._instance._$data,
       if (input != _undefined && input != null)
-        'input': (input as Input$CreateNotificationInput),
+        'input': (input as Input$SendNotificationInput),
     }),
   );
 }
@@ -103,35 +103,34 @@ class _CopyWithStubImpl$Variables$Mutation$CreateNotification<TRes>
 
   TRes _res;
 
-  call({Input$CreateNotificationInput? input}) => _res;
+  call({Input$SendNotificationInput? input}) => _res;
 }
 
 class Mutation$CreateNotification {
   Mutation$CreateNotification({
-    required this.createNotification,
+    required this.sendNotification,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$CreateNotification.fromJson(Map<String, dynamic> json) {
-    final l$createNotification = json['createNotification'];
+    final l$sendNotification = json['sendNotification'];
     final l$$__typename = json['__typename'];
     return Mutation$CreateNotification(
-      createNotification:
-          Mutation$CreateNotification$createNotification.fromJson(
-            (l$createNotification as Map<String, dynamic>),
-          ),
+      sendNotification: Mutation$CreateNotification$sendNotification.fromJson(
+        (l$sendNotification as Map<String, dynamic>),
+      ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$CreateNotification$createNotification createNotification;
+  final Mutation$CreateNotification$sendNotification sendNotification;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$createNotification = createNotification;
-    _resultData['createNotification'] = l$createNotification.toJson();
+    final l$sendNotification = sendNotification;
+    _resultData['sendNotification'] = l$sendNotification.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -139,9 +138,9 @@ class Mutation$CreateNotification {
 
   @override
   int get hashCode {
-    final l$createNotification = createNotification;
+    final l$sendNotification = sendNotification;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$createNotification, l$$__typename]);
+    return Object.hashAll([l$sendNotification, l$$__typename]);
   }
 
   @override
@@ -153,9 +152,9 @@ class Mutation$CreateNotification {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$createNotification = createNotification;
-    final lOther$createNotification = other.createNotification;
-    if (l$createNotification != lOther$createNotification) {
+    final l$sendNotification = sendNotification;
+    final lOther$sendNotification = other.sendNotification;
+    if (l$sendNotification != lOther$sendNotification) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -183,11 +182,11 @@ abstract class CopyWith$Mutation$CreateNotification<TRes> {
       _CopyWithStubImpl$Mutation$CreateNotification;
 
   TRes call({
-    Mutation$CreateNotification$createNotification? createNotification,
+    Mutation$CreateNotification$sendNotification? sendNotification,
     String? $__typename,
   });
-  CopyWith$Mutation$CreateNotification$createNotification<TRes>
-  get createNotification;
+  CopyWith$Mutation$CreateNotification$sendNotification<TRes>
+  get sendNotification;
 }
 
 class _CopyWithImpl$Mutation$CreateNotification<TRes>
@@ -201,27 +200,26 @@ class _CopyWithImpl$Mutation$CreateNotification<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? createNotification = _undefined,
+    Object? sendNotification = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CreateNotification(
-      createNotification:
-          createNotification == _undefined || createNotification == null
-          ? _instance.createNotification
-          : (createNotification
-                as Mutation$CreateNotification$createNotification),
+      sendNotification:
+          sendNotification == _undefined || sendNotification == null
+          ? _instance.sendNotification
+          : (sendNotification as Mutation$CreateNotification$sendNotification),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$CreateNotification$createNotification<TRes>
-  get createNotification {
-    final local$createNotification = _instance.createNotification;
-    return CopyWith$Mutation$CreateNotification$createNotification(
-      local$createNotification,
-      (e) => call(createNotification: e),
+  CopyWith$Mutation$CreateNotification$sendNotification<TRes>
+  get sendNotification {
+    final local$sendNotification = _instance.sendNotification;
+    return CopyWith$Mutation$CreateNotification$sendNotification(
+      local$sendNotification,
+      (e) => call(sendNotification: e),
     );
   }
 }
@@ -233,13 +231,13 @@ class _CopyWithStubImpl$Mutation$CreateNotification<TRes>
   TRes _res;
 
   call({
-    Mutation$CreateNotification$createNotification? createNotification,
+    Mutation$CreateNotification$sendNotification? sendNotification,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Mutation$CreateNotification$createNotification<TRes>
-  get createNotification =>
-      CopyWith$Mutation$CreateNotification$createNotification.stub(_res);
+  CopyWith$Mutation$CreateNotification$sendNotification<TRes>
+  get sendNotification =>
+      CopyWith$Mutation$CreateNotification$sendNotification.stub(_res);
 }
 
 const documentNodeMutationCreateNotification = DocumentNode(
@@ -251,7 +249,7 @@ const documentNodeMutationCreateNotification = DocumentNode(
         VariableDefinitionNode(
           variable: VariableNode(name: NameNode(value: 'input')),
           type: NamedTypeNode(
-            name: NameNode(value: 'CreateNotificationInput'),
+            name: NameNode(value: 'SendNotificationInput'),
             isNonNull: true,
           ),
           defaultValue: DefaultValueNode(value: null),
@@ -262,7 +260,7 @@ const documentNodeMutationCreateNotification = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'createNotification'),
+            name: NameNode(value: 'sendNotification'),
             alias: null,
             arguments: [
               ArgumentNode(
@@ -288,14 +286,14 @@ const documentNodeMutationCreateNotification = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'type'),
+                  name: NameNode(value: 'title'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'title'),
+                  name: NameNode(value: 'body'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -316,14 +314,21 @@ const documentNodeMutationCreateNotification = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'channels'),
+                  name: NameNode(value: 'channel'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'scheduledAt'),
+                  name: NameNode(value: 'priority'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'scheduledFor'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -459,46 +464,47 @@ extension ClientExtension$Mutation$CreateNotification on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$CreateNotification$createNotification {
-  Mutation$CreateNotification$createNotification({
+class Mutation$CreateNotification$sendNotification {
+  Mutation$CreateNotification$sendNotification({
     required this.id,
     required this.userId,
-    required this.type,
     required this.title,
+    required this.body,
     required this.message,
     required this.status,
-    required this.channels,
-    this.scheduledAt,
+    required this.channel,
+    required this.priority,
+    this.scheduledFor,
     required this.createdAt,
     this.$__typename = 'Notification',
   });
 
-  factory Mutation$CreateNotification$createNotification.fromJson(
+  factory Mutation$CreateNotification$sendNotification.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
     final l$userId = json['userId'];
-    final l$type = json['type'];
     final l$title = json['title'];
+    final l$body = json['body'];
     final l$message = json['message'];
     final l$status = json['status'];
-    final l$channels = json['channels'];
-    final l$scheduledAt = json['scheduledAt'];
+    final l$channel = json['channel'];
+    final l$priority = json['priority'];
+    final l$scheduledFor = json['scheduledFor'];
     final l$createdAt = json['createdAt'];
     final l$$__typename = json['__typename'];
-    return Mutation$CreateNotification$createNotification(
+    return Mutation$CreateNotification$sendNotification(
       id: (l$id as String),
       userId: (l$userId as String),
-      type: fromJson$Enum$NotificationType((l$type as String)),
       title: (l$title as String),
+      body: (l$body as String),
       message: (l$message as String),
       status: fromJson$Enum$NotificationStatus((l$status as String)),
-      channels: (l$channels as List<dynamic>)
-          .map((e) => fromJson$Enum$NotificationChannel((e as String)))
-          .toList(),
-      scheduledAt: l$scheduledAt == null
+      channel: fromJson$Enum$NotificationChannel((l$channel as String)),
+      priority: fromJson$Enum$NotificationPriority((l$priority as String)),
+      scheduledFor: l$scheduledFor == null
           ? null
-          : DateTime.parse((l$scheduledAt as String)),
+          : DateTime.parse((l$scheduledFor as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -508,17 +514,19 @@ class Mutation$CreateNotification$createNotification {
 
   final String userId;
 
-  final Enum$NotificationType type;
-
   final String title;
+
+  final String body;
 
   final String message;
 
   final Enum$NotificationStatus status;
 
-  final List<Enum$NotificationChannel> channels;
+  final Enum$NotificationChannel channel;
 
-  final DateTime? scheduledAt;
+  final Enum$NotificationPriority priority;
+
+  final DateTime? scheduledFor;
 
   final DateTime createdAt;
 
@@ -530,20 +538,20 @@ class Mutation$CreateNotification$createNotification {
     _resultData['id'] = l$id;
     final l$userId = userId;
     _resultData['userId'] = l$userId;
-    final l$type = type;
-    _resultData['type'] = toJson$Enum$NotificationType(l$type);
     final l$title = title;
     _resultData['title'] = l$title;
+    final l$body = body;
+    _resultData['body'] = l$body;
     final l$message = message;
     _resultData['message'] = l$message;
     final l$status = status;
     _resultData['status'] = toJson$Enum$NotificationStatus(l$status);
-    final l$channels = channels;
-    _resultData['channels'] = l$channels
-        .map((e) => toJson$Enum$NotificationChannel(e))
-        .toList();
-    final l$scheduledAt = scheduledAt;
-    _resultData['scheduledAt'] = l$scheduledAt?.toIso8601String();
+    final l$channel = channel;
+    _resultData['channel'] = toJson$Enum$NotificationChannel(l$channel);
+    final l$priority = priority;
+    _resultData['priority'] = toJson$Enum$NotificationPriority(l$priority);
+    final l$scheduledFor = scheduledFor;
+    _resultData['scheduledFor'] = l$scheduledFor?.toIso8601String();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -555,23 +563,25 @@ class Mutation$CreateNotification$createNotification {
   int get hashCode {
     final l$id = id;
     final l$userId = userId;
-    final l$type = type;
     final l$title = title;
+    final l$body = body;
     final l$message = message;
     final l$status = status;
-    final l$channels = channels;
-    final l$scheduledAt = scheduledAt;
+    final l$channel = channel;
+    final l$priority = priority;
+    final l$scheduledFor = scheduledFor;
     final l$createdAt = createdAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
       l$userId,
-      l$type,
       l$title,
+      l$body,
       l$message,
       l$status,
-      Object.hashAll(l$channels.map((v) => v)),
-      l$scheduledAt,
+      l$channel,
+      l$priority,
+      l$scheduledFor,
       l$createdAt,
       l$$__typename,
     ]);
@@ -582,7 +592,7 @@ class Mutation$CreateNotification$createNotification {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$CreateNotification$createNotification ||
+    if (other is! Mutation$CreateNotification$sendNotification ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -596,14 +606,14 @@ class Mutation$CreateNotification$createNotification {
     if (l$userId != lOther$userId) {
       return false;
     }
-    final l$type = type;
-    final lOther$type = other.type;
-    if (l$type != lOther$type) {
-      return false;
-    }
     final l$title = title;
     final lOther$title = other.title;
     if (l$title != lOther$title) {
+      return false;
+    }
+    final l$body = body;
+    final lOther$body = other.body;
+    if (l$body != lOther$body) {
       return false;
     }
     final l$message = message;
@@ -616,21 +626,19 @@ class Mutation$CreateNotification$createNotification {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$channels = channels;
-    final lOther$channels = other.channels;
-    if (l$channels.length != lOther$channels.length) {
+    final l$channel = channel;
+    final lOther$channel = other.channel;
+    if (l$channel != lOther$channel) {
       return false;
     }
-    for (int i = 0; i < l$channels.length; i++) {
-      final l$channels$entry = l$channels[i];
-      final lOther$channels$entry = lOther$channels[i];
-      if (l$channels$entry != lOther$channels$entry) {
-        return false;
-      }
+    final l$priority = priority;
+    final lOther$priority = other.priority;
+    if (l$priority != lOther$priority) {
+      return false;
     }
-    final l$scheduledAt = scheduledAt;
-    final lOther$scheduledAt = other.scheduledAt;
-    if (l$scheduledAt != lOther$scheduledAt) {
+    final l$scheduledFor = scheduledFor;
+    final lOther$scheduledFor = other.scheduledFor;
+    if (l$scheduledFor != lOther$scheduledFor) {
       return false;
     }
     final l$createdAt = createdAt;
@@ -647,87 +655,91 @@ class Mutation$CreateNotification$createNotification {
   }
 }
 
-extension UtilityExtension$Mutation$CreateNotification$createNotification
-    on Mutation$CreateNotification$createNotification {
-  CopyWith$Mutation$CreateNotification$createNotification<
-    Mutation$CreateNotification$createNotification
+extension UtilityExtension$Mutation$CreateNotification$sendNotification
+    on Mutation$CreateNotification$sendNotification {
+  CopyWith$Mutation$CreateNotification$sendNotification<
+    Mutation$CreateNotification$sendNotification
   >
   get copyWith =>
-      CopyWith$Mutation$CreateNotification$createNotification(this, (i) => i);
+      CopyWith$Mutation$CreateNotification$sendNotification(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$CreateNotification$createNotification<TRes> {
-  factory CopyWith$Mutation$CreateNotification$createNotification(
-    Mutation$CreateNotification$createNotification instance,
-    TRes Function(Mutation$CreateNotification$createNotification) then,
-  ) = _CopyWithImpl$Mutation$CreateNotification$createNotification;
+abstract class CopyWith$Mutation$CreateNotification$sendNotification<TRes> {
+  factory CopyWith$Mutation$CreateNotification$sendNotification(
+    Mutation$CreateNotification$sendNotification instance,
+    TRes Function(Mutation$CreateNotification$sendNotification) then,
+  ) = _CopyWithImpl$Mutation$CreateNotification$sendNotification;
 
-  factory CopyWith$Mutation$CreateNotification$createNotification.stub(
-    TRes res,
-  ) = _CopyWithStubImpl$Mutation$CreateNotification$createNotification;
+  factory CopyWith$Mutation$CreateNotification$sendNotification.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$CreateNotification$sendNotification;
 
   TRes call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
     String? title,
+    String? body,
     String? message,
     Enum$NotificationStatus? status,
-    List<Enum$NotificationChannel>? channels,
-    DateTime? scheduledAt,
+    Enum$NotificationChannel? channel,
+    Enum$NotificationPriority? priority,
+    DateTime? scheduledFor,
     DateTime? createdAt,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Mutation$CreateNotification$createNotification<TRes>
-    implements CopyWith$Mutation$CreateNotification$createNotification<TRes> {
-  _CopyWithImpl$Mutation$CreateNotification$createNotification(
+class _CopyWithImpl$Mutation$CreateNotification$sendNotification<TRes>
+    implements CopyWith$Mutation$CreateNotification$sendNotification<TRes> {
+  _CopyWithImpl$Mutation$CreateNotification$sendNotification(
     this._instance,
     this._then,
   );
 
-  final Mutation$CreateNotification$createNotification _instance;
+  final Mutation$CreateNotification$sendNotification _instance;
 
-  final TRes Function(Mutation$CreateNotification$createNotification) _then;
+  final TRes Function(Mutation$CreateNotification$sendNotification) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? id = _undefined,
     Object? userId = _undefined,
-    Object? type = _undefined,
     Object? title = _undefined,
+    Object? body = _undefined,
     Object? message = _undefined,
     Object? status = _undefined,
-    Object? channels = _undefined,
-    Object? scheduledAt = _undefined,
+    Object? channel = _undefined,
+    Object? priority = _undefined,
+    Object? scheduledFor = _undefined,
     Object? createdAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$CreateNotification$createNotification(
+    Mutation$CreateNotification$sendNotification(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       userId: userId == _undefined || userId == null
           ? _instance.userId
           : (userId as String),
-      type: type == _undefined || type == null
-          ? _instance.type
-          : (type as Enum$NotificationType),
       title: title == _undefined || title == null
           ? _instance.title
           : (title as String),
+      body: body == _undefined || body == null
+          ? _instance.body
+          : (body as String),
       message: message == _undefined || message == null
           ? _instance.message
           : (message as String),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$NotificationStatus),
-      channels: channels == _undefined || channels == null
-          ? _instance.channels
-          : (channels as List<Enum$NotificationChannel>),
-      scheduledAt: scheduledAt == _undefined
-          ? _instance.scheduledAt
-          : (scheduledAt as DateTime?),
+      channel: channel == _undefined || channel == null
+          ? _instance.channel
+          : (channel as Enum$NotificationChannel),
+      priority: priority == _undefined || priority == null
+          ? _instance.priority
+          : (priority as Enum$NotificationPriority),
+      scheduledFor: scheduledFor == _undefined
+          ? _instance.scheduledFor
+          : (scheduledFor as DateTime?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -738,21 +750,22 @@ class _CopyWithImpl$Mutation$CreateNotification$createNotification<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$CreateNotification$createNotification<TRes>
-    implements CopyWith$Mutation$CreateNotification$createNotification<TRes> {
-  _CopyWithStubImpl$Mutation$CreateNotification$createNotification(this._res);
+class _CopyWithStubImpl$Mutation$CreateNotification$sendNotification<TRes>
+    implements CopyWith$Mutation$CreateNotification$sendNotification<TRes> {
+  _CopyWithStubImpl$Mutation$CreateNotification$sendNotification(this._res);
 
   TRes _res;
 
   call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
     String? title,
+    String? body,
     String? message,
     Enum$NotificationStatus? status,
-    List<Enum$NotificationChannel>? channels,
-    DateTime? scheduledAt,
+    Enum$NotificationChannel? channel,
+    Enum$NotificationPriority? priority,
+    DateTime? scheduledFor,
     DateTime? createdAt,
     String? $__typename,
   }) => _res;

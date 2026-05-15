@@ -5,7 +5,8 @@ query ReciprocalAgreements($pagination: PaginationInput, $status: AgreementStatu
       clubId
       partnerClubId
       status
-      terms {
+      agreementType
+      agreementTerms {
         maxVisitsPerMonth
         reciprocalFee
         blackoutDates
@@ -13,6 +14,8 @@ query ReciprocalAgreements($pagination: PaginationInput, $status: AgreementStatu
       }
       effectiveDate
       expirationDate
+      startDate
+      endDate
       createdAt
       updatedAt
     }

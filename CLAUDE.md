@@ -212,6 +212,22 @@ final data = Mutation$Login.fromJson(result.data!);
 final token = data.login.token;
 ```
 
+**Schema sync — `lib/schema/schema.graphql` is NOT hand-maintained.**
+It is a copy of the backend's canonical merged SDL. The backend is the source of
+truth for the GraphQL contract. To re-sync after backend schema changes:
+
+```bash
+# In the backend repo: regenerate the canonical artifact
+../reciprocal-clubs-backend/scripts/export-graphql-schema.sh
+# In this repo: copy it in, then regenerate
+./scripts/sync-schema.sh
+dart run build_runner build --delete-conflicting-outputs
+```
+
+`scripts/sync-schema.sh` assumes the backend is a sibling checkout
+(`../reciprocal-clubs-backend`); override with the `BACKEND_REPO` env var.
+Never edit `lib/schema/schema.graphql` directly — changes belong in the backend.
+
 ### 4. Repository Pattern
 
 **Always use `Either<Failure, T>` for error handling:**

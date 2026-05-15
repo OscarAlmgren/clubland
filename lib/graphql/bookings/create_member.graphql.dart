@@ -300,59 +300,35 @@ const documentNodeMutationCreateMember = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'blockchainIdentity'),
+                  name: NameNode(value: 'firstName'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'profile'),
+                  name: NameNode(value: 'lastName'),
                   alias: null,
                   arguments: [],
                   directives: [],
-                  selectionSet: SelectionSetNode(
-                    selections: [
-                      FieldNode(
-                        name: NameNode(value: 'firstName'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'lastName'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'dateOfBirth'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'phoneNumber'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: '__typename'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                    ],
-                  ),
+                  selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'joinedAt'),
+                  name: NameNode(value: 'email'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'phone'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'joinedDate'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -492,13 +468,15 @@ class Mutation$CreateMember$createMember {
   Mutation$CreateMember$createMember({
     required this.id,
     required this.clubId,
-    required this.userId,
+    this.userId,
     required this.memberNumber,
     required this.membershipType,
     required this.status,
-    this.blockchainIdentity,
-    this.profile,
-    required this.joinedAt,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    this.phone,
+    required this.joinedDate,
     required this.createdAt,
     required this.updatedAt,
     this.$__typename = 'Member',
@@ -513,28 +491,26 @@ class Mutation$CreateMember$createMember {
     final l$memberNumber = json['memberNumber'];
     final l$membershipType = json['membershipType'];
     final l$status = json['status'];
-    final l$blockchainIdentity = json['blockchainIdentity'];
-    final l$profile = json['profile'];
-    final l$joinedAt = json['joinedAt'];
+    final l$firstName = json['firstName'];
+    final l$lastName = json['lastName'];
+    final l$email = json['email'];
+    final l$phone = json['phone'];
+    final l$joinedDate = json['joinedDate'];
     final l$createdAt = json['createdAt'];
     final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
     return Mutation$CreateMember$createMember(
       id: (l$id as String),
       clubId: (l$clubId as String),
-      userId: (l$userId as String),
+      userId: (l$userId as String?),
       memberNumber: (l$memberNumber as String),
-      membershipType: fromJson$Enum$MembershipType(
-        (l$membershipType as String),
-      ),
+      membershipType: (l$membershipType as String),
       status: fromJson$Enum$MemberStatus((l$status as String)),
-      blockchainIdentity: (l$blockchainIdentity as String?),
-      profile: l$profile == null
-          ? null
-          : Mutation$CreateMember$createMember$profile.fromJson(
-              (l$profile as Map<String, dynamic>),
-            ),
-      joinedAt: DateTime.parse((l$joinedAt as String)),
+      firstName: (l$firstName as String),
+      lastName: (l$lastName as String),
+      email: (l$email as String),
+      phone: (l$phone as String?),
+      joinedDate: DateTime.parse((l$joinedDate as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -545,19 +521,23 @@ class Mutation$CreateMember$createMember {
 
   final String clubId;
 
-  final String userId;
+  final String? userId;
 
   final String memberNumber;
 
-  final Enum$MembershipType membershipType;
+  final String membershipType;
 
   final Enum$MemberStatus status;
 
-  final String? blockchainIdentity;
+  final String firstName;
 
-  final Mutation$CreateMember$createMember$profile? profile;
+  final String lastName;
 
-  final DateTime joinedAt;
+  final String email;
+
+  final String? phone;
+
+  final DateTime joinedDate;
 
   final DateTime createdAt;
 
@@ -576,17 +556,19 @@ class Mutation$CreateMember$createMember {
     final l$memberNumber = memberNumber;
     _resultData['memberNumber'] = l$memberNumber;
     final l$membershipType = membershipType;
-    _resultData['membershipType'] = toJson$Enum$MembershipType(
-      l$membershipType,
-    );
+    _resultData['membershipType'] = l$membershipType;
     final l$status = status;
     _resultData['status'] = toJson$Enum$MemberStatus(l$status);
-    final l$blockchainIdentity = blockchainIdentity;
-    _resultData['blockchainIdentity'] = l$blockchainIdentity;
-    final l$profile = profile;
-    _resultData['profile'] = l$profile?.toJson();
-    final l$joinedAt = joinedAt;
-    _resultData['joinedAt'] = l$joinedAt.toIso8601String();
+    final l$firstName = firstName;
+    _resultData['firstName'] = l$firstName;
+    final l$lastName = lastName;
+    _resultData['lastName'] = l$lastName;
+    final l$email = email;
+    _resultData['email'] = l$email;
+    final l$phone = phone;
+    _resultData['phone'] = l$phone;
+    final l$joinedDate = joinedDate;
+    _resultData['joinedDate'] = l$joinedDate.toIso8601String();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -604,9 +586,11 @@ class Mutation$CreateMember$createMember {
     final l$memberNumber = memberNumber;
     final l$membershipType = membershipType;
     final l$status = status;
-    final l$blockchainIdentity = blockchainIdentity;
-    final l$profile = profile;
-    final l$joinedAt = joinedAt;
+    final l$firstName = firstName;
+    final l$lastName = lastName;
+    final l$email = email;
+    final l$phone = phone;
+    final l$joinedDate = joinedDate;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
@@ -617,9 +601,11 @@ class Mutation$CreateMember$createMember {
       l$memberNumber,
       l$membershipType,
       l$status,
-      l$blockchainIdentity,
-      l$profile,
-      l$joinedAt,
+      l$firstName,
+      l$lastName,
+      l$email,
+      l$phone,
+      l$joinedDate,
       l$createdAt,
       l$updatedAt,
       l$$__typename,
@@ -665,19 +651,29 @@ class Mutation$CreateMember$createMember {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$blockchainIdentity = blockchainIdentity;
-    final lOther$blockchainIdentity = other.blockchainIdentity;
-    if (l$blockchainIdentity != lOther$blockchainIdentity) {
+    final l$firstName = firstName;
+    final lOther$firstName = other.firstName;
+    if (l$firstName != lOther$firstName) {
       return false;
     }
-    final l$profile = profile;
-    final lOther$profile = other.profile;
-    if (l$profile != lOther$profile) {
+    final l$lastName = lastName;
+    final lOther$lastName = other.lastName;
+    if (l$lastName != lOther$lastName) {
       return false;
     }
-    final l$joinedAt = joinedAt;
-    final lOther$joinedAt = other.joinedAt;
-    if (l$joinedAt != lOther$joinedAt) {
+    final l$email = email;
+    final lOther$email = other.email;
+    if (l$email != lOther$email) {
+      return false;
+    }
+    final l$phone = phone;
+    final lOther$phone = other.phone;
+    if (l$phone != lOther$phone) {
+      return false;
+    }
+    final l$joinedDate = joinedDate;
+    final lOther$joinedDate = other.joinedDate;
+    if (l$joinedDate != lOther$joinedDate) {
       return false;
     }
     final l$createdAt = createdAt;
@@ -721,16 +717,17 @@ abstract class CopyWith$Mutation$CreateMember$createMember<TRes> {
     String? clubId,
     String? userId,
     String? memberNumber,
-    Enum$MembershipType? membershipType,
+    String? membershipType,
     Enum$MemberStatus? status,
-    String? blockchainIdentity,
-    Mutation$CreateMember$createMember$profile? profile,
-    DateTime? joinedAt,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    DateTime? joinedDate,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
-  CopyWith$Mutation$CreateMember$createMember$profile<TRes> get profile;
 }
 
 class _CopyWithImpl$Mutation$CreateMember$createMember<TRes>
@@ -750,9 +747,11 @@ class _CopyWithImpl$Mutation$CreateMember$createMember<TRes>
     Object? memberNumber = _undefined,
     Object? membershipType = _undefined,
     Object? status = _undefined,
-    Object? blockchainIdentity = _undefined,
-    Object? profile = _undefined,
-    Object? joinedAt = _undefined,
+    Object? firstName = _undefined,
+    Object? lastName = _undefined,
+    Object? email = _undefined,
+    Object? phone = _undefined,
+    Object? joinedDate = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
@@ -762,27 +761,29 @@ class _CopyWithImpl$Mutation$CreateMember$createMember<TRes>
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
-      userId: userId == _undefined || userId == null
-          ? _instance.userId
-          : (userId as String),
+      userId: userId == _undefined ? _instance.userId : (userId as String?),
       memberNumber: memberNumber == _undefined || memberNumber == null
           ? _instance.memberNumber
           : (memberNumber as String),
       membershipType: membershipType == _undefined || membershipType == null
           ? _instance.membershipType
-          : (membershipType as Enum$MembershipType),
+          : (membershipType as String),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$MemberStatus),
-      blockchainIdentity: blockchainIdentity == _undefined
-          ? _instance.blockchainIdentity
-          : (blockchainIdentity as String?),
-      profile: profile == _undefined
-          ? _instance.profile
-          : (profile as Mutation$CreateMember$createMember$profile?),
-      joinedAt: joinedAt == _undefined || joinedAt == null
-          ? _instance.joinedAt
-          : (joinedAt as DateTime),
+      firstName: firstName == _undefined || firstName == null
+          ? _instance.firstName
+          : (firstName as String),
+      lastName: lastName == _undefined || lastName == null
+          ? _instance.lastName
+          : (lastName as String),
+      email: email == _undefined || email == null
+          ? _instance.email
+          : (email as String),
+      phone: phone == _undefined ? _instance.phone : (phone as String?),
+      joinedDate: joinedDate == _undefined || joinedDate == null
+          ? _instance.joinedDate
+          : (joinedDate as DateTime),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -794,18 +795,6 @@ class _CopyWithImpl$Mutation$CreateMember$createMember<TRes>
           : ($__typename as String),
     ),
   );
-
-  CopyWith$Mutation$CreateMember$createMember$profile<TRes> get profile {
-    final local$profile = _instance.profile;
-    return local$profile == null
-        ? CopyWith$Mutation$CreateMember$createMember$profile.stub(
-            _then(_instance),
-          )
-        : CopyWith$Mutation$CreateMember$createMember$profile(
-            local$profile,
-            (e) => call(profile: e),
-          );
-  }
 }
 
 class _CopyWithStubImpl$Mutation$CreateMember$createMember<TRes>
@@ -819,205 +808,15 @@ class _CopyWithStubImpl$Mutation$CreateMember$createMember<TRes>
     String? clubId,
     String? userId,
     String? memberNumber,
-    Enum$MembershipType? membershipType,
+    String? membershipType,
     Enum$MemberStatus? status,
-    String? blockchainIdentity,
-    Mutation$CreateMember$createMember$profile? profile,
-    DateTime? joinedAt,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    DateTime? joinedDate,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? $__typename,
-  }) => _res;
-
-  CopyWith$Mutation$CreateMember$createMember$profile<TRes> get profile =>
-      CopyWith$Mutation$CreateMember$createMember$profile.stub(_res);
-}
-
-class Mutation$CreateMember$createMember$profile {
-  Mutation$CreateMember$createMember$profile({
-    required this.firstName,
-    required this.lastName,
-    this.dateOfBirth,
-    this.phoneNumber,
-    this.$__typename = 'MemberProfile',
-  });
-
-  factory Mutation$CreateMember$createMember$profile.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    final l$firstName = json['firstName'];
-    final l$lastName = json['lastName'];
-    final l$dateOfBirth = json['dateOfBirth'];
-    final l$phoneNumber = json['phoneNumber'];
-    final l$$__typename = json['__typename'];
-    return Mutation$CreateMember$createMember$profile(
-      firstName: (l$firstName as String),
-      lastName: (l$lastName as String),
-      dateOfBirth: l$dateOfBirth == null
-          ? null
-          : DateTime.parse((l$dateOfBirth as String)),
-      phoneNumber: (l$phoneNumber as String?),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final String firstName;
-
-  final String lastName;
-
-  final DateTime? dateOfBirth;
-
-  final String? phoneNumber;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$firstName = firstName;
-    _resultData['firstName'] = l$firstName;
-    final l$lastName = lastName;
-    _resultData['lastName'] = l$lastName;
-    final l$dateOfBirth = dateOfBirth;
-    _resultData['dateOfBirth'] = l$dateOfBirth?.toIso8601String();
-    final l$phoneNumber = phoneNumber;
-    _resultData['phoneNumber'] = l$phoneNumber;
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$firstName = firstName;
-    final l$lastName = lastName;
-    final l$dateOfBirth = dateOfBirth;
-    final l$phoneNumber = phoneNumber;
-    final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$firstName,
-      l$lastName,
-      l$dateOfBirth,
-      l$phoneNumber,
-      l$$__typename,
-    ]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Mutation$CreateMember$createMember$profile ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$firstName = firstName;
-    final lOther$firstName = other.firstName;
-    if (l$firstName != lOther$firstName) {
-      return false;
-    }
-    final l$lastName = lastName;
-    final lOther$lastName = other.lastName;
-    if (l$lastName != lOther$lastName) {
-      return false;
-    }
-    final l$dateOfBirth = dateOfBirth;
-    final lOther$dateOfBirth = other.dateOfBirth;
-    if (l$dateOfBirth != lOther$dateOfBirth) {
-      return false;
-    }
-    final l$phoneNumber = phoneNumber;
-    final lOther$phoneNumber = other.phoneNumber;
-    if (l$phoneNumber != lOther$phoneNumber) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Mutation$CreateMember$createMember$profile
-    on Mutation$CreateMember$createMember$profile {
-  CopyWith$Mutation$CreateMember$createMember$profile<
-    Mutation$CreateMember$createMember$profile
-  >
-  get copyWith =>
-      CopyWith$Mutation$CreateMember$createMember$profile(this, (i) => i);
-}
-
-abstract class CopyWith$Mutation$CreateMember$createMember$profile<TRes> {
-  factory CopyWith$Mutation$CreateMember$createMember$profile(
-    Mutation$CreateMember$createMember$profile instance,
-    TRes Function(Mutation$CreateMember$createMember$profile) then,
-  ) = _CopyWithImpl$Mutation$CreateMember$createMember$profile;
-
-  factory CopyWith$Mutation$CreateMember$createMember$profile.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$CreateMember$createMember$profile;
-
-  TRes call({
-    String? firstName,
-    String? lastName,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
-    String? $__typename,
-  });
-}
-
-class _CopyWithImpl$Mutation$CreateMember$createMember$profile<TRes>
-    implements CopyWith$Mutation$CreateMember$createMember$profile<TRes> {
-  _CopyWithImpl$Mutation$CreateMember$createMember$profile(
-    this._instance,
-    this._then,
-  );
-
-  final Mutation$CreateMember$createMember$profile _instance;
-
-  final TRes Function(Mutation$CreateMember$createMember$profile) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? firstName = _undefined,
-    Object? lastName = _undefined,
-    Object? dateOfBirth = _undefined,
-    Object? phoneNumber = _undefined,
-    Object? $__typename = _undefined,
-  }) => _then(
-    Mutation$CreateMember$createMember$profile(
-      firstName: firstName == _undefined || firstName == null
-          ? _instance.firstName
-          : (firstName as String),
-      lastName: lastName == _undefined || lastName == null
-          ? _instance.lastName
-          : (lastName as String),
-      dateOfBirth: dateOfBirth == _undefined
-          ? _instance.dateOfBirth
-          : (dateOfBirth as DateTime?),
-      phoneNumber: phoneNumber == _undefined
-          ? _instance.phoneNumber
-          : (phoneNumber as String?),
-      $__typename: $__typename == _undefined || $__typename == null
-          ? _instance.$__typename
-          : ($__typename as String),
-    ),
-  );
-}
-
-class _CopyWithStubImpl$Mutation$CreateMember$createMember$profile<TRes>
-    implements CopyWith$Mutation$CreateMember$createMember$profile<TRes> {
-  _CopyWithStubImpl$Mutation$CreateMember$createMember$profile(this._res);
-
-  TRes _res;
-
-  call({
-    String? firstName,
-    String? lastName,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
     String? $__typename,
   }) => _res;
 }

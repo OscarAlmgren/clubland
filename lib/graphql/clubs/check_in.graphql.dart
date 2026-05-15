@@ -445,7 +445,7 @@ class Mutation$CheckInToClub$checkInToClub {
     required this.success,
     this.message,
     this.visit,
-    this.$__typename = 'CheckInResponse',
+    this.$__typename = 'CheckInToClubResult',
   });
 
   factory Mutation$CheckInToClub$checkInToClub.fromJson(
@@ -622,7 +622,7 @@ class _CopyWithStubImpl$Mutation$CheckInToClub$checkInToClub<TRes>
 class Mutation$CheckInToClub$checkInToClub$visit {
   Mutation$CheckInToClub$checkInToClub$visit({
     required this.id,
-    required this.checkedInAt,
+    this.checkedInAt,
     this.club,
     this.$__typename = 'Visit',
   });
@@ -636,7 +636,9 @@ class Mutation$CheckInToClub$checkInToClub$visit {
     final l$$__typename = json['__typename'];
     return Mutation$CheckInToClub$checkInToClub$visit(
       id: (l$id as String),
-      checkedInAt: DateTime.parse((l$checkedInAt as String)),
+      checkedInAt: l$checkedInAt == null
+          ? null
+          : DateTime.parse((l$checkedInAt as String)),
       club: l$club == null
           ? null
           : Mutation$CheckInToClub$checkInToClub$visit$club.fromJson(
@@ -648,7 +650,7 @@ class Mutation$CheckInToClub$checkInToClub$visit {
 
   final String id;
 
-  final DateTime checkedInAt;
+  final DateTime? checkedInAt;
 
   final Mutation$CheckInToClub$checkInToClub$visit$club? club;
 
@@ -659,7 +661,7 @@ class Mutation$CheckInToClub$checkInToClub$visit {
     final l$id = id;
     _resultData['id'] = l$id;
     final l$checkedInAt = checkedInAt;
-    _resultData['checkedInAt'] = l$checkedInAt.toIso8601String();
+    _resultData['checkedInAt'] = l$checkedInAt?.toIso8601String();
     final l$club = club;
     _resultData['club'] = l$club?.toJson();
     final l$$__typename = $__typename;
@@ -757,9 +759,9 @@ class _CopyWithImpl$Mutation$CheckInToClub$checkInToClub$visit<TRes>
   }) => _then(
     Mutation$CheckInToClub$checkInToClub$visit(
       id: id == _undefined || id == null ? _instance.id : (id as String),
-      checkedInAt: checkedInAt == _undefined || checkedInAt == null
+      checkedInAt: checkedInAt == _undefined
           ? _instance.checkedInAt
-          : (checkedInAt as DateTime),
+          : (checkedInAt as DateTime?),
       club: club == _undefined
           ? _instance.club
           : (club as Mutation$CheckInToClub$checkInToClub$visit$club?),

@@ -277,181 +277,81 @@ const documentNodeQueryMember = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'blockchainIdentity'),
+                  name: NameNode(value: 'firstName'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'profile'),
+                  name: NameNode(value: 'lastName'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'email'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'phone'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'dateOfBirth'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'address'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: SelectionSetNode(
                     selections: [
                       FieldNode(
-                        name: NameNode(value: 'firstName'),
+                        name: NameNode(value: 'street'),
                         alias: null,
                         arguments: [],
                         directives: [],
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'lastName'),
+                        name: NameNode(value: 'city'),
                         alias: null,
                         arguments: [],
                         directives: [],
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'dateOfBirth'),
+                        name: NameNode(value: 'state'),
                         alias: null,
                         arguments: [],
                         directives: [],
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'phoneNumber'),
+                        name: NameNode(value: 'postalCode'),
                         alias: null,
                         arguments: [],
                         directives: [],
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'address'),
+                        name: NameNode(value: 'country'),
                         alias: null,
                         arguments: [],
                         directives: [],
-                        selectionSet: SelectionSetNode(
-                          selections: [
-                            FieldNode(
-                              name: NameNode(value: 'street'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'city'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'state'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'postalCode'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'country'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                          ],
-                        ),
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'emergencyContact'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(
-                          selections: [
-                            FieldNode(
-                              name: NameNode(value: 'name'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'relationship'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'phoneNumber'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                          ],
-                        ),
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'preferences'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(
-                          selections: [
-                            FieldNode(
-                              name: NameNode(value: 'emailNotifications'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'smsNotifications'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'pushNotifications'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'marketingEmails'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                          ],
-                        ),
+                        selectionSet: null,
                       ),
                       FieldNode(
                         name: NameNode(value: '__typename'),
@@ -464,7 +364,90 @@ const documentNodeQueryMember = DocumentNode(
                   ),
                 ),
                 FieldNode(
-                  name: NameNode(value: 'joinedAt'),
+                  name: NameNode(value: 'emergencyContact'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: SelectionSetNode(
+                    selections: [
+                      FieldNode(
+                        name: NameNode(value: 'name'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'relationship'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'phone'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: '__typename'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                    ],
+                  ),
+                ),
+                FieldNode(
+                  name: NameNode(value: 'preferences'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: SelectionSetNode(
+                    selections: [
+                      FieldNode(
+                        name: NameNode(value: 'receiveNewsletter'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'receivePromotions'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'allowDataSharing'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'preferredLanguage'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: '__typename'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                    ],
+                  ),
+                ),
+                FieldNode(
+                  name: NameNode(value: 'joinedDate'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -640,13 +623,19 @@ class Query$Member$member {
   Query$Member$member({
     required this.id,
     required this.clubId,
-    required this.userId,
+    this.userId,
     required this.memberNumber,
     required this.membershipType,
     required this.status,
-    this.blockchainIdentity,
-    this.profile,
-    required this.joinedAt,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    this.phone,
+    this.dateOfBirth,
+    this.address,
+    this.emergencyContact,
+    this.preferences,
+    required this.joinedDate,
     required this.createdAt,
     required this.updatedAt,
     this.$__typename = 'Member',
@@ -659,28 +648,48 @@ class Query$Member$member {
     final l$memberNumber = json['memberNumber'];
     final l$membershipType = json['membershipType'];
     final l$status = json['status'];
-    final l$blockchainIdentity = json['blockchainIdentity'];
-    final l$profile = json['profile'];
-    final l$joinedAt = json['joinedAt'];
+    final l$firstName = json['firstName'];
+    final l$lastName = json['lastName'];
+    final l$email = json['email'];
+    final l$phone = json['phone'];
+    final l$dateOfBirth = json['dateOfBirth'];
+    final l$address = json['address'];
+    final l$emergencyContact = json['emergencyContact'];
+    final l$preferences = json['preferences'];
+    final l$joinedDate = json['joinedDate'];
     final l$createdAt = json['createdAt'];
     final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
     return Query$Member$member(
       id: (l$id as String),
       clubId: (l$clubId as String),
-      userId: (l$userId as String),
+      userId: (l$userId as String?),
       memberNumber: (l$memberNumber as String),
-      membershipType: fromJson$Enum$MembershipType(
-        (l$membershipType as String),
-      ),
+      membershipType: (l$membershipType as String),
       status: fromJson$Enum$MemberStatus((l$status as String)),
-      blockchainIdentity: (l$blockchainIdentity as String?),
-      profile: l$profile == null
+      firstName: (l$firstName as String),
+      lastName: (l$lastName as String),
+      email: (l$email as String),
+      phone: (l$phone as String?),
+      dateOfBirth: l$dateOfBirth == null
           ? null
-          : Query$Member$member$profile.fromJson(
-              (l$profile as Map<String, dynamic>),
+          : DateTime.parse((l$dateOfBirth as String)),
+      address: l$address == null
+          ? null
+          : Query$Member$member$address.fromJson(
+              (l$address as Map<String, dynamic>),
             ),
-      joinedAt: DateTime.parse((l$joinedAt as String)),
+      emergencyContact: l$emergencyContact == null
+          ? null
+          : Query$Member$member$emergencyContact.fromJson(
+              (l$emergencyContact as Map<String, dynamic>),
+            ),
+      preferences: l$preferences == null
+          ? null
+          : Query$Member$member$preferences.fromJson(
+              (l$preferences as Map<String, dynamic>),
+            ),
+      joinedDate: DateTime.parse((l$joinedDate as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -691,19 +700,31 @@ class Query$Member$member {
 
   final String clubId;
 
-  final String userId;
+  final String? userId;
 
   final String memberNumber;
 
-  final Enum$MembershipType membershipType;
+  final String membershipType;
 
   final Enum$MemberStatus status;
 
-  final String? blockchainIdentity;
+  final String firstName;
 
-  final Query$Member$member$profile? profile;
+  final String lastName;
 
-  final DateTime joinedAt;
+  final String email;
+
+  final String? phone;
+
+  final DateTime? dateOfBirth;
+
+  final Query$Member$member$address? address;
+
+  final Query$Member$member$emergencyContact? emergencyContact;
+
+  final Query$Member$member$preferences? preferences;
+
+  final DateTime joinedDate;
 
   final DateTime createdAt;
 
@@ -722,17 +743,27 @@ class Query$Member$member {
     final l$memberNumber = memberNumber;
     _resultData['memberNumber'] = l$memberNumber;
     final l$membershipType = membershipType;
-    _resultData['membershipType'] = toJson$Enum$MembershipType(
-      l$membershipType,
-    );
+    _resultData['membershipType'] = l$membershipType;
     final l$status = status;
     _resultData['status'] = toJson$Enum$MemberStatus(l$status);
-    final l$blockchainIdentity = blockchainIdentity;
-    _resultData['blockchainIdentity'] = l$blockchainIdentity;
-    final l$profile = profile;
-    _resultData['profile'] = l$profile?.toJson();
-    final l$joinedAt = joinedAt;
-    _resultData['joinedAt'] = l$joinedAt.toIso8601String();
+    final l$firstName = firstName;
+    _resultData['firstName'] = l$firstName;
+    final l$lastName = lastName;
+    _resultData['lastName'] = l$lastName;
+    final l$email = email;
+    _resultData['email'] = l$email;
+    final l$phone = phone;
+    _resultData['phone'] = l$phone;
+    final l$dateOfBirth = dateOfBirth;
+    _resultData['dateOfBirth'] = l$dateOfBirth?.toIso8601String();
+    final l$address = address;
+    _resultData['address'] = l$address?.toJson();
+    final l$emergencyContact = emergencyContact;
+    _resultData['emergencyContact'] = l$emergencyContact?.toJson();
+    final l$preferences = preferences;
+    _resultData['preferences'] = l$preferences?.toJson();
+    final l$joinedDate = joinedDate;
+    _resultData['joinedDate'] = l$joinedDate.toIso8601String();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -750,9 +781,15 @@ class Query$Member$member {
     final l$memberNumber = memberNumber;
     final l$membershipType = membershipType;
     final l$status = status;
-    final l$blockchainIdentity = blockchainIdentity;
-    final l$profile = profile;
-    final l$joinedAt = joinedAt;
+    final l$firstName = firstName;
+    final l$lastName = lastName;
+    final l$email = email;
+    final l$phone = phone;
+    final l$dateOfBirth = dateOfBirth;
+    final l$address = address;
+    final l$emergencyContact = emergencyContact;
+    final l$preferences = preferences;
+    final l$joinedDate = joinedDate;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
@@ -763,9 +800,15 @@ class Query$Member$member {
       l$memberNumber,
       l$membershipType,
       l$status,
-      l$blockchainIdentity,
-      l$profile,
-      l$joinedAt,
+      l$firstName,
+      l$lastName,
+      l$email,
+      l$phone,
+      l$dateOfBirth,
+      l$address,
+      l$emergencyContact,
+      l$preferences,
+      l$joinedDate,
       l$createdAt,
       l$updatedAt,
       l$$__typename,
@@ -810,19 +853,49 @@ class Query$Member$member {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$blockchainIdentity = blockchainIdentity;
-    final lOther$blockchainIdentity = other.blockchainIdentity;
-    if (l$blockchainIdentity != lOther$blockchainIdentity) {
+    final l$firstName = firstName;
+    final lOther$firstName = other.firstName;
+    if (l$firstName != lOther$firstName) {
       return false;
     }
-    final l$profile = profile;
-    final lOther$profile = other.profile;
-    if (l$profile != lOther$profile) {
+    final l$lastName = lastName;
+    final lOther$lastName = other.lastName;
+    if (l$lastName != lOther$lastName) {
       return false;
     }
-    final l$joinedAt = joinedAt;
-    final lOther$joinedAt = other.joinedAt;
-    if (l$joinedAt != lOther$joinedAt) {
+    final l$email = email;
+    final lOther$email = other.email;
+    if (l$email != lOther$email) {
+      return false;
+    }
+    final l$phone = phone;
+    final lOther$phone = other.phone;
+    if (l$phone != lOther$phone) {
+      return false;
+    }
+    final l$dateOfBirth = dateOfBirth;
+    final lOther$dateOfBirth = other.dateOfBirth;
+    if (l$dateOfBirth != lOther$dateOfBirth) {
+      return false;
+    }
+    final l$address = address;
+    final lOther$address = other.address;
+    if (l$address != lOther$address) {
+      return false;
+    }
+    final l$emergencyContact = emergencyContact;
+    final lOther$emergencyContact = other.emergencyContact;
+    if (l$emergencyContact != lOther$emergencyContact) {
+      return false;
+    }
+    final l$preferences = preferences;
+    final lOther$preferences = other.preferences;
+    if (l$preferences != lOther$preferences) {
+      return false;
+    }
+    final l$joinedDate = joinedDate;
+    final lOther$joinedDate = other.joinedDate;
+    if (l$joinedDate != lOther$joinedDate) {
       return false;
     }
     final l$createdAt = createdAt;
@@ -863,16 +936,24 @@ abstract class CopyWith$Query$Member$member<TRes> {
     String? clubId,
     String? userId,
     String? memberNumber,
-    Enum$MembershipType? membershipType,
+    String? membershipType,
     Enum$MemberStatus? status,
-    String? blockchainIdentity,
-    Query$Member$member$profile? profile,
-    DateTime? joinedAt,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    DateTime? dateOfBirth,
+    Query$Member$member$address? address,
+    Query$Member$member$emergencyContact? emergencyContact,
+    Query$Member$member$preferences? preferences,
+    DateTime? joinedDate,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
-  CopyWith$Query$Member$member$profile<TRes> get profile;
+  CopyWith$Query$Member$member$address<TRes> get address;
+  CopyWith$Query$Member$member$emergencyContact<TRes> get emergencyContact;
+  CopyWith$Query$Member$member$preferences<TRes> get preferences;
 }
 
 class _CopyWithImpl$Query$Member$member<TRes>
@@ -892,9 +973,15 @@ class _CopyWithImpl$Query$Member$member<TRes>
     Object? memberNumber = _undefined,
     Object? membershipType = _undefined,
     Object? status = _undefined,
-    Object? blockchainIdentity = _undefined,
-    Object? profile = _undefined,
-    Object? joinedAt = _undefined,
+    Object? firstName = _undefined,
+    Object? lastName = _undefined,
+    Object? email = _undefined,
+    Object? phone = _undefined,
+    Object? dateOfBirth = _undefined,
+    Object? address = _undefined,
+    Object? emergencyContact = _undefined,
+    Object? preferences = _undefined,
+    Object? joinedDate = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
@@ -904,27 +991,41 @@ class _CopyWithImpl$Query$Member$member<TRes>
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
-      userId: userId == _undefined || userId == null
-          ? _instance.userId
-          : (userId as String),
+      userId: userId == _undefined ? _instance.userId : (userId as String?),
       memberNumber: memberNumber == _undefined || memberNumber == null
           ? _instance.memberNumber
           : (memberNumber as String),
       membershipType: membershipType == _undefined || membershipType == null
           ? _instance.membershipType
-          : (membershipType as Enum$MembershipType),
+          : (membershipType as String),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$MemberStatus),
-      blockchainIdentity: blockchainIdentity == _undefined
-          ? _instance.blockchainIdentity
-          : (blockchainIdentity as String?),
-      profile: profile == _undefined
-          ? _instance.profile
-          : (profile as Query$Member$member$profile?),
-      joinedAt: joinedAt == _undefined || joinedAt == null
-          ? _instance.joinedAt
-          : (joinedAt as DateTime),
+      firstName: firstName == _undefined || firstName == null
+          ? _instance.firstName
+          : (firstName as String),
+      lastName: lastName == _undefined || lastName == null
+          ? _instance.lastName
+          : (lastName as String),
+      email: email == _undefined || email == null
+          ? _instance.email
+          : (email as String),
+      phone: phone == _undefined ? _instance.phone : (phone as String?),
+      dateOfBirth: dateOfBirth == _undefined
+          ? _instance.dateOfBirth
+          : (dateOfBirth as DateTime?),
+      address: address == _undefined
+          ? _instance.address
+          : (address as Query$Member$member$address?),
+      emergencyContact: emergencyContact == _undefined
+          ? _instance.emergencyContact
+          : (emergencyContact as Query$Member$member$emergencyContact?),
+      preferences: preferences == _undefined
+          ? _instance.preferences
+          : (preferences as Query$Member$member$preferences?),
+      joinedDate: joinedDate == _undefined || joinedDate == null
+          ? _instance.joinedDate
+          : (joinedDate as DateTime),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -937,13 +1038,33 @@ class _CopyWithImpl$Query$Member$member<TRes>
     ),
   );
 
-  CopyWith$Query$Member$member$profile<TRes> get profile {
-    final local$profile = _instance.profile;
-    return local$profile == null
-        ? CopyWith$Query$Member$member$profile.stub(_then(_instance))
-        : CopyWith$Query$Member$member$profile(
-            local$profile,
-            (e) => call(profile: e),
+  CopyWith$Query$Member$member$address<TRes> get address {
+    final local$address = _instance.address;
+    return local$address == null
+        ? CopyWith$Query$Member$member$address.stub(_then(_instance))
+        : CopyWith$Query$Member$member$address(
+            local$address,
+            (e) => call(address: e),
+          );
+  }
+
+  CopyWith$Query$Member$member$emergencyContact<TRes> get emergencyContact {
+    final local$emergencyContact = _instance.emergencyContact;
+    return local$emergencyContact == null
+        ? CopyWith$Query$Member$member$emergencyContact.stub(_then(_instance))
+        : CopyWith$Query$Member$member$emergencyContact(
+            local$emergencyContact,
+            (e) => call(emergencyContact: e),
+          );
+  }
+
+  CopyWith$Query$Member$member$preferences<TRes> get preferences {
+    final local$preferences = _instance.preferences;
+    return local$preferences == null
+        ? CopyWith$Query$Member$member$preferences.stub(_then(_instance))
+        : CopyWith$Query$Member$member$preferences(
+            local$preferences,
+            (e) => call(preferences: e),
           );
   }
 }
@@ -959,324 +1080,34 @@ class _CopyWithStubImpl$Query$Member$member<TRes>
     String? clubId,
     String? userId,
     String? memberNumber,
-    Enum$MembershipType? membershipType,
+    String? membershipType,
     Enum$MemberStatus? status,
-    String? blockchainIdentity,
-    Query$Member$member$profile? profile,
-    DateTime? joinedAt,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    DateTime? dateOfBirth,
+    Query$Member$member$address? address,
+    Query$Member$member$emergencyContact? emergencyContact,
+    Query$Member$member$preferences? preferences,
+    DateTime? joinedDate,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Query$Member$member$profile<TRes> get profile =>
-      CopyWith$Query$Member$member$profile.stub(_res);
+  CopyWith$Query$Member$member$address<TRes> get address =>
+      CopyWith$Query$Member$member$address.stub(_res);
+
+  CopyWith$Query$Member$member$emergencyContact<TRes> get emergencyContact =>
+      CopyWith$Query$Member$member$emergencyContact.stub(_res);
+
+  CopyWith$Query$Member$member$preferences<TRes> get preferences =>
+      CopyWith$Query$Member$member$preferences.stub(_res);
 }
 
-class Query$Member$member$profile {
-  Query$Member$member$profile({
-    required this.firstName,
-    required this.lastName,
-    this.dateOfBirth,
-    this.phoneNumber,
-    this.address,
-    this.emergencyContact,
-    this.preferences,
-    this.$__typename = 'MemberProfile',
-  });
-
-  factory Query$Member$member$profile.fromJson(Map<String, dynamic> json) {
-    final l$firstName = json['firstName'];
-    final l$lastName = json['lastName'];
-    final l$dateOfBirth = json['dateOfBirth'];
-    final l$phoneNumber = json['phoneNumber'];
-    final l$address = json['address'];
-    final l$emergencyContact = json['emergencyContact'];
-    final l$preferences = json['preferences'];
-    final l$$__typename = json['__typename'];
-    return Query$Member$member$profile(
-      firstName: (l$firstName as String),
-      lastName: (l$lastName as String),
-      dateOfBirth: l$dateOfBirth == null
-          ? null
-          : DateTime.parse((l$dateOfBirth as String)),
-      phoneNumber: (l$phoneNumber as String?),
-      address: l$address == null
-          ? null
-          : Query$Member$member$profile$address.fromJson(
-              (l$address as Map<String, dynamic>),
-            ),
-      emergencyContact: l$emergencyContact == null
-          ? null
-          : Query$Member$member$profile$emergencyContact.fromJson(
-              (l$emergencyContact as Map<String, dynamic>),
-            ),
-      preferences: l$preferences == null
-          ? null
-          : Query$Member$member$profile$preferences.fromJson(
-              (l$preferences as Map<String, dynamic>),
-            ),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final String firstName;
-
-  final String lastName;
-
-  final DateTime? dateOfBirth;
-
-  final String? phoneNumber;
-
-  final Query$Member$member$profile$address? address;
-
-  final Query$Member$member$profile$emergencyContact? emergencyContact;
-
-  final Query$Member$member$profile$preferences? preferences;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$firstName = firstName;
-    _resultData['firstName'] = l$firstName;
-    final l$lastName = lastName;
-    _resultData['lastName'] = l$lastName;
-    final l$dateOfBirth = dateOfBirth;
-    _resultData['dateOfBirth'] = l$dateOfBirth?.toIso8601String();
-    final l$phoneNumber = phoneNumber;
-    _resultData['phoneNumber'] = l$phoneNumber;
-    final l$address = address;
-    _resultData['address'] = l$address?.toJson();
-    final l$emergencyContact = emergencyContact;
-    _resultData['emergencyContact'] = l$emergencyContact?.toJson();
-    final l$preferences = preferences;
-    _resultData['preferences'] = l$preferences?.toJson();
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$firstName = firstName;
-    final l$lastName = lastName;
-    final l$dateOfBirth = dateOfBirth;
-    final l$phoneNumber = phoneNumber;
-    final l$address = address;
-    final l$emergencyContact = emergencyContact;
-    final l$preferences = preferences;
-    final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$firstName,
-      l$lastName,
-      l$dateOfBirth,
-      l$phoneNumber,
-      l$address,
-      l$emergencyContact,
-      l$preferences,
-      l$$__typename,
-    ]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Query$Member$member$profile ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$firstName = firstName;
-    final lOther$firstName = other.firstName;
-    if (l$firstName != lOther$firstName) {
-      return false;
-    }
-    final l$lastName = lastName;
-    final lOther$lastName = other.lastName;
-    if (l$lastName != lOther$lastName) {
-      return false;
-    }
-    final l$dateOfBirth = dateOfBirth;
-    final lOther$dateOfBirth = other.dateOfBirth;
-    if (l$dateOfBirth != lOther$dateOfBirth) {
-      return false;
-    }
-    final l$phoneNumber = phoneNumber;
-    final lOther$phoneNumber = other.phoneNumber;
-    if (l$phoneNumber != lOther$phoneNumber) {
-      return false;
-    }
-    final l$address = address;
-    final lOther$address = other.address;
-    if (l$address != lOther$address) {
-      return false;
-    }
-    final l$emergencyContact = emergencyContact;
-    final lOther$emergencyContact = other.emergencyContact;
-    if (l$emergencyContact != lOther$emergencyContact) {
-      return false;
-    }
-    final l$preferences = preferences;
-    final lOther$preferences = other.preferences;
-    if (l$preferences != lOther$preferences) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Query$Member$member$profile
-    on Query$Member$member$profile {
-  CopyWith$Query$Member$member$profile<Query$Member$member$profile>
-  get copyWith => CopyWith$Query$Member$member$profile(this, (i) => i);
-}
-
-abstract class CopyWith$Query$Member$member$profile<TRes> {
-  factory CopyWith$Query$Member$member$profile(
-    Query$Member$member$profile instance,
-    TRes Function(Query$Member$member$profile) then,
-  ) = _CopyWithImpl$Query$Member$member$profile;
-
-  factory CopyWith$Query$Member$member$profile.stub(TRes res) =
-      _CopyWithStubImpl$Query$Member$member$profile;
-
-  TRes call({
-    String? firstName,
-    String? lastName,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
-    Query$Member$member$profile$address? address,
-    Query$Member$member$profile$emergencyContact? emergencyContact,
-    Query$Member$member$profile$preferences? preferences,
-    String? $__typename,
-  });
-  CopyWith$Query$Member$member$profile$address<TRes> get address;
-  CopyWith$Query$Member$member$profile$emergencyContact<TRes>
-  get emergencyContact;
-  CopyWith$Query$Member$member$profile$preferences<TRes> get preferences;
-}
-
-class _CopyWithImpl$Query$Member$member$profile<TRes>
-    implements CopyWith$Query$Member$member$profile<TRes> {
-  _CopyWithImpl$Query$Member$member$profile(this._instance, this._then);
-
-  final Query$Member$member$profile _instance;
-
-  final TRes Function(Query$Member$member$profile) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? firstName = _undefined,
-    Object? lastName = _undefined,
-    Object? dateOfBirth = _undefined,
-    Object? phoneNumber = _undefined,
-    Object? address = _undefined,
-    Object? emergencyContact = _undefined,
-    Object? preferences = _undefined,
-    Object? $__typename = _undefined,
-  }) => _then(
-    Query$Member$member$profile(
-      firstName: firstName == _undefined || firstName == null
-          ? _instance.firstName
-          : (firstName as String),
-      lastName: lastName == _undefined || lastName == null
-          ? _instance.lastName
-          : (lastName as String),
-      dateOfBirth: dateOfBirth == _undefined
-          ? _instance.dateOfBirth
-          : (dateOfBirth as DateTime?),
-      phoneNumber: phoneNumber == _undefined
-          ? _instance.phoneNumber
-          : (phoneNumber as String?),
-      address: address == _undefined
-          ? _instance.address
-          : (address as Query$Member$member$profile$address?),
-      emergencyContact: emergencyContact == _undefined
-          ? _instance.emergencyContact
-          : (emergencyContact as Query$Member$member$profile$emergencyContact?),
-      preferences: preferences == _undefined
-          ? _instance.preferences
-          : (preferences as Query$Member$member$profile$preferences?),
-      $__typename: $__typename == _undefined || $__typename == null
-          ? _instance.$__typename
-          : ($__typename as String),
-    ),
-  );
-
-  CopyWith$Query$Member$member$profile$address<TRes> get address {
-    final local$address = _instance.address;
-    return local$address == null
-        ? CopyWith$Query$Member$member$profile$address.stub(_then(_instance))
-        : CopyWith$Query$Member$member$profile$address(
-            local$address,
-            (e) => call(address: e),
-          );
-  }
-
-  CopyWith$Query$Member$member$profile$emergencyContact<TRes>
-  get emergencyContact {
-    final local$emergencyContact = _instance.emergencyContact;
-    return local$emergencyContact == null
-        ? CopyWith$Query$Member$member$profile$emergencyContact.stub(
-            _then(_instance),
-          )
-        : CopyWith$Query$Member$member$profile$emergencyContact(
-            local$emergencyContact,
-            (e) => call(emergencyContact: e),
-          );
-  }
-
-  CopyWith$Query$Member$member$profile$preferences<TRes> get preferences {
-    final local$preferences = _instance.preferences;
-    return local$preferences == null
-        ? CopyWith$Query$Member$member$profile$preferences.stub(
-            _then(_instance),
-          )
-        : CopyWith$Query$Member$member$profile$preferences(
-            local$preferences,
-            (e) => call(preferences: e),
-          );
-  }
-}
-
-class _CopyWithStubImpl$Query$Member$member$profile<TRes>
-    implements CopyWith$Query$Member$member$profile<TRes> {
-  _CopyWithStubImpl$Query$Member$member$profile(this._res);
-
-  TRes _res;
-
-  call({
-    String? firstName,
-    String? lastName,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
-    Query$Member$member$profile$address? address,
-    Query$Member$member$profile$emergencyContact? emergencyContact,
-    Query$Member$member$profile$preferences? preferences,
-    String? $__typename,
-  }) => _res;
-
-  CopyWith$Query$Member$member$profile$address<TRes> get address =>
-      CopyWith$Query$Member$member$profile$address.stub(_res);
-
-  CopyWith$Query$Member$member$profile$emergencyContact<TRes>
-  get emergencyContact =>
-      CopyWith$Query$Member$member$profile$emergencyContact.stub(_res);
-
-  CopyWith$Query$Member$member$profile$preferences<TRes> get preferences =>
-      CopyWith$Query$Member$member$profile$preferences.stub(_res);
-}
-
-class Query$Member$member$profile$address {
-  Query$Member$member$profile$address({
+class Query$Member$member$address {
+  Query$Member$member$address({
     required this.street,
     required this.city,
     required this.state,
@@ -1285,16 +1116,14 @@ class Query$Member$member$profile$address {
     this.$__typename = 'Address',
   });
 
-  factory Query$Member$member$profile$address.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory Query$Member$member$address.fromJson(Map<String, dynamic> json) {
     final l$street = json['street'];
     final l$city = json['city'];
     final l$state = json['state'];
     final l$postalCode = json['postalCode'];
     final l$country = json['country'];
     final l$$__typename = json['__typename'];
-    return Query$Member$member$profile$address(
+    return Query$Member$member$address(
       street: (l$street as String),
       city: (l$city as String),
       state: (l$state as String),
@@ -1356,7 +1185,7 @@ class Query$Member$member$profile$address {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Member$member$profile$address ||
+    if (other is! Query$Member$member$address ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1394,22 +1223,20 @@ class Query$Member$member$profile$address {
   }
 }
 
-extension UtilityExtension$Query$Member$member$profile$address
-    on Query$Member$member$profile$address {
-  CopyWith$Query$Member$member$profile$address<
-    Query$Member$member$profile$address
-  >
-  get copyWith => CopyWith$Query$Member$member$profile$address(this, (i) => i);
+extension UtilityExtension$Query$Member$member$address
+    on Query$Member$member$address {
+  CopyWith$Query$Member$member$address<Query$Member$member$address>
+  get copyWith => CopyWith$Query$Member$member$address(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Member$member$profile$address<TRes> {
-  factory CopyWith$Query$Member$member$profile$address(
-    Query$Member$member$profile$address instance,
-    TRes Function(Query$Member$member$profile$address) then,
-  ) = _CopyWithImpl$Query$Member$member$profile$address;
+abstract class CopyWith$Query$Member$member$address<TRes> {
+  factory CopyWith$Query$Member$member$address(
+    Query$Member$member$address instance,
+    TRes Function(Query$Member$member$address) then,
+  ) = _CopyWithImpl$Query$Member$member$address;
 
-  factory CopyWith$Query$Member$member$profile$address.stub(TRes res) =
-      _CopyWithStubImpl$Query$Member$member$profile$address;
+  factory CopyWith$Query$Member$member$address.stub(TRes res) =
+      _CopyWithStubImpl$Query$Member$member$address;
 
   TRes call({
     String? street,
@@ -1421,13 +1248,13 @@ abstract class CopyWith$Query$Member$member$profile$address<TRes> {
   });
 }
 
-class _CopyWithImpl$Query$Member$member$profile$address<TRes>
-    implements CopyWith$Query$Member$member$profile$address<TRes> {
-  _CopyWithImpl$Query$Member$member$profile$address(this._instance, this._then);
+class _CopyWithImpl$Query$Member$member$address<TRes>
+    implements CopyWith$Query$Member$member$address<TRes> {
+  _CopyWithImpl$Query$Member$member$address(this._instance, this._then);
 
-  final Query$Member$member$profile$address _instance;
+  final Query$Member$member$address _instance;
 
-  final TRes Function(Query$Member$member$profile$address) _then;
+  final TRes Function(Query$Member$member$address) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -1439,7 +1266,7 @@ class _CopyWithImpl$Query$Member$member$profile$address<TRes>
     Object? country = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Member$member$profile$address(
+    Query$Member$member$address(
       street: street == _undefined || street == null
           ? _instance.street
           : (street as String),
@@ -1462,9 +1289,9 @@ class _CopyWithImpl$Query$Member$member$profile$address<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$Member$member$profile$address<TRes>
-    implements CopyWith$Query$Member$member$profile$address<TRes> {
-  _CopyWithStubImpl$Query$Member$member$profile$address(this._res);
+class _CopyWithStubImpl$Query$Member$member$address<TRes>
+    implements CopyWith$Query$Member$member$address<TRes> {
+  _CopyWithStubImpl$Query$Member$member$address(this._res);
 
   TRes _res;
 
@@ -1478,25 +1305,25 @@ class _CopyWithStubImpl$Query$Member$member$profile$address<TRes>
   }) => _res;
 }
 
-class Query$Member$member$profile$emergencyContact {
-  Query$Member$member$profile$emergencyContact({
+class Query$Member$member$emergencyContact {
+  Query$Member$member$emergencyContact({
     required this.name,
     required this.relationship,
-    required this.phoneNumber,
+    required this.phone,
     this.$__typename = 'EmergencyContact',
   });
 
-  factory Query$Member$member$profile$emergencyContact.fromJson(
+  factory Query$Member$member$emergencyContact.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$name = json['name'];
     final l$relationship = json['relationship'];
-    final l$phoneNumber = json['phoneNumber'];
+    final l$phone = json['phone'];
     final l$$__typename = json['__typename'];
-    return Query$Member$member$profile$emergencyContact(
+    return Query$Member$member$emergencyContact(
       name: (l$name as String),
       relationship: (l$relationship as String),
-      phoneNumber: (l$phoneNumber as String),
+      phone: (l$phone as String),
       $__typename: (l$$__typename as String),
     );
   }
@@ -1505,7 +1332,7 @@ class Query$Member$member$profile$emergencyContact {
 
   final String relationship;
 
-  final String phoneNumber;
+  final String phone;
 
   final String $__typename;
 
@@ -1515,8 +1342,8 @@ class Query$Member$member$profile$emergencyContact {
     _resultData['name'] = l$name;
     final l$relationship = relationship;
     _resultData['relationship'] = l$relationship;
-    final l$phoneNumber = phoneNumber;
-    _resultData['phoneNumber'] = l$phoneNumber;
+    final l$phone = phone;
+    _resultData['phone'] = l$phone;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1526,14 +1353,9 @@ class Query$Member$member$profile$emergencyContact {
   int get hashCode {
     final l$name = name;
     final l$relationship = relationship;
-    final l$phoneNumber = phoneNumber;
+    final l$phone = phone;
     final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$name,
-      l$relationship,
-      l$phoneNumber,
-      l$$__typename,
-    ]);
+    return Object.hashAll([l$name, l$relationship, l$phone, l$$__typename]);
   }
 
   @override
@@ -1541,7 +1363,7 @@ class Query$Member$member$profile$emergencyContact {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Member$member$profile$emergencyContact ||
+    if (other is! Query$Member$member$emergencyContact ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1555,9 +1377,9 @@ class Query$Member$member$profile$emergencyContact {
     if (l$relationship != lOther$relationship) {
       return false;
     }
-    final l$phoneNumber = phoneNumber;
-    final lOther$phoneNumber = other.phoneNumber;
-    if (l$phoneNumber != lOther$phoneNumber) {
+    final l$phone = phone;
+    final lOther$phone = other.phone;
+    if (l$phone != lOther$phone) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -1569,61 +1391,60 @@ class Query$Member$member$profile$emergencyContact {
   }
 }
 
-extension UtilityExtension$Query$Member$member$profile$emergencyContact
-    on Query$Member$member$profile$emergencyContact {
-  CopyWith$Query$Member$member$profile$emergencyContact<
-    Query$Member$member$profile$emergencyContact
+extension UtilityExtension$Query$Member$member$emergencyContact
+    on Query$Member$member$emergencyContact {
+  CopyWith$Query$Member$member$emergencyContact<
+    Query$Member$member$emergencyContact
   >
-  get copyWith =>
-      CopyWith$Query$Member$member$profile$emergencyContact(this, (i) => i);
+  get copyWith => CopyWith$Query$Member$member$emergencyContact(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Member$member$profile$emergencyContact<TRes> {
-  factory CopyWith$Query$Member$member$profile$emergencyContact(
-    Query$Member$member$profile$emergencyContact instance,
-    TRes Function(Query$Member$member$profile$emergencyContact) then,
-  ) = _CopyWithImpl$Query$Member$member$profile$emergencyContact;
+abstract class CopyWith$Query$Member$member$emergencyContact<TRes> {
+  factory CopyWith$Query$Member$member$emergencyContact(
+    Query$Member$member$emergencyContact instance,
+    TRes Function(Query$Member$member$emergencyContact) then,
+  ) = _CopyWithImpl$Query$Member$member$emergencyContact;
 
-  factory CopyWith$Query$Member$member$profile$emergencyContact.stub(TRes res) =
-      _CopyWithStubImpl$Query$Member$member$profile$emergencyContact;
+  factory CopyWith$Query$Member$member$emergencyContact.stub(TRes res) =
+      _CopyWithStubImpl$Query$Member$member$emergencyContact;
 
   TRes call({
     String? name,
     String? relationship,
-    String? phoneNumber,
+    String? phone,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Query$Member$member$profile$emergencyContact<TRes>
-    implements CopyWith$Query$Member$member$profile$emergencyContact<TRes> {
-  _CopyWithImpl$Query$Member$member$profile$emergencyContact(
+class _CopyWithImpl$Query$Member$member$emergencyContact<TRes>
+    implements CopyWith$Query$Member$member$emergencyContact<TRes> {
+  _CopyWithImpl$Query$Member$member$emergencyContact(
     this._instance,
     this._then,
   );
 
-  final Query$Member$member$profile$emergencyContact _instance;
+  final Query$Member$member$emergencyContact _instance;
 
-  final TRes Function(Query$Member$member$profile$emergencyContact) _then;
+  final TRes Function(Query$Member$member$emergencyContact) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? name = _undefined,
     Object? relationship = _undefined,
-    Object? phoneNumber = _undefined,
+    Object? phone = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Member$member$profile$emergencyContact(
+    Query$Member$member$emergencyContact(
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
       relationship: relationship == _undefined || relationship == null
           ? _instance.relationship
           : (relationship as String),
-      phoneNumber: phoneNumber == _undefined || phoneNumber == null
-          ? _instance.phoneNumber
-          : (phoneNumber as String),
+      phone: phone == _undefined || phone == null
+          ? _instance.phone
+          : (phone as String),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1631,66 +1452,64 @@ class _CopyWithImpl$Query$Member$member$profile$emergencyContact<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$Member$member$profile$emergencyContact<TRes>
-    implements CopyWith$Query$Member$member$profile$emergencyContact<TRes> {
-  _CopyWithStubImpl$Query$Member$member$profile$emergencyContact(this._res);
+class _CopyWithStubImpl$Query$Member$member$emergencyContact<TRes>
+    implements CopyWith$Query$Member$member$emergencyContact<TRes> {
+  _CopyWithStubImpl$Query$Member$member$emergencyContact(this._res);
 
   TRes _res;
 
   call({
     String? name,
     String? relationship,
-    String? phoneNumber,
+    String? phone,
     String? $__typename,
   }) => _res;
 }
 
-class Query$Member$member$profile$preferences {
-  Query$Member$member$profile$preferences({
-    required this.emailNotifications,
-    required this.smsNotifications,
-    required this.pushNotifications,
-    required this.marketingEmails,
+class Query$Member$member$preferences {
+  Query$Member$member$preferences({
+    required this.receiveNewsletter,
+    required this.receivePromotions,
+    required this.allowDataSharing,
+    this.preferredLanguage,
     this.$__typename = 'MemberPreferences',
   });
 
-  factory Query$Member$member$profile$preferences.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    final l$emailNotifications = json['emailNotifications'];
-    final l$smsNotifications = json['smsNotifications'];
-    final l$pushNotifications = json['pushNotifications'];
-    final l$marketingEmails = json['marketingEmails'];
+  factory Query$Member$member$preferences.fromJson(Map<String, dynamic> json) {
+    final l$receiveNewsletter = json['receiveNewsletter'];
+    final l$receivePromotions = json['receivePromotions'];
+    final l$allowDataSharing = json['allowDataSharing'];
+    final l$preferredLanguage = json['preferredLanguage'];
     final l$$__typename = json['__typename'];
-    return Query$Member$member$profile$preferences(
-      emailNotifications: (l$emailNotifications as bool),
-      smsNotifications: (l$smsNotifications as bool),
-      pushNotifications: (l$pushNotifications as bool),
-      marketingEmails: (l$marketingEmails as bool),
+    return Query$Member$member$preferences(
+      receiveNewsletter: (l$receiveNewsletter as bool),
+      receivePromotions: (l$receivePromotions as bool),
+      allowDataSharing: (l$allowDataSharing as bool),
+      preferredLanguage: (l$preferredLanguage as String?),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final bool emailNotifications;
+  final bool receiveNewsletter;
 
-  final bool smsNotifications;
+  final bool receivePromotions;
 
-  final bool pushNotifications;
+  final bool allowDataSharing;
 
-  final bool marketingEmails;
+  final String? preferredLanguage;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$emailNotifications = emailNotifications;
-    _resultData['emailNotifications'] = l$emailNotifications;
-    final l$smsNotifications = smsNotifications;
-    _resultData['smsNotifications'] = l$smsNotifications;
-    final l$pushNotifications = pushNotifications;
-    _resultData['pushNotifications'] = l$pushNotifications;
-    final l$marketingEmails = marketingEmails;
-    _resultData['marketingEmails'] = l$marketingEmails;
+    final l$receiveNewsletter = receiveNewsletter;
+    _resultData['receiveNewsletter'] = l$receiveNewsletter;
+    final l$receivePromotions = receivePromotions;
+    _resultData['receivePromotions'] = l$receivePromotions;
+    final l$allowDataSharing = allowDataSharing;
+    _resultData['allowDataSharing'] = l$allowDataSharing;
+    final l$preferredLanguage = preferredLanguage;
+    _resultData['preferredLanguage'] = l$preferredLanguage;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1698,16 +1517,16 @@ class Query$Member$member$profile$preferences {
 
   @override
   int get hashCode {
-    final l$emailNotifications = emailNotifications;
-    final l$smsNotifications = smsNotifications;
-    final l$pushNotifications = pushNotifications;
-    final l$marketingEmails = marketingEmails;
+    final l$receiveNewsletter = receiveNewsletter;
+    final l$receivePromotions = receivePromotions;
+    final l$allowDataSharing = allowDataSharing;
+    final l$preferredLanguage = preferredLanguage;
     final l$$__typename = $__typename;
     return Object.hashAll([
-      l$emailNotifications,
-      l$smsNotifications,
-      l$pushNotifications,
-      l$marketingEmails,
+      l$receiveNewsletter,
+      l$receivePromotions,
+      l$allowDataSharing,
+      l$preferredLanguage,
       l$$__typename,
     ]);
   }
@@ -1717,28 +1536,28 @@ class Query$Member$member$profile$preferences {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Member$member$profile$preferences ||
+    if (other is! Query$Member$member$preferences ||
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$emailNotifications = emailNotifications;
-    final lOther$emailNotifications = other.emailNotifications;
-    if (l$emailNotifications != lOther$emailNotifications) {
+    final l$receiveNewsletter = receiveNewsletter;
+    final lOther$receiveNewsletter = other.receiveNewsletter;
+    if (l$receiveNewsletter != lOther$receiveNewsletter) {
       return false;
     }
-    final l$smsNotifications = smsNotifications;
-    final lOther$smsNotifications = other.smsNotifications;
-    if (l$smsNotifications != lOther$smsNotifications) {
+    final l$receivePromotions = receivePromotions;
+    final lOther$receivePromotions = other.receivePromotions;
+    if (l$receivePromotions != lOther$receivePromotions) {
       return false;
     }
-    final l$pushNotifications = pushNotifications;
-    final lOther$pushNotifications = other.pushNotifications;
-    if (l$pushNotifications != lOther$pushNotifications) {
+    final l$allowDataSharing = allowDataSharing;
+    final lOther$allowDataSharing = other.allowDataSharing;
+    if (l$allowDataSharing != lOther$allowDataSharing) {
       return false;
     }
-    final l$marketingEmails = marketingEmails;
-    final lOther$marketingEmails = other.marketingEmails;
-    if (l$marketingEmails != lOther$marketingEmails) {
+    final l$preferredLanguage = preferredLanguage;
+    final lOther$preferredLanguage = other.preferredLanguage;
+    if (l$preferredLanguage != lOther$preferredLanguage) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -1750,69 +1569,63 @@ class Query$Member$member$profile$preferences {
   }
 }
 
-extension UtilityExtension$Query$Member$member$profile$preferences
-    on Query$Member$member$profile$preferences {
-  CopyWith$Query$Member$member$profile$preferences<
-    Query$Member$member$profile$preferences
-  >
-  get copyWith =>
-      CopyWith$Query$Member$member$profile$preferences(this, (i) => i);
+extension UtilityExtension$Query$Member$member$preferences
+    on Query$Member$member$preferences {
+  CopyWith$Query$Member$member$preferences<Query$Member$member$preferences>
+  get copyWith => CopyWith$Query$Member$member$preferences(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Member$member$profile$preferences<TRes> {
-  factory CopyWith$Query$Member$member$profile$preferences(
-    Query$Member$member$profile$preferences instance,
-    TRes Function(Query$Member$member$profile$preferences) then,
-  ) = _CopyWithImpl$Query$Member$member$profile$preferences;
+abstract class CopyWith$Query$Member$member$preferences<TRes> {
+  factory CopyWith$Query$Member$member$preferences(
+    Query$Member$member$preferences instance,
+    TRes Function(Query$Member$member$preferences) then,
+  ) = _CopyWithImpl$Query$Member$member$preferences;
 
-  factory CopyWith$Query$Member$member$profile$preferences.stub(TRes res) =
-      _CopyWithStubImpl$Query$Member$member$profile$preferences;
+  factory CopyWith$Query$Member$member$preferences.stub(TRes res) =
+      _CopyWithStubImpl$Query$Member$member$preferences;
 
   TRes call({
-    bool? emailNotifications,
-    bool? smsNotifications,
-    bool? pushNotifications,
-    bool? marketingEmails,
+    bool? receiveNewsletter,
+    bool? receivePromotions,
+    bool? allowDataSharing,
+    String? preferredLanguage,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Query$Member$member$profile$preferences<TRes>
-    implements CopyWith$Query$Member$member$profile$preferences<TRes> {
-  _CopyWithImpl$Query$Member$member$profile$preferences(
-    this._instance,
-    this._then,
-  );
+class _CopyWithImpl$Query$Member$member$preferences<TRes>
+    implements CopyWith$Query$Member$member$preferences<TRes> {
+  _CopyWithImpl$Query$Member$member$preferences(this._instance, this._then);
 
-  final Query$Member$member$profile$preferences _instance;
+  final Query$Member$member$preferences _instance;
 
-  final TRes Function(Query$Member$member$profile$preferences) _then;
+  final TRes Function(Query$Member$member$preferences) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? emailNotifications = _undefined,
-    Object? smsNotifications = _undefined,
-    Object? pushNotifications = _undefined,
-    Object? marketingEmails = _undefined,
+    Object? receiveNewsletter = _undefined,
+    Object? receivePromotions = _undefined,
+    Object? allowDataSharing = _undefined,
+    Object? preferredLanguage = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Member$member$profile$preferences(
-      emailNotifications:
-          emailNotifications == _undefined || emailNotifications == null
-          ? _instance.emailNotifications
-          : (emailNotifications as bool),
-      smsNotifications:
-          smsNotifications == _undefined || smsNotifications == null
-          ? _instance.smsNotifications
-          : (smsNotifications as bool),
-      pushNotifications:
-          pushNotifications == _undefined || pushNotifications == null
-          ? _instance.pushNotifications
-          : (pushNotifications as bool),
-      marketingEmails: marketingEmails == _undefined || marketingEmails == null
-          ? _instance.marketingEmails
-          : (marketingEmails as bool),
+    Query$Member$member$preferences(
+      receiveNewsletter:
+          receiveNewsletter == _undefined || receiveNewsletter == null
+          ? _instance.receiveNewsletter
+          : (receiveNewsletter as bool),
+      receivePromotions:
+          receivePromotions == _undefined || receivePromotions == null
+          ? _instance.receivePromotions
+          : (receivePromotions as bool),
+      allowDataSharing:
+          allowDataSharing == _undefined || allowDataSharing == null
+          ? _instance.allowDataSharing
+          : (allowDataSharing as bool),
+      preferredLanguage: preferredLanguage == _undefined
+          ? _instance.preferredLanguage
+          : (preferredLanguage as String?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1820,17 +1633,17 @@ class _CopyWithImpl$Query$Member$member$profile$preferences<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$Member$member$profile$preferences<TRes>
-    implements CopyWith$Query$Member$member$profile$preferences<TRes> {
-  _CopyWithStubImpl$Query$Member$member$profile$preferences(this._res);
+class _CopyWithStubImpl$Query$Member$member$preferences<TRes>
+    implements CopyWith$Query$Member$member$preferences<TRes> {
+  _CopyWithStubImpl$Query$Member$member$preferences(this._res);
 
   TRes _res;
 
   call({
-    bool? emailNotifications,
-    bool? smsNotifications,
-    bool? pushNotifications,
-    bool? marketingEmails,
+    bool? receiveNewsletter,
+    bool? receivePromotions,
+    bool? allowDataSharing,
+    String? preferredLanguage,
     String? $__typename,
   }) => _res;
 }

@@ -100,29 +100,30 @@ class _CopyWithStubImpl$Variables$Mutation$CreateBooking<TRes>
 
 class Mutation$CreateBooking {
   Mutation$CreateBooking({
-    required this.createBooking,
+    required this.createFacilityBooking,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$CreateBooking.fromJson(Map<String, dynamic> json) {
-    final l$createBooking = json['createBooking'];
+    final l$createFacilityBooking = json['createFacilityBooking'];
     final l$$__typename = json['__typename'];
     return Mutation$CreateBooking(
-      createBooking: Mutation$CreateBooking$createBooking.fromJson(
-        (l$createBooking as Map<String, dynamic>),
-      ),
+      createFacilityBooking:
+          Mutation$CreateBooking$createFacilityBooking.fromJson(
+            (l$createFacilityBooking as Map<String, dynamic>),
+          ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$CreateBooking$createBooking createBooking;
+  final Mutation$CreateBooking$createFacilityBooking createFacilityBooking;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$createBooking = createBooking;
-    _resultData['createBooking'] = l$createBooking.toJson();
+    final l$createFacilityBooking = createFacilityBooking;
+    _resultData['createFacilityBooking'] = l$createFacilityBooking.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -130,9 +131,9 @@ class Mutation$CreateBooking {
 
   @override
   int get hashCode {
-    final l$createBooking = createBooking;
+    final l$createFacilityBooking = createFacilityBooking;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$createBooking, l$$__typename]);
+    return Object.hashAll([l$createFacilityBooking, l$$__typename]);
   }
 
   @override
@@ -143,9 +144,9 @@ class Mutation$CreateBooking {
     if (other is! Mutation$CreateBooking || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$createBooking = createBooking;
-    final lOther$createBooking = other.createBooking;
-    if (l$createBooking != lOther$createBooking) {
+    final l$createFacilityBooking = createFacilityBooking;
+    final lOther$createFacilityBooking = other.createFacilityBooking;
+    if (l$createFacilityBooking != lOther$createFacilityBooking) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -172,10 +173,11 @@ abstract class CopyWith$Mutation$CreateBooking<TRes> {
       _CopyWithStubImpl$Mutation$CreateBooking;
 
   TRes call({
-    Mutation$CreateBooking$createBooking? createBooking,
+    Mutation$CreateBooking$createFacilityBooking? createFacilityBooking,
     String? $__typename,
   });
-  CopyWith$Mutation$CreateBooking$createBooking<TRes> get createBooking;
+  CopyWith$Mutation$CreateBooking$createFacilityBooking<TRes>
+  get createFacilityBooking;
 }
 
 class _CopyWithImpl$Mutation$CreateBooking<TRes>
@@ -189,24 +191,27 @@ class _CopyWithImpl$Mutation$CreateBooking<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? createBooking = _undefined,
+    Object? createFacilityBooking = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CreateBooking(
-      createBooking: createBooking == _undefined || createBooking == null
-          ? _instance.createBooking
-          : (createBooking as Mutation$CreateBooking$createBooking),
+      createFacilityBooking:
+          createFacilityBooking == _undefined || createFacilityBooking == null
+          ? _instance.createFacilityBooking
+          : (createFacilityBooking
+                as Mutation$CreateBooking$createFacilityBooking),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$CreateBooking$createBooking<TRes> get createBooking {
-    final local$createBooking = _instance.createBooking;
-    return CopyWith$Mutation$CreateBooking$createBooking(
-      local$createBooking,
-      (e) => call(createBooking: e),
+  CopyWith$Mutation$CreateBooking$createFacilityBooking<TRes>
+  get createFacilityBooking {
+    final local$createFacilityBooking = _instance.createFacilityBooking;
+    return CopyWith$Mutation$CreateBooking$createFacilityBooking(
+      local$createFacilityBooking,
+      (e) => call(createFacilityBooking: e),
     );
   }
 }
@@ -218,12 +223,13 @@ class _CopyWithStubImpl$Mutation$CreateBooking<TRes>
   TRes _res;
 
   call({
-    Mutation$CreateBooking$createBooking? createBooking,
+    Mutation$CreateBooking$createFacilityBooking? createFacilityBooking,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Mutation$CreateBooking$createBooking<TRes> get createBooking =>
-      CopyWith$Mutation$CreateBooking$createBooking.stub(_res);
+  CopyWith$Mutation$CreateBooking$createFacilityBooking<TRes>
+  get createFacilityBooking =>
+      CopyWith$Mutation$CreateBooking$createFacilityBooking.stub(_res);
 }
 
 const documentNodeMutationCreateBooking = DocumentNode(
@@ -246,7 +252,7 @@ const documentNodeMutationCreateBooking = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'createBooking'),
+            name: NameNode(value: 'createFacilityBooking'),
             alias: null,
             arguments: [
               ArgumentNode(
@@ -279,7 +285,7 @@ const documentNodeMutationCreateBooking = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'userId'),
+                  name: NameNode(value: 'memberId'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -307,7 +313,14 @@ const documentNodeMutationCreateBooking = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'notes'),
+                  name: NameNode(value: 'purpose'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'guestCount'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -474,47 +487,50 @@ extension ClientExtension$Mutation$CreateBooking on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$CreateBooking$createBooking {
-  Mutation$CreateBooking$createBooking({
+class Mutation$CreateBooking$createFacilityBooking {
+  Mutation$CreateBooking$createFacilityBooking({
     required this.id,
     required this.clubId,
     required this.facilityId,
-    required this.userId,
+    required this.memberId,
     required this.startTime,
     required this.endTime,
     required this.status,
-    this.notes,
+    this.purpose,
+    this.guestCount,
     this.facility,
     required this.createdAt,
-    this.$__typename = 'Booking',
+    this.$__typename = 'FacilityBooking',
   });
 
-  factory Mutation$CreateBooking$createBooking.fromJson(
+  factory Mutation$CreateBooking$createFacilityBooking.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
     final l$clubId = json['clubId'];
     final l$facilityId = json['facilityId'];
-    final l$userId = json['userId'];
+    final l$memberId = json['memberId'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
     final l$status = json['status'];
-    final l$notes = json['notes'];
+    final l$purpose = json['purpose'];
+    final l$guestCount = json['guestCount'];
     final l$facility = json['facility'];
     final l$createdAt = json['createdAt'];
     final l$$__typename = json['__typename'];
-    return Mutation$CreateBooking$createBooking(
+    return Mutation$CreateBooking$createFacilityBooking(
       id: (l$id as String),
       clubId: (l$clubId as String),
       facilityId: (l$facilityId as String),
-      userId: (l$userId as String),
+      memberId: (l$memberId as String),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
-      notes: (l$notes as String?),
+      purpose: (l$purpose as String?),
+      guestCount: (l$guestCount as int?),
       facility: l$facility == null
           ? null
-          : Mutation$CreateBooking$createBooking$facility.fromJson(
+          : Mutation$CreateBooking$createFacilityBooking$facility.fromJson(
               (l$facility as Map<String, dynamic>),
             ),
       createdAt: DateTime.parse((l$createdAt as String)),
@@ -528,7 +544,7 @@ class Mutation$CreateBooking$createBooking {
 
   final String facilityId;
 
-  final String userId;
+  final String memberId;
 
   final DateTime startTime;
 
@@ -536,9 +552,11 @@ class Mutation$CreateBooking$createBooking {
 
   final Enum$BookingStatus status;
 
-  final String? notes;
+  final String? purpose;
 
-  final Mutation$CreateBooking$createBooking$facility? facility;
+  final int? guestCount;
+
+  final Mutation$CreateBooking$createFacilityBooking$facility? facility;
 
   final DateTime createdAt;
 
@@ -552,16 +570,18 @@ class Mutation$CreateBooking$createBooking {
     _resultData['clubId'] = l$clubId;
     final l$facilityId = facilityId;
     _resultData['facilityId'] = l$facilityId;
-    final l$userId = userId;
-    _resultData['userId'] = l$userId;
+    final l$memberId = memberId;
+    _resultData['memberId'] = l$memberId;
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
     _resultData['endTime'] = l$endTime.toIso8601String();
     final l$status = status;
     _resultData['status'] = toJson$Enum$BookingStatus(l$status);
-    final l$notes = notes;
-    _resultData['notes'] = l$notes;
+    final l$purpose = purpose;
+    _resultData['purpose'] = l$purpose;
+    final l$guestCount = guestCount;
+    _resultData['guestCount'] = l$guestCount;
     final l$facility = facility;
     _resultData['facility'] = l$facility?.toJson();
     final l$createdAt = createdAt;
@@ -576,11 +596,12 @@ class Mutation$CreateBooking$createBooking {
     final l$id = id;
     final l$clubId = clubId;
     final l$facilityId = facilityId;
-    final l$userId = userId;
+    final l$memberId = memberId;
     final l$startTime = startTime;
     final l$endTime = endTime;
     final l$status = status;
-    final l$notes = notes;
+    final l$purpose = purpose;
+    final l$guestCount = guestCount;
     final l$facility = facility;
     final l$createdAt = createdAt;
     final l$$__typename = $__typename;
@@ -588,11 +609,12 @@ class Mutation$CreateBooking$createBooking {
       l$id,
       l$clubId,
       l$facilityId,
-      l$userId,
+      l$memberId,
       l$startTime,
       l$endTime,
       l$status,
-      l$notes,
+      l$purpose,
+      l$guestCount,
       l$facility,
       l$createdAt,
       l$$__typename,
@@ -604,7 +626,7 @@ class Mutation$CreateBooking$createBooking {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$CreateBooking$createBooking ||
+    if (other is! Mutation$CreateBooking$createFacilityBooking ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -623,9 +645,9 @@ class Mutation$CreateBooking$createBooking {
     if (l$facilityId != lOther$facilityId) {
       return false;
     }
-    final l$userId = userId;
-    final lOther$userId = other.userId;
-    if (l$userId != lOther$userId) {
+    final l$memberId = memberId;
+    final lOther$memberId = other.memberId;
+    if (l$memberId != lOther$memberId) {
       return false;
     }
     final l$startTime = startTime;
@@ -643,9 +665,14 @@ class Mutation$CreateBooking$createBooking {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$notes = notes;
-    final lOther$notes = other.notes;
-    if (l$notes != lOther$notes) {
+    final l$purpose = purpose;
+    final lOther$purpose = other.purpose;
+    if (l$purpose != lOther$purpose) {
+      return false;
+    }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (l$guestCount != lOther$guestCount) {
       return false;
     }
     final l$facility = facility;
@@ -667,49 +694,52 @@ class Mutation$CreateBooking$createBooking {
   }
 }
 
-extension UtilityExtension$Mutation$CreateBooking$createBooking
-    on Mutation$CreateBooking$createBooking {
-  CopyWith$Mutation$CreateBooking$createBooking<
-    Mutation$CreateBooking$createBooking
+extension UtilityExtension$Mutation$CreateBooking$createFacilityBooking
+    on Mutation$CreateBooking$createFacilityBooking {
+  CopyWith$Mutation$CreateBooking$createFacilityBooking<
+    Mutation$CreateBooking$createFacilityBooking
   >
-  get copyWith => CopyWith$Mutation$CreateBooking$createBooking(this, (i) => i);
+  get copyWith =>
+      CopyWith$Mutation$CreateBooking$createFacilityBooking(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$CreateBooking$createBooking<TRes> {
-  factory CopyWith$Mutation$CreateBooking$createBooking(
-    Mutation$CreateBooking$createBooking instance,
-    TRes Function(Mutation$CreateBooking$createBooking) then,
-  ) = _CopyWithImpl$Mutation$CreateBooking$createBooking;
+abstract class CopyWith$Mutation$CreateBooking$createFacilityBooking<TRes> {
+  factory CopyWith$Mutation$CreateBooking$createFacilityBooking(
+    Mutation$CreateBooking$createFacilityBooking instance,
+    TRes Function(Mutation$CreateBooking$createFacilityBooking) then,
+  ) = _CopyWithImpl$Mutation$CreateBooking$createFacilityBooking;
 
-  factory CopyWith$Mutation$CreateBooking$createBooking.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$CreateBooking$createBooking;
+  factory CopyWith$Mutation$CreateBooking$createFacilityBooking.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$CreateBooking$createFacilityBooking;
 
   TRes call({
     String? id,
     String? clubId,
     String? facilityId,
-    String? userId,
+    String? memberId,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
-    String? notes,
-    Mutation$CreateBooking$createBooking$facility? facility,
+    String? purpose,
+    int? guestCount,
+    Mutation$CreateBooking$createFacilityBooking$facility? facility,
     DateTime? createdAt,
     String? $__typename,
   });
-  CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> get facility;
+  CopyWith$Mutation$CreateBooking$createFacilityBooking$facility<TRes>
+  get facility;
 }
 
-class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
-    implements CopyWith$Mutation$CreateBooking$createBooking<TRes> {
-  _CopyWithImpl$Mutation$CreateBooking$createBooking(
+class _CopyWithImpl$Mutation$CreateBooking$createFacilityBooking<TRes>
+    implements CopyWith$Mutation$CreateBooking$createFacilityBooking<TRes> {
+  _CopyWithImpl$Mutation$CreateBooking$createFacilityBooking(
     this._instance,
     this._then,
   );
 
-  final Mutation$CreateBooking$createBooking _instance;
+  final Mutation$CreateBooking$createFacilityBooking _instance;
 
-  final TRes Function(Mutation$CreateBooking$createBooking) _then;
+  final TRes Function(Mutation$CreateBooking$createFacilityBooking) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -717,16 +747,17 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
     Object? id = _undefined,
     Object? clubId = _undefined,
     Object? facilityId = _undefined,
-    Object? userId = _undefined,
+    Object? memberId = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
     Object? status = _undefined,
-    Object? notes = _undefined,
+    Object? purpose = _undefined,
+    Object? guestCount = _undefined,
     Object? facility = _undefined,
     Object? createdAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$CreateBooking$createBooking(
+    Mutation$CreateBooking$createFacilityBooking(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
@@ -734,9 +765,9 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
       facilityId: facilityId == _undefined || facilityId == null
           ? _instance.facilityId
           : (facilityId as String),
-      userId: userId == _undefined || userId == null
-          ? _instance.userId
-          : (userId as String),
+      memberId: memberId == _undefined || memberId == null
+          ? _instance.memberId
+          : (memberId as String),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -746,10 +777,14 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$BookingStatus),
-      notes: notes == _undefined ? _instance.notes : (notes as String?),
+      purpose: purpose == _undefined ? _instance.purpose : (purpose as String?),
+      guestCount: guestCount == _undefined
+          ? _instance.guestCount
+          : (guestCount as int?),
       facility: facility == _undefined
           ? _instance.facility
-          : (facility as Mutation$CreateBooking$createBooking$facility?),
+          : (facility
+                as Mutation$CreateBooking$createFacilityBooking$facility?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -759,22 +794,23 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking<TRes>
     ),
   );
 
-  CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> get facility {
+  CopyWith$Mutation$CreateBooking$createFacilityBooking$facility<TRes>
+  get facility {
     final local$facility = _instance.facility;
     return local$facility == null
-        ? CopyWith$Mutation$CreateBooking$createBooking$facility.stub(
+        ? CopyWith$Mutation$CreateBooking$createFacilityBooking$facility.stub(
             _then(_instance),
           )
-        : CopyWith$Mutation$CreateBooking$createBooking$facility(
+        : CopyWith$Mutation$CreateBooking$createFacilityBooking$facility(
             local$facility,
             (e) => call(facility: e),
           );
   }
 }
 
-class _CopyWithStubImpl$Mutation$CreateBooking$createBooking<TRes>
-    implements CopyWith$Mutation$CreateBooking$createBooking<TRes> {
-  _CopyWithStubImpl$Mutation$CreateBooking$createBooking(this._res);
+class _CopyWithStubImpl$Mutation$CreateBooking$createFacilityBooking<TRes>
+    implements CopyWith$Mutation$CreateBooking$createFacilityBooking<TRes> {
+  _CopyWithStubImpl$Mutation$CreateBooking$createFacilityBooking(this._res);
 
   TRes _res;
 
@@ -782,39 +818,41 @@ class _CopyWithStubImpl$Mutation$CreateBooking$createBooking<TRes>
     String? id,
     String? clubId,
     String? facilityId,
-    String? userId,
+    String? memberId,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
-    String? notes,
-    Mutation$CreateBooking$createBooking$facility? facility,
+    String? purpose,
+    int? guestCount,
+    Mutation$CreateBooking$createFacilityBooking$facility? facility,
     DateTime? createdAt,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> get facility =>
-      CopyWith$Mutation$CreateBooking$createBooking$facility.stub(_res);
+  CopyWith$Mutation$CreateBooking$createFacilityBooking$facility<TRes>
+  get facility =>
+      CopyWith$Mutation$CreateBooking$createFacilityBooking$facility.stub(_res);
 }
 
-class Mutation$CreateBooking$createBooking$facility {
-  Mutation$CreateBooking$createBooking$facility({
+class Mutation$CreateBooking$createFacilityBooking$facility {
+  Mutation$CreateBooking$createFacilityBooking$facility({
     required this.id,
     required this.name,
     required this.type,
     this.$__typename = 'Facility',
   });
 
-  factory Mutation$CreateBooking$createBooking$facility.fromJson(
+  factory Mutation$CreateBooking$createFacilityBooking$facility.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
     final l$name = json['name'];
     final l$type = json['type'];
     final l$$__typename = json['__typename'];
-    return Mutation$CreateBooking$createBooking$facility(
+    return Mutation$CreateBooking$createFacilityBooking$facility(
       id: (l$id as String),
       name: (l$name as String),
-      type: (l$type as String),
+      type: fromJson$Enum$FacilityType((l$type as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -823,7 +861,7 @@ class Mutation$CreateBooking$createBooking$facility {
 
   final String name;
 
-  final String type;
+  final Enum$FacilityType type;
 
   final String $__typename;
 
@@ -834,7 +872,7 @@ class Mutation$CreateBooking$createBooking$facility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = l$type;
+    _resultData['type'] = toJson$Enum$FacilityType(l$type);
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -854,7 +892,7 @@ class Mutation$CreateBooking$createBooking$facility {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$CreateBooking$createBooking$facility ||
+    if (other is! Mutation$CreateBooking$createFacilityBooking$facility ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -882,38 +920,50 @@ class Mutation$CreateBooking$createBooking$facility {
   }
 }
 
-extension UtilityExtension$Mutation$CreateBooking$createBooking$facility
-    on Mutation$CreateBooking$createBooking$facility {
-  CopyWith$Mutation$CreateBooking$createBooking$facility<
-    Mutation$CreateBooking$createBooking$facility
+extension UtilityExtension$Mutation$CreateBooking$createFacilityBooking$facility
+    on Mutation$CreateBooking$createFacilityBooking$facility {
+  CopyWith$Mutation$CreateBooking$createFacilityBooking$facility<
+    Mutation$CreateBooking$createFacilityBooking$facility
   >
   get copyWith =>
-      CopyWith$Mutation$CreateBooking$createBooking$facility(this, (i) => i);
+      CopyWith$Mutation$CreateBooking$createFacilityBooking$facility(
+        this,
+        (i) => i,
+      );
 }
 
-abstract class CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> {
-  factory CopyWith$Mutation$CreateBooking$createBooking$facility(
-    Mutation$CreateBooking$createBooking$facility instance,
-    TRes Function(Mutation$CreateBooking$createBooking$facility) then,
-  ) = _CopyWithImpl$Mutation$CreateBooking$createBooking$facility;
+abstract class CopyWith$Mutation$CreateBooking$createFacilityBooking$facility<
+  TRes
+> {
+  factory CopyWith$Mutation$CreateBooking$createFacilityBooking$facility(
+    Mutation$CreateBooking$createFacilityBooking$facility instance,
+    TRes Function(Mutation$CreateBooking$createFacilityBooking$facility) then,
+  ) = _CopyWithImpl$Mutation$CreateBooking$createFacilityBooking$facility;
 
-  factory CopyWith$Mutation$CreateBooking$createBooking$facility.stub(
+  factory CopyWith$Mutation$CreateBooking$createFacilityBooking$facility.stub(
     TRes res,
-  ) = _CopyWithStubImpl$Mutation$CreateBooking$createBooking$facility;
+  ) = _CopyWithStubImpl$Mutation$CreateBooking$createFacilityBooking$facility;
 
-  TRes call({String? id, String? name, String? type, String? $__typename});
+  TRes call({
+    String? id,
+    String? name,
+    Enum$FacilityType? type,
+    String? $__typename,
+  });
 }
 
-class _CopyWithImpl$Mutation$CreateBooking$createBooking$facility<TRes>
-    implements CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> {
-  _CopyWithImpl$Mutation$CreateBooking$createBooking$facility(
+class _CopyWithImpl$Mutation$CreateBooking$createFacilityBooking$facility<TRes>
+    implements
+        CopyWith$Mutation$CreateBooking$createFacilityBooking$facility<TRes> {
+  _CopyWithImpl$Mutation$CreateBooking$createFacilityBooking$facility(
     this._instance,
     this._then,
   );
 
-  final Mutation$CreateBooking$createBooking$facility _instance;
+  final Mutation$CreateBooking$createFacilityBooking$facility _instance;
 
-  final TRes Function(Mutation$CreateBooking$createBooking$facility) _then;
+  final TRes Function(Mutation$CreateBooking$createFacilityBooking$facility)
+  _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -923,14 +973,14 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking$facility<TRes>
     Object? type = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$CreateBooking$createBooking$facility(
+    Mutation$CreateBooking$createFacilityBooking$facility(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as String),
+          : (type as Enum$FacilityType),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -938,11 +988,21 @@ class _CopyWithImpl$Mutation$CreateBooking$createBooking$facility<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$CreateBooking$createBooking$facility<TRes>
-    implements CopyWith$Mutation$CreateBooking$createBooking$facility<TRes> {
-  _CopyWithStubImpl$Mutation$CreateBooking$createBooking$facility(this._res);
+class _CopyWithStubImpl$Mutation$CreateBooking$createFacilityBooking$facility<
+  TRes
+>
+    implements
+        CopyWith$Mutation$CreateBooking$createFacilityBooking$facility<TRes> {
+  _CopyWithStubImpl$Mutation$CreateBooking$createFacilityBooking$facility(
+    this._res,
+  );
 
   TRes _res;
 
-  call({String? id, String? name, String? type, String? $__typename}) => _res;
+  call({
+    String? id,
+    String? name,
+    Enum$FacilityType? type,
+    String? $__typename,
+  }) => _res;
 }

@@ -6,7 +6,7 @@ import 'package:graphql/client.dart' as graphql;
 class Variables$Mutation$UpdateMember {
   factory Variables$Mutation$UpdateMember({
     required String id,
-    required Input$MemberProfileInput input,
+    required Input$UpdateMemberInput input,
   }) => Variables$Mutation$UpdateMember._({r'id': id, r'input': input});
 
   Variables$Mutation$UpdateMember._(this._$data);
@@ -16,7 +16,7 @@ class Variables$Mutation$UpdateMember {
     final l$id = data['id'];
     result$data['id'] = (l$id as String);
     final l$input = data['input'];
-    result$data['input'] = Input$MemberProfileInput.fromJson(
+    result$data['input'] = Input$UpdateMemberInput.fromJson(
       (l$input as Map<String, dynamic>),
     );
     return Variables$Mutation$UpdateMember._(result$data);
@@ -26,8 +26,8 @@ class Variables$Mutation$UpdateMember {
 
   String get id => (_$data['id'] as String);
 
-  Input$MemberProfileInput get input =>
-      (_$data['input'] as Input$MemberProfileInput);
+  Input$UpdateMemberInput get input =>
+      (_$data['input'] as Input$UpdateMemberInput);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
@@ -80,7 +80,7 @@ abstract class CopyWith$Variables$Mutation$UpdateMember<TRes> {
   factory CopyWith$Variables$Mutation$UpdateMember.stub(TRes res) =
       _CopyWithStubImpl$Variables$Mutation$UpdateMember;
 
-  TRes call({String? id, Input$MemberProfileInput? input});
+  TRes call({String? id, Input$UpdateMemberInput? input});
 }
 
 class _CopyWithImpl$Variables$Mutation$UpdateMember<TRes>
@@ -98,7 +98,7 @@ class _CopyWithImpl$Variables$Mutation$UpdateMember<TRes>
       ..._instance._$data,
       if (id != _undefined && id != null) 'id': (id as String),
       if (input != _undefined && input != null)
-        'input': (input as Input$MemberProfileInput),
+        'input': (input as Input$UpdateMemberInput),
     }),
   );
 }
@@ -109,7 +109,7 @@ class _CopyWithStubImpl$Variables$Mutation$UpdateMember<TRes>
 
   TRes _res;
 
-  call({String? id, Input$MemberProfileInput? input}) => _res;
+  call({String? id, Input$UpdateMemberInput? input}) => _res;
 }
 
 class Mutation$UpdateMember {
@@ -255,7 +255,7 @@ const documentNodeMutationUpdateMember = DocumentNode(
         VariableDefinitionNode(
           variable: VariableNode(name: NameNode(value: 'input')),
           type: NamedTypeNode(
-            name: NameNode(value: 'MemberProfileInput'),
+            name: NameNode(value: 'UpdateMemberInput'),
             isNonNull: true,
           ),
           defaultValue: DefaultValueNode(value: null),
@@ -324,101 +324,39 @@ const documentNodeMutationUpdateMember = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'profile'),
+                  name: NameNode(value: 'firstName'),
                   alias: null,
                   arguments: [],
                   directives: [],
-                  selectionSet: SelectionSetNode(
-                    selections: [
-                      FieldNode(
-                        name: NameNode(value: 'firstName'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'lastName'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'dateOfBirth'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'phoneNumber'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'address'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(
-                          selections: [
-                            FieldNode(
-                              name: NameNode(value: 'street'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'city'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'state'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'postalCode'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'country'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                          ],
-                        ),
-                      ),
-                      FieldNode(
-                        name: NameNode(value: '__typename'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                    ],
-                  ),
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'lastName'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'email'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'phone'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'dateOfBirth'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
                 ),
                 FieldNode(
                   name: NameNode(value: 'updatedAt'),
@@ -547,11 +485,15 @@ class Mutation$UpdateMember$updateMember {
   Mutation$UpdateMember$updateMember({
     required this.id,
     required this.clubId,
-    required this.userId,
+    this.userId,
     required this.memberNumber,
     required this.membershipType,
     required this.status,
-    this.profile,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    this.phone,
+    this.dateOfBirth,
     required this.updatedAt,
     this.$__typename = 'Member',
   });
@@ -565,23 +507,27 @@ class Mutation$UpdateMember$updateMember {
     final l$memberNumber = json['memberNumber'];
     final l$membershipType = json['membershipType'];
     final l$status = json['status'];
-    final l$profile = json['profile'];
+    final l$firstName = json['firstName'];
+    final l$lastName = json['lastName'];
+    final l$email = json['email'];
+    final l$phone = json['phone'];
+    final l$dateOfBirth = json['dateOfBirth'];
     final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
     return Mutation$UpdateMember$updateMember(
       id: (l$id as String),
       clubId: (l$clubId as String),
-      userId: (l$userId as String),
+      userId: (l$userId as String?),
       memberNumber: (l$memberNumber as String),
-      membershipType: fromJson$Enum$MembershipType(
-        (l$membershipType as String),
-      ),
+      membershipType: (l$membershipType as String),
       status: fromJson$Enum$MemberStatus((l$status as String)),
-      profile: l$profile == null
+      firstName: (l$firstName as String),
+      lastName: (l$lastName as String),
+      email: (l$email as String),
+      phone: (l$phone as String?),
+      dateOfBirth: l$dateOfBirth == null
           ? null
-          : Mutation$UpdateMember$updateMember$profile.fromJson(
-              (l$profile as Map<String, dynamic>),
-            ),
+          : DateTime.parse((l$dateOfBirth as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -591,15 +537,23 @@ class Mutation$UpdateMember$updateMember {
 
   final String clubId;
 
-  final String userId;
+  final String? userId;
 
   final String memberNumber;
 
-  final Enum$MembershipType membershipType;
+  final String membershipType;
 
   final Enum$MemberStatus status;
 
-  final Mutation$UpdateMember$updateMember$profile? profile;
+  final String firstName;
+
+  final String lastName;
+
+  final String email;
+
+  final String? phone;
+
+  final DateTime? dateOfBirth;
 
   final DateTime updatedAt;
 
@@ -616,13 +570,19 @@ class Mutation$UpdateMember$updateMember {
     final l$memberNumber = memberNumber;
     _resultData['memberNumber'] = l$memberNumber;
     final l$membershipType = membershipType;
-    _resultData['membershipType'] = toJson$Enum$MembershipType(
-      l$membershipType,
-    );
+    _resultData['membershipType'] = l$membershipType;
     final l$status = status;
     _resultData['status'] = toJson$Enum$MemberStatus(l$status);
-    final l$profile = profile;
-    _resultData['profile'] = l$profile?.toJson();
+    final l$firstName = firstName;
+    _resultData['firstName'] = l$firstName;
+    final l$lastName = lastName;
+    _resultData['lastName'] = l$lastName;
+    final l$email = email;
+    _resultData['email'] = l$email;
+    final l$phone = phone;
+    _resultData['phone'] = l$phone;
+    final l$dateOfBirth = dateOfBirth;
+    _resultData['dateOfBirth'] = l$dateOfBirth?.toIso8601String();
     final l$updatedAt = updatedAt;
     _resultData['updatedAt'] = l$updatedAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -638,7 +598,11 @@ class Mutation$UpdateMember$updateMember {
     final l$memberNumber = memberNumber;
     final l$membershipType = membershipType;
     final l$status = status;
-    final l$profile = profile;
+    final l$firstName = firstName;
+    final l$lastName = lastName;
+    final l$email = email;
+    final l$phone = phone;
+    final l$dateOfBirth = dateOfBirth;
     final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
@@ -648,7 +612,11 @@ class Mutation$UpdateMember$updateMember {
       l$memberNumber,
       l$membershipType,
       l$status,
-      l$profile,
+      l$firstName,
+      l$lastName,
+      l$email,
+      l$phone,
+      l$dateOfBirth,
       l$updatedAt,
       l$$__typename,
     ]);
@@ -693,9 +661,29 @@ class Mutation$UpdateMember$updateMember {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$profile = profile;
-    final lOther$profile = other.profile;
-    if (l$profile != lOther$profile) {
+    final l$firstName = firstName;
+    final lOther$firstName = other.firstName;
+    if (l$firstName != lOther$firstName) {
+      return false;
+    }
+    final l$lastName = lastName;
+    final lOther$lastName = other.lastName;
+    if (l$lastName != lOther$lastName) {
+      return false;
+    }
+    final l$email = email;
+    final lOther$email = other.email;
+    if (l$email != lOther$email) {
+      return false;
+    }
+    final l$phone = phone;
+    final lOther$phone = other.phone;
+    if (l$phone != lOther$phone) {
+      return false;
+    }
+    final l$dateOfBirth = dateOfBirth;
+    final lOther$dateOfBirth = other.dateOfBirth;
+    if (l$dateOfBirth != lOther$dateOfBirth) {
       return false;
     }
     final l$updatedAt = updatedAt;
@@ -734,13 +722,16 @@ abstract class CopyWith$Mutation$UpdateMember$updateMember<TRes> {
     String? clubId,
     String? userId,
     String? memberNumber,
-    Enum$MembershipType? membershipType,
+    String? membershipType,
     Enum$MemberStatus? status,
-    Mutation$UpdateMember$updateMember$profile? profile,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    DateTime? dateOfBirth,
     DateTime? updatedAt,
     String? $__typename,
   });
-  CopyWith$Mutation$UpdateMember$updateMember$profile<TRes> get profile;
 }
 
 class _CopyWithImpl$Mutation$UpdateMember$updateMember<TRes>
@@ -760,7 +751,11 @@ class _CopyWithImpl$Mutation$UpdateMember$updateMember<TRes>
     Object? memberNumber = _undefined,
     Object? membershipType = _undefined,
     Object? status = _undefined,
-    Object? profile = _undefined,
+    Object? firstName = _undefined,
+    Object? lastName = _undefined,
+    Object? email = _undefined,
+    Object? phone = _undefined,
+    Object? dateOfBirth = _undefined,
     Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
@@ -769,21 +764,29 @@ class _CopyWithImpl$Mutation$UpdateMember$updateMember<TRes>
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
-      userId: userId == _undefined || userId == null
-          ? _instance.userId
-          : (userId as String),
+      userId: userId == _undefined ? _instance.userId : (userId as String?),
       memberNumber: memberNumber == _undefined || memberNumber == null
           ? _instance.memberNumber
           : (memberNumber as String),
       membershipType: membershipType == _undefined || membershipType == null
           ? _instance.membershipType
-          : (membershipType as Enum$MembershipType),
+          : (membershipType as String),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$MemberStatus),
-      profile: profile == _undefined
-          ? _instance.profile
-          : (profile as Mutation$UpdateMember$updateMember$profile?),
+      firstName: firstName == _undefined || firstName == null
+          ? _instance.firstName
+          : (firstName as String),
+      lastName: lastName == _undefined || lastName == null
+          ? _instance.lastName
+          : (lastName as String),
+      email: email == _undefined || email == null
+          ? _instance.email
+          : (email as String),
+      phone: phone == _undefined ? _instance.phone : (phone as String?),
+      dateOfBirth: dateOfBirth == _undefined
+          ? _instance.dateOfBirth
+          : (dateOfBirth as DateTime?),
       updatedAt: updatedAt == _undefined || updatedAt == null
           ? _instance.updatedAt
           : (updatedAt as DateTime),
@@ -792,18 +795,6 @@ class _CopyWithImpl$Mutation$UpdateMember$updateMember<TRes>
           : ($__typename as String),
     ),
   );
-
-  CopyWith$Mutation$UpdateMember$updateMember$profile<TRes> get profile {
-    final local$profile = _instance.profile;
-    return local$profile == null
-        ? CopyWith$Mutation$UpdateMember$updateMember$profile.stub(
-            _then(_instance),
-          )
-        : CopyWith$Mutation$UpdateMember$updateMember$profile(
-            local$profile,
-            (e) => call(profile: e),
-          );
-  }
 }
 
 class _CopyWithStubImpl$Mutation$UpdateMember$updateMember<TRes>
@@ -817,460 +808,14 @@ class _CopyWithStubImpl$Mutation$UpdateMember$updateMember<TRes>
     String? clubId,
     String? userId,
     String? memberNumber,
-    Enum$MembershipType? membershipType,
+    String? membershipType,
     Enum$MemberStatus? status,
-    Mutation$UpdateMember$updateMember$profile? profile,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    DateTime? dateOfBirth,
     DateTime? updatedAt,
-    String? $__typename,
-  }) => _res;
-
-  CopyWith$Mutation$UpdateMember$updateMember$profile<TRes> get profile =>
-      CopyWith$Mutation$UpdateMember$updateMember$profile.stub(_res);
-}
-
-class Mutation$UpdateMember$updateMember$profile {
-  Mutation$UpdateMember$updateMember$profile({
-    required this.firstName,
-    required this.lastName,
-    this.dateOfBirth,
-    this.phoneNumber,
-    this.address,
-    this.$__typename = 'MemberProfile',
-  });
-
-  factory Mutation$UpdateMember$updateMember$profile.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    final l$firstName = json['firstName'];
-    final l$lastName = json['lastName'];
-    final l$dateOfBirth = json['dateOfBirth'];
-    final l$phoneNumber = json['phoneNumber'];
-    final l$address = json['address'];
-    final l$$__typename = json['__typename'];
-    return Mutation$UpdateMember$updateMember$profile(
-      firstName: (l$firstName as String),
-      lastName: (l$lastName as String),
-      dateOfBirth: l$dateOfBirth == null
-          ? null
-          : DateTime.parse((l$dateOfBirth as String)),
-      phoneNumber: (l$phoneNumber as String?),
-      address: l$address == null
-          ? null
-          : Mutation$UpdateMember$updateMember$profile$address.fromJson(
-              (l$address as Map<String, dynamic>),
-            ),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final String firstName;
-
-  final String lastName;
-
-  final DateTime? dateOfBirth;
-
-  final String? phoneNumber;
-
-  final Mutation$UpdateMember$updateMember$profile$address? address;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$firstName = firstName;
-    _resultData['firstName'] = l$firstName;
-    final l$lastName = lastName;
-    _resultData['lastName'] = l$lastName;
-    final l$dateOfBirth = dateOfBirth;
-    _resultData['dateOfBirth'] = l$dateOfBirth?.toIso8601String();
-    final l$phoneNumber = phoneNumber;
-    _resultData['phoneNumber'] = l$phoneNumber;
-    final l$address = address;
-    _resultData['address'] = l$address?.toJson();
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$firstName = firstName;
-    final l$lastName = lastName;
-    final l$dateOfBirth = dateOfBirth;
-    final l$phoneNumber = phoneNumber;
-    final l$address = address;
-    final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$firstName,
-      l$lastName,
-      l$dateOfBirth,
-      l$phoneNumber,
-      l$address,
-      l$$__typename,
-    ]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Mutation$UpdateMember$updateMember$profile ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$firstName = firstName;
-    final lOther$firstName = other.firstName;
-    if (l$firstName != lOther$firstName) {
-      return false;
-    }
-    final l$lastName = lastName;
-    final lOther$lastName = other.lastName;
-    if (l$lastName != lOther$lastName) {
-      return false;
-    }
-    final l$dateOfBirth = dateOfBirth;
-    final lOther$dateOfBirth = other.dateOfBirth;
-    if (l$dateOfBirth != lOther$dateOfBirth) {
-      return false;
-    }
-    final l$phoneNumber = phoneNumber;
-    final lOther$phoneNumber = other.phoneNumber;
-    if (l$phoneNumber != lOther$phoneNumber) {
-      return false;
-    }
-    final l$address = address;
-    final lOther$address = other.address;
-    if (l$address != lOther$address) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Mutation$UpdateMember$updateMember$profile
-    on Mutation$UpdateMember$updateMember$profile {
-  CopyWith$Mutation$UpdateMember$updateMember$profile<
-    Mutation$UpdateMember$updateMember$profile
-  >
-  get copyWith =>
-      CopyWith$Mutation$UpdateMember$updateMember$profile(this, (i) => i);
-}
-
-abstract class CopyWith$Mutation$UpdateMember$updateMember$profile<TRes> {
-  factory CopyWith$Mutation$UpdateMember$updateMember$profile(
-    Mutation$UpdateMember$updateMember$profile instance,
-    TRes Function(Mutation$UpdateMember$updateMember$profile) then,
-  ) = _CopyWithImpl$Mutation$UpdateMember$updateMember$profile;
-
-  factory CopyWith$Mutation$UpdateMember$updateMember$profile.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$UpdateMember$updateMember$profile;
-
-  TRes call({
-    String? firstName,
-    String? lastName,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
-    Mutation$UpdateMember$updateMember$profile$address? address,
-    String? $__typename,
-  });
-  CopyWith$Mutation$UpdateMember$updateMember$profile$address<TRes> get address;
-}
-
-class _CopyWithImpl$Mutation$UpdateMember$updateMember$profile<TRes>
-    implements CopyWith$Mutation$UpdateMember$updateMember$profile<TRes> {
-  _CopyWithImpl$Mutation$UpdateMember$updateMember$profile(
-    this._instance,
-    this._then,
-  );
-
-  final Mutation$UpdateMember$updateMember$profile _instance;
-
-  final TRes Function(Mutation$UpdateMember$updateMember$profile) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? firstName = _undefined,
-    Object? lastName = _undefined,
-    Object? dateOfBirth = _undefined,
-    Object? phoneNumber = _undefined,
-    Object? address = _undefined,
-    Object? $__typename = _undefined,
-  }) => _then(
-    Mutation$UpdateMember$updateMember$profile(
-      firstName: firstName == _undefined || firstName == null
-          ? _instance.firstName
-          : (firstName as String),
-      lastName: lastName == _undefined || lastName == null
-          ? _instance.lastName
-          : (lastName as String),
-      dateOfBirth: dateOfBirth == _undefined
-          ? _instance.dateOfBirth
-          : (dateOfBirth as DateTime?),
-      phoneNumber: phoneNumber == _undefined
-          ? _instance.phoneNumber
-          : (phoneNumber as String?),
-      address: address == _undefined
-          ? _instance.address
-          : (address as Mutation$UpdateMember$updateMember$profile$address?),
-      $__typename: $__typename == _undefined || $__typename == null
-          ? _instance.$__typename
-          : ($__typename as String),
-    ),
-  );
-
-  CopyWith$Mutation$UpdateMember$updateMember$profile$address<TRes>
-  get address {
-    final local$address = _instance.address;
-    return local$address == null
-        ? CopyWith$Mutation$UpdateMember$updateMember$profile$address.stub(
-            _then(_instance),
-          )
-        : CopyWith$Mutation$UpdateMember$updateMember$profile$address(
-            local$address,
-            (e) => call(address: e),
-          );
-  }
-}
-
-class _CopyWithStubImpl$Mutation$UpdateMember$updateMember$profile<TRes>
-    implements CopyWith$Mutation$UpdateMember$updateMember$profile<TRes> {
-  _CopyWithStubImpl$Mutation$UpdateMember$updateMember$profile(this._res);
-
-  TRes _res;
-
-  call({
-    String? firstName,
-    String? lastName,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
-    Mutation$UpdateMember$updateMember$profile$address? address,
-    String? $__typename,
-  }) => _res;
-
-  CopyWith$Mutation$UpdateMember$updateMember$profile$address<TRes>
-  get address =>
-      CopyWith$Mutation$UpdateMember$updateMember$profile$address.stub(_res);
-}
-
-class Mutation$UpdateMember$updateMember$profile$address {
-  Mutation$UpdateMember$updateMember$profile$address({
-    required this.street,
-    required this.city,
-    required this.state,
-    required this.postalCode,
-    required this.country,
-    this.$__typename = 'Address',
-  });
-
-  factory Mutation$UpdateMember$updateMember$profile$address.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    final l$street = json['street'];
-    final l$city = json['city'];
-    final l$state = json['state'];
-    final l$postalCode = json['postalCode'];
-    final l$country = json['country'];
-    final l$$__typename = json['__typename'];
-    return Mutation$UpdateMember$updateMember$profile$address(
-      street: (l$street as String),
-      city: (l$city as String),
-      state: (l$state as String),
-      postalCode: (l$postalCode as String),
-      country: (l$country as String),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final String street;
-
-  final String city;
-
-  final String state;
-
-  final String postalCode;
-
-  final String country;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$street = street;
-    _resultData['street'] = l$street;
-    final l$city = city;
-    _resultData['city'] = l$city;
-    final l$state = state;
-    _resultData['state'] = l$state;
-    final l$postalCode = postalCode;
-    _resultData['postalCode'] = l$postalCode;
-    final l$country = country;
-    _resultData['country'] = l$country;
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$street = street;
-    final l$city = city;
-    final l$state = state;
-    final l$postalCode = postalCode;
-    final l$country = country;
-    final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$street,
-      l$city,
-      l$state,
-      l$postalCode,
-      l$country,
-      l$$__typename,
-    ]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Mutation$UpdateMember$updateMember$profile$address ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$street = street;
-    final lOther$street = other.street;
-    if (l$street != lOther$street) {
-      return false;
-    }
-    final l$city = city;
-    final lOther$city = other.city;
-    if (l$city != lOther$city) {
-      return false;
-    }
-    final l$state = state;
-    final lOther$state = other.state;
-    if (l$state != lOther$state) {
-      return false;
-    }
-    final l$postalCode = postalCode;
-    final lOther$postalCode = other.postalCode;
-    if (l$postalCode != lOther$postalCode) {
-      return false;
-    }
-    final l$country = country;
-    final lOther$country = other.country;
-    if (l$country != lOther$country) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Mutation$UpdateMember$updateMember$profile$address
-    on Mutation$UpdateMember$updateMember$profile$address {
-  CopyWith$Mutation$UpdateMember$updateMember$profile$address<
-    Mutation$UpdateMember$updateMember$profile$address
-  >
-  get copyWith => CopyWith$Mutation$UpdateMember$updateMember$profile$address(
-    this,
-    (i) => i,
-  );
-}
-
-abstract class CopyWith$Mutation$UpdateMember$updateMember$profile$address<
-  TRes
-> {
-  factory CopyWith$Mutation$UpdateMember$updateMember$profile$address(
-    Mutation$UpdateMember$updateMember$profile$address instance,
-    TRes Function(Mutation$UpdateMember$updateMember$profile$address) then,
-  ) = _CopyWithImpl$Mutation$UpdateMember$updateMember$profile$address;
-
-  factory CopyWith$Mutation$UpdateMember$updateMember$profile$address.stub(
-    TRes res,
-  ) = _CopyWithStubImpl$Mutation$UpdateMember$updateMember$profile$address;
-
-  TRes call({
-    String? street,
-    String? city,
-    String? state,
-    String? postalCode,
-    String? country,
-    String? $__typename,
-  });
-}
-
-class _CopyWithImpl$Mutation$UpdateMember$updateMember$profile$address<TRes>
-    implements
-        CopyWith$Mutation$UpdateMember$updateMember$profile$address<TRes> {
-  _CopyWithImpl$Mutation$UpdateMember$updateMember$profile$address(
-    this._instance,
-    this._then,
-  );
-
-  final Mutation$UpdateMember$updateMember$profile$address _instance;
-
-  final TRes Function(Mutation$UpdateMember$updateMember$profile$address) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? street = _undefined,
-    Object? city = _undefined,
-    Object? state = _undefined,
-    Object? postalCode = _undefined,
-    Object? country = _undefined,
-    Object? $__typename = _undefined,
-  }) => _then(
-    Mutation$UpdateMember$updateMember$profile$address(
-      street: street == _undefined || street == null
-          ? _instance.street
-          : (street as String),
-      city: city == _undefined || city == null
-          ? _instance.city
-          : (city as String),
-      state: state == _undefined || state == null
-          ? _instance.state
-          : (state as String),
-      postalCode: postalCode == _undefined || postalCode == null
-          ? _instance.postalCode
-          : (postalCode as String),
-      country: country == _undefined || country == null
-          ? _instance.country
-          : (country as String),
-      $__typename: $__typename == _undefined || $__typename == null
-          ? _instance.$__typename
-          : ($__typename as String),
-    ),
-  );
-}
-
-class _CopyWithStubImpl$Mutation$UpdateMember$updateMember$profile$address<TRes>
-    implements
-        CopyWith$Mutation$UpdateMember$updateMember$profile$address<TRes> {
-  _CopyWithStubImpl$Mutation$UpdateMember$updateMember$profile$address(
-    this._res,
-  );
-
-  TRes _res;
-
-  call({
-    String? street,
-    String? city,
-    String? state,
-    String? postalCode,
-    String? country,
     String? $__typename,
   }) => _res;
 }

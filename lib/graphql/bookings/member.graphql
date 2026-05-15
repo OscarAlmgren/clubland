@@ -6,32 +6,30 @@ query Member($id: ID!) {
     memberNumber
     membershipType
     status
-    blockchainIdentity
-    profile {
-      firstName
-      lastName
-      dateOfBirth
-      phoneNumber
-      address {
-        street
-        city
-        state
-        postalCode
-        country
-      }
-      emergencyContact {
-        name
-        relationship
-        phoneNumber
-      }
-      preferences {
-        emailNotifications
-        smsNotifications
-        pushNotifications
-        marketingEmails
-      }
+    firstName
+    lastName
+    email
+    phone
+    dateOfBirth
+    address {
+      street
+      city
+      state
+      postalCode
+      country
     }
-    joinedAt
+    emergencyContact {
+      name
+      relationship
+      phone
+    }
+    preferences {
+      receiveNewsletter
+      receivePromotions
+      allowDataSharing
+      preferredLanguage
+    }
+    joinedDate
     createdAt
     updatedAt
   }

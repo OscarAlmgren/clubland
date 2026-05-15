@@ -5,25 +5,21 @@ import 'package:graphql/client.dart' as graphql;
 
 class Variables$Query$Bookings {
   factory Variables$Query$Bookings({
-    Input$BookingFilterInput? filter,
     Input$PaginationInput? pagination,
+    Enum$BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
   }) => Variables$Query$Bookings._({
-    if (filter != null) r'filter': filter,
     if (pagination != null) r'pagination': pagination,
+    if (status != null) r'status': status,
+    if (startDate != null) r'startDate': startDate,
+    if (endDate != null) r'endDate': endDate,
   });
 
   Variables$Query$Bookings._(this._$data);
 
   factory Variables$Query$Bookings.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    if (data.containsKey('filter')) {
-      final l$filter = data['filter'];
-      result$data['filter'] = l$filter == null
-          ? null
-          : Input$BookingFilterInput.fromJson(
-              (l$filter as Map<String, dynamic>),
-            );
-    }
     if (data.containsKey('pagination')) {
       final l$pagination = data['pagination'];
       result$data['pagination'] = l$pagination == null
@@ -32,26 +28,57 @@ class Variables$Query$Bookings {
               (l$pagination as Map<String, dynamic>),
             );
     }
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$BookingStatus((l$status as String));
+    }
+    if (data.containsKey('startDate')) {
+      final l$startDate = data['startDate'];
+      result$data['startDate'] = l$startDate == null
+          ? null
+          : DateTime.parse((l$startDate as String));
+    }
+    if (data.containsKey('endDate')) {
+      final l$endDate = data['endDate'];
+      result$data['endDate'] = l$endDate == null
+          ? null
+          : DateTime.parse((l$endDate as String));
+    }
     return Variables$Query$Bookings._(result$data);
   }
 
   Map<String, dynamic> _$data;
 
-  Input$BookingFilterInput? get filter =>
-      (_$data['filter'] as Input$BookingFilterInput?);
-
   Input$PaginationInput? get pagination =>
       (_$data['pagination'] as Input$PaginationInput?);
 
+  Enum$BookingStatus? get status => (_$data['status'] as Enum$BookingStatus?);
+
+  DateTime? get startDate => (_$data['startDate'] as DateTime?);
+
+  DateTime? get endDate => (_$data['endDate'] as DateTime?);
+
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    if (_$data.containsKey('filter')) {
-      final l$filter = filter;
-      result$data['filter'] = l$filter?.toJson();
-    }
     if (_$data.containsKey('pagination')) {
       final l$pagination = pagination;
       result$data['pagination'] = l$pagination?.toJson();
+    }
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$BookingStatus(l$status);
+    }
+    if (_$data.containsKey('startDate')) {
+      final l$startDate = startDate;
+      result$data['startDate'] = l$startDate?.toIso8601String();
+    }
+    if (_$data.containsKey('endDate')) {
+      final l$endDate = endDate;
+      result$data['endDate'] = l$endDate?.toIso8601String();
     }
     return result$data;
   }
@@ -68,14 +95,6 @@ class Variables$Query$Bookings {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$filter = filter;
-    final lOther$filter = other.filter;
-    if (_$data.containsKey('filter') != other._$data.containsKey('filter')) {
-      return false;
-    }
-    if (l$filter != lOther$filter) {
-      return false;
-    }
     final l$pagination = pagination;
     final lOther$pagination = other.pagination;
     if (_$data.containsKey('pagination') !=
@@ -85,16 +104,45 @@ class Variables$Query$Bookings {
     if (l$pagination != lOther$pagination) {
       return false;
     }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$startDate = startDate;
+    final lOther$startDate = other.startDate;
+    if (_$data.containsKey('startDate') !=
+        other._$data.containsKey('startDate')) {
+      return false;
+    }
+    if (l$startDate != lOther$startDate) {
+      return false;
+    }
+    final l$endDate = endDate;
+    final lOther$endDate = other.endDate;
+    if (_$data.containsKey('endDate') != other._$data.containsKey('endDate')) {
+      return false;
+    }
+    if (l$endDate != lOther$endDate) {
+      return false;
+    }
     return true;
   }
 
   @override
   int get hashCode {
-    final l$filter = filter;
     final l$pagination = pagination;
+    final l$status = status;
+    final l$startDate = startDate;
+    final l$endDate = endDate;
     return Object.hashAll([
-      _$data.containsKey('filter') ? l$filter : const {},
       _$data.containsKey('pagination') ? l$pagination : const {},
+      _$data.containsKey('status') ? l$status : const {},
+      _$data.containsKey('startDate') ? l$startDate : const {},
+      _$data.containsKey('endDate') ? l$endDate : const {},
     ]);
   }
 }
@@ -109,8 +157,10 @@ abstract class CopyWith$Variables$Query$Bookings<TRes> {
       _CopyWithStubImpl$Variables$Query$Bookings;
 
   TRes call({
-    Input$BookingFilterInput? filter,
     Input$PaginationInput? pagination,
+    Enum$BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
   });
 }
 
@@ -124,16 +174,21 @@ class _CopyWithImpl$Variables$Query$Bookings<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? filter = _undefined, Object? pagination = _undefined}) =>
-      _then(
-        Variables$Query$Bookings._({
-          ..._instance._$data,
-          if (filter != _undefined)
-            'filter': (filter as Input$BookingFilterInput?),
-          if (pagination != _undefined)
-            'pagination': (pagination as Input$PaginationInput?),
-        }),
-      );
+  TRes call({
+    Object? pagination = _undefined,
+    Object? status = _undefined,
+    Object? startDate = _undefined,
+    Object? endDate = _undefined,
+  }) => _then(
+    Variables$Query$Bookings._({
+      ..._instance._$data,
+      if (pagination != _undefined)
+        'pagination': (pagination as Input$PaginationInput?),
+      if (status != _undefined) 'status': (status as Enum$BookingStatus?),
+      if (startDate != _undefined) 'startDate': (startDate as DateTime?),
+      if (endDate != _undefined) 'endDate': (endDate as DateTime?),
+    }),
+  );
 }
 
 class _CopyWithStubImpl$Variables$Query$Bookings<TRes>
@@ -142,32 +197,36 @@ class _CopyWithStubImpl$Variables$Query$Bookings<TRes>
 
   TRes _res;
 
-  call({Input$BookingFilterInput? filter, Input$PaginationInput? pagination}) =>
-      _res;
+  call({
+    Input$PaginationInput? pagination,
+    Enum$BookingStatus? status,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) => _res;
 }
 
 class Query$Bookings {
-  Query$Bookings({required this.bookings, this.$__typename = 'Query'});
+  Query$Bookings({required this.facilityBookings, this.$__typename = 'Query'});
 
   factory Query$Bookings.fromJson(Map<String, dynamic> json) {
-    final l$bookings = json['bookings'];
+    final l$facilityBookings = json['facilityBookings'];
     final l$$__typename = json['__typename'];
     return Query$Bookings(
-      bookings: Query$Bookings$bookings.fromJson(
-        (l$bookings as Map<String, dynamic>),
+      facilityBookings: Query$Bookings$facilityBookings.fromJson(
+        (l$facilityBookings as Map<String, dynamic>),
       ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Query$Bookings$bookings bookings;
+  final Query$Bookings$facilityBookings facilityBookings;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$bookings = bookings;
-    _resultData['bookings'] = l$bookings.toJson();
+    final l$facilityBookings = facilityBookings;
+    _resultData['facilityBookings'] = l$facilityBookings.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -175,9 +234,9 @@ class Query$Bookings {
 
   @override
   int get hashCode {
-    final l$bookings = bookings;
+    final l$facilityBookings = facilityBookings;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$bookings, l$$__typename]);
+    return Object.hashAll([l$facilityBookings, l$$__typename]);
   }
 
   @override
@@ -188,9 +247,9 @@ class Query$Bookings {
     if (other is! Query$Bookings || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$bookings = bookings;
-    final lOther$bookings = other.bookings;
-    if (l$bookings != lOther$bookings) {
+    final l$facilityBookings = facilityBookings;
+    final lOther$facilityBookings = other.facilityBookings;
+    if (l$facilityBookings != lOther$facilityBookings) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -216,8 +275,11 @@ abstract class CopyWith$Query$Bookings<TRes> {
   factory CopyWith$Query$Bookings.stub(TRes res) =
       _CopyWithStubImpl$Query$Bookings;
 
-  TRes call({Query$Bookings$bookings? bookings, String? $__typename});
-  CopyWith$Query$Bookings$bookings<TRes> get bookings;
+  TRes call({
+    Query$Bookings$facilityBookings? facilityBookings,
+    String? $__typename,
+  });
+  CopyWith$Query$Bookings$facilityBookings<TRes> get facilityBookings;
 }
 
 class _CopyWithImpl$Query$Bookings<TRes>
@@ -231,24 +293,25 @@ class _CopyWithImpl$Query$Bookings<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? bookings = _undefined,
+    Object? facilityBookings = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$Bookings(
-      bookings: bookings == _undefined || bookings == null
-          ? _instance.bookings
-          : (bookings as Query$Bookings$bookings),
+      facilityBookings:
+          facilityBookings == _undefined || facilityBookings == null
+          ? _instance.facilityBookings
+          : (facilityBookings as Query$Bookings$facilityBookings),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Query$Bookings$bookings<TRes> get bookings {
-    final local$bookings = _instance.bookings;
-    return CopyWith$Query$Bookings$bookings(
-      local$bookings,
-      (e) => call(bookings: e),
+  CopyWith$Query$Bookings$facilityBookings<TRes> get facilityBookings {
+    final local$facilityBookings = _instance.facilityBookings;
+    return CopyWith$Query$Bookings$facilityBookings(
+      local$facilityBookings,
+      (e) => call(facilityBookings: e),
     );
   }
 }
@@ -259,10 +322,13 @@ class _CopyWithStubImpl$Query$Bookings<TRes>
 
   TRes _res;
 
-  call({Query$Bookings$bookings? bookings, String? $__typename}) => _res;
+  call({
+    Query$Bookings$facilityBookings? facilityBookings,
+    String? $__typename,
+  }) => _res;
 
-  CopyWith$Query$Bookings$bookings<TRes> get bookings =>
-      CopyWith$Query$Bookings$bookings.stub(_res);
+  CopyWith$Query$Bookings$facilityBookings<TRes> get facilityBookings =>
+      CopyWith$Query$Bookings$facilityBookings.stub(_res);
 }
 
 const documentNodeQueryBookings = DocumentNode(
@@ -272,15 +338,6 @@ const documentNodeQueryBookings = DocumentNode(
       name: NameNode(value: 'Bookings'),
       variableDefinitions: [
         VariableDefinitionNode(
-          variable: VariableNode(name: NameNode(value: 'filter')),
-          type: NamedTypeNode(
-            name: NameNode(value: 'BookingFilterInput'),
-            isNonNull: false,
-          ),
-          defaultValue: DefaultValueNode(value: null),
-          directives: [],
-        ),
-        VariableDefinitionNode(
           variable: VariableNode(name: NameNode(value: 'pagination')),
           type: NamedTypeNode(
             name: NameNode(value: 'PaginationInput'),
@@ -289,21 +346,50 @@ const documentNodeQueryBookings = DocumentNode(
           defaultValue: DefaultValueNode(value: null),
           directives: [],
         ),
+        VariableDefinitionNode(
+          variable: VariableNode(name: NameNode(value: 'status')),
+          type: NamedTypeNode(
+            name: NameNode(value: 'BookingStatus'),
+            isNonNull: false,
+          ),
+          defaultValue: DefaultValueNode(value: null),
+          directives: [],
+        ),
+        VariableDefinitionNode(
+          variable: VariableNode(name: NameNode(value: 'startDate')),
+          type: NamedTypeNode(name: NameNode(value: 'Time'), isNonNull: false),
+          defaultValue: DefaultValueNode(value: null),
+          directives: [],
+        ),
+        VariableDefinitionNode(
+          variable: VariableNode(name: NameNode(value: 'endDate')),
+          type: NamedTypeNode(name: NameNode(value: 'Time'), isNonNull: false),
+          defaultValue: DefaultValueNode(value: null),
+          directives: [],
+        ),
       ],
       directives: [],
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'bookings'),
+            name: NameNode(value: 'facilityBookings'),
             alias: null,
             arguments: [
               ArgumentNode(
-                name: NameNode(value: 'filter'),
-                value: VariableNode(name: NameNode(value: 'filter')),
-              ),
-              ArgumentNode(
                 name: NameNode(value: 'pagination'),
                 value: VariableNode(name: NameNode(value: 'pagination')),
+              ),
+              ArgumentNode(
+                name: NameNode(value: 'status'),
+                value: VariableNode(name: NameNode(value: 'status')),
+              ),
+              ArgumentNode(
+                name: NameNode(value: 'startDate'),
+                value: VariableNode(name: NameNode(value: 'startDate')),
+              ),
+              ArgumentNode(
+                name: NameNode(value: 'endDate'),
+                value: VariableNode(name: NameNode(value: 'endDate')),
               ),
             ],
             directives: [],
@@ -324,6 +410,13 @@ const documentNodeQueryBookings = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'clubId'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'facilityId'),
                         alias: null,
                         arguments: [],
@@ -331,7 +424,7 @@ const documentNodeQueryBookings = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'userId'),
+                        name: NameNode(value: 'memberId'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -345,6 +438,13 @@ const documentNodeQueryBookings = DocumentNode(
                         selectionSet: SelectionSetNode(
                           selections: [
                             FieldNode(
+                              name: NameNode(value: 'id'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
                               name: NameNode(value: 'name'),
                               alias: null,
                               arguments: [],
@@ -353,37 +453,6 @@ const documentNodeQueryBookings = DocumentNode(
                             ),
                             FieldNode(
                               name: NameNode(value: 'type'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                          ],
-                        ),
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'user'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(
-                          selections: [
-                            FieldNode(
-                              name: NameNode(value: 'firstName'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'lastName'),
                               alias: null,
                               arguments: [],
                               directives: [],
@@ -421,14 +490,21 @@ const documentNodeQueryBookings = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'notes'),
+                        name: NameNode(value: 'purpose'),
                         alias: null,
                         arguments: [],
                         directives: [],
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'participants'),
+                        name: NameNode(value: 'guestCount'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'paymentStatus'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -662,35 +738,35 @@ extension ClientExtension$Query$Bookings on graphql.GraphQLClient {
   }
 }
 
-class Query$Bookings$bookings {
-  Query$Bookings$bookings({
+class Query$Bookings$facilityBookings {
+  Query$Bookings$facilityBookings({
     required this.nodes,
     required this.pageInfo,
     this.$__typename = 'BookingConnection',
   });
 
-  factory Query$Bookings$bookings.fromJson(Map<String, dynamic> json) {
+  factory Query$Bookings$facilityBookings.fromJson(Map<String, dynamic> json) {
     final l$nodes = json['nodes'];
     final l$pageInfo = json['pageInfo'];
     final l$$__typename = json['__typename'];
-    return Query$Bookings$bookings(
+    return Query$Bookings$facilityBookings(
       nodes: (l$nodes as List<dynamic>)
           .map(
-            (e) => Query$Bookings$bookings$nodes.fromJson(
+            (e) => Query$Bookings$facilityBookings$nodes.fromJson(
               (e as Map<String, dynamic>),
             ),
           )
           .toList(),
-      pageInfo: Query$Bookings$bookings$pageInfo.fromJson(
+      pageInfo: Query$Bookings$facilityBookings$pageInfo.fromJson(
         (l$pageInfo as Map<String, dynamic>),
       ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final List<Query$Bookings$bookings$nodes> nodes;
+  final List<Query$Bookings$facilityBookings$nodes> nodes;
 
-  final Query$Bookings$bookings$pageInfo pageInfo;
+  final Query$Bookings$facilityBookings$pageInfo pageInfo;
 
   final String $__typename;
 
@@ -722,7 +798,8 @@ class Query$Bookings$bookings {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Bookings$bookings || runtimeType != other.runtimeType) {
+    if (other is! Query$Bookings$facilityBookings ||
+        runtimeType != other.runtimeType) {
       return false;
     }
     final l$nodes = nodes;
@@ -751,43 +828,46 @@ class Query$Bookings$bookings {
   }
 }
 
-extension UtilityExtension$Query$Bookings$bookings on Query$Bookings$bookings {
-  CopyWith$Query$Bookings$bookings<Query$Bookings$bookings> get copyWith =>
-      CopyWith$Query$Bookings$bookings(this, (i) => i);
+extension UtilityExtension$Query$Bookings$facilityBookings
+    on Query$Bookings$facilityBookings {
+  CopyWith$Query$Bookings$facilityBookings<Query$Bookings$facilityBookings>
+  get copyWith => CopyWith$Query$Bookings$facilityBookings(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Bookings$bookings<TRes> {
-  factory CopyWith$Query$Bookings$bookings(
-    Query$Bookings$bookings instance,
-    TRes Function(Query$Bookings$bookings) then,
-  ) = _CopyWithImpl$Query$Bookings$bookings;
+abstract class CopyWith$Query$Bookings$facilityBookings<TRes> {
+  factory CopyWith$Query$Bookings$facilityBookings(
+    Query$Bookings$facilityBookings instance,
+    TRes Function(Query$Bookings$facilityBookings) then,
+  ) = _CopyWithImpl$Query$Bookings$facilityBookings;
 
-  factory CopyWith$Query$Bookings$bookings.stub(TRes res) =
-      _CopyWithStubImpl$Query$Bookings$bookings;
+  factory CopyWith$Query$Bookings$facilityBookings.stub(TRes res) =
+      _CopyWithStubImpl$Query$Bookings$facilityBookings;
 
   TRes call({
-    List<Query$Bookings$bookings$nodes>? nodes,
-    Query$Bookings$bookings$pageInfo? pageInfo,
+    List<Query$Bookings$facilityBookings$nodes>? nodes,
+    Query$Bookings$facilityBookings$pageInfo? pageInfo,
     String? $__typename,
   });
   TRes nodes(
-    Iterable<Query$Bookings$bookings$nodes> Function(
+    Iterable<Query$Bookings$facilityBookings$nodes> Function(
       Iterable<
-        CopyWith$Query$Bookings$bookings$nodes<Query$Bookings$bookings$nodes>
+        CopyWith$Query$Bookings$facilityBookings$nodes<
+          Query$Bookings$facilityBookings$nodes
+        >
       >,
     )
     _fn,
   );
-  CopyWith$Query$Bookings$bookings$pageInfo<TRes> get pageInfo;
+  CopyWith$Query$Bookings$facilityBookings$pageInfo<TRes> get pageInfo;
 }
 
-class _CopyWithImpl$Query$Bookings$bookings<TRes>
-    implements CopyWith$Query$Bookings$bookings<TRes> {
-  _CopyWithImpl$Query$Bookings$bookings(this._instance, this._then);
+class _CopyWithImpl$Query$Bookings$facilityBookings<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings<TRes> {
+  _CopyWithImpl$Query$Bookings$facilityBookings(this._instance, this._then);
 
-  final Query$Bookings$bookings _instance;
+  final Query$Bookings$facilityBookings _instance;
 
-  final TRes Function(Query$Bookings$bookings) _then;
+  final TRes Function(Query$Bookings$facilityBookings) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -796,13 +876,13 @@ class _CopyWithImpl$Query$Bookings$bookings<TRes>
     Object? pageInfo = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Bookings$bookings(
+    Query$Bookings$facilityBookings(
       nodes: nodes == _undefined || nodes == null
           ? _instance.nodes
-          : (nodes as List<Query$Bookings$bookings$nodes>),
+          : (nodes as List<Query$Bookings$facilityBookings$nodes>),
       pageInfo: pageInfo == _undefined || pageInfo == null
           ? _instance.pageInfo
-          : (pageInfo as Query$Bookings$bookings$pageInfo),
+          : (pageInfo as Query$Bookings$facilityBookings$pageInfo),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -810,97 +890,98 @@ class _CopyWithImpl$Query$Bookings$bookings<TRes>
   );
 
   TRes nodes(
-    Iterable<Query$Bookings$bookings$nodes> Function(
+    Iterable<Query$Bookings$facilityBookings$nodes> Function(
       Iterable<
-        CopyWith$Query$Bookings$bookings$nodes<Query$Bookings$bookings$nodes>
+        CopyWith$Query$Bookings$facilityBookings$nodes<
+          Query$Bookings$facilityBookings$nodes
+        >
       >,
     )
     _fn,
   ) => call(
     nodes: _fn(
       _instance.nodes.map(
-        (e) => CopyWith$Query$Bookings$bookings$nodes(e, (i) => i),
+        (e) => CopyWith$Query$Bookings$facilityBookings$nodes(e, (i) => i),
       ),
     ).toList(),
   );
 
-  CopyWith$Query$Bookings$bookings$pageInfo<TRes> get pageInfo {
+  CopyWith$Query$Bookings$facilityBookings$pageInfo<TRes> get pageInfo {
     final local$pageInfo = _instance.pageInfo;
-    return CopyWith$Query$Bookings$bookings$pageInfo(
+    return CopyWith$Query$Bookings$facilityBookings$pageInfo(
       local$pageInfo,
       (e) => call(pageInfo: e),
     );
   }
 }
 
-class _CopyWithStubImpl$Query$Bookings$bookings<TRes>
-    implements CopyWith$Query$Bookings$bookings<TRes> {
-  _CopyWithStubImpl$Query$Bookings$bookings(this._res);
+class _CopyWithStubImpl$Query$Bookings$facilityBookings<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings<TRes> {
+  _CopyWithStubImpl$Query$Bookings$facilityBookings(this._res);
 
   TRes _res;
 
   call({
-    List<Query$Bookings$bookings$nodes>? nodes,
-    Query$Bookings$bookings$pageInfo? pageInfo,
+    List<Query$Bookings$facilityBookings$nodes>? nodes,
+    Query$Bookings$facilityBookings$pageInfo? pageInfo,
     String? $__typename,
   }) => _res;
 
   nodes(_fn) => _res;
 
-  CopyWith$Query$Bookings$bookings$pageInfo<TRes> get pageInfo =>
-      CopyWith$Query$Bookings$bookings$pageInfo.stub(_res);
+  CopyWith$Query$Bookings$facilityBookings$pageInfo<TRes> get pageInfo =>
+      CopyWith$Query$Bookings$facilityBookings$pageInfo.stub(_res);
 }
 
-class Query$Bookings$bookings$nodes {
-  Query$Bookings$bookings$nodes({
+class Query$Bookings$facilityBookings$nodes {
+  Query$Bookings$facilityBookings$nodes({
     required this.id,
+    required this.clubId,
     required this.facilityId,
-    required this.userId,
+    required this.memberId,
     this.facility,
-    this.user,
     required this.startTime,
     required this.endTime,
     required this.status,
-    this.notes,
-    required this.participants,
+    this.purpose,
+    this.guestCount,
+    required this.paymentStatus,
     required this.createdAt,
-    this.$__typename = 'Booking',
+    this.$__typename = 'FacilityBooking',
   });
 
-  factory Query$Bookings$bookings$nodes.fromJson(Map<String, dynamic> json) {
+  factory Query$Bookings$facilityBookings$nodes.fromJson(
+    Map<String, dynamic> json,
+  ) {
     final l$id = json['id'];
+    final l$clubId = json['clubId'];
     final l$facilityId = json['facilityId'];
-    final l$userId = json['userId'];
+    final l$memberId = json['memberId'];
     final l$facility = json['facility'];
-    final l$user = json['user'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
     final l$status = json['status'];
-    final l$notes = json['notes'];
-    final l$participants = json['participants'];
+    final l$purpose = json['purpose'];
+    final l$guestCount = json['guestCount'];
+    final l$paymentStatus = json['paymentStatus'];
     final l$createdAt = json['createdAt'];
     final l$$__typename = json['__typename'];
-    return Query$Bookings$bookings$nodes(
+    return Query$Bookings$facilityBookings$nodes(
       id: (l$id as String),
+      clubId: (l$clubId as String),
       facilityId: (l$facilityId as String),
-      userId: (l$userId as String),
+      memberId: (l$memberId as String),
       facility: l$facility == null
           ? null
-          : Query$Bookings$bookings$nodes$facility.fromJson(
+          : Query$Bookings$facilityBookings$nodes$facility.fromJson(
               (l$facility as Map<String, dynamic>),
-            ),
-      user: l$user == null
-          ? null
-          : Query$Bookings$bookings$nodes$user.fromJson(
-              (l$user as Map<String, dynamic>),
             ),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       status: fromJson$Enum$BookingStatus((l$status as String)),
-      notes: (l$notes as String?),
-      participants: (l$participants as List<dynamic>)
-          .map((e) => (e as String))
-          .toList(),
+      purpose: (l$purpose as String?),
+      guestCount: (l$guestCount as int?),
+      paymentStatus: fromJson$Enum$PaymentStatus((l$paymentStatus as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -908,13 +989,13 @@ class Query$Bookings$bookings$nodes {
 
   final String id;
 
+  final String clubId;
+
   final String facilityId;
 
-  final String userId;
+  final String memberId;
 
-  final Query$Bookings$bookings$nodes$facility? facility;
-
-  final Query$Bookings$bookings$nodes$user? user;
+  final Query$Bookings$facilityBookings$nodes$facility? facility;
 
   final DateTime startTime;
 
@@ -922,9 +1003,11 @@ class Query$Bookings$bookings$nodes {
 
   final Enum$BookingStatus status;
 
-  final String? notes;
+  final String? purpose;
 
-  final List<String> participants;
+  final int? guestCount;
+
+  final Enum$PaymentStatus paymentStatus;
 
   final DateTime createdAt;
 
@@ -934,24 +1017,26 @@ class Query$Bookings$bookings$nodes {
     final _resultData = <String, dynamic>{};
     final l$id = id;
     _resultData['id'] = l$id;
+    final l$clubId = clubId;
+    _resultData['clubId'] = l$clubId;
     final l$facilityId = facilityId;
     _resultData['facilityId'] = l$facilityId;
-    final l$userId = userId;
-    _resultData['userId'] = l$userId;
+    final l$memberId = memberId;
+    _resultData['memberId'] = l$memberId;
     final l$facility = facility;
     _resultData['facility'] = l$facility?.toJson();
-    final l$user = user;
-    _resultData['user'] = l$user?.toJson();
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
     _resultData['endTime'] = l$endTime.toIso8601String();
     final l$status = status;
     _resultData['status'] = toJson$Enum$BookingStatus(l$status);
-    final l$notes = notes;
-    _resultData['notes'] = l$notes;
-    final l$participants = participants;
-    _resultData['participants'] = l$participants.map((e) => e).toList();
+    final l$purpose = purpose;
+    _resultData['purpose'] = l$purpose;
+    final l$guestCount = guestCount;
+    _resultData['guestCount'] = l$guestCount;
+    final l$paymentStatus = paymentStatus;
+    _resultData['paymentStatus'] = toJson$Enum$PaymentStatus(l$paymentStatus);
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -962,28 +1047,30 @@ class Query$Bookings$bookings$nodes {
   @override
   int get hashCode {
     final l$id = id;
+    final l$clubId = clubId;
     final l$facilityId = facilityId;
-    final l$userId = userId;
+    final l$memberId = memberId;
     final l$facility = facility;
-    final l$user = user;
     final l$startTime = startTime;
     final l$endTime = endTime;
     final l$status = status;
-    final l$notes = notes;
-    final l$participants = participants;
+    final l$purpose = purpose;
+    final l$guestCount = guestCount;
+    final l$paymentStatus = paymentStatus;
     final l$createdAt = createdAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
+      l$clubId,
       l$facilityId,
-      l$userId,
+      l$memberId,
       l$facility,
-      l$user,
       l$startTime,
       l$endTime,
       l$status,
-      l$notes,
-      Object.hashAll(l$participants.map((v) => v)),
+      l$purpose,
+      l$guestCount,
+      l$paymentStatus,
       l$createdAt,
       l$$__typename,
     ]);
@@ -994,7 +1081,7 @@ class Query$Bookings$bookings$nodes {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Bookings$bookings$nodes ||
+    if (other is! Query$Bookings$facilityBookings$nodes ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1003,24 +1090,24 @@ class Query$Bookings$bookings$nodes {
     if (l$id != lOther$id) {
       return false;
     }
+    final l$clubId = clubId;
+    final lOther$clubId = other.clubId;
+    if (l$clubId != lOther$clubId) {
+      return false;
+    }
     final l$facilityId = facilityId;
     final lOther$facilityId = other.facilityId;
     if (l$facilityId != lOther$facilityId) {
       return false;
     }
-    final l$userId = userId;
-    final lOther$userId = other.userId;
-    if (l$userId != lOther$userId) {
+    final l$memberId = memberId;
+    final lOther$memberId = other.memberId;
+    if (l$memberId != lOther$memberId) {
       return false;
     }
     final l$facility = facility;
     final lOther$facility = other.facility;
     if (l$facility != lOther$facility) {
-      return false;
-    }
-    final l$user = user;
-    final lOther$user = other.user;
-    if (l$user != lOther$user) {
       return false;
     }
     final l$startTime = startTime;
@@ -1038,22 +1125,20 @@ class Query$Bookings$bookings$nodes {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$notes = notes;
-    final lOther$notes = other.notes;
-    if (l$notes != lOther$notes) {
+    final l$purpose = purpose;
+    final lOther$purpose = other.purpose;
+    if (l$purpose != lOther$purpose) {
       return false;
     }
-    final l$participants = participants;
-    final lOther$participants = other.participants;
-    if (l$participants.length != lOther$participants.length) {
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (l$guestCount != lOther$guestCount) {
       return false;
     }
-    for (int i = 0; i < l$participants.length; i++) {
-      final l$participants$entry = l$participants[i];
-      final lOther$participants$entry = lOther$participants[i];
-      if (l$participants$entry != lOther$participants$entry) {
-        return false;
-      }
+    final l$paymentStatus = paymentStatus;
+    final lOther$paymentStatus = other.paymentStatus;
+    if (l$paymentStatus != lOther$paymentStatus) {
+      return false;
     }
     final l$createdAt = createdAt;
     final lOther$createdAt = other.createdAt;
@@ -1069,77 +1154,84 @@ class Query$Bookings$bookings$nodes {
   }
 }
 
-extension UtilityExtension$Query$Bookings$bookings$nodes
-    on Query$Bookings$bookings$nodes {
-  CopyWith$Query$Bookings$bookings$nodes<Query$Bookings$bookings$nodes>
-  get copyWith => CopyWith$Query$Bookings$bookings$nodes(this, (i) => i);
+extension UtilityExtension$Query$Bookings$facilityBookings$nodes
+    on Query$Bookings$facilityBookings$nodes {
+  CopyWith$Query$Bookings$facilityBookings$nodes<
+    Query$Bookings$facilityBookings$nodes
+  >
+  get copyWith =>
+      CopyWith$Query$Bookings$facilityBookings$nodes(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Bookings$bookings$nodes<TRes> {
-  factory CopyWith$Query$Bookings$bookings$nodes(
-    Query$Bookings$bookings$nodes instance,
-    TRes Function(Query$Bookings$bookings$nodes) then,
-  ) = _CopyWithImpl$Query$Bookings$bookings$nodes;
+abstract class CopyWith$Query$Bookings$facilityBookings$nodes<TRes> {
+  factory CopyWith$Query$Bookings$facilityBookings$nodes(
+    Query$Bookings$facilityBookings$nodes instance,
+    TRes Function(Query$Bookings$facilityBookings$nodes) then,
+  ) = _CopyWithImpl$Query$Bookings$facilityBookings$nodes;
 
-  factory CopyWith$Query$Bookings$bookings$nodes.stub(TRes res) =
-      _CopyWithStubImpl$Query$Bookings$bookings$nodes;
+  factory CopyWith$Query$Bookings$facilityBookings$nodes.stub(TRes res) =
+      _CopyWithStubImpl$Query$Bookings$facilityBookings$nodes;
 
   TRes call({
     String? id,
+    String? clubId,
     String? facilityId,
-    String? userId,
-    Query$Bookings$bookings$nodes$facility? facility,
-    Query$Bookings$bookings$nodes$user? user,
+    String? memberId,
+    Query$Bookings$facilityBookings$nodes$facility? facility,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
-    String? notes,
-    List<String>? participants,
+    String? purpose,
+    int? guestCount,
+    Enum$PaymentStatus? paymentStatus,
     DateTime? createdAt,
     String? $__typename,
   });
-  CopyWith$Query$Bookings$bookings$nodes$facility<TRes> get facility;
-  CopyWith$Query$Bookings$bookings$nodes$user<TRes> get user;
+  CopyWith$Query$Bookings$facilityBookings$nodes$facility<TRes> get facility;
 }
 
-class _CopyWithImpl$Query$Bookings$bookings$nodes<TRes>
-    implements CopyWith$Query$Bookings$bookings$nodes<TRes> {
-  _CopyWithImpl$Query$Bookings$bookings$nodes(this._instance, this._then);
+class _CopyWithImpl$Query$Bookings$facilityBookings$nodes<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings$nodes<TRes> {
+  _CopyWithImpl$Query$Bookings$facilityBookings$nodes(
+    this._instance,
+    this._then,
+  );
 
-  final Query$Bookings$bookings$nodes _instance;
+  final Query$Bookings$facilityBookings$nodes _instance;
 
-  final TRes Function(Query$Bookings$bookings$nodes) _then;
+  final TRes Function(Query$Bookings$facilityBookings$nodes) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? id = _undefined,
+    Object? clubId = _undefined,
     Object? facilityId = _undefined,
-    Object? userId = _undefined,
+    Object? memberId = _undefined,
     Object? facility = _undefined,
-    Object? user = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
     Object? status = _undefined,
-    Object? notes = _undefined,
-    Object? participants = _undefined,
+    Object? purpose = _undefined,
+    Object? guestCount = _undefined,
+    Object? paymentStatus = _undefined,
     Object? createdAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Bookings$bookings$nodes(
+    Query$Bookings$facilityBookings$nodes(
       id: id == _undefined || id == null ? _instance.id : (id as String),
+      clubId: clubId == _undefined || clubId == null
+          ? _instance.clubId
+          : (clubId as String),
       facilityId: facilityId == _undefined || facilityId == null
           ? _instance.facilityId
           : (facilityId as String),
-      userId: userId == _undefined || userId == null
-          ? _instance.userId
-          : (userId as String),
+      memberId: memberId == _undefined || memberId == null
+          ? _instance.memberId
+          : (memberId as String),
       facility: facility == _undefined
           ? _instance.facility
-          : (facility as Query$Bookings$bookings$nodes$facility?),
-      user: user == _undefined
-          ? _instance.user
-          : (user as Query$Bookings$bookings$nodes$user?),
+          : (facility as Query$Bookings$facilityBookings$nodes$facility?),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -1149,10 +1241,13 @@ class _CopyWithImpl$Query$Bookings$bookings$nodes<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$BookingStatus),
-      notes: notes == _undefined ? _instance.notes : (notes as String?),
-      participants: participants == _undefined || participants == null
-          ? _instance.participants
-          : (participants as List<String>),
+      purpose: purpose == _undefined ? _instance.purpose : (purpose as String?),
+      guestCount: guestCount == _undefined
+          ? _instance.guestCount
+          : (guestCount as int?),
+      paymentStatus: paymentStatus == _undefined || paymentStatus == null
+          ? _instance.paymentStatus
+          : (paymentStatus as Enum$PaymentStatus),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -1162,87 +1257,84 @@ class _CopyWithImpl$Query$Bookings$bookings$nodes<TRes>
     ),
   );
 
-  CopyWith$Query$Bookings$bookings$nodes$facility<TRes> get facility {
+  CopyWith$Query$Bookings$facilityBookings$nodes$facility<TRes> get facility {
     final local$facility = _instance.facility;
     return local$facility == null
-        ? CopyWith$Query$Bookings$bookings$nodes$facility.stub(_then(_instance))
-        : CopyWith$Query$Bookings$bookings$nodes$facility(
+        ? CopyWith$Query$Bookings$facilityBookings$nodes$facility.stub(
+            _then(_instance),
+          )
+        : CopyWith$Query$Bookings$facilityBookings$nodes$facility(
             local$facility,
             (e) => call(facility: e),
           );
   }
-
-  CopyWith$Query$Bookings$bookings$nodes$user<TRes> get user {
-    final local$user = _instance.user;
-    return local$user == null
-        ? CopyWith$Query$Bookings$bookings$nodes$user.stub(_then(_instance))
-        : CopyWith$Query$Bookings$bookings$nodes$user(
-            local$user,
-            (e) => call(user: e),
-          );
-  }
 }
 
-class _CopyWithStubImpl$Query$Bookings$bookings$nodes<TRes>
-    implements CopyWith$Query$Bookings$bookings$nodes<TRes> {
-  _CopyWithStubImpl$Query$Bookings$bookings$nodes(this._res);
+class _CopyWithStubImpl$Query$Bookings$facilityBookings$nodes<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings$nodes<TRes> {
+  _CopyWithStubImpl$Query$Bookings$facilityBookings$nodes(this._res);
 
   TRes _res;
 
   call({
     String? id,
+    String? clubId,
     String? facilityId,
-    String? userId,
-    Query$Bookings$bookings$nodes$facility? facility,
-    Query$Bookings$bookings$nodes$user? user,
+    String? memberId,
+    Query$Bookings$facilityBookings$nodes$facility? facility,
     DateTime? startTime,
     DateTime? endTime,
     Enum$BookingStatus? status,
-    String? notes,
-    List<String>? participants,
+    String? purpose,
+    int? guestCount,
+    Enum$PaymentStatus? paymentStatus,
     DateTime? createdAt,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Query$Bookings$bookings$nodes$facility<TRes> get facility =>
-      CopyWith$Query$Bookings$bookings$nodes$facility.stub(_res);
-
-  CopyWith$Query$Bookings$bookings$nodes$user<TRes> get user =>
-      CopyWith$Query$Bookings$bookings$nodes$user.stub(_res);
+  CopyWith$Query$Bookings$facilityBookings$nodes$facility<TRes> get facility =>
+      CopyWith$Query$Bookings$facilityBookings$nodes$facility.stub(_res);
 }
 
-class Query$Bookings$bookings$nodes$facility {
-  Query$Bookings$bookings$nodes$facility({
+class Query$Bookings$facilityBookings$nodes$facility {
+  Query$Bookings$facilityBookings$nodes$facility({
+    required this.id,
     required this.name,
     required this.type,
     this.$__typename = 'Facility',
   });
 
-  factory Query$Bookings$bookings$nodes$facility.fromJson(
+  factory Query$Bookings$facilityBookings$nodes$facility.fromJson(
     Map<String, dynamic> json,
   ) {
+    final l$id = json['id'];
     final l$name = json['name'];
     final l$type = json['type'];
     final l$$__typename = json['__typename'];
-    return Query$Bookings$bookings$nodes$facility(
+    return Query$Bookings$facilityBookings$nodes$facility(
+      id: (l$id as String),
       name: (l$name as String),
-      type: (l$type as String),
+      type: fromJson$Enum$FacilityType((l$type as String)),
       $__typename: (l$$__typename as String),
     );
   }
 
+  final String id;
+
   final String name;
 
-  final String type;
+  final Enum$FacilityType type;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$id = id;
+    _resultData['id'] = l$id;
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = l$type;
+    _resultData['type'] = toJson$Enum$FacilityType(l$type);
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1250,10 +1342,11 @@ class Query$Bookings$bookings$nodes$facility {
 
   @override
   int get hashCode {
+    final l$id = id;
     final l$name = name;
     final l$type = type;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$name, l$type, l$$__typename]);
+    return Object.hashAll([l$id, l$name, l$type, l$$__typename]);
   }
 
   @override
@@ -1261,8 +1354,13 @@ class Query$Bookings$bookings$nodes$facility {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Bookings$bookings$nodes$facility ||
+    if (other is! Query$Bookings$facilityBookings$nodes$facility ||
         runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
       return false;
     }
     final l$name = name;
@@ -1284,52 +1382,60 @@ class Query$Bookings$bookings$nodes$facility {
   }
 }
 
-extension UtilityExtension$Query$Bookings$bookings$nodes$facility
-    on Query$Bookings$bookings$nodes$facility {
-  CopyWith$Query$Bookings$bookings$nodes$facility<
-    Query$Bookings$bookings$nodes$facility
+extension UtilityExtension$Query$Bookings$facilityBookings$nodes$facility
+    on Query$Bookings$facilityBookings$nodes$facility {
+  CopyWith$Query$Bookings$facilityBookings$nodes$facility<
+    Query$Bookings$facilityBookings$nodes$facility
   >
   get copyWith =>
-      CopyWith$Query$Bookings$bookings$nodes$facility(this, (i) => i);
+      CopyWith$Query$Bookings$facilityBookings$nodes$facility(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Bookings$bookings$nodes$facility<TRes> {
-  factory CopyWith$Query$Bookings$bookings$nodes$facility(
-    Query$Bookings$bookings$nodes$facility instance,
-    TRes Function(Query$Bookings$bookings$nodes$facility) then,
-  ) = _CopyWithImpl$Query$Bookings$bookings$nodes$facility;
+abstract class CopyWith$Query$Bookings$facilityBookings$nodes$facility<TRes> {
+  factory CopyWith$Query$Bookings$facilityBookings$nodes$facility(
+    Query$Bookings$facilityBookings$nodes$facility instance,
+    TRes Function(Query$Bookings$facilityBookings$nodes$facility) then,
+  ) = _CopyWithImpl$Query$Bookings$facilityBookings$nodes$facility;
 
-  factory CopyWith$Query$Bookings$bookings$nodes$facility.stub(TRes res) =
-      _CopyWithStubImpl$Query$Bookings$bookings$nodes$facility;
+  factory CopyWith$Query$Bookings$facilityBookings$nodes$facility.stub(
+    TRes res,
+  ) = _CopyWithStubImpl$Query$Bookings$facilityBookings$nodes$facility;
 
-  TRes call({String? name, String? type, String? $__typename});
+  TRes call({
+    String? id,
+    String? name,
+    Enum$FacilityType? type,
+    String? $__typename,
+  });
 }
 
-class _CopyWithImpl$Query$Bookings$bookings$nodes$facility<TRes>
-    implements CopyWith$Query$Bookings$bookings$nodes$facility<TRes> {
-  _CopyWithImpl$Query$Bookings$bookings$nodes$facility(
+class _CopyWithImpl$Query$Bookings$facilityBookings$nodes$facility<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings$nodes$facility<TRes> {
+  _CopyWithImpl$Query$Bookings$facilityBookings$nodes$facility(
     this._instance,
     this._then,
   );
 
-  final Query$Bookings$bookings$nodes$facility _instance;
+  final Query$Bookings$facilityBookings$nodes$facility _instance;
 
-  final TRes Function(Query$Bookings$bookings$nodes$facility) _then;
+  final TRes Function(Query$Bookings$facilityBookings$nodes$facility) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
+    Object? id = _undefined,
     Object? name = _undefined,
     Object? type = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Bookings$bookings$nodes$facility(
+    Query$Bookings$facilityBookings$nodes$facility(
+      id: id == _undefined || id == null ? _instance.id : (id as String),
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as String),
+          : (type as Enum$FacilityType),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1337,148 +1443,22 @@ class _CopyWithImpl$Query$Bookings$bookings$nodes$facility<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$Bookings$bookings$nodes$facility<TRes>
-    implements CopyWith$Query$Bookings$bookings$nodes$facility<TRes> {
-  _CopyWithStubImpl$Query$Bookings$bookings$nodes$facility(this._res);
+class _CopyWithStubImpl$Query$Bookings$facilityBookings$nodes$facility<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings$nodes$facility<TRes> {
+  _CopyWithStubImpl$Query$Bookings$facilityBookings$nodes$facility(this._res);
 
   TRes _res;
 
-  call({String? name, String? type, String? $__typename}) => _res;
+  call({
+    String? id,
+    String? name,
+    Enum$FacilityType? type,
+    String? $__typename,
+  }) => _res;
 }
 
-class Query$Bookings$bookings$nodes$user {
-  Query$Bookings$bookings$nodes$user({
-    this.firstName,
-    this.lastName,
-    this.$__typename = 'User',
-  });
-
-  factory Query$Bookings$bookings$nodes$user.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    final l$firstName = json['firstName'];
-    final l$lastName = json['lastName'];
-    final l$$__typename = json['__typename'];
-    return Query$Bookings$bookings$nodes$user(
-      firstName: (l$firstName as String?),
-      lastName: (l$lastName as String?),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final String? firstName;
-
-  final String? lastName;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$firstName = firstName;
-    _resultData['firstName'] = l$firstName;
-    final l$lastName = lastName;
-    _resultData['lastName'] = l$lastName;
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$firstName = firstName;
-    final l$lastName = lastName;
-    final l$$__typename = $__typename;
-    return Object.hashAll([l$firstName, l$lastName, l$$__typename]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Query$Bookings$bookings$nodes$user ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$firstName = firstName;
-    final lOther$firstName = other.firstName;
-    if (l$firstName != lOther$firstName) {
-      return false;
-    }
-    final l$lastName = lastName;
-    final lOther$lastName = other.lastName;
-    if (l$lastName != lOther$lastName) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Query$Bookings$bookings$nodes$user
-    on Query$Bookings$bookings$nodes$user {
-  CopyWith$Query$Bookings$bookings$nodes$user<
-    Query$Bookings$bookings$nodes$user
-  >
-  get copyWith => CopyWith$Query$Bookings$bookings$nodes$user(this, (i) => i);
-}
-
-abstract class CopyWith$Query$Bookings$bookings$nodes$user<TRes> {
-  factory CopyWith$Query$Bookings$bookings$nodes$user(
-    Query$Bookings$bookings$nodes$user instance,
-    TRes Function(Query$Bookings$bookings$nodes$user) then,
-  ) = _CopyWithImpl$Query$Bookings$bookings$nodes$user;
-
-  factory CopyWith$Query$Bookings$bookings$nodes$user.stub(TRes res) =
-      _CopyWithStubImpl$Query$Bookings$bookings$nodes$user;
-
-  TRes call({String? firstName, String? lastName, String? $__typename});
-}
-
-class _CopyWithImpl$Query$Bookings$bookings$nodes$user<TRes>
-    implements CopyWith$Query$Bookings$bookings$nodes$user<TRes> {
-  _CopyWithImpl$Query$Bookings$bookings$nodes$user(this._instance, this._then);
-
-  final Query$Bookings$bookings$nodes$user _instance;
-
-  final TRes Function(Query$Bookings$bookings$nodes$user) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? firstName = _undefined,
-    Object? lastName = _undefined,
-    Object? $__typename = _undefined,
-  }) => _then(
-    Query$Bookings$bookings$nodes$user(
-      firstName: firstName == _undefined
-          ? _instance.firstName
-          : (firstName as String?),
-      lastName: lastName == _undefined
-          ? _instance.lastName
-          : (lastName as String?),
-      $__typename: $__typename == _undefined || $__typename == null
-          ? _instance.$__typename
-          : ($__typename as String),
-    ),
-  );
-}
-
-class _CopyWithStubImpl$Query$Bookings$bookings$nodes$user<TRes>
-    implements CopyWith$Query$Bookings$bookings$nodes$user<TRes> {
-  _CopyWithStubImpl$Query$Bookings$bookings$nodes$user(this._res);
-
-  TRes _res;
-
-  call({String? firstName, String? lastName, String? $__typename}) => _res;
-}
-
-class Query$Bookings$bookings$pageInfo {
-  Query$Bookings$bookings$pageInfo({
+class Query$Bookings$facilityBookings$pageInfo {
+  Query$Bookings$facilityBookings$pageInfo({
     required this.page,
     required this.pageSize,
     required this.total,
@@ -1488,7 +1468,9 @@ class Query$Bookings$bookings$pageInfo {
     this.$__typename = 'PageInfo',
   });
 
-  factory Query$Bookings$bookings$pageInfo.fromJson(Map<String, dynamic> json) {
+  factory Query$Bookings$facilityBookings$pageInfo.fromJson(
+    Map<String, dynamic> json,
+  ) {
     final l$page = json['page'];
     final l$pageSize = json['pageSize'];
     final l$total = json['total'];
@@ -1496,7 +1478,7 @@ class Query$Bookings$bookings$pageInfo {
     final l$hasNextPage = json['hasNextPage'];
     final l$hasPrevPage = json['hasPrevPage'];
     final l$$__typename = json['__typename'];
-    return Query$Bookings$bookings$pageInfo(
+    return Query$Bookings$facilityBookings$pageInfo(
       page: (l$page as int),
       pageSize: (l$pageSize as int),
       total: (l$total as int),
@@ -1565,7 +1547,7 @@ class Query$Bookings$bookings$pageInfo {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Bookings$bookings$pageInfo ||
+    if (other is! Query$Bookings$facilityBookings$pageInfo ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1608,20 +1590,23 @@ class Query$Bookings$bookings$pageInfo {
   }
 }
 
-extension UtilityExtension$Query$Bookings$bookings$pageInfo
-    on Query$Bookings$bookings$pageInfo {
-  CopyWith$Query$Bookings$bookings$pageInfo<Query$Bookings$bookings$pageInfo>
-  get copyWith => CopyWith$Query$Bookings$bookings$pageInfo(this, (i) => i);
+extension UtilityExtension$Query$Bookings$facilityBookings$pageInfo
+    on Query$Bookings$facilityBookings$pageInfo {
+  CopyWith$Query$Bookings$facilityBookings$pageInfo<
+    Query$Bookings$facilityBookings$pageInfo
+  >
+  get copyWith =>
+      CopyWith$Query$Bookings$facilityBookings$pageInfo(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Bookings$bookings$pageInfo<TRes> {
-  factory CopyWith$Query$Bookings$bookings$pageInfo(
-    Query$Bookings$bookings$pageInfo instance,
-    TRes Function(Query$Bookings$bookings$pageInfo) then,
-  ) = _CopyWithImpl$Query$Bookings$bookings$pageInfo;
+abstract class CopyWith$Query$Bookings$facilityBookings$pageInfo<TRes> {
+  factory CopyWith$Query$Bookings$facilityBookings$pageInfo(
+    Query$Bookings$facilityBookings$pageInfo instance,
+    TRes Function(Query$Bookings$facilityBookings$pageInfo) then,
+  ) = _CopyWithImpl$Query$Bookings$facilityBookings$pageInfo;
 
-  factory CopyWith$Query$Bookings$bookings$pageInfo.stub(TRes res) =
-      _CopyWithStubImpl$Query$Bookings$bookings$pageInfo;
+  factory CopyWith$Query$Bookings$facilityBookings$pageInfo.stub(TRes res) =
+      _CopyWithStubImpl$Query$Bookings$facilityBookings$pageInfo;
 
   TRes call({
     int? page,
@@ -1634,13 +1619,16 @@ abstract class CopyWith$Query$Bookings$bookings$pageInfo<TRes> {
   });
 }
 
-class _CopyWithImpl$Query$Bookings$bookings$pageInfo<TRes>
-    implements CopyWith$Query$Bookings$bookings$pageInfo<TRes> {
-  _CopyWithImpl$Query$Bookings$bookings$pageInfo(this._instance, this._then);
+class _CopyWithImpl$Query$Bookings$facilityBookings$pageInfo<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings$pageInfo<TRes> {
+  _CopyWithImpl$Query$Bookings$facilityBookings$pageInfo(
+    this._instance,
+    this._then,
+  );
 
-  final Query$Bookings$bookings$pageInfo _instance;
+  final Query$Bookings$facilityBookings$pageInfo _instance;
 
-  final TRes Function(Query$Bookings$bookings$pageInfo) _then;
+  final TRes Function(Query$Bookings$facilityBookings$pageInfo) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -1653,7 +1641,7 @@ class _CopyWithImpl$Query$Bookings$bookings$pageInfo<TRes>
     Object? hasPrevPage = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Bookings$bookings$pageInfo(
+    Query$Bookings$facilityBookings$pageInfo(
       page: page == _undefined || page == null ? _instance.page : (page as int),
       pageSize: pageSize == _undefined || pageSize == null
           ? _instance.pageSize
@@ -1677,9 +1665,9 @@ class _CopyWithImpl$Query$Bookings$bookings$pageInfo<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$Bookings$bookings$pageInfo<TRes>
-    implements CopyWith$Query$Bookings$bookings$pageInfo<TRes> {
-  _CopyWithStubImpl$Query$Bookings$bookings$pageInfo(this._res);
+class _CopyWithStubImpl$Query$Bookings$facilityBookings$pageInfo<TRes>
+    implements CopyWith$Query$Bookings$facilityBookings$pageInfo<TRes> {
+  _CopyWithStubImpl$Query$Bookings$facilityBookings$pageInfo(this._res);
 
   TRes _res;
 

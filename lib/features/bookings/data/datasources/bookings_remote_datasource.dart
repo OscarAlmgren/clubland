@@ -93,13 +93,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         QueryOptions(
           document: documentNodeQueryMyBookings,
           variables: Variables$Query$MyBookings(
-            filter: Input$BookingFilterInput(
-              status: _toEnumBookingStatus(status),
-              startDate: startDate,
-              endDate: endDate,
-            ),
+            status: _toEnumBookingStatus(status),
             pagination: limit != null
-                ? Input$PaginationInput(pageSize: limit, after: cursor)
+                ? Input$PaginationInput(pageSize: limit)
                 : null,
           ).toJson(),
           fetchPolicy: FetchPolicy.cacheAndNetwork,
@@ -280,8 +276,8 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
                   facilityId: facilityId,
                   startTime: startTime,
                   endTime: endTime,
-                  notes: notes,
-                  participants: participantIds,
+                  purpose: notes,
+                  guestCount: participantIds?.length,
                 ),
               ).toJson(),
             ),
@@ -345,8 +341,8 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
                 input: Input$UpdateBookingInput(
                   startTime: startTime,
                   endTime: endTime,
-                  notes: notes,
-                  participants: participantIds,
+                  purpose: notes,
+                  guestCount: participantIds?.length,
                 ),
               ).toJson(),
             ),
@@ -394,7 +390,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
               document: documentNodeMutationCancelBooking,
               variables: Variables$Mutation$CancelBooking(
                 bookingId: bookingId,
-                reason: reason,
+                reason: reason ?? 'No reason provided',
               ).toJson(),
             ),
           )
@@ -566,7 +562,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
       case BookingStatus.cancelled:
         return Enum$BookingStatus.CANCELLED;
       case BookingStatus.completed:
-        return Enum$BookingStatus.COMPLETED;
+        return Enum$BookingStatus.CHECKED_OUT;
       case BookingStatus.noShow:
         return Enum$BookingStatus.NO_SHOW;
     }
@@ -654,7 +650,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           document: documentNodeQueryMyVisits,
           variables: Variables$Query$MyVisits(
             pagination: limit != null
-                ? Input$PaginationInput(pageSize: limit, after: cursor)
+                ? Input$PaginationInput(pageSize: limit)
                 : null,
           ).toJson(),
           fetchPolicy: FetchPolicy.cacheAndNetwork,

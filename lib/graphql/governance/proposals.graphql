@@ -1,29 +1,36 @@
-query Proposals($pagination: PaginationInput, $status: ProposalStatus) {
-  proposals(pagination: $pagination, status: $status) {
+query Proposals(
+  $pagination: PaginationInput
+  $status: ProposalStatus
+  $type: ProposalType
+) {
+  proposals(pagination: $pagination, status: $status, type: $type) {
     nodes {
       id
       title
       description
       type
       status
+      category
+      votingStartTime
+      votingEndTime
+      totalVotes
+      votesYay
+      votesNay
+      votesAbstain
+      createdAt
       proposer {
-        username
+        id
         firstName
         lastName
       }
-      votes {
-        id
-        choice
-        voter {
-          username
-        }
-      }
-      votingDeadline
-      createdAt
     }
     pageInfo {
       page
+      pageSize
       total
+      totalPages
+      hasNextPage
+      hasPrevPage
     }
   }
 }

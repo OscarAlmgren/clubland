@@ -465,7 +465,7 @@ class Mutation$MarkNotificationRead$markNotificationRead {
     return Mutation$MarkNotificationRead$markNotificationRead(
       id: (l$id as String),
       userId: (l$userId as String),
-      type: fromJson$Enum$NotificationType((l$type as String)),
+      type: (l$type as String),
       title: (l$title as String),
       message: (l$message as String),
       status: fromJson$Enum$NotificationStatus((l$status as String)),
@@ -478,7 +478,7 @@ class Mutation$MarkNotificationRead$markNotificationRead {
 
   final String userId;
 
-  final Enum$NotificationType type;
+  final String type;
 
   final String title;
 
@@ -497,7 +497,7 @@ class Mutation$MarkNotificationRead$markNotificationRead {
     final l$userId = userId;
     _resultData['userId'] = l$userId;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$NotificationType(l$type);
+    _resultData['type'] = l$type;
     final l$title = title;
     _resultData['title'] = l$title;
     final l$message = message;
@@ -612,7 +612,7 @@ abstract class CopyWith$Mutation$MarkNotificationRead$markNotificationRead<
   TRes call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
+    String? type,
     String? title,
     String? message,
     Enum$NotificationStatus? status,
@@ -652,7 +652,7 @@ class _CopyWithImpl$Mutation$MarkNotificationRead$markNotificationRead<TRes>
           : (userId as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$NotificationType),
+          : (type as String),
       title: title == _undefined || title == null
           ? _instance.title
           : (title as String),
@@ -682,7 +682,7 @@ class _CopyWithStubImpl$Mutation$MarkNotificationRead$markNotificationRead<TRes>
   call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
+    String? type,
     String? title,
     String? message,
     Enum$NotificationStatus? status,

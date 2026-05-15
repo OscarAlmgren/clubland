@@ -1,4 +1,4 @@
-mutation UpdateMember($id: ID!, $input: MemberProfileInput!) {
+mutation UpdateMember($id: ID!, $input: UpdateMemberInput!) {
   updateMember(id: $id, input: $input) {
     id
     clubId
@@ -6,19 +6,11 @@ mutation UpdateMember($id: ID!, $input: MemberProfileInput!) {
     memberNumber
     membershipType
     status
-    profile {
-      firstName
-      lastName
-      dateOfBirth
-      phoneNumber
-      address {
-        street
-        city
-        state
-        postalCode
-        country
-      }
-    }
+    firstName
+    lastName
+    email
+    phone
+    dateOfBirth
     updatedAt
   }
 }

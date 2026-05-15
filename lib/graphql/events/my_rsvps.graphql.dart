@@ -5,56 +5,53 @@ import 'package:graphql/client.dart' as graphql;
 
 class Variables$Query$MyRSVPs {
   factory Variables$Query$MyRSVPs({
-    required String clubId,
-    List<Enum$RSVPStatus>? status,
-    required Input$PaginationInput pagination,
+    Input$PaginationInput? pagination,
+    Enum$RSVPStatus? status,
   }) => Variables$Query$MyRSVPs._({
-    r'clubId': clubId,
+    if (pagination != null) r'pagination': pagination,
     if (status != null) r'status': status,
-    r'pagination': pagination,
   });
 
   Variables$Query$MyRSVPs._(this._$data);
 
   factory Variables$Query$MyRSVPs.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    final l$clubId = data['clubId'];
-    result$data['clubId'] = (l$clubId as String);
+    if (data.containsKey('pagination')) {
+      final l$pagination = data['pagination'];
+      result$data['pagination'] = l$pagination == null
+          ? null
+          : Input$PaginationInput.fromJson(
+              (l$pagination as Map<String, dynamic>),
+            );
+    }
     if (data.containsKey('status')) {
       final l$status = data['status'];
-      result$data['status'] = (l$status as List<dynamic>?)
-          ?.map((e) => fromJson$Enum$RSVPStatus((e as String)))
-          .toList();
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$RSVPStatus((l$status as String));
     }
-    final l$pagination = data['pagination'];
-    result$data['pagination'] = Input$PaginationInput.fromJson(
-      (l$pagination as Map<String, dynamic>),
-    );
     return Variables$Query$MyRSVPs._(result$data);
   }
 
   Map<String, dynamic> _$data;
 
-  String get clubId => (_$data['clubId'] as String);
+  Input$PaginationInput? get pagination =>
+      (_$data['pagination'] as Input$PaginationInput?);
 
-  List<Enum$RSVPStatus>? get status =>
-      (_$data['status'] as List<Enum$RSVPStatus>?);
-
-  Input$PaginationInput get pagination =>
-      (_$data['pagination'] as Input$PaginationInput);
+  Enum$RSVPStatus? get status => (_$data['status'] as Enum$RSVPStatus?);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    final l$clubId = clubId;
-    result$data['clubId'] = l$clubId;
+    if (_$data.containsKey('pagination')) {
+      final l$pagination = pagination;
+      result$data['pagination'] = l$pagination?.toJson();
+    }
     if (_$data.containsKey('status')) {
       final l$status = status;
-      result$data['status'] = l$status
-          ?.map((e) => toJson$Enum$RSVPStatus(e))
-          .toList();
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$RSVPStatus(l$status);
     }
-    final l$pagination = pagination;
-    result$data['pagination'] = l$pagination.toJson();
     return result$data;
   }
 
@@ -69,9 +66,13 @@ class Variables$Query$MyRSVPs {
     if (other is! Variables$Query$MyRSVPs || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$clubId = clubId;
-    final lOther$clubId = other.clubId;
-    if (l$clubId != lOther$clubId) {
+    final l$pagination = pagination;
+    final lOther$pagination = other.pagination;
+    if (_$data.containsKey('pagination') !=
+        other._$data.containsKey('pagination')) {
+      return false;
+    }
+    if (l$pagination != lOther$pagination) {
       return false;
     }
     final l$status = status;
@@ -79,23 +80,7 @@ class Variables$Query$MyRSVPs {
     if (_$data.containsKey('status') != other._$data.containsKey('status')) {
       return false;
     }
-    if (l$status != null && lOther$status != null) {
-      if (l$status.length != lOther$status.length) {
-        return false;
-      }
-      for (int i = 0; i < l$status.length; i++) {
-        final l$status$entry = l$status[i];
-        final lOther$status$entry = lOther$status[i];
-        if (l$status$entry != lOther$status$entry) {
-          return false;
-        }
-      }
-    } else if (l$status != lOther$status) {
-      return false;
-    }
-    final l$pagination = pagination;
-    final lOther$pagination = other.pagination;
-    if (l$pagination != lOther$pagination) {
+    if (l$status != lOther$status) {
       return false;
     }
     return true;
@@ -103,17 +88,11 @@ class Variables$Query$MyRSVPs {
 
   @override
   int get hashCode {
-    final l$clubId = clubId;
-    final l$status = status;
     final l$pagination = pagination;
+    final l$status = status;
     return Object.hashAll([
-      l$clubId,
-      _$data.containsKey('status')
-          ? l$status == null
-                ? null
-                : Object.hashAll(l$status.map((v) => v))
-          : const {},
-      l$pagination,
+      _$data.containsKey('pagination') ? l$pagination : const {},
+      _$data.containsKey('status') ? l$status : const {},
     ]);
   }
 }
@@ -127,11 +106,7 @@ abstract class CopyWith$Variables$Query$MyRSVPs<TRes> {
   factory CopyWith$Variables$Query$MyRSVPs.stub(TRes res) =
       _CopyWithStubImpl$Variables$Query$MyRSVPs;
 
-  TRes call({
-    String? clubId,
-    List<Enum$RSVPStatus>? status,
-    Input$PaginationInput? pagination,
-  });
+  TRes call({Input$PaginationInput? pagination, Enum$RSVPStatus? status});
 }
 
 class _CopyWithImpl$Variables$Query$MyRSVPs<TRes>
@@ -144,19 +119,15 @@ class _CopyWithImpl$Variables$Query$MyRSVPs<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({
-    Object? clubId = _undefined,
-    Object? status = _undefined,
-    Object? pagination = _undefined,
-  }) => _then(
-    Variables$Query$MyRSVPs._({
-      ..._instance._$data,
-      if (clubId != _undefined && clubId != null) 'clubId': (clubId as String),
-      if (status != _undefined) 'status': (status as List<Enum$RSVPStatus>?),
-      if (pagination != _undefined && pagination != null)
-        'pagination': (pagination as Input$PaginationInput),
-    }),
-  );
+  TRes call({Object? pagination = _undefined, Object? status = _undefined}) =>
+      _then(
+        Variables$Query$MyRSVPs._({
+          ..._instance._$data,
+          if (pagination != _undefined)
+            'pagination': (pagination as Input$PaginationInput?),
+          if (status != _undefined) 'status': (status as Enum$RSVPStatus?),
+        }),
+      );
 }
 
 class _CopyWithStubImpl$Variables$Query$MyRSVPs<TRes>
@@ -165,35 +136,31 @@ class _CopyWithStubImpl$Variables$Query$MyRSVPs<TRes>
 
   TRes _res;
 
-  call({
-    String? clubId,
-    List<Enum$RSVPStatus>? status,
-    Input$PaginationInput? pagination,
-  }) => _res;
+  call({Input$PaginationInput? pagination, Enum$RSVPStatus? status}) => _res;
 }
 
 class Query$MyRSVPs {
-  Query$MyRSVPs({required this.myRSVPs, this.$__typename = 'Query'});
+  Query$MyRSVPs({required this.myEventRSVPs, this.$__typename = 'Query'});
 
   factory Query$MyRSVPs.fromJson(Map<String, dynamic> json) {
-    final l$myRSVPs = json['myRSVPs'];
+    final l$myEventRSVPs = json['myEventRSVPs'];
     final l$$__typename = json['__typename'];
     return Query$MyRSVPs(
-      myRSVPs: Query$MyRSVPs$myRSVPs.fromJson(
-        (l$myRSVPs as Map<String, dynamic>),
+      myEventRSVPs: Query$MyRSVPs$myEventRSVPs.fromJson(
+        (l$myEventRSVPs as Map<String, dynamic>),
       ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Query$MyRSVPs$myRSVPs myRSVPs;
+  final Query$MyRSVPs$myEventRSVPs myEventRSVPs;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$myRSVPs = myRSVPs;
-    _resultData['myRSVPs'] = l$myRSVPs.toJson();
+    final l$myEventRSVPs = myEventRSVPs;
+    _resultData['myEventRSVPs'] = l$myEventRSVPs.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -201,9 +168,9 @@ class Query$MyRSVPs {
 
   @override
   int get hashCode {
-    final l$myRSVPs = myRSVPs;
+    final l$myEventRSVPs = myEventRSVPs;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$myRSVPs, l$$__typename]);
+    return Object.hashAll([l$myEventRSVPs, l$$__typename]);
   }
 
   @override
@@ -214,9 +181,9 @@ class Query$MyRSVPs {
     if (other is! Query$MyRSVPs || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$myRSVPs = myRSVPs;
-    final lOther$myRSVPs = other.myRSVPs;
-    if (l$myRSVPs != lOther$myRSVPs) {
+    final l$myEventRSVPs = myEventRSVPs;
+    final lOther$myEventRSVPs = other.myEventRSVPs;
+    if (l$myEventRSVPs != lOther$myEventRSVPs) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -242,8 +209,8 @@ abstract class CopyWith$Query$MyRSVPs<TRes> {
   factory CopyWith$Query$MyRSVPs.stub(TRes res) =
       _CopyWithStubImpl$Query$MyRSVPs;
 
-  TRes call({Query$MyRSVPs$myRSVPs? myRSVPs, String? $__typename});
-  CopyWith$Query$MyRSVPs$myRSVPs<TRes> get myRSVPs;
+  TRes call({Query$MyRSVPs$myEventRSVPs? myEventRSVPs, String? $__typename});
+  CopyWith$Query$MyRSVPs$myEventRSVPs<TRes> get myEventRSVPs;
 }
 
 class _CopyWithImpl$Query$MyRSVPs<TRes>
@@ -256,23 +223,25 @@ class _CopyWithImpl$Query$MyRSVPs<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call({Object? myRSVPs = _undefined, Object? $__typename = _undefined}) =>
-      _then(
-        Query$MyRSVPs(
-          myRSVPs: myRSVPs == _undefined || myRSVPs == null
-              ? _instance.myRSVPs
-              : (myRSVPs as Query$MyRSVPs$myRSVPs),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String),
-        ),
-      );
+  TRes call({
+    Object? myEventRSVPs = _undefined,
+    Object? $__typename = _undefined,
+  }) => _then(
+    Query$MyRSVPs(
+      myEventRSVPs: myEventRSVPs == _undefined || myEventRSVPs == null
+          ? _instance.myEventRSVPs
+          : (myEventRSVPs as Query$MyRSVPs$myEventRSVPs),
+      $__typename: $__typename == _undefined || $__typename == null
+          ? _instance.$__typename
+          : ($__typename as String),
+    ),
+  );
 
-  CopyWith$Query$MyRSVPs$myRSVPs<TRes> get myRSVPs {
-    final local$myRSVPs = _instance.myRSVPs;
-    return CopyWith$Query$MyRSVPs$myRSVPs(
-      local$myRSVPs,
-      (e) => call(myRSVPs: e),
+  CopyWith$Query$MyRSVPs$myEventRSVPs<TRes> get myEventRSVPs {
+    final local$myEventRSVPs = _instance.myEventRSVPs;
+    return CopyWith$Query$MyRSVPs$myEventRSVPs(
+      local$myEventRSVPs,
+      (e) => call(myEventRSVPs: e),
     );
   }
 }
@@ -283,10 +252,10 @@ class _CopyWithStubImpl$Query$MyRSVPs<TRes>
 
   TRes _res;
 
-  call({Query$MyRSVPs$myRSVPs? myRSVPs, String? $__typename}) => _res;
+  call({Query$MyRSVPs$myEventRSVPs? myEventRSVPs, String? $__typename}) => _res;
 
-  CopyWith$Query$MyRSVPs$myRSVPs<TRes> get myRSVPs =>
-      CopyWith$Query$MyRSVPs$myRSVPs.stub(_res);
+  CopyWith$Query$MyRSVPs$myEventRSVPs<TRes> get myEventRSVPs =>
+      CopyWith$Query$MyRSVPs$myEventRSVPs.stub(_res);
 }
 
 const documentNodeQueryMyRSVPs = DocumentNode(
@@ -296,28 +265,19 @@ const documentNodeQueryMyRSVPs = DocumentNode(
       name: NameNode(value: 'MyRSVPs'),
       variableDefinitions: [
         VariableDefinitionNode(
-          variable: VariableNode(name: NameNode(value: 'clubId')),
-          type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
-          defaultValue: DefaultValueNode(value: null),
-          directives: [],
-        ),
-        VariableDefinitionNode(
-          variable: VariableNode(name: NameNode(value: 'status')),
-          type: ListTypeNode(
-            type: NamedTypeNode(
-              name: NameNode(value: 'RSVPStatus'),
-              isNonNull: true,
-            ),
+          variable: VariableNode(name: NameNode(value: 'pagination')),
+          type: NamedTypeNode(
+            name: NameNode(value: 'PaginationInput'),
             isNonNull: false,
           ),
           defaultValue: DefaultValueNode(value: null),
           directives: [],
         ),
         VariableDefinitionNode(
-          variable: VariableNode(name: NameNode(value: 'pagination')),
+          variable: VariableNode(name: NameNode(value: 'status')),
           type: NamedTypeNode(
-            name: NameNode(value: 'PaginationInput'),
-            isNonNull: true,
+            name: NameNode(value: 'RSVPStatus'),
+            isNonNull: false,
           ),
           defaultValue: DefaultValueNode(value: null),
           directives: [],
@@ -327,209 +287,146 @@ const documentNodeQueryMyRSVPs = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'myRSVPs'),
+            name: NameNode(value: 'myEventRSVPs'),
             alias: null,
             arguments: [
               ArgumentNode(
-                name: NameNode(value: 'clubId'),
-                value: VariableNode(name: NameNode(value: 'clubId')),
+                name: NameNode(value: 'pagination'),
+                value: VariableNode(name: NameNode(value: 'pagination')),
               ),
               ArgumentNode(
                 name: NameNode(value: 'status'),
                 value: VariableNode(name: NameNode(value: 'status')),
-              ),
-              ArgumentNode(
-                name: NameNode(value: 'pagination'),
-                value: VariableNode(name: NameNode(value: 'pagination')),
               ),
             ],
             directives: [],
             selectionSet: SelectionSetNode(
               selections: [
                 FieldNode(
-                  name: NameNode(value: 'edges'),
+                  name: NameNode(value: 'nodes'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: SelectionSetNode(
                     selections: [
                       FieldNode(
-                        name: NameNode(value: 'node'),
+                        name: NameNode(value: 'id'),
                         alias: null,
                         arguments: [],
                         directives: [],
-                        selectionSet: SelectionSetNode(
-                          selections: [
-                            FieldNode(
-                              name: NameNode(value: 'id'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'eventId'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'memberId'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'clubId'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'response'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'rsvpType'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'priority'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'attendanceCount'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'guestNames'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'dietaryRestrictions'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'seatingPreferences'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'specialRequests'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'status'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'paymentRequired'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'paymentVerified'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'paymentAmount'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'cancellationFee'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'feeWaived'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'waitlistPosition'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'rsvpedAt'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'updatedAt'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'cancelledAt'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'cancellationReason'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                          ],
-                        ),
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'eventId'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'memberId'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'clubId'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'status'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'guestCount'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'dietaryRestrictions'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'specialRequests'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'paymentStatus'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'response'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'attendanceCount'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'cancellationFee'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'feeWaived'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'rsvpedAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'updatedAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'cancelledAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'cancellationReason'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
                       ),
                       FieldNode(
                         name: NameNode(value: '__typename'),
@@ -549,6 +446,34 @@ const documentNodeQueryMyRSVPs = DocumentNode(
                   selectionSet: SelectionSetNode(
                     selections: [
                       FieldNode(
+                        name: NameNode(value: 'page'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'pageSize'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'total'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'totalPages'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'hasNextPage'),
                         alias: null,
                         arguments: [],
@@ -556,21 +481,7 @@ const documentNodeQueryMyRSVPs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'hasPreviousPage'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'startCursor'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'endCursor'),
+                        name: NameNode(value: 'hasPrevPage'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -585,13 +496,6 @@ const documentNodeQueryMyRSVPs = DocumentNode(
                       ),
                     ],
                   ),
-                ),
-                FieldNode(
-                  name: NameNode(value: 'totalCount'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
                 ),
                 FieldNode(
                   name: NameNode(value: '__typename'),
@@ -623,7 +527,7 @@ typedef OnQueryComplete$Query$MyRSVPs =
 class Options$Query$MyRSVPs extends graphql.QueryOptions<Query$MyRSVPs> {
   Options$Query$MyRSVPs({
     String? operationName,
-    required Variables$Query$MyRSVPs variables,
+    Variables$Query$MyRSVPs? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -635,7 +539,7 @@ class Options$Query$MyRSVPs extends graphql.QueryOptions<Query$MyRSVPs> {
     graphql.OnQueryError? onError,
   }) : onCompleteWithParsed = onComplete,
        super(
-         variables: variables.toJson(),
+         variables: variables?.toJson() ?? {},
          operationName: operationName,
          fetchPolicy: fetchPolicy,
          errorPolicy: errorPolicy,
@@ -669,7 +573,7 @@ class WatchOptions$Query$MyRSVPs
     extends graphql.WatchQueryOptions<Query$MyRSVPs> {
   WatchOptions$Query$MyRSVPs({
     String? operationName,
-    required Variables$Query$MyRSVPs variables,
+    Variables$Query$MyRSVPs? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -681,7 +585,7 @@ class WatchOptions$Query$MyRSVPs
     bool carryForwardDataOnException = true,
     bool fetchResults = false,
   }) : super(
-         variables: variables.toJson(),
+         variables: variables?.toJson() ?? {},
          operationName: operationName,
          fetchPolicy: fetchPolicy,
          errorPolicy: errorPolicy,
@@ -700,44 +604,44 @@ class WatchOptions$Query$MyRSVPs
 class FetchMoreOptions$Query$MyRSVPs extends graphql.FetchMoreOptions {
   FetchMoreOptions$Query$MyRSVPs({
     required graphql.UpdateQuery updateQuery,
-    required Variables$Query$MyRSVPs variables,
+    Variables$Query$MyRSVPs? variables,
   }) : super(
          updateQuery: updateQuery,
-         variables: variables.toJson(),
+         variables: variables?.toJson() ?? {},
          document: documentNodeQueryMyRSVPs,
        );
 }
 
 extension ClientExtension$Query$MyRSVPs on graphql.GraphQLClient {
-  Future<graphql.QueryResult<Query$MyRSVPs>> query$MyRSVPs(
-    Options$Query$MyRSVPs options,
-  ) async => await this.query(options);
+  Future<graphql.QueryResult<Query$MyRSVPs>> query$MyRSVPs([
+    Options$Query$MyRSVPs? options,
+  ]) async => await this.query(options ?? Options$Query$MyRSVPs());
 
-  graphql.ObservableQuery<Query$MyRSVPs> watchQuery$MyRSVPs(
-    WatchOptions$Query$MyRSVPs options,
-  ) => this.watchQuery(options);
+  graphql.ObservableQuery<Query$MyRSVPs> watchQuery$MyRSVPs([
+    WatchOptions$Query$MyRSVPs? options,
+  ]) => this.watchQuery(options ?? WatchOptions$Query$MyRSVPs());
 
   void writeQuery$MyRSVPs({
     required Query$MyRSVPs data,
-    required Variables$Query$MyRSVPs variables,
+    Variables$Query$MyRSVPs? variables,
     bool broadcast = true,
   }) => this.writeQuery(
     graphql.Request(
       operation: graphql.Operation(document: documentNodeQueryMyRSVPs),
-      variables: variables.toJson(),
+      variables: variables?.toJson() ?? const {},
     ),
     data: data.toJson(),
     broadcast: broadcast,
   );
 
   Query$MyRSVPs? readQuery$MyRSVPs({
-    required Variables$Query$MyRSVPs variables,
+    Variables$Query$MyRSVPs? variables,
     bool optimistic = true,
   }) {
     final result = this.readQuery(
       graphql.Request(
         operation: graphql.Operation(document: documentNodeQueryMyRSVPs),
-        variables: variables.toJson(),
+        variables: variables?.toJson() ?? const {},
       ),
       optimistic: optimistic,
     );
@@ -745,51 +649,44 @@ extension ClientExtension$Query$MyRSVPs on graphql.GraphQLClient {
   }
 }
 
-class Query$MyRSVPs$myRSVPs {
-  Query$MyRSVPs$myRSVPs({
-    required this.edges,
+class Query$MyRSVPs$myEventRSVPs {
+  Query$MyRSVPs$myEventRSVPs({
+    required this.nodes,
     required this.pageInfo,
-    required this.totalCount,
     this.$__typename = 'RSVPConnection',
   });
 
-  factory Query$MyRSVPs$myRSVPs.fromJson(Map<String, dynamic> json) {
-    final l$edges = json['edges'];
+  factory Query$MyRSVPs$myEventRSVPs.fromJson(Map<String, dynamic> json) {
+    final l$nodes = json['nodes'];
     final l$pageInfo = json['pageInfo'];
-    final l$totalCount = json['totalCount'];
     final l$$__typename = json['__typename'];
-    return Query$MyRSVPs$myRSVPs(
-      edges: (l$edges as List<dynamic>)
+    return Query$MyRSVPs$myEventRSVPs(
+      nodes: (l$nodes as List<dynamic>)
           .map(
-            (e) => Query$MyRSVPs$myRSVPs$edges.fromJson(
+            (e) => Query$MyRSVPs$myEventRSVPs$nodes.fromJson(
               (e as Map<String, dynamic>),
             ),
           )
           .toList(),
-      pageInfo: Query$MyRSVPs$myRSVPs$pageInfo.fromJson(
+      pageInfo: Query$MyRSVPs$myEventRSVPs$pageInfo.fromJson(
         (l$pageInfo as Map<String, dynamic>),
       ),
-      totalCount: (l$totalCount as int),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final List<Query$MyRSVPs$myRSVPs$edges> edges;
+  final List<Query$MyRSVPs$myEventRSVPs$nodes> nodes;
 
-  final Query$MyRSVPs$myRSVPs$pageInfo pageInfo;
-
-  final int totalCount;
+  final Query$MyRSVPs$myEventRSVPs$pageInfo pageInfo;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$edges = edges;
-    _resultData['edges'] = l$edges.map((e) => e.toJson()).toList();
+    final l$nodes = nodes;
+    _resultData['nodes'] = l$nodes.map((e) => e.toJson()).toList();
     final l$pageInfo = pageInfo;
     _resultData['pageInfo'] = l$pageInfo.toJson();
-    final l$totalCount = totalCount;
-    _resultData['totalCount'] = l$totalCount;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -797,14 +694,12 @@ class Query$MyRSVPs$myRSVPs {
 
   @override
   int get hashCode {
-    final l$edges = edges;
+    final l$nodes = nodes;
     final l$pageInfo = pageInfo;
-    final l$totalCount = totalCount;
     final l$$__typename = $__typename;
     return Object.hashAll([
-      Object.hashAll(l$edges.map((v) => v)),
+      Object.hashAll(l$nodes.map((v) => v)),
       l$pageInfo,
-      l$totalCount,
       l$$__typename,
     ]);
   }
@@ -814,18 +709,19 @@ class Query$MyRSVPs$myRSVPs {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$MyRSVPs$myRSVPs || runtimeType != other.runtimeType) {
+    if (other is! Query$MyRSVPs$myEventRSVPs ||
+        runtimeType != other.runtimeType) {
       return false;
     }
-    final l$edges = edges;
-    final lOther$edges = other.edges;
-    if (l$edges.length != lOther$edges.length) {
+    final l$nodes = nodes;
+    final lOther$nodes = other.nodes;
+    if (l$nodes.length != lOther$nodes.length) {
       return false;
     }
-    for (int i = 0; i < l$edges.length; i++) {
-      final l$edges$entry = l$edges[i];
-      final lOther$edges$entry = lOther$edges[i];
-      if (l$edges$entry != lOther$edges$entry) {
+    for (int i = 0; i < l$nodes.length; i++) {
+      final l$nodes$entry = l$nodes[i];
+      final lOther$nodes$entry = lOther$nodes[i];
+      if (l$nodes$entry != lOther$nodes$entry) {
         return false;
       }
     }
@@ -834,11 +730,6 @@ class Query$MyRSVPs$myRSVPs {
     if (l$pageInfo != lOther$pageInfo) {
       return false;
     }
-    final l$totalCount = totalCount;
-    final lOther$totalCount = other.totalCount;
-    if (l$totalCount != lOther$totalCount) {
-      return false;
-    }
     final l$$__typename = $__typename;
     final lOther$$__typename = other.$__typename;
     if (l$$__typename != lOther$$__typename) {
@@ -848,311 +739,168 @@ class Query$MyRSVPs$myRSVPs {
   }
 }
 
-extension UtilityExtension$Query$MyRSVPs$myRSVPs on Query$MyRSVPs$myRSVPs {
-  CopyWith$Query$MyRSVPs$myRSVPs<Query$MyRSVPs$myRSVPs> get copyWith =>
-      CopyWith$Query$MyRSVPs$myRSVPs(this, (i) => i);
+extension UtilityExtension$Query$MyRSVPs$myEventRSVPs
+    on Query$MyRSVPs$myEventRSVPs {
+  CopyWith$Query$MyRSVPs$myEventRSVPs<Query$MyRSVPs$myEventRSVPs>
+  get copyWith => CopyWith$Query$MyRSVPs$myEventRSVPs(this, (i) => i);
 }
 
-abstract class CopyWith$Query$MyRSVPs$myRSVPs<TRes> {
-  factory CopyWith$Query$MyRSVPs$myRSVPs(
-    Query$MyRSVPs$myRSVPs instance,
-    TRes Function(Query$MyRSVPs$myRSVPs) then,
-  ) = _CopyWithImpl$Query$MyRSVPs$myRSVPs;
+abstract class CopyWith$Query$MyRSVPs$myEventRSVPs<TRes> {
+  factory CopyWith$Query$MyRSVPs$myEventRSVPs(
+    Query$MyRSVPs$myEventRSVPs instance,
+    TRes Function(Query$MyRSVPs$myEventRSVPs) then,
+  ) = _CopyWithImpl$Query$MyRSVPs$myEventRSVPs;
 
-  factory CopyWith$Query$MyRSVPs$myRSVPs.stub(TRes res) =
-      _CopyWithStubImpl$Query$MyRSVPs$myRSVPs;
+  factory CopyWith$Query$MyRSVPs$myEventRSVPs.stub(TRes res) =
+      _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs;
 
   TRes call({
-    List<Query$MyRSVPs$myRSVPs$edges>? edges,
-    Query$MyRSVPs$myRSVPs$pageInfo? pageInfo,
-    int? totalCount,
+    List<Query$MyRSVPs$myEventRSVPs$nodes>? nodes,
+    Query$MyRSVPs$myEventRSVPs$pageInfo? pageInfo,
     String? $__typename,
   });
-  TRes edges(
-    Iterable<Query$MyRSVPs$myRSVPs$edges> Function(
+  TRes nodes(
+    Iterable<Query$MyRSVPs$myEventRSVPs$nodes> Function(
       Iterable<
-        CopyWith$Query$MyRSVPs$myRSVPs$edges<Query$MyRSVPs$myRSVPs$edges>
+        CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<
+          Query$MyRSVPs$myEventRSVPs$nodes
+        >
       >,
     )
     _fn,
   );
-  CopyWith$Query$MyRSVPs$myRSVPs$pageInfo<TRes> get pageInfo;
+  CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes> get pageInfo;
 }
 
-class _CopyWithImpl$Query$MyRSVPs$myRSVPs<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs<TRes> {
-  _CopyWithImpl$Query$MyRSVPs$myRSVPs(this._instance, this._then);
+class _CopyWithImpl$Query$MyRSVPs$myEventRSVPs<TRes>
+    implements CopyWith$Query$MyRSVPs$myEventRSVPs<TRes> {
+  _CopyWithImpl$Query$MyRSVPs$myEventRSVPs(this._instance, this._then);
 
-  final Query$MyRSVPs$myRSVPs _instance;
+  final Query$MyRSVPs$myEventRSVPs _instance;
 
-  final TRes Function(Query$MyRSVPs$myRSVPs) _then;
+  final TRes Function(Query$MyRSVPs$myEventRSVPs) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? edges = _undefined,
+    Object? nodes = _undefined,
     Object? pageInfo = _undefined,
-    Object? totalCount = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$MyRSVPs$myRSVPs(
-      edges: edges == _undefined || edges == null
-          ? _instance.edges
-          : (edges as List<Query$MyRSVPs$myRSVPs$edges>),
+    Query$MyRSVPs$myEventRSVPs(
+      nodes: nodes == _undefined || nodes == null
+          ? _instance.nodes
+          : (nodes as List<Query$MyRSVPs$myEventRSVPs$nodes>),
       pageInfo: pageInfo == _undefined || pageInfo == null
           ? _instance.pageInfo
-          : (pageInfo as Query$MyRSVPs$myRSVPs$pageInfo),
-      totalCount: totalCount == _undefined || totalCount == null
-          ? _instance.totalCount
-          : (totalCount as int),
+          : (pageInfo as Query$MyRSVPs$myEventRSVPs$pageInfo),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  TRes edges(
-    Iterable<Query$MyRSVPs$myRSVPs$edges> Function(
+  TRes nodes(
+    Iterable<Query$MyRSVPs$myEventRSVPs$nodes> Function(
       Iterable<
-        CopyWith$Query$MyRSVPs$myRSVPs$edges<Query$MyRSVPs$myRSVPs$edges>
+        CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<
+          Query$MyRSVPs$myEventRSVPs$nodes
+        >
       >,
     )
     _fn,
   ) => call(
-    edges: _fn(
-      _instance.edges.map(
-        (e) => CopyWith$Query$MyRSVPs$myRSVPs$edges(e, (i) => i),
+    nodes: _fn(
+      _instance.nodes.map(
+        (e) => CopyWith$Query$MyRSVPs$myEventRSVPs$nodes(e, (i) => i),
       ),
     ).toList(),
   );
 
-  CopyWith$Query$MyRSVPs$myRSVPs$pageInfo<TRes> get pageInfo {
+  CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes> get pageInfo {
     final local$pageInfo = _instance.pageInfo;
-    return CopyWith$Query$MyRSVPs$myRSVPs$pageInfo(
+    return CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo(
       local$pageInfo,
       (e) => call(pageInfo: e),
     );
   }
 }
 
-class _CopyWithStubImpl$Query$MyRSVPs$myRSVPs<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs<TRes> {
-  _CopyWithStubImpl$Query$MyRSVPs$myRSVPs(this._res);
+class _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs<TRes>
+    implements CopyWith$Query$MyRSVPs$myEventRSVPs<TRes> {
+  _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs(this._res);
 
   TRes _res;
 
   call({
-    List<Query$MyRSVPs$myRSVPs$edges>? edges,
-    Query$MyRSVPs$myRSVPs$pageInfo? pageInfo,
-    int? totalCount,
+    List<Query$MyRSVPs$myEventRSVPs$nodes>? nodes,
+    Query$MyRSVPs$myEventRSVPs$pageInfo? pageInfo,
     String? $__typename,
   }) => _res;
 
-  edges(_fn) => _res;
+  nodes(_fn) => _res;
 
-  CopyWith$Query$MyRSVPs$myRSVPs$pageInfo<TRes> get pageInfo =>
-      CopyWith$Query$MyRSVPs$myRSVPs$pageInfo.stub(_res);
+  CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes> get pageInfo =>
+      CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo.stub(_res);
 }
 
-class Query$MyRSVPs$myRSVPs$edges {
-  Query$MyRSVPs$myRSVPs$edges({
-    required this.node,
-    this.$__typename = 'RSVPEdge',
-  });
-
-  factory Query$MyRSVPs$myRSVPs$edges.fromJson(Map<String, dynamic> json) {
-    final l$node = json['node'];
-    final l$$__typename = json['__typename'];
-    return Query$MyRSVPs$myRSVPs$edges(
-      node: Query$MyRSVPs$myRSVPs$edges$node.fromJson(
-        (l$node as Map<String, dynamic>),
-      ),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final Query$MyRSVPs$myRSVPs$edges$node node;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$node = node;
-    _resultData['node'] = l$node.toJson();
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$node = node;
-    final l$$__typename = $__typename;
-    return Object.hashAll([l$node, l$$__typename]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Query$MyRSVPs$myRSVPs$edges ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$node = node;
-    final lOther$node = other.node;
-    if (l$node != lOther$node) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Query$MyRSVPs$myRSVPs$edges
-    on Query$MyRSVPs$myRSVPs$edges {
-  CopyWith$Query$MyRSVPs$myRSVPs$edges<Query$MyRSVPs$myRSVPs$edges>
-  get copyWith => CopyWith$Query$MyRSVPs$myRSVPs$edges(this, (i) => i);
-}
-
-abstract class CopyWith$Query$MyRSVPs$myRSVPs$edges<TRes> {
-  factory CopyWith$Query$MyRSVPs$myRSVPs$edges(
-    Query$MyRSVPs$myRSVPs$edges instance,
-    TRes Function(Query$MyRSVPs$myRSVPs$edges) then,
-  ) = _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges;
-
-  factory CopyWith$Query$MyRSVPs$myRSVPs$edges.stub(TRes res) =
-      _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges;
-
-  TRes call({Query$MyRSVPs$myRSVPs$edges$node? node, String? $__typename});
-  CopyWith$Query$MyRSVPs$myRSVPs$edges$node<TRes> get node;
-}
-
-class _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs$edges<TRes> {
-  _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges(this._instance, this._then);
-
-  final Query$MyRSVPs$myRSVPs$edges _instance;
-
-  final TRes Function(Query$MyRSVPs$myRSVPs$edges) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({Object? node = _undefined, Object? $__typename = _undefined}) =>
-      _then(
-        Query$MyRSVPs$myRSVPs$edges(
-          node: node == _undefined || node == null
-              ? _instance.node
-              : (node as Query$MyRSVPs$myRSVPs$edges$node),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String),
-        ),
-      );
-
-  CopyWith$Query$MyRSVPs$myRSVPs$edges$node<TRes> get node {
-    final local$node = _instance.node;
-    return CopyWith$Query$MyRSVPs$myRSVPs$edges$node(
-      local$node,
-      (e) => call(node: e),
-    );
-  }
-}
-
-class _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs$edges<TRes> {
-  _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges(this._res);
-
-  TRes _res;
-
-  call({Query$MyRSVPs$myRSVPs$edges$node? node, String? $__typename}) => _res;
-
-  CopyWith$Query$MyRSVPs$myRSVPs$edges$node<TRes> get node =>
-      CopyWith$Query$MyRSVPs$myRSVPs$edges$node.stub(_res);
-}
-
-class Query$MyRSVPs$myRSVPs$edges$node {
-  Query$MyRSVPs$myRSVPs$edges$node({
+class Query$MyRSVPs$myEventRSVPs$nodes {
+  Query$MyRSVPs$myEventRSVPs$nodes({
     required this.id,
     required this.eventId,
     required this.memberId,
     required this.clubId,
-    this.response,
-    this.rsvpType,
-    this.priority,
-    this.attendanceCount,
-    this.guestNames,
-    this.dietaryRestrictions,
-    this.seatingPreferences,
-    this.specialRequests,
     required this.status,
-    this.paymentRequired,
-    this.paymentVerified,
-    this.paymentAmount,
+    required this.guestCount,
+    this.dietaryRestrictions,
+    this.specialRequests,
+    required this.paymentStatus,
+    this.response,
+    this.attendanceCount,
     this.cancellationFee,
     this.feeWaived,
-    this.waitlistPosition,
     this.rsvpedAt,
     required this.updatedAt,
     this.cancelledAt,
     this.cancellationReason,
-    this.$__typename = 'RSVP',
+    this.$__typename = 'EventRSVP',
   });
 
-  factory Query$MyRSVPs$myRSVPs$edges$node.fromJson(Map<String, dynamic> json) {
+  factory Query$MyRSVPs$myEventRSVPs$nodes.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
     final l$eventId = json['eventId'];
     final l$memberId = json['memberId'];
     final l$clubId = json['clubId'];
-    final l$response = json['response'];
-    final l$rsvpType = json['rsvpType'];
-    final l$priority = json['priority'];
-    final l$attendanceCount = json['attendanceCount'];
-    final l$guestNames = json['guestNames'];
-    final l$dietaryRestrictions = json['dietaryRestrictions'];
-    final l$seatingPreferences = json['seatingPreferences'];
-    final l$specialRequests = json['specialRequests'];
     final l$status = json['status'];
-    final l$paymentRequired = json['paymentRequired'];
-    final l$paymentVerified = json['paymentVerified'];
-    final l$paymentAmount = json['paymentAmount'];
+    final l$guestCount = json['guestCount'];
+    final l$dietaryRestrictions = json['dietaryRestrictions'];
+    final l$specialRequests = json['specialRequests'];
+    final l$paymentStatus = json['paymentStatus'];
+    final l$response = json['response'];
+    final l$attendanceCount = json['attendanceCount'];
     final l$cancellationFee = json['cancellationFee'];
     final l$feeWaived = json['feeWaived'];
-    final l$waitlistPosition = json['waitlistPosition'];
     final l$rsvpedAt = json['rsvpedAt'];
     final l$updatedAt = json['updatedAt'];
     final l$cancelledAt = json['cancelledAt'];
     final l$cancellationReason = json['cancellationReason'];
     final l$$__typename = json['__typename'];
-    return Query$MyRSVPs$myRSVPs$edges$node(
+    return Query$MyRSVPs$myEventRSVPs$nodes(
       id: (l$id as String),
       eventId: (l$eventId as String),
       memberId: (l$memberId as String),
       clubId: (l$clubId as String),
-      response: (l$response as String?),
-      rsvpType: (l$rsvpType as String?),
-      priority: (l$priority as int?),
-      attendanceCount: (l$attendanceCount as int?),
-      guestNames: (l$guestNames as List<dynamic>?)
-          ?.map((e) => (e as String))
-          .toList(),
+      status: fromJson$Enum$RSVPStatus((l$status as String)),
+      guestCount: (l$guestCount as int),
       dietaryRestrictions: (l$dietaryRestrictions as List<dynamic>?)
           ?.map((e) => (e as String))
           .toList(),
-      seatingPreferences: (l$seatingPreferences as String?),
       specialRequests: (l$specialRequests as String?),
-      status: fromJson$Enum$RSVPStatus((l$status as String)),
-      paymentRequired: (l$paymentRequired as bool?),
-      paymentVerified: (l$paymentVerified as bool?),
-      paymentAmount: (l$paymentAmount as num?)?.toDouble(),
+      paymentStatus: fromJson$Enum$PaymentStatus((l$paymentStatus as String)),
+      response: (l$response as String?),
+      attendanceCount: (l$attendanceCount as int?),
       cancellationFee: (l$cancellationFee as num?)?.toDouble(),
       feeWaived: (l$feeWaived as bool?),
-      waitlistPosition: (l$waitlistPosition as int?),
       rsvpedAt: l$rsvpedAt == null
           ? null
           : DateTime.parse((l$rsvpedAt as String)),
@@ -1173,35 +921,23 @@ class Query$MyRSVPs$myRSVPs$edges$node {
 
   final String clubId;
 
-  final String? response;
+  final Enum$RSVPStatus status;
 
-  final String? rsvpType;
-
-  final int? priority;
-
-  final int? attendanceCount;
-
-  final List<String>? guestNames;
+  final int guestCount;
 
   final List<String>? dietaryRestrictions;
 
-  final String? seatingPreferences;
-
   final String? specialRequests;
 
-  final Enum$RSVPStatus status;
+  final Enum$PaymentStatus paymentStatus;
 
-  final bool? paymentRequired;
+  final String? response;
 
-  final bool? paymentVerified;
-
-  final double? paymentAmount;
+  final int? attendanceCount;
 
   final double? cancellationFee;
 
   final bool? feeWaived;
-
-  final int? waitlistPosition;
 
   final DateTime? rsvpedAt;
 
@@ -1223,38 +959,26 @@ class Query$MyRSVPs$myRSVPs$edges$node {
     _resultData['memberId'] = l$memberId;
     final l$clubId = clubId;
     _resultData['clubId'] = l$clubId;
-    final l$response = response;
-    _resultData['response'] = l$response;
-    final l$rsvpType = rsvpType;
-    _resultData['rsvpType'] = l$rsvpType;
-    final l$priority = priority;
-    _resultData['priority'] = l$priority;
-    final l$attendanceCount = attendanceCount;
-    _resultData['attendanceCount'] = l$attendanceCount;
-    final l$guestNames = guestNames;
-    _resultData['guestNames'] = l$guestNames?.map((e) => e).toList();
+    final l$status = status;
+    _resultData['status'] = toJson$Enum$RSVPStatus(l$status);
+    final l$guestCount = guestCount;
+    _resultData['guestCount'] = l$guestCount;
     final l$dietaryRestrictions = dietaryRestrictions;
     _resultData['dietaryRestrictions'] = l$dietaryRestrictions
         ?.map((e) => e)
         .toList();
-    final l$seatingPreferences = seatingPreferences;
-    _resultData['seatingPreferences'] = l$seatingPreferences;
     final l$specialRequests = specialRequests;
     _resultData['specialRequests'] = l$specialRequests;
-    final l$status = status;
-    _resultData['status'] = toJson$Enum$RSVPStatus(l$status);
-    final l$paymentRequired = paymentRequired;
-    _resultData['paymentRequired'] = l$paymentRequired;
-    final l$paymentVerified = paymentVerified;
-    _resultData['paymentVerified'] = l$paymentVerified;
-    final l$paymentAmount = paymentAmount;
-    _resultData['paymentAmount'] = l$paymentAmount;
+    final l$paymentStatus = paymentStatus;
+    _resultData['paymentStatus'] = toJson$Enum$PaymentStatus(l$paymentStatus);
+    final l$response = response;
+    _resultData['response'] = l$response;
+    final l$attendanceCount = attendanceCount;
+    _resultData['attendanceCount'] = l$attendanceCount;
     final l$cancellationFee = cancellationFee;
     _resultData['cancellationFee'] = l$cancellationFee;
     final l$feeWaived = feeWaived;
     _resultData['feeWaived'] = l$feeWaived;
-    final l$waitlistPosition = waitlistPosition;
-    _resultData['waitlistPosition'] = l$waitlistPosition;
     final l$rsvpedAt = rsvpedAt;
     _resultData['rsvpedAt'] = l$rsvpedAt?.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -1274,21 +998,15 @@ class Query$MyRSVPs$myRSVPs$edges$node {
     final l$eventId = eventId;
     final l$memberId = memberId;
     final l$clubId = clubId;
-    final l$response = response;
-    final l$rsvpType = rsvpType;
-    final l$priority = priority;
-    final l$attendanceCount = attendanceCount;
-    final l$guestNames = guestNames;
-    final l$dietaryRestrictions = dietaryRestrictions;
-    final l$seatingPreferences = seatingPreferences;
-    final l$specialRequests = specialRequests;
     final l$status = status;
-    final l$paymentRequired = paymentRequired;
-    final l$paymentVerified = paymentVerified;
-    final l$paymentAmount = paymentAmount;
+    final l$guestCount = guestCount;
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final l$specialRequests = specialRequests;
+    final l$paymentStatus = paymentStatus;
+    final l$response = response;
+    final l$attendanceCount = attendanceCount;
     final l$cancellationFee = cancellationFee;
     final l$feeWaived = feeWaived;
-    final l$waitlistPosition = waitlistPosition;
     final l$rsvpedAt = rsvpedAt;
     final l$updatedAt = updatedAt;
     final l$cancelledAt = cancelledAt;
@@ -1299,23 +1017,17 @@ class Query$MyRSVPs$myRSVPs$edges$node {
       l$eventId,
       l$memberId,
       l$clubId,
-      l$response,
-      l$rsvpType,
-      l$priority,
-      l$attendanceCount,
-      l$guestNames == null ? null : Object.hashAll(l$guestNames.map((v) => v)),
+      l$status,
+      l$guestCount,
       l$dietaryRestrictions == null
           ? null
           : Object.hashAll(l$dietaryRestrictions.map((v) => v)),
-      l$seatingPreferences,
       l$specialRequests,
-      l$status,
-      l$paymentRequired,
-      l$paymentVerified,
-      l$paymentAmount,
+      l$paymentStatus,
+      l$response,
+      l$attendanceCount,
       l$cancellationFee,
       l$feeWaived,
-      l$waitlistPosition,
       l$rsvpedAt,
       l$updatedAt,
       l$cancelledAt,
@@ -1329,7 +1041,7 @@ class Query$MyRSVPs$myRSVPs$edges$node {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$MyRSVPs$myRSVPs$edges$node ||
+    if (other is! Query$MyRSVPs$myEventRSVPs$nodes ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1353,40 +1065,14 @@ class Query$MyRSVPs$myRSVPs$edges$node {
     if (l$clubId != lOther$clubId) {
       return false;
     }
-    final l$response = response;
-    final lOther$response = other.response;
-    if (l$response != lOther$response) {
+    final l$status = status;
+    final lOther$status = other.status;
+    if (l$status != lOther$status) {
       return false;
     }
-    final l$rsvpType = rsvpType;
-    final lOther$rsvpType = other.rsvpType;
-    if (l$rsvpType != lOther$rsvpType) {
-      return false;
-    }
-    final l$priority = priority;
-    final lOther$priority = other.priority;
-    if (l$priority != lOther$priority) {
-      return false;
-    }
-    final l$attendanceCount = attendanceCount;
-    final lOther$attendanceCount = other.attendanceCount;
-    if (l$attendanceCount != lOther$attendanceCount) {
-      return false;
-    }
-    final l$guestNames = guestNames;
-    final lOther$guestNames = other.guestNames;
-    if (l$guestNames != null && lOther$guestNames != null) {
-      if (l$guestNames.length != lOther$guestNames.length) {
-        return false;
-      }
-      for (int i = 0; i < l$guestNames.length; i++) {
-        final l$guestNames$entry = l$guestNames[i];
-        final lOther$guestNames$entry = lOther$guestNames[i];
-        if (l$guestNames$entry != lOther$guestNames$entry) {
-          return false;
-        }
-      }
-    } else if (l$guestNames != lOther$guestNames) {
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (l$guestCount != lOther$guestCount) {
       return false;
     }
     final l$dietaryRestrictions = dietaryRestrictions;
@@ -1405,34 +1091,24 @@ class Query$MyRSVPs$myRSVPs$edges$node {
     } else if (l$dietaryRestrictions != lOther$dietaryRestrictions) {
       return false;
     }
-    final l$seatingPreferences = seatingPreferences;
-    final lOther$seatingPreferences = other.seatingPreferences;
-    if (l$seatingPreferences != lOther$seatingPreferences) {
-      return false;
-    }
     final l$specialRequests = specialRequests;
     final lOther$specialRequests = other.specialRequests;
     if (l$specialRequests != lOther$specialRequests) {
       return false;
     }
-    final l$status = status;
-    final lOther$status = other.status;
-    if (l$status != lOther$status) {
+    final l$paymentStatus = paymentStatus;
+    final lOther$paymentStatus = other.paymentStatus;
+    if (l$paymentStatus != lOther$paymentStatus) {
       return false;
     }
-    final l$paymentRequired = paymentRequired;
-    final lOther$paymentRequired = other.paymentRequired;
-    if (l$paymentRequired != lOther$paymentRequired) {
+    final l$response = response;
+    final lOther$response = other.response;
+    if (l$response != lOther$response) {
       return false;
     }
-    final l$paymentVerified = paymentVerified;
-    final lOther$paymentVerified = other.paymentVerified;
-    if (l$paymentVerified != lOther$paymentVerified) {
-      return false;
-    }
-    final l$paymentAmount = paymentAmount;
-    final lOther$paymentAmount = other.paymentAmount;
-    if (l$paymentAmount != lOther$paymentAmount) {
+    final l$attendanceCount = attendanceCount;
+    final lOther$attendanceCount = other.attendanceCount;
+    if (l$attendanceCount != lOther$attendanceCount) {
       return false;
     }
     final l$cancellationFee = cancellationFee;
@@ -1443,11 +1119,6 @@ class Query$MyRSVPs$myRSVPs$edges$node {
     final l$feeWaived = feeWaived;
     final lOther$feeWaived = other.feeWaived;
     if (l$feeWaived != lOther$feeWaived) {
-      return false;
-    }
-    final l$waitlistPosition = waitlistPosition;
-    final lOther$waitlistPosition = other.waitlistPosition;
-    if (l$waitlistPosition != lOther$waitlistPosition) {
       return false;
     }
     final l$rsvpedAt = rsvpedAt;
@@ -1479,41 +1150,35 @@ class Query$MyRSVPs$myRSVPs$edges$node {
   }
 }
 
-extension UtilityExtension$Query$MyRSVPs$myRSVPs$edges$node
-    on Query$MyRSVPs$myRSVPs$edges$node {
-  CopyWith$Query$MyRSVPs$myRSVPs$edges$node<Query$MyRSVPs$myRSVPs$edges$node>
-  get copyWith => CopyWith$Query$MyRSVPs$myRSVPs$edges$node(this, (i) => i);
+extension UtilityExtension$Query$MyRSVPs$myEventRSVPs$nodes
+    on Query$MyRSVPs$myEventRSVPs$nodes {
+  CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<Query$MyRSVPs$myEventRSVPs$nodes>
+  get copyWith => CopyWith$Query$MyRSVPs$myEventRSVPs$nodes(this, (i) => i);
 }
 
-abstract class CopyWith$Query$MyRSVPs$myRSVPs$edges$node<TRes> {
-  factory CopyWith$Query$MyRSVPs$myRSVPs$edges$node(
-    Query$MyRSVPs$myRSVPs$edges$node instance,
-    TRes Function(Query$MyRSVPs$myRSVPs$edges$node) then,
-  ) = _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges$node;
+abstract class CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<TRes> {
+  factory CopyWith$Query$MyRSVPs$myEventRSVPs$nodes(
+    Query$MyRSVPs$myEventRSVPs$nodes instance,
+    TRes Function(Query$MyRSVPs$myEventRSVPs$nodes) then,
+  ) = _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$nodes;
 
-  factory CopyWith$Query$MyRSVPs$myRSVPs$edges$node.stub(TRes res) =
-      _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges$node;
+  factory CopyWith$Query$MyRSVPs$myEventRSVPs$nodes.stub(TRes res) =
+      _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$nodes;
 
   TRes call({
     String? id,
     String? eventId,
     String? memberId,
     String? clubId,
-    String? response,
-    String? rsvpType,
-    int? priority,
-    int? attendanceCount,
-    List<String>? guestNames,
-    List<String>? dietaryRestrictions,
-    String? seatingPreferences,
-    String? specialRequests,
     Enum$RSVPStatus? status,
-    bool? paymentRequired,
-    bool? paymentVerified,
-    double? paymentAmount,
+    int? guestCount,
+    List<String>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$PaymentStatus? paymentStatus,
+    String? response,
+    int? attendanceCount,
     double? cancellationFee,
     bool? feeWaived,
-    int? waitlistPosition,
     DateTime? rsvpedAt,
     DateTime? updatedAt,
     DateTime? cancelledAt,
@@ -1522,13 +1187,13 @@ abstract class CopyWith$Query$MyRSVPs$myRSVPs$edges$node<TRes> {
   });
 }
 
-class _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges$node<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs$edges$node<TRes> {
-  _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges$node(this._instance, this._then);
+class _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$nodes<TRes>
+    implements CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<TRes> {
+  _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$nodes(this._instance, this._then);
 
-  final Query$MyRSVPs$myRSVPs$edges$node _instance;
+  final Query$MyRSVPs$myEventRSVPs$nodes _instance;
 
-  final TRes Function(Query$MyRSVPs$myRSVPs$edges$node) _then;
+  final TRes Function(Query$MyRSVPs$myEventRSVPs$nodes) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -1537,28 +1202,22 @@ class _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges$node<TRes>
     Object? eventId = _undefined,
     Object? memberId = _undefined,
     Object? clubId = _undefined,
-    Object? response = _undefined,
-    Object? rsvpType = _undefined,
-    Object? priority = _undefined,
-    Object? attendanceCount = _undefined,
-    Object? guestNames = _undefined,
-    Object? dietaryRestrictions = _undefined,
-    Object? seatingPreferences = _undefined,
-    Object? specialRequests = _undefined,
     Object? status = _undefined,
-    Object? paymentRequired = _undefined,
-    Object? paymentVerified = _undefined,
-    Object? paymentAmount = _undefined,
+    Object? guestCount = _undefined,
+    Object? dietaryRestrictions = _undefined,
+    Object? specialRequests = _undefined,
+    Object? paymentStatus = _undefined,
+    Object? response = _undefined,
+    Object? attendanceCount = _undefined,
     Object? cancellationFee = _undefined,
     Object? feeWaived = _undefined,
-    Object? waitlistPosition = _undefined,
     Object? rsvpedAt = _undefined,
     Object? updatedAt = _undefined,
     Object? cancelledAt = _undefined,
     Object? cancellationReason = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$MyRSVPs$myRSVPs$edges$node(
+    Query$MyRSVPs$myEventRSVPs$nodes(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       eventId: eventId == _undefined || eventId == null
           ? _instance.eventId
@@ -1569,51 +1228,33 @@ class _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges$node<TRes>
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
-      response: response == _undefined
-          ? _instance.response
-          : (response as String?),
-      rsvpType: rsvpType == _undefined
-          ? _instance.rsvpType
-          : (rsvpType as String?),
-      priority: priority == _undefined
-          ? _instance.priority
-          : (priority as int?),
-      attendanceCount: attendanceCount == _undefined
-          ? _instance.attendanceCount
-          : (attendanceCount as int?),
-      guestNames: guestNames == _undefined
-          ? _instance.guestNames
-          : (guestNames as List<String>?),
-      dietaryRestrictions: dietaryRestrictions == _undefined
-          ? _instance.dietaryRestrictions
-          : (dietaryRestrictions as List<String>?),
-      seatingPreferences: seatingPreferences == _undefined
-          ? _instance.seatingPreferences
-          : (seatingPreferences as String?),
-      specialRequests: specialRequests == _undefined
-          ? _instance.specialRequests
-          : (specialRequests as String?),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$RSVPStatus),
-      paymentRequired: paymentRequired == _undefined
-          ? _instance.paymentRequired
-          : (paymentRequired as bool?),
-      paymentVerified: paymentVerified == _undefined
-          ? _instance.paymentVerified
-          : (paymentVerified as bool?),
-      paymentAmount: paymentAmount == _undefined
-          ? _instance.paymentAmount
-          : (paymentAmount as double?),
+      guestCount: guestCount == _undefined || guestCount == null
+          ? _instance.guestCount
+          : (guestCount as int),
+      dietaryRestrictions: dietaryRestrictions == _undefined
+          ? _instance.dietaryRestrictions
+          : (dietaryRestrictions as List<String>?),
+      specialRequests: specialRequests == _undefined
+          ? _instance.specialRequests
+          : (specialRequests as String?),
+      paymentStatus: paymentStatus == _undefined || paymentStatus == null
+          ? _instance.paymentStatus
+          : (paymentStatus as Enum$PaymentStatus),
+      response: response == _undefined
+          ? _instance.response
+          : (response as String?),
+      attendanceCount: attendanceCount == _undefined
+          ? _instance.attendanceCount
+          : (attendanceCount as int?),
       cancellationFee: cancellationFee == _undefined
           ? _instance.cancellationFee
           : (cancellationFee as double?),
       feeWaived: feeWaived == _undefined
           ? _instance.feeWaived
           : (feeWaived as bool?),
-      waitlistPosition: waitlistPosition == _undefined
-          ? _instance.waitlistPosition
-          : (waitlistPosition as int?),
       rsvpedAt: rsvpedAt == _undefined
           ? _instance.rsvpedAt
           : (rsvpedAt as DateTime?),
@@ -1633,9 +1274,9 @@ class _CopyWithImpl$Query$MyRSVPs$myRSVPs$edges$node<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges$node<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs$edges$node<TRes> {
-  _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges$node(this._res);
+class _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$nodes<TRes>
+    implements CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<TRes> {
+  _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$nodes(this._res);
 
   TRes _res;
 
@@ -1644,21 +1285,15 @@ class _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges$node<TRes>
     String? eventId,
     String? memberId,
     String? clubId,
-    String? response,
-    String? rsvpType,
-    int? priority,
-    int? attendanceCount,
-    List<String>? guestNames,
-    List<String>? dietaryRestrictions,
-    String? seatingPreferences,
-    String? specialRequests,
     Enum$RSVPStatus? status,
-    bool? paymentRequired,
-    bool? paymentVerified,
-    double? paymentAmount,
+    int? guestCount,
+    List<String>? dietaryRestrictions,
+    String? specialRequests,
+    Enum$PaymentStatus? paymentStatus,
+    String? response,
+    int? attendanceCount,
     double? cancellationFee,
     bool? feeWaived,
-    int? waitlistPosition,
     DateTime? rsvpedAt,
     DateTime? updatedAt,
     DateTime? cancelledAt,
@@ -1667,50 +1302,66 @@ class _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$edges$node<TRes>
   }) => _res;
 }
 
-class Query$MyRSVPs$myRSVPs$pageInfo {
-  Query$MyRSVPs$myRSVPs$pageInfo({
+class Query$MyRSVPs$myEventRSVPs$pageInfo {
+  Query$MyRSVPs$myEventRSVPs$pageInfo({
+    required this.page,
+    required this.pageSize,
+    required this.total,
+    required this.totalPages,
     required this.hasNextPage,
-    required this.hasPreviousPage,
-    this.startCursor,
-    this.endCursor,
+    required this.hasPrevPage,
     this.$__typename = 'PageInfo',
   });
 
-  factory Query$MyRSVPs$myRSVPs$pageInfo.fromJson(Map<String, dynamic> json) {
+  factory Query$MyRSVPs$myEventRSVPs$pageInfo.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final l$page = json['page'];
+    final l$pageSize = json['pageSize'];
+    final l$total = json['total'];
+    final l$totalPages = json['totalPages'];
     final l$hasNextPage = json['hasNextPage'];
-    final l$hasPreviousPage = json['hasPreviousPage'];
-    final l$startCursor = json['startCursor'];
-    final l$endCursor = json['endCursor'];
+    final l$hasPrevPage = json['hasPrevPage'];
     final l$$__typename = json['__typename'];
-    return Query$MyRSVPs$myRSVPs$pageInfo(
+    return Query$MyRSVPs$myEventRSVPs$pageInfo(
+      page: (l$page as int),
+      pageSize: (l$pageSize as int),
+      total: (l$total as int),
+      totalPages: (l$totalPages as int),
       hasNextPage: (l$hasNextPage as bool),
-      hasPreviousPage: (l$hasPreviousPage as bool),
-      startCursor: (l$startCursor as String?),
-      endCursor: (l$endCursor as String?),
+      hasPrevPage: (l$hasPrevPage as bool),
       $__typename: (l$$__typename as String),
     );
   }
 
+  final int page;
+
+  final int pageSize;
+
+  final int total;
+
+  final int totalPages;
+
   final bool hasNextPage;
 
-  final bool hasPreviousPage;
-
-  final String? startCursor;
-
-  final String? endCursor;
+  final bool hasPrevPage;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$page = page;
+    _resultData['page'] = l$page;
+    final l$pageSize = pageSize;
+    _resultData['pageSize'] = l$pageSize;
+    final l$total = total;
+    _resultData['total'] = l$total;
+    final l$totalPages = totalPages;
+    _resultData['totalPages'] = l$totalPages;
     final l$hasNextPage = hasNextPage;
     _resultData['hasNextPage'] = l$hasNextPage;
-    final l$hasPreviousPage = hasPreviousPage;
-    _resultData['hasPreviousPage'] = l$hasPreviousPage;
-    final l$startCursor = startCursor;
-    _resultData['startCursor'] = l$startCursor;
-    final l$endCursor = endCursor;
-    _resultData['endCursor'] = l$endCursor;
+    final l$hasPrevPage = hasPrevPage;
+    _resultData['hasPrevPage'] = l$hasPrevPage;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1718,16 +1369,20 @@ class Query$MyRSVPs$myRSVPs$pageInfo {
 
   @override
   int get hashCode {
+    final l$page = page;
+    final l$pageSize = pageSize;
+    final l$total = total;
+    final l$totalPages = totalPages;
     final l$hasNextPage = hasNextPage;
-    final l$hasPreviousPage = hasPreviousPage;
-    final l$startCursor = startCursor;
-    final l$endCursor = endCursor;
+    final l$hasPrevPage = hasPrevPage;
     final l$$__typename = $__typename;
     return Object.hashAll([
+      l$page,
+      l$pageSize,
+      l$total,
+      l$totalPages,
       l$hasNextPage,
-      l$hasPreviousPage,
-      l$startCursor,
-      l$endCursor,
+      l$hasPrevPage,
       l$$__typename,
     ]);
   }
@@ -1737,8 +1392,28 @@ class Query$MyRSVPs$myRSVPs$pageInfo {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$MyRSVPs$myRSVPs$pageInfo ||
+    if (other is! Query$MyRSVPs$myEventRSVPs$pageInfo ||
         runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$page = page;
+    final lOther$page = other.page;
+    if (l$page != lOther$page) {
+      return false;
+    }
+    final l$pageSize = pageSize;
+    final lOther$pageSize = other.pageSize;
+    if (l$pageSize != lOther$pageSize) {
+      return false;
+    }
+    final l$total = total;
+    final lOther$total = other.total;
+    if (l$total != lOther$total) {
+      return false;
+    }
+    final l$totalPages = totalPages;
+    final lOther$totalPages = other.totalPages;
+    if (l$totalPages != lOther$totalPages) {
       return false;
     }
     final l$hasNextPage = hasNextPage;
@@ -1746,19 +1421,9 @@ class Query$MyRSVPs$myRSVPs$pageInfo {
     if (l$hasNextPage != lOther$hasNextPage) {
       return false;
     }
-    final l$hasPreviousPage = hasPreviousPage;
-    final lOther$hasPreviousPage = other.hasPreviousPage;
-    if (l$hasPreviousPage != lOther$hasPreviousPage) {
-      return false;
-    }
-    final l$startCursor = startCursor;
-    final lOther$startCursor = other.startCursor;
-    if (l$startCursor != lOther$startCursor) {
-      return false;
-    }
-    final l$endCursor = endCursor;
-    final lOther$endCursor = other.endCursor;
-    if (l$endCursor != lOther$endCursor) {
+    final l$hasPrevPage = hasPrevPage;
+    final lOther$hasPrevPage = other.hasPrevPage;
+    if (l$hasPrevPage != lOther$hasPrevPage) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -1770,60 +1435,70 @@ class Query$MyRSVPs$myRSVPs$pageInfo {
   }
 }
 
-extension UtilityExtension$Query$MyRSVPs$myRSVPs$pageInfo
-    on Query$MyRSVPs$myRSVPs$pageInfo {
-  CopyWith$Query$MyRSVPs$myRSVPs$pageInfo<Query$MyRSVPs$myRSVPs$pageInfo>
-  get copyWith => CopyWith$Query$MyRSVPs$myRSVPs$pageInfo(this, (i) => i);
+extension UtilityExtension$Query$MyRSVPs$myEventRSVPs$pageInfo
+    on Query$MyRSVPs$myEventRSVPs$pageInfo {
+  CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo<
+    Query$MyRSVPs$myEventRSVPs$pageInfo
+  >
+  get copyWith => CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo(this, (i) => i);
 }
 
-abstract class CopyWith$Query$MyRSVPs$myRSVPs$pageInfo<TRes> {
-  factory CopyWith$Query$MyRSVPs$myRSVPs$pageInfo(
-    Query$MyRSVPs$myRSVPs$pageInfo instance,
-    TRes Function(Query$MyRSVPs$myRSVPs$pageInfo) then,
-  ) = _CopyWithImpl$Query$MyRSVPs$myRSVPs$pageInfo;
+abstract class CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes> {
+  factory CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo(
+    Query$MyRSVPs$myEventRSVPs$pageInfo instance,
+    TRes Function(Query$MyRSVPs$myEventRSVPs$pageInfo) then,
+  ) = _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$pageInfo;
 
-  factory CopyWith$Query$MyRSVPs$myRSVPs$pageInfo.stub(TRes res) =
-      _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$pageInfo;
+  factory CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo.stub(TRes res) =
+      _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$pageInfo;
 
   TRes call({
+    int? page,
+    int? pageSize,
+    int? total,
+    int? totalPages,
     bool? hasNextPage,
-    bool? hasPreviousPage,
-    String? startCursor,
-    String? endCursor,
+    bool? hasPrevPage,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Query$MyRSVPs$myRSVPs$pageInfo<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs$pageInfo<TRes> {
-  _CopyWithImpl$Query$MyRSVPs$myRSVPs$pageInfo(this._instance, this._then);
+class _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes>
+    implements CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes> {
+  _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$pageInfo(this._instance, this._then);
 
-  final Query$MyRSVPs$myRSVPs$pageInfo _instance;
+  final Query$MyRSVPs$myEventRSVPs$pageInfo _instance;
 
-  final TRes Function(Query$MyRSVPs$myRSVPs$pageInfo) _then;
+  final TRes Function(Query$MyRSVPs$myEventRSVPs$pageInfo) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
+    Object? page = _undefined,
+    Object? pageSize = _undefined,
+    Object? total = _undefined,
+    Object? totalPages = _undefined,
     Object? hasNextPage = _undefined,
-    Object? hasPreviousPage = _undefined,
-    Object? startCursor = _undefined,
-    Object? endCursor = _undefined,
+    Object? hasPrevPage = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$MyRSVPs$myRSVPs$pageInfo(
+    Query$MyRSVPs$myEventRSVPs$pageInfo(
+      page: page == _undefined || page == null ? _instance.page : (page as int),
+      pageSize: pageSize == _undefined || pageSize == null
+          ? _instance.pageSize
+          : (pageSize as int),
+      total: total == _undefined || total == null
+          ? _instance.total
+          : (total as int),
+      totalPages: totalPages == _undefined || totalPages == null
+          ? _instance.totalPages
+          : (totalPages as int),
       hasNextPage: hasNextPage == _undefined || hasNextPage == null
           ? _instance.hasNextPage
           : (hasNextPage as bool),
-      hasPreviousPage: hasPreviousPage == _undefined || hasPreviousPage == null
-          ? _instance.hasPreviousPage
-          : (hasPreviousPage as bool),
-      startCursor: startCursor == _undefined
-          ? _instance.startCursor
-          : (startCursor as String?),
-      endCursor: endCursor == _undefined
-          ? _instance.endCursor
-          : (endCursor as String?),
+      hasPrevPage: hasPrevPage == _undefined || hasPrevPage == null
+          ? _instance.hasPrevPage
+          : (hasPrevPage as bool),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1831,17 +1506,19 @@ class _CopyWithImpl$Query$MyRSVPs$myRSVPs$pageInfo<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$pageInfo<TRes>
-    implements CopyWith$Query$MyRSVPs$myRSVPs$pageInfo<TRes> {
-  _CopyWithStubImpl$Query$MyRSVPs$myRSVPs$pageInfo(this._res);
+class _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes>
+    implements CopyWith$Query$MyRSVPs$myEventRSVPs$pageInfo<TRes> {
+  _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$pageInfo(this._res);
 
   TRes _res;
 
   call({
+    int? page,
+    int? pageSize,
+    int? total,
+    int? totalPages,
     bool? hasNextPage,
-    bool? hasPreviousPage,
-    String? startCursor,
-    String? endCursor,
+    bool? hasPrevPage,
     String? $__typename,
   }) => _res;
 }

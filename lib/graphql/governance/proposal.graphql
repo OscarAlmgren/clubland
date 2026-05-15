@@ -5,25 +5,36 @@ query Proposal($id: ID!) {
     description
     type
     status
+    category
+    votingMethod
+    votingStartTime
+    votingEndTime
+    quorumRequired
+    approvalThreshold
+    totalVotes
+    votesYay
+    votesNay
+    votesAbstain
+    createdAt
+    updatedAt
     proposer {
       id
-      username
       firstName
       lastName
+      email
     }
     votes {
       id
-      choice
-      comment
+      voteValue
+      weight
+      comments
+      isAnonymous
+      castAt
       voter {
         id
-        username
         firstName
         lastName
       }
-      createdAt
     }
-    votingDeadline
-    createdAt
   }
 }

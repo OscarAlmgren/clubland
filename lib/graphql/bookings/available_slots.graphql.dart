@@ -528,7 +528,7 @@ class Query$AvailableSlots$availableSlots {
     required this.endTime,
     required this.available,
     this.reason,
-    this.$__typename = 'TimeSlot',
+    this.$__typename = 'AvailabilitySlot',
   });
 
   factory Query$AvailableSlots$availableSlots.fromJson(

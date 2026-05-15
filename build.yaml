@@ -13,6 +13,10 @@ targets:
           scalars:
             Time:
               type: DateTime
+            DateTime:
+              type: DateTime
+            JSON:
+              type: dynamic
 
           # Clients to generate
           clients:

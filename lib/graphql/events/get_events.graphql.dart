@@ -5,53 +5,97 @@ import 'package:graphql/client.dart' as graphql;
 
 class Variables$Query$GetEvents {
   factory Variables$Query$GetEvents({
-    required String clubId,
-    Input$EventFilters? filters,
-    required Input$PaginationInput pagination,
+    Input$PaginationInput? pagination,
+    Enum$EventStatus? status,
+    Enum$ClubEventType? type,
+    DateTime? startDate,
+    DateTime? endDate,
   }) => Variables$Query$GetEvents._({
-    r'clubId': clubId,
-    if (filters != null) r'filters': filters,
-    r'pagination': pagination,
+    if (pagination != null) r'pagination': pagination,
+    if (status != null) r'status': status,
+    if (type != null) r'type': type,
+    if (startDate != null) r'startDate': startDate,
+    if (endDate != null) r'endDate': endDate,
   });
 
   Variables$Query$GetEvents._(this._$data);
 
   factory Variables$Query$GetEvents.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
-    final l$clubId = data['clubId'];
-    result$data['clubId'] = (l$clubId as String);
-    if (data.containsKey('filters')) {
-      final l$filters = data['filters'];
-      result$data['filters'] = l$filters == null
+    if (data.containsKey('pagination')) {
+      final l$pagination = data['pagination'];
+      result$data['pagination'] = l$pagination == null
           ? null
-          : Input$EventFilters.fromJson((l$filters as Map<String, dynamic>));
+          : Input$PaginationInput.fromJson(
+              (l$pagination as Map<String, dynamic>),
+            );
     }
-    final l$pagination = data['pagination'];
-    result$data['pagination'] = Input$PaginationInput.fromJson(
-      (l$pagination as Map<String, dynamic>),
-    );
+    if (data.containsKey('status')) {
+      final l$status = data['status'];
+      result$data['status'] = l$status == null
+          ? null
+          : fromJson$Enum$EventStatus((l$status as String));
+    }
+    if (data.containsKey('type')) {
+      final l$type = data['type'];
+      result$data['type'] = l$type == null
+          ? null
+          : fromJson$Enum$ClubEventType((l$type as String));
+    }
+    if (data.containsKey('startDate')) {
+      final l$startDate = data['startDate'];
+      result$data['startDate'] = l$startDate == null
+          ? null
+          : DateTime.parse((l$startDate as String));
+    }
+    if (data.containsKey('endDate')) {
+      final l$endDate = data['endDate'];
+      result$data['endDate'] = l$endDate == null
+          ? null
+          : DateTime.parse((l$endDate as String));
+    }
     return Variables$Query$GetEvents._(result$data);
   }
 
   Map<String, dynamic> _$data;
 
-  String get clubId => (_$data['clubId'] as String);
+  Input$PaginationInput? get pagination =>
+      (_$data['pagination'] as Input$PaginationInput?);
 
-  Input$EventFilters? get filters => (_$data['filters'] as Input$EventFilters?);
+  Enum$EventStatus? get status => (_$data['status'] as Enum$EventStatus?);
 
-  Input$PaginationInput get pagination =>
-      (_$data['pagination'] as Input$PaginationInput);
+  Enum$ClubEventType? get type => (_$data['type'] as Enum$ClubEventType?);
+
+  DateTime? get startDate => (_$data['startDate'] as DateTime?);
+
+  DateTime? get endDate => (_$data['endDate'] as DateTime?);
 
   Map<String, dynamic> toJson() {
     final result$data = <String, dynamic>{};
-    final l$clubId = clubId;
-    result$data['clubId'] = l$clubId;
-    if (_$data.containsKey('filters')) {
-      final l$filters = filters;
-      result$data['filters'] = l$filters?.toJson();
+    if (_$data.containsKey('pagination')) {
+      final l$pagination = pagination;
+      result$data['pagination'] = l$pagination?.toJson();
     }
-    final l$pagination = pagination;
-    result$data['pagination'] = l$pagination.toJson();
+    if (_$data.containsKey('status')) {
+      final l$status = status;
+      result$data['status'] = l$status == null
+          ? null
+          : toJson$Enum$EventStatus(l$status);
+    }
+    if (_$data.containsKey('type')) {
+      final l$type = type;
+      result$data['type'] = l$type == null
+          ? null
+          : toJson$Enum$ClubEventType(l$type);
+    }
+    if (_$data.containsKey('startDate')) {
+      final l$startDate = startDate;
+      result$data['startDate'] = l$startDate?.toIso8601String();
+    }
+    if (_$data.containsKey('endDate')) {
+      final l$endDate = endDate;
+      result$data['endDate'] = l$endDate?.toIso8601String();
+    }
     return result$data;
   }
 
@@ -67,22 +111,46 @@ class Variables$Query$GetEvents {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$clubId = clubId;
-    final lOther$clubId = other.clubId;
-    if (l$clubId != lOther$clubId) {
-      return false;
-    }
-    final l$filters = filters;
-    final lOther$filters = other.filters;
-    if (_$data.containsKey('filters') != other._$data.containsKey('filters')) {
-      return false;
-    }
-    if (l$filters != lOther$filters) {
-      return false;
-    }
     final l$pagination = pagination;
     final lOther$pagination = other.pagination;
+    if (_$data.containsKey('pagination') !=
+        other._$data.containsKey('pagination')) {
+      return false;
+    }
     if (l$pagination != lOther$pagination) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (_$data.containsKey('status') != other._$data.containsKey('status')) {
+      return false;
+    }
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$type = type;
+    final lOther$type = other.type;
+    if (_$data.containsKey('type') != other._$data.containsKey('type')) {
+      return false;
+    }
+    if (l$type != lOther$type) {
+      return false;
+    }
+    final l$startDate = startDate;
+    final lOther$startDate = other.startDate;
+    if (_$data.containsKey('startDate') !=
+        other._$data.containsKey('startDate')) {
+      return false;
+    }
+    if (l$startDate != lOther$startDate) {
+      return false;
+    }
+    final l$endDate = endDate;
+    final lOther$endDate = other.endDate;
+    if (_$data.containsKey('endDate') != other._$data.containsKey('endDate')) {
+      return false;
+    }
+    if (l$endDate != lOther$endDate) {
       return false;
     }
     return true;
@@ -90,13 +158,17 @@ class Variables$Query$GetEvents {
 
   @override
   int get hashCode {
-    final l$clubId = clubId;
-    final l$filters = filters;
     final l$pagination = pagination;
+    final l$status = status;
+    final l$type = type;
+    final l$startDate = startDate;
+    final l$endDate = endDate;
     return Object.hashAll([
-      l$clubId,
-      _$data.containsKey('filters') ? l$filters : const {},
-      l$pagination,
+      _$data.containsKey('pagination') ? l$pagination : const {},
+      _$data.containsKey('status') ? l$status : const {},
+      _$data.containsKey('type') ? l$type : const {},
+      _$data.containsKey('startDate') ? l$startDate : const {},
+      _$data.containsKey('endDate') ? l$endDate : const {},
     ]);
   }
 }
@@ -111,9 +183,11 @@ abstract class CopyWith$Variables$Query$GetEvents<TRes> {
       _CopyWithStubImpl$Variables$Query$GetEvents;
 
   TRes call({
-    String? clubId,
-    Input$EventFilters? filters,
     Input$PaginationInput? pagination,
+    Enum$EventStatus? status,
+    Enum$ClubEventType? type,
+    DateTime? startDate,
+    DateTime? endDate,
   });
 }
 
@@ -128,16 +202,20 @@ class _CopyWithImpl$Variables$Query$GetEvents<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? clubId = _undefined,
-    Object? filters = _undefined,
     Object? pagination = _undefined,
+    Object? status = _undefined,
+    Object? type = _undefined,
+    Object? startDate = _undefined,
+    Object? endDate = _undefined,
   }) => _then(
     Variables$Query$GetEvents._({
       ..._instance._$data,
-      if (clubId != _undefined && clubId != null) 'clubId': (clubId as String),
-      if (filters != _undefined) 'filters': (filters as Input$EventFilters?),
-      if (pagination != _undefined && pagination != null)
-        'pagination': (pagination as Input$PaginationInput),
+      if (pagination != _undefined)
+        'pagination': (pagination as Input$PaginationInput?),
+      if (status != _undefined) 'status': (status as Enum$EventStatus?),
+      if (type != _undefined) 'type': (type as Enum$ClubEventType?),
+      if (startDate != _undefined) 'startDate': (startDate as DateTime?),
+      if (endDate != _undefined) 'endDate': (endDate as DateTime?),
     }),
   );
 }
@@ -149,9 +227,11 @@ class _CopyWithStubImpl$Variables$Query$GetEvents<TRes>
   TRes _res;
 
   call({
-    String? clubId,
-    Input$EventFilters? filters,
     Input$PaginationInput? pagination,
+    Enum$EventStatus? status,
+    Enum$ClubEventType? type,
+    DateTime? startDate,
+    DateTime? endDate,
   }) => _res;
 }
 
@@ -279,26 +359,41 @@ const documentNodeQueryGetEvents = DocumentNode(
       name: NameNode(value: 'GetEvents'),
       variableDefinitions: [
         VariableDefinitionNode(
-          variable: VariableNode(name: NameNode(value: 'clubId')),
-          type: NamedTypeNode(name: NameNode(value: 'ID'), isNonNull: true),
-          defaultValue: DefaultValueNode(value: null),
-          directives: [],
-        ),
-        VariableDefinitionNode(
-          variable: VariableNode(name: NameNode(value: 'filters')),
+          variable: VariableNode(name: NameNode(value: 'pagination')),
           type: NamedTypeNode(
-            name: NameNode(value: 'EventFilters'),
+            name: NameNode(value: 'PaginationInput'),
             isNonNull: false,
           ),
           defaultValue: DefaultValueNode(value: null),
           directives: [],
         ),
         VariableDefinitionNode(
-          variable: VariableNode(name: NameNode(value: 'pagination')),
+          variable: VariableNode(name: NameNode(value: 'status')),
           type: NamedTypeNode(
-            name: NameNode(value: 'PaginationInput'),
-            isNonNull: true,
+            name: NameNode(value: 'EventStatus'),
+            isNonNull: false,
           ),
+          defaultValue: DefaultValueNode(value: null),
+          directives: [],
+        ),
+        VariableDefinitionNode(
+          variable: VariableNode(name: NameNode(value: 'type')),
+          type: NamedTypeNode(
+            name: NameNode(value: 'ClubEventType'),
+            isNonNull: false,
+          ),
+          defaultValue: DefaultValueNode(value: null),
+          directives: [],
+        ),
+        VariableDefinitionNode(
+          variable: VariableNode(name: NameNode(value: 'startDate')),
+          type: NamedTypeNode(name: NameNode(value: 'Time'), isNonNull: false),
+          defaultValue: DefaultValueNode(value: null),
+          directives: [],
+        ),
+        VariableDefinitionNode(
+          variable: VariableNode(name: NameNode(value: 'endDate')),
+          type: NamedTypeNode(name: NameNode(value: 'Time'), isNonNull: false),
           defaultValue: DefaultValueNode(value: null),
           directives: [],
         ),
@@ -311,270 +406,224 @@ const documentNodeQueryGetEvents = DocumentNode(
             alias: null,
             arguments: [
               ArgumentNode(
-                name: NameNode(value: 'clubId'),
-                value: VariableNode(name: NameNode(value: 'clubId')),
-              ),
-              ArgumentNode(
-                name: NameNode(value: 'filters'),
-                value: VariableNode(name: NameNode(value: 'filters')),
-              ),
-              ArgumentNode(
                 name: NameNode(value: 'pagination'),
                 value: VariableNode(name: NameNode(value: 'pagination')),
+              ),
+              ArgumentNode(
+                name: NameNode(value: 'status'),
+                value: VariableNode(name: NameNode(value: 'status')),
+              ),
+              ArgumentNode(
+                name: NameNode(value: 'type'),
+                value: VariableNode(name: NameNode(value: 'type')),
+              ),
+              ArgumentNode(
+                name: NameNode(value: 'startDate'),
+                value: VariableNode(name: NameNode(value: 'startDate')),
+              ),
+              ArgumentNode(
+                name: NameNode(value: 'endDate'),
+                value: VariableNode(name: NameNode(value: 'endDate')),
               ),
             ],
             directives: [],
             selectionSet: SelectionSetNode(
               selections: [
                 FieldNode(
-                  name: NameNode(value: 'edges'),
+                  name: NameNode(value: 'nodes'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: SelectionSetNode(
                     selections: [
                       FieldNode(
-                        name: NameNode(value: 'node'),
+                        name: NameNode(value: 'id'),
                         alias: null,
                         arguments: [],
                         directives: [],
-                        selectionSet: SelectionSetNode(
-                          selections: [
-                            FieldNode(
-                              name: NameNode(value: 'id'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'clubId'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'title'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'description'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'eventType'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'startTime'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'endTime'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'location'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'imageUrl'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'capacity'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'currentAttendees'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'availableSpots'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'tentativeCount'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'waitlistCount'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'guestPolicy'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'maxGuestsPerMember'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'requiresApproval'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'requiresPayment'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'price'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'cancellationDeadline'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'freeCancellationDays'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(
-                                value: 'cancellationFeePercentage',
-                              ),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'allowsSubgroupPriority'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'fullHouseExclusive'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'rsvpDeadline'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'subgroupId'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'organizerName'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'contactEmail'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'contactPhone'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'paymentInstructions'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'createdAt'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'updatedAt'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: '__typename'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                          ],
-                        ),
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'clubId'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'name'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'title'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'description'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'type'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'eventType'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'startTime'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'endTime'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'location'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'imageUrl'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'capacity'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'currentAttendees'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'availableSpots'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'tentativeCount'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'waitlistCount'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'requiresApproval'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'requiresPayment'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'price'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'cancellationDeadline'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'rsvpDeadline'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'organizerName'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'contactEmail'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'contactPhone'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'paymentInstructions'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'createdAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'updatedAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
                       ),
                       FieldNode(
                         name: NameNode(value: '__typename'),
@@ -594,6 +643,34 @@ const documentNodeQueryGetEvents = DocumentNode(
                   selectionSet: SelectionSetNode(
                     selections: [
                       FieldNode(
+                        name: NameNode(value: 'page'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'pageSize'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'total'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'totalPages'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'hasNextPage'),
                         alias: null,
                         arguments: [],
@@ -601,21 +678,7 @@ const documentNodeQueryGetEvents = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'hasPreviousPage'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'startCursor'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'endCursor'),
+                        name: NameNode(value: 'hasPrevPage'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -630,13 +693,6 @@ const documentNodeQueryGetEvents = DocumentNode(
                       ),
                     ],
                   ),
-                ),
-                FieldNode(
-                  name: NameNode(value: 'totalCount'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
                 ),
                 FieldNode(
                   name: NameNode(value: '__typename'),
@@ -668,7 +724,7 @@ typedef OnQueryComplete$Query$GetEvents =
 class Options$Query$GetEvents extends graphql.QueryOptions<Query$GetEvents> {
   Options$Query$GetEvents({
     String? operationName,
-    required Variables$Query$GetEvents variables,
+    Variables$Query$GetEvents? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -680,7 +736,7 @@ class Options$Query$GetEvents extends graphql.QueryOptions<Query$GetEvents> {
     graphql.OnQueryError? onError,
   }) : onCompleteWithParsed = onComplete,
        super(
-         variables: variables.toJson(),
+         variables: variables?.toJson() ?? {},
          operationName: operationName,
          fetchPolicy: fetchPolicy,
          errorPolicy: errorPolicy,
@@ -714,7 +770,7 @@ class WatchOptions$Query$GetEvents
     extends graphql.WatchQueryOptions<Query$GetEvents> {
   WatchOptions$Query$GetEvents({
     String? operationName,
-    required Variables$Query$GetEvents variables,
+    Variables$Query$GetEvents? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -726,7 +782,7 @@ class WatchOptions$Query$GetEvents
     bool carryForwardDataOnException = true,
     bool fetchResults = false,
   }) : super(
-         variables: variables.toJson(),
+         variables: variables?.toJson() ?? {},
          operationName: operationName,
          fetchPolicy: fetchPolicy,
          errorPolicy: errorPolicy,
@@ -745,44 +801,44 @@ class WatchOptions$Query$GetEvents
 class FetchMoreOptions$Query$GetEvents extends graphql.FetchMoreOptions {
   FetchMoreOptions$Query$GetEvents({
     required graphql.UpdateQuery updateQuery,
-    required Variables$Query$GetEvents variables,
+    Variables$Query$GetEvents? variables,
   }) : super(
          updateQuery: updateQuery,
-         variables: variables.toJson(),
+         variables: variables?.toJson() ?? {},
          document: documentNodeQueryGetEvents,
        );
 }
 
 extension ClientExtension$Query$GetEvents on graphql.GraphQLClient {
-  Future<graphql.QueryResult<Query$GetEvents>> query$GetEvents(
-    Options$Query$GetEvents options,
-  ) async => await this.query(options);
+  Future<graphql.QueryResult<Query$GetEvents>> query$GetEvents([
+    Options$Query$GetEvents? options,
+  ]) async => await this.query(options ?? Options$Query$GetEvents());
 
-  graphql.ObservableQuery<Query$GetEvents> watchQuery$GetEvents(
-    WatchOptions$Query$GetEvents options,
-  ) => this.watchQuery(options);
+  graphql.ObservableQuery<Query$GetEvents> watchQuery$GetEvents([
+    WatchOptions$Query$GetEvents? options,
+  ]) => this.watchQuery(options ?? WatchOptions$Query$GetEvents());
 
   void writeQuery$GetEvents({
     required Query$GetEvents data,
-    required Variables$Query$GetEvents variables,
+    Variables$Query$GetEvents? variables,
     bool broadcast = true,
   }) => this.writeQuery(
     graphql.Request(
       operation: graphql.Operation(document: documentNodeQueryGetEvents),
-      variables: variables.toJson(),
+      variables: variables?.toJson() ?? const {},
     ),
     data: data.toJson(),
     broadcast: broadcast,
   );
 
   Query$GetEvents? readQuery$GetEvents({
-    required Variables$Query$GetEvents variables,
+    Variables$Query$GetEvents? variables,
     bool optimistic = true,
   }) {
     final result = this.readQuery(
       graphql.Request(
         operation: graphql.Operation(document: documentNodeQueryGetEvents),
-        variables: variables.toJson(),
+        variables: variables?.toJson() ?? const {},
       ),
       optimistic: optimistic,
     );
@@ -792,21 +848,19 @@ extension ClientExtension$Query$GetEvents on graphql.GraphQLClient {
 
 class Query$GetEvents$events {
   Query$GetEvents$events({
-    required this.edges,
+    required this.nodes,
     required this.pageInfo,
-    required this.totalCount,
     this.$__typename = 'EventConnection',
   });
 
   factory Query$GetEvents$events.fromJson(Map<String, dynamic> json) {
-    final l$edges = json['edges'];
+    final l$nodes = json['nodes'];
     final l$pageInfo = json['pageInfo'];
-    final l$totalCount = json['totalCount'];
     final l$$__typename = json['__typename'];
     return Query$GetEvents$events(
-      edges: (l$edges as List<dynamic>)
+      nodes: (l$nodes as List<dynamic>)
           .map(
-            (e) => Query$GetEvents$events$edges.fromJson(
+            (e) => Query$GetEvents$events$nodes.fromJson(
               (e as Map<String, dynamic>),
             ),
           )
@@ -814,27 +868,22 @@ class Query$GetEvents$events {
       pageInfo: Query$GetEvents$events$pageInfo.fromJson(
         (l$pageInfo as Map<String, dynamic>),
       ),
-      totalCount: (l$totalCount as int),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final List<Query$GetEvents$events$edges> edges;
+  final List<Query$GetEvents$events$nodes> nodes;
 
   final Query$GetEvents$events$pageInfo pageInfo;
-
-  final int totalCount;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$edges = edges;
-    _resultData['edges'] = l$edges.map((e) => e.toJson()).toList();
+    final l$nodes = nodes;
+    _resultData['nodes'] = l$nodes.map((e) => e.toJson()).toList();
     final l$pageInfo = pageInfo;
     _resultData['pageInfo'] = l$pageInfo.toJson();
-    final l$totalCount = totalCount;
-    _resultData['totalCount'] = l$totalCount;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -842,14 +891,12 @@ class Query$GetEvents$events {
 
   @override
   int get hashCode {
-    final l$edges = edges;
+    final l$nodes = nodes;
     final l$pageInfo = pageInfo;
-    final l$totalCount = totalCount;
     final l$$__typename = $__typename;
     return Object.hashAll([
-      Object.hashAll(l$edges.map((v) => v)),
+      Object.hashAll(l$nodes.map((v) => v)),
       l$pageInfo,
-      l$totalCount,
       l$$__typename,
     ]);
   }
@@ -862,26 +909,21 @@ class Query$GetEvents$events {
     if (other is! Query$GetEvents$events || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$edges = edges;
-    final lOther$edges = other.edges;
-    if (l$edges.length != lOther$edges.length) {
+    final l$nodes = nodes;
+    final lOther$nodes = other.nodes;
+    if (l$nodes.length != lOther$nodes.length) {
       return false;
     }
-    for (int i = 0; i < l$edges.length; i++) {
-      final l$edges$entry = l$edges[i];
-      final lOther$edges$entry = lOther$edges[i];
-      if (l$edges$entry != lOther$edges$entry) {
+    for (int i = 0; i < l$nodes.length; i++) {
+      final l$nodes$entry = l$nodes[i];
+      final lOther$nodes$entry = lOther$nodes[i];
+      if (l$nodes$entry != lOther$nodes$entry) {
         return false;
       }
     }
     final l$pageInfo = pageInfo;
     final lOther$pageInfo = other.pageInfo;
     if (l$pageInfo != lOther$pageInfo) {
-      return false;
-    }
-    final l$totalCount = totalCount;
-    final lOther$totalCount = other.totalCount;
-    if (l$totalCount != lOther$totalCount) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -908,15 +950,14 @@ abstract class CopyWith$Query$GetEvents$events<TRes> {
       _CopyWithStubImpl$Query$GetEvents$events;
 
   TRes call({
-    List<Query$GetEvents$events$edges>? edges,
+    List<Query$GetEvents$events$nodes>? nodes,
     Query$GetEvents$events$pageInfo? pageInfo,
-    int? totalCount,
     String? $__typename,
   });
-  TRes edges(
-    Iterable<Query$GetEvents$events$edges> Function(
+  TRes nodes(
+    Iterable<Query$GetEvents$events$nodes> Function(
       Iterable<
-        CopyWith$Query$GetEvents$events$edges<Query$GetEvents$events$edges>
+        CopyWith$Query$GetEvents$events$nodes<Query$GetEvents$events$nodes>
       >,
     )
     _fn,
@@ -935,38 +976,34 @@ class _CopyWithImpl$Query$GetEvents$events<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? edges = _undefined,
+    Object? nodes = _undefined,
     Object? pageInfo = _undefined,
-    Object? totalCount = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$GetEvents$events(
-      edges: edges == _undefined || edges == null
-          ? _instance.edges
-          : (edges as List<Query$GetEvents$events$edges>),
+      nodes: nodes == _undefined || nodes == null
+          ? _instance.nodes
+          : (nodes as List<Query$GetEvents$events$nodes>),
       pageInfo: pageInfo == _undefined || pageInfo == null
           ? _instance.pageInfo
           : (pageInfo as Query$GetEvents$events$pageInfo),
-      totalCount: totalCount == _undefined || totalCount == null
-          ? _instance.totalCount
-          : (totalCount as int),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  TRes edges(
-    Iterable<Query$GetEvents$events$edges> Function(
+  TRes nodes(
+    Iterable<Query$GetEvents$events$nodes> Function(
       Iterable<
-        CopyWith$Query$GetEvents$events$edges<Query$GetEvents$events$edges>
+        CopyWith$Query$GetEvents$events$nodes<Query$GetEvents$events$nodes>
       >,
     )
     _fn,
   ) => call(
-    edges: _fn(
-      _instance.edges.map(
-        (e) => CopyWith$Query$GetEvents$events$edges(e, (i) => i),
+    nodes: _fn(
+      _instance.nodes.map(
+        (e) => CopyWith$Query$GetEvents$events$nodes(e, (i) => i),
       ),
     ).toList(),
   );
@@ -987,168 +1024,40 @@ class _CopyWithStubImpl$Query$GetEvents$events<TRes>
   TRes _res;
 
   call({
-    List<Query$GetEvents$events$edges>? edges,
+    List<Query$GetEvents$events$nodes>? nodes,
     Query$GetEvents$events$pageInfo? pageInfo,
-    int? totalCount,
     String? $__typename,
   }) => _res;
 
-  edges(_fn) => _res;
+  nodes(_fn) => _res;
 
   CopyWith$Query$GetEvents$events$pageInfo<TRes> get pageInfo =>
       CopyWith$Query$GetEvents$events$pageInfo.stub(_res);
 }
 
-class Query$GetEvents$events$edges {
-  Query$GetEvents$events$edges({
-    required this.node,
-    this.$__typename = 'EventEdge',
-  });
-
-  factory Query$GetEvents$events$edges.fromJson(Map<String, dynamic> json) {
-    final l$node = json['node'];
-    final l$$__typename = json['__typename'];
-    return Query$GetEvents$events$edges(
-      node: Query$GetEvents$events$edges$node.fromJson(
-        (l$node as Map<String, dynamic>),
-      ),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final Query$GetEvents$events$edges$node node;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$node = node;
-    _resultData['node'] = l$node.toJson();
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$node = node;
-    final l$$__typename = $__typename;
-    return Object.hashAll([l$node, l$$__typename]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! Query$GetEvents$events$edges ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$node = node;
-    final lOther$node = other.node;
-    if (l$node != lOther$node) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Query$GetEvents$events$edges
-    on Query$GetEvents$events$edges {
-  CopyWith$Query$GetEvents$events$edges<Query$GetEvents$events$edges>
-  get copyWith => CopyWith$Query$GetEvents$events$edges(this, (i) => i);
-}
-
-abstract class CopyWith$Query$GetEvents$events$edges<TRes> {
-  factory CopyWith$Query$GetEvents$events$edges(
-    Query$GetEvents$events$edges instance,
-    TRes Function(Query$GetEvents$events$edges) then,
-  ) = _CopyWithImpl$Query$GetEvents$events$edges;
-
-  factory CopyWith$Query$GetEvents$events$edges.stub(TRes res) =
-      _CopyWithStubImpl$Query$GetEvents$events$edges;
-
-  TRes call({Query$GetEvents$events$edges$node? node, String? $__typename});
-  CopyWith$Query$GetEvents$events$edges$node<TRes> get node;
-}
-
-class _CopyWithImpl$Query$GetEvents$events$edges<TRes>
-    implements CopyWith$Query$GetEvents$events$edges<TRes> {
-  _CopyWithImpl$Query$GetEvents$events$edges(this._instance, this._then);
-
-  final Query$GetEvents$events$edges _instance;
-
-  final TRes Function(Query$GetEvents$events$edges) _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({Object? node = _undefined, Object? $__typename = _undefined}) =>
-      _then(
-        Query$GetEvents$events$edges(
-          node: node == _undefined || node == null
-              ? _instance.node
-              : (node as Query$GetEvents$events$edges$node),
-          $__typename: $__typename == _undefined || $__typename == null
-              ? _instance.$__typename
-              : ($__typename as String),
-        ),
-      );
-
-  CopyWith$Query$GetEvents$events$edges$node<TRes> get node {
-    final local$node = _instance.node;
-    return CopyWith$Query$GetEvents$events$edges$node(
-      local$node,
-      (e) => call(node: e),
-    );
-  }
-}
-
-class _CopyWithStubImpl$Query$GetEvents$events$edges<TRes>
-    implements CopyWith$Query$GetEvents$events$edges<TRes> {
-  _CopyWithStubImpl$Query$GetEvents$events$edges(this._res);
-
-  TRes _res;
-
-  call({Query$GetEvents$events$edges$node? node, String? $__typename}) => _res;
-
-  CopyWith$Query$GetEvents$events$edges$node<TRes> get node =>
-      CopyWith$Query$GetEvents$events$edges$node.stub(_res);
-}
-
-class Query$GetEvents$events$edges$node {
-  Query$GetEvents$events$edges$node({
+class Query$GetEvents$events$nodes {
+  Query$GetEvents$events$nodes({
     required this.id,
     required this.clubId,
+    required this.name,
     required this.title,
     this.description,
-    this.eventType,
+    required this.type,
+    required this.eventType,
     required this.startTime,
     required this.endTime,
     this.location,
     this.imageUrl,
-    this.capacity,
-    this.currentAttendees,
+    required this.capacity,
+    required this.currentAttendees,
     this.availableSpots,
     this.tentativeCount,
     this.waitlistCount,
-    this.guestPolicy,
-    this.maxGuestsPerMember,
-    this.requiresApproval,
+    required this.requiresApproval,
     this.requiresPayment,
     this.price,
     this.cancellationDeadline,
-    this.freeCancellationDays,
-    this.cancellationFeePercentage,
-    this.allowsSubgroupPriority,
-    this.fullHouseExclusive,
     this.rsvpDeadline,
-    this.subgroupId,
     this.organizerName,
     this.contactEmail,
     this.contactPhone,
@@ -1158,13 +1067,13 @@ class Query$GetEvents$events$edges$node {
     this.$__typename = 'Event',
   });
 
-  factory Query$GetEvents$events$edges$node.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory Query$GetEvents$events$nodes.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
     final l$clubId = json['clubId'];
+    final l$name = json['name'];
     final l$title = json['title'];
     final l$description = json['description'];
+    final l$type = json['type'];
     final l$eventType = json['eventType'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
@@ -1175,18 +1084,11 @@ class Query$GetEvents$events$edges$node {
     final l$availableSpots = json['availableSpots'];
     final l$tentativeCount = json['tentativeCount'];
     final l$waitlistCount = json['waitlistCount'];
-    final l$guestPolicy = json['guestPolicy'];
-    final l$maxGuestsPerMember = json['maxGuestsPerMember'];
     final l$requiresApproval = json['requiresApproval'];
     final l$requiresPayment = json['requiresPayment'];
     final l$price = json['price'];
     final l$cancellationDeadline = json['cancellationDeadline'];
-    final l$freeCancellationDays = json['freeCancellationDays'];
-    final l$cancellationFeePercentage = json['cancellationFeePercentage'];
-    final l$allowsSubgroupPriority = json['allowsSubgroupPriority'];
-    final l$fullHouseExclusive = json['fullHouseExclusive'];
     final l$rsvpDeadline = json['rsvpDeadline'];
-    final l$subgroupId = json['subgroupId'];
     final l$organizerName = json['organizerName'];
     final l$contactEmail = json['contactEmail'];
     final l$contactPhone = json['contactPhone'];
@@ -1194,38 +1096,32 @@ class Query$GetEvents$events$edges$node {
     final l$createdAt = json['createdAt'];
     final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
-    return Query$GetEvents$events$edges$node(
+    return Query$GetEvents$events$nodes(
       id: (l$id as String),
       clubId: (l$clubId as String),
+      name: (l$name as String),
       title: (l$title as String),
       description: (l$description as String?),
-      eventType: (l$eventType as String?),
+      type: fromJson$Enum$ClubEventType((l$type as String)),
+      eventType: fromJson$Enum$ClubEventType((l$eventType as String)),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       location: (l$location as String?),
       imageUrl: (l$imageUrl as String?),
-      capacity: (l$capacity as int?),
-      currentAttendees: (l$currentAttendees as int?),
+      capacity: (l$capacity as int),
+      currentAttendees: (l$currentAttendees as int),
       availableSpots: (l$availableSpots as int?),
       tentativeCount: (l$tentativeCount as int?),
       waitlistCount: (l$waitlistCount as int?),
-      guestPolicy: (l$guestPolicy as String?),
-      maxGuestsPerMember: (l$maxGuestsPerMember as int?),
-      requiresApproval: (l$requiresApproval as bool?),
+      requiresApproval: (l$requiresApproval as bool),
       requiresPayment: (l$requiresPayment as bool?),
       price: (l$price as num?)?.toDouble(),
       cancellationDeadline: l$cancellationDeadline == null
           ? null
           : DateTime.parse((l$cancellationDeadline as String)),
-      freeCancellationDays: (l$freeCancellationDays as int?),
-      cancellationFeePercentage: (l$cancellationFeePercentage as num?)
-          ?.toDouble(),
-      allowsSubgroupPriority: (l$allowsSubgroupPriority as bool?),
-      fullHouseExclusive: (l$fullHouseExclusive as bool?),
       rsvpDeadline: l$rsvpDeadline == null
           ? null
           : DateTime.parse((l$rsvpDeadline as String)),
-      subgroupId: (l$subgroupId as String?),
       organizerName: (l$organizerName as String?),
       contactEmail: (l$contactEmail as String?),
       contactPhone: (l$contactPhone as String?),
@@ -1240,11 +1136,15 @@ class Query$GetEvents$events$edges$node {
 
   final String clubId;
 
+  final String name;
+
   final String title;
 
   final String? description;
 
-  final String? eventType;
+  final Enum$ClubEventType type;
+
+  final Enum$ClubEventType eventType;
 
   final DateTime startTime;
 
@@ -1254,9 +1154,9 @@ class Query$GetEvents$events$edges$node {
 
   final String? imageUrl;
 
-  final int? capacity;
+  final int capacity;
 
-  final int? currentAttendees;
+  final int currentAttendees;
 
   final int? availableSpots;
 
@@ -1264,11 +1164,7 @@ class Query$GetEvents$events$edges$node {
 
   final int? waitlistCount;
 
-  final String? guestPolicy;
-
-  final int? maxGuestsPerMember;
-
-  final bool? requiresApproval;
+  final bool requiresApproval;
 
   final bool? requiresPayment;
 
@@ -1276,17 +1172,7 @@ class Query$GetEvents$events$edges$node {
 
   final DateTime? cancellationDeadline;
 
-  final int? freeCancellationDays;
-
-  final double? cancellationFeePercentage;
-
-  final bool? allowsSubgroupPriority;
-
-  final bool? fullHouseExclusive;
-
   final DateTime? rsvpDeadline;
-
-  final String? subgroupId;
 
   final String? organizerName;
 
@@ -1308,12 +1194,16 @@ class Query$GetEvents$events$edges$node {
     _resultData['id'] = l$id;
     final l$clubId = clubId;
     _resultData['clubId'] = l$clubId;
+    final l$name = name;
+    _resultData['name'] = l$name;
     final l$title = title;
     _resultData['title'] = l$title;
     final l$description = description;
     _resultData['description'] = l$description;
+    final l$type = type;
+    _resultData['type'] = toJson$Enum$ClubEventType(l$type);
     final l$eventType = eventType;
-    _resultData['eventType'] = l$eventType;
+    _resultData['eventType'] = toJson$Enum$ClubEventType(l$eventType);
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
@@ -1332,10 +1222,6 @@ class Query$GetEvents$events$edges$node {
     _resultData['tentativeCount'] = l$tentativeCount;
     final l$waitlistCount = waitlistCount;
     _resultData['waitlistCount'] = l$waitlistCount;
-    final l$guestPolicy = guestPolicy;
-    _resultData['guestPolicy'] = l$guestPolicy;
-    final l$maxGuestsPerMember = maxGuestsPerMember;
-    _resultData['maxGuestsPerMember'] = l$maxGuestsPerMember;
     final l$requiresApproval = requiresApproval;
     _resultData['requiresApproval'] = l$requiresApproval;
     final l$requiresPayment = requiresPayment;
@@ -1345,18 +1231,8 @@ class Query$GetEvents$events$edges$node {
     final l$cancellationDeadline = cancellationDeadline;
     _resultData['cancellationDeadline'] = l$cancellationDeadline
         ?.toIso8601String();
-    final l$freeCancellationDays = freeCancellationDays;
-    _resultData['freeCancellationDays'] = l$freeCancellationDays;
-    final l$cancellationFeePercentage = cancellationFeePercentage;
-    _resultData['cancellationFeePercentage'] = l$cancellationFeePercentage;
-    final l$allowsSubgroupPriority = allowsSubgroupPriority;
-    _resultData['allowsSubgroupPriority'] = l$allowsSubgroupPriority;
-    final l$fullHouseExclusive = fullHouseExclusive;
-    _resultData['fullHouseExclusive'] = l$fullHouseExclusive;
     final l$rsvpDeadline = rsvpDeadline;
     _resultData['rsvpDeadline'] = l$rsvpDeadline?.toIso8601String();
-    final l$subgroupId = subgroupId;
-    _resultData['subgroupId'] = l$subgroupId;
     final l$organizerName = organizerName;
     _resultData['organizerName'] = l$organizerName;
     final l$contactEmail = contactEmail;
@@ -1378,8 +1254,10 @@ class Query$GetEvents$events$edges$node {
   int get hashCode {
     final l$id = id;
     final l$clubId = clubId;
+    final l$name = name;
     final l$title = title;
     final l$description = description;
+    final l$type = type;
     final l$eventType = eventType;
     final l$startTime = startTime;
     final l$endTime = endTime;
@@ -1390,18 +1268,11 @@ class Query$GetEvents$events$edges$node {
     final l$availableSpots = availableSpots;
     final l$tentativeCount = tentativeCount;
     final l$waitlistCount = waitlistCount;
-    final l$guestPolicy = guestPolicy;
-    final l$maxGuestsPerMember = maxGuestsPerMember;
     final l$requiresApproval = requiresApproval;
     final l$requiresPayment = requiresPayment;
     final l$price = price;
     final l$cancellationDeadline = cancellationDeadline;
-    final l$freeCancellationDays = freeCancellationDays;
-    final l$cancellationFeePercentage = cancellationFeePercentage;
-    final l$allowsSubgroupPriority = allowsSubgroupPriority;
-    final l$fullHouseExclusive = fullHouseExclusive;
     final l$rsvpDeadline = rsvpDeadline;
-    final l$subgroupId = subgroupId;
     final l$organizerName = organizerName;
     final l$contactEmail = contactEmail;
     final l$contactPhone = contactPhone;
@@ -1412,8 +1283,10 @@ class Query$GetEvents$events$edges$node {
     return Object.hashAll([
       l$id,
       l$clubId,
+      l$name,
       l$title,
       l$description,
+      l$type,
       l$eventType,
       l$startTime,
       l$endTime,
@@ -1424,18 +1297,11 @@ class Query$GetEvents$events$edges$node {
       l$availableSpots,
       l$tentativeCount,
       l$waitlistCount,
-      l$guestPolicy,
-      l$maxGuestsPerMember,
       l$requiresApproval,
       l$requiresPayment,
       l$price,
       l$cancellationDeadline,
-      l$freeCancellationDays,
-      l$cancellationFeePercentage,
-      l$allowsSubgroupPriority,
-      l$fullHouseExclusive,
       l$rsvpDeadline,
-      l$subgroupId,
       l$organizerName,
       l$contactEmail,
       l$contactPhone,
@@ -1451,7 +1317,7 @@ class Query$GetEvents$events$edges$node {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$GetEvents$events$edges$node ||
+    if (other is! Query$GetEvents$events$nodes ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1465,6 +1331,11 @@ class Query$GetEvents$events$edges$node {
     if (l$clubId != lOther$clubId) {
       return false;
     }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
     final l$title = title;
     final lOther$title = other.title;
     if (l$title != lOther$title) {
@@ -1473,6 +1344,11 @@ class Query$GetEvents$events$edges$node {
     final l$description = description;
     final lOther$description = other.description;
     if (l$description != lOther$description) {
+      return false;
+    }
+    final l$type = type;
+    final lOther$type = other.type;
+    if (l$type != lOther$type) {
       return false;
     }
     final l$eventType = eventType;
@@ -1525,16 +1401,6 @@ class Query$GetEvents$events$edges$node {
     if (l$waitlistCount != lOther$waitlistCount) {
       return false;
     }
-    final l$guestPolicy = guestPolicy;
-    final lOther$guestPolicy = other.guestPolicy;
-    if (l$guestPolicy != lOther$guestPolicy) {
-      return false;
-    }
-    final l$maxGuestsPerMember = maxGuestsPerMember;
-    final lOther$maxGuestsPerMember = other.maxGuestsPerMember;
-    if (l$maxGuestsPerMember != lOther$maxGuestsPerMember) {
-      return false;
-    }
     final l$requiresApproval = requiresApproval;
     final lOther$requiresApproval = other.requiresApproval;
     if (l$requiresApproval != lOther$requiresApproval) {
@@ -1555,34 +1421,9 @@ class Query$GetEvents$events$edges$node {
     if (l$cancellationDeadline != lOther$cancellationDeadline) {
       return false;
     }
-    final l$freeCancellationDays = freeCancellationDays;
-    final lOther$freeCancellationDays = other.freeCancellationDays;
-    if (l$freeCancellationDays != lOther$freeCancellationDays) {
-      return false;
-    }
-    final l$cancellationFeePercentage = cancellationFeePercentage;
-    final lOther$cancellationFeePercentage = other.cancellationFeePercentage;
-    if (l$cancellationFeePercentage != lOther$cancellationFeePercentage) {
-      return false;
-    }
-    final l$allowsSubgroupPriority = allowsSubgroupPriority;
-    final lOther$allowsSubgroupPriority = other.allowsSubgroupPriority;
-    if (l$allowsSubgroupPriority != lOther$allowsSubgroupPriority) {
-      return false;
-    }
-    final l$fullHouseExclusive = fullHouseExclusive;
-    final lOther$fullHouseExclusive = other.fullHouseExclusive;
-    if (l$fullHouseExclusive != lOther$fullHouseExclusive) {
-      return false;
-    }
     final l$rsvpDeadline = rsvpDeadline;
     final lOther$rsvpDeadline = other.rsvpDeadline;
     if (l$rsvpDeadline != lOther$rsvpDeadline) {
-      return false;
-    }
-    final l$subgroupId = subgroupId;
-    final lOther$subgroupId = other.subgroupId;
-    if (l$subgroupId != lOther$subgroupId) {
       return false;
     }
     final l$organizerName = organizerName;
@@ -1624,27 +1465,29 @@ class Query$GetEvents$events$edges$node {
   }
 }
 
-extension UtilityExtension$Query$GetEvents$events$edges$node
-    on Query$GetEvents$events$edges$node {
-  CopyWith$Query$GetEvents$events$edges$node<Query$GetEvents$events$edges$node>
-  get copyWith => CopyWith$Query$GetEvents$events$edges$node(this, (i) => i);
+extension UtilityExtension$Query$GetEvents$events$nodes
+    on Query$GetEvents$events$nodes {
+  CopyWith$Query$GetEvents$events$nodes<Query$GetEvents$events$nodes>
+  get copyWith => CopyWith$Query$GetEvents$events$nodes(this, (i) => i);
 }
 
-abstract class CopyWith$Query$GetEvents$events$edges$node<TRes> {
-  factory CopyWith$Query$GetEvents$events$edges$node(
-    Query$GetEvents$events$edges$node instance,
-    TRes Function(Query$GetEvents$events$edges$node) then,
-  ) = _CopyWithImpl$Query$GetEvents$events$edges$node;
+abstract class CopyWith$Query$GetEvents$events$nodes<TRes> {
+  factory CopyWith$Query$GetEvents$events$nodes(
+    Query$GetEvents$events$nodes instance,
+    TRes Function(Query$GetEvents$events$nodes) then,
+  ) = _CopyWithImpl$Query$GetEvents$events$nodes;
 
-  factory CopyWith$Query$GetEvents$events$edges$node.stub(TRes res) =
-      _CopyWithStubImpl$Query$GetEvents$events$edges$node;
+  factory CopyWith$Query$GetEvents$events$nodes.stub(TRes res) =
+      _CopyWithStubImpl$Query$GetEvents$events$nodes;
 
   TRes call({
     String? id,
     String? clubId,
+    String? name,
     String? title,
     String? description,
-    String? eventType,
+    Enum$ClubEventType? type,
+    Enum$ClubEventType? eventType,
     DateTime? startTime,
     DateTime? endTime,
     String? location,
@@ -1654,18 +1497,11 @@ abstract class CopyWith$Query$GetEvents$events$edges$node<TRes> {
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
-    String? guestPolicy,
-    int? maxGuestsPerMember,
     bool? requiresApproval,
     bool? requiresPayment,
     double? price,
     DateTime? cancellationDeadline,
-    int? freeCancellationDays,
-    double? cancellationFeePercentage,
-    bool? allowsSubgroupPriority,
-    bool? fullHouseExclusive,
     DateTime? rsvpDeadline,
-    String? subgroupId,
     String? organizerName,
     String? contactEmail,
     String? contactPhone,
@@ -1676,21 +1512,23 @@ abstract class CopyWith$Query$GetEvents$events$edges$node<TRes> {
   });
 }
 
-class _CopyWithImpl$Query$GetEvents$events$edges$node<TRes>
-    implements CopyWith$Query$GetEvents$events$edges$node<TRes> {
-  _CopyWithImpl$Query$GetEvents$events$edges$node(this._instance, this._then);
+class _CopyWithImpl$Query$GetEvents$events$nodes<TRes>
+    implements CopyWith$Query$GetEvents$events$nodes<TRes> {
+  _CopyWithImpl$Query$GetEvents$events$nodes(this._instance, this._then);
 
-  final Query$GetEvents$events$edges$node _instance;
+  final Query$GetEvents$events$nodes _instance;
 
-  final TRes Function(Query$GetEvents$events$edges$node) _then;
+  final TRes Function(Query$GetEvents$events$nodes) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? id = _undefined,
     Object? clubId = _undefined,
+    Object? name = _undefined,
     Object? title = _undefined,
     Object? description = _undefined,
+    Object? type = _undefined,
     Object? eventType = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
@@ -1701,18 +1539,11 @@ class _CopyWithImpl$Query$GetEvents$events$edges$node<TRes>
     Object? availableSpots = _undefined,
     Object? tentativeCount = _undefined,
     Object? waitlistCount = _undefined,
-    Object? guestPolicy = _undefined,
-    Object? maxGuestsPerMember = _undefined,
     Object? requiresApproval = _undefined,
     Object? requiresPayment = _undefined,
     Object? price = _undefined,
     Object? cancellationDeadline = _undefined,
-    Object? freeCancellationDays = _undefined,
-    Object? cancellationFeePercentage = _undefined,
-    Object? allowsSubgroupPriority = _undefined,
-    Object? fullHouseExclusive = _undefined,
     Object? rsvpDeadline = _undefined,
-    Object? subgroupId = _undefined,
     Object? organizerName = _undefined,
     Object? contactEmail = _undefined,
     Object? contactPhone = _undefined,
@@ -1721,20 +1552,26 @@ class _CopyWithImpl$Query$GetEvents$events$edges$node<TRes>
     Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$GetEvents$events$edges$node(
+    Query$GetEvents$events$nodes(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
+      name: name == _undefined || name == null
+          ? _instance.name
+          : (name as String),
       title: title == _undefined || title == null
           ? _instance.title
           : (title as String),
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      eventType: eventType == _undefined
+      type: type == _undefined || type == null
+          ? _instance.type
+          : (type as Enum$ClubEventType),
+      eventType: eventType == _undefined || eventType == null
           ? _instance.eventType
-          : (eventType as String?),
+          : (eventType as Enum$ClubEventType),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -1747,12 +1584,13 @@ class _CopyWithImpl$Query$GetEvents$events$edges$node<TRes>
       imageUrl: imageUrl == _undefined
           ? _instance.imageUrl
           : (imageUrl as String?),
-      capacity: capacity == _undefined
+      capacity: capacity == _undefined || capacity == null
           ? _instance.capacity
-          : (capacity as int?),
-      currentAttendees: currentAttendees == _undefined
+          : (capacity as int),
+      currentAttendees:
+          currentAttendees == _undefined || currentAttendees == null
           ? _instance.currentAttendees
-          : (currentAttendees as int?),
+          : (currentAttendees as int),
       availableSpots: availableSpots == _undefined
           ? _instance.availableSpots
           : (availableSpots as int?),
@@ -1762,15 +1600,10 @@ class _CopyWithImpl$Query$GetEvents$events$edges$node<TRes>
       waitlistCount: waitlistCount == _undefined
           ? _instance.waitlistCount
           : (waitlistCount as int?),
-      guestPolicy: guestPolicy == _undefined
-          ? _instance.guestPolicy
-          : (guestPolicy as String?),
-      maxGuestsPerMember: maxGuestsPerMember == _undefined
-          ? _instance.maxGuestsPerMember
-          : (maxGuestsPerMember as int?),
-      requiresApproval: requiresApproval == _undefined
+      requiresApproval:
+          requiresApproval == _undefined || requiresApproval == null
           ? _instance.requiresApproval
-          : (requiresApproval as bool?),
+          : (requiresApproval as bool),
       requiresPayment: requiresPayment == _undefined
           ? _instance.requiresPayment
           : (requiresPayment as bool?),
@@ -1778,24 +1611,9 @@ class _CopyWithImpl$Query$GetEvents$events$edges$node<TRes>
       cancellationDeadline: cancellationDeadline == _undefined
           ? _instance.cancellationDeadline
           : (cancellationDeadline as DateTime?),
-      freeCancellationDays: freeCancellationDays == _undefined
-          ? _instance.freeCancellationDays
-          : (freeCancellationDays as int?),
-      cancellationFeePercentage: cancellationFeePercentage == _undefined
-          ? _instance.cancellationFeePercentage
-          : (cancellationFeePercentage as double?),
-      allowsSubgroupPriority: allowsSubgroupPriority == _undefined
-          ? _instance.allowsSubgroupPriority
-          : (allowsSubgroupPriority as bool?),
-      fullHouseExclusive: fullHouseExclusive == _undefined
-          ? _instance.fullHouseExclusive
-          : (fullHouseExclusive as bool?),
       rsvpDeadline: rsvpDeadline == _undefined
           ? _instance.rsvpDeadline
           : (rsvpDeadline as DateTime?),
-      subgroupId: subgroupId == _undefined
-          ? _instance.subgroupId
-          : (subgroupId as String?),
       organizerName: organizerName == _undefined
           ? _instance.organizerName
           : (organizerName as String?),
@@ -1821,18 +1639,20 @@ class _CopyWithImpl$Query$GetEvents$events$edges$node<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$GetEvents$events$edges$node<TRes>
-    implements CopyWith$Query$GetEvents$events$edges$node<TRes> {
-  _CopyWithStubImpl$Query$GetEvents$events$edges$node(this._res);
+class _CopyWithStubImpl$Query$GetEvents$events$nodes<TRes>
+    implements CopyWith$Query$GetEvents$events$nodes<TRes> {
+  _CopyWithStubImpl$Query$GetEvents$events$nodes(this._res);
 
   TRes _res;
 
   call({
     String? id,
     String? clubId,
+    String? name,
     String? title,
     String? description,
-    String? eventType,
+    Enum$ClubEventType? type,
+    Enum$ClubEventType? eventType,
     DateTime? startTime,
     DateTime? endTime,
     String? location,
@@ -1842,18 +1662,11 @@ class _CopyWithStubImpl$Query$GetEvents$events$edges$node<TRes>
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
-    String? guestPolicy,
-    int? maxGuestsPerMember,
     bool? requiresApproval,
     bool? requiresPayment,
     double? price,
     DateTime? cancellationDeadline,
-    int? freeCancellationDays,
-    double? cancellationFeePercentage,
-    bool? allowsSubgroupPriority,
-    bool? fullHouseExclusive,
     DateTime? rsvpDeadline,
-    String? subgroupId,
     String? organizerName,
     String? contactEmail,
     String? contactPhone,
@@ -1866,48 +1679,62 @@ class _CopyWithStubImpl$Query$GetEvents$events$edges$node<TRes>
 
 class Query$GetEvents$events$pageInfo {
   Query$GetEvents$events$pageInfo({
+    required this.page,
+    required this.pageSize,
+    required this.total,
+    required this.totalPages,
     required this.hasNextPage,
-    required this.hasPreviousPage,
-    this.startCursor,
-    this.endCursor,
+    required this.hasPrevPage,
     this.$__typename = 'PageInfo',
   });
 
   factory Query$GetEvents$events$pageInfo.fromJson(Map<String, dynamic> json) {
+    final l$page = json['page'];
+    final l$pageSize = json['pageSize'];
+    final l$total = json['total'];
+    final l$totalPages = json['totalPages'];
     final l$hasNextPage = json['hasNextPage'];
-    final l$hasPreviousPage = json['hasPreviousPage'];
-    final l$startCursor = json['startCursor'];
-    final l$endCursor = json['endCursor'];
+    final l$hasPrevPage = json['hasPrevPage'];
     final l$$__typename = json['__typename'];
     return Query$GetEvents$events$pageInfo(
+      page: (l$page as int),
+      pageSize: (l$pageSize as int),
+      total: (l$total as int),
+      totalPages: (l$totalPages as int),
       hasNextPage: (l$hasNextPage as bool),
-      hasPreviousPage: (l$hasPreviousPage as bool),
-      startCursor: (l$startCursor as String?),
-      endCursor: (l$endCursor as String?),
+      hasPrevPage: (l$hasPrevPage as bool),
       $__typename: (l$$__typename as String),
     );
   }
 
+  final int page;
+
+  final int pageSize;
+
+  final int total;
+
+  final int totalPages;
+
   final bool hasNextPage;
 
-  final bool hasPreviousPage;
-
-  final String? startCursor;
-
-  final String? endCursor;
+  final bool hasPrevPage;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$page = page;
+    _resultData['page'] = l$page;
+    final l$pageSize = pageSize;
+    _resultData['pageSize'] = l$pageSize;
+    final l$total = total;
+    _resultData['total'] = l$total;
+    final l$totalPages = totalPages;
+    _resultData['totalPages'] = l$totalPages;
     final l$hasNextPage = hasNextPage;
     _resultData['hasNextPage'] = l$hasNextPage;
-    final l$hasPreviousPage = hasPreviousPage;
-    _resultData['hasPreviousPage'] = l$hasPreviousPage;
-    final l$startCursor = startCursor;
-    _resultData['startCursor'] = l$startCursor;
-    final l$endCursor = endCursor;
-    _resultData['endCursor'] = l$endCursor;
+    final l$hasPrevPage = hasPrevPage;
+    _resultData['hasPrevPage'] = l$hasPrevPage;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1915,16 +1742,20 @@ class Query$GetEvents$events$pageInfo {
 
   @override
   int get hashCode {
+    final l$page = page;
+    final l$pageSize = pageSize;
+    final l$total = total;
+    final l$totalPages = totalPages;
     final l$hasNextPage = hasNextPage;
-    final l$hasPreviousPage = hasPreviousPage;
-    final l$startCursor = startCursor;
-    final l$endCursor = endCursor;
+    final l$hasPrevPage = hasPrevPage;
     final l$$__typename = $__typename;
     return Object.hashAll([
+      l$page,
+      l$pageSize,
+      l$total,
+      l$totalPages,
       l$hasNextPage,
-      l$hasPreviousPage,
-      l$startCursor,
-      l$endCursor,
+      l$hasPrevPage,
       l$$__typename,
     ]);
   }
@@ -1938,24 +1769,34 @@ class Query$GetEvents$events$pageInfo {
         runtimeType != other.runtimeType) {
       return false;
     }
+    final l$page = page;
+    final lOther$page = other.page;
+    if (l$page != lOther$page) {
+      return false;
+    }
+    final l$pageSize = pageSize;
+    final lOther$pageSize = other.pageSize;
+    if (l$pageSize != lOther$pageSize) {
+      return false;
+    }
+    final l$total = total;
+    final lOther$total = other.total;
+    if (l$total != lOther$total) {
+      return false;
+    }
+    final l$totalPages = totalPages;
+    final lOther$totalPages = other.totalPages;
+    if (l$totalPages != lOther$totalPages) {
+      return false;
+    }
     final l$hasNextPage = hasNextPage;
     final lOther$hasNextPage = other.hasNextPage;
     if (l$hasNextPage != lOther$hasNextPage) {
       return false;
     }
-    final l$hasPreviousPage = hasPreviousPage;
-    final lOther$hasPreviousPage = other.hasPreviousPage;
-    if (l$hasPreviousPage != lOther$hasPreviousPage) {
-      return false;
-    }
-    final l$startCursor = startCursor;
-    final lOther$startCursor = other.startCursor;
-    if (l$startCursor != lOther$startCursor) {
-      return false;
-    }
-    final l$endCursor = endCursor;
-    final lOther$endCursor = other.endCursor;
-    if (l$endCursor != lOther$endCursor) {
+    final l$hasPrevPage = hasPrevPage;
+    final lOther$hasPrevPage = other.hasPrevPage;
+    if (l$hasPrevPage != lOther$hasPrevPage) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -1983,10 +1824,12 @@ abstract class CopyWith$Query$GetEvents$events$pageInfo<TRes> {
       _CopyWithStubImpl$Query$GetEvents$events$pageInfo;
 
   TRes call({
+    int? page,
+    int? pageSize,
+    int? total,
+    int? totalPages,
     bool? hasNextPage,
-    bool? hasPreviousPage,
-    String? startCursor,
-    String? endCursor,
+    bool? hasPrevPage,
     String? $__typename,
   });
 }
@@ -2002,25 +1845,31 @@ class _CopyWithImpl$Query$GetEvents$events$pageInfo<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
+    Object? page = _undefined,
+    Object? pageSize = _undefined,
+    Object? total = _undefined,
+    Object? totalPages = _undefined,
     Object? hasNextPage = _undefined,
-    Object? hasPreviousPage = _undefined,
-    Object? startCursor = _undefined,
-    Object? endCursor = _undefined,
+    Object? hasPrevPage = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$GetEvents$events$pageInfo(
+      page: page == _undefined || page == null ? _instance.page : (page as int),
+      pageSize: pageSize == _undefined || pageSize == null
+          ? _instance.pageSize
+          : (pageSize as int),
+      total: total == _undefined || total == null
+          ? _instance.total
+          : (total as int),
+      totalPages: totalPages == _undefined || totalPages == null
+          ? _instance.totalPages
+          : (totalPages as int),
       hasNextPage: hasNextPage == _undefined || hasNextPage == null
           ? _instance.hasNextPage
           : (hasNextPage as bool),
-      hasPreviousPage: hasPreviousPage == _undefined || hasPreviousPage == null
-          ? _instance.hasPreviousPage
-          : (hasPreviousPage as bool),
-      startCursor: startCursor == _undefined
-          ? _instance.startCursor
-          : (startCursor as String?),
-      endCursor: endCursor == _undefined
-          ? _instance.endCursor
-          : (endCursor as String?),
+      hasPrevPage: hasPrevPage == _undefined || hasPrevPage == null
+          ? _instance.hasPrevPage
+          : (hasPrevPage as bool),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -2035,10 +1884,12 @@ class _CopyWithStubImpl$Query$GetEvents$events$pageInfo<TRes>
   TRes _res;
 
   call({
+    int? page,
+    int? pageSize,
+    int? total,
+    int? totalPages,
     bool? hasNextPage,
-    bool? hasPreviousPage,
-    String? startCursor,
-    String? endCursor,
+    bool? hasPrevPage,
     String? $__typename,
   }) => _res;
 }

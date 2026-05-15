@@ -280,6 +280,90 @@ const documentNodeQueryProposal = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
+                  name: NameNode(value: 'category'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votingMethod'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votingStartTime'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votingEndTime'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'quorumRequired'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'approvalThreshold'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'totalVotes'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votesYay'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votesNay'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'votesAbstain'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'createdAt'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'updatedAt'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
                   name: NameNode(value: 'proposer'),
                   alias: null,
                   arguments: [],
@@ -294,13 +378,6 @@ const documentNodeQueryProposal = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'username'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
                         name: NameNode(value: 'firstName'),
                         alias: null,
                         arguments: [],
@@ -309,6 +386,13 @@ const documentNodeQueryProposal = DocumentNode(
                       ),
                       FieldNode(
                         name: NameNode(value: 'lastName'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'email'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -339,14 +423,35 @@ const documentNodeQueryProposal = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'choice'),
+                        name: NameNode(value: 'voteValue'),
                         alias: null,
                         arguments: [],
                         directives: [],
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'comment'),
+                        name: NameNode(value: 'weight'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'comments'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'isAnonymous'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'castAt'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -361,13 +466,6 @@ const documentNodeQueryProposal = DocumentNode(
                           selections: [
                             FieldNode(
                               name: NameNode(value: 'id'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'username'),
                               alias: null,
                               arguments: [],
                               directives: [],
@@ -398,13 +496,6 @@ const documentNodeQueryProposal = DocumentNode(
                         ),
                       ),
                       FieldNode(
-                        name: NameNode(value: 'createdAt'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
                         name: NameNode(value: '__typename'),
                         alias: null,
                         arguments: [],
@@ -413,20 +504,6 @@ const documentNodeQueryProposal = DocumentNode(
                       ),
                     ],
                   ),
-                ),
-                FieldNode(
-                  name: NameNode(value: 'votingDeadline'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'createdAt'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
                 ),
                 FieldNode(
                   name: NameNode(value: '__typename'),
@@ -587,10 +664,20 @@ class Query$Proposal$proposal {
     required this.description,
     required this.type,
     required this.status,
-    required this.proposer,
-    required this.votes,
-    required this.votingDeadline,
+    this.category,
+    required this.votingMethod,
+    required this.votingStartTime,
+    required this.votingEndTime,
+    required this.quorumRequired,
+    required this.approvalThreshold,
+    required this.totalVotes,
+    required this.votesYay,
+    required this.votesNay,
+    required this.votesAbstain,
     required this.createdAt,
+    required this.updatedAt,
+    this.proposer,
+    required this.votes,
     this.$__typename = 'Proposal',
   });
 
@@ -600,10 +687,20 @@ class Query$Proposal$proposal {
     final l$description = json['description'];
     final l$type = json['type'];
     final l$status = json['status'];
+    final l$category = json['category'];
+    final l$votingMethod = json['votingMethod'];
+    final l$votingStartTime = json['votingStartTime'];
+    final l$votingEndTime = json['votingEndTime'];
+    final l$quorumRequired = json['quorumRequired'];
+    final l$approvalThreshold = json['approvalThreshold'];
+    final l$totalVotes = json['totalVotes'];
+    final l$votesYay = json['votesYay'];
+    final l$votesNay = json['votesNay'];
+    final l$votesAbstain = json['votesAbstain'];
+    final l$createdAt = json['createdAt'];
+    final l$updatedAt = json['updatedAt'];
     final l$proposer = json['proposer'];
     final l$votes = json['votes'];
-    final l$votingDeadline = json['votingDeadline'];
-    final l$createdAt = json['createdAt'];
     final l$$__typename = json['__typename'];
     return Query$Proposal$proposal(
       id: (l$id as String),
@@ -611,9 +708,23 @@ class Query$Proposal$proposal {
       description: (l$description as String),
       type: fromJson$Enum$ProposalType((l$type as String)),
       status: fromJson$Enum$ProposalStatus((l$status as String)),
-      proposer: Query$Proposal$proposal$proposer.fromJson(
-        (l$proposer as Map<String, dynamic>),
-      ),
+      category: (l$category as String?),
+      votingMethod: fromJson$Enum$VotingMethod((l$votingMethod as String)),
+      votingStartTime: DateTime.parse((l$votingStartTime as String)),
+      votingEndTime: DateTime.parse((l$votingEndTime as String)),
+      quorumRequired: (l$quorumRequired as int),
+      approvalThreshold: (l$approvalThreshold as num).toDouble(),
+      totalVotes: (l$totalVotes as int),
+      votesYay: (l$votesYay as int),
+      votesNay: (l$votesNay as int),
+      votesAbstain: (l$votesAbstain as int),
+      createdAt: DateTime.parse((l$createdAt as String)),
+      updatedAt: DateTime.parse((l$updatedAt as String)),
+      proposer: l$proposer == null
+          ? null
+          : Query$Proposal$proposal$proposer.fromJson(
+              (l$proposer as Map<String, dynamic>),
+            ),
       votes: (l$votes as List<dynamic>)
           .map(
             (e) => Query$Proposal$proposal$votes.fromJson(
@@ -621,8 +732,6 @@ class Query$Proposal$proposal {
             ),
           )
           .toList(),
-      votingDeadline: DateTime.parse((l$votingDeadline as String)),
-      createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -637,13 +746,33 @@ class Query$Proposal$proposal {
 
   final Enum$ProposalStatus status;
 
-  final Query$Proposal$proposal$proposer proposer;
+  final String? category;
 
-  final List<Query$Proposal$proposal$votes> votes;
+  final Enum$VotingMethod votingMethod;
 
-  final DateTime votingDeadline;
+  final DateTime votingStartTime;
+
+  final DateTime votingEndTime;
+
+  final int quorumRequired;
+
+  final double approvalThreshold;
+
+  final int totalVotes;
+
+  final int votesYay;
+
+  final int votesNay;
+
+  final int votesAbstain;
 
   final DateTime createdAt;
+
+  final DateTime updatedAt;
+
+  final Query$Proposal$proposal$proposer? proposer;
+
+  final List<Query$Proposal$proposal$votes> votes;
 
   final String $__typename;
 
@@ -659,14 +788,34 @@ class Query$Proposal$proposal {
     _resultData['type'] = toJson$Enum$ProposalType(l$type);
     final l$status = status;
     _resultData['status'] = toJson$Enum$ProposalStatus(l$status);
-    final l$proposer = proposer;
-    _resultData['proposer'] = l$proposer.toJson();
-    final l$votes = votes;
-    _resultData['votes'] = l$votes.map((e) => e.toJson()).toList();
-    final l$votingDeadline = votingDeadline;
-    _resultData['votingDeadline'] = l$votingDeadline.toIso8601String();
+    final l$category = category;
+    _resultData['category'] = l$category;
+    final l$votingMethod = votingMethod;
+    _resultData['votingMethod'] = toJson$Enum$VotingMethod(l$votingMethod);
+    final l$votingStartTime = votingStartTime;
+    _resultData['votingStartTime'] = l$votingStartTime.toIso8601String();
+    final l$votingEndTime = votingEndTime;
+    _resultData['votingEndTime'] = l$votingEndTime.toIso8601String();
+    final l$quorumRequired = quorumRequired;
+    _resultData['quorumRequired'] = l$quorumRequired;
+    final l$approvalThreshold = approvalThreshold;
+    _resultData['approvalThreshold'] = l$approvalThreshold;
+    final l$totalVotes = totalVotes;
+    _resultData['totalVotes'] = l$totalVotes;
+    final l$votesYay = votesYay;
+    _resultData['votesYay'] = l$votesYay;
+    final l$votesNay = votesNay;
+    _resultData['votesNay'] = l$votesNay;
+    final l$votesAbstain = votesAbstain;
+    _resultData['votesAbstain'] = l$votesAbstain;
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
+    final l$updatedAt = updatedAt;
+    _resultData['updatedAt'] = l$updatedAt.toIso8601String();
+    final l$proposer = proposer;
+    _resultData['proposer'] = l$proposer?.toJson();
+    final l$votes = votes;
+    _resultData['votes'] = l$votes.map((e) => e.toJson()).toList();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -679,10 +828,20 @@ class Query$Proposal$proposal {
     final l$description = description;
     final l$type = type;
     final l$status = status;
+    final l$category = category;
+    final l$votingMethod = votingMethod;
+    final l$votingStartTime = votingStartTime;
+    final l$votingEndTime = votingEndTime;
+    final l$quorumRequired = quorumRequired;
+    final l$approvalThreshold = approvalThreshold;
+    final l$totalVotes = totalVotes;
+    final l$votesYay = votesYay;
+    final l$votesNay = votesNay;
+    final l$votesAbstain = votesAbstain;
+    final l$createdAt = createdAt;
+    final l$updatedAt = updatedAt;
     final l$proposer = proposer;
     final l$votes = votes;
-    final l$votingDeadline = votingDeadline;
-    final l$createdAt = createdAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
@@ -690,10 +849,20 @@ class Query$Proposal$proposal {
       l$description,
       l$type,
       l$status,
+      l$category,
+      l$votingMethod,
+      l$votingStartTime,
+      l$votingEndTime,
+      l$quorumRequired,
+      l$approvalThreshold,
+      l$totalVotes,
+      l$votesYay,
+      l$votesNay,
+      l$votesAbstain,
+      l$createdAt,
+      l$updatedAt,
       l$proposer,
       Object.hashAll(l$votes.map((v) => v)),
-      l$votingDeadline,
-      l$createdAt,
       l$$__typename,
     ]);
   }
@@ -731,6 +900,66 @@ class Query$Proposal$proposal {
     if (l$status != lOther$status) {
       return false;
     }
+    final l$category = category;
+    final lOther$category = other.category;
+    if (l$category != lOther$category) {
+      return false;
+    }
+    final l$votingMethod = votingMethod;
+    final lOther$votingMethod = other.votingMethod;
+    if (l$votingMethod != lOther$votingMethod) {
+      return false;
+    }
+    final l$votingStartTime = votingStartTime;
+    final lOther$votingStartTime = other.votingStartTime;
+    if (l$votingStartTime != lOther$votingStartTime) {
+      return false;
+    }
+    final l$votingEndTime = votingEndTime;
+    final lOther$votingEndTime = other.votingEndTime;
+    if (l$votingEndTime != lOther$votingEndTime) {
+      return false;
+    }
+    final l$quorumRequired = quorumRequired;
+    final lOther$quorumRequired = other.quorumRequired;
+    if (l$quorumRequired != lOther$quorumRequired) {
+      return false;
+    }
+    final l$approvalThreshold = approvalThreshold;
+    final lOther$approvalThreshold = other.approvalThreshold;
+    if (l$approvalThreshold != lOther$approvalThreshold) {
+      return false;
+    }
+    final l$totalVotes = totalVotes;
+    final lOther$totalVotes = other.totalVotes;
+    if (l$totalVotes != lOther$totalVotes) {
+      return false;
+    }
+    final l$votesYay = votesYay;
+    final lOther$votesYay = other.votesYay;
+    if (l$votesYay != lOther$votesYay) {
+      return false;
+    }
+    final l$votesNay = votesNay;
+    final lOther$votesNay = other.votesNay;
+    if (l$votesNay != lOther$votesNay) {
+      return false;
+    }
+    final l$votesAbstain = votesAbstain;
+    final lOther$votesAbstain = other.votesAbstain;
+    if (l$votesAbstain != lOther$votesAbstain) {
+      return false;
+    }
+    final l$createdAt = createdAt;
+    final lOther$createdAt = other.createdAt;
+    if (l$createdAt != lOther$createdAt) {
+      return false;
+    }
+    final l$updatedAt = updatedAt;
+    final lOther$updatedAt = other.updatedAt;
+    if (l$updatedAt != lOther$updatedAt) {
+      return false;
+    }
     final l$proposer = proposer;
     final lOther$proposer = other.proposer;
     if (l$proposer != lOther$proposer) {
@@ -747,16 +976,6 @@ class Query$Proposal$proposal {
       if (l$votes$entry != lOther$votes$entry) {
         return false;
       }
-    }
-    final l$votingDeadline = votingDeadline;
-    final lOther$votingDeadline = other.votingDeadline;
-    if (l$votingDeadline != lOther$votingDeadline) {
-      return false;
-    }
-    final l$createdAt = createdAt;
-    final lOther$createdAt = other.createdAt;
-    if (l$createdAt != lOther$createdAt) {
-      return false;
     }
     final l$$__typename = $__typename;
     final lOther$$__typename = other.$__typename;
@@ -787,10 +1006,20 @@ abstract class CopyWith$Query$Proposal$proposal<TRes> {
     String? description,
     Enum$ProposalType? type,
     Enum$ProposalStatus? status,
+    String? category,
+    Enum$VotingMethod? votingMethod,
+    DateTime? votingStartTime,
+    DateTime? votingEndTime,
+    int? quorumRequired,
+    double? approvalThreshold,
+    int? totalVotes,
+    int? votesYay,
+    int? votesNay,
+    int? votesAbstain,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     Query$Proposal$proposal$proposer? proposer,
     List<Query$Proposal$proposal$votes>? votes,
-    DateTime? votingDeadline,
-    DateTime? createdAt,
     String? $__typename,
   });
   CopyWith$Query$Proposal$proposal$proposer<TRes> get proposer;
@@ -820,10 +1049,20 @@ class _CopyWithImpl$Query$Proposal$proposal<TRes>
     Object? description = _undefined,
     Object? type = _undefined,
     Object? status = _undefined,
+    Object? category = _undefined,
+    Object? votingMethod = _undefined,
+    Object? votingStartTime = _undefined,
+    Object? votingEndTime = _undefined,
+    Object? quorumRequired = _undefined,
+    Object? approvalThreshold = _undefined,
+    Object? totalVotes = _undefined,
+    Object? votesYay = _undefined,
+    Object? votesNay = _undefined,
+    Object? votesAbstain = _undefined,
+    Object? createdAt = _undefined,
+    Object? updatedAt = _undefined,
     Object? proposer = _undefined,
     Object? votes = _undefined,
-    Object? votingDeadline = _undefined,
-    Object? createdAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$Proposal$proposal(
@@ -840,18 +1079,49 @@ class _CopyWithImpl$Query$Proposal$proposal<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$ProposalStatus),
-      proposer: proposer == _undefined || proposer == null
-          ? _instance.proposer
-          : (proposer as Query$Proposal$proposal$proposer),
-      votes: votes == _undefined || votes == null
-          ? _instance.votes
-          : (votes as List<Query$Proposal$proposal$votes>),
-      votingDeadline: votingDeadline == _undefined || votingDeadline == null
-          ? _instance.votingDeadline
-          : (votingDeadline as DateTime),
+      category: category == _undefined
+          ? _instance.category
+          : (category as String?),
+      votingMethod: votingMethod == _undefined || votingMethod == null
+          ? _instance.votingMethod
+          : (votingMethod as Enum$VotingMethod),
+      votingStartTime: votingStartTime == _undefined || votingStartTime == null
+          ? _instance.votingStartTime
+          : (votingStartTime as DateTime),
+      votingEndTime: votingEndTime == _undefined || votingEndTime == null
+          ? _instance.votingEndTime
+          : (votingEndTime as DateTime),
+      quorumRequired: quorumRequired == _undefined || quorumRequired == null
+          ? _instance.quorumRequired
+          : (quorumRequired as int),
+      approvalThreshold:
+          approvalThreshold == _undefined || approvalThreshold == null
+          ? _instance.approvalThreshold
+          : (approvalThreshold as double),
+      totalVotes: totalVotes == _undefined || totalVotes == null
+          ? _instance.totalVotes
+          : (totalVotes as int),
+      votesYay: votesYay == _undefined || votesYay == null
+          ? _instance.votesYay
+          : (votesYay as int),
+      votesNay: votesNay == _undefined || votesNay == null
+          ? _instance.votesNay
+          : (votesNay as int),
+      votesAbstain: votesAbstain == _undefined || votesAbstain == null
+          ? _instance.votesAbstain
+          : (votesAbstain as int),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
+      updatedAt: updatedAt == _undefined || updatedAt == null
+          ? _instance.updatedAt
+          : (updatedAt as DateTime),
+      proposer: proposer == _undefined
+          ? _instance.proposer
+          : (proposer as Query$Proposal$proposal$proposer?),
+      votes: votes == _undefined || votes == null
+          ? _instance.votes
+          : (votes as List<Query$Proposal$proposal$votes>),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -860,10 +1130,12 @@ class _CopyWithImpl$Query$Proposal$proposal<TRes>
 
   CopyWith$Query$Proposal$proposal$proposer<TRes> get proposer {
     final local$proposer = _instance.proposer;
-    return CopyWith$Query$Proposal$proposal$proposer(
-      local$proposer,
-      (e) => call(proposer: e),
-    );
+    return local$proposer == null
+        ? CopyWith$Query$Proposal$proposal$proposer.stub(_then(_instance))
+        : CopyWith$Query$Proposal$proposal$proposer(
+            local$proposer,
+            (e) => call(proposer: e),
+          );
   }
 
   TRes votes(
@@ -894,10 +1166,20 @@ class _CopyWithStubImpl$Query$Proposal$proposal<TRes>
     String? description,
     Enum$ProposalType? type,
     Enum$ProposalStatus? status,
+    String? category,
+    Enum$VotingMethod? votingMethod,
+    DateTime? votingStartTime,
+    DateTime? votingEndTime,
+    int? quorumRequired,
+    double? approvalThreshold,
+    int? totalVotes,
+    int? votesYay,
+    int? votesNay,
+    int? votesAbstain,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     Query$Proposal$proposal$proposer? proposer,
     List<Query$Proposal$proposal$votes>? votes,
-    DateTime? votingDeadline,
-    DateTime? createdAt,
     String? $__typename,
   }) => _res;
 
@@ -910,34 +1192,34 @@ class _CopyWithStubImpl$Query$Proposal$proposal<TRes>
 class Query$Proposal$proposal$proposer {
   Query$Proposal$proposal$proposer({
     required this.id,
-    required this.username,
-    this.firstName,
-    this.lastName,
-    this.$__typename = 'User',
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    this.$__typename = 'Member',
   });
 
   factory Query$Proposal$proposal$proposer.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
-    final l$username = json['username'];
     final l$firstName = json['firstName'];
     final l$lastName = json['lastName'];
+    final l$email = json['email'];
     final l$$__typename = json['__typename'];
     return Query$Proposal$proposal$proposer(
       id: (l$id as String),
-      username: (l$username as String),
-      firstName: (l$firstName as String?),
-      lastName: (l$lastName as String?),
+      firstName: (l$firstName as String),
+      lastName: (l$lastName as String),
+      email: (l$email as String),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String id;
 
-  final String username;
+  final String firstName;
 
-  final String? firstName;
+  final String lastName;
 
-  final String? lastName;
+  final String email;
 
   final String $__typename;
 
@@ -945,12 +1227,12 @@ class Query$Proposal$proposal$proposer {
     final _resultData = <String, dynamic>{};
     final l$id = id;
     _resultData['id'] = l$id;
-    final l$username = username;
-    _resultData['username'] = l$username;
     final l$firstName = firstName;
     _resultData['firstName'] = l$firstName;
     final l$lastName = lastName;
     _resultData['lastName'] = l$lastName;
+    final l$email = email;
+    _resultData['email'] = l$email;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -959,15 +1241,15 @@ class Query$Proposal$proposal$proposer {
   @override
   int get hashCode {
     final l$id = id;
-    final l$username = username;
     final l$firstName = firstName;
     final l$lastName = lastName;
+    final l$email = email;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
-      l$username,
       l$firstName,
       l$lastName,
+      l$email,
       l$$__typename,
     ]);
   }
@@ -986,11 +1268,6 @@ class Query$Proposal$proposal$proposer {
     if (l$id != lOther$id) {
       return false;
     }
-    final l$username = username;
-    final lOther$username = other.username;
-    if (l$username != lOther$username) {
-      return false;
-    }
     final l$firstName = firstName;
     final lOther$firstName = other.firstName;
     if (l$firstName != lOther$firstName) {
@@ -999,6 +1276,11 @@ class Query$Proposal$proposal$proposer {
     final l$lastName = lastName;
     final lOther$lastName = other.lastName;
     if (l$lastName != lOther$lastName) {
+      return false;
+    }
+    final l$email = email;
+    final lOther$email = other.email;
+    if (l$email != lOther$email) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -1027,9 +1309,9 @@ abstract class CopyWith$Query$Proposal$proposal$proposer<TRes> {
 
   TRes call({
     String? id,
-    String? username,
     String? firstName,
     String? lastName,
+    String? email,
     String? $__typename,
   });
 }
@@ -1046,22 +1328,22 @@ class _CopyWithImpl$Query$Proposal$proposal$proposer<TRes>
 
   TRes call({
     Object? id = _undefined,
-    Object? username = _undefined,
     Object? firstName = _undefined,
     Object? lastName = _undefined,
+    Object? email = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$Proposal$proposal$proposer(
       id: id == _undefined || id == null ? _instance.id : (id as String),
-      username: username == _undefined || username == null
-          ? _instance.username
-          : (username as String),
-      firstName: firstName == _undefined
+      firstName: firstName == _undefined || firstName == null
           ? _instance.firstName
-          : (firstName as String?),
-      lastName: lastName == _undefined
+          : (firstName as String),
+      lastName: lastName == _undefined || lastName == null
           ? _instance.lastName
-          : (lastName as String?),
+          : (lastName as String),
+      email: email == _undefined || email == null
+          ? _instance.email
+          : (email as String),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1077,9 +1359,9 @@ class _CopyWithStubImpl$Query$Proposal$proposal$proposer<TRes>
 
   call({
     String? id,
-    String? username,
     String? firstName,
     String? lastName,
+    String? email,
     String? $__typename,
   }) => _res;
 }
@@ -1087,41 +1369,53 @@ class _CopyWithStubImpl$Query$Proposal$proposal$proposer<TRes>
 class Query$Proposal$proposal$votes {
   Query$Proposal$proposal$votes({
     required this.id,
-    required this.choice,
-    this.comment,
-    required this.voter,
-    required this.createdAt,
+    required this.voteValue,
+    required this.weight,
+    this.comments,
+    required this.isAnonymous,
+    required this.castAt,
+    this.voter,
     this.$__typename = 'Vote',
   });
 
   factory Query$Proposal$proposal$votes.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
-    final l$choice = json['choice'];
-    final l$comment = json['comment'];
+    final l$voteValue = json['voteValue'];
+    final l$weight = json['weight'];
+    final l$comments = json['comments'];
+    final l$isAnonymous = json['isAnonymous'];
+    final l$castAt = json['castAt'];
     final l$voter = json['voter'];
-    final l$createdAt = json['createdAt'];
     final l$$__typename = json['__typename'];
     return Query$Proposal$proposal$votes(
       id: (l$id as String),
-      choice: fromJson$Enum$VoteChoice((l$choice as String)),
-      comment: (l$comment as String?),
-      voter: Query$Proposal$proposal$votes$voter.fromJson(
-        (l$voter as Map<String, dynamic>),
-      ),
-      createdAt: DateTime.parse((l$createdAt as String)),
+      voteValue: fromJson$Enum$VoteChoice((l$voteValue as String)),
+      weight: (l$weight as int),
+      comments: (l$comments as String?),
+      isAnonymous: (l$isAnonymous as bool),
+      castAt: DateTime.parse((l$castAt as String)),
+      voter: l$voter == null
+          ? null
+          : Query$Proposal$proposal$votes$voter.fromJson(
+              (l$voter as Map<String, dynamic>),
+            ),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String id;
 
-  final Enum$VoteChoice choice;
+  final Enum$VoteChoice voteValue;
 
-  final String? comment;
+  final int weight;
 
-  final Query$Proposal$proposal$votes$voter voter;
+  final String? comments;
 
-  final DateTime createdAt;
+  final bool isAnonymous;
+
+  final DateTime castAt;
+
+  final Query$Proposal$proposal$votes$voter? voter;
 
   final String $__typename;
 
@@ -1129,14 +1423,18 @@ class Query$Proposal$proposal$votes {
     final _resultData = <String, dynamic>{};
     final l$id = id;
     _resultData['id'] = l$id;
-    final l$choice = choice;
-    _resultData['choice'] = toJson$Enum$VoteChoice(l$choice);
-    final l$comment = comment;
-    _resultData['comment'] = l$comment;
+    final l$voteValue = voteValue;
+    _resultData['voteValue'] = toJson$Enum$VoteChoice(l$voteValue);
+    final l$weight = weight;
+    _resultData['weight'] = l$weight;
+    final l$comments = comments;
+    _resultData['comments'] = l$comments;
+    final l$isAnonymous = isAnonymous;
+    _resultData['isAnonymous'] = l$isAnonymous;
+    final l$castAt = castAt;
+    _resultData['castAt'] = l$castAt.toIso8601String();
     final l$voter = voter;
-    _resultData['voter'] = l$voter.toJson();
-    final l$createdAt = createdAt;
-    _resultData['createdAt'] = l$createdAt.toIso8601String();
+    _resultData['voter'] = l$voter?.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1145,17 +1443,21 @@ class Query$Proposal$proposal$votes {
   @override
   int get hashCode {
     final l$id = id;
-    final l$choice = choice;
-    final l$comment = comment;
+    final l$voteValue = voteValue;
+    final l$weight = weight;
+    final l$comments = comments;
+    final l$isAnonymous = isAnonymous;
+    final l$castAt = castAt;
     final l$voter = voter;
-    final l$createdAt = createdAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
-      l$choice,
-      l$comment,
+      l$voteValue,
+      l$weight,
+      l$comments,
+      l$isAnonymous,
+      l$castAt,
       l$voter,
-      l$createdAt,
       l$$__typename,
     ]);
   }
@@ -1174,24 +1476,34 @@ class Query$Proposal$proposal$votes {
     if (l$id != lOther$id) {
       return false;
     }
-    final l$choice = choice;
-    final lOther$choice = other.choice;
-    if (l$choice != lOther$choice) {
+    final l$voteValue = voteValue;
+    final lOther$voteValue = other.voteValue;
+    if (l$voteValue != lOther$voteValue) {
       return false;
     }
-    final l$comment = comment;
-    final lOther$comment = other.comment;
-    if (l$comment != lOther$comment) {
+    final l$weight = weight;
+    final lOther$weight = other.weight;
+    if (l$weight != lOther$weight) {
+      return false;
+    }
+    final l$comments = comments;
+    final lOther$comments = other.comments;
+    if (l$comments != lOther$comments) {
+      return false;
+    }
+    final l$isAnonymous = isAnonymous;
+    final lOther$isAnonymous = other.isAnonymous;
+    if (l$isAnonymous != lOther$isAnonymous) {
+      return false;
+    }
+    final l$castAt = castAt;
+    final lOther$castAt = other.castAt;
+    if (l$castAt != lOther$castAt) {
       return false;
     }
     final l$voter = voter;
     final lOther$voter = other.voter;
     if (l$voter != lOther$voter) {
-      return false;
-    }
-    final l$createdAt = createdAt;
-    final lOther$createdAt = other.createdAt;
-    if (l$createdAt != lOther$createdAt) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -1220,10 +1532,12 @@ abstract class CopyWith$Query$Proposal$proposal$votes<TRes> {
 
   TRes call({
     String? id,
-    Enum$VoteChoice? choice,
-    String? comment,
+    Enum$VoteChoice? voteValue,
+    int? weight,
+    String? comments,
+    bool? isAnonymous,
+    DateTime? castAt,
     Query$Proposal$proposal$votes$voter? voter,
-    DateTime? createdAt,
     String? $__typename,
   });
   CopyWith$Query$Proposal$proposal$votes$voter<TRes> get voter;
@@ -1241,24 +1555,34 @@ class _CopyWithImpl$Query$Proposal$proposal$votes<TRes>
 
   TRes call({
     Object? id = _undefined,
-    Object? choice = _undefined,
-    Object? comment = _undefined,
+    Object? voteValue = _undefined,
+    Object? weight = _undefined,
+    Object? comments = _undefined,
+    Object? isAnonymous = _undefined,
+    Object? castAt = _undefined,
     Object? voter = _undefined,
-    Object? createdAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$Proposal$proposal$votes(
       id: id == _undefined || id == null ? _instance.id : (id as String),
-      choice: choice == _undefined || choice == null
-          ? _instance.choice
-          : (choice as Enum$VoteChoice),
-      comment: comment == _undefined ? _instance.comment : (comment as String?),
-      voter: voter == _undefined || voter == null
+      voteValue: voteValue == _undefined || voteValue == null
+          ? _instance.voteValue
+          : (voteValue as Enum$VoteChoice),
+      weight: weight == _undefined || weight == null
+          ? _instance.weight
+          : (weight as int),
+      comments: comments == _undefined
+          ? _instance.comments
+          : (comments as String?),
+      isAnonymous: isAnonymous == _undefined || isAnonymous == null
+          ? _instance.isAnonymous
+          : (isAnonymous as bool),
+      castAt: castAt == _undefined || castAt == null
+          ? _instance.castAt
+          : (castAt as DateTime),
+      voter: voter == _undefined
           ? _instance.voter
-          : (voter as Query$Proposal$proposal$votes$voter),
-      createdAt: createdAt == _undefined || createdAt == null
-          ? _instance.createdAt
-          : (createdAt as DateTime),
+          : (voter as Query$Proposal$proposal$votes$voter?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1267,10 +1591,12 @@ class _CopyWithImpl$Query$Proposal$proposal$votes<TRes>
 
   CopyWith$Query$Proposal$proposal$votes$voter<TRes> get voter {
     final local$voter = _instance.voter;
-    return CopyWith$Query$Proposal$proposal$votes$voter(
-      local$voter,
-      (e) => call(voter: e),
-    );
+    return local$voter == null
+        ? CopyWith$Query$Proposal$proposal$votes$voter.stub(_then(_instance))
+        : CopyWith$Query$Proposal$proposal$votes$voter(
+            local$voter,
+            (e) => call(voter: e),
+          );
   }
 }
 
@@ -1282,10 +1608,12 @@ class _CopyWithStubImpl$Query$Proposal$proposal$votes<TRes>
 
   call({
     String? id,
-    Enum$VoteChoice? choice,
-    String? comment,
+    Enum$VoteChoice? voteValue,
+    int? weight,
+    String? comments,
+    bool? isAnonymous,
+    DateTime? castAt,
     Query$Proposal$proposal$votes$voter? voter,
-    DateTime? createdAt,
     String? $__typename,
   }) => _res;
 
@@ -1296,36 +1624,31 @@ class _CopyWithStubImpl$Query$Proposal$proposal$votes<TRes>
 class Query$Proposal$proposal$votes$voter {
   Query$Proposal$proposal$votes$voter({
     required this.id,
-    required this.username,
-    this.firstName,
-    this.lastName,
-    this.$__typename = 'User',
+    required this.firstName,
+    required this.lastName,
+    this.$__typename = 'Member',
   });
 
   factory Query$Proposal$proposal$votes$voter.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
-    final l$username = json['username'];
     final l$firstName = json['firstName'];
     final l$lastName = json['lastName'];
     final l$$__typename = json['__typename'];
     return Query$Proposal$proposal$votes$voter(
       id: (l$id as String),
-      username: (l$username as String),
-      firstName: (l$firstName as String?),
-      lastName: (l$lastName as String?),
+      firstName: (l$firstName as String),
+      lastName: (l$lastName as String),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String id;
 
-  final String username;
+  final String firstName;
 
-  final String? firstName;
-
-  final String? lastName;
+  final String lastName;
 
   final String $__typename;
 
@@ -1333,8 +1656,6 @@ class Query$Proposal$proposal$votes$voter {
     final _resultData = <String, dynamic>{};
     final l$id = id;
     _resultData['id'] = l$id;
-    final l$username = username;
-    _resultData['username'] = l$username;
     final l$firstName = firstName;
     _resultData['firstName'] = l$firstName;
     final l$lastName = lastName;
@@ -1347,17 +1668,10 @@ class Query$Proposal$proposal$votes$voter {
   @override
   int get hashCode {
     final l$id = id;
-    final l$username = username;
     final l$firstName = firstName;
     final l$lastName = lastName;
     final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$id,
-      l$username,
-      l$firstName,
-      l$lastName,
-      l$$__typename,
-    ]);
+    return Object.hashAll([l$id, l$firstName, l$lastName, l$$__typename]);
   }
 
   @override
@@ -1372,11 +1686,6 @@ class Query$Proposal$proposal$votes$voter {
     final l$id = id;
     final lOther$id = other.id;
     if (l$id != lOther$id) {
-      return false;
-    }
-    final l$username = username;
-    final lOther$username = other.username;
-    if (l$username != lOther$username) {
       return false;
     }
     final l$firstName = firstName;
@@ -1417,7 +1726,6 @@ abstract class CopyWith$Query$Proposal$proposal$votes$voter<TRes> {
 
   TRes call({
     String? id,
-    String? username,
     String? firstName,
     String? lastName,
     String? $__typename,
@@ -1436,22 +1744,18 @@ class _CopyWithImpl$Query$Proposal$proposal$votes$voter<TRes>
 
   TRes call({
     Object? id = _undefined,
-    Object? username = _undefined,
     Object? firstName = _undefined,
     Object? lastName = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$Proposal$proposal$votes$voter(
       id: id == _undefined || id == null ? _instance.id : (id as String),
-      username: username == _undefined || username == null
-          ? _instance.username
-          : (username as String),
-      firstName: firstName == _undefined
+      firstName: firstName == _undefined || firstName == null
           ? _instance.firstName
-          : (firstName as String?),
-      lastName: lastName == _undefined
+          : (firstName as String),
+      lastName: lastName == _undefined || lastName == null
           ? _instance.lastName
-          : (lastName as String?),
+          : (lastName as String),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1467,7 +1771,6 @@ class _CopyWithStubImpl$Query$Proposal$proposal$votes$voter<TRes>
 
   call({
     String? id,
-    String? username,
     String? firstName,
     String? lastName,
     String? $__typename,

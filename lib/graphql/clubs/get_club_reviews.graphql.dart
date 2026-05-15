@@ -531,7 +531,7 @@ class Query$ClubReviews$clubReviews {
   Query$ClubReviews$clubReviews({
     required this.nodes,
     required this.pageInfo,
-    this.$__typename = 'ReviewConnection',
+    this.$__typename = 'ClubReviewConnection',
   });
 
   factory Query$ClubReviews$clubReviews.fromJson(Map<String, dynamic> json) {
@@ -729,7 +729,7 @@ class Query$ClubReviews$clubReviews$nodes {
     this.comment,
     this.author,
     required this.createdAt,
-    this.$__typename = 'Review',
+    this.$__typename = 'ClubReview',
   });
 
   factory Query$ClubReviews$clubReviews$nodes.fromJson(
@@ -743,7 +743,7 @@ class Query$ClubReviews$clubReviews$nodes {
     final l$$__typename = json['__typename'];
     return Query$ClubReviews$clubReviews$nodes(
       id: (l$id as String),
-      rating: (l$rating as num).toDouble(),
+      rating: (l$rating as int),
       comment: (l$comment as String?),
       author: (l$author as String?),
       createdAt: DateTime.parse((l$createdAt as String)),
@@ -753,7 +753,7 @@ class Query$ClubReviews$clubReviews$nodes {
 
   final String id;
 
-  final double rating;
+  final int rating;
 
   final String? comment;
 
@@ -860,7 +860,7 @@ abstract class CopyWith$Query$ClubReviews$clubReviews$nodes<TRes> {
 
   TRes call({
     String? id,
-    double? rating,
+    int? rating,
     String? comment,
     String? author,
     DateTime? createdAt,
@@ -890,7 +890,7 @@ class _CopyWithImpl$Query$ClubReviews$clubReviews$nodes<TRes>
       id: id == _undefined || id == null ? _instance.id : (id as String),
       rating: rating == _undefined || rating == null
           ? _instance.rating
-          : (rating as double),
+          : (rating as int),
       comment: comment == _undefined ? _instance.comment : (comment as String?),
       author: author == _undefined ? _instance.author : (author as String?),
       createdAt: createdAt == _undefined || createdAt == null
@@ -911,7 +911,7 @@ class _CopyWithStubImpl$Query$ClubReviews$clubReviews$nodes<TRes>
 
   call({
     String? id,
-    double? rating,
+    int? rating,
     String? comment,
     String? author,
     DateTime? createdAt,
@@ -922,7 +922,7 @@ class _CopyWithStubImpl$Query$ClubReviews$clubReviews$nodes<TRes>
 class Query$ClubReviews$clubReviews$pageInfo {
   Query$ClubReviews$clubReviews$pageInfo({
     required this.hasNextPage,
-    this.totalCount,
+    required this.totalCount,
     this.$__typename = 'PageInfo',
   });
 
@@ -934,14 +934,14 @@ class Query$ClubReviews$clubReviews$pageInfo {
     final l$$__typename = json['__typename'];
     return Query$ClubReviews$clubReviews$pageInfo(
       hasNextPage: (l$hasNextPage as bool),
-      totalCount: (l$totalCount as int?),
+      totalCount: (l$totalCount as int),
       $__typename: (l$$__typename as String),
     );
   }
 
   final bool hasNextPage;
 
-  final int? totalCount;
+  final int totalCount;
 
   final String $__typename;
 
@@ -1035,9 +1035,9 @@ class _CopyWithImpl$Query$ClubReviews$clubReviews$pageInfo<TRes>
       hasNextPage: hasNextPage == _undefined || hasNextPage == null
           ? _instance.hasNextPage
           : (hasNextPage as bool),
-      totalCount: totalCount == _undefined
+      totalCount: totalCount == _undefined || totalCount == null
           ? _instance.totalCount
-          : (totalCount as int?),
+          : (totalCount as int),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),

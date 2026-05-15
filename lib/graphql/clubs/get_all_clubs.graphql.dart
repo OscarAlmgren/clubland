@@ -778,7 +778,7 @@ class Query$Clubs$clubs$nodes {
     required this.id,
     required this.name,
     this.description,
-    required this.location,
+    this.location,
     this.address,
     this.contactEmail,
     this.contactPhone,
@@ -804,8 +804,12 @@ class Query$Clubs$clubs$nodes {
       id: (l$id as String),
       name: (l$name as String),
       description: (l$description as String?),
-      location: (l$location as String),
-      address: (l$address as String?),
+      location: (l$location as String?),
+      address: l$address == null
+          ? null
+          : Query$Clubs$clubs$nodes$address.fromJson(
+              (l$address as Map<String, dynamic>),
+            ),
       contactEmail: (l$contactEmail as String?),
       contactPhone: (l$contactPhone as String?),
       website: (l$website as String?),
@@ -821,9 +825,9 @@ class Query$Clubs$clubs$nodes {
 
   final String? description;
 
-  final String location;
+  final String? location;
 
-  final String? address;
+  final Query$Clubs$clubs$nodes$address? address;
 
   final String? contactEmail;
 
@@ -848,7 +852,7 @@ class Query$Clubs$clubs$nodes {
     final l$location = location;
     _resultData['location'] = l$location;
     final l$address = address;
-    _resultData['address'] = l$address;
+    _resultData['address'] = l$address?.toJson();
     final l$contactEmail = contactEmail;
     _resultData['contactEmail'] = l$contactEmail;
     final l$contactPhone = contactPhone;
@@ -978,7 +982,7 @@ abstract class CopyWith$Query$Clubs$clubs$nodes<TRes> {
     String? name,
     String? description,
     String? location,
-    String? address,
+    Query$Clubs$clubs$nodes$address? address,
     String? contactEmail,
     String? contactPhone,
     String? website,
@@ -986,6 +990,7 @@ abstract class CopyWith$Query$Clubs$clubs$nodes<TRes> {
     DateTime? createdAt,
     String? $__typename,
   });
+  CopyWith$Query$Clubs$clubs$nodes$address<TRes> get address;
 }
 
 class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
@@ -1019,10 +1024,12 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      location: location == _undefined || location == null
+      location: location == _undefined
           ? _instance.location
-          : (location as String),
-      address: address == _undefined ? _instance.address : (address as String?),
+          : (location as String?),
+      address: address == _undefined
+          ? _instance.address
+          : (address as Query$Clubs$clubs$nodes$address?),
       contactEmail: contactEmail == _undefined
           ? _instance.contactEmail
           : (contactEmail as String?),
@@ -1041,6 +1048,16 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
           : ($__typename as String),
     ),
   );
+
+  CopyWith$Query$Clubs$clubs$nodes$address<TRes> get address {
+    final local$address = _instance.address;
+    return local$address == null
+        ? CopyWith$Query$Clubs$clubs$nodes$address.stub(_then(_instance))
+        : CopyWith$Query$Clubs$clubs$nodes$address(
+            local$address,
+            (e) => call(address: e),
+          );
+  }
 }
 
 class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
@@ -1054,7 +1071,7 @@ class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
     String? name,
     String? description,
     String? location,
-    String? address,
+    Query$Clubs$clubs$nodes$address? address,
     String? contactEmail,
     String? contactPhone,
     String? website,
@@ -1062,6 +1079,79 @@ class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
     DateTime? createdAt,
     String? $__typename,
   }) => _res;
+
+  CopyWith$Query$Clubs$clubs$nodes$address<TRes> get address =>
+      CopyWith$Query$Clubs$clubs$nodes$address.stub(_res);
+}
+
+class Query$Clubs$clubs$nodes$address {
+  Query$Clubs$clubs$nodes$address();
+
+  factory Query$Clubs$clubs$nodes$address.fromJson(Map<String, dynamic> json) {
+    return Query$Clubs$clubs$nodes$address();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Query$Clubs$clubs$nodes$address ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$Clubs$clubs$nodes$address
+    on Query$Clubs$clubs$nodes$address {
+  CopyWith$Query$Clubs$clubs$nodes$address<Query$Clubs$clubs$nodes$address>
+  get copyWith => CopyWith$Query$Clubs$clubs$nodes$address(this, (i) => i);
+}
+
+abstract class CopyWith$Query$Clubs$clubs$nodes$address<TRes> {
+  factory CopyWith$Query$Clubs$clubs$nodes$address(
+    Query$Clubs$clubs$nodes$address instance,
+    TRes Function(Query$Clubs$clubs$nodes$address) then,
+  ) = _CopyWithImpl$Query$Clubs$clubs$nodes$address;
+
+  factory CopyWith$Query$Clubs$clubs$nodes$address.stub(TRes res) =
+      _CopyWithStubImpl$Query$Clubs$clubs$nodes$address;
+
+  TRes call();
+}
+
+class _CopyWithImpl$Query$Clubs$clubs$nodes$address<TRes>
+    implements CopyWith$Query$Clubs$clubs$nodes$address<TRes> {
+  _CopyWithImpl$Query$Clubs$clubs$nodes$address(this._instance, this._then);
+
+  final Query$Clubs$clubs$nodes$address _instance;
+
+  final TRes Function(Query$Clubs$clubs$nodes$address) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call() => _then(Query$Clubs$clubs$nodes$address());
+}
+
+class _CopyWithStubImpl$Query$Clubs$clubs$nodes$address<TRes>
+    implements CopyWith$Query$Clubs$clubs$nodes$address<TRes> {
+  _CopyWithStubImpl$Query$Clubs$clubs$nodes$address(this._res);
+
+  TRes _res;
+
+  call() => _res;
 }
 
 class Query$Clubs$clubs$pageInfo {

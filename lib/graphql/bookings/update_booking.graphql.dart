@@ -114,29 +114,30 @@ class _CopyWithStubImpl$Variables$Mutation$UpdateBooking<TRes>
 
 class Mutation$UpdateBooking {
   Mutation$UpdateBooking({
-    required this.updateBooking,
+    required this.updateFacilityBooking,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$UpdateBooking.fromJson(Map<String, dynamic> json) {
-    final l$updateBooking = json['updateBooking'];
+    final l$updateFacilityBooking = json['updateFacilityBooking'];
     final l$$__typename = json['__typename'];
     return Mutation$UpdateBooking(
-      updateBooking: Mutation$UpdateBooking$updateBooking.fromJson(
-        (l$updateBooking as Map<String, dynamic>),
-      ),
+      updateFacilityBooking:
+          Mutation$UpdateBooking$updateFacilityBooking.fromJson(
+            (l$updateFacilityBooking as Map<String, dynamic>),
+          ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$UpdateBooking$updateBooking updateBooking;
+  final Mutation$UpdateBooking$updateFacilityBooking updateFacilityBooking;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$updateBooking = updateBooking;
-    _resultData['updateBooking'] = l$updateBooking.toJson();
+    final l$updateFacilityBooking = updateFacilityBooking;
+    _resultData['updateFacilityBooking'] = l$updateFacilityBooking.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -144,9 +145,9 @@ class Mutation$UpdateBooking {
 
   @override
   int get hashCode {
-    final l$updateBooking = updateBooking;
+    final l$updateFacilityBooking = updateFacilityBooking;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$updateBooking, l$$__typename]);
+    return Object.hashAll([l$updateFacilityBooking, l$$__typename]);
   }
 
   @override
@@ -157,9 +158,9 @@ class Mutation$UpdateBooking {
     if (other is! Mutation$UpdateBooking || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$updateBooking = updateBooking;
-    final lOther$updateBooking = other.updateBooking;
-    if (l$updateBooking != lOther$updateBooking) {
+    final l$updateFacilityBooking = updateFacilityBooking;
+    final lOther$updateFacilityBooking = other.updateFacilityBooking;
+    if (l$updateFacilityBooking != lOther$updateFacilityBooking) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -186,10 +187,11 @@ abstract class CopyWith$Mutation$UpdateBooking<TRes> {
       _CopyWithStubImpl$Mutation$UpdateBooking;
 
   TRes call({
-    Mutation$UpdateBooking$updateBooking? updateBooking,
+    Mutation$UpdateBooking$updateFacilityBooking? updateFacilityBooking,
     String? $__typename,
   });
-  CopyWith$Mutation$UpdateBooking$updateBooking<TRes> get updateBooking;
+  CopyWith$Mutation$UpdateBooking$updateFacilityBooking<TRes>
+  get updateFacilityBooking;
 }
 
 class _CopyWithImpl$Mutation$UpdateBooking<TRes>
@@ -203,24 +205,27 @@ class _CopyWithImpl$Mutation$UpdateBooking<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? updateBooking = _undefined,
+    Object? updateFacilityBooking = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$UpdateBooking(
-      updateBooking: updateBooking == _undefined || updateBooking == null
-          ? _instance.updateBooking
-          : (updateBooking as Mutation$UpdateBooking$updateBooking),
+      updateFacilityBooking:
+          updateFacilityBooking == _undefined || updateFacilityBooking == null
+          ? _instance.updateFacilityBooking
+          : (updateFacilityBooking
+                as Mutation$UpdateBooking$updateFacilityBooking),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$UpdateBooking$updateBooking<TRes> get updateBooking {
-    final local$updateBooking = _instance.updateBooking;
-    return CopyWith$Mutation$UpdateBooking$updateBooking(
-      local$updateBooking,
-      (e) => call(updateBooking: e),
+  CopyWith$Mutation$UpdateBooking$updateFacilityBooking<TRes>
+  get updateFacilityBooking {
+    final local$updateFacilityBooking = _instance.updateFacilityBooking;
+    return CopyWith$Mutation$UpdateBooking$updateFacilityBooking(
+      local$updateFacilityBooking,
+      (e) => call(updateFacilityBooking: e),
     );
   }
 }
@@ -232,12 +237,13 @@ class _CopyWithStubImpl$Mutation$UpdateBooking<TRes>
   TRes _res;
 
   call({
-    Mutation$UpdateBooking$updateBooking? updateBooking,
+    Mutation$UpdateBooking$updateFacilityBooking? updateFacilityBooking,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Mutation$UpdateBooking$updateBooking<TRes> get updateBooking =>
-      CopyWith$Mutation$UpdateBooking$updateBooking.stub(_res);
+  CopyWith$Mutation$UpdateBooking$updateFacilityBooking<TRes>
+  get updateFacilityBooking =>
+      CopyWith$Mutation$UpdateBooking$updateFacilityBooking.stub(_res);
 }
 
 const documentNodeMutationUpdateBooking = DocumentNode(
@@ -266,7 +272,7 @@ const documentNodeMutationUpdateBooking = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'updateBooking'),
+            name: NameNode(value: 'updateFacilityBooking'),
             alias: null,
             arguments: [
               ArgumentNode(
@@ -303,14 +309,21 @@ const documentNodeMutationUpdateBooking = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'notes'),
+                  name: NameNode(value: 'purpose'),
                   alias: null,
                   arguments: [],
                   directives: [],
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'participants'),
+                  name: NameNode(value: 'guestCount'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'specialRequests'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -439,35 +452,36 @@ extension ClientExtension$Mutation$UpdateBooking on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$UpdateBooking$updateBooking {
-  Mutation$UpdateBooking$updateBooking({
+class Mutation$UpdateBooking$updateFacilityBooking {
+  Mutation$UpdateBooking$updateFacilityBooking({
     required this.id,
     required this.startTime,
     required this.endTime,
-    this.notes,
-    required this.participants,
+    this.purpose,
+    this.guestCount,
+    this.specialRequests,
     required this.updatedAt,
-    this.$__typename = 'Booking',
+    this.$__typename = 'FacilityBooking',
   });
 
-  factory Mutation$UpdateBooking$updateBooking.fromJson(
+  factory Mutation$UpdateBooking$updateFacilityBooking.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
-    final l$notes = json['notes'];
-    final l$participants = json['participants'];
+    final l$purpose = json['purpose'];
+    final l$guestCount = json['guestCount'];
+    final l$specialRequests = json['specialRequests'];
     final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
-    return Mutation$UpdateBooking$updateBooking(
+    return Mutation$UpdateBooking$updateFacilityBooking(
       id: (l$id as String),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
-      notes: (l$notes as String?),
-      participants: (l$participants as List<dynamic>)
-          .map((e) => (e as String))
-          .toList(),
+      purpose: (l$purpose as String?),
+      guestCount: (l$guestCount as int?),
+      specialRequests: (l$specialRequests as String?),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -479,9 +493,11 @@ class Mutation$UpdateBooking$updateBooking {
 
   final DateTime endTime;
 
-  final String? notes;
+  final String? purpose;
 
-  final List<String> participants;
+  final int? guestCount;
+
+  final String? specialRequests;
 
   final DateTime updatedAt;
 
@@ -495,10 +511,12 @@ class Mutation$UpdateBooking$updateBooking {
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
     _resultData['endTime'] = l$endTime.toIso8601String();
-    final l$notes = notes;
-    _resultData['notes'] = l$notes;
-    final l$participants = participants;
-    _resultData['participants'] = l$participants.map((e) => e).toList();
+    final l$purpose = purpose;
+    _resultData['purpose'] = l$purpose;
+    final l$guestCount = guestCount;
+    _resultData['guestCount'] = l$guestCount;
+    final l$specialRequests = specialRequests;
+    _resultData['specialRequests'] = l$specialRequests;
     final l$updatedAt = updatedAt;
     _resultData['updatedAt'] = l$updatedAt.toIso8601String();
     final l$$__typename = $__typename;
@@ -511,16 +529,18 @@ class Mutation$UpdateBooking$updateBooking {
     final l$id = id;
     final l$startTime = startTime;
     final l$endTime = endTime;
-    final l$notes = notes;
-    final l$participants = participants;
+    final l$purpose = purpose;
+    final l$guestCount = guestCount;
+    final l$specialRequests = specialRequests;
     final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
       l$startTime,
       l$endTime,
-      l$notes,
-      Object.hashAll(l$participants.map((v) => v)),
+      l$purpose,
+      l$guestCount,
+      l$specialRequests,
       l$updatedAt,
       l$$__typename,
     ]);
@@ -531,7 +551,7 @@ class Mutation$UpdateBooking$updateBooking {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$UpdateBooking$updateBooking ||
+    if (other is! Mutation$UpdateBooking$updateFacilityBooking ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -550,22 +570,20 @@ class Mutation$UpdateBooking$updateBooking {
     if (l$endTime != lOther$endTime) {
       return false;
     }
-    final l$notes = notes;
-    final lOther$notes = other.notes;
-    if (l$notes != lOther$notes) {
+    final l$purpose = purpose;
+    final lOther$purpose = other.purpose;
+    if (l$purpose != lOther$purpose) {
       return false;
     }
-    final l$participants = participants;
-    final lOther$participants = other.participants;
-    if (l$participants.length != lOther$participants.length) {
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (l$guestCount != lOther$guestCount) {
       return false;
     }
-    for (int i = 0; i < l$participants.length; i++) {
-      final l$participants$entry = l$participants[i];
-      final lOther$participants$entry = lOther$participants[i];
-      if (l$participants$entry != lOther$participants$entry) {
-        return false;
-      }
+    final l$specialRequests = specialRequests;
+    final lOther$specialRequests = other.specialRequests;
+    if (l$specialRequests != lOther$specialRequests) {
+      return false;
     }
     final l$updatedAt = updatedAt;
     final lOther$updatedAt = other.updatedAt;
@@ -581,44 +599,46 @@ class Mutation$UpdateBooking$updateBooking {
   }
 }
 
-extension UtilityExtension$Mutation$UpdateBooking$updateBooking
-    on Mutation$UpdateBooking$updateBooking {
-  CopyWith$Mutation$UpdateBooking$updateBooking<
-    Mutation$UpdateBooking$updateBooking
+extension UtilityExtension$Mutation$UpdateBooking$updateFacilityBooking
+    on Mutation$UpdateBooking$updateFacilityBooking {
+  CopyWith$Mutation$UpdateBooking$updateFacilityBooking<
+    Mutation$UpdateBooking$updateFacilityBooking
   >
-  get copyWith => CopyWith$Mutation$UpdateBooking$updateBooking(this, (i) => i);
+  get copyWith =>
+      CopyWith$Mutation$UpdateBooking$updateFacilityBooking(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$UpdateBooking$updateBooking<TRes> {
-  factory CopyWith$Mutation$UpdateBooking$updateBooking(
-    Mutation$UpdateBooking$updateBooking instance,
-    TRes Function(Mutation$UpdateBooking$updateBooking) then,
-  ) = _CopyWithImpl$Mutation$UpdateBooking$updateBooking;
+abstract class CopyWith$Mutation$UpdateBooking$updateFacilityBooking<TRes> {
+  factory CopyWith$Mutation$UpdateBooking$updateFacilityBooking(
+    Mutation$UpdateBooking$updateFacilityBooking instance,
+    TRes Function(Mutation$UpdateBooking$updateFacilityBooking) then,
+  ) = _CopyWithImpl$Mutation$UpdateBooking$updateFacilityBooking;
 
-  factory CopyWith$Mutation$UpdateBooking$updateBooking.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$UpdateBooking$updateBooking;
+  factory CopyWith$Mutation$UpdateBooking$updateFacilityBooking.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$UpdateBooking$updateFacilityBooking;
 
   TRes call({
     String? id,
     DateTime? startTime,
     DateTime? endTime,
-    String? notes,
-    List<String>? participants,
+    String? purpose,
+    int? guestCount,
+    String? specialRequests,
     DateTime? updatedAt,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Mutation$UpdateBooking$updateBooking<TRes>
-    implements CopyWith$Mutation$UpdateBooking$updateBooking<TRes> {
-  _CopyWithImpl$Mutation$UpdateBooking$updateBooking(
+class _CopyWithImpl$Mutation$UpdateBooking$updateFacilityBooking<TRes>
+    implements CopyWith$Mutation$UpdateBooking$updateFacilityBooking<TRes> {
+  _CopyWithImpl$Mutation$UpdateBooking$updateFacilityBooking(
     this._instance,
     this._then,
   );
 
-  final Mutation$UpdateBooking$updateBooking _instance;
+  final Mutation$UpdateBooking$updateFacilityBooking _instance;
 
-  final TRes Function(Mutation$UpdateBooking$updateBooking) _then;
+  final TRes Function(Mutation$UpdateBooking$updateFacilityBooking) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -626,12 +646,13 @@ class _CopyWithImpl$Mutation$UpdateBooking$updateBooking<TRes>
     Object? id = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
-    Object? notes = _undefined,
-    Object? participants = _undefined,
+    Object? purpose = _undefined,
+    Object? guestCount = _undefined,
+    Object? specialRequests = _undefined,
     Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$UpdateBooking$updateBooking(
+    Mutation$UpdateBooking$updateFacilityBooking(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
@@ -639,10 +660,13 @@ class _CopyWithImpl$Mutation$UpdateBooking$updateBooking<TRes>
       endTime: endTime == _undefined || endTime == null
           ? _instance.endTime
           : (endTime as DateTime),
-      notes: notes == _undefined ? _instance.notes : (notes as String?),
-      participants: participants == _undefined || participants == null
-          ? _instance.participants
-          : (participants as List<String>),
+      purpose: purpose == _undefined ? _instance.purpose : (purpose as String?),
+      guestCount: guestCount == _undefined
+          ? _instance.guestCount
+          : (guestCount as int?),
+      specialRequests: specialRequests == _undefined
+          ? _instance.specialRequests
+          : (specialRequests as String?),
       updatedAt: updatedAt == _undefined || updatedAt == null
           ? _instance.updatedAt
           : (updatedAt as DateTime),
@@ -653,9 +677,9 @@ class _CopyWithImpl$Mutation$UpdateBooking$updateBooking<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$UpdateBooking$updateBooking<TRes>
-    implements CopyWith$Mutation$UpdateBooking$updateBooking<TRes> {
-  _CopyWithStubImpl$Mutation$UpdateBooking$updateBooking(this._res);
+class _CopyWithStubImpl$Mutation$UpdateBooking$updateFacilityBooking<TRes>
+    implements CopyWith$Mutation$UpdateBooking$updateFacilityBooking<TRes> {
+  _CopyWithStubImpl$Mutation$UpdateBooking$updateFacilityBooking(this._res);
 
   TRes _res;
 
@@ -663,8 +687,9 @@ class _CopyWithStubImpl$Mutation$UpdateBooking$updateBooking<TRes>
     String? id,
     DateTime? startTime,
     DateTime? endTime,
-    String? notes,
-    List<String>? participants,
+    String? purpose,
+    int? guestCount,
+    String? specialRequests,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;

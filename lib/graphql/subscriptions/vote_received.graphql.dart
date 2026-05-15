@@ -428,7 +428,7 @@ class Subscription$VoteReceived$voteReceived {
   Subscription$VoteReceived$voteReceived({
     required this.id,
     required this.proposalId,
-    required this.voter,
+    this.voter,
     required this.choice,
     required this.createdAt,
     this.$__typename = 'Vote',
@@ -446,9 +446,11 @@ class Subscription$VoteReceived$voteReceived {
     return Subscription$VoteReceived$voteReceived(
       id: (l$id as String),
       proposalId: (l$proposalId as String),
-      voter: Subscription$VoteReceived$voteReceived$voter.fromJson(
-        (l$voter as Map<String, dynamic>),
-      ),
+      voter: l$voter == null
+          ? null
+          : Subscription$VoteReceived$voteReceived$voter.fromJson(
+              (l$voter as Map<String, dynamic>),
+            ),
       choice: fromJson$Enum$VoteChoice((l$choice as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
@@ -459,7 +461,7 @@ class Subscription$VoteReceived$voteReceived {
 
   final String proposalId;
 
-  final Subscription$VoteReceived$voteReceived$voter voter;
+  final Subscription$VoteReceived$voteReceived$voter? voter;
 
   final Enum$VoteChoice choice;
 
@@ -474,7 +476,7 @@ class Subscription$VoteReceived$voteReceived {
     final l$proposalId = proposalId;
     _resultData['proposalId'] = l$proposalId;
     final l$voter = voter;
-    _resultData['voter'] = l$voter.toJson();
+    _resultData['voter'] = l$voter?.toJson();
     final l$choice = choice;
     _resultData['choice'] = toJson$Enum$VoteChoice(l$choice);
     final l$createdAt = createdAt;
@@ -600,9 +602,9 @@ class _CopyWithImpl$Subscription$VoteReceived$voteReceived<TRes>
       proposalId: proposalId == _undefined || proposalId == null
           ? _instance.proposalId
           : (proposalId as String),
-      voter: voter == _undefined || voter == null
+      voter: voter == _undefined
           ? _instance.voter
-          : (voter as Subscription$VoteReceived$voteReceived$voter),
+          : (voter as Subscription$VoteReceived$voteReceived$voter?),
       choice: choice == _undefined || choice == null
           ? _instance.choice
           : (choice as Enum$VoteChoice),
@@ -617,10 +619,14 @@ class _CopyWithImpl$Subscription$VoteReceived$voteReceived<TRes>
 
   CopyWith$Subscription$VoteReceived$voteReceived$voter<TRes> get voter {
     final local$voter = _instance.voter;
-    return CopyWith$Subscription$VoteReceived$voteReceived$voter(
-      local$voter,
-      (e) => call(voter: e),
-    );
+    return local$voter == null
+        ? CopyWith$Subscription$VoteReceived$voteReceived$voter.stub(
+            _then(_instance),
+          )
+        : CopyWith$Subscription$VoteReceived$voteReceived$voter(
+            local$voter,
+            (e) => call(voter: e),
+          );
   }
 }
 
@@ -645,8 +651,8 @@ class _CopyWithStubImpl$Subscription$VoteReceived$voteReceived<TRes>
 
 class Subscription$VoteReceived$voteReceived$voter {
   Subscription$VoteReceived$voteReceived$voter({
-    required this.username,
-    this.$__typename = 'User',
+    this.username,
+    this.$__typename = 'Member',
   });
 
   factory Subscription$VoteReceived$voteReceived$voter.fromJson(
@@ -655,12 +661,12 @@ class Subscription$VoteReceived$voteReceived$voter {
     final l$username = json['username'];
     final l$$__typename = json['__typename'];
     return Subscription$VoteReceived$voteReceived$voter(
-      username: (l$username as String),
+      username: (l$username as String?),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final String username;
+  final String? username;
 
   final String $__typename;
 
@@ -742,9 +748,9 @@ class _CopyWithImpl$Subscription$VoteReceived$voteReceived$voter<TRes>
     Object? $__typename = _undefined,
   }) => _then(
     Subscription$VoteReceived$voteReceived$voter(
-      username: username == _undefined || username == null
+      username: username == _undefined
           ? _instance.username
-          : (username as String),
+          : (username as String?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),

@@ -566,7 +566,7 @@ class Query$UpcomingBookings$upcomingBookings {
   Query$UpcomingBookings$upcomingBookings({
     required this.nodes,
     required this.pageInfo,
-    this.$__typename = 'BookingConnection',
+    this.$__typename = 'FacilityBookingConnection',
   });
 
   factory Query$UpcomingBookings$upcomingBookings.fromJson(
@@ -774,7 +774,7 @@ class Query$UpcomingBookings$upcomingBookings$nodes {
     required this.startTime,
     required this.endTime,
     required this.status,
-    this.$__typename = 'Booking',
+    this.$__typename = 'FacilityBooking',
   });
 
   factory Query$UpcomingBookings$upcomingBookings$nodes.fromJson(
@@ -1014,14 +1014,14 @@ class Query$UpcomingBookings$upcomingBookings$nodes$facility {
     final l$$__typename = json['__typename'];
     return Query$UpcomingBookings$upcomingBookings$nodes$facility(
       name: (l$name as String),
-      type: (l$type as String),
+      type: fromJson$Enum$FacilityType((l$type as String)),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String name;
 
-  final String type;
+  final Enum$FacilityType type;
 
   final String $__typename;
 
@@ -1030,7 +1030,7 @@ class Query$UpcomingBookings$upcomingBookings$nodes$facility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = l$type;
+    _resultData['type'] = toJson$Enum$FacilityType(l$type);
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1096,7 +1096,7 @@ abstract class CopyWith$Query$UpcomingBookings$upcomingBookings$nodes$facility<
     TRes res,
   ) = _CopyWithStubImpl$Query$UpcomingBookings$upcomingBookings$nodes$facility;
 
-  TRes call({String? name, String? type, String? $__typename});
+  TRes call({String? name, Enum$FacilityType? type, String? $__typename});
 }
 
 class _CopyWithImpl$Query$UpcomingBookings$upcomingBookings$nodes$facility<TRes>
@@ -1125,7 +1125,7 @@ class _CopyWithImpl$Query$UpcomingBookings$upcomingBookings$nodes$facility<TRes>
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as String),
+          : (type as Enum$FacilityType),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1144,7 +1144,7 @@ class _CopyWithStubImpl$Query$UpcomingBookings$upcomingBookings$nodes$facility<
 
   TRes _res;
 
-  call({String? name, String? type, String? $__typename}) => _res;
+  call({String? name, Enum$FacilityType? type, String? $__typename}) => _res;
 }
 
 class Query$UpcomingBookings$upcomingBookings$pageInfo {

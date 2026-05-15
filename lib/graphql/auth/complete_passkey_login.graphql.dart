@@ -808,7 +808,7 @@ class Mutation$CompletePasskeyLogin$completePasskeyLogin$user {
     required this.id,
     required this.clubId,
     required this.email,
-    required this.username,
+    this.username,
     this.firstName,
     this.lastName,
     required this.status,
@@ -836,11 +836,18 @@ class Mutation$CompletePasskeyLogin$completePasskeyLogin$user {
       id: (l$id as String),
       clubId: (l$clubId as String),
       email: (l$email as String),
-      username: (l$username as String),
+      username: (l$username as String?),
       firstName: (l$firstName as String?),
       lastName: (l$lastName as String?),
       status: fromJson$Enum$UserStatus((l$status as String)),
-      roles: (l$roles as List<dynamic>).map((e) => (e as String)).toList(),
+      roles: (l$roles as List<dynamic>)
+          .map(
+            (e) =>
+                Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles.fromJson(
+                  (e as Map<String, dynamic>),
+                ),
+          )
+          .toList(),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -853,7 +860,7 @@ class Mutation$CompletePasskeyLogin$completePasskeyLogin$user {
 
   final String email;
 
-  final String username;
+  final String? username;
 
   final String? firstName;
 
@@ -861,7 +868,8 @@ class Mutation$CompletePasskeyLogin$completePasskeyLogin$user {
 
   final Enum$UserStatus status;
 
-  final List<String> roles;
+  final List<Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles>
+  roles;
 
   final DateTime createdAt;
 
@@ -886,7 +894,7 @@ class Mutation$CompletePasskeyLogin$completePasskeyLogin$user {
     final l$status = status;
     _resultData['status'] = toJson$Enum$UserStatus(l$status);
     final l$roles = roles;
-    _resultData['roles'] = l$roles.map((e) => e).toList();
+    _resultData['roles'] = l$roles.map((e) => e.toJson()).toList();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -1031,11 +1039,22 @@ abstract class CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user<
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
+    List<Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles>? roles,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
+  TRes roles(
+    Iterable<Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles>
+    Function(
+      Iterable<
+        CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+          Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles
+        >
+      >,
+    )
+    _fn,
+  );
 }
 
 class _CopyWithImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user<
@@ -1076,9 +1095,9 @@ class _CopyWithImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user<
       email: email == _undefined || email == null
           ? _instance.email
           : (email as String),
-      username: username == _undefined || username == null
+      username: username == _undefined
           ? _instance.username
-          : (username as String),
+          : (username as String?),
       firstName: firstName == _undefined
           ? _instance.firstName
           : (firstName as String?),
@@ -1090,7 +1109,10 @@ class _CopyWithImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user<
           : (status as Enum$UserStatus),
       roles: roles == _undefined || roles == null
           ? _instance.roles
-          : (roles as List<String>),
+          : (roles
+                as List<
+                  Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles
+                >),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -1101,6 +1123,28 @@ class _CopyWithImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user<
           ? _instance.$__typename
           : ($__typename as String),
     ),
+  );
+
+  TRes roles(
+    Iterable<Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles>
+    Function(
+      Iterable<
+        CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+          Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles
+        >
+      >,
+    )
+    _fn,
+  ) => call(
+    roles: _fn(
+      _instance.roles.map(
+        (e) =>
+            CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles(
+              e,
+              (i) => i,
+            ),
+      ),
+    ).toList(),
   );
 }
 
@@ -1123,9 +1167,150 @@ class _CopyWithStubImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user<
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
+    List<Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles>? roles,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;
+
+  roles(_fn) => _res;
+}
+
+class Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles {
+  Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles({
+    required this.name,
+    this.$__typename = 'Role',
+  });
+
+  factory Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final l$name = json['name'];
+    final l$$__typename = json['__typename'];
+    return Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles(
+      name: (l$name as String),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String name;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$name = name;
+    _resultData['name'] = l$name;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$name = name;
+    final l$$__typename = $__typename;
+    return Object.hashAll([l$name, l$$__typename]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other
+            is! Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$name = name;
+    final lOther$name = other.name;
+    if (l$name != lOther$name) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles
+    on Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles {
+  CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+    Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles
+  >
+  get copyWith =>
+      CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles(
+        this,
+        (i) => i,
+      );
+}
+
+abstract class CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+  TRes
+> {
+  factory CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles(
+    Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles instance,
+    TRes Function(Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles)
+    then,
+  ) = _CopyWithImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles;
+
+  factory CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles.stub(
+    TRes res,
+  ) = _CopyWithStubImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles;
+
+  TRes call({String? name, String? $__typename});
+}
+
+class _CopyWithImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+  TRes
+>
+    implements
+        CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+          TRes
+        > {
+  _CopyWithImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles _instance;
+
+  final TRes Function(
+    Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles,
+  )
+  _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({Object? name = _undefined, Object? $__typename = _undefined}) =>
+      _then(
+        Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles(
+          name: name == _undefined || name == null
+              ? _instance.name
+              : (name as String),
+          $__typename: $__typename == _undefined || $__typename == null
+              ? _instance.$__typename
+              : ($__typename as String),
+        ),
+      );
+}
+
+class _CopyWithStubImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+  TRes
+>
+    implements
+        CopyWith$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles<
+          TRes
+        > {
+  _CopyWithStubImpl$Mutation$CompletePasskeyLogin$completePasskeyLogin$user$roles(
+    this._res,
+  );
+
+  TRes _res;
+
+  call({String? name, String? $__typename}) => _res;
 }

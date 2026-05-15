@@ -1,10 +1,11 @@
 mutation UpdateBooking($id: ID!, $input: UpdateBookingInput!) {
-  updateBooking(id: $id, input: $input) {
+  updateFacilityBooking(id: $id, input: $input) {
     id
     startTime
     endTime
-    notes
-    participants
+    purpose
+    guestCount
+    specialRequests
     updatedAt
   }
 }

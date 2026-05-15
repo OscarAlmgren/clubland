@@ -98,29 +98,30 @@ class _CopyWithStubImpl$Variables$Mutation$ConfirmBooking<TRes>
 
 class Mutation$ConfirmBooking {
   Mutation$ConfirmBooking({
-    required this.confirmBooking,
+    required this.confirmFacilityBooking,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$ConfirmBooking.fromJson(Map<String, dynamic> json) {
-    final l$confirmBooking = json['confirmBooking'];
+    final l$confirmFacilityBooking = json['confirmFacilityBooking'];
     final l$$__typename = json['__typename'];
     return Mutation$ConfirmBooking(
-      confirmBooking: Mutation$ConfirmBooking$confirmBooking.fromJson(
-        (l$confirmBooking as Map<String, dynamic>),
-      ),
+      confirmFacilityBooking:
+          Mutation$ConfirmBooking$confirmFacilityBooking.fromJson(
+            (l$confirmFacilityBooking as Map<String, dynamic>),
+          ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$ConfirmBooking$confirmBooking confirmBooking;
+  final Mutation$ConfirmBooking$confirmFacilityBooking confirmFacilityBooking;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$confirmBooking = confirmBooking;
-    _resultData['confirmBooking'] = l$confirmBooking.toJson();
+    final l$confirmFacilityBooking = confirmFacilityBooking;
+    _resultData['confirmFacilityBooking'] = l$confirmFacilityBooking.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -128,9 +129,9 @@ class Mutation$ConfirmBooking {
 
   @override
   int get hashCode {
-    final l$confirmBooking = confirmBooking;
+    final l$confirmFacilityBooking = confirmFacilityBooking;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$confirmBooking, l$$__typename]);
+    return Object.hashAll([l$confirmFacilityBooking, l$$__typename]);
   }
 
   @override
@@ -141,9 +142,9 @@ class Mutation$ConfirmBooking {
     if (other is! Mutation$ConfirmBooking || runtimeType != other.runtimeType) {
       return false;
     }
-    final l$confirmBooking = confirmBooking;
-    final lOther$confirmBooking = other.confirmBooking;
-    if (l$confirmBooking != lOther$confirmBooking) {
+    final l$confirmFacilityBooking = confirmFacilityBooking;
+    final lOther$confirmFacilityBooking = other.confirmFacilityBooking;
+    if (l$confirmFacilityBooking != lOther$confirmFacilityBooking) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -170,10 +171,11 @@ abstract class CopyWith$Mutation$ConfirmBooking<TRes> {
       _CopyWithStubImpl$Mutation$ConfirmBooking;
 
   TRes call({
-    Mutation$ConfirmBooking$confirmBooking? confirmBooking,
+    Mutation$ConfirmBooking$confirmFacilityBooking? confirmFacilityBooking,
     String? $__typename,
   });
-  CopyWith$Mutation$ConfirmBooking$confirmBooking<TRes> get confirmBooking;
+  CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking<TRes>
+  get confirmFacilityBooking;
 }
 
 class _CopyWithImpl$Mutation$ConfirmBooking<TRes>
@@ -187,24 +189,27 @@ class _CopyWithImpl$Mutation$ConfirmBooking<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? confirmBooking = _undefined,
+    Object? confirmFacilityBooking = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$ConfirmBooking(
-      confirmBooking: confirmBooking == _undefined || confirmBooking == null
-          ? _instance.confirmBooking
-          : (confirmBooking as Mutation$ConfirmBooking$confirmBooking),
+      confirmFacilityBooking:
+          confirmFacilityBooking == _undefined || confirmFacilityBooking == null
+          ? _instance.confirmFacilityBooking
+          : (confirmFacilityBooking
+                as Mutation$ConfirmBooking$confirmFacilityBooking),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$ConfirmBooking$confirmBooking<TRes> get confirmBooking {
-    final local$confirmBooking = _instance.confirmBooking;
-    return CopyWith$Mutation$ConfirmBooking$confirmBooking(
-      local$confirmBooking,
-      (e) => call(confirmBooking: e),
+  CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking<TRes>
+  get confirmFacilityBooking {
+    final local$confirmFacilityBooking = _instance.confirmFacilityBooking;
+    return CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking(
+      local$confirmFacilityBooking,
+      (e) => call(confirmFacilityBooking: e),
     );
   }
 }
@@ -216,12 +221,13 @@ class _CopyWithStubImpl$Mutation$ConfirmBooking<TRes>
   TRes _res;
 
   call({
-    Mutation$ConfirmBooking$confirmBooking? confirmBooking,
+    Mutation$ConfirmBooking$confirmFacilityBooking? confirmFacilityBooking,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Mutation$ConfirmBooking$confirmBooking<TRes> get confirmBooking =>
-      CopyWith$Mutation$ConfirmBooking$confirmBooking.stub(_res);
+  CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking<TRes>
+  get confirmFacilityBooking =>
+      CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking.stub(_res);
 }
 
 const documentNodeMutationConfirmBooking = DocumentNode(
@@ -241,11 +247,11 @@ const documentNodeMutationConfirmBooking = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'confirmBooking'),
+            name: NameNode(value: 'confirmFacilityBooking'),
             alias: null,
             arguments: [
               ArgumentNode(
-                name: NameNode(value: 'bookingId'),
+                name: NameNode(value: 'id'),
                 value: VariableNode(name: NameNode(value: 'bookingId')),
               ),
             ],
@@ -267,14 +273,7 @@ const documentNodeMutationConfirmBooking = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'confirmedAt'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'confirmedBy'),
+                  name: NameNode(value: 'updatedAt'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -396,30 +395,25 @@ extension ClientExtension$Mutation$ConfirmBooking on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$ConfirmBooking$confirmBooking {
-  Mutation$ConfirmBooking$confirmBooking({
+class Mutation$ConfirmBooking$confirmFacilityBooking {
+  Mutation$ConfirmBooking$confirmFacilityBooking({
     required this.id,
     required this.status,
-    this.confirmedAt,
-    this.confirmedBy,
-    this.$__typename = 'Booking',
+    required this.updatedAt,
+    this.$__typename = 'FacilityBooking',
   });
 
-  factory Mutation$ConfirmBooking$confirmBooking.fromJson(
+  factory Mutation$ConfirmBooking$confirmFacilityBooking.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
     final l$status = json['status'];
-    final l$confirmedAt = json['confirmedAt'];
-    final l$confirmedBy = json['confirmedBy'];
+    final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
-    return Mutation$ConfirmBooking$confirmBooking(
+    return Mutation$ConfirmBooking$confirmFacilityBooking(
       id: (l$id as String),
       status: fromJson$Enum$BookingStatus((l$status as String)),
-      confirmedAt: l$confirmedAt == null
-          ? null
-          : DateTime.parse((l$confirmedAt as String)),
-      confirmedBy: (l$confirmedBy as String?),
+      updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -428,9 +422,7 @@ class Mutation$ConfirmBooking$confirmBooking {
 
   final Enum$BookingStatus status;
 
-  final DateTime? confirmedAt;
-
-  final String? confirmedBy;
+  final DateTime updatedAt;
 
   final String $__typename;
 
@@ -440,10 +432,8 @@ class Mutation$ConfirmBooking$confirmBooking {
     _resultData['id'] = l$id;
     final l$status = status;
     _resultData['status'] = toJson$Enum$BookingStatus(l$status);
-    final l$confirmedAt = confirmedAt;
-    _resultData['confirmedAt'] = l$confirmedAt?.toIso8601String();
-    final l$confirmedBy = confirmedBy;
-    _resultData['confirmedBy'] = l$confirmedBy;
+    final l$updatedAt = updatedAt;
+    _resultData['updatedAt'] = l$updatedAt.toIso8601String();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -453,16 +443,9 @@ class Mutation$ConfirmBooking$confirmBooking {
   int get hashCode {
     final l$id = id;
     final l$status = status;
-    final l$confirmedAt = confirmedAt;
-    final l$confirmedBy = confirmedBy;
+    final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$id,
-      l$status,
-      l$confirmedAt,
-      l$confirmedBy,
-      l$$__typename,
-    ]);
+    return Object.hashAll([l$id, l$status, l$updatedAt, l$$__typename]);
   }
 
   @override
@@ -470,7 +453,7 @@ class Mutation$ConfirmBooking$confirmBooking {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$ConfirmBooking$confirmBooking ||
+    if (other is! Mutation$ConfirmBooking$confirmFacilityBooking ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -484,14 +467,9 @@ class Mutation$ConfirmBooking$confirmBooking {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$confirmedAt = confirmedAt;
-    final lOther$confirmedAt = other.confirmedAt;
-    if (l$confirmedAt != lOther$confirmedAt) {
-      return false;
-    }
-    final l$confirmedBy = confirmedBy;
-    final lOther$confirmedBy = other.confirmedBy;
-    if (l$confirmedBy != lOther$confirmedBy) {
+    final l$updatedAt = updatedAt;
+    final lOther$updatedAt = other.updatedAt;
+    if (l$updatedAt != lOther$updatedAt) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -503,64 +481,60 @@ class Mutation$ConfirmBooking$confirmBooking {
   }
 }
 
-extension UtilityExtension$Mutation$ConfirmBooking$confirmBooking
-    on Mutation$ConfirmBooking$confirmBooking {
-  CopyWith$Mutation$ConfirmBooking$confirmBooking<
-    Mutation$ConfirmBooking$confirmBooking
+extension UtilityExtension$Mutation$ConfirmBooking$confirmFacilityBooking
+    on Mutation$ConfirmBooking$confirmFacilityBooking {
+  CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking<
+    Mutation$ConfirmBooking$confirmFacilityBooking
   >
   get copyWith =>
-      CopyWith$Mutation$ConfirmBooking$confirmBooking(this, (i) => i);
+      CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$ConfirmBooking$confirmBooking<TRes> {
-  factory CopyWith$Mutation$ConfirmBooking$confirmBooking(
-    Mutation$ConfirmBooking$confirmBooking instance,
-    TRes Function(Mutation$ConfirmBooking$confirmBooking) then,
-  ) = _CopyWithImpl$Mutation$ConfirmBooking$confirmBooking;
+abstract class CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking<TRes> {
+  factory CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking(
+    Mutation$ConfirmBooking$confirmFacilityBooking instance,
+    TRes Function(Mutation$ConfirmBooking$confirmFacilityBooking) then,
+  ) = _CopyWithImpl$Mutation$ConfirmBooking$confirmFacilityBooking;
 
-  factory CopyWith$Mutation$ConfirmBooking$confirmBooking.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$ConfirmBooking$confirmBooking;
+  factory CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking.stub(
+    TRes res,
+  ) = _CopyWithStubImpl$Mutation$ConfirmBooking$confirmFacilityBooking;
 
   TRes call({
     String? id,
     Enum$BookingStatus? status,
-    DateTime? confirmedAt,
-    String? confirmedBy,
+    DateTime? updatedAt,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Mutation$ConfirmBooking$confirmBooking<TRes>
-    implements CopyWith$Mutation$ConfirmBooking$confirmBooking<TRes> {
-  _CopyWithImpl$Mutation$ConfirmBooking$confirmBooking(
+class _CopyWithImpl$Mutation$ConfirmBooking$confirmFacilityBooking<TRes>
+    implements CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking<TRes> {
+  _CopyWithImpl$Mutation$ConfirmBooking$confirmFacilityBooking(
     this._instance,
     this._then,
   );
 
-  final Mutation$ConfirmBooking$confirmBooking _instance;
+  final Mutation$ConfirmBooking$confirmFacilityBooking _instance;
 
-  final TRes Function(Mutation$ConfirmBooking$confirmBooking) _then;
+  final TRes Function(Mutation$ConfirmBooking$confirmFacilityBooking) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? id = _undefined,
     Object? status = _undefined,
-    Object? confirmedAt = _undefined,
-    Object? confirmedBy = _undefined,
+    Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$ConfirmBooking$confirmBooking(
+    Mutation$ConfirmBooking$confirmFacilityBooking(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$BookingStatus),
-      confirmedAt: confirmedAt == _undefined
-          ? _instance.confirmedAt
-          : (confirmedAt as DateTime?),
-      confirmedBy: confirmedBy == _undefined
-          ? _instance.confirmedBy
-          : (confirmedBy as String?),
+      updatedAt: updatedAt == _undefined || updatedAt == null
+          ? _instance.updatedAt
+          : (updatedAt as DateTime),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -568,17 +542,16 @@ class _CopyWithImpl$Mutation$ConfirmBooking$confirmBooking<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$ConfirmBooking$confirmBooking<TRes>
-    implements CopyWith$Mutation$ConfirmBooking$confirmBooking<TRes> {
-  _CopyWithStubImpl$Mutation$ConfirmBooking$confirmBooking(this._res);
+class _CopyWithStubImpl$Mutation$ConfirmBooking$confirmFacilityBooking<TRes>
+    implements CopyWith$Mutation$ConfirmBooking$confirmFacilityBooking<TRes> {
+  _CopyWithStubImpl$Mutation$ConfirmBooking$confirmFacilityBooking(this._res);
 
   TRes _res;
 
   call({
     String? id,
     Enum$BookingStatus? status,
-    DateTime? confirmedAt,
-    String? confirmedBy,
+    DateTime? updatedAt,
     String? $__typename,
   }) => _res;
 }

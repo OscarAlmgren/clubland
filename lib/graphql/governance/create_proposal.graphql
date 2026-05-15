@@ -5,6 +5,12 @@ mutation CreateProposal($input: CreateProposalInput!) {
     description
     type
     status
-    votingDeadline
+    category
+    votingMethod
+    votingStartTime
+    votingEndTime
+    quorumRequired
+    approvalThreshold
+    createdAt
   }
 }

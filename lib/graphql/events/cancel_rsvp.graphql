@@ -1,9 +1,10 @@
-mutation CancelRSVP($id: ID!) {
-  cancelRSVP(id: $id) {
-    success
-    message
+mutation CancelRSVP($id: ID!, $reason: String!) {
+  cancelEventRSVP(id: $id, reason: $reason) {
+    id
+    status
+    cancellationReason
+    cancelledAt
     cancellationFee
-    refundAmount
     feeWaived
   }
 }

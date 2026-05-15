@@ -1,13 +1,14 @@
-mutation CreateNotification($input: CreateNotificationInput!) {
-  createNotification(input: $input) {
+mutation CreateNotification($input: SendNotificationInput!) {
+  sendNotification(input: $input) {
     id
     userId
-    type
     title
+    body
     message
     status
-    channels
-    scheduledAt
+    channel
+    priority
+    scheduledFor
     createdAt
   }
 }

@@ -100,29 +100,31 @@ class _CopyWithStubImpl$Variables$Mutation$CheckOutBooking<TRes>
 
 class Mutation$CheckOutBooking {
   Mutation$CheckOutBooking({
-    required this.checkOutBooking,
+    required this.checkOutFacilityBooking,
     this.$__typename = 'Mutation',
   });
 
   factory Mutation$CheckOutBooking.fromJson(Map<String, dynamic> json) {
-    final l$checkOutBooking = json['checkOutBooking'];
+    final l$checkOutFacilityBooking = json['checkOutFacilityBooking'];
     final l$$__typename = json['__typename'];
     return Mutation$CheckOutBooking(
-      checkOutBooking: Mutation$CheckOutBooking$checkOutBooking.fromJson(
-        (l$checkOutBooking as Map<String, dynamic>),
-      ),
+      checkOutFacilityBooking:
+          Mutation$CheckOutBooking$checkOutFacilityBooking.fromJson(
+            (l$checkOutFacilityBooking as Map<String, dynamic>),
+          ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Mutation$CheckOutBooking$checkOutBooking checkOutBooking;
+  final Mutation$CheckOutBooking$checkOutFacilityBooking
+  checkOutFacilityBooking;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$checkOutBooking = checkOutBooking;
-    _resultData['checkOutBooking'] = l$checkOutBooking.toJson();
+    final l$checkOutFacilityBooking = checkOutFacilityBooking;
+    _resultData['checkOutFacilityBooking'] = l$checkOutFacilityBooking.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -130,9 +132,9 @@ class Mutation$CheckOutBooking {
 
   @override
   int get hashCode {
-    final l$checkOutBooking = checkOutBooking;
+    final l$checkOutFacilityBooking = checkOutFacilityBooking;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$checkOutBooking, l$$__typename]);
+    return Object.hashAll([l$checkOutFacilityBooking, l$$__typename]);
   }
 
   @override
@@ -144,9 +146,9 @@ class Mutation$CheckOutBooking {
         runtimeType != other.runtimeType) {
       return false;
     }
-    final l$checkOutBooking = checkOutBooking;
-    final lOther$checkOutBooking = other.checkOutBooking;
-    if (l$checkOutBooking != lOther$checkOutBooking) {
+    final l$checkOutFacilityBooking = checkOutFacilityBooking;
+    final lOther$checkOutFacilityBooking = other.checkOutFacilityBooking;
+    if (l$checkOutFacilityBooking != lOther$checkOutFacilityBooking) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -174,10 +176,11 @@ abstract class CopyWith$Mutation$CheckOutBooking<TRes> {
       _CopyWithStubImpl$Mutation$CheckOutBooking;
 
   TRes call({
-    Mutation$CheckOutBooking$checkOutBooking? checkOutBooking,
+    Mutation$CheckOutBooking$checkOutFacilityBooking? checkOutFacilityBooking,
     String? $__typename,
   });
-  CopyWith$Mutation$CheckOutBooking$checkOutBooking<TRes> get checkOutBooking;
+  CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes>
+  get checkOutFacilityBooking;
 }
 
 class _CopyWithImpl$Mutation$CheckOutBooking<TRes>
@@ -191,24 +194,28 @@ class _CopyWithImpl$Mutation$CheckOutBooking<TRes>
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? checkOutBooking = _undefined,
+    Object? checkOutFacilityBooking = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CheckOutBooking(
-      checkOutBooking: checkOutBooking == _undefined || checkOutBooking == null
-          ? _instance.checkOutBooking
-          : (checkOutBooking as Mutation$CheckOutBooking$checkOutBooking),
+      checkOutFacilityBooking:
+          checkOutFacilityBooking == _undefined ||
+              checkOutFacilityBooking == null
+          ? _instance.checkOutFacilityBooking
+          : (checkOutFacilityBooking
+                as Mutation$CheckOutBooking$checkOutFacilityBooking),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
 
-  CopyWith$Mutation$CheckOutBooking$checkOutBooking<TRes> get checkOutBooking {
-    final local$checkOutBooking = _instance.checkOutBooking;
-    return CopyWith$Mutation$CheckOutBooking$checkOutBooking(
-      local$checkOutBooking,
-      (e) => call(checkOutBooking: e),
+  CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes>
+  get checkOutFacilityBooking {
+    final local$checkOutFacilityBooking = _instance.checkOutFacilityBooking;
+    return CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking(
+      local$checkOutFacilityBooking,
+      (e) => call(checkOutFacilityBooking: e),
     );
   }
 }
@@ -220,12 +227,13 @@ class _CopyWithStubImpl$Mutation$CheckOutBooking<TRes>
   TRes _res;
 
   call({
-    Mutation$CheckOutBooking$checkOutBooking? checkOutBooking,
+    Mutation$CheckOutBooking$checkOutFacilityBooking? checkOutFacilityBooking,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Mutation$CheckOutBooking$checkOutBooking<TRes> get checkOutBooking =>
-      CopyWith$Mutation$CheckOutBooking$checkOutBooking.stub(_res);
+  CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes>
+  get checkOutFacilityBooking =>
+      CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking.stub(_res);
 }
 
 const documentNodeMutationCheckOutBooking = DocumentNode(
@@ -245,11 +253,11 @@ const documentNodeMutationCheckOutBooking = DocumentNode(
       selectionSet: SelectionSetNode(
         selections: [
           FieldNode(
-            name: NameNode(value: 'checkOutBooking'),
+            name: NameNode(value: 'checkOutFacilityBooking'),
             alias: null,
             arguments: [
               ArgumentNode(
-                name: NameNode(value: 'bookingId'),
+                name: NameNode(value: 'id'),
                 value: VariableNode(name: NameNode(value: 'bookingId')),
               ),
             ],
@@ -271,7 +279,7 @@ const documentNodeMutationCheckOutBooking = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
-                  name: NameNode(value: 'checkedOutAt'),
+                  name: NameNode(value: 'checkOutTime'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -394,27 +402,27 @@ extension ClientExtension$Mutation$CheckOutBooking on graphql.GraphQLClient {
   ) => this.watchMutation(options);
 }
 
-class Mutation$CheckOutBooking$checkOutBooking {
-  Mutation$CheckOutBooking$checkOutBooking({
+class Mutation$CheckOutBooking$checkOutFacilityBooking {
+  Mutation$CheckOutBooking$checkOutFacilityBooking({
     required this.id,
     required this.status,
-    this.checkedOutAt,
-    this.$__typename = 'Booking',
+    this.checkOutTime,
+    this.$__typename = 'FacilityBooking',
   });
 
-  factory Mutation$CheckOutBooking$checkOutBooking.fromJson(
+  factory Mutation$CheckOutBooking$checkOutFacilityBooking.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$id = json['id'];
     final l$status = json['status'];
-    final l$checkedOutAt = json['checkedOutAt'];
+    final l$checkOutTime = json['checkOutTime'];
     final l$$__typename = json['__typename'];
-    return Mutation$CheckOutBooking$checkOutBooking(
+    return Mutation$CheckOutBooking$checkOutFacilityBooking(
       id: (l$id as String),
       status: fromJson$Enum$BookingStatus((l$status as String)),
-      checkedOutAt: l$checkedOutAt == null
+      checkOutTime: l$checkOutTime == null
           ? null
-          : DateTime.parse((l$checkedOutAt as String)),
+          : DateTime.parse((l$checkOutTime as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -423,7 +431,7 @@ class Mutation$CheckOutBooking$checkOutBooking {
 
   final Enum$BookingStatus status;
 
-  final DateTime? checkedOutAt;
+  final DateTime? checkOutTime;
 
   final String $__typename;
 
@@ -433,8 +441,8 @@ class Mutation$CheckOutBooking$checkOutBooking {
     _resultData['id'] = l$id;
     final l$status = status;
     _resultData['status'] = toJson$Enum$BookingStatus(l$status);
-    final l$checkedOutAt = checkedOutAt;
-    _resultData['checkedOutAt'] = l$checkedOutAt?.toIso8601String();
+    final l$checkOutTime = checkOutTime;
+    _resultData['checkOutTime'] = l$checkOutTime?.toIso8601String();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -444,9 +452,9 @@ class Mutation$CheckOutBooking$checkOutBooking {
   int get hashCode {
     final l$id = id;
     final l$status = status;
-    final l$checkedOutAt = checkedOutAt;
+    final l$checkOutTime = checkOutTime;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$id, l$status, l$checkedOutAt, l$$__typename]);
+    return Object.hashAll([l$id, l$status, l$checkOutTime, l$$__typename]);
   }
 
   @override
@@ -454,7 +462,7 @@ class Mutation$CheckOutBooking$checkOutBooking {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Mutation$CheckOutBooking$checkOutBooking ||
+    if (other is! Mutation$CheckOutBooking$checkOutFacilityBooking ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -468,9 +476,9 @@ class Mutation$CheckOutBooking$checkOutBooking {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$checkedOutAt = checkedOutAt;
-    final lOther$checkedOutAt = other.checkedOutAt;
-    if (l$checkedOutAt != lOther$checkedOutAt) {
+    final l$checkOutTime = checkOutTime;
+    final lOther$checkOutTime = other.checkOutTime;
+    if (l$checkOutTime != lOther$checkOutTime) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -482,59 +490,60 @@ class Mutation$CheckOutBooking$checkOutBooking {
   }
 }
 
-extension UtilityExtension$Mutation$CheckOutBooking$checkOutBooking
-    on Mutation$CheckOutBooking$checkOutBooking {
-  CopyWith$Mutation$CheckOutBooking$checkOutBooking<
-    Mutation$CheckOutBooking$checkOutBooking
+extension UtilityExtension$Mutation$CheckOutBooking$checkOutFacilityBooking
+    on Mutation$CheckOutBooking$checkOutFacilityBooking {
+  CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking<
+    Mutation$CheckOutBooking$checkOutFacilityBooking
   >
   get copyWith =>
-      CopyWith$Mutation$CheckOutBooking$checkOutBooking(this, (i) => i);
+      CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking(this, (i) => i);
 }
 
-abstract class CopyWith$Mutation$CheckOutBooking$checkOutBooking<TRes> {
-  factory CopyWith$Mutation$CheckOutBooking$checkOutBooking(
-    Mutation$CheckOutBooking$checkOutBooking instance,
-    TRes Function(Mutation$CheckOutBooking$checkOutBooking) then,
-  ) = _CopyWithImpl$Mutation$CheckOutBooking$checkOutBooking;
+abstract class CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes> {
+  factory CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking(
+    Mutation$CheckOutBooking$checkOutFacilityBooking instance,
+    TRes Function(Mutation$CheckOutBooking$checkOutFacilityBooking) then,
+  ) = _CopyWithImpl$Mutation$CheckOutBooking$checkOutFacilityBooking;
 
-  factory CopyWith$Mutation$CheckOutBooking$checkOutBooking.stub(TRes res) =
-      _CopyWithStubImpl$Mutation$CheckOutBooking$checkOutBooking;
+  factory CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking.stub(
+    TRes res,
+  ) = _CopyWithStubImpl$Mutation$CheckOutBooking$checkOutFacilityBooking;
 
   TRes call({
     String? id,
     Enum$BookingStatus? status,
-    DateTime? checkedOutAt,
+    DateTime? checkOutTime,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Mutation$CheckOutBooking$checkOutBooking<TRes>
-    implements CopyWith$Mutation$CheckOutBooking$checkOutBooking<TRes> {
-  _CopyWithImpl$Mutation$CheckOutBooking$checkOutBooking(
+class _CopyWithImpl$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes>
+    implements CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes> {
+  _CopyWithImpl$Mutation$CheckOutBooking$checkOutFacilityBooking(
     this._instance,
     this._then,
   );
 
-  final Mutation$CheckOutBooking$checkOutBooking _instance;
+  final Mutation$CheckOutBooking$checkOutFacilityBooking _instance;
 
-  final TRes Function(Mutation$CheckOutBooking$checkOutBooking) _then;
+  final TRes Function(Mutation$CheckOutBooking$checkOutFacilityBooking) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? id = _undefined,
     Object? status = _undefined,
-    Object? checkedOutAt = _undefined,
+    Object? checkOutTime = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Mutation$CheckOutBooking$checkOutBooking(
+    Mutation$CheckOutBooking$checkOutFacilityBooking(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$BookingStatus),
-      checkedOutAt: checkedOutAt == _undefined
-          ? _instance.checkedOutAt
-          : (checkedOutAt as DateTime?),
+      checkOutTime: checkOutTime == _undefined
+          ? _instance.checkOutTime
+          : (checkOutTime as DateTime?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -542,16 +551,16 @@ class _CopyWithImpl$Mutation$CheckOutBooking$checkOutBooking<TRes>
   );
 }
 
-class _CopyWithStubImpl$Mutation$CheckOutBooking$checkOutBooking<TRes>
-    implements CopyWith$Mutation$CheckOutBooking$checkOutBooking<TRes> {
-  _CopyWithStubImpl$Mutation$CheckOutBooking$checkOutBooking(this._res);
+class _CopyWithStubImpl$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes>
+    implements CopyWith$Mutation$CheckOutBooking$checkOutFacilityBooking<TRes> {
+  _CopyWithStubImpl$Mutation$CheckOutBooking$checkOutFacilityBooking(this._res);
 
   TRes _res;
 
   call({
     String? id,
     Enum$BookingStatus? status,
-    DateTime? checkedOutAt,
+    DateTime? checkOutTime,
     String? $__typename,
   }) => _res;
 }

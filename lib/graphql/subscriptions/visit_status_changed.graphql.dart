@@ -455,7 +455,7 @@ class Subscription$VisitStatusChanged$visitStatusChanged {
     required this.status,
     required this.checkInTime,
     this.checkOutTime,
-    required this.verified,
+    this.verified,
     required this.createdAt,
     this.$__typename = 'Visit',
   });
@@ -483,7 +483,7 @@ class Subscription$VisitStatusChanged$visitStatusChanged {
       checkOutTime: l$checkOutTime == null
           ? null
           : DateTime.parse((l$checkOutTime as String)),
-      verified: (l$verified as bool),
+      verified: (l$verified as bool?),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -503,7 +503,7 @@ class Subscription$VisitStatusChanged$visitStatusChanged {
 
   final DateTime? checkOutTime;
 
-  final bool verified;
+  final bool? verified;
 
   final DateTime createdAt;
 
@@ -706,9 +706,9 @@ class _CopyWithImpl$Subscription$VisitStatusChanged$visitStatusChanged<TRes>
       checkOutTime: checkOutTime == _undefined
           ? _instance.checkOutTime
           : (checkOutTime as DateTime?),
-      verified: verified == _undefined || verified == null
+      verified: verified == _undefined
           ? _instance.verified
-          : (verified as bool),
+          : (verified as bool?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),

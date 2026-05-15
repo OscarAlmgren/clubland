@@ -329,7 +329,7 @@ class Subscription$NotificationReceived$notificationReceived {
     required this.title,
     required this.message,
     required this.status,
-    required this.channels,
+    this.channels,
     required this.createdAt,
     this.$__typename = 'Notification',
   });
@@ -349,12 +349,12 @@ class Subscription$NotificationReceived$notificationReceived {
     return Subscription$NotificationReceived$notificationReceived(
       id: (l$id as String),
       userId: (l$userId as String),
-      type: fromJson$Enum$NotificationType((l$type as String)),
+      type: (l$type as String),
       title: (l$title as String),
       message: (l$message as String),
       status: fromJson$Enum$NotificationStatus((l$status as String)),
-      channels: (l$channels as List<dynamic>)
-          .map((e) => fromJson$Enum$NotificationChannel((e as String)))
+      channels: (l$channels as List<dynamic>?)
+          ?.map((e) => fromJson$Enum$NotificationChannel((e as String)))
           .toList(),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
@@ -365,7 +365,7 @@ class Subscription$NotificationReceived$notificationReceived {
 
   final String userId;
 
-  final Enum$NotificationType type;
+  final String type;
 
   final String title;
 
@@ -373,7 +373,7 @@ class Subscription$NotificationReceived$notificationReceived {
 
   final Enum$NotificationStatus status;
 
-  final List<Enum$NotificationChannel> channels;
+  final List<Enum$NotificationChannel>? channels;
 
   final DateTime createdAt;
 
@@ -386,7 +386,7 @@ class Subscription$NotificationReceived$notificationReceived {
     final l$userId = userId;
     _resultData['userId'] = l$userId;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$NotificationType(l$type);
+    _resultData['type'] = l$type;
     final l$title = title;
     _resultData['title'] = l$title;
     final l$message = message;
@@ -395,7 +395,7 @@ class Subscription$NotificationReceived$notificationReceived {
     _resultData['status'] = toJson$Enum$NotificationStatus(l$status);
     final l$channels = channels;
     _resultData['channels'] = l$channels
-        .map((e) => toJson$Enum$NotificationChannel(e))
+        ?.map((e) => toJson$Enum$NotificationChannel(e))
         .toList();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
@@ -422,7 +422,7 @@ class Subscription$NotificationReceived$notificationReceived {
       l$title,
       l$message,
       l$status,
-      Object.hashAll(l$channels.map((v) => v)),
+      l$channels == null ? null : Object.hashAll(l$channels.map((v) => v)),
       l$createdAt,
       l$$__typename,
     ]);
@@ -469,15 +469,19 @@ class Subscription$NotificationReceived$notificationReceived {
     }
     final l$channels = channels;
     final lOther$channels = other.channels;
-    if (l$channels.length != lOther$channels.length) {
-      return false;
-    }
-    for (int i = 0; i < l$channels.length; i++) {
-      final l$channels$entry = l$channels[i];
-      final lOther$channels$entry = lOther$channels[i];
-      if (l$channels$entry != lOther$channels$entry) {
+    if (l$channels != null && lOther$channels != null) {
+      if (l$channels.length != lOther$channels.length) {
         return false;
       }
+      for (int i = 0; i < l$channels.length; i++) {
+        final l$channels$entry = l$channels[i];
+        final lOther$channels$entry = lOther$channels[i];
+        if (l$channels$entry != lOther$channels$entry) {
+          return false;
+        }
+      }
+    } else if (l$channels != lOther$channels) {
+      return false;
     }
     final l$createdAt = createdAt;
     final lOther$createdAt = other.createdAt;
@@ -520,7 +524,7 @@ abstract class CopyWith$Subscription$NotificationReceived$notificationReceived<
   TRes call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
+    String? type,
     String? title,
     String? message,
     Enum$NotificationStatus? status,
@@ -563,7 +567,7 @@ class _CopyWithImpl$Subscription$NotificationReceived$notificationReceived<TRes>
           : (userId as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$NotificationType),
+          : (type as String),
       title: title == _undefined || title == null
           ? _instance.title
           : (title as String),
@@ -573,9 +577,9 @@ class _CopyWithImpl$Subscription$NotificationReceived$notificationReceived<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$NotificationStatus),
-      channels: channels == _undefined || channels == null
+      channels: channels == _undefined
           ? _instance.channels
-          : (channels as List<Enum$NotificationChannel>),
+          : (channels as List<Enum$NotificationChannel>?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -600,7 +604,7 @@ class _CopyWithStubImpl$Subscription$NotificationReceived$notificationReceived<
   call({
     String? id,
     String? userId,
-    Enum$NotificationType? type,
+    String? type,
     String? title,
     String? message,
     Enum$NotificationStatus? status,

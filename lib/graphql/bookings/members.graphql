@@ -7,32 +7,11 @@ query Members($pagination: PaginationInput, $status: MemberStatus) {
       memberNumber
       membershipType
       status
-      blockchainIdentity
-      profile {
-        firstName
-        lastName
-        dateOfBirth
-        phoneNumber
-        address {
-          street
-          city
-          state
-          postalCode
-          country
-        }
-        emergencyContact {
-          name
-          relationship
-          phoneNumber
-        }
-        preferences {
-          emailNotifications
-          smsNotifications
-          pushNotifications
-          marketingEmails
-        }
-      }
-      joinedAt
+      firstName
+      lastName
+      email
+      phone
+      joinedDate
       createdAt
       updatedAt
     }

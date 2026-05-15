@@ -481,8 +481,8 @@ class Mutation$CreateReciprocalAgreement$createReciprocalAgreement {
     required this.clubId,
     required this.partnerClubId,
     required this.status,
-    required this.terms,
-    required this.effectiveDate,
+    this.terms,
+    this.effectiveDate,
     this.$__typename = 'ReciprocalAgreement',
   });
 
@@ -501,11 +501,10 @@ class Mutation$CreateReciprocalAgreement$createReciprocalAgreement {
       clubId: (l$clubId as String),
       partnerClubId: (l$partnerClubId as String),
       status: fromJson$Enum$AgreementStatus((l$status as String)),
-      terms:
-          Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms.fromJson(
-            (l$terms as Map<String, dynamic>),
-          ),
-      effectiveDate: DateTime.parse((l$effectiveDate as String)),
+      terms: (l$terms as String?),
+      effectiveDate: l$effectiveDate == null
+          ? null
+          : DateTime.parse((l$effectiveDate as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -518,10 +517,9 @@ class Mutation$CreateReciprocalAgreement$createReciprocalAgreement {
 
   final Enum$AgreementStatus status;
 
-  final Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms
-  terms;
+  final String? terms;
 
-  final DateTime effectiveDate;
+  final DateTime? effectiveDate;
 
   final String $__typename;
 
@@ -536,9 +534,9 @@ class Mutation$CreateReciprocalAgreement$createReciprocalAgreement {
     final l$status = status;
     _resultData['status'] = toJson$Enum$AgreementStatus(l$status);
     final l$terms = terms;
-    _resultData['terms'] = l$terms.toJson();
+    _resultData['terms'] = l$terms;
     final l$effectiveDate = effectiveDate;
-    _resultData['effectiveDate'] = l$effectiveDate.toIso8601String();
+    _resultData['effectiveDate'] = l$effectiveDate?.toIso8601String();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -643,14 +641,10 @@ abstract class CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgree
     String? clubId,
     String? partnerClubId,
     Enum$AgreementStatus? status,
-    Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms? terms,
+    String? terms,
     DateTime? effectiveDate,
     String? $__typename,
   });
-  CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-    TRes
-  >
-  get terms;
 }
 
 class _CopyWithImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement<
@@ -694,29 +688,15 @@ class _CopyWithImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$AgreementStatus),
-      terms: terms == _undefined || terms == null
-          ? _instance.terms
-          : (terms
-                as Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms),
-      effectiveDate: effectiveDate == _undefined || effectiveDate == null
+      terms: terms == _undefined ? _instance.terms : (terms as String?),
+      effectiveDate: effectiveDate == _undefined
           ? _instance.effectiveDate
-          : (effectiveDate as DateTime),
+          : (effectiveDate as DateTime?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
     ),
   );
-
-  CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-    TRes
-  >
-  get terms {
-    final local$terms = _instance.terms;
-    return CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms(
-      local$terms,
-      (e) => call(terms: e),
-    );
-  }
 }
 
 class _CopyWithStubImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement<
@@ -737,187 +717,8 @@ class _CopyWithStubImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgree
     String? clubId,
     String? partnerClubId,
     Enum$AgreementStatus? status,
-    Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms? terms,
+    String? terms,
     DateTime? effectiveDate,
     String? $__typename,
   }) => _res;
-
-  CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-    TRes
-  >
-  get terms =>
-      CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms.stub(
-        _res,
-      );
-}
-
-class Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms {
-  Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms({
-    required this.maxVisitsPerMonth,
-    this.reciprocalFee,
-    this.$__typename = 'AgreementTerms',
-  });
-
-  factory Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    final l$maxVisitsPerMonth = json['maxVisitsPerMonth'];
-    final l$reciprocalFee = json['reciprocalFee'];
-    final l$$__typename = json['__typename'];
-    return Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms(
-      maxVisitsPerMonth: (l$maxVisitsPerMonth as int),
-      reciprocalFee: (l$reciprocalFee as num?)?.toDouble(),
-      $__typename: (l$$__typename as String),
-    );
-  }
-
-  final int maxVisitsPerMonth;
-
-  final double? reciprocalFee;
-
-  final String $__typename;
-
-  Map<String, dynamic> toJson() {
-    final _resultData = <String, dynamic>{};
-    final l$maxVisitsPerMonth = maxVisitsPerMonth;
-    _resultData['maxVisitsPerMonth'] = l$maxVisitsPerMonth;
-    final l$reciprocalFee = reciprocalFee;
-    _resultData['reciprocalFee'] = l$reciprocalFee;
-    final l$$__typename = $__typename;
-    _resultData['__typename'] = l$$__typename;
-    return _resultData;
-  }
-
-  @override
-  int get hashCode {
-    final l$maxVisitsPerMonth = maxVisitsPerMonth;
-    final l$reciprocalFee = reciprocalFee;
-    final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$maxVisitsPerMonth,
-      l$reciprocalFee,
-      l$$__typename,
-    ]);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other
-            is! Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms ||
-        runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$maxVisitsPerMonth = maxVisitsPerMonth;
-    final lOther$maxVisitsPerMonth = other.maxVisitsPerMonth;
-    if (l$maxVisitsPerMonth != lOther$maxVisitsPerMonth) {
-      return false;
-    }
-    final l$reciprocalFee = reciprocalFee;
-    final lOther$reciprocalFee = other.reciprocalFee;
-    if (l$reciprocalFee != lOther$reciprocalFee) {
-      return false;
-    }
-    final l$$__typename = $__typename;
-    final lOther$$__typename = other.$__typename;
-    if (l$$__typename != lOther$$__typename) {
-      return false;
-    }
-    return true;
-  }
-}
-
-extension UtilityExtension$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms
-    on Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms {
-  CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-    Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms
-  >
-  get copyWith =>
-      CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms(
-        this,
-        (i) => i,
-      );
-}
-
-abstract class CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-  TRes
-> {
-  factory CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms(
-    Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms instance,
-    TRes Function(
-      Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms,
-    )
-    then,
-  ) = _CopyWithImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms;
-
-  factory CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms.stub(
-    TRes res,
-  ) = _CopyWithStubImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms;
-
-  TRes call({
-    int? maxVisitsPerMonth,
-    double? reciprocalFee,
-    String? $__typename,
-  });
-}
-
-class _CopyWithImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-  TRes
->
-    implements
-        CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-          TRes
-        > {
-  _CopyWithImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms(
-    this._instance,
-    this._then,
-  );
-
-  final Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms
-  _instance;
-
-  final TRes Function(
-    Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms,
-  )
-  _then;
-
-  static const _undefined = <dynamic, dynamic>{};
-
-  TRes call({
-    Object? maxVisitsPerMonth = _undefined,
-    Object? reciprocalFee = _undefined,
-    Object? $__typename = _undefined,
-  }) => _then(
-    Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms(
-      maxVisitsPerMonth:
-          maxVisitsPerMonth == _undefined || maxVisitsPerMonth == null
-          ? _instance.maxVisitsPerMonth
-          : (maxVisitsPerMonth as int),
-      reciprocalFee: reciprocalFee == _undefined
-          ? _instance.reciprocalFee
-          : (reciprocalFee as double?),
-      $__typename: $__typename == _undefined || $__typename == null
-          ? _instance.$__typename
-          : ($__typename as String),
-    ),
-  );
-}
-
-class _CopyWithStubImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-  TRes
->
-    implements
-        CopyWith$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms<
-          TRes
-        > {
-  _CopyWithStubImpl$Mutation$CreateReciprocalAgreement$createReciprocalAgreement$terms(
-    this._res,
-  );
-
-  TRes _res;
-
-  call({int? maxVisitsPerMonth, double? reciprocalFee, String? $__typename}) =>
-      _res;
 }

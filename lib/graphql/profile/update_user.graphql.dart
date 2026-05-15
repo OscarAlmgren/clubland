@@ -510,7 +510,7 @@ class Mutation$UpdateUser$updateUser {
     required this.id,
     required this.clubId,
     required this.email,
-    required this.username,
+    this.username,
     this.firstName,
     this.lastName,
     required this.status,
@@ -534,7 +534,7 @@ class Mutation$UpdateUser$updateUser {
       id: (l$id as String),
       clubId: (l$clubId as String),
       email: (l$email as String),
-      username: (l$username as String),
+      username: (l$username as String?),
       firstName: (l$firstName as String?),
       lastName: (l$lastName as String?),
       status: fromJson$Enum$UserStatus((l$status as String)),
@@ -550,7 +550,7 @@ class Mutation$UpdateUser$updateUser {
 
   final String email;
 
-  final String username;
+  final String? username;
 
   final String? firstName;
 
@@ -737,9 +737,9 @@ class _CopyWithImpl$Mutation$UpdateUser$updateUser<TRes>
       email: email == _undefined || email == null
           ? _instance.email
           : (email as String),
-      username: username == _undefined || username == null
+      username: username == _undefined
           ? _instance.username
-          : (username as String),
+          : (username as String?),
       firstName: firstName == _undefined
           ? _instance.firstName
           : (firstName as String?),

@@ -261,6 +261,55 @@ const documentNodeMutationCastVote = DocumentNode(
                   selectionSet: null,
                 ),
                 FieldNode(
+                  name: NameNode(value: 'voterId'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'voteValue'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'weight'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'comments'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'isAnonymous'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'castAt'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
+                  name: NameNode(value: 'createdAt'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null,
+                ),
+                FieldNode(
                   name: NameNode(value: 'voter'),
                   alias: null,
                   arguments: [],
@@ -275,7 +324,14 @@ const documentNodeMutationCastVote = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'username'),
+                        name: NameNode(value: 'firstName'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'lastName'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -290,27 +346,6 @@ const documentNodeMutationCastVote = DocumentNode(
                       ),
                     ],
                   ),
-                ),
-                FieldNode(
-                  name: NameNode(value: 'choice'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'comment'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                ),
-                FieldNode(
-                  name: NameNode(value: 'createdAt'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
                 ),
                 FieldNode(
                   name: NameNode(value: '__typename'),
@@ -431,30 +466,44 @@ class Mutation$CastVote$castVote {
   Mutation$CastVote$castVote({
     required this.id,
     required this.proposalId,
-    required this.voter,
-    required this.choice,
-    this.comment,
+    required this.voterId,
+    required this.voteValue,
+    required this.weight,
+    this.comments,
+    required this.isAnonymous,
+    required this.castAt,
     required this.createdAt,
+    this.voter,
     this.$__typename = 'Vote',
   });
 
   factory Mutation$CastVote$castVote.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
     final l$proposalId = json['proposalId'];
-    final l$voter = json['voter'];
-    final l$choice = json['choice'];
-    final l$comment = json['comment'];
+    final l$voterId = json['voterId'];
+    final l$voteValue = json['voteValue'];
+    final l$weight = json['weight'];
+    final l$comments = json['comments'];
+    final l$isAnonymous = json['isAnonymous'];
+    final l$castAt = json['castAt'];
     final l$createdAt = json['createdAt'];
+    final l$voter = json['voter'];
     final l$$__typename = json['__typename'];
     return Mutation$CastVote$castVote(
       id: (l$id as String),
       proposalId: (l$proposalId as String),
-      voter: Mutation$CastVote$castVote$voter.fromJson(
-        (l$voter as Map<String, dynamic>),
-      ),
-      choice: fromJson$Enum$VoteChoice((l$choice as String)),
-      comment: (l$comment as String?),
+      voterId: (l$voterId as String),
+      voteValue: fromJson$Enum$VoteChoice((l$voteValue as String)),
+      weight: (l$weight as int),
+      comments: (l$comments as String?),
+      isAnonymous: (l$isAnonymous as bool),
+      castAt: DateTime.parse((l$castAt as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
+      voter: l$voter == null
+          ? null
+          : Mutation$CastVote$castVote$voter.fromJson(
+              (l$voter as Map<String, dynamic>),
+            ),
       $__typename: (l$$__typename as String),
     );
   }
@@ -463,13 +512,21 @@ class Mutation$CastVote$castVote {
 
   final String proposalId;
 
-  final Mutation$CastVote$castVote$voter voter;
+  final String voterId;
 
-  final Enum$VoteChoice choice;
+  final Enum$VoteChoice voteValue;
 
-  final String? comment;
+  final int weight;
+
+  final String? comments;
+
+  final bool isAnonymous;
+
+  final DateTime castAt;
 
   final DateTime createdAt;
+
+  final Mutation$CastVote$castVote$voter? voter;
 
   final String $__typename;
 
@@ -479,14 +536,22 @@ class Mutation$CastVote$castVote {
     _resultData['id'] = l$id;
     final l$proposalId = proposalId;
     _resultData['proposalId'] = l$proposalId;
-    final l$voter = voter;
-    _resultData['voter'] = l$voter.toJson();
-    final l$choice = choice;
-    _resultData['choice'] = toJson$Enum$VoteChoice(l$choice);
-    final l$comment = comment;
-    _resultData['comment'] = l$comment;
+    final l$voterId = voterId;
+    _resultData['voterId'] = l$voterId;
+    final l$voteValue = voteValue;
+    _resultData['voteValue'] = toJson$Enum$VoteChoice(l$voteValue);
+    final l$weight = weight;
+    _resultData['weight'] = l$weight;
+    final l$comments = comments;
+    _resultData['comments'] = l$comments;
+    final l$isAnonymous = isAnonymous;
+    _resultData['isAnonymous'] = l$isAnonymous;
+    final l$castAt = castAt;
+    _resultData['castAt'] = l$castAt.toIso8601String();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
+    final l$voter = voter;
+    _resultData['voter'] = l$voter?.toJson();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -496,18 +561,26 @@ class Mutation$CastVote$castVote {
   int get hashCode {
     final l$id = id;
     final l$proposalId = proposalId;
-    final l$voter = voter;
-    final l$choice = choice;
-    final l$comment = comment;
+    final l$voterId = voterId;
+    final l$voteValue = voteValue;
+    final l$weight = weight;
+    final l$comments = comments;
+    final l$isAnonymous = isAnonymous;
+    final l$castAt = castAt;
     final l$createdAt = createdAt;
+    final l$voter = voter;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
       l$proposalId,
-      l$voter,
-      l$choice,
-      l$comment,
+      l$voterId,
+      l$voteValue,
+      l$weight,
+      l$comments,
+      l$isAnonymous,
+      l$castAt,
       l$createdAt,
+      l$voter,
       l$$__typename,
     ]);
   }
@@ -531,24 +604,44 @@ class Mutation$CastVote$castVote {
     if (l$proposalId != lOther$proposalId) {
       return false;
     }
-    final l$voter = voter;
-    final lOther$voter = other.voter;
-    if (l$voter != lOther$voter) {
+    final l$voterId = voterId;
+    final lOther$voterId = other.voterId;
+    if (l$voterId != lOther$voterId) {
       return false;
     }
-    final l$choice = choice;
-    final lOther$choice = other.choice;
-    if (l$choice != lOther$choice) {
+    final l$voteValue = voteValue;
+    final lOther$voteValue = other.voteValue;
+    if (l$voteValue != lOther$voteValue) {
       return false;
     }
-    final l$comment = comment;
-    final lOther$comment = other.comment;
-    if (l$comment != lOther$comment) {
+    final l$weight = weight;
+    final lOther$weight = other.weight;
+    if (l$weight != lOther$weight) {
+      return false;
+    }
+    final l$comments = comments;
+    final lOther$comments = other.comments;
+    if (l$comments != lOther$comments) {
+      return false;
+    }
+    final l$isAnonymous = isAnonymous;
+    final lOther$isAnonymous = other.isAnonymous;
+    if (l$isAnonymous != lOther$isAnonymous) {
+      return false;
+    }
+    final l$castAt = castAt;
+    final lOther$castAt = other.castAt;
+    if (l$castAt != lOther$castAt) {
       return false;
     }
     final l$createdAt = createdAt;
     final lOther$createdAt = other.createdAt;
     if (l$createdAt != lOther$createdAt) {
+      return false;
+    }
+    final l$voter = voter;
+    final lOther$voter = other.voter;
+    if (l$voter != lOther$voter) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -578,10 +671,14 @@ abstract class CopyWith$Mutation$CastVote$castVote<TRes> {
   TRes call({
     String? id,
     String? proposalId,
-    Mutation$CastVote$castVote$voter? voter,
-    Enum$VoteChoice? choice,
-    String? comment,
+    String? voterId,
+    Enum$VoteChoice? voteValue,
+    int? weight,
+    String? comments,
+    bool? isAnonymous,
+    DateTime? castAt,
     DateTime? createdAt,
+    Mutation$CastVote$castVote$voter? voter,
     String? $__typename,
   });
   CopyWith$Mutation$CastVote$castVote$voter<TRes> get voter;
@@ -600,10 +697,14 @@ class _CopyWithImpl$Mutation$CastVote$castVote<TRes>
   TRes call({
     Object? id = _undefined,
     Object? proposalId = _undefined,
-    Object? voter = _undefined,
-    Object? choice = _undefined,
-    Object? comment = _undefined,
+    Object? voterId = _undefined,
+    Object? voteValue = _undefined,
+    Object? weight = _undefined,
+    Object? comments = _undefined,
+    Object? isAnonymous = _undefined,
+    Object? castAt = _undefined,
     Object? createdAt = _undefined,
+    Object? voter = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CastVote$castVote(
@@ -611,16 +712,30 @@ class _CopyWithImpl$Mutation$CastVote$castVote<TRes>
       proposalId: proposalId == _undefined || proposalId == null
           ? _instance.proposalId
           : (proposalId as String),
-      voter: voter == _undefined || voter == null
-          ? _instance.voter
-          : (voter as Mutation$CastVote$castVote$voter),
-      choice: choice == _undefined || choice == null
-          ? _instance.choice
-          : (choice as Enum$VoteChoice),
-      comment: comment == _undefined ? _instance.comment : (comment as String?),
+      voterId: voterId == _undefined || voterId == null
+          ? _instance.voterId
+          : (voterId as String),
+      voteValue: voteValue == _undefined || voteValue == null
+          ? _instance.voteValue
+          : (voteValue as Enum$VoteChoice),
+      weight: weight == _undefined || weight == null
+          ? _instance.weight
+          : (weight as int),
+      comments: comments == _undefined
+          ? _instance.comments
+          : (comments as String?),
+      isAnonymous: isAnonymous == _undefined || isAnonymous == null
+          ? _instance.isAnonymous
+          : (isAnonymous as bool),
+      castAt: castAt == _undefined || castAt == null
+          ? _instance.castAt
+          : (castAt as DateTime),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
+      voter: voter == _undefined
+          ? _instance.voter
+          : (voter as Mutation$CastVote$castVote$voter?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -629,10 +744,12 @@ class _CopyWithImpl$Mutation$CastVote$castVote<TRes>
 
   CopyWith$Mutation$CastVote$castVote$voter<TRes> get voter {
     final local$voter = _instance.voter;
-    return CopyWith$Mutation$CastVote$castVote$voter(
-      local$voter,
-      (e) => call(voter: e),
-    );
+    return local$voter == null
+        ? CopyWith$Mutation$CastVote$castVote$voter.stub(_then(_instance))
+        : CopyWith$Mutation$CastVote$castVote$voter(
+            local$voter,
+            (e) => call(voter: e),
+          );
   }
 }
 
@@ -645,10 +762,14 @@ class _CopyWithStubImpl$Mutation$CastVote$castVote<TRes>
   call({
     String? id,
     String? proposalId,
-    Mutation$CastVote$castVote$voter? voter,
-    Enum$VoteChoice? choice,
-    String? comment,
+    String? voterId,
+    Enum$VoteChoice? voteValue,
+    int? weight,
+    String? comments,
+    bool? isAnonymous,
+    DateTime? castAt,
     DateTime? createdAt,
+    Mutation$CastVote$castVote$voter? voter,
     String? $__typename,
   }) => _res;
 
@@ -659,24 +780,29 @@ class _CopyWithStubImpl$Mutation$CastVote$castVote<TRes>
 class Mutation$CastVote$castVote$voter {
   Mutation$CastVote$castVote$voter({
     required this.id,
-    required this.username,
-    this.$__typename = 'User',
+    required this.firstName,
+    required this.lastName,
+    this.$__typename = 'Member',
   });
 
   factory Mutation$CastVote$castVote$voter.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
-    final l$username = json['username'];
+    final l$firstName = json['firstName'];
+    final l$lastName = json['lastName'];
     final l$$__typename = json['__typename'];
     return Mutation$CastVote$castVote$voter(
       id: (l$id as String),
-      username: (l$username as String),
+      firstName: (l$firstName as String),
+      lastName: (l$lastName as String),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String id;
 
-  final String username;
+  final String firstName;
+
+  final String lastName;
 
   final String $__typename;
 
@@ -684,8 +810,10 @@ class Mutation$CastVote$castVote$voter {
     final _resultData = <String, dynamic>{};
     final l$id = id;
     _resultData['id'] = l$id;
-    final l$username = username;
-    _resultData['username'] = l$username;
+    final l$firstName = firstName;
+    _resultData['firstName'] = l$firstName;
+    final l$lastName = lastName;
+    _resultData['lastName'] = l$lastName;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -694,9 +822,10 @@ class Mutation$CastVote$castVote$voter {
   @override
   int get hashCode {
     final l$id = id;
-    final l$username = username;
+    final l$firstName = firstName;
+    final l$lastName = lastName;
     final l$$__typename = $__typename;
-    return Object.hashAll([l$id, l$username, l$$__typename]);
+    return Object.hashAll([l$id, l$firstName, l$lastName, l$$__typename]);
   }
 
   @override
@@ -713,9 +842,14 @@ class Mutation$CastVote$castVote$voter {
     if (l$id != lOther$id) {
       return false;
     }
-    final l$username = username;
-    final lOther$username = other.username;
-    if (l$username != lOther$username) {
+    final l$firstName = firstName;
+    final lOther$firstName = other.firstName;
+    if (l$firstName != lOther$firstName) {
+      return false;
+    }
+    final l$lastName = lastName;
+    final lOther$lastName = other.lastName;
+    if (l$lastName != lOther$lastName) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -742,7 +876,12 @@ abstract class CopyWith$Mutation$CastVote$castVote$voter<TRes> {
   factory CopyWith$Mutation$CastVote$castVote$voter.stub(TRes res) =
       _CopyWithStubImpl$Mutation$CastVote$castVote$voter;
 
-  TRes call({String? id, String? username, String? $__typename});
+  TRes call({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Mutation$CastVote$castVote$voter<TRes>
@@ -757,14 +896,18 @@ class _CopyWithImpl$Mutation$CastVote$castVote$voter<TRes>
 
   TRes call({
     Object? id = _undefined,
-    Object? username = _undefined,
+    Object? firstName = _undefined,
+    Object? lastName = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$CastVote$castVote$voter(
       id: id == _undefined || id == null ? _instance.id : (id as String),
-      username: username == _undefined || username == null
-          ? _instance.username
-          : (username as String),
+      firstName: firstName == _undefined || firstName == null
+          ? _instance.firstName
+          : (firstName as String),
+      lastName: lastName == _undefined || lastName == null
+          ? _instance.lastName
+          : (lastName as String),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -778,5 +921,10 @@ class _CopyWithStubImpl$Mutation$CastVote$castVote$voter<TRes>
 
   TRes _res;
 
-  call({String? id, String? username, String? $__typename}) => _res;
+  call({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? $__typename,
+  }) => _res;
 }

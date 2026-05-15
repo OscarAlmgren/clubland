@@ -511,10 +511,10 @@ class Query$Facility$facility {
     required this.capacity,
     required this.amenities,
     required this.status,
-    required this.minBookingDuration,
-    required this.maxBookingDuration,
-    required this.advanceBookingDays,
-    required this.cancellationDeadline,
+    this.minBookingDuration,
+    this.maxBookingDuration,
+    this.advanceBookingDays,
+    this.cancellationDeadline,
     this.operatingHours,
     required this.createdAt,
     required this.updatedAt,
@@ -543,17 +543,17 @@ class Query$Facility$facility {
       clubId: (l$clubId as String),
       name: (l$name as String),
       description: (l$description as String?),
-      type: (l$type as String),
+      type: fromJson$Enum$FacilityType((l$type as String)),
       capacity: (l$capacity as int),
       amenities: (l$amenities as List<dynamic>)
           .map((e) => (e as String))
           .toList(),
       status: fromJson$Enum$FacilityStatus((l$status as String)),
-      minBookingDuration: (l$minBookingDuration as int),
-      maxBookingDuration: (l$maxBookingDuration as int),
-      advanceBookingDays: (l$advanceBookingDays as int),
-      cancellationDeadline: (l$cancellationDeadline as int),
-      operatingHours: (l$operatingHours as String?),
+      minBookingDuration: (l$minBookingDuration as int?),
+      maxBookingDuration: (l$maxBookingDuration as int?),
+      advanceBookingDays: (l$advanceBookingDays as int?),
+      cancellationDeadline: (l$cancellationDeadline as int?),
+      operatingHours: (l$operatingHours as dynamic?),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -568,7 +568,7 @@ class Query$Facility$facility {
 
   final String? description;
 
-  final String type;
+  final Enum$FacilityType type;
 
   final int capacity;
 
@@ -576,15 +576,15 @@ class Query$Facility$facility {
 
   final Enum$FacilityStatus status;
 
-  final int minBookingDuration;
+  final int? minBookingDuration;
 
-  final int maxBookingDuration;
+  final int? maxBookingDuration;
 
-  final int advanceBookingDays;
+  final int? advanceBookingDays;
 
-  final int cancellationDeadline;
+  final int? cancellationDeadline;
 
-  final String? operatingHours;
+  final dynamic? operatingHours;
 
   final DateTime createdAt;
 
@@ -603,7 +603,7 @@ class Query$Facility$facility {
     final l$description = description;
     _resultData['description'] = l$description;
     final l$type = type;
-    _resultData['type'] = l$type;
+    _resultData['type'] = toJson$Enum$FacilityType(l$type);
     final l$capacity = capacity;
     _resultData['capacity'] = l$capacity;
     final l$amenities = amenities;
@@ -785,7 +785,7 @@ abstract class CopyWith$Query$Facility$facility<TRes> {
     String? clubId,
     String? name,
     String? description,
-    String? type,
+    Enum$FacilityType? type,
     int? capacity,
     List<String>? amenities,
     Enum$FacilityStatus? status,
@@ -793,7 +793,7 @@ abstract class CopyWith$Query$Facility$facility<TRes> {
     int? maxBookingDuration,
     int? advanceBookingDays,
     int? cancellationDeadline,
-    String? operatingHours,
+    dynamic? operatingHours,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
@@ -841,7 +841,7 @@ class _CopyWithImpl$Query$Facility$facility<TRes>
           : (description as String?),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as String),
+          : (type as Enum$FacilityType),
       capacity: capacity == _undefined || capacity == null
           ? _instance.capacity
           : (capacity as int),
@@ -851,25 +851,21 @@ class _CopyWithImpl$Query$Facility$facility<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$FacilityStatus),
-      minBookingDuration:
-          minBookingDuration == _undefined || minBookingDuration == null
+      minBookingDuration: minBookingDuration == _undefined
           ? _instance.minBookingDuration
-          : (minBookingDuration as int),
-      maxBookingDuration:
-          maxBookingDuration == _undefined || maxBookingDuration == null
+          : (minBookingDuration as int?),
+      maxBookingDuration: maxBookingDuration == _undefined
           ? _instance.maxBookingDuration
-          : (maxBookingDuration as int),
-      advanceBookingDays:
-          advanceBookingDays == _undefined || advanceBookingDays == null
+          : (maxBookingDuration as int?),
+      advanceBookingDays: advanceBookingDays == _undefined
           ? _instance.advanceBookingDays
-          : (advanceBookingDays as int),
-      cancellationDeadline:
-          cancellationDeadline == _undefined || cancellationDeadline == null
+          : (advanceBookingDays as int?),
+      cancellationDeadline: cancellationDeadline == _undefined
           ? _instance.cancellationDeadline
-          : (cancellationDeadline as int),
+          : (cancellationDeadline as int?),
       operatingHours: operatingHours == _undefined
           ? _instance.operatingHours
-          : (operatingHours as String?),
+          : (operatingHours as dynamic?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -894,7 +890,7 @@ class _CopyWithStubImpl$Query$Facility$facility<TRes>
     String? clubId,
     String? name,
     String? description,
-    String? type,
+    Enum$FacilityType? type,
     int? capacity,
     List<String>? amenities,
     Enum$FacilityStatus? status,
@@ -902,7 +898,7 @@ class _CopyWithStubImpl$Query$Facility$facility<TRes>
     int? maxBookingDuration,
     int? advanceBookingDays,
     int? cancellationDeadline,
-    String? operatingHours,
+    dynamic? operatingHours,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,

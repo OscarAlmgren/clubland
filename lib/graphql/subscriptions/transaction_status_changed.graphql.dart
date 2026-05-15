@@ -356,16 +356,16 @@ class Subscription$TransactionStatusChanged$transactionStatusChanged {
   Subscription$TransactionStatusChanged$transactionStatusChanged({
     required this.id,
     required this.type,
-    required this.chaincode,
-    required this.function,
-    required this.args,
+    this.chaincode,
+    this.function,
+    this.args,
     required this.status,
-    this.txId,
+    required this.txId,
     this.blockNumber,
     this.timestamp,
     this.error,
-    required this.createdAt,
-    this.$__typename = 'Transaction',
+    this.createdAt,
+    this.$__typename = 'BlockchainTransaction',
   });
 
   factory Subscription$TransactionStatusChanged$transactionStatusChanged.fromJson(
@@ -385,35 +385,37 @@ class Subscription$TransactionStatusChanged$transactionStatusChanged {
     final l$$__typename = json['__typename'];
     return Subscription$TransactionStatusChanged$transactionStatusChanged(
       id: (l$id as String),
-      type: fromJson$Enum$TransactionType((l$type as String)),
-      chaincode: (l$chaincode as String),
-      function: (l$function as String),
-      args: (l$args as List<dynamic>).map((e) => (e as String)).toList(),
+      type: (l$type as String),
+      chaincode: (l$chaincode as String?),
+      function: (l$function as String?),
+      args: (l$args as List<dynamic>?)?.map((e) => (e as String)).toList(),
       status: fromJson$Enum$TransactionStatus((l$status as String)),
-      txId: (l$txId as String?),
+      txId: (l$txId as String),
       blockNumber: (l$blockNumber as int?),
       timestamp: l$timestamp == null
           ? null
           : DateTime.parse((l$timestamp as String)),
       error: (l$error as String?),
-      createdAt: DateTime.parse((l$createdAt as String)),
+      createdAt: l$createdAt == null
+          ? null
+          : DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String id;
 
-  final Enum$TransactionType type;
+  final String type;
 
-  final String chaincode;
+  final String? chaincode;
 
-  final String function;
+  final String? function;
 
-  final List<String> args;
+  final List<String>? args;
 
   final Enum$TransactionStatus status;
 
-  final String? txId;
+  final String txId;
 
   final int? blockNumber;
 
@@ -421,7 +423,7 @@ class Subscription$TransactionStatusChanged$transactionStatusChanged {
 
   final String? error;
 
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   final String $__typename;
 
@@ -430,13 +432,13 @@ class Subscription$TransactionStatusChanged$transactionStatusChanged {
     final l$id = id;
     _resultData['id'] = l$id;
     final l$type = type;
-    _resultData['type'] = toJson$Enum$TransactionType(l$type);
+    _resultData['type'] = l$type;
     final l$chaincode = chaincode;
     _resultData['chaincode'] = l$chaincode;
     final l$function = function;
     _resultData['function'] = l$function;
     final l$args = args;
-    _resultData['args'] = l$args.map((e) => e).toList();
+    _resultData['args'] = l$args?.map((e) => e).toList();
     final l$status = status;
     _resultData['status'] = toJson$Enum$TransactionStatus(l$status);
     final l$txId = txId;
@@ -448,7 +450,7 @@ class Subscription$TransactionStatusChanged$transactionStatusChanged {
     final l$error = error;
     _resultData['error'] = l$error;
     final l$createdAt = createdAt;
-    _resultData['createdAt'] = l$createdAt.toIso8601String();
+    _resultData['createdAt'] = l$createdAt?.toIso8601String();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -473,7 +475,7 @@ class Subscription$TransactionStatusChanged$transactionStatusChanged {
       l$type,
       l$chaincode,
       l$function,
-      Object.hashAll(l$args.map((v) => v)),
+      l$args == null ? null : Object.hashAll(l$args.map((v) => v)),
       l$status,
       l$txId,
       l$blockNumber,
@@ -516,15 +518,19 @@ class Subscription$TransactionStatusChanged$transactionStatusChanged {
     }
     final l$args = args;
     final lOther$args = other.args;
-    if (l$args.length != lOther$args.length) {
-      return false;
-    }
-    for (int i = 0; i < l$args.length; i++) {
-      final l$args$entry = l$args[i];
-      final lOther$args$entry = lOther$args[i];
-      if (l$args$entry != lOther$args$entry) {
+    if (l$args != null && lOther$args != null) {
+      if (l$args.length != lOther$args.length) {
         return false;
       }
+      for (int i = 0; i < l$args.length; i++) {
+        final l$args$entry = l$args[i];
+        final lOther$args$entry = lOther$args[i];
+        if (l$args$entry != lOther$args$entry) {
+          return false;
+        }
+      }
+    } else if (l$args != lOther$args) {
+      return false;
     }
     final l$status = status;
     final lOther$status = other.status;
@@ -594,7 +600,7 @@ abstract class CopyWith$Subscription$TransactionStatusChanged$transactionStatusC
 
   TRes call({
     String? id,
-    Enum$TransactionType? type,
+    String? type,
     String? chaincode,
     String? function,
     List<String>? args,
@@ -648,20 +654,20 @@ class _CopyWithImpl$Subscription$TransactionStatusChanged$transactionStatusChang
       id: id == _undefined || id == null ? _instance.id : (id as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$TransactionType),
-      chaincode: chaincode == _undefined || chaincode == null
+          : (type as String),
+      chaincode: chaincode == _undefined
           ? _instance.chaincode
-          : (chaincode as String),
-      function: function == _undefined || function == null
+          : (chaincode as String?),
+      function: function == _undefined
           ? _instance.function
-          : (function as String),
-      args: args == _undefined || args == null
-          ? _instance.args
-          : (args as List<String>),
+          : (function as String?),
+      args: args == _undefined ? _instance.args : (args as List<String>?),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$TransactionStatus),
-      txId: txId == _undefined ? _instance.txId : (txId as String?),
+      txId: txId == _undefined || txId == null
+          ? _instance.txId
+          : (txId as String),
       blockNumber: blockNumber == _undefined
           ? _instance.blockNumber
           : (blockNumber as int?),
@@ -669,9 +675,9 @@ class _CopyWithImpl$Subscription$TransactionStatusChanged$transactionStatusChang
           ? _instance.timestamp
           : (timestamp as DateTime?),
       error: error == _undefined ? _instance.error : (error as String?),
-      createdAt: createdAt == _undefined || createdAt == null
+      createdAt: createdAt == _undefined
           ? _instance.createdAt
-          : (createdAt as DateTime),
+          : (createdAt as DateTime?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -694,7 +700,7 @@ class _CopyWithStubImpl$Subscription$TransactionStatusChanged$transactionStatusC
 
   call({
     String? id,
-    Enum$TransactionType? type,
+    String? type,
     String? chaincode,
     String? function,
     List<String>? args,

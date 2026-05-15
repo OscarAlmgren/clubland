@@ -1,18 +1,20 @@
 mutation UpdateRSVP($id: ID!, $input: UpdateRSVPInput!) {
-  updateRSVP(id: $id, input: $input) {
+  updateEventRSVP(id: $id, input: $input) {
     id
     eventId
     memberId
     clubId
+    status
+    guestCount
+    dietaryRestrictions
+    specialRequests
+    paymentStatus
     response
     rsvpType
     priority
     attendanceCount
     guestNames
-    dietaryRestrictions
     seatingPreferences
-    specialRequests
-    status
     paymentRequired
     paymentVerified
     paymentAmount

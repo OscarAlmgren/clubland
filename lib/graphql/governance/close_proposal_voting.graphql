@@ -1,0 +1,6 @@
+mutation CloseProposalVoting($id: ID!) {
+  closeProposalVoting(id: $id) {
+    id
+    status
+  }
+}

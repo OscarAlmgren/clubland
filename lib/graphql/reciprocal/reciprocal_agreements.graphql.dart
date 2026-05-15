@@ -365,7 +365,14 @@ const documentNodeQueryReciprocalAgreements = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'terms'),
+                        name: NameNode(value: 'agreementType'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'agreementTerms'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -418,6 +425,20 @@ const documentNodeQueryReciprocalAgreements = DocumentNode(
                       ),
                       FieldNode(
                         name: NameNode(value: 'expirationDate'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'startDate'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'endDate'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -673,7 +694,7 @@ class Query$ReciprocalAgreements$reciprocalAgreements {
   Query$ReciprocalAgreements$reciprocalAgreements({
     required this.nodes,
     required this.pageInfo,
-    this.$__typename = 'ReciprocalAgreementConnection',
+    this.$__typename = 'AgreementConnection',
   });
 
   factory Query$ReciprocalAgreements$reciprocalAgreements.fromJson(
@@ -891,9 +912,12 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
     required this.clubId,
     required this.partnerClubId,
     required this.status,
-    required this.terms,
-    required this.effectiveDate,
+    required this.agreementType,
+    this.agreementTerms,
+    this.effectiveDate,
     this.expirationDate,
+    required this.startDate,
+    this.endDate,
     required this.createdAt,
     required this.updatedAt,
     this.$__typename = 'ReciprocalAgreement',
@@ -906,9 +930,12 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
     final l$clubId = json['clubId'];
     final l$partnerClubId = json['partnerClubId'];
     final l$status = json['status'];
-    final l$terms = json['terms'];
+    final l$agreementType = json['agreementType'];
+    final l$agreementTerms = json['agreementTerms'];
     final l$effectiveDate = json['effectiveDate'];
     final l$expirationDate = json['expirationDate'];
+    final l$startDate = json['startDate'];
+    final l$endDate = json['endDate'];
     final l$createdAt = json['createdAt'];
     final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
@@ -917,14 +944,20 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
       clubId: (l$clubId as String),
       partnerClubId: (l$partnerClubId as String),
       status: fromJson$Enum$AgreementStatus((l$status as String)),
-      terms:
-          Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms.fromJson(
-            (l$terms as Map<String, dynamic>),
-          ),
-      effectiveDate: DateTime.parse((l$effectiveDate as String)),
+      agreementType: fromJson$Enum$AgreementType((l$agreementType as String)),
+      agreementTerms: l$agreementTerms == null
+          ? null
+          : Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms.fromJson(
+              (l$agreementTerms as Map<String, dynamic>),
+            ),
+      effectiveDate: l$effectiveDate == null
+          ? null
+          : DateTime.parse((l$effectiveDate as String)),
       expirationDate: l$expirationDate == null
           ? null
           : DateTime.parse((l$expirationDate as String)),
+      startDate: DateTime.parse((l$startDate as String)),
+      endDate: l$endDate == null ? null : DateTime.parse((l$endDate as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -939,11 +972,18 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
 
   final Enum$AgreementStatus status;
 
-  final Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms terms;
+  final Enum$AgreementType agreementType;
 
-  final DateTime effectiveDate;
+  final Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms?
+  agreementTerms;
+
+  final DateTime? effectiveDate;
 
   final DateTime? expirationDate;
+
+  final DateTime startDate;
+
+  final DateTime? endDate;
 
   final DateTime createdAt;
 
@@ -961,12 +1001,18 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
     _resultData['partnerClubId'] = l$partnerClubId;
     final l$status = status;
     _resultData['status'] = toJson$Enum$AgreementStatus(l$status);
-    final l$terms = terms;
-    _resultData['terms'] = l$terms.toJson();
+    final l$agreementType = agreementType;
+    _resultData['agreementType'] = toJson$Enum$AgreementType(l$agreementType);
+    final l$agreementTerms = agreementTerms;
+    _resultData['agreementTerms'] = l$agreementTerms?.toJson();
     final l$effectiveDate = effectiveDate;
-    _resultData['effectiveDate'] = l$effectiveDate.toIso8601String();
+    _resultData['effectiveDate'] = l$effectiveDate?.toIso8601String();
     final l$expirationDate = expirationDate;
     _resultData['expirationDate'] = l$expirationDate?.toIso8601String();
+    final l$startDate = startDate;
+    _resultData['startDate'] = l$startDate.toIso8601String();
+    final l$endDate = endDate;
+    _resultData['endDate'] = l$endDate?.toIso8601String();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -982,9 +1028,12 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
     final l$clubId = clubId;
     final l$partnerClubId = partnerClubId;
     final l$status = status;
-    final l$terms = terms;
+    final l$agreementType = agreementType;
+    final l$agreementTerms = agreementTerms;
     final l$effectiveDate = effectiveDate;
     final l$expirationDate = expirationDate;
+    final l$startDate = startDate;
+    final l$endDate = endDate;
     final l$createdAt = createdAt;
     final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
@@ -993,9 +1042,12 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
       l$clubId,
       l$partnerClubId,
       l$status,
-      l$terms,
+      l$agreementType,
+      l$agreementTerms,
       l$effectiveDate,
       l$expirationDate,
+      l$startDate,
+      l$endDate,
       l$createdAt,
       l$updatedAt,
       l$$__typename,
@@ -1031,9 +1083,14 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
     if (l$status != lOther$status) {
       return false;
     }
-    final l$terms = terms;
-    final lOther$terms = other.terms;
-    if (l$terms != lOther$terms) {
+    final l$agreementType = agreementType;
+    final lOther$agreementType = other.agreementType;
+    if (l$agreementType != lOther$agreementType) {
+      return false;
+    }
+    final l$agreementTerms = agreementTerms;
+    final lOther$agreementTerms = other.agreementTerms;
+    if (l$agreementTerms != lOther$agreementTerms) {
       return false;
     }
     final l$effectiveDate = effectiveDate;
@@ -1044,6 +1101,16 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes {
     final l$expirationDate = expirationDate;
     final lOther$expirationDate = other.expirationDate;
     if (l$expirationDate != lOther$expirationDate) {
+      return false;
+    }
+    final l$startDate = startDate;
+    final lOther$startDate = other.startDate;
+    if (l$startDate != lOther$startDate) {
+      return false;
+    }
+    final l$endDate = endDate;
+    final lOther$endDate = other.endDate;
+    if (l$endDate != lOther$endDate) {
       return false;
     }
     final l$createdAt = createdAt;
@@ -1094,15 +1161,21 @@ abstract class CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes<
     String? clubId,
     String? partnerClubId,
     Enum$AgreementStatus? status,
-    Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms? terms,
+    Enum$AgreementType? agreementType,
+    Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms?
+    agreementTerms,
     DateTime? effectiveDate,
     DateTime? expirationDate,
+    DateTime? startDate,
+    DateTime? endDate,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
-  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<TRes>
-  get terms;
+  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
+    TRes
+  >
+  get agreementTerms;
 }
 
 class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes<TRes>
@@ -1125,9 +1198,12 @@ class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes<TRes>
     Object? clubId = _undefined,
     Object? partnerClubId = _undefined,
     Object? status = _undefined,
-    Object? terms = _undefined,
+    Object? agreementType = _undefined,
+    Object? agreementTerms = _undefined,
     Object? effectiveDate = _undefined,
     Object? expirationDate = _undefined,
+    Object? startDate = _undefined,
+    Object? endDate = _undefined,
     Object? createdAt = _undefined,
     Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
@@ -1143,16 +1219,25 @@ class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$AgreementStatus),
-      terms: terms == _undefined || terms == null
-          ? _instance.terms
-          : (terms
-                as Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms),
-      effectiveDate: effectiveDate == _undefined || effectiveDate == null
+      agreementType: agreementType == _undefined || agreementType == null
+          ? _instance.agreementType
+          : (agreementType as Enum$AgreementType),
+      agreementTerms: agreementTerms == _undefined
+          ? _instance.agreementTerms
+          : (agreementTerms
+                as Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms?),
+      effectiveDate: effectiveDate == _undefined
           ? _instance.effectiveDate
-          : (effectiveDate as DateTime),
+          : (effectiveDate as DateTime?),
       expirationDate: expirationDate == _undefined
           ? _instance.expirationDate
           : (expirationDate as DateTime?),
+      startDate: startDate == _undefined || startDate == null
+          ? _instance.startDate
+          : (startDate as DateTime),
+      endDate: endDate == _undefined
+          ? _instance.endDate
+          : (endDate as DateTime?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -1165,13 +1250,19 @@ class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes<TRes>
     ),
   );
 
-  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<TRes>
-  get terms {
-    final local$terms = _instance.terms;
-    return CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms(
-      local$terms,
-      (e) => call(terms: e),
-    );
+  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
+    TRes
+  >
+  get agreementTerms {
+    final local$agreementTerms = _instance.agreementTerms;
+    return local$agreementTerms == null
+        ? CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms.stub(
+            _then(_instance),
+          )
+        : CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms(
+            local$agreementTerms,
+            (e) => call(agreementTerms: e),
+          );
   }
 }
 
@@ -1191,31 +1282,37 @@ class _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes<
     String? clubId,
     String? partnerClubId,
     Enum$AgreementStatus? status,
-    Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms? terms,
+    Enum$AgreementType? agreementType,
+    Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms?
+    agreementTerms,
     DateTime? effectiveDate,
     DateTime? expirationDate,
+    DateTime? startDate,
+    DateTime? endDate,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<TRes>
-  get terms =>
-      CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms.stub(
+  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
+    TRes
+  >
+  get agreementTerms =>
+      CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms.stub(
         _res,
       );
 }
 
-class Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms {
-  Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms({
-    required this.maxVisitsPerMonth,
+class Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms {
+  Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms({
+    this.maxVisitsPerMonth,
     this.reciprocalFee,
     this.blackoutDates,
     this.specialConditions,
     this.$__typename = 'AgreementTerms',
   });
 
-  factory Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms.fromJson(
+  factory Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms.fromJson(
     Map<String, dynamic> json,
   ) {
     final l$maxVisitsPerMonth = json['maxVisitsPerMonth'];
@@ -1223,22 +1320,22 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms {
     final l$blackoutDates = json['blackoutDates'];
     final l$specialConditions = json['specialConditions'];
     final l$$__typename = json['__typename'];
-    return Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms(
-      maxVisitsPerMonth: (l$maxVisitsPerMonth as int),
+    return Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms(
+      maxVisitsPerMonth: (l$maxVisitsPerMonth as int?),
       reciprocalFee: (l$reciprocalFee as num?)?.toDouble(),
       blackoutDates: (l$blackoutDates as List<dynamic>?)
-          ?.map((e) => DateTime.parse((e as String)))
+          ?.map((e) => (e as String))
           .toList(),
       specialConditions: (l$specialConditions as String?),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final int maxVisitsPerMonth;
+  final int? maxVisitsPerMonth;
 
   final double? reciprocalFee;
 
-  final List<DateTime>? blackoutDates;
+  final List<String>? blackoutDates;
 
   final String? specialConditions;
 
@@ -1251,9 +1348,7 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms {
     final l$reciprocalFee = reciprocalFee;
     _resultData['reciprocalFee'] = l$reciprocalFee;
     final l$blackoutDates = blackoutDates;
-    _resultData['blackoutDates'] = l$blackoutDates
-        ?.map((e) => e.toIso8601String())
-        .toList();
+    _resultData['blackoutDates'] = l$blackoutDates?.map((e) => e).toList();
     final l$specialConditions = specialConditions;
     _resultData['specialConditions'] = l$specialConditions;
     final l$$__typename = $__typename;
@@ -1284,7 +1379,8 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms ||
+    if (other
+            is! Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms ||
         runtimeType != other.runtimeType) {
       return false;
     }
@@ -1328,56 +1424,60 @@ class Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms {
   }
 }
 
-extension UtilityExtension$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms
-    on Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms {
-  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
-    Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms
+extension UtilityExtension$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms
+    on Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms {
+  CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
+    Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms
   >
   get copyWith =>
-      CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms(
+      CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms(
         this,
         (i) => i,
       );
 }
 
-abstract class CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
+abstract class CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
   TRes
 > {
-  factory CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms(
-    Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms instance,
-    TRes Function(Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms)
+  factory CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms(
+    Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms
+    instance,
+    TRes Function(
+      Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms,
+    )
     then,
-  ) = _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms;
+  ) = _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms;
 
-  factory CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms.stub(
+  factory CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms.stub(
     TRes res,
-  ) = _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms;
+  ) = _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms;
 
   TRes call({
     int? maxVisitsPerMonth,
     double? reciprocalFee,
-    List<DateTime>? blackoutDates,
+    List<String>? blackoutDates,
     String? specialConditions,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
+class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
   TRes
 >
     implements
-        CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
+        CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
           TRes
         > {
-  _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms(
+  _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms(
     this._instance,
     this._then,
   );
 
-  final Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms _instance;
+  final Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms
+  _instance;
 
   final TRes Function(
-    Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms,
+    Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms,
   )
   _then;
 
@@ -1390,17 +1490,16 @@ class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
     Object? specialConditions = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms(
-      maxVisitsPerMonth:
-          maxVisitsPerMonth == _undefined || maxVisitsPerMonth == null
+    Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms(
+      maxVisitsPerMonth: maxVisitsPerMonth == _undefined
           ? _instance.maxVisitsPerMonth
-          : (maxVisitsPerMonth as int),
+          : (maxVisitsPerMonth as int?),
       reciprocalFee: reciprocalFee == _undefined
           ? _instance.reciprocalFee
           : (reciprocalFee as double?),
       blackoutDates: blackoutDates == _undefined
           ? _instance.blackoutDates
-          : (blackoutDates as List<DateTime>?),
+          : (blackoutDates as List<String>?),
       specialConditions: specialConditions == _undefined
           ? _instance.specialConditions
           : (specialConditions as String?),
@@ -1411,14 +1510,14 @@ class _CopyWithImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
   );
 }
 
-class _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
+class _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
   TRes
 >
     implements
-        CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms<
+        CopyWith$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms<
           TRes
         > {
-  _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$terms(
+  _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$agreementTerms(
     this._res,
   );
 
@@ -1427,7 +1526,7 @@ class _CopyWithStubImpl$Query$ReciprocalAgreements$reciprocalAgreements$nodes$te
   call({
     int? maxVisitsPerMonth,
     double? reciprocalFee,
-    List<DateTime>? blackoutDates,
+    List<String>? blackoutDates,
     String? specialConditions,
     String? $__typename,
   }) => _res;

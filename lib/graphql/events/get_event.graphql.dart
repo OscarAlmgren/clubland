@@ -1,3 +1,4 @@
+import '../../schema/schema.graphql.dart';
 import 'dart:async';
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -548,7 +549,7 @@ class Query$GetEvent$event {
     required this.clubId,
     required this.title,
     this.description,
-    this.eventType,
+    required this.eventType,
     required this.startTime,
     required this.endTime,
     this.availableSpots,
@@ -598,7 +599,7 @@ class Query$GetEvent$event {
       clubId: (l$clubId as String),
       title: (l$title as String),
       description: (l$description as String?),
-      eventType: (l$eventType as String?),
+      eventType: fromJson$Enum$ClubEventType((l$eventType as String)),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
       availableSpots: (l$availableSpots as int?),
@@ -630,7 +631,7 @@ class Query$GetEvent$event {
 
   final String? description;
 
-  final String? eventType;
+  final Enum$ClubEventType eventType;
 
   final DateTime startTime;
 
@@ -679,7 +680,7 @@ class Query$GetEvent$event {
     final l$description = description;
     _resultData['description'] = l$description;
     final l$eventType = eventType;
-    _resultData['eventType'] = l$eventType;
+    _resultData['eventType'] = toJson$Enum$ClubEventType(l$eventType);
     final l$startTime = startTime;
     _resultData['startTime'] = l$startTime.toIso8601String();
     final l$endTime = endTime;
@@ -917,7 +918,7 @@ abstract class CopyWith$Query$GetEvent$event<TRes> {
     String? clubId,
     String? title,
     String? description,
-    String? eventType,
+    Enum$ClubEventType? eventType,
     DateTime? startTime,
     DateTime? endTime,
     int? availableSpots,
@@ -985,9 +986,9 @@ class _CopyWithImpl$Query$GetEvent$event<TRes>
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      eventType: eventType == _undefined
+      eventType: eventType == _undefined || eventType == null
           ? _instance.eventType
-          : (eventType as String?),
+          : (eventType as Enum$ClubEventType),
       startTime: startTime == _undefined || startTime == null
           ? _instance.startTime
           : (startTime as DateTime),
@@ -1057,7 +1058,7 @@ class _CopyWithStubImpl$Query$GetEvent$event<TRes>
     String? clubId,
     String? title,
     String? description,
-    String? eventType,
+    Enum$ClubEventType? eventType,
     DateTime? startTime,
     DateTime? endTime,
     int? availableSpots,

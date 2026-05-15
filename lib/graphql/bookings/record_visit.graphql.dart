@@ -451,7 +451,7 @@ class Mutation$RecordVisit$recordVisit {
     required this.checkInTime,
     this.services,
     this.cost,
-    required this.verified,
+    this.verified,
     required this.createdAt,
     this.$__typename = 'Visit',
   });
@@ -479,7 +479,7 @@ class Mutation$RecordVisit$recordVisit {
           ?.map((e) => (e as String))
           .toList(),
       cost: (l$cost as num?)?.toDouble(),
-      verified: (l$verified as bool),
+      verified: (l$verified as bool?),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
     );
@@ -501,7 +501,7 @@ class Mutation$RecordVisit$recordVisit {
 
   final double? cost;
 
-  final bool verified;
+  final bool? verified;
 
   final DateTime createdAt;
 
@@ -715,9 +715,9 @@ class _CopyWithImpl$Mutation$RecordVisit$recordVisit<TRes>
           ? _instance.services
           : (services as List<String>?),
       cost: cost == _undefined ? _instance.cost : (cost as double?),
-      verified: verified == _undefined || verified == null
+      verified: verified == _undefined
           ? _instance.verified
-          : (verified as bool),
+          : (verified as bool?),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),

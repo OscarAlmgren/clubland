@@ -1,9 +1,22 @@
-query MyVotes($proposalId: ID) {
-  myVotes(proposalId: $proposalId) {
-    id
-    proposalId
-    choice
-    comment
-    createdAt
+query MyVotes($pagination: PaginationInput) {
+  myVotes(pagination: $pagination) {
+    nodes {
+      id
+      proposalId
+      voteValue
+      weight
+      comments
+      isAnonymous
+      castAt
+      createdAt
+    }
+    pageInfo {
+      page
+      pageSize
+      total
+      totalPages
+      hasNextPage
+      hasPrevPage
+    }
   }
 }

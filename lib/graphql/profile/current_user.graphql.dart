@@ -352,7 +352,7 @@ class Query$CurrentUser$me {
     required this.id,
     required this.clubId,
     required this.email,
-    required this.username,
+    this.username,
     this.firstName,
     this.lastName,
     required this.status,
@@ -380,13 +380,23 @@ class Query$CurrentUser$me {
       id: (l$id as String),
       clubId: (l$clubId as String),
       email: (l$email as String),
-      username: (l$username as String),
+      username: (l$username as String?),
       firstName: (l$firstName as String?),
       lastName: (l$lastName as String?),
       status: fromJson$Enum$UserStatus((l$status as String)),
-      roles: (l$roles as List<dynamic>).map((e) => (e as String)).toList(),
+      roles: (l$roles as List<dynamic>)
+          .map(
+            (e) => Query$CurrentUser$me$roles.fromJson(
+              (e as Map<String, dynamic>),
+            ),
+          )
+          .toList(),
       permissions: (l$permissions as List<dynamic>)
-          .map((e) => (e as String))
+          .map(
+            (e) => Query$CurrentUser$me$permissions.fromJson(
+              (e as Map<String, dynamic>),
+            ),
+          )
           .toList(),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
@@ -400,7 +410,7 @@ class Query$CurrentUser$me {
 
   final String email;
 
-  final String username;
+  final String? username;
 
   final String? firstName;
 
@@ -408,9 +418,9 @@ class Query$CurrentUser$me {
 
   final Enum$UserStatus status;
 
-  final List<String> roles;
+  final List<Query$CurrentUser$me$roles> roles;
 
-  final List<String> permissions;
+  final List<Query$CurrentUser$me$permissions> permissions;
 
   final DateTime createdAt;
 
@@ -435,9 +445,9 @@ class Query$CurrentUser$me {
     final l$status = status;
     _resultData['status'] = toJson$Enum$UserStatus(l$status);
     final l$roles = roles;
-    _resultData['roles'] = l$roles.map((e) => e).toList();
+    _resultData['roles'] = l$roles.map((e) => e.toJson()).toList();
     final l$permissions = permissions;
-    _resultData['permissions'] = l$permissions.map((e) => e).toList();
+    _resultData['permissions'] = l$permissions.map((e) => e.toJson()).toList();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -585,12 +595,28 @@ abstract class CopyWith$Query$CurrentUser$me<TRes> {
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
-    List<String>? permissions,
+    List<Query$CurrentUser$me$roles>? roles,
+    List<Query$CurrentUser$me$permissions>? permissions,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
+  TRes roles(
+    Iterable<Query$CurrentUser$me$roles> Function(
+      Iterable<CopyWith$Query$CurrentUser$me$roles<Query$CurrentUser$me$roles>>,
+    )
+    _fn,
+  );
+  TRes permissions(
+    Iterable<Query$CurrentUser$me$permissions> Function(
+      Iterable<
+        CopyWith$Query$CurrentUser$me$permissions<
+          Query$CurrentUser$me$permissions
+        >
+      >,
+    )
+    _fn,
+  );
 }
 
 class _CopyWithImpl$Query$CurrentUser$me<TRes>
@@ -625,9 +651,9 @@ class _CopyWithImpl$Query$CurrentUser$me<TRes>
       email: email == _undefined || email == null
           ? _instance.email
           : (email as String),
-      username: username == _undefined || username == null
+      username: username == _undefined
           ? _instance.username
-          : (username as String),
+          : (username as String?),
       firstName: firstName == _undefined
           ? _instance.firstName
           : (firstName as String?),
@@ -639,10 +665,10 @@ class _CopyWithImpl$Query$CurrentUser$me<TRes>
           : (status as Enum$UserStatus),
       roles: roles == _undefined || roles == null
           ? _instance.roles
-          : (roles as List<String>),
+          : (roles as List<Query$CurrentUser$me$roles>),
       permissions: permissions == _undefined || permissions == null
           ? _instance.permissions
-          : (permissions as List<String>),
+          : (permissions as List<Query$CurrentUser$me$permissions>),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -653,6 +679,36 @@ class _CopyWithImpl$Query$CurrentUser$me<TRes>
           ? _instance.$__typename
           : ($__typename as String),
     ),
+  );
+
+  TRes roles(
+    Iterable<Query$CurrentUser$me$roles> Function(
+      Iterable<CopyWith$Query$CurrentUser$me$roles<Query$CurrentUser$me$roles>>,
+    )
+    _fn,
+  ) => call(
+    roles: _fn(
+      _instance.roles.map(
+        (e) => CopyWith$Query$CurrentUser$me$roles(e, (i) => i),
+      ),
+    ).toList(),
+  );
+
+  TRes permissions(
+    Iterable<Query$CurrentUser$me$permissions> Function(
+      Iterable<
+        CopyWith$Query$CurrentUser$me$permissions<
+          Query$CurrentUser$me$permissions
+        >
+      >,
+    )
+    _fn,
+  ) => call(
+    permissions: _fn(
+      _instance.permissions.map(
+        (e) => CopyWith$Query$CurrentUser$me$permissions(e, (i) => i),
+      ),
+    ).toList(),
   );
 }
 
@@ -670,10 +726,154 @@ class _CopyWithStubImpl$Query$CurrentUser$me<TRes>
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
-    List<String>? permissions,
+    List<Query$CurrentUser$me$roles>? roles,
+    List<Query$CurrentUser$me$permissions>? permissions,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;
+
+  roles(_fn) => _res;
+
+  permissions(_fn) => _res;
+}
+
+class Query$CurrentUser$me$roles {
+  Query$CurrentUser$me$roles();
+
+  factory Query$CurrentUser$me$roles.fromJson(Map<String, dynamic> json) {
+    return Query$CurrentUser$me$roles();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Query$CurrentUser$me$roles ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$CurrentUser$me$roles
+    on Query$CurrentUser$me$roles {
+  CopyWith$Query$CurrentUser$me$roles<Query$CurrentUser$me$roles>
+  get copyWith => CopyWith$Query$CurrentUser$me$roles(this, (i) => i);
+}
+
+abstract class CopyWith$Query$CurrentUser$me$roles<TRes> {
+  factory CopyWith$Query$CurrentUser$me$roles(
+    Query$CurrentUser$me$roles instance,
+    TRes Function(Query$CurrentUser$me$roles) then,
+  ) = _CopyWithImpl$Query$CurrentUser$me$roles;
+
+  factory CopyWith$Query$CurrentUser$me$roles.stub(TRes res) =
+      _CopyWithStubImpl$Query$CurrentUser$me$roles;
+
+  TRes call();
+}
+
+class _CopyWithImpl$Query$CurrentUser$me$roles<TRes>
+    implements CopyWith$Query$CurrentUser$me$roles<TRes> {
+  _CopyWithImpl$Query$CurrentUser$me$roles(this._instance, this._then);
+
+  final Query$CurrentUser$me$roles _instance;
+
+  final TRes Function(Query$CurrentUser$me$roles) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call() => _then(Query$CurrentUser$me$roles());
+}
+
+class _CopyWithStubImpl$Query$CurrentUser$me$roles<TRes>
+    implements CopyWith$Query$CurrentUser$me$roles<TRes> {
+  _CopyWithStubImpl$Query$CurrentUser$me$roles(this._res);
+
+  TRes _res;
+
+  call() => _res;
+}
+
+class Query$CurrentUser$me$permissions {
+  Query$CurrentUser$me$permissions();
+
+  factory Query$CurrentUser$me$permissions.fromJson(Map<String, dynamic> json) {
+    return Query$CurrentUser$me$permissions();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Query$CurrentUser$me$permissions ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$CurrentUser$me$permissions
+    on Query$CurrentUser$me$permissions {
+  CopyWith$Query$CurrentUser$me$permissions<Query$CurrentUser$me$permissions>
+  get copyWith => CopyWith$Query$CurrentUser$me$permissions(this, (i) => i);
+}
+
+abstract class CopyWith$Query$CurrentUser$me$permissions<TRes> {
+  factory CopyWith$Query$CurrentUser$me$permissions(
+    Query$CurrentUser$me$permissions instance,
+    TRes Function(Query$CurrentUser$me$permissions) then,
+  ) = _CopyWithImpl$Query$CurrentUser$me$permissions;
+
+  factory CopyWith$Query$CurrentUser$me$permissions.stub(TRes res) =
+      _CopyWithStubImpl$Query$CurrentUser$me$permissions;
+
+  TRes call();
+}
+
+class _CopyWithImpl$Query$CurrentUser$me$permissions<TRes>
+    implements CopyWith$Query$CurrentUser$me$permissions<TRes> {
+  _CopyWithImpl$Query$CurrentUser$me$permissions(this._instance, this._then);
+
+  final Query$CurrentUser$me$permissions _instance;
+
+  final TRes Function(Query$CurrentUser$me$permissions) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call() => _then(Query$CurrentUser$me$permissions());
+}
+
+class _CopyWithStubImpl$Query$CurrentUser$me$permissions<TRes>
+    implements CopyWith$Query$CurrentUser$me$permissions<TRes> {
+  _CopyWithStubImpl$Query$CurrentUser$me$permissions(this._res);
+
+  TRes _res;
+
+  call() => _res;
 }

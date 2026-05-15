@@ -451,7 +451,7 @@ class Mutation$CreateFacility$createFacility {
       id: (l$id as String),
       clubId: (l$clubId as String),
       name: (l$name as String),
-      type: (l$type as String),
+      type: fromJson$Enum$FacilityType((l$type as String)),
       capacity: (l$capacity as int),
       status: fromJson$Enum$FacilityStatus((l$status as String)),
       createdAt: DateTime.parse((l$createdAt as String)),
@@ -465,7 +465,7 @@ class Mutation$CreateFacility$createFacility {
 
   final String name;
 
-  final String type;
+  final Enum$FacilityType type;
 
   final int capacity;
 
@@ -484,7 +484,7 @@ class Mutation$CreateFacility$createFacility {
     final l$name = name;
     _resultData['name'] = l$name;
     final l$type = type;
-    _resultData['type'] = l$type;
+    _resultData['type'] = toJson$Enum$FacilityType(l$type);
     final l$capacity = capacity;
     _resultData['capacity'] = l$capacity;
     final l$status = status;
@@ -593,7 +593,7 @@ abstract class CopyWith$Mutation$CreateFacility$createFacility<TRes> {
     String? id,
     String? clubId,
     String? name,
-    String? type,
+    Enum$FacilityType? type,
     int? capacity,
     Enum$FacilityStatus? status,
     DateTime? createdAt,
@@ -634,7 +634,7 @@ class _CopyWithImpl$Mutation$CreateFacility$createFacility<TRes>
           : (name as String),
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as String),
+          : (type as Enum$FacilityType),
       capacity: capacity == _undefined || capacity == null
           ? _instance.capacity
           : (capacity as int),
@@ -661,7 +661,7 @@ class _CopyWithStubImpl$Mutation$CreateFacility$createFacility<TRes>
     String? id,
     String? clubId,
     String? name,
-    String? type,
+    Enum$FacilityType? type,
     int? capacity,
     Enum$FacilityStatus? status,
     DateTime? createdAt,

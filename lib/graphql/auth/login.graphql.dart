@@ -689,7 +689,7 @@ class Mutation$Login$login$user {
     required this.id,
     required this.clubId,
     required this.email,
-    required this.username,
+    this.username,
     this.firstName,
     this.lastName,
     required this.status,
@@ -717,13 +717,23 @@ class Mutation$Login$login$user {
       id: (l$id as String),
       clubId: (l$clubId as String),
       email: (l$email as String),
-      username: (l$username as String),
+      username: (l$username as String?),
       firstName: (l$firstName as String?),
       lastName: (l$lastName as String?),
       status: fromJson$Enum$UserStatus((l$status as String)),
-      roles: (l$roles as List<dynamic>).map((e) => (e as String)).toList(),
+      roles: (l$roles as List<dynamic>)
+          .map(
+            (e) => Mutation$Login$login$user$roles.fromJson(
+              (e as Map<String, dynamic>),
+            ),
+          )
+          .toList(),
       permissions: (l$permissions as List<dynamic>)
-          .map((e) => (e as String))
+          .map(
+            (e) => Mutation$Login$login$user$permissions.fromJson(
+              (e as Map<String, dynamic>),
+            ),
+          )
           .toList(),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
@@ -737,7 +747,7 @@ class Mutation$Login$login$user {
 
   final String email;
 
-  final String username;
+  final String? username;
 
   final String? firstName;
 
@@ -745,9 +755,9 @@ class Mutation$Login$login$user {
 
   final Enum$UserStatus status;
 
-  final List<String> roles;
+  final List<Mutation$Login$login$user$roles> roles;
 
-  final List<String> permissions;
+  final List<Mutation$Login$login$user$permissions> permissions;
 
   final DateTime createdAt;
 
@@ -772,9 +782,9 @@ class Mutation$Login$login$user {
     final l$status = status;
     _resultData['status'] = toJson$Enum$UserStatus(l$status);
     final l$roles = roles;
-    _resultData['roles'] = l$roles.map((e) => e).toList();
+    _resultData['roles'] = l$roles.map((e) => e.toJson()).toList();
     final l$permissions = permissions;
-    _resultData['permissions'] = l$permissions.map((e) => e).toList();
+    _resultData['permissions'] = l$permissions.map((e) => e.toJson()).toList();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -924,12 +934,32 @@ abstract class CopyWith$Mutation$Login$login$user<TRes> {
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
-    List<String>? permissions,
+    List<Mutation$Login$login$user$roles>? roles,
+    List<Mutation$Login$login$user$permissions>? permissions,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
+  TRes roles(
+    Iterable<Mutation$Login$login$user$roles> Function(
+      Iterable<
+        CopyWith$Mutation$Login$login$user$roles<
+          Mutation$Login$login$user$roles
+        >
+      >,
+    )
+    _fn,
+  );
+  TRes permissions(
+    Iterable<Mutation$Login$login$user$permissions> Function(
+      Iterable<
+        CopyWith$Mutation$Login$login$user$permissions<
+          Mutation$Login$login$user$permissions
+        >
+      >,
+    )
+    _fn,
+  );
 }
 
 class _CopyWithImpl$Mutation$Login$login$user<TRes>
@@ -964,9 +994,9 @@ class _CopyWithImpl$Mutation$Login$login$user<TRes>
       email: email == _undefined || email == null
           ? _instance.email
           : (email as String),
-      username: username == _undefined || username == null
+      username: username == _undefined
           ? _instance.username
-          : (username as String),
+          : (username as String?),
       firstName: firstName == _undefined
           ? _instance.firstName
           : (firstName as String?),
@@ -978,10 +1008,10 @@ class _CopyWithImpl$Mutation$Login$login$user<TRes>
           : (status as Enum$UserStatus),
       roles: roles == _undefined || roles == null
           ? _instance.roles
-          : (roles as List<String>),
+          : (roles as List<Mutation$Login$login$user$roles>),
       permissions: permissions == _undefined || permissions == null
           ? _instance.permissions
-          : (permissions as List<String>),
+          : (permissions as List<Mutation$Login$login$user$permissions>),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -992,6 +1022,40 @@ class _CopyWithImpl$Mutation$Login$login$user<TRes>
           ? _instance.$__typename
           : ($__typename as String),
     ),
+  );
+
+  TRes roles(
+    Iterable<Mutation$Login$login$user$roles> Function(
+      Iterable<
+        CopyWith$Mutation$Login$login$user$roles<
+          Mutation$Login$login$user$roles
+        >
+      >,
+    )
+    _fn,
+  ) => call(
+    roles: _fn(
+      _instance.roles.map(
+        (e) => CopyWith$Mutation$Login$login$user$roles(e, (i) => i),
+      ),
+    ).toList(),
+  );
+
+  TRes permissions(
+    Iterable<Mutation$Login$login$user$permissions> Function(
+      Iterable<
+        CopyWith$Mutation$Login$login$user$permissions<
+          Mutation$Login$login$user$permissions
+        >
+      >,
+    )
+    _fn,
+  ) => call(
+    permissions: _fn(
+      _instance.permissions.map(
+        (e) => CopyWith$Mutation$Login$login$user$permissions(e, (i) => i),
+      ),
+    ).toList(),
   );
 }
 
@@ -1009,10 +1073,162 @@ class _CopyWithStubImpl$Mutation$Login$login$user<TRes>
     String? firstName,
     String? lastName,
     Enum$UserStatus? status,
-    List<String>? roles,
-    List<String>? permissions,
+    List<Mutation$Login$login$user$roles>? roles,
+    List<Mutation$Login$login$user$permissions>? permissions,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;
+
+  roles(_fn) => _res;
+
+  permissions(_fn) => _res;
+}
+
+class Mutation$Login$login$user$roles {
+  Mutation$Login$login$user$roles();
+
+  factory Mutation$Login$login$user$roles.fromJson(Map<String, dynamic> json) {
+    return Mutation$Login$login$user$roles();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Mutation$Login$login$user$roles ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$Login$login$user$roles
+    on Mutation$Login$login$user$roles {
+  CopyWith$Mutation$Login$login$user$roles<Mutation$Login$login$user$roles>
+  get copyWith => CopyWith$Mutation$Login$login$user$roles(this, (i) => i);
+}
+
+abstract class CopyWith$Mutation$Login$login$user$roles<TRes> {
+  factory CopyWith$Mutation$Login$login$user$roles(
+    Mutation$Login$login$user$roles instance,
+    TRes Function(Mutation$Login$login$user$roles) then,
+  ) = _CopyWithImpl$Mutation$Login$login$user$roles;
+
+  factory CopyWith$Mutation$Login$login$user$roles.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$Login$login$user$roles;
+
+  TRes call();
+}
+
+class _CopyWithImpl$Mutation$Login$login$user$roles<TRes>
+    implements CopyWith$Mutation$Login$login$user$roles<TRes> {
+  _CopyWithImpl$Mutation$Login$login$user$roles(this._instance, this._then);
+
+  final Mutation$Login$login$user$roles _instance;
+
+  final TRes Function(Mutation$Login$login$user$roles) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call() => _then(Mutation$Login$login$user$roles());
+}
+
+class _CopyWithStubImpl$Mutation$Login$login$user$roles<TRes>
+    implements CopyWith$Mutation$Login$login$user$roles<TRes> {
+  _CopyWithStubImpl$Mutation$Login$login$user$roles(this._res);
+
+  TRes _res;
+
+  call() => _res;
+}
+
+class Mutation$Login$login$user$permissions {
+  Mutation$Login$login$user$permissions();
+
+  factory Mutation$Login$login$user$permissions.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return Mutation$Login$login$user$permissions();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Mutation$Login$login$user$permissions ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Mutation$Login$login$user$permissions
+    on Mutation$Login$login$user$permissions {
+  CopyWith$Mutation$Login$login$user$permissions<
+    Mutation$Login$login$user$permissions
+  >
+  get copyWith =>
+      CopyWith$Mutation$Login$login$user$permissions(this, (i) => i);
+}
+
+abstract class CopyWith$Mutation$Login$login$user$permissions<TRes> {
+  factory CopyWith$Mutation$Login$login$user$permissions(
+    Mutation$Login$login$user$permissions instance,
+    TRes Function(Mutation$Login$login$user$permissions) then,
+  ) = _CopyWithImpl$Mutation$Login$login$user$permissions;
+
+  factory CopyWith$Mutation$Login$login$user$permissions.stub(TRes res) =
+      _CopyWithStubImpl$Mutation$Login$login$user$permissions;
+
+  TRes call();
+}
+
+class _CopyWithImpl$Mutation$Login$login$user$permissions<TRes>
+    implements CopyWith$Mutation$Login$login$user$permissions<TRes> {
+  _CopyWithImpl$Mutation$Login$login$user$permissions(
+    this._instance,
+    this._then,
+  );
+
+  final Mutation$Login$login$user$permissions _instance;
+
+  final TRes Function(Mutation$Login$login$user$permissions) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call() => _then(Mutation$Login$login$user$permissions());
+}
+
+class _CopyWithStubImpl$Mutation$Login$login$user$permissions<TRes>
+    implements CopyWith$Mutation$Login$login$user$permissions<TRes> {
+  _CopyWithStubImpl$Mutation$Login$login$user$permissions(this._res);
+
+  TRes _res;
+
+  call() => _res;
 }

@@ -1,4 +1,3 @@
-import '../../schema/schema.graphql.dart';
 import 'dart:async';
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
@@ -1305,7 +1304,7 @@ class _CopyWithStubImpl$Query$Analytics$analytics$visits$monthlyVisits<TRes>
 
 class Query$Analytics$analytics$visits$topDestinations {
   Query$Analytics$analytics$visits$topDestinations({
-    required this.club,
+    this.club,
     required this.count,
     this.$__typename = 'ClubVisitCount',
   });
@@ -1317,15 +1316,17 @@ class Query$Analytics$analytics$visits$topDestinations {
     final l$count = json['count'];
     final l$$__typename = json['__typename'];
     return Query$Analytics$analytics$visits$topDestinations(
-      club: Query$Analytics$analytics$visits$topDestinations$club.fromJson(
-        (l$club as Map<String, dynamic>),
-      ),
+      club: l$club == null
+          ? null
+          : Query$Analytics$analytics$visits$topDestinations$club.fromJson(
+              (l$club as Map<String, dynamic>),
+            ),
       count: (l$count as int),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Query$Analytics$analytics$visits$topDestinations$club club;
+  final Query$Analytics$analytics$visits$topDestinations$club? club;
 
   final int count;
 
@@ -1334,7 +1335,7 @@ class Query$Analytics$analytics$visits$topDestinations {
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
     final l$club = club;
-    _resultData['club'] = l$club.toJson();
+    _resultData['club'] = l$club?.toJson();
     final l$count = count;
     _resultData['count'] = l$count;
     final l$$__typename = $__typename;
@@ -1424,9 +1425,9 @@ class _CopyWithImpl$Query$Analytics$analytics$visits$topDestinations<TRes>
     Object? $__typename = _undefined,
   }) => _then(
     Query$Analytics$analytics$visits$topDestinations(
-      club: club == _undefined || club == null
+      club: club == _undefined
           ? _instance.club
-          : (club as Query$Analytics$analytics$visits$topDestinations$club),
+          : (club as Query$Analytics$analytics$visits$topDestinations$club?),
       count: count == _undefined || count == null
           ? _instance.count
           : (count as int),
@@ -1439,10 +1440,14 @@ class _CopyWithImpl$Query$Analytics$analytics$visits$topDestinations<TRes>
   CopyWith$Query$Analytics$analytics$visits$topDestinations$club<TRes>
   get club {
     final local$club = _instance.club;
-    return CopyWith$Query$Analytics$analytics$visits$topDestinations$club(
-      local$club,
-      (e) => call(club: e),
-    );
+    return local$club == null
+        ? CopyWith$Query$Analytics$analytics$visits$topDestinations$club.stub(
+            _then(_instance),
+          )
+        : CopyWith$Query$Analytics$analytics$visits$topDestinations$club(
+            local$club,
+            (e) => call(club: e),
+          );
   }
 }
 
@@ -1466,7 +1471,7 @@ class _CopyWithStubImpl$Query$Analytics$analytics$visits$topDestinations<TRes>
 class Query$Analytics$analytics$visits$topDestinations$club {
   Query$Analytics$analytics$visits$topDestinations$club({
     required this.name,
-    required this.location,
+    this.location,
     this.$__typename = 'Club',
   });
 
@@ -1478,14 +1483,14 @@ class Query$Analytics$analytics$visits$topDestinations$club {
     final l$$__typename = json['__typename'];
     return Query$Analytics$analytics$visits$topDestinations$club(
       name: (l$name as String),
-      location: (l$location as String),
+      location: (l$location as String?),
       $__typename: (l$$__typename as String),
     );
   }
 
   final String name;
 
-  final String location;
+  final String? location;
 
   final String $__typename;
 
@@ -1587,9 +1592,9 @@ class _CopyWithImpl$Query$Analytics$analytics$visits$topDestinations$club<TRes>
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
-      location: location == _undefined || location == null
+      location: location == _undefined
           ? _instance.location
-          : (location as String),
+          : (location as String?),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1866,13 +1871,13 @@ class Query$Analytics$analytics$members$membershipDistribution {
     final l$count = json['count'];
     final l$$__typename = json['__typename'];
     return Query$Analytics$analytics$members$membershipDistribution(
-      type: fromJson$Enum$MembershipType((l$type as String)),
+      type: (l$type as String),
       count: (l$count as int),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Enum$MembershipType type;
+  final String type;
 
   final int count;
 
@@ -1881,7 +1886,7 @@ class Query$Analytics$analytics$members$membershipDistribution {
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
     final l$type = type;
-    _resultData['type'] = toJson$Enum$MembershipType(l$type);
+    _resultData['type'] = l$type;
     final l$count = count;
     _resultData['count'] = l$count;
     final l$$__typename = $__typename;
@@ -1950,7 +1955,7 @@ abstract class CopyWith$Query$Analytics$analytics$members$membershipDistribution
     TRes res,
   ) = _CopyWithStubImpl$Query$Analytics$analytics$members$membershipDistribution;
 
-  TRes call({Enum$MembershipType? type, int? count, String? $__typename});
+  TRes call({String? type, int? count, String? $__typename});
 }
 
 class _CopyWithImpl$Query$Analytics$analytics$members$membershipDistribution<
@@ -1980,7 +1985,7 @@ class _CopyWithImpl$Query$Analytics$analytics$members$membershipDistribution<
     Query$Analytics$analytics$members$membershipDistribution(
       type: type == _undefined || type == null
           ? _instance.type
-          : (type as Enum$MembershipType),
+          : (type as String),
       count: count == _undefined || count == null
           ? _instance.count
           : (count as int),
@@ -2004,7 +2009,7 @@ class _CopyWithStubImpl$Query$Analytics$analytics$members$membershipDistribution
 
   TRes _res;
 
-  call({Enum$MembershipType? type, int? count, String? $__typename}) => _res;
+  call({String? type, int? count, String? $__typename}) => _res;
 }
 
 class Query$Analytics$analytics$reciprocals {

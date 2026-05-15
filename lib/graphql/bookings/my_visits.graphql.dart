@@ -773,7 +773,7 @@ class Query$MyVisits$myVisits$nodes {
     this.checkOutTime,
     this.services,
     this.cost,
-    required this.verified,
+    this.verified,
     this.blockchainTxId,
     required this.createdAt,
     this.$__typename = 'Visit',
@@ -807,7 +807,7 @@ class Query$MyVisits$myVisits$nodes {
           ?.map((e) => (e as String))
           .toList(),
       cost: (l$cost as num?)?.toDouble(),
-      verified: (l$verified as bool),
+      verified: (l$verified as bool?),
       blockchainTxId: (l$blockchainTxId as String?),
       createdAt: DateTime.parse((l$createdAt as String)),
       $__typename: (l$$__typename as String),
@@ -832,7 +832,7 @@ class Query$MyVisits$myVisits$nodes {
 
   final double? cost;
 
-  final bool verified;
+  final bool? verified;
 
   final String? blockchainTxId;
 
@@ -1073,9 +1073,9 @@ class _CopyWithImpl$Query$MyVisits$myVisits$nodes<TRes>
           ? _instance.services
           : (services as List<String>?),
       cost: cost == _undefined ? _instance.cost : (cost as double?),
-      verified: verified == _undefined || verified == null
+      verified: verified == _undefined
           ? _instance.verified
-          : (verified as bool),
+          : (verified as bool?),
       blockchainTxId: blockchainTxId == _undefined
           ? _instance.blockchainTxId
           : (blockchainTxId as String?),

@@ -373,10 +373,10 @@ class Query$MyClub$myClub {
     required this.id,
     required this.name,
     this.description,
-    required this.location,
+    this.location,
     this.website,
     required this.status,
-    this.settings,
+    required this.settings,
     required this.createdAt,
     required this.updatedAt,
     this.$__typename = 'Club',
@@ -397,14 +397,12 @@ class Query$MyClub$myClub {
       id: (l$id as String),
       name: (l$name as String),
       description: (l$description as String?),
-      location: (l$location as String),
+      location: (l$location as String?),
       website: (l$website as String?),
       status: fromJson$Enum$ClubStatus((l$status as String)),
-      settings: l$settings == null
-          ? null
-          : Query$MyClub$myClub$settings.fromJson(
-              (l$settings as Map<String, dynamic>),
-            ),
+      settings: Query$MyClub$myClub$settings.fromJson(
+        (l$settings as Map<String, dynamic>),
+      ),
       createdAt: DateTime.parse((l$createdAt as String)),
       updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
@@ -417,13 +415,13 @@ class Query$MyClub$myClub {
 
   final String? description;
 
-  final String location;
+  final String? location;
 
   final String? website;
 
   final Enum$ClubStatus status;
 
-  final Query$MyClub$myClub$settings? settings;
+  final Query$MyClub$myClub$settings settings;
 
   final DateTime createdAt;
 
@@ -446,7 +444,7 @@ class Query$MyClub$myClub {
     final l$status = status;
     _resultData['status'] = toJson$Enum$ClubStatus(l$status);
     final l$settings = settings;
-    _resultData['settings'] = l$settings?.toJson();
+    _resultData['settings'] = l$settings.toJson();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -603,16 +601,16 @@ class _CopyWithImpl$Query$MyClub$myClub<TRes>
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      location: location == _undefined || location == null
+      location: location == _undefined
           ? _instance.location
-          : (location as String),
+          : (location as String?),
       website: website == _undefined ? _instance.website : (website as String?),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$ClubStatus),
-      settings: settings == _undefined
+      settings: settings == _undefined || settings == null
           ? _instance.settings
-          : (settings as Query$MyClub$myClub$settings?),
+          : (settings as Query$MyClub$myClub$settings),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -627,12 +625,10 @@ class _CopyWithImpl$Query$MyClub$myClub<TRes>
 
   CopyWith$Query$MyClub$myClub$settings<TRes> get settings {
     final local$settings = _instance.settings;
-    return local$settings == null
-        ? CopyWith$Query$MyClub$myClub$settings.stub(_then(_instance))
-        : CopyWith$Query$MyClub$myClub$settings(
-            local$settings,
-            (e) => call(settings: e),
-          );
+    return CopyWith$Query$MyClub$myClub$settings(
+      local$settings,
+      (e) => call(settings: e),
+    );
   }
 }
 
