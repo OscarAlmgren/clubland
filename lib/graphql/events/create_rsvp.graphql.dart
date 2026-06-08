@@ -644,8 +644,12 @@ class Mutation$CreateRSVP$createEventRSVP {
           .toList(),
       specialRequests: (l$specialRequests as String?),
       paymentStatus: fromJson$Enum$PaymentStatus((l$paymentStatus as String)),
-      response: (l$response as String?),
-      rsvpType: (l$rsvpType as String?),
+      response: l$response == null
+          ? null
+          : fromJson$Enum$RSVPResponse((l$response as String)),
+      rsvpType: l$rsvpType == null
+          ? null
+          : fromJson$Enum$RSVPType((l$rsvpType as String)),
       priority: (l$priority as String?),
       attendanceCount: (l$attendanceCount as int?),
       guestNames: (l$guestNames as List<dynamic>?)
@@ -693,9 +697,9 @@ class Mutation$CreateRSVP$createEventRSVP {
 
   final Enum$PaymentStatus paymentStatus;
 
-  final String? response;
+  final Enum$RSVPResponse? response;
 
-  final String? rsvpType;
+  final Enum$RSVPType? rsvpType;
 
   final String? priority;
 
@@ -756,9 +760,13 @@ class Mutation$CreateRSVP$createEventRSVP {
     final l$paymentStatus = paymentStatus;
     _resultData['paymentStatus'] = toJson$Enum$PaymentStatus(l$paymentStatus);
     final l$response = response;
-    _resultData['response'] = l$response;
+    _resultData['response'] = l$response == null
+        ? null
+        : toJson$Enum$RSVPResponse(l$response);
     final l$rsvpType = rsvpType;
-    _resultData['rsvpType'] = l$rsvpType;
+    _resultData['rsvpType'] = l$rsvpType == null
+        ? null
+        : toJson$Enum$RSVPType(l$rsvpType);
     final l$priority = priority;
     _resultData['priority'] = l$priority;
     final l$attendanceCount = attendanceCount;
@@ -1071,8 +1079,8 @@ abstract class CopyWith$Mutation$CreateRSVP$createEventRSVP<TRes> {
     List<String>? dietaryRestrictions,
     String? specialRequests,
     Enum$PaymentStatus? paymentStatus,
-    String? response,
-    String? rsvpType,
+    Enum$RSVPResponse? response,
+    Enum$RSVPType? rsvpType,
     String? priority,
     int? attendanceCount,
     List<String>? guestNames,
@@ -1163,10 +1171,10 @@ class _CopyWithImpl$Mutation$CreateRSVP$createEventRSVP<TRes>
           : (paymentStatus as Enum$PaymentStatus),
       response: response == _undefined
           ? _instance.response
-          : (response as String?),
+          : (response as Enum$RSVPResponse?),
       rsvpType: rsvpType == _undefined
           ? _instance.rsvpType
-          : (rsvpType as String?),
+          : (rsvpType as Enum$RSVPType?),
       priority: priority == _undefined
           ? _instance.priority
           : (priority as String?),
@@ -1241,8 +1249,8 @@ class _CopyWithStubImpl$Mutation$CreateRSVP$createEventRSVP<TRes>
     List<String>? dietaryRestrictions,
     String? specialRequests,
     Enum$PaymentStatus? paymentStatus,
-    String? response,
-    String? rsvpType,
+    Enum$RSVPResponse? response,
+    Enum$RSVPType? rsvpType,
     String? priority,
     int? attendanceCount,
     List<String>? guestNames,

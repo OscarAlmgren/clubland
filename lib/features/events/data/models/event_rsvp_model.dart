@@ -1,3 +1,4 @@
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/event_rsvp_entity.dart';
 
 /// Event RSVP model - data layer representation with JSON serialization
@@ -38,8 +39,8 @@ class EventRSVPModel extends EventRSVPEntity {
       eventId: json['eventId'] as String,
       memberId: json['memberId'] as String,
       clubId: json['clubId'] as String,
-      response: RSVPResponse.fromString(json['response'] as String),
-      rsvpType: RSVPType.fromString(json['rsvpType'] as String),
+      response: fromJson$Enum$RSVPResponse(json['response'] as String),
+      rsvpType: fromJson$Enum$RSVPType(json['rsvpType'] as String),
       priority: json['priority'] as int? ?? 2,
       attendanceCount: json['attendanceCount'] as int? ?? 1,
       guestNames:
@@ -54,7 +55,7 @@ class EventRSVPModel extends EventRSVPEntity {
           const [],
       seatingPreferences: json['seatingPreferences'] as String?,
       specialRequests: json['specialRequests'] as String?,
-      status: RSVPStatus.fromString(json['status'] as String),
+      status: fromJson$Enum$RSVPStatus(json['status'] as String),
       paymentRequired: json['paymentRequired'] as bool? ?? false,
       paymentVerified: json['paymentVerified'] as bool? ?? false,
       paymentAmount: (json['paymentAmount'] as num?)?.toDouble(),
@@ -82,15 +83,15 @@ class EventRSVPModel extends EventRSVPEntity {
       'eventId': eventId,
       'memberId': memberId,
       'clubId': clubId,
-      'response': response.toGraphQL(),
-      'rsvpType': rsvpType.toGraphQL(),
+      'response': toJson$Enum$RSVPResponse(response),
+      'rsvpType': toJson$Enum$RSVPType(rsvpType),
       'priority': priority,
       'attendanceCount': attendanceCount,
       'guestNames': guestNames,
       'dietaryRestrictions': dietaryRestrictions,
       'seatingPreferences': seatingPreferences,
       'specialRequests': specialRequests,
-      'status': status.toGraphQL(),
+      'status': toJson$Enum$RSVPStatus(status),
       'paymentRequired': paymentRequired,
       'paymentVerified': paymentVerified,
       'paymentAmount': paymentAmount,

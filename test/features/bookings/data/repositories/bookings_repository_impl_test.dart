@@ -1,4 +1,5 @@
 import 'package:clubland/core/errors/exceptions.dart';
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/bookings/data/datasources/bookings_remote_datasource.dart';
 import 'package:clubland/features/bookings/data/models/booking_model.dart';
 import 'package:clubland/features/bookings/data/repositories/bookings_repository_impl.dart';
@@ -25,7 +26,7 @@ void main() {
           id: '1',
           startTime: DateTime(2025, 12, 1, 10),
           endTime: DateTime(2025, 12, 1, 11),
-          status: BookingStatus.confirmed,
+          status: Enum$BookingStatus.CONFIRMED,
           club: const ClubSummary(id: 'club1', name: 'Test Club'),
           facility: const FacilitySummary(
             id: 'facility1',
@@ -81,7 +82,7 @@ void main() {
           // arrange
           when(
             () => mockRemoteDataSource.getUserBookings(
-              status: BookingStatus.confirmed,
+              status: Enum$BookingStatus.CONFIRMED,
               startDate: any(named: 'startDate'),
               endDate: any(named: 'endDate'),
               limit: any(named: 'limit'),
@@ -91,7 +92,7 @@ void main() {
 
           // act
           final result = await repository.getUserBookings(
-            status: BookingStatus.confirmed,
+            status: Enum$BookingStatus.CONFIRMED,
           );
 
           // assert
@@ -102,7 +103,7 @@ void main() {
           );
           verify(
             () => mockRemoteDataSource.getUserBookings(
-              status: BookingStatus.confirmed,
+              status: Enum$BookingStatus.CONFIRMED,
               startDate: any(named: 'startDate'),
               endDate: any(named: 'endDate'),
               limit: any(named: 'limit'),
@@ -141,7 +142,7 @@ void main() {
         id: '1',
         startTime: DateTime(2025, 12, 1, 10),
         endTime: DateTime(2025, 12, 1, 11),
-        status: BookingStatus.confirmed,
+        status: Enum$BookingStatus.CONFIRMED,
         club: const ClubSummary(id: 'club1', name: 'Test Club'),
         facility: const FacilitySummary(id: 'facility1', name: 'Tennis Court'),
         user: const UserSummary(
@@ -193,7 +194,7 @@ void main() {
         id: 'new-booking',
         startTime: DateTime(2025, 12, 1, 10),
         endTime: DateTime(2025, 12, 1, 11),
-        status: BookingStatus.pending,
+        status: Enum$BookingStatus.PENDING,
         club: const ClubSummary(id: 'club1', name: 'Test Club'),
         facility: const FacilitySummary(id: 'facility1', name: 'Tennis Court'),
         user: const UserSummary(
@@ -276,7 +277,7 @@ void main() {
         id: '1',
         startTime: DateTime(2025, 12, 1, 11),
         endTime: DateTime(2025, 12, 1, 12),
-        status: BookingStatus.confirmed,
+        status: Enum$BookingStatus.CONFIRMED,
         club: const ClubSummary(id: 'club1', name: 'Test Club'),
         facility: const FacilitySummary(id: 'facility1', name: 'Tennis Court'),
         user: const UserSummary(
@@ -331,7 +332,7 @@ void main() {
         id: '1',
         startTime: DateTime(2025, 12, 1, 10),
         endTime: DateTime(2025, 12, 1, 11),
-        status: BookingStatus.cancelled,
+        status: Enum$BookingStatus.CANCELLED,
         club: const ClubSummary(id: 'club1', name: 'Test Club'),
         facility: const FacilitySummary(id: 'facility1', name: 'Tennis Court'),
         user: const UserSummary(
@@ -368,7 +369,7 @@ void main() {
           result.fold(
             (failure) => fail('Should return Right'),
             (booking) =>
-                expect(booking.status, equals(BookingStatus.cancelled)),
+                expect(booking.status, equals(Enum$BookingStatus.CANCELLED)),
           );
           verify(
             () => mockRemoteDataSource.cancelBooking(

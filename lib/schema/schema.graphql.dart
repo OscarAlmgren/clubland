@@ -15416,8 +15416,11 @@ class _CopyWithStubImpl$Input$BulkNotificationInput<TRes>
 
 enum Enum$EventType {
   USER_LOGIN,
+  USER_LOGOUT,
   USER_REGISTERED,
   BOOKING_CREATED,
+  BOOKING_CONFIRMED,
+  BOOKING_CANCELLED,
   VISIT_CHECKED_IN,
   VISIT_CHECKED_OUT,
   PROPOSAL_CREATED,
@@ -15435,10 +15438,16 @@ String toJson$Enum$EventType(Enum$EventType e) {
   switch (e) {
     case Enum$EventType.USER_LOGIN:
       return r'USER_LOGIN';
+    case Enum$EventType.USER_LOGOUT:
+      return r'USER_LOGOUT';
     case Enum$EventType.USER_REGISTERED:
       return r'USER_REGISTERED';
     case Enum$EventType.BOOKING_CREATED:
       return r'BOOKING_CREATED';
+    case Enum$EventType.BOOKING_CONFIRMED:
+      return r'BOOKING_CONFIRMED';
+    case Enum$EventType.BOOKING_CANCELLED:
+      return r'BOOKING_CANCELLED';
     case Enum$EventType.VISIT_CHECKED_IN:
       return r'VISIT_CHECKED_IN';
     case Enum$EventType.VISIT_CHECKED_OUT:
@@ -15458,10 +15467,16 @@ Enum$EventType fromJson$Enum$EventType(String value) {
   switch (value) {
     case r'USER_LOGIN':
       return Enum$EventType.USER_LOGIN;
+    case r'USER_LOGOUT':
+      return Enum$EventType.USER_LOGOUT;
     case r'USER_REGISTERED':
       return Enum$EventType.USER_REGISTERED;
     case r'BOOKING_CREATED':
       return Enum$EventType.BOOKING_CREATED;
+    case r'BOOKING_CONFIRMED':
+      return Enum$EventType.BOOKING_CONFIRMED;
+    case r'BOOKING_CANCELLED':
+      return Enum$EventType.BOOKING_CANCELLED;
     case r'VISIT_CHECKED_IN':
       return Enum$EventType.VISIT_CHECKED_IN;
     case r'VISIT_CHECKED_OUT':
@@ -16285,6 +16300,129 @@ Enum$RSVPStatus fromJson$Enum$RSVPStatus(String value) {
   }
 }
 
+enum Enum$RSVPResponse {
+  YES,
+  MAYBE,
+  NO,
+  $unknown;
+
+  factory Enum$RSVPResponse.fromJson(String value) =>
+      fromJson$Enum$RSVPResponse(value);
+
+  String toJson() => toJson$Enum$RSVPResponse(this);
+}
+
+String toJson$Enum$RSVPResponse(Enum$RSVPResponse e) {
+  switch (e) {
+    case Enum$RSVPResponse.YES:
+      return r'YES';
+    case Enum$RSVPResponse.MAYBE:
+      return r'MAYBE';
+    case Enum$RSVPResponse.NO:
+      return r'NO';
+    case Enum$RSVPResponse.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$RSVPResponse fromJson$Enum$RSVPResponse(String value) {
+  switch (value) {
+    case r'YES':
+      return Enum$RSVPResponse.YES;
+    case r'MAYBE':
+      return Enum$RSVPResponse.MAYBE;
+    case r'NO':
+      return Enum$RSVPResponse.NO;
+    default:
+      return Enum$RSVPResponse.$unknown;
+  }
+}
+
+enum Enum$RSVPType {
+  PRIMARY,
+  RECIPROCAL,
+  SUBGROUP,
+  $unknown;
+
+  factory Enum$RSVPType.fromJson(String value) => fromJson$Enum$RSVPType(value);
+
+  String toJson() => toJson$Enum$RSVPType(this);
+}
+
+String toJson$Enum$RSVPType(Enum$RSVPType e) {
+  switch (e) {
+    case Enum$RSVPType.PRIMARY:
+      return r'PRIMARY';
+    case Enum$RSVPType.RECIPROCAL:
+      return r'RECIPROCAL';
+    case Enum$RSVPType.SUBGROUP:
+      return r'SUBGROUP';
+    case Enum$RSVPType.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$RSVPType fromJson$Enum$RSVPType(String value) {
+  switch (value) {
+    case r'PRIMARY':
+      return Enum$RSVPType.PRIMARY;
+    case r'RECIPROCAL':
+      return Enum$RSVPType.RECIPROCAL;
+    case r'SUBGROUP':
+      return Enum$RSVPType.SUBGROUP;
+    default:
+      return Enum$RSVPType.$unknown;
+  }
+}
+
+enum Enum$GuestPolicy {
+  NO_GUESTS,
+  MEMBERS_ONLY,
+  MALE_GUESTS_ONLY,
+  FEMALE_GUESTS_ONLY,
+  FRIENDS_AND_FAMILY,
+  $unknown;
+
+  factory Enum$GuestPolicy.fromJson(String value) =>
+      fromJson$Enum$GuestPolicy(value);
+
+  String toJson() => toJson$Enum$GuestPolicy(this);
+}
+
+String toJson$Enum$GuestPolicy(Enum$GuestPolicy e) {
+  switch (e) {
+    case Enum$GuestPolicy.NO_GUESTS:
+      return r'NO_GUESTS';
+    case Enum$GuestPolicy.MEMBERS_ONLY:
+      return r'MEMBERS_ONLY';
+    case Enum$GuestPolicy.MALE_GUESTS_ONLY:
+      return r'MALE_GUESTS_ONLY';
+    case Enum$GuestPolicy.FEMALE_GUESTS_ONLY:
+      return r'FEMALE_GUESTS_ONLY';
+    case Enum$GuestPolicy.FRIENDS_AND_FAMILY:
+      return r'FRIENDS_AND_FAMILY';
+    case Enum$GuestPolicy.$unknown:
+      return r'$unknown';
+  }
+}
+
+Enum$GuestPolicy fromJson$Enum$GuestPolicy(String value) {
+  switch (value) {
+    case r'NO_GUESTS':
+      return Enum$GuestPolicy.NO_GUESTS;
+    case r'MEMBERS_ONLY':
+      return Enum$GuestPolicy.MEMBERS_ONLY;
+    case r'MALE_GUESTS_ONLY':
+      return Enum$GuestPolicy.MALE_GUESTS_ONLY;
+    case r'FEMALE_GUESTS_ONLY':
+      return Enum$GuestPolicy.FEMALE_GUESTS_ONLY;
+    case r'FRIENDS_AND_FAMILY':
+      return Enum$GuestPolicy.FRIENDS_AND_FAMILY;
+    default:
+      return Enum$GuestPolicy.$unknown;
+  }
+}
+
 enum Enum$ClubStatus {
   ACTIVE,
   INACTIVE,
@@ -16363,12 +16501,13 @@ Enum$FacilityStatus fromJson$Enum$FacilityStatus(String value) {
 
 enum Enum$ProposalType {
   POLICY_CHANGE,
-  BUDGET_APPROVAL,
-  MEMBERSHIP_RULE,
+  BUDGET,
+  STRATEGIC,
+  MEMBERSHIP,
+  AMENDMENT,
   FACILITY_MODIFICATION,
   EVENT_APPROVAL,
   BOARD_ELECTION,
-  CONSTITUTIONAL_AMENDMENT,
   OTHER,
   $unknown;
 
@@ -16382,18 +16521,20 @@ String toJson$Enum$ProposalType(Enum$ProposalType e) {
   switch (e) {
     case Enum$ProposalType.POLICY_CHANGE:
       return r'POLICY_CHANGE';
-    case Enum$ProposalType.BUDGET_APPROVAL:
-      return r'BUDGET_APPROVAL';
-    case Enum$ProposalType.MEMBERSHIP_RULE:
-      return r'MEMBERSHIP_RULE';
+    case Enum$ProposalType.BUDGET:
+      return r'BUDGET';
+    case Enum$ProposalType.STRATEGIC:
+      return r'STRATEGIC';
+    case Enum$ProposalType.MEMBERSHIP:
+      return r'MEMBERSHIP';
+    case Enum$ProposalType.AMENDMENT:
+      return r'AMENDMENT';
     case Enum$ProposalType.FACILITY_MODIFICATION:
       return r'FACILITY_MODIFICATION';
     case Enum$ProposalType.EVENT_APPROVAL:
       return r'EVENT_APPROVAL';
     case Enum$ProposalType.BOARD_ELECTION:
       return r'BOARD_ELECTION';
-    case Enum$ProposalType.CONSTITUTIONAL_AMENDMENT:
-      return r'CONSTITUTIONAL_AMENDMENT';
     case Enum$ProposalType.OTHER:
       return r'OTHER';
     case Enum$ProposalType.$unknown:
@@ -16405,18 +16546,20 @@ Enum$ProposalType fromJson$Enum$ProposalType(String value) {
   switch (value) {
     case r'POLICY_CHANGE':
       return Enum$ProposalType.POLICY_CHANGE;
-    case r'BUDGET_APPROVAL':
-      return Enum$ProposalType.BUDGET_APPROVAL;
-    case r'MEMBERSHIP_RULE':
-      return Enum$ProposalType.MEMBERSHIP_RULE;
+    case r'BUDGET':
+      return Enum$ProposalType.BUDGET;
+    case r'STRATEGIC':
+      return Enum$ProposalType.STRATEGIC;
+    case r'MEMBERSHIP':
+      return Enum$ProposalType.MEMBERSHIP;
+    case r'AMENDMENT':
+      return Enum$ProposalType.AMENDMENT;
     case r'FACILITY_MODIFICATION':
       return Enum$ProposalType.FACILITY_MODIFICATION;
     case r'EVENT_APPROVAL':
       return Enum$ProposalType.EVENT_APPROVAL;
     case r'BOARD_ELECTION':
       return Enum$ProposalType.BOARD_ELECTION;
-    case r'CONSTITUTIONAL_AMENDMENT':
-      return Enum$ProposalType.CONSTITUTIONAL_AMENDMENT;
     case r'OTHER':
       return Enum$ProposalType.OTHER;
     default:
@@ -16700,6 +16843,7 @@ Enum$MemberStatus fromJson$Enum$MemberStatus(String value) {
 }
 
 enum Enum$AgreementStatus {
+  DRAFT,
   PENDING,
   APPROVED,
   REJECTED,
@@ -16707,6 +16851,7 @@ enum Enum$AgreementStatus {
   SUSPENDED,
   EXPIRED,
   CANCELLED,
+  TERMINATED,
   $unknown;
 
   factory Enum$AgreementStatus.fromJson(String value) =>
@@ -16717,6 +16862,8 @@ enum Enum$AgreementStatus {
 
 String toJson$Enum$AgreementStatus(Enum$AgreementStatus e) {
   switch (e) {
+    case Enum$AgreementStatus.DRAFT:
+      return r'DRAFT';
     case Enum$AgreementStatus.PENDING:
       return r'PENDING';
     case Enum$AgreementStatus.APPROVED:
@@ -16731,6 +16878,8 @@ String toJson$Enum$AgreementStatus(Enum$AgreementStatus e) {
       return r'EXPIRED';
     case Enum$AgreementStatus.CANCELLED:
       return r'CANCELLED';
+    case Enum$AgreementStatus.TERMINATED:
+      return r'TERMINATED';
     case Enum$AgreementStatus.$unknown:
       return r'$unknown';
   }
@@ -16738,6 +16887,8 @@ String toJson$Enum$AgreementStatus(Enum$AgreementStatus e) {
 
 Enum$AgreementStatus fromJson$Enum$AgreementStatus(String value) {
   switch (value) {
+    case r'DRAFT':
+      return Enum$AgreementStatus.DRAFT;
     case r'PENDING':
       return Enum$AgreementStatus.PENDING;
     case r'APPROVED':
@@ -16752,6 +16903,8 @@ Enum$AgreementStatus fromJson$Enum$AgreementStatus(String value) {
       return Enum$AgreementStatus.EXPIRED;
     case r'CANCELLED':
       return Enum$AgreementStatus.CANCELLED;
+    case r'TERMINATED':
+      return Enum$AgreementStatus.TERMINATED;
     default:
       return Enum$AgreementStatus.$unknown;
   }

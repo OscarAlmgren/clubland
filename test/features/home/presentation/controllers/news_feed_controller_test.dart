@@ -1,3 +1,4 @@
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/home/domain/entities/news_feed_item_entity.dart';
 import 'package:clubland/features/home/presentation/controllers/news_feed_controller.dart';
@@ -131,10 +132,10 @@ void main() {
 
       // assert
       final hasMembersOnly = events.any(
-        (e) => e.guestPolicy == GuestPolicy.membersOnly,
+        (e) => e.guestPolicy == Enum$GuestPolicy.MEMBERS_ONLY,
       );
       final hasFriendsAndFamily = events.any(
-        (e) => e.guestPolicy == GuestPolicy.friendsAndFamily,
+        (e) => e.guestPolicy == Enum$GuestPolicy.FRIENDS_AND_FAMILY,
       );
 
       expect(hasMembersOnly, true);

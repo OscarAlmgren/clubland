@@ -1,3 +1,4 @@
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/event_entity.dart';
 
 /// Event model - data layer representation with JSON serialization
@@ -45,7 +46,7 @@ class EventModel extends EventEntity {
       clubId: json['clubId'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      eventType: EventType.fromString(json['eventType'] as String),
+      eventType: fromJson$Enum$ClubEventType(json['eventType'] as String),
       startTime: DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
       location: json['location'] as String?,
@@ -53,7 +54,7 @@ class EventModel extends EventEntity {
       capacity: json['capacity'] as int?,
       currentAttendees: json['currentAttendees'] as int?,
       availableSpots: json['availableSpots'] as int? ?? 0,
-      guestPolicy: GuestPolicy.fromString(json['guestPolicy'] as String),
+      guestPolicy: fromJson$Enum$GuestPolicy(json['guestPolicy'] as String),
       maxGuestsPerMember: json['maxGuestsPerMember'] as int?,
       requiresApproval: json['requiresApproval'] as bool?,
       requiresPayment: json['requiresPayment'] as bool?,
@@ -92,7 +93,7 @@ class EventModel extends EventEntity {
       'clubId': clubId,
       'title': title,
       'description': description,
-      'eventType': eventType.toGraphQL(),
+      'eventType': toJson$Enum$ClubEventType(eventType),
       'startTime': startTime.toIso8601String(),
       'endTime': endTime.toIso8601String(),
       'location': location,
@@ -100,7 +101,7 @@ class EventModel extends EventEntity {
       'capacity': capacity,
       'currentAttendees': currentAttendees,
       'availableSpots': availableSpots,
-      'guestPolicy': guestPolicy.toGraphQL(),
+      'guestPolicy': toJson$Enum$GuestPolicy(guestPolicy),
       'maxGuestsPerMember': maxGuestsPerMember,
       'requiresApproval': requiresApproval,
       'requiresPayment': requiresPayment,

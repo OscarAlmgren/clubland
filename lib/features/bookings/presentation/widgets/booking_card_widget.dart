@@ -1,4 +1,5 @@
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/booking_entity.dart';
 
 class BookingCardWidget extends StatelessWidget {
@@ -120,7 +121,7 @@ class BookingCardWidget extends StatelessWidget {
 class _StatusChip extends StatelessWidget {
   const _StatusChip({required this.status});
 
-  final BookingStatus status;
+  final Enum$BookingStatus status;
 
   @override
   Widget build(BuildContext context) {
@@ -147,33 +148,22 @@ class _StatusChip extends StatelessWidget {
   }
 
   /// Returns WCAG AAA compliant status info for booking statuses.
-  _BookingStatusInfo _getStatusInfo(BookingStatus status) {
+  _BookingStatusInfo _getStatusInfo(Enum$BookingStatus status) {
     switch (status) {
-      case BookingStatus.confirmed:
-        return _BookingStatusInfo(
-          color: AppColors.success, // 7.23:1 contrast
-          label: 'Confirmed',
-        );
-      case BookingStatus.pending:
-        return _BookingStatusInfo(
-          color: AppColors.warning, // 7.81:1 contrast
-          label: 'Pending',
-        );
-      case BookingStatus.cancelled:
-        return _BookingStatusInfo(
-          color: AppColors.error, // 7.56:1 contrast
-          label: 'Cancelled',
-        );
-      case BookingStatus.completed:
-        return _BookingStatusInfo(
-          color: AppColors.info, // 7.03:1 contrast
-          label: 'Completed',
-        );
-      case BookingStatus.noShow:
-        return _BookingStatusInfo(
-          color: AppColors.neutral600, // 7.01:1 contrast
-          label: 'No Show',
-        );
+      case Enum$BookingStatus.CONFIRMED:
+        return _BookingStatusInfo(color: AppColors.success, label: 'Confirmed');
+      case Enum$BookingStatus.PENDING:
+        return _BookingStatusInfo(color: AppColors.warning, label: 'Pending');
+      case Enum$BookingStatus.CANCELLED:
+        return _BookingStatusInfo(color: AppColors.error, label: 'Cancelled');
+      case Enum$BookingStatus.CHECKED_IN:
+        return _BookingStatusInfo(color: AppColors.info, label: 'Checked In');
+      case Enum$BookingStatus.CHECKED_OUT:
+        return _BookingStatusInfo(color: AppColors.info, label: 'Completed');
+      case Enum$BookingStatus.NO_SHOW:
+        return _BookingStatusInfo(color: AppColors.neutral600, label: 'No Show');
+      case Enum$BookingStatus.$unknown:
+        return _BookingStatusInfo(color: AppColors.neutral600, label: 'Unknown');
     }
   }
 }

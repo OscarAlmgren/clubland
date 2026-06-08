@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../../domain/entities/facility_entity.dart';
 import '../../domain/entities/visit_entity.dart';
@@ -23,7 +24,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
 
   @override
   Future<Either<Failure, List<BookingEntity>>> getUserBookings({
-    BookingStatus? status,
+    Enum$BookingStatus? status,
     DateTime? startDate,
     DateTime? endDate,
     int? limit,
@@ -351,13 +352,13 @@ class BookingsRepositoryImpl implements BookingsRepository {
         totalBookings: bookings.length,
         upcomingBookings: bookings.where((b) => b.isUpcoming).length,
         completedBookings: bookings
-            .where((b) => b.status == BookingStatus.completed)
+            .where((b) => b.status == Enum$BookingStatus.CHECKED_OUT)
             .length,
         cancelledBookings: bookings
-            .where((b) => b.status == BookingStatus.cancelled)
+            .where((b) => b.status == Enum$BookingStatus.CANCELLED)
             .length,
         noShowBookings: bookings
-            .where((b) => b.status == BookingStatus.noShow)
+            .where((b) => b.status == Enum$BookingStatus.NO_SHOW)
             .length,
       );
 

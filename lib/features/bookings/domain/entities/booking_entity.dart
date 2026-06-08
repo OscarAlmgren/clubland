@@ -1,13 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// Booking status enumeration
-enum BookingStatus {
-  confirmed,
-  pending,
-  cancelled,
-  completed,
-  noShow,
-}
+import '../../../../core/graphql/graphql_api.dart';
 
 /// Booking entity - represents a facility booking in the domain layer
 class BookingEntity extends Equatable {
@@ -30,7 +23,7 @@ class BookingEntity extends Equatable {
   final String id;
   final DateTime startTime;
   final DateTime endTime;
-  final BookingStatus status;
+  final Enum$BookingStatus status;
   final String? notes;
   final ClubSummaryEntity club;
   final FacilitySummaryEntity facility;
@@ -53,11 +46,11 @@ class BookingEntity extends Equatable {
 
   /// Whether this booking can be cancelled
   bool get canBeCancelled =>
-      status == BookingStatus.confirmed || status == BookingStatus.pending;
+      status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
 
   /// Whether this booking can be modified
   bool get canBeModified =>
-      status == BookingStatus.confirmed || status == BookingStatus.pending;
+      status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
 
   /// Duration of the booking
   Duration get duration => endTime.difference(startTime);

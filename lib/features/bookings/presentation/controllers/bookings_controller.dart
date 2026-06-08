@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/bookings_remote_datasource.dart';
+import '../../data/models/booking_model.dart';
 import '../../data/repositories/bookings_repository_impl.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../../domain/repositories/bookings_repository.dart';
@@ -68,7 +70,7 @@ class BookingsController extends _$BookingsController {
       await ref.read(allBookingsProvider.future);
 
   /// Apply filter to bookings
-  Future<void> applyFilter(BookingStatus? status) async {
+  Future<void> applyFilter(Enum$BookingStatus? status) async {
     if (status == null) {
       // Show all bookings
       state = await AsyncValue.guard(
@@ -221,11 +223,3 @@ class BookingUpdate {
   final DateTime? timestamp;
 }
 
-/// Types of booking updates that can be received
-enum BookingUpdateType {
-  created,
-  modified,
-  cancelled,
-  confirmed,
-  statusChanged,
-}

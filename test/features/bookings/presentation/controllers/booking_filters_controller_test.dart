@@ -1,3 +1,4 @@
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:clubland/features/bookings/presentation/controllers/booking_filters_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,7 @@ void main() {
 
     test('should detect active filters when status is set', () {
       // arrange
-      const filters = BookingFilters(status: BookingStatus.confirmed);
+      const filters = BookingFilters(status: Enum$BookingStatus.CONFIRMED);
 
       // assert
       expect(filters.hasActiveFilters, isTrue);
@@ -39,20 +40,20 @@ void main() {
 
     test('should copy with new values', () {
       // arrange
-      const original = BookingFilters(status: BookingStatus.pending);
+      const original = BookingFilters(status: Enum$BookingStatus.PENDING);
 
       // act
-      final copied = original.copyWith(status: () => BookingStatus.confirmed);
+      final copied = original.copyWith(status: () => Enum$BookingStatus.CONFIRMED);
 
       // assert
-      expect(copied.status, equals(BookingStatus.confirmed));
-      expect(original.status, equals(BookingStatus.pending));
+      expect(copied.status, equals(Enum$BookingStatus.CONFIRMED));
+      expect(original.status, equals(Enum$BookingStatus.PENDING));
     });
 
     test('should clear all filters', () {
       // arrange
       final filters = BookingFilters(
-        status: BookingStatus.confirmed,
+        status: Enum$BookingStatus.CONFIRMED,
         startDate: DateTime(2025, 12),
         clubId: 'club123',
       );
@@ -110,11 +111,11 @@ void main() {
       );
 
       // act
-      controller.setStatusFilter(BookingStatus.confirmed);
+      controller.setStatusFilter(Enum$BookingStatus.CONFIRMED);
 
       // assert
       final filters = container.read(bookingFiltersControllerProvider);
-      expect(filters.status, equals(BookingStatus.confirmed));
+      expect(filters.status, equals(Enum$BookingStatus.CONFIRMED));
       expect(filters.hasActiveFilters, isTrue);
     });
 
@@ -123,7 +124,7 @@ void main() {
       final controller = container.read(
         bookingFiltersControllerProvider.notifier,
       );
-      controller.setStatusFilter(BookingStatus.confirmed);
+      controller.setStatusFilter(Enum$BookingStatus.CONFIRMED);
 
       // act
       controller.setStatusFilter(null);
@@ -186,7 +187,7 @@ void main() {
       final controller = container.read(
         bookingFiltersControllerProvider.notifier,
       );
-      controller.setStatusFilter(BookingStatus.confirmed);
+      controller.setStatusFilter(Enum$BookingStatus.CONFIRMED);
       controller.setClubFilter('club123');
       controller.setSearchQuery('tennis');
 
@@ -206,7 +207,7 @@ void main() {
       final controller = container.read(
         bookingFiltersControllerProvider.notifier,
       );
-      controller.setStatusFilter(BookingStatus.confirmed);
+      controller.setStatusFilter(Enum$BookingStatus.CONFIRMED);
       controller.setClubFilter('club123');
 
       // act

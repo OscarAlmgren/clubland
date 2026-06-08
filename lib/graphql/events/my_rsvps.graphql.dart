@@ -897,7 +897,9 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
           .toList(),
       specialRequests: (l$specialRequests as String?),
       paymentStatus: fromJson$Enum$PaymentStatus((l$paymentStatus as String)),
-      response: (l$response as String?),
+      response: l$response == null
+          ? null
+          : fromJson$Enum$RSVPResponse((l$response as String)),
       attendanceCount: (l$attendanceCount as int?),
       cancellationFee: (l$cancellationFee as num?)?.toDouble(),
       feeWaived: (l$feeWaived as bool?),
@@ -931,7 +933,7 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
 
   final Enum$PaymentStatus paymentStatus;
 
-  final String? response;
+  final Enum$RSVPResponse? response;
 
   final int? attendanceCount;
 
@@ -972,7 +974,9 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     final l$paymentStatus = paymentStatus;
     _resultData['paymentStatus'] = toJson$Enum$PaymentStatus(l$paymentStatus);
     final l$response = response;
-    _resultData['response'] = l$response;
+    _resultData['response'] = l$response == null
+        ? null
+        : toJson$Enum$RSVPResponse(l$response);
     final l$attendanceCount = attendanceCount;
     _resultData['attendanceCount'] = l$attendanceCount;
     final l$cancellationFee = cancellationFee;
@@ -1175,7 +1179,7 @@ abstract class CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<TRes> {
     List<String>? dietaryRestrictions,
     String? specialRequests,
     Enum$PaymentStatus? paymentStatus,
-    String? response,
+    Enum$RSVPResponse? response,
     int? attendanceCount,
     double? cancellationFee,
     bool? feeWaived,
@@ -1245,7 +1249,7 @@ class _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$nodes<TRes>
           : (paymentStatus as Enum$PaymentStatus),
       response: response == _undefined
           ? _instance.response
-          : (response as String?),
+          : (response as Enum$RSVPResponse?),
       attendanceCount: attendanceCount == _undefined
           ? _instance.attendanceCount
           : (attendanceCount as int?),
@@ -1290,7 +1294,7 @@ class _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$nodes<TRes>
     List<String>? dietaryRestrictions,
     String? specialRequests,
     Enum$PaymentStatus? paymentStatus,
-    String? response,
+    Enum$RSVPResponse? response,
     int? attendanceCount,
     double? cancellationFee,
     bool? feeWaived,

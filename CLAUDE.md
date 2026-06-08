@@ -254,13 +254,33 @@ class MyRepositoryImpl implements MyRepository {
 }
 ```
 
-### 5. Storage Architecture
+### 5. Enum Types — Always Use Generated `Enum$*`
+
+**Never declare hand-rolled enums that shadow generated types.** All domain enums
+are generated from the GraphQL schema via `graphql_codegen` and live in:
+
+```dart
+import 'package:clubland/core/graphql/graphql_api.dart';
+// Enum$ClubEventType, Enum$BookingStatus, Enum$VisitStatus, Enum$RSVPStatus,
+// Enum$RSVPResponse, Enum$RSVPType, Enum$GuestPolicy, Enum$UserStatus, Enum$FacilityType
+```
+
+**Rules:**
+- Use `fromJson$Enum$X(value)` at data boundaries (graceful `$unknown` fallback).
+- Exclude `$unknown` from UI iteration: `.where((v) => v != Enum$X.$unknown)`.
+- Every `switch` on an `Enum$*` must include a `$unknown` case (exhaustiveness).
+- Domain-specific getters (`isActive`, `canCancel`, etc.) live as extensions on the generated type.
+
+**Guard:** `flutter test test/ontology/enum_drift_test.dart` fails if a hand-rolled
+`enum X` shadowing a generated `Enum$<X>` is re-introduced in `lib/features/**`.
+
+### 7. Storage Architecture
 
 - **Simple data**: SharedPreferences (via TypedLocalStorage)
 - **Structured data**: Drift SQL database
 - **Secure data**: FlutterSecureStorage (tokens, credentials)
 
-### 6. Internationalization
+### 8. Internationalization
 
 **Add translations to ARB files:**
 

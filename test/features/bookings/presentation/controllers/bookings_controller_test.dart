@@ -1,3 +1,4 @@
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:clubland/features/bookings/domain/repositories/bookings_repository.dart';
 import 'package:clubland/features/bookings/presentation/controllers/bookings_controller.dart';
@@ -20,7 +21,7 @@ void main() {
     id: '1',
     startTime: DateTime.now().add(const Duration(days: 1)),
     endTime: DateTime.now().add(const Duration(days: 1, hours: 1)),
-    status: BookingStatus.confirmed,
+    status: Enum$BookingStatus.CONFIRMED,
     club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
     facility: const FacilitySummaryEntity(id: 'facility1', name: 'Tennis Court'),
     user: const UserSummaryEntity(id: 'user1', firstName: 'John', lastName: 'Doe'),
@@ -33,7 +34,7 @@ void main() {
     endTime: DateTime.now()
         .subtract(const Duration(days: 1))
         .add(const Duration(hours: 1)),
-    status: BookingStatus.completed,
+    status: Enum$BookingStatus.CHECKED_OUT,
     club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
     facility: const FacilitySummaryEntity(id: 'facility2', name: 'Pool'),
     user: const UserSummaryEntity(id: 'user1', firstName: 'John', lastName: 'Doe'),
@@ -164,13 +165,13 @@ void main() {
       final controller = container.read(bookingsControllerProvider.notifier);
 
       // act
-      await controller.applyFilter(BookingStatus.confirmed);
+      await controller.applyFilter(Enum$BookingStatus.CONFIRMED);
 
       // assert
       final state = container.read(bookingsControllerProvider);
       expect(state.hasValue, isTrue);
       expect(state.value!.length, equals(1));
-      expect(state.value!.first.status, equals(BookingStatus.confirmed));
+      expect(state.value!.first.status, equals(Enum$BookingStatus.CONFIRMED));
     });
 
     test('should show all bookings when filter is null', () async {
@@ -211,7 +212,7 @@ void main() {
         id: '1',
         startTime: tBooking1.startTime,
         endTime: tBooking1.endTime,
-        status: BookingStatus.cancelled,
+        status: Enum$BookingStatus.CANCELLED,
         club: tBooking1.club,
         facility: tBooking1.facility,
         user: tBooking1.user,
@@ -268,7 +269,7 @@ void main() {
         id: 'new-booking',
         startTime: DateTime.now().add(const Duration(days: 2)),
         endTime: DateTime.now().add(const Duration(days: 2, hours: 1)),
-        status: BookingStatus.pending,
+        status: Enum$BookingStatus.PENDING,
         club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
         facility: const FacilitySummaryEntity(id: 'facility1', name: 'Tennis Court'),
         user: const UserSummaryEntity(
@@ -338,7 +339,7 @@ void main() {
         id: '1',
         startTime: DateTime.now().add(const Duration(days: 2)),
         endTime: DateTime.now().add(const Duration(days: 2, hours: 1)),
-        status: BookingStatus.confirmed,
+        status: Enum$BookingStatus.CONFIRMED,
         club: tBooking1.club,
         facility: tBooking1.facility,
         user: tBooking1.user,

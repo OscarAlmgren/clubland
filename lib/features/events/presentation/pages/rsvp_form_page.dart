@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/event_entity.dart';
 import '../../domain/entities/event_rsvp_entity.dart';
 import '../../domain/entities/rsvp_eligibility_entity.dart';
@@ -36,7 +37,7 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
   final _formKey = GlobalKey<FormState>();
 
   // Form fields
-  RSVPResponse _response = RSVPResponse.yes;
+  Enum$RSVPResponse _response = Enum$RSVPResponse.YES;
   int _attendanceCount = 1;
   final List<TextEditingController> _guestNameControllers = [];
   final Set<String> _selectedDietaryRestrictions = {};
@@ -251,33 +252,33 @@ class _RSVPFormPageState extends ConsumerState<RSVPFormPage> {
               ),
             ),
             const SizedBox(height: 12),
-            SegmentedButton<RSVPResponse>(
+            SegmentedButton<Enum$RSVPResponse>(
               segments: const [
                 ButtonSegment(
-                  value: RSVPResponse.yes,
+                  value: Enum$RSVPResponse.YES,
                   label: Text('Yes'),
                   icon: Icon(Icons.check_circle),
                 ),
                 ButtonSegment(
-                  value: RSVPResponse.maybe,
+                  value: Enum$RSVPResponse.MAYBE,
                   label: Text('Maybe'),
                   icon: Icon(Icons.help_outline),
                 ),
                 ButtonSegment(
-                  value: RSVPResponse.no,
+                  value: Enum$RSVPResponse.NO,
                   label: Text('No'),
                   icon: Icon(Icons.cancel),
                 ),
               ],
               selected: {_response},
-              onSelectionChanged: (Set<RSVPResponse> newSelection) {
+              onSelectionChanged: (Set<Enum$RSVPResponse> newSelection) {
                 setState(() {
                   _response = newSelection.first;
                 });
               },
             ),
 
-            if (_response != RSVPResponse.no) ...[
+            if (_response != Enum$RSVPResponse.NO) ...[
               const SizedBox(height: 24),
 
               // Attendance count

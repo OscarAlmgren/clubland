@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/booking_entity.dart';
 
 class BookingFiltersWidget extends StatelessWidget {
@@ -10,10 +12,10 @@ class BookingFiltersWidget extends StatelessWidget {
     super.key,
   });
 
-  final BookingStatus? selectedStatus;
-  final ValueChanged<BookingStatus?>? onStatusChanged;
-  final BookingStatus? currentFilter;
-  final ValueChanged<BookingStatus?>? onFilterChanged;
+  final Enum$BookingStatus? selectedStatus;
+  final ValueChanged<Enum$BookingStatus?>? onStatusChanged;
+  final Enum$BookingStatus? currentFilter;
+  final ValueChanged<Enum$BookingStatus?>? onFilterChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +42,18 @@ class BookingFiltersWidget extends StatelessWidget {
                   onStatusChanged?.call(null);
                 },
               ),
-              ...BookingStatus.values.map(
-                (status) => _FilterChip(
-                  label: _getStatusLabel(status),
-                  isSelected: (currentFilter ?? selectedStatus) == status,
-                  onSelected: () {
-                    onFilterChanged?.call(status);
-                    onStatusChanged?.call(status);
-                  },
-                ),
-              ),
+              ...Enum$BookingStatus.values
+                  .where((s) => s != Enum$BookingStatus.$unknown)
+                  .map(
+                    (status) => _FilterChip(
+                      label: _getStatusLabel(status),
+                      isSelected: (currentFilter ?? selectedStatus) == status,
+                      onSelected: () {
+                        onFilterChanged?.call(status);
+                        onStatusChanged?.call(status);
+                      },
+                    ),
+                  ),
             ],
           ),
         ],
@@ -57,18 +61,22 @@ class BookingFiltersWidget extends StatelessWidget {
     );
   }
 
-  String _getStatusLabel(BookingStatus status) {
+  String _getStatusLabel(Enum$BookingStatus status) {
     switch (status) {
-      case BookingStatus.confirmed:
+      case Enum$BookingStatus.CONFIRMED:
         return 'Confirmed';
-      case BookingStatus.pending:
+      case Enum$BookingStatus.PENDING:
         return 'Pending';
-      case BookingStatus.cancelled:
+      case Enum$BookingStatus.CANCELLED:
         return 'Cancelled';
-      case BookingStatus.completed:
+      case Enum$BookingStatus.CHECKED_IN:
+        return 'Checked In';
+      case Enum$BookingStatus.CHECKED_OUT:
         return 'Completed';
-      case BookingStatus.noShow:
+      case Enum$BookingStatus.NO_SHOW:
         return 'No Show';
+      case Enum$BookingStatus.$unknown:
+        return 'Unknown';
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/event_entity.dart';
 import 'capacity_indicator.dart';
 import 'rsvp_status_badge.dart';
@@ -263,49 +264,47 @@ class EventCard extends StatelessWidget {
   }
 
   /// Returns WCAG AAA compliant color for event type badges.
-  Color _getEventTypeColor(EventType type) {
+  Color _getEventTypeColor(Enum$ClubEventType type) {
     switch (type) {
-      case EventType.social:
+      case Enum$ClubEventType.SOCIAL:
         return AppColors.getEventTypeColor('social');
-      case EventType.dining:
-        return AppColors.getEventTypeColor('dining');
-      case EventType.sports:
+      case Enum$ClubEventType.SPORTING:
         return AppColors.getEventTypeColor('sports');
-      case EventType.cultural:
+      case Enum$ClubEventType.CULTURAL:
         return AppColors.getEventTypeColor('cultural');
-      case EventType.educational:
+      case Enum$ClubEventType.EDUCATIONAL:
         return AppColors.getEventTypeColor('educational');
-      case EventType.networking:
+      case Enum$ClubEventType.NETWORKING:
         return AppColors.getEventTypeColor('networking');
-      case EventType.family:
-        return AppColors.getEventTypeColor('family');
-      case EventType.special:
-        return AppColors.getEventTypeColor('special');
-      case EventType.findingFriends:
-        return AppColors.getEventTypeColor('finding_friends');
+      case Enum$ClubEventType.FUNDRAISING:
+        return AppColors.getEventTypeColor('cultural');
+      case Enum$ClubEventType.MEETING:
+        return AppColors.getEventTypeColor('networking');
+      case Enum$ClubEventType.OTHER:
+      case Enum$ClubEventType.$unknown:
+        return AppColors.getEventTypeColor('social');
     }
   }
 
-  String _getEventTypeLabel(EventType type) {
+  String _getEventTypeLabel(Enum$ClubEventType type) {
     switch (type) {
-      case EventType.social:
+      case Enum$ClubEventType.SOCIAL:
         return 'Social';
-      case EventType.dining:
-        return 'Dining';
-      case EventType.sports:
+      case Enum$ClubEventType.SPORTING:
         return 'Sports';
-      case EventType.cultural:
+      case Enum$ClubEventType.CULTURAL:
         return 'Cultural';
-      case EventType.educational:
+      case Enum$ClubEventType.EDUCATIONAL:
         return 'Educational';
-      case EventType.networking:
+      case Enum$ClubEventType.NETWORKING:
         return 'Networking';
-      case EventType.family:
-        return 'Family';
-      case EventType.special:
-        return 'Special';
-      case EventType.findingFriends:
-        return 'Finding Friends';
+      case Enum$ClubEventType.FUNDRAISING:
+        return 'Fundraising';
+      case Enum$ClubEventType.MEETING:
+        return 'Meeting';
+      case Enum$ClubEventType.OTHER:
+      case Enum$ClubEventType.$unknown:
+        return 'Other';
     }
   }
 }

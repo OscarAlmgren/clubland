@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:clubland/core/errors/failures.dart';
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/events/domain/entities/event_rsvp_entity.dart';
 import 'package:clubland/features/events/domain/entities/events_connection_entity.dart';
@@ -46,14 +47,14 @@ void main() {
     clubId: clubId,
     title: 'Wine Tasting Evening',
     description: 'Sample description',
-    eventType: EventType.dining,
+    eventType: Enum$ClubEventType.SOCIAL,
     startTime: DateTime.now().add(const Duration(days: 7)),
     endTime: DateTime.now().add(const Duration(days: 7, hours: 2)),
     location: 'Wine Cellar',
     capacity: 20,
     currentAttendees: 15,
     availableSpots: 5,
-    guestPolicy: GuestPolicy.membersOnly,
+    guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
     requiresApproval: false,
     requiresPayment: true,
     price: 50.0,
@@ -72,11 +73,11 @@ void main() {
     eventId: eventId,
     memberId: memberId,
     clubId: clubId,
-    response: RSVPResponse.yes,
-    rsvpType: RSVPType.primary,
+    response: Enum$RSVPResponse.YES,
+    rsvpType: Enum$RSVPType.PRIMARY,
     priority: 1,
     attendanceCount: 1,
-    status: RSVPStatus.confirmed,
+    status: Enum$RSVPStatus.CONFIRMED,
     paymentRequired: true,
     paymentVerified: true,
     paymentAmount: 50.0,
@@ -579,11 +580,11 @@ void main() {
           eventId: eventId,
           memberId: memberId,
           clubId: clubId,
-          response: RSVPResponse.yes,
-          rsvpType: RSVPType.primary,
+          response: Enum$RSVPResponse.YES,
+          rsvpType: Enum$RSVPType.PRIMARY,
           priority: 1,
           attendanceCount: 1,
-          status: RSVPStatus.confirmed,
+          status: Enum$RSVPStatus.CONFIRMED,
           paymentRequired: false,
           paymentVerified: false,
           feeWaived: false,

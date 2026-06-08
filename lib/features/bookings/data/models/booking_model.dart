@@ -1,11 +1,15 @@
 import 'package:equatable/equatable.dart';
+
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/booking_entity.dart';
 
 enum BookingUpdateType {
+  created,
   confirmed,
   cancelled,
   modified,
   reminder,
+  statusChanged,
 }
 
 class BookingModel extends Equatable {
@@ -28,7 +32,7 @@ class BookingModel extends Equatable {
   final String id;
   final DateTime startTime;
   final DateTime endTime;
-  final BookingStatus status;
+  final Enum$BookingStatus status;
   final String? notes;
   final ClubSummary club;
   final FacilitySummary facility;
@@ -44,7 +48,7 @@ class BookingModel extends Equatable {
       id: json['id'] as String,
       startTime: DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
-      status: _parseStatus(json['status'] as String?),
+      status: fromJson$Enum$BookingStatus(json['status'] as String? ?? 'PENDING'),
       notes: json['notes'] as String?,
       // Backend returns clubId scalar — no nested club relation in schema
       club: ClubSummary(
@@ -85,27 +89,12 @@ class BookingModel extends Equatable {
     );
   }
 
-  static BookingStatus _parseStatus(String? value) {
-    switch (value?.toUpperCase()) {
-      case 'CONFIRMED':
-        return BookingStatus.confirmed;
-      case 'CANCELLED':
-        return BookingStatus.cancelled;
-      case 'COMPLETED':
-        return BookingStatus.completed;
-      case 'NO_SHOW':
-        return BookingStatus.noShow;
-      default:
-        return BookingStatus.pending;
-    }
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'startTime': startTime.toIso8601String(),
       'endTime': endTime.toIso8601String(),
-      'status': status.name,
+      'status': toJson$Enum$BookingStatus(status),
       'notes': notes,
       'club': club.toJson(),
       'facility': facility.toJson(),
@@ -123,10 +112,10 @@ class BookingModel extends Equatable {
   bool get isActive => DateTime.now().isAfter(startTime) && DateTime.now().isBefore(endTime);
 
   /// Whether this booking can be cancelled
-  bool get canBeCancelled => status == BookingStatus.confirmed || status == BookingStatus.pending;
+  bool get canBeCancelled => status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
 
   /// Whether this booking can be modified
-  bool get canBeModified => status == BookingStatus.confirmed || status == BookingStatus.pending;
+  bool get canBeModified => status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
 
   @override
   List<Object?> get props => [

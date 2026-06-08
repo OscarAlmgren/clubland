@@ -1,92 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// RSVP response enumeration
-enum RSVPResponse {
-  yes,
-  maybe,
-  no;
-
-  /// Convert from GraphQL string
-  static RSVPResponse fromString(String value) {
-    return RSVPResponse.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => RSVPResponse.no,
-    );
-  }
-
-  /// Convert to GraphQL string
-  String toGraphQL() {
-    return name.toUpperCase();
-  }
-}
-
-/// RSVP type enumeration
-enum RSVPType {
-  primary, // Home club member
-  reciprocal, // Visiting reciprocal member
-  subgroup; // Finding Friends subgroup member
-
-  /// Convert from GraphQL string
-  static RSVPType fromString(String value) {
-    return RSVPType.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => RSVPType.primary,
-    );
-  }
-
-  /// Convert to GraphQL string
-  String toGraphQL() {
-    return name.toUpperCase();
-  }
-}
-
-/// RSVP status enumeration
-enum RSVPStatus {
-  confirmed,
-  tentative,
-  pendingApproval,
-  waitlist,
-  cancelled,
-  declined;
-
-  /// Convert from GraphQL string
-  static RSVPStatus fromString(String value) {
-    switch (value.toUpperCase()) {
-      case 'CONFIRMED':
-        return RSVPStatus.confirmed;
-      case 'TENTATIVE':
-        return RSVPStatus.tentative;
-      case 'PENDING_APPROVAL':
-        return RSVPStatus.pendingApproval;
-      case 'WAITLIST':
-        return RSVPStatus.waitlist;
-      case 'CANCELLED':
-        return RSVPStatus.cancelled;
-      case 'DECLINED':
-        return RSVPStatus.declined;
-      default:
-        return RSVPStatus.confirmed;
-    }
-  }
-
-  /// Convert to GraphQL string
-  String toGraphQL() {
-    switch (this) {
-      case RSVPStatus.confirmed:
-        return 'CONFIRMED';
-      case RSVPStatus.tentative:
-        return 'TENTATIVE';
-      case RSVPStatus.pendingApproval:
-        return 'PENDING_APPROVAL';
-      case RSVPStatus.waitlist:
-        return 'WAITLIST';
-      case RSVPStatus.cancelled:
-        return 'CANCELLED';
-      case RSVPStatus.declined:
-        return 'DECLINED';
-    }
-  }
-}
+import '../../../../core/graphql/graphql_api.dart';
 
 /// Event RSVP entity - represents a member's RSVP to an event
 class EventRSVPEntity extends Equatable {
@@ -125,8 +39,8 @@ class EventRSVPEntity extends Equatable {
   final String clubId;
 
   // RSVP details
-  final RSVPResponse response;
-  final RSVPType rsvpType;
+  final Enum$RSVPResponse response;
+  final Enum$RSVPType rsvpType;
   final int priority;
 
   // Attendance
@@ -137,7 +51,7 @@ class EventRSVPEntity extends Equatable {
   final String? specialRequests;
 
   // Status
-  final RSVPStatus status;
+  final Enum$RSVPStatus status;
 
   // Payment
   final bool paymentRequired;
@@ -163,32 +77,29 @@ class EventRSVPEntity extends Equatable {
   final DateTime updatedAt;
 
   /// Whether this RSVP is confirmed
-  bool get isConfirmed => status == RSVPStatus.confirmed;
+  bool get isConfirmed => status == Enum$RSVPStatus.CONFIRMED;
 
   /// Whether this RSVP is on waitlist
-  bool get isOnWaitlist => status == RSVPStatus.waitlist;
+  bool get isOnWaitlist => status == Enum$RSVPStatus.WAITLISTED;
 
   /// Whether this RSVP is pending approval
-  bool get isPendingApproval => status == RSVPStatus.pendingApproval;
-
-  /// Whether this RSVP is tentative (Maybe)
-  bool get isTentative => status == RSVPStatus.tentative;
+  bool get isPendingApproval => status == Enum$RSVPStatus.PENDING;
 
   /// Whether this RSVP is cancelled
-  bool get isCancelled => status == RSVPStatus.cancelled;
+  bool get isCancelled => status == Enum$RSVPStatus.CANCELLED;
 
   /// Whether this RSVP can be cancelled
   bool get canCancel {
-    return status == RSVPStatus.confirmed ||
-        status == RSVPStatus.tentative ||
-        status == RSVPStatus.pendingApproval;
+    return status == Enum$RSVPStatus.CONFIRMED ||
+        status == Enum$RSVPStatus.PENDING ||
+        status == Enum$RSVPStatus.WAITLISTED;
   }
 
   /// Whether this RSVP can be modified
   bool get canModify {
-    return status == RSVPStatus.confirmed ||
-        status == RSVPStatus.tentative ||
-        status == RSVPStatus.pendingApproval;
+    return status == Enum$RSVPStatus.CONFIRMED ||
+        status == Enum$RSVPStatus.PENDING ||
+        status == Enum$RSVPStatus.WAITLISTED;
   }
 
   /// Whether payment is pending

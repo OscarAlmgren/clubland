@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/visit_entity.dart';
 
 class VisitModel extends Equatable {
@@ -21,7 +23,7 @@ class VisitModel extends Equatable {
   final String memberId;
   final String clubId;
   final String visitingClubId;
-  final VisitStatus status;
+  final Enum$VisitStatus status;
   final DateTime checkedInAt;
   final DateTime? checkedOutAt;
   final List<String>? services;
@@ -36,7 +38,7 @@ class VisitModel extends Equatable {
       memberId: (json['memberId'] as String?) ?? '',
       clubId: (json['clubId'] as String?) ?? '',
       visitingClubId: (json['visitingClubId'] as String?) ?? '',
-      status: _parseStatus(json['status'] as String?),
+      status: fromJson$Enum$VisitStatus(json['status'] as String? ?? 'PLANNED'),
       checkedInAt: json['checkInTime'] != null
           ? DateTime.parse(json['checkInTime'] as String)
           : DateTime.now(),
@@ -53,21 +55,6 @@ class VisitModel extends Equatable {
           ? DateTime.parse(json['createdAt'] as String)
           : null,
     );
-  }
-
-  static VisitStatus _parseStatus(String? value) {
-    switch (value?.toUpperCase()) {
-      case 'CHECKED_IN':
-        return VisitStatus.checkedIn;
-      case 'CHECKED_OUT':
-        return VisitStatus.checkedOut;
-      case 'CANCELLED':
-        return VisitStatus.cancelled;
-      case 'NO_SHOW':
-        return VisitStatus.noShow;
-      default:
-        return VisitStatus.checkedIn;
-    }
   }
 
   VisitEntity toEntity() {

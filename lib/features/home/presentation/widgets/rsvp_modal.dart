@@ -1,8 +1,6 @@
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../events/domain/entities/event_entity.dart';
-
-/// RSVP response type
-enum RSVPResponse { yes, no, maybe }
 
 /// RSVP modal dialog for event responses
 class RSVPModal extends StatelessWidget {
@@ -10,15 +8,15 @@ class RSVPModal extends StatelessWidget {
   final EventEntity event;
 
   /// Callback when RSVP is selected
-  final void Function(RSVPResponse response) onRSVP;
+  final void Function(Enum$RSVPResponse response) onRSVP;
 
   const RSVPModal({required this.event, required this.onRSVP, super.key});
 
   /// Show the RSVP modal
-  static Future<RSVPResponse?> show({
+  static Future<Enum$RSVPResponse?> show({
     required BuildContext context,
     required EventEntity event,
-  }) => showDialog<RSVPResponse>(
+  }) => showDialog<Enum$RSVPResponse>(
     context: context,
     builder: (context) => RSVPModal(
       event: event,
@@ -90,7 +88,7 @@ class RSVPModal extends StatelessWidget {
             _buildRSVPOption(
               context: context,
               theme: theme,
-              response: RSVPResponse.yes,
+              response: Enum$RSVPResponse.YES,
               icon: Icons.check_circle,
               label: "Yes, I'll attend",
               description: 'Confirm your attendance',
@@ -102,7 +100,7 @@ class RSVPModal extends StatelessWidget {
             _buildRSVPOption(
               context: context,
               theme: theme,
-              response: RSVPResponse.maybe,
+              response: Enum$RSVPResponse.MAYBE,
               icon: Icons.help_outline,
               label: 'Maybe',
               description: "You're not sure yet",
@@ -114,7 +112,7 @@ class RSVPModal extends StatelessWidget {
             _buildRSVPOption(
               context: context,
               theme: theme,
-              response: RSVPResponse.no,
+              response: Enum$RSVPResponse.NO,
               icon: Icons.cancel,
               label: "No, I can't attend",
               description: 'Decline the invitation',
@@ -158,7 +156,7 @@ class RSVPModal extends StatelessWidget {
   Widget _buildRSVPOption({
     required BuildContext context,
     required ThemeData theme,
-    required RSVPResponse response,
+    required Enum$RSVPResponse response,
     required IconData icon,
     required String label,
     required String description,

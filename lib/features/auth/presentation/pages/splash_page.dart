@@ -84,7 +84,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
                         ],
                       ),
                       child: const Icon(
-                        Icons.location_city,
+                        Icons.location_pin,
                         size: 60,
                         color: AppColors.brandPrimary,
                       ),

@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/booking_entity.dart';
 
 part 'booking_filters_controller.g.dart';
@@ -14,7 +15,7 @@ class BookingFilters {
     this.searchQuery,
   });
 
-  final BookingStatus? status;
+  final Enum$BookingStatus? status;
   final DateTime? startDate;
   final DateTime? endDate;
   final String? clubId;
@@ -22,7 +23,7 @@ class BookingFilters {
 
   /// Creates a copy of this filter with the given fields replaced.
   BookingFilters copyWith({
-    BookingStatus? Function()? status,
+    Enum$BookingStatus? Function()? status,
     DateTime? Function()? startDate,
     DateTime? Function()? endDate,
     String? Function()? clubId,
@@ -56,7 +57,7 @@ class BookingFiltersController extends _$BookingFiltersController {
   BookingFilters build() => const BookingFilters();
 
   /// Sets the status filter.
-  void setStatusFilter(BookingStatus? status) {
+  void setStatusFilter(Enum$BookingStatus? status) {
     state = state.copyWith(status: () => status);
   }
 

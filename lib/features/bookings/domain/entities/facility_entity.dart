@@ -1,19 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// Facility type enumeration
-enum FacilityType {
-  diningRoom,
-  meetingRoom,
-  library,
-  gym,
-  pool,
-  tennisPort,
-  golfCourse,
-  sportsField,
-  eventSpace,
-  lounge,
-  other,
-}
+import '../../../../core/graphql/graphql_api.dart';
 
 /// Facility entity - represents a bookable facility in a club
 class FacilityEntity extends Equatable {
@@ -40,7 +27,7 @@ class FacilityEntity extends Equatable {
   final String id;
   final String clubId;
   final String name;
-  final FacilityType type;
+  final Enum$FacilityType type;
   final String? description;
   final String? location;
   final int capacity;

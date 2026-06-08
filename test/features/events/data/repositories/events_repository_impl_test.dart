@@ -1,5 +1,6 @@
 import 'package:clubland/core/errors/exceptions.dart';
 import 'package:clubland/core/errors/failures.dart';
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/events/data/datasources/events_remote_datasource.dart';
 import 'package:clubland/features/events/data/repositories/events_repository_impl.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
@@ -283,7 +284,7 @@ void main() {
           expect(events.length, 1);
           expect(events.first.id, 'event1');
           expect(events.first.title, 'Upcoming Event');
-          expect(events.first.eventType, EventType.sports);
+          expect(events.first.eventType, Enum$ClubEventType.SPORTING);
         });
       });
 

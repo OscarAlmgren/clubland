@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/event_entity.dart';
 import '../../domain/entities/event_rsvp_entity.dart';
 import '../controllers/events_controller.dart';
@@ -23,7 +24,7 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
   final _formKey = GlobalKey<FormState>();
 
   // Form fields
-  late RSVPResponse _response;
+  late Enum$RSVPResponse _response;
   late int _attendanceCount;
   final List<TextEditingController> _guestNameControllers = [];
   final Set<String> _selectedDietaryRestrictions = {};
@@ -276,26 +277,26 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
               ),
             ),
             const SizedBox(height: 12),
-            SegmentedButton<RSVPResponse>(
+            SegmentedButton<Enum$RSVPResponse>(
               segments: const [
                 ButtonSegment(
-                  value: RSVPResponse.yes,
+                  value: Enum$RSVPResponse.YES,
                   label: Text('Yes'),
                   icon: Icon(Icons.check),
                 ),
                 ButtonSegment(
-                  value: RSVPResponse.maybe,
+                  value: Enum$RSVPResponse.MAYBE,
                   label: Text('Maybe'),
                   icon: Icon(Icons.help_outline),
                 ),
                 ButtonSegment(
-                  value: RSVPResponse.no,
+                  value: Enum$RSVPResponse.NO,
                   label: Text('No'),
                   icon: Icon(Icons.close),
                 ),
               ],
               selected: {_response},
-              onSelectionChanged: (Set<RSVPResponse> selection) {
+              onSelectionChanged: (Set<Enum$RSVPResponse> selection) {
                 setState(() {
                   _response = selection.first;
                 });
@@ -305,7 +306,7 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
             const SizedBox(height: 24),
 
             // Attendance count (only for Yes/Maybe)
-            if (_response != RSVPResponse.no) ...[
+            if (_response != Enum$RSVPResponse.NO) ...[
               Text(
                 'Number of Attendees',
                 style: theme.textTheme.titleMedium?.copyWith(
@@ -540,20 +541,15 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
     );
   }
 
-  String _getStatusLabel(RSVPStatus status) {
+  String _getStatusLabel(Enum$RSVPStatus status) {
     switch (status) {
-      case RSVPStatus.confirmed:
-        return 'Confirmed';
-      case RSVPStatus.tentative:
-        return 'Tentative';
-      case RSVPStatus.pendingApproval:
-        return 'Pending Approval';
-      case RSVPStatus.waitlist:
-        return 'Waitlist';
-      case RSVPStatus.cancelled:
-        return 'Cancelled';
-      case RSVPStatus.declined:
-        return 'Declined';
+      case Enum$RSVPStatus.CONFIRMED: return 'Confirmed';
+      case Enum$RSVPStatus.PENDING: return 'Pending Approval';
+      case Enum$RSVPStatus.WAITLISTED: return 'Waitlist';
+      case Enum$RSVPStatus.ATTENDED: return 'Attended';
+      case Enum$RSVPStatus.NO_SHOW: return 'No Show';
+      case Enum$RSVPStatus.CANCELLED: return 'Cancelled';
+      case Enum$RSVPStatus.$unknown: return 'Unknown';
     }
   }
 }

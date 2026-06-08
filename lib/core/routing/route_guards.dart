@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/graphql/graphql_api.dart';
 import '../../features/auth/domain/entities/user_entity.dart';
 import 'app_routes.dart';
 
@@ -145,7 +146,7 @@ class RouteGuards {
   static bool _needsProfileCompletion(UserEntity user) =>
       user.firstName == null ||
       user.lastName == null ||
-      user.status == UserStatus.pending;
+      user.status == Enum$UserStatus.PENDING_VERIFICATION;
 
   /// Check if route requires admin access
   static bool _isAdminRoute(String path) {
@@ -217,7 +218,7 @@ class RouteGuards {
 
   /// Check if user's email is verified
   static bool _isEmailVerified(UserEntity user) =>
-      user.status == UserStatus.verified || user.status == UserStatus.active;
+      user.status == Enum$UserStatus.ACTIVE;
 
   /// Get appropriate redirect for unverified users
   static String _getEmailVerificationRedirect() => '/verify-email';
@@ -309,7 +310,7 @@ extension UserPermissionsExtension on UserEntity {
       firstName != null &&
       lastName != null &&
       profile?.phoneNumber != null &&
-      status != UserStatus.pending;
+      status != Enum$UserStatus.PENDING_VERIFICATION;
 
   /// Get user's highest membership tier
   String get membershipTier {

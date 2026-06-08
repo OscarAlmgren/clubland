@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../auth/presentation/controllers/auth_controller.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../events/domain/entities/event_entity.dart';
 import '../../domain/entities/lunch_menu_entity.dart';
 import '../../domain/entities/news_feed_item_entity.dart';
@@ -56,14 +57,14 @@ class NewsFeedController extends _$NewsFeedController {
           description:
               'Join us for an exclusive wine tasting featuring selections from renowned vineyards. '
               'Expert sommeliers will guide you through each tasting.',
-          eventType: EventType.dining,
+          eventType: Enum$ClubEventType.SOCIAL,
           startTime: now.add(const Duration(days: 3, hours: 18)),
           endTime: now.add(const Duration(days: 3, hours: 21)),
           location: 'Main Dining Room',
           capacity: 30,
           currentAttendees: 24,
           availableSpots: 6,
-          guestPolicy: GuestPolicy.membersOnly,
+          guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
           requiresApproval: false,
           requiresPayment: true,
           price: 75.0,
@@ -127,14 +128,14 @@ class NewsFeedController extends _$NewsFeedController {
           description:
               'Our most prestigious event of the year. Black tie required. '
               'Featuring live entertainment, gourmet dining, and special guest speakers.',
-          eventType: EventType.special,
+          eventType: Enum$ClubEventType.OTHER,
           startTime: now.add(const Duration(days: 14, hours: 19)),
           endTime: now.add(const Duration(days: 14, hours: 23)),
           location: 'Grand Ballroom',
           capacity: 100,
           currentAttendees: 78,
           availableSpots: 22,
-          guestPolicy: GuestPolicy.friendsAndFamily,
+          guestPolicy: Enum$GuestPolicy.FRIENDS_AND_FAMILY,
           maxGuestsPerMember: 2,
           requiresApproval: true,
           requiresPayment: true,
@@ -168,14 +169,14 @@ class NewsFeedController extends _$NewsFeedController {
           title: 'Golf Tournament',
           description:
               'Annual member golf tournament with prizes and dinner reception to follow.',
-          eventType: EventType.sports,
+          eventType: Enum$ClubEventType.SPORTING,
           startTime: now.add(const Duration(days: 7, hours: 8)),
           endTime: now.add(const Duration(days: 7, hours: 17)),
           location: 'Golf Course',
           capacity: 40,
           currentAttendees: 40,
           availableSpots: 0, // Fully booked
-          guestPolicy: GuestPolicy.membersOnly,
+          guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
           requiresApproval: false,
           requiresPayment: false,
           allowsSubgroupPriority: false,
@@ -193,14 +194,14 @@ class NewsFeedController extends _$NewsFeedController {
           title: 'Family Brunch',
           description:
               'Bring your family for a delightful Sunday brunch with activities for children.',
-          eventType: EventType.family,
+          eventType: Enum$ClubEventType.SOCIAL,
           startTime: now.add(const Duration(days: 10, hours: 11)),
           endTime: now.add(const Duration(days: 10, hours: 14)),
           location: 'Terrace Restaurant',
           capacity: 60,
           currentAttendees: 35,
           availableSpots: 25,
-          guestPolicy: GuestPolicy.friendsAndFamily, // Others welcome
+          guestPolicy: Enum$GuestPolicy.FRIENDS_AND_FAMILY, // Others welcome
           maxGuestsPerMember: 4,
           requiresApproval: false,
           requiresPayment: true,

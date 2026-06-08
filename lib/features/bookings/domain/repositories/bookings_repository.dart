@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../entities/booking_entity.dart';
 import '../entities/facility_entity.dart';
 import '../entities/visit_entity.dart';
@@ -26,7 +27,7 @@ abstract class BookingsRepository {
   /// - [Right<List<BookingEntity>>]: List of user's bookings on success
   /// - [Left<Failure>]: Failure object on error
   Future<Either<Failure, List<BookingEntity>>> getUserBookings({
-    BookingStatus? status,
+    Enum$BookingStatus? status,
     DateTime? startDate,
     DateTime? endDate,
     int? limit,

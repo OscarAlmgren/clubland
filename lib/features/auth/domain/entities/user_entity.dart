@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
+
 /// User entity representing authenticated user
 class UserEntity extends Equatable {
   /// Constructs a [UserEntity]
@@ -11,7 +13,7 @@ class UserEntity extends Equatable {
     this.firstName,
     this.lastName,
     this.clubId,
-    this.status = UserStatus.active,
+    this.status = Enum$UserStatus.ACTIVE,
     this.roles = const [],
     this.permissions = const [],
     this.profile,
@@ -37,7 +39,7 @@ class UserEntity extends Equatable {
   final String? clubId;
 
   /// The current verification status of the user account.
-  final UserStatus status;
+  final Enum$UserStatus status;
 
   /// A list of roles assigned to the user (e.g., 'admin', 'member').
   final List<String> roles;
@@ -72,7 +74,7 @@ class UserEntity extends Equatable {
   bool hasPermission(String permission) => permissions.contains(permission);
 
   /// Check if user is active
-  bool get isActive => status == UserStatus.active;
+  bool get isActive => status == Enum$UserStatus.ACTIVE;
 
   /// Check if user has club membership
   bool get hasClubMembership => clubId != null && clubId!.isNotEmpty;
@@ -114,7 +116,7 @@ class UserEntity extends Equatable {
     String? clubId,
 
     /// The current verification status of the user account.
-    UserStatus? status,
+    Enum$UserStatus? status,
 
     /// A list of roles assigned to the user.
     List<String>? roles,
@@ -144,24 +146,6 @@ class UserEntity extends Equatable {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
-}
-
-/// User status enumeration
-enum UserStatus {
-  /// The user account is fully active and operational.
-  active,
-
-  /// The user account is temporarily disabled or not currently in use.
-  inactive,
-
-  /// The user account has been blocked due to policy violations.
-  suspended,
-
-  /// The user account is created but requires further action (e.g., email verification).
-  pending,
-
-  /// The user account's primary details (e.g., email) have been verified.
-  verified,
 }
 
 /// User profile information

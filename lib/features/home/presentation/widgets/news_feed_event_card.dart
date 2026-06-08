@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../events/domain/entities/event_entity.dart';
 
 /// Enhanced event card for news feed with attendance markers
@@ -87,8 +88,8 @@ class NewsFeedEventCard extends StatelessWidget {
                     ),
 
                   // Others welcome marker (opposite of members only) - WCAG AAA compliant
-                  if (event.guestPolicy != GuestPolicy.noGuests &&
-                      event.guestPolicy != GuestPolicy.membersOnly)
+                  if (event.guestPolicy != Enum$GuestPolicy.NO_GUESTS &&
+                      event.guestPolicy != Enum$GuestPolicy.MEMBERS_ONLY)
                     _buildBadge(
                       label: 'OTHERS WELCOME',
                       icon: Icons.people,
@@ -274,26 +275,25 @@ class NewsFeedEventCard extends StatelessWidget {
   }
 
   /// Returns WCAG AAA compliant color for event type badges.
-  Color _getEventTypeColor(EventType type) {
+  Color _getEventTypeColor(Enum$ClubEventType type) {
     switch (type) {
-      case EventType.social:
+      case Enum$ClubEventType.SOCIAL:
         return AppColors.getEventTypeColor('social');
-      case EventType.dining:
-        return AppColors.getEventTypeColor('dining');
-      case EventType.sports:
-        return AppColors.getEventTypeColor('sports');
-      case EventType.cultural:
-        return AppColors.getEventTypeColor('cultural');
-      case EventType.educational:
-        return AppColors.getEventTypeColor('educational');
-      case EventType.networking:
+      case Enum$ClubEventType.NETWORKING:
         return AppColors.getEventTypeColor('networking');
-      case EventType.family:
-        return AppColors.getEventTypeColor('family');
-      case EventType.special:
-        return AppColors.getEventTypeColor('special');
-      case EventType.findingFriends:
-        return AppColors.getEventTypeColor('finding_friends');
+      case Enum$ClubEventType.EDUCATIONAL:
+        return AppColors.getEventTypeColor('educational');
+      case Enum$ClubEventType.SPORTING:
+        return AppColors.getEventTypeColor('sports');
+      case Enum$ClubEventType.CULTURAL:
+        return AppColors.getEventTypeColor('cultural');
+      case Enum$ClubEventType.FUNDRAISING:
+        return AppColors.getEventTypeColor('cultural');
+      case Enum$ClubEventType.MEETING:
+        return AppColors.getEventTypeColor('networking');
+      case Enum$ClubEventType.OTHER:
+      case Enum$ClubEventType.$unknown:
+        return AppColors.getEventTypeColor('social');
     }
   }
 }

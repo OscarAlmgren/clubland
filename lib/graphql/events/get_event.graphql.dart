@@ -605,7 +605,9 @@ class Query$GetEvent$event {
       availableSpots: (l$availableSpots as int?),
       tentativeCount: (l$tentativeCount as int?),
       waitlistCount: (l$waitlistCount as int?),
-      guestPolicy: (l$guestPolicy as String?),
+      guestPolicy: l$guestPolicy == null
+          ? null
+          : fromJson$Enum$GuestPolicy((l$guestPolicy as String)),
       maxGuestsPerMember: (l$maxGuestsPerMember as int?),
       freeCancellationDays: (l$freeCancellationDays as int?),
       fullHouseExclusive: (l$fullHouseExclusive as bool?),
@@ -643,7 +645,7 @@ class Query$GetEvent$event {
 
   final int? waitlistCount;
 
-  final String? guestPolicy;
+  final Enum$GuestPolicy? guestPolicy;
 
   final int? maxGuestsPerMember;
 
@@ -692,7 +694,9 @@ class Query$GetEvent$event {
     final l$waitlistCount = waitlistCount;
     _resultData['waitlistCount'] = l$waitlistCount;
     final l$guestPolicy = guestPolicy;
-    _resultData['guestPolicy'] = l$guestPolicy;
+    _resultData['guestPolicy'] = l$guestPolicy == null
+        ? null
+        : toJson$Enum$GuestPolicy(l$guestPolicy);
     final l$maxGuestsPerMember = maxGuestsPerMember;
     _resultData['maxGuestsPerMember'] = l$maxGuestsPerMember;
     final l$freeCancellationDays = freeCancellationDays;
@@ -924,7 +928,7 @@ abstract class CopyWith$Query$GetEvent$event<TRes> {
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
-    String? guestPolicy,
+    Enum$GuestPolicy? guestPolicy,
     int? maxGuestsPerMember,
     int? freeCancellationDays,
     bool? fullHouseExclusive,
@@ -1006,7 +1010,7 @@ class _CopyWithImpl$Query$GetEvent$event<TRes>
           : (waitlistCount as int?),
       guestPolicy: guestPolicy == _undefined
           ? _instance.guestPolicy
-          : (guestPolicy as String?),
+          : (guestPolicy as Enum$GuestPolicy?),
       maxGuestsPerMember: maxGuestsPerMember == _undefined
           ? _instance.maxGuestsPerMember
           : (maxGuestsPerMember as int?),
@@ -1064,7 +1068,7 @@ class _CopyWithStubImpl$Query$GetEvent$event<TRes>
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
-    String? guestPolicy,
+    Enum$GuestPolicy? guestPolicy,
     int? maxGuestsPerMember,
     int? freeCancellationDays,
     bool? fullHouseExclusive,

@@ -143,8 +143,11 @@ type AnalyticsEvent {
 
 enum EventType {
   USER_LOGIN
+  USER_LOGOUT
   USER_REGISTERED
   BOOKING_CREATED
+  BOOKING_CONFIRMED
+  BOOKING_CANCELLED
   VISIT_CHECKED_IN
   VISIT_CHECKED_OUT
   PROPOSAL_CREATED
@@ -935,6 +938,26 @@ enum RSVPStatus {
   CANCELLED
 }
 
+enum RSVPResponse {
+  YES
+  MAYBE
+  NO
+}
+
+enum RSVPType {
+  PRIMARY
+  RECIPROCAL
+  SUBGROUP
+}
+
+enum GuestPolicy {
+  NO_GUESTS
+  MEMBERS_ONLY
+  MALE_GUESTS_ONLY
+  FEMALE_GUESTS_ONLY
+  FRIENDS_AND_FAMILY
+}
+
 # Input types
 input CreateFacilityInput {
   name: String!
@@ -1363,7 +1386,7 @@ extend type Event {
   availableSpots: Int
   tentativeCount: Int
   waitlistCount: Int
-  guestPolicy: String
+  guestPolicy: GuestPolicy
   maxGuestsPerMember: Int
   requiresPayment: Boolean
   price: Float
@@ -1380,8 +1403,8 @@ extend type Event {
 }
 
 extend type EventRSVP {
-  response: String
-  rsvpType: String
+  response: RSVPResponse
+  rsvpType: RSVPType
   priority: String
   attendanceCount: Int
   guestNames: [String!]
@@ -1615,12 +1638,13 @@ type Proposal {
 
 enum ProposalType {
   POLICY_CHANGE
-  BUDGET_APPROVAL
-  MEMBERSHIP_RULE
+  BUDGET
+  STRATEGIC
+  MEMBERSHIP
+  AMENDMENT
   FACILITY_MODIFICATION
   EVENT_APPROVAL
   BOARD_ELECTION
-  CONSTITUTIONAL_AMENDMENT
   OTHER
 }
 
@@ -1975,6 +1999,7 @@ type ReciprocalAgreement {
 }
 
 enum AgreementStatus {
+  DRAFT
   PENDING
   APPROVED
   REJECTED
@@ -1982,6 +2007,7 @@ enum AgreementStatus {
   SUSPENDED
   EXPIRED
   CANCELLED
+  TERMINATED
 }
 
 enum AgreementType {

@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../../core/network/graphql_client.dart';
 import '../../../../core/storage/secure_storage.dart';
 import '../../domain/entities/auth_session_entity.dart';
@@ -434,7 +435,7 @@ class AuthRepositoryImpl implements AuthRepository {
           if (userResult.isRight()) {
             final user = userResult.getOrElse(() => null);
             if (user != null) {
-              final updatedUser = user.copyWith(status: UserStatus.verified);
+              final updatedUser = user.copyWith(status: Enum$UserStatus.ACTIVE);
               await _localDataSource.storeUser(updatedUser);
 
               // Update session with verified user

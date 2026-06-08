@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/event_entity.dart';
 import '../controllers/events_controller.dart';
 import '../widgets/error_display.dart';
@@ -239,7 +240,7 @@ class _EventFiltersSheet extends StatefulWidget {
 }
 
 class _EventFiltersSheetState extends State<_EventFiltersSheet> {
-  Set<EventType> _selectedEventTypes = {};
+  Set<Enum$ClubEventType> _selectedEventTypes = {};
   DateTimeRange? _dateRange;
   bool _requiresPayment = false;
   bool _requiresApproval = false;
@@ -255,12 +256,8 @@ class _EventFiltersSheetState extends State<_EventFiltersSheet> {
       final eventTypes = widget.currentFilters!['eventTypes'] as List<String>?;
       if (eventTypes != null) {
         _selectedEventTypes = eventTypes
-            .map(
-              (type) => EventType.values.firstWhere(
-                (e) => e.toString() == type,
-                orElse: () => EventType.social,
-              ),
-            )
+            .map((type) => fromJson$Enum$ClubEventType(type))
+            .where((t) => t != Enum$ClubEventType.$unknown)
             .toSet();
       }
 
@@ -333,7 +330,7 @@ class _EventFiltersSheetState extends State<_EventFiltersSheet> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: EventType.values.map((type) {
+                    children: Enum$ClubEventType.values.where((t) => t != Enum$ClubEventType.$unknown).map((type) {
                       final isSelected = _selectedEventTypes.contains(type);
                       return FilterChip(
                         label: Text(_getEventTypeLabel(type)),
@@ -469,26 +466,25 @@ class _EventFiltersSheetState extends State<_EventFiltersSheet> {
     Navigator.of(context).pop(filters.isEmpty ? null : filters);
   }
 
-  String _getEventTypeLabel(EventType type) {
+  String _getEventTypeLabel(Enum$ClubEventType type) {
     switch (type) {
-      case EventType.social:
+      case Enum$ClubEventType.SOCIAL:
         return 'Social';
-      case EventType.dining:
-        return 'Dining';
-      case EventType.sports:
+      case Enum$ClubEventType.SPORTING:
         return 'Sports';
-      case EventType.cultural:
+      case Enum$ClubEventType.CULTURAL:
         return 'Cultural';
-      case EventType.educational:
+      case Enum$ClubEventType.EDUCATIONAL:
         return 'Educational';
-      case EventType.networking:
+      case Enum$ClubEventType.NETWORKING:
         return 'Networking';
-      case EventType.family:
-        return 'Family';
-      case EventType.special:
-        return 'Special';
-      case EventType.findingFriends:
-        return 'Finding Friends';
+      case Enum$ClubEventType.FUNDRAISING:
+        return 'Fundraising';
+      case Enum$ClubEventType.MEETING:
+        return 'Meeting';
+      case Enum$ClubEventType.OTHER:
+      case Enum$ClubEventType.$unknown:
+        return 'Other';
     }
   }
 }

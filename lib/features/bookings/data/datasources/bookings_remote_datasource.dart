@@ -10,7 +10,7 @@ import '../models/visit_model.dart';
 
 abstract class BookingsRemoteDataSource {
   Future<List<BookingModel>> getUserBookings({
-    BookingStatus? status,
+    Enum$BookingStatus? status,
     DateTime? startDate,
     DateTime? endDate,
     int? limit,
@@ -80,7 +80,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
 
   @override
   Future<List<BookingModel>> getUserBookings({
-    BookingStatus? status,
+    Enum$BookingStatus? status,
     DateTime? startDate,
     DateTime? endDate,
     int? limit,
@@ -93,7 +93,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         QueryOptions(
           document: documentNodeQueryMyBookings,
           variables: Variables$Query$MyBookings(
-            status: _toEnumBookingStatus(status),
+            status: status,
             pagination: limit != null
                 ? Input$PaginationInput(pageSize: limit)
                 : null,
@@ -549,22 +549,6 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         'Failed to check out booking: $e',
         'UNKNOWN',
       );
-    }
-  }
-
-  Enum$BookingStatus? _toEnumBookingStatus(BookingStatus? status) {
-    if (status == null) return null;
-    switch (status) {
-      case BookingStatus.confirmed:
-        return Enum$BookingStatus.CONFIRMED;
-      case BookingStatus.pending:
-        return Enum$BookingStatus.PENDING;
-      case BookingStatus.cancelled:
-        return Enum$BookingStatus.CANCELLED;
-      case BookingStatus.completed:
-        return Enum$BookingStatus.CHECKED_OUT;
-      case BookingStatus.noShow:
-        return Enum$BookingStatus.NO_SHOW;
     }
   }
 

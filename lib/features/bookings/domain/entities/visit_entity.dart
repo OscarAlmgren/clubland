@@ -1,12 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// Visit status enumeration
-enum VisitStatus {
-  checkedIn,
-  checkedOut,
-  cancelled,
-  noShow,
-}
+import '../../../../core/graphql/graphql_api.dart';
 
 /// Visit entity - represents a member's visit to a club
 class VisitEntity extends Equatable {
@@ -30,7 +24,7 @@ class VisitEntity extends Equatable {
   final String id;
   final String clubId;
   final String userId;
-  final VisitStatus status;
+  final Enum$VisitStatus status;
   final DateTime checkedInAt;
   final DateTime? checkedOutAt;
   final String? purpose;
@@ -43,7 +37,7 @@ class VisitEntity extends Equatable {
   final DateTime? updatedAt;
 
   /// Whether the visit is currently active (checked in but not checked out)
-  bool get isActive => checkedOutAt == null && status == VisitStatus.checkedIn;
+  bool get isActive => checkedOutAt == null && status == Enum$VisitStatus.CHECKED_IN;
 
   /// Duration of the visit (if checked out)
   Duration? get duration {
@@ -92,7 +86,7 @@ class VisitSummaryEntity extends Equatable {
   final String? clubLogo;
   final DateTime checkedInAt;
   final DateTime? checkedOutAt;
-  final VisitStatus? status;
+  final Enum$VisitStatus? status;
 
   @override
   List<Object?> get props => [

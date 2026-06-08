@@ -1,4 +1,5 @@
 import 'package:clubland/core/errors/exceptions.dart' as app_exceptions;
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/features/events/data/datasources/events_remote_datasource.dart';
 import 'package:clubland/features/events/data/models/cancel_rsvp_response_model.dart';
@@ -32,14 +33,14 @@ void main() {
       clubId: clubId,
       title: 'Summer Gala',
       description: 'Annual summer event',
-      eventType: EventType.social,
+      eventType: Enum$ClubEventType.SOCIAL,
       startTime: DateTime(2024, 7, 1, 18),
       endTime: DateTime(2024, 7, 1, 23),
       location: 'Main Hall',
       capacity: 100,
       currentAttendees: 50,
       availableSpots: 50,
-      guestPolicy: GuestPolicy.friendsAndFamily,
+      guestPolicy: Enum$GuestPolicy.FRIENDS_AND_FAMILY,
       requiresApproval: false,
       requiresPayment: true,
       price: 50.0,
@@ -148,14 +149,14 @@ void main() {
       clubId: 'club123',
       title: 'Summer Gala',
       description: 'Annual summer event',
-      eventType: EventType.social,
+      eventType: Enum$ClubEventType.SOCIAL,
       startTime: DateTime(2024, 7, 1, 18),
       endTime: DateTime(2024, 7, 1, 23),
       location: 'Main Hall',
       capacity: 100,
       currentAttendees: 50,
       availableSpots: 50,
-      guestPolicy: GuestPolicy.friendsAndFamily,
+      guestPolicy: Enum$GuestPolicy.FRIENDS_AND_FAMILY,
       requiresApproval: false,
       requiresPayment: true,
       allowsSubgroupPriority: false,
@@ -288,11 +289,11 @@ void main() {
       eventId: 'event123',
       memberId: 'member123',
       clubId: 'club123',
-      response: RSVPResponse.yes,
-      rsvpType: RSVPType.primary,
+      response: Enum$RSVPResponse.YES,
+      rsvpType: Enum$RSVPType.PRIMARY,
       priority: 2,
       attendanceCount: 2,
-      status: RSVPStatus.confirmed,
+      status: Enum$RSVPStatus.CONFIRMED,
       paymentRequired: false,
       paymentVerified: false,
       feeWaived: false,
@@ -314,7 +315,7 @@ void main() {
       result.fold((failure) => fail('Should return Right'), (rsvp) {
         expect(rsvp, isA<EventRSVPEntity>());
         expect(rsvp.id, 'rsvp123');
-        expect(rsvp.status, RSVPStatus.confirmed);
+        expect(rsvp.status, Enum$RSVPStatus.CONFIRMED);
       });
       verify(() => mockRemoteDataSource.createRSVP(input)).called(1);
     });

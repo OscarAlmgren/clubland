@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/news_feed_item_entity.dart';
 import '../controllers/news_feed_controller.dart';
 import '../widgets/lunch_menu_card.dart';
@@ -181,12 +182,14 @@ class HomePage extends ConsumerWidget {
                   // Map response to RSVP status
                   String status;
                   switch (response) {
-                    case RSVPResponse.yes:
-                      status = 'confirmed';
-                    case RSVPResponse.maybe:
-                      status = 'tentative';
-                    case RSVPResponse.no:
-                      status = 'declined';
+                    case Enum$RSVPResponse.YES:
+                      status = 'YES';
+                    case Enum$RSVPResponse.MAYBE:
+                      status = 'MAYBE';
+                    case Enum$RSVPResponse.NO:
+                      status = 'NO';
+                    case Enum$RSVPResponse.$unknown:
+                      return;
                   }
 
                   // Update RSVP status

@@ -1,73 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-/// Event type enumeration
-enum EventType {
-  social,
-  dining,
-  sports,
-  cultural,
-  educational,
-  networking,
-  family,
-  special,
-  findingFriends;
-
-  /// Convert from GraphQL string
-  static EventType fromString(String value) {
-    return EventType.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => EventType.social,
-    );
-  }
-
-  /// Convert to GraphQL string
-  String toGraphQL() {
-    return name.toUpperCase();
-  }
-}
-
-/// Guest policy enumeration
-enum GuestPolicy {
-  noGuests,
-  membersOnly,
-  maleGuestsOnly,
-  femaleGuestsOnly,
-  friendsAndFamily;
-
-  /// Convert from GraphQL string
-  static GuestPolicy fromString(String value) {
-    switch (value.toUpperCase()) {
-      case 'NO_GUESTS':
-        return GuestPolicy.noGuests;
-      case 'MEMBERS_ONLY':
-        return GuestPolicy.membersOnly;
-      case 'MALE_GUESTS_ONLY':
-        return GuestPolicy.maleGuestsOnly;
-      case 'FEMALE_GUESTS_ONLY':
-        return GuestPolicy.femaleGuestsOnly;
-      case 'FRIENDS_AND_FAMILY':
-        return GuestPolicy.friendsAndFamily;
-      default:
-        return GuestPolicy.noGuests;
-    }
-  }
-
-  /// Convert to GraphQL string
-  String toGraphQL() {
-    switch (this) {
-      case GuestPolicy.noGuests:
-        return 'NO_GUESTS';
-      case GuestPolicy.membersOnly:
-        return 'MEMBERS_ONLY';
-      case GuestPolicy.maleGuestsOnly:
-        return 'MALE_GUESTS_ONLY';
-      case GuestPolicy.femaleGuestsOnly:
-        return 'FEMALE_GUESTS_ONLY';
-      case GuestPolicy.friendsAndFamily:
-        return 'FRIENDS_AND_FAMILY';
-    }
-  }
-}
+import '../../../../core/graphql/graphql_api.dart';
 
 /// Event entity - represents a club event in the domain layer
 class EventEntity extends Equatable {
@@ -111,7 +44,7 @@ class EventEntity extends Equatable {
   final String clubId;
   final String title;
   final String description;
-  final EventType eventType;
+  final Enum$ClubEventType eventType;
   final DateTime startTime;
   final DateTime endTime;
   final String? location;
@@ -125,7 +58,7 @@ class EventEntity extends Equatable {
   final int? waitlistCount;
 
   // Guest policy
-  final GuestPolicy guestPolicy;
+  final Enum$GuestPolicy guestPolicy;
   final int? maxGuestsPerMember;
 
   // RSVP settings
@@ -165,7 +98,7 @@ class EventEntity extends Equatable {
   bool get isFull => availableSpots <= 0;
 
   /// Whether this event accepts guests
-  bool get acceptsGuests => guestPolicy != GuestPolicy.noGuests;
+  bool get acceptsGuests => guestPolicy != Enum$GuestPolicy.NO_GUESTS;
 
   /// Whether this event is paid
   bool get isPaid => (requiresPayment ?? false) && price != null && price! > 0;

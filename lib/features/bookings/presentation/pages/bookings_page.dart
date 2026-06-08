@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../../shared/widgets/app_error_widget.dart';
 import '../../../../shared/widgets/app_loading_widget.dart';
 import '../../domain/entities/booking_entity.dart';
@@ -23,7 +24,7 @@ class BookingsPage extends ConsumerStatefulWidget {
 class _BookingsPageState extends ConsumerState<BookingsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  BookingStatus? _currentFilter;
+  Enum$BookingStatus? _currentFilter;
 
   @override
   void initState() {
@@ -135,7 +136,7 @@ class _BookingsPageState extends ConsumerState<BookingsPage>
       backgroundColor: Colors.transparent,
       builder: (context) => BookingFiltersWidget(
         currentFilter: _currentFilter,
-        onFilterChanged: (BookingStatus? filter) {
+        onFilterChanged: (Enum$BookingStatus? filter) {
           setState(() => _currentFilter = filter);
           ref.read(bookingsControllerProvider.notifier).applyFilter(filter);
         },

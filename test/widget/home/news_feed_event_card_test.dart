@@ -1,3 +1,4 @@
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/home/presentation/widgets/news_feed_event_card.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +14,14 @@ void main() {
         clubId: 'club_1',
         title: 'Wine Tasting Evening',
         description: 'An exclusive wine tasting event',
-        eventType: EventType.dining,
+        eventType: Enum$ClubEventType.SOCIAL,
         startTime: DateTime(2024, 2, 15, 18),
         endTime: DateTime(2024, 2, 15, 21),
         location: 'Main Dining Room',
         capacity: 30,
         currentAttendees: 20,
         availableSpots: 10,
-        guestPolicy: GuestPolicy.membersOnly,
+        guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
         requiresApproval: false,
         requiresPayment: true,
         price: 75.0,
@@ -90,7 +91,7 @@ void main() {
         capacity: 30,
         currentAttendees: 30,
         availableSpots: 0, // Full
-        guestPolicy: GuestPolicy.membersOnly,
+        guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
         requiresApproval: false,
         requiresPayment: false,
         allowsSubgroupPriority: false,
@@ -127,7 +128,7 @@ void main() {
         capacity: 100,
         currentAttendees: 50,
         availableSpots: 50,
-        guestPolicy: GuestPolicy.membersOnly,
+        guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
         requiresApproval: false,
         requiresPayment: false,
         allowsSubgroupPriority: false,
