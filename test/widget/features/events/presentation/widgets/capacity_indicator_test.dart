@@ -1,4 +1,5 @@
 import 'package:clubland/features/events/presentation/widgets/capacity_indicator.dart';
+import 'package:clubland/core/design_system/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -24,7 +25,7 @@ void main() {
       expect(progressIndicator.value, 0.2);
       expect(
         (progressIndicator.valueColor as AlwaysStoppedAnimation<Color>).value,
-        Colors.green,
+        AppColors.success,
       );
     });
 
@@ -45,7 +46,7 @@ void main() {
       expect(progressIndicator.value, 0.85);
       expect(
         (progressIndicator.valueColor as AlwaysStoppedAnimation<Color>).value,
-        Colors.orange,
+        AppColors.warning,
       );
     });
 
@@ -66,7 +67,7 @@ void main() {
       expect(progressIndicator.value, 1.0);
       expect(
         (progressIndicator.valueColor as AlwaysStoppedAnimation<Color>).value,
-        Colors.red,
+        AppColors.error,
       );
     });
 
@@ -87,7 +88,7 @@ void main() {
       expect(progressIndicator.value, 1.05);
       expect(
         (progressIndicator.valueColor as AlwaysStoppedAnimation<Color>).value,
-        Colors.red,
+        AppColors.error,
       );
     });
 
@@ -190,7 +191,7 @@ void main() {
       // At exactly 80%, should be orange (isNearlyFull)
       expect(
         (progressIndicator.valueColor as AlwaysStoppedAnimation<Color>).value,
-        Colors.orange,
+        AppColors.warning,
       );
     });
 
@@ -208,7 +209,7 @@ void main() {
       expect(progressIndicator.value, 0.79);
       expect(
         (progressIndicator.valueColor as AlwaysStoppedAnimation<Color>).value,
-        Colors.green,
+        AppColors.success,
       );
     });
   });
@@ -239,7 +240,7 @@ void main() {
       expect(find.byIcon(Icons.event_busy), findsOneWidget);
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.event_busy));
-      expect(icon.color, Colors.red);
+      expect(icon.color, AppColors.error);
     });
 
     testWidgets('should show correct icon for available spots',

@@ -73,7 +73,7 @@ class NewsFeedController extends _$NewsFeedController {
           createdAt: now.subtract(const Duration(days: 14)),
           updatedAt: now.subtract(const Duration(days: 14)),
         ),
-        userRSVPStatus: 'confirmed', // User is attending
+        userRSVPResponse: Enum$RSVPResponse.YES, // User is attending
       ),
 
       // Weekly lunch menu
@@ -243,10 +243,13 @@ class NewsFeedController extends _$NewsFeedController {
     });
   }
 
-  /// Update RSVP status for an event
-  Future<void> updateRSVP(String eventId, String status) async {
-    final currentState = state.value;
-    if (currentState == null) return;
+  /// Update RSVP response for an event
+  Future<void> updateRSVP(String eventId, Enum$RSVPResponse response) async {
+    // Use `await future` rather than `state.value` so that any in-flight
+    // rebuild (e.g. triggered by an auth-state change) completes before we
+    // mutate.  `state.value` is null while the provider is AsyncLoading,
+    // which would silently discard the update via the null guard.
+    final currentState = await future;
 
     // Update the RSVP status in the list
     final updatedItems = currentState.map((item) {
@@ -256,7 +259,7 @@ class NewsFeedController extends _$NewsFeedController {
           event.id == eventId) {
         return NewsFeedItemEntity.event(
           event: event,
-          userRSVPStatus: status,
+          userRSVPResponse: response,
         );
       }
       return item;

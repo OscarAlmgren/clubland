@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../graphql/graphql_api.dart';
+
 /// App color schemes, constants, and utility methods for the Clubland application.
 ///
 /// This class defines brand colors, semantic colors, neutral palette, and the
@@ -178,16 +180,6 @@ class AppColors {
     'verified': info, // 7.03:1
   };
 
-  // Booking Status Colors - All WCAG AAA compliant
-  /// Map associating booking status strings with semantic colors.
-  static const Map<String, Color> bookingStatusColors = {
-    'confirmed': success, // 7.23:1
-    'pending': warning, // 7.81:1
-    'cancelled': error, // 7.56:1
-    'completed': info, // 7.03:1
-    'no_show': neutral600, // 7.01:1
-  };
-
   // Membership Tier Colors - All WCAG AAA compliant (7:1+)
   /// Map associating membership tier strings (e.g., 'gold') with specific colors.
   static const Map<String, Color> membershipTierColors = {
@@ -212,26 +204,28 @@ class AppColors {
     'finding_friends': Color(0xFF8B7200), // Dark Amber (7.02:1)
   };
 
-  // RSVP Status Colors - All WCAG AAA compliant (7:1+ with white text)
-  /// Map associating RSVP status strings with semantic colors for badges.
-  static const Map<String, Color> rsvpStatusColors = {
-    'confirmed': success, // Dark Green (7.23:1)
-    'tentative': Color(0xFFBF360C), // Dark Orange (7.12:1)
-    'pending': Color(0xFF8B7200), // Dark Amber (7.02:1)
-    'waitlist': Color(0xFF0D47A1), // Dark Blue (7.03:1)
-    'cancelled': error, // Dark Red (7.56:1)
-    'declined': neutral600, // Medium Grey (7.01:1)
-  };
-
   /// Retrieves the associated color for a given event type.
   /// Defaults to [neutral600] if the type is not found.
   static Color getEventTypeColor(String type) =>
       eventTypeColors[type.toLowerCase()] ?? neutral600;
 
-  /// Retrieves the associated color for a given RSVP status.
-  /// Defaults to [neutral600] if the status is not found.
-  static Color getRSVPStatusColor(String status) =>
-      rsvpStatusColors[status.toLowerCase().replaceAll('_', '')] ?? neutral600;
+  /// Retrieves the WCAG AAA compliant color for a given RSVP status.
+  static Color getRSVPStatusColor(Enum$RSVPStatus status) {
+    switch (status) {
+      case Enum$RSVPStatus.CONFIRMED:
+        return success; // Dark Green (7.23:1)
+      case Enum$RSVPStatus.PENDING:
+        return warning; // Darker Orange (7.81:1)
+      case Enum$RSVPStatus.WAITLISTED:
+        return info; // Dark Blue (7.03:1)
+      case Enum$RSVPStatus.ATTENDED:
+        return success; // Dark Green (7.23:1)
+      case Enum$RSVPStatus.NO_SHOW:
+      case Enum$RSVPStatus.CANCELLED:
+      case Enum$RSVPStatus.$unknown:
+        return error; // Dark Red (7.56:1)
+    }
+  }
 
   // Gradient Definitions
   /// A gradient using the primary brand color.
@@ -279,11 +273,6 @@ class AppColors {
   /// Defaults to [neutral500] if the status is not found.
   static Color getStatusColor(String status) =>
       statusColors[status.toLowerCase()] ?? neutral500;
-
-  /// Retrieves the associated color for a given booking status string.
-  /// Defaults to [neutral500] if the status is not found.
-  static Color getBookingStatusColor(String status) =>
-      bookingStatusColors[status.toLowerCase()] ?? neutral500;
 
   /// Retrieves the associated color for a given membership tier string.
   /// Defaults to [neutral500] if the tier is not found.

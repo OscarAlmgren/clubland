@@ -1,9 +1,10 @@
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 
 /// RSVP status badge widget showing status with appropriate colors
 class RSVPStatusBadge extends StatelessWidget {
-  /// RSVP status string (confirmed, tentative, pending, waitlist, cancelled, declined)
-  final String status;
+  /// RSVP status (typed to generated enum — never a raw string)
+  final Enum$RSVPStatus status;
 
   /// Badge size
   final double? size;
@@ -52,51 +53,50 @@ class RSVPStatusBadge extends StatelessWidget {
   }
 
   /// Returns WCAG AAA compliant status info for the given RSVP status.
-  _StatusInfo _getStatusInfo(String status) {
-    final statusLower = status.toLowerCase();
-
-    if (statusLower == 'confirmed') {
-      return _StatusInfo(
-        color: AppColors.success, // 7.23:1 contrast
-        icon: Icons.check_circle,
-        label: 'Confirmed',
-      );
-    } else if (statusLower == 'tentative') {
-      return _StatusInfo(
-        color: AppColors.getRSVPStatusColor('tentative'), // 7.12:1 contrast
-        icon: Icons.help_outline,
-        label: 'Tentative',
-      );
-    } else if (statusLower == 'pending_approval' || statusLower == 'pending') {
-      return _StatusInfo(
-        color: AppColors.getRSVPStatusColor('pending'), // 7.02:1 contrast
-        icon: Icons.schedule,
-        label: 'Pending',
-      );
-    } else if (statusLower == 'waitlist') {
-      return _StatusInfo(
-        color: AppColors.info, // 7.03:1 contrast
-        icon: Icons.hourglass_empty,
-        label: 'Waitlist',
-      );
-    } else if (statusLower == 'cancelled') {
-      return _StatusInfo(
-        color: AppColors.error, // 7.56:1 contrast
-        icon: Icons.cancel,
-        label: 'Cancelled',
-      );
-    } else if (statusLower == 'declined') {
-      return _StatusInfo(
-        color: AppColors.neutral600, // 7.01:1 contrast
-        icon: Icons.not_interested,
-        label: 'Declined',
-      );
-    } else {
-      return _StatusInfo(
-        color: AppColors.neutral600, // 7.01:1 contrast
-        icon: Icons.info,
-        label: status,
-      );
+  _StatusInfo _getStatusInfo(Enum$RSVPStatus status) {
+    switch (status) {
+      case Enum$RSVPStatus.CONFIRMED:
+        return _StatusInfo(
+          color: AppColors.success, // 7.23:1 contrast
+          icon: Icons.check_circle,
+          label: 'Confirmed',
+        );
+      case Enum$RSVPStatus.PENDING:
+        return _StatusInfo(
+          color: AppColors.warning, // 7.81:1 contrast
+          icon: Icons.schedule,
+          label: 'Pending',
+        );
+      case Enum$RSVPStatus.WAITLISTED:
+        return _StatusInfo(
+          color: AppColors.info, // 7.03:1 contrast
+          icon: Icons.hourglass_empty,
+          label: 'Waitlisted',
+        );
+      case Enum$RSVPStatus.ATTENDED:
+        return _StatusInfo(
+          color: AppColors.success, // 7.23:1 contrast
+          icon: Icons.how_to_reg,
+          label: 'Attended',
+        );
+      case Enum$RSVPStatus.NO_SHOW:
+        return _StatusInfo(
+          color: AppColors.neutral600, // 7.01:1 contrast
+          icon: Icons.not_interested,
+          label: 'No Show',
+        );
+      case Enum$RSVPStatus.CANCELLED:
+        return _StatusInfo(
+          color: AppColors.error, // 7.56:1 contrast
+          icon: Icons.cancel,
+          label: 'Cancelled',
+        );
+      case Enum$RSVPStatus.$unknown:
+        return _StatusInfo(
+          color: AppColors.neutral600, // 7.01:1 contrast
+          icon: Icons.info,
+          label: 'Unknown',
+        );
     }
   }
 }

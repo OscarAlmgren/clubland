@@ -373,7 +373,7 @@ void main() {
       // Assert
       expect(result, isA<EventRSVPModel>());
       expect(result.id, 'rsvp123');
-      expect(result.status.name, 'confirmed');
+      expect(result.status.name, 'CONFIRMED');
       expect(result.attendanceCount, 2);
       verify(() => mockClient.mutate(any())).called(1);
     });

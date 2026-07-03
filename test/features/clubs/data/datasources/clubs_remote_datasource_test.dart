@@ -84,25 +84,17 @@ void main() {
   group('searchClubs', () {
     test('should return filtered clubs based on query', () async {
       // Arrange
+      // datasource reads data['searchClubs']['nodes'] and builds each node from
+      // m['id'], m['name'], m['slug'], m['description'], m['location'] (flat string)
       final mockData = {
-        'clubs': {
+        'searchClubs': {
           'nodes': [
             {
               'id': '1',
               'name': 'Test Club',
               'slug': 'test-club',
               'description': 'A test club',
-              'address': {
-                'street': '123 Test St',
-                'city': 'Test City',
-                'state': 'TS',
-                'zipCode': '12345',
-                'country': 'Test Country',
-              },
-              'website': 'https://test.com',
-              'status': 'ACTIVE',
-              'createdAt': '2024-01-01T00:00:00Z',
-              'updatedAt': '2024-01-01T00:00:00Z',
+              'location': 'Test City',
             },
           ],
         },
@@ -148,6 +140,13 @@ void main() {
         },
       };
 
+      // toggleFavoriteClub calls mutate; stub it with null data (= no failure)
+      when(() => mockClient.mutate(any()))
+          .thenAnswer((_) async => QueryResult(
+                source: QueryResultSource.network,
+                options: MutationOptions(document: gql('')),
+              ));
+      // After mutate it calls getClubById, which calls query and reads data['club']
       when(() => mockClient.query(any()))
           .thenAnswer((_) async => QueryResult(
                 source: QueryResultSource.network,
@@ -165,7 +164,15 @@ void main() {
   });
 
   group('getClubReviews', () {
-    test('should return empty list (not yet implemented)', () async {
+    test('should return empty list when club has no reviews', () async {
+      // Arrange - stub query to return empty nodes
+      when(() => mockClient.query(any()))
+          .thenAnswer((_) async => QueryResult(
+                source: QueryResultSource.network,
+                data: {'clubReviews': {'nodes': <dynamic>[]}},
+                options: QueryOptions(document: gql('')),
+              ));
+
       // Act
       final result = await dataSource.getClubReviews('1');
 

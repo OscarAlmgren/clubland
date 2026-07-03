@@ -11,8 +11,8 @@ class EventCard extends StatelessWidget {
   /// Event entity to display
   final EventEntity event;
 
-  /// Optional RSVP status for the current user
-  final String? userRSVPStatus;
+  /// Optional RSVP status for the current user (typed enum)
+  final Enum$RSVPStatus? userRSVPStatus;
 
   /// Callback when card is tapped
   final VoidCallback? onTap;

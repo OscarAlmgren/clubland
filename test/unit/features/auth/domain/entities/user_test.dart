@@ -1,3 +1,4 @@
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,7 +17,7 @@ void main() {
       expect(testUser.email, 'test@example.com');
       expect(testUser.firstName, 'John');
       expect(testUser.lastName, 'Doe');
-      expect(testUser.status, UserStatus.active);
+      expect(testUser.status, Enum$UserStatus.ACTIVE);
       expect(testUser.createdAt, DateTime(2023));
     });
 
@@ -146,7 +147,7 @@ void main() {
       expect(minimalUser.firstName, isNull);
       expect(minimalUser.lastName, isNull);
       expect(minimalUser.clubId, isNull);
-      expect(minimalUser.status, UserStatus.active);
+      expect(minimalUser.status, Enum$UserStatus.ACTIVE);
       expect(minimalUser.roles, isEmpty);
       expect(minimalUser.permissions, isEmpty);
       expect(minimalUser.profile, isNull);

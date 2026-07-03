@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/design_system/design_system.dart';
+import '../../../../core/graphql/graphql_api.dart';
 import '../controllers/events_controller.dart';
 import '../widgets/error_display.dart';
 import '../widgets/rsvp_status_badge.dart';
@@ -19,7 +20,7 @@ class MyRSVPsPage extends ConsumerStatefulWidget {
 
 class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
   final _scrollController = ScrollController();
-  List<String>? _statusFilter;
+  List<Enum$RSVPStatus>? _statusFilter;
 
   @override
   void initState() {
@@ -60,7 +61,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
     await controller.refresh();
   }
 
-  Future<void> _applyFilter(List<String>? statusFilter) async {
+  Future<void> _applyFilter(List<Enum$RSVPStatus>? statusFilter) async {
     setState(() {
       _statusFilter = statusFilter;
     });
@@ -68,7 +69,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
     final controller = ref.read(
       myRSVPsControllerProvider(widget.clubId).notifier,
     );
-    await controller.applyFilter(statusFilter);
+    await controller.applyFilter(statusFilter?.map((s) => s.toJson()).toList());
   }
 
   @override
@@ -173,7 +174,7 @@ class _MyRSVPsPageState extends ConsumerState<MyRSVPsPage> {
   }
 
   void _showFilterDialog() {
-    showModalBottomSheet<List<String>>(
+    showModalBottomSheet<List<Enum$RSVPStatus>>(
       context: context,
       builder: (context) => _RSVPFilterSheet(currentFilter: _statusFilter),
     ).then((filter) {
@@ -305,7 +306,7 @@ class _RSVPCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final status = rsvpData['status'] as String? ?? 'pending';
+    final status = fromJson$Enum$RSVPStatus(rsvpData['status'] as String? ?? '');
     final response = rsvpData['response'] as String? ?? 'yes';
     final eventTitle = rsvpData['eventTitle'] as String? ?? 'Event';
     final eventDate = rsvpData['eventDate'] as String?;
@@ -419,10 +420,10 @@ class _RSVPCard extends StatelessWidget {
     );
   }
 
-  bool _canCancelRSVP(String status) {
-    return status == 'confirmed' ||
-        status == 'tentative' ||
-        status == 'pending_approval';
+  bool _canCancelRSVP(Enum$RSVPStatus status) {
+    return status == Enum$RSVPStatus.CONFIRMED ||
+        status == Enum$RSVPStatus.PENDING ||
+        status == Enum$RSVPStatus.WAITLISTED;
   }
 
   IconData _getResponseIcon(String response) {
@@ -477,7 +478,7 @@ class _RSVPCard extends StatelessWidget {
 
 /// RSVP filter bottom sheet
 class _RSVPFilterSheet extends StatefulWidget {
-  final List<String>? currentFilter;
+  final List<Enum$RSVPStatus>? currentFilter;
 
   const _RSVPFilterSheet({this.currentFilter});
 
@@ -486,15 +487,15 @@ class _RSVPFilterSheet extends StatefulWidget {
 }
 
 class _RSVPFilterSheetState extends State<_RSVPFilterSheet> {
-  late Set<String> _selectedStatuses;
+  late Set<Enum$RSVPStatus> _selectedStatuses;
 
-  final List<String> _availableStatuses = [
-    'confirmed',
-    'tentative',
-    'pending_approval',
-    'waitlist',
-    'cancelled',
-    'declined',
+  final List<Enum$RSVPStatus> _availableStatuses = [
+    Enum$RSVPStatus.CONFIRMED,
+    Enum$RSVPStatus.PENDING,
+    Enum$RSVPStatus.WAITLISTED,
+    Enum$RSVPStatus.ATTENDED,
+    Enum$RSVPStatus.NO_SHOW,
+    Enum$RSVPStatus.CANCELLED,
   ];
 
   @override
@@ -575,22 +576,22 @@ class _RSVPFilterSheetState extends State<_RSVPFilterSheet> {
     );
   }
 
-  String _getStatusLabel(String status) {
+  String _getStatusLabel(Enum$RSVPStatus status) {
     switch (status) {
-      case 'confirmed':
+      case Enum$RSVPStatus.CONFIRMED:
         return 'Confirmed';
-      case 'tentative':
-        return 'Tentative';
-      case 'pending_approval':
-        return 'Pending Approval';
-      case 'waitlist':
-        return 'Waitlist';
-      case 'cancelled':
+      case Enum$RSVPStatus.PENDING:
+        return 'Pending';
+      case Enum$RSVPStatus.WAITLISTED:
+        return 'Waitlisted';
+      case Enum$RSVPStatus.ATTENDED:
+        return 'Attended';
+      case Enum$RSVPStatus.NO_SHOW:
+        return 'No Show';
+      case Enum$RSVPStatus.CANCELLED:
         return 'Cancelled';
-      case 'declined':
-        return 'Declined';
-      default:
-        return status;
+      case Enum$RSVPStatus.$unknown:
+        return 'Unknown';
     }
   }
 }

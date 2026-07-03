@@ -16,8 +16,12 @@ class LoginUsecase {
     required String email,
     required String password,
   }) async {
+    // Normalise first so validation runs on the trimmed value (matches
+    // what is ultimately passed to the repository).
+    final normalizedEmail = email.trim().toLowerCase();
+
     // Validate input
-    final emailValidation = _validateEmail(email);
+    final emailValidation = _validateEmail(normalizedEmail);
     if (emailValidation != null) {
       return Left(ValidationFailure.invalidEmail());
     }
@@ -29,7 +33,7 @@ class LoginUsecase {
 
     // Execute login
     return _repository.login(
-      email: email.trim().toLowerCase(),
+      email: normalizedEmail,
       password: password,
     );
   }
@@ -73,19 +77,21 @@ class HankoLoginUsecase {
     required String email,
     required String clubSlug,
   }) async {
-    if (email.isEmpty) return Left(ValidationFailure.invalidEmail());
+    final normalizedEmail = email.trim().toLowerCase();
+
+    if (normalizedEmail.isEmpty) return Left(ValidationFailure.invalidEmail());
 
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
-    if (!emailRegex.hasMatch(email)) return Left(ValidationFailure.invalidEmail());
+    if (!emailRegex.hasMatch(normalizedEmail)) return Left(ValidationFailure.invalidEmail());
 
     if (clubSlug.isEmpty) {
       return Left(ValidationFailure.fieldRequired('Club'));
     }
 
     return _repository.loginWithHanko(
-      email: email.trim().toLowerCase(),
+      email: normalizedEmail,
       clubSlug: clubSlug,
     );
   }
@@ -151,15 +157,17 @@ class RegisterUsecase {
     required String firstName,
     required String lastName,
   }) {
-    // Email validation
-    if (email.isEmpty) {
+    // Email validation (validate on the trimmed value for consistency
+    // with the trim applied at the call site).
+    final trimmedEmail = email.trim();
+    if (trimmedEmail.isEmpty) {
       return ValidationFailure.fieldRequired('Email');
     }
 
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
-    if (!emailRegex.hasMatch(email)) {
+    if (!emailRegex.hasMatch(trimmedEmail)) {
       return ValidationFailure.invalidEmail();
     }
 

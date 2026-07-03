@@ -9,8 +9,8 @@ class NewsFeedEventCard extends StatelessWidget {
   /// Event to display
   final EventEntity event;
 
-  /// User's RSVP status (null if not attending)
-  final String? userRSVPStatus;
+  /// User's RSVP response (null if not RSVP'd)
+  final Enum$RSVPResponse? userRSVPResponse;
 
   /// Callback when card is tapped
   final VoidCallback? onTap;
@@ -20,7 +20,7 @@ class NewsFeedEventCard extends StatelessWidget {
 
   const NewsFeedEventCard({
     required this.event,
-    this.userRSVPStatus,
+    this.userRSVPResponse,
     this.onTap,
     this.onRSVPTap,
     super.key,
@@ -32,7 +32,7 @@ class NewsFeedEventCard extends StatelessWidget {
     final dateFormat = DateFormat('MMM d, y');
     final timeFormat = DateFormat('h:mm a');
 
-    final bool isAttending = userRSVPStatus?.toLowerCase() == 'confirmed';
+    final bool isAttending = userRSVPResponse == Enum$RSVPResponse.YES;
     final bool isFull = event.isFull;
 
     return Card(

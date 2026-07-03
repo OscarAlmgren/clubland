@@ -63,7 +63,7 @@ void main() {
           home: Scaffold(
             body: NewsFeedEventCard(
               event: testEvent,
-              userRSVPStatus: 'confirmed',
+              userRSVPResponse: Enum$RSVPResponse.YES,
             ),
           ),
         ),
@@ -84,7 +84,7 @@ void main() {
         clubId: 'club_1',
         title: 'Full Event',
         description: 'This event is full',
-        eventType: EventType.social,
+        eventType: Enum$ClubEventType.SOCIAL,
         startTime: DateTime(2024, 2, 15, 18),
         endTime: DateTime(2024, 2, 15, 21),
         location: 'Main Hall',
@@ -121,7 +121,7 @@ void main() {
         clubId: 'club_1',
         title: 'Exclusive Event',
         description: 'Full house exclusive event',
-        eventType: EventType.special,
+        eventType: Enum$ClubEventType.OTHER,
         startTime: DateTime(2024, 2, 15, 18),
         endTime: DateTime(2024, 2, 15, 21),
         location: 'Grand Ballroom',
@@ -155,14 +155,14 @@ void main() {
         clubId: 'club_1',
         title: 'Family Event',
         description: 'Guests welcome',
-        eventType: EventType.family,
+        eventType: Enum$ClubEventType.SOCIAL,
         startTime: DateTime(2024, 2, 15, 18),
         endTime: DateTime(2024, 2, 15, 21),
         location: 'Terrace',
         capacity: 60,
         currentAttendees: 30,
         availableSpots: 30,
-        guestPolicy: GuestPolicy.friendsAndFamily, // Others welcome
+        guestPolicy: Enum$GuestPolicy.FRIENDS_AND_FAMILY, // Others welcome
         requiresApproval: false,
         requiresPayment: false,
         allowsSubgroupPriority: false,

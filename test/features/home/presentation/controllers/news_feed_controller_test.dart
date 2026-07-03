@@ -1,5 +1,4 @@
 import 'package:clubland/core/graphql/graphql_api.dart';
-import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/home/domain/entities/news_feed_item_entity.dart';
 import 'package:clubland/features/home/presentation/controllers/news_feed_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -175,9 +174,9 @@ void main() {
 
       // assert
       final hasConfirmedRSVP = eventItems.any(
-        (item) => item.userRSVPStatus == 'confirmed',
+        (item) => item.userRSVPResponse == Enum$RSVPResponse.YES,
       );
-      final hasNoRSVP = eventItems.any((item) => item.userRSVPStatus == null);
+      final hasNoRSVP = eventItems.any((item) => item.userRSVPResponse == null);
 
       expect(
         hasConfirmedRSVP,
@@ -224,7 +223,7 @@ void main() {
 
       // act
       final controller = container.read(newsFeedControllerProvider.notifier);
-      await controller.updateRSVP(eventId, 'confirmed');
+      await controller.updateRSVP(eventId, Enum$RSVPResponse.YES);
 
       // assert
       final updated = container.read(newsFeedControllerProvider).value;
@@ -233,7 +232,7 @@ void main() {
             item.type == NewsFeedItemType.event && item.event?.id == eventId,
       );
 
-      expect(updatedEvent.userRSVPStatus, 'confirmed');
+      expect(updatedEvent.userRSVPResponse, Enum$RSVPResponse.YES);
     });
 
     test('should not update RSVP for non-matching event', () async {
@@ -246,7 +245,7 @@ void main() {
 
       // act
       final controller = container.read(newsFeedControllerProvider.notifier);
-      await controller.updateRSVP('non_existent_event', 'confirmed');
+      await controller.updateRSVP('non_existent_event', Enum$RSVPResponse.YES);
 
       // assert - should complete without error
       final state = container.read(newsFeedControllerProvider).value;
@@ -272,8 +271,8 @@ void main() {
 
       // act
       final controller = container.read(newsFeedControllerProvider.notifier);
-      await controller.updateRSVP(firstEventId, 'confirmed');
-      await controller.updateRSVP(secondEventId, 'tentative');
+      await controller.updateRSVP(firstEventId, Enum$RSVPResponse.YES);
+      await controller.updateRSVP(secondEventId, Enum$RSVPResponse.MAYBE);
 
       // assert
       final updated = container.read(newsFeedControllerProvider).value!;
@@ -289,8 +288,8 @@ void main() {
             item.event?.id == secondEventId,
       );
 
-      expect(firstUpdated.userRSVPStatus, 'confirmed');
-      expect(secondUpdated.userRSVPStatus, 'tentative');
+      expect(firstUpdated.userRSVPResponse, Enum$RSVPResponse.YES);
+      expect(secondUpdated.userRSVPResponse, Enum$RSVPResponse.MAYBE);
     });
 
     test('should include paid and free events', () async {

@@ -167,7 +167,7 @@ class HomePage extends ConsumerWidget {
             }
             return NewsFeedEventCard(
               event: event,
-              userRSVPStatus: item.userRSVPStatus,
+              userRSVPResponse: item.userRSVPResponse,
               onTap: () {
                 // Navigate to event details
                 context.go('/events/${event.clubId}/event/${event.id}');
@@ -178,31 +178,18 @@ class HomePage extends ConsumerWidget {
                   event: event,
                 );
 
-                if (response != null) {
-                  // Map response to RSVP status
-                  String status;
-                  switch (response) {
-                    case Enum$RSVPResponse.YES:
-                      status = 'YES';
-                    case Enum$RSVPResponse.MAYBE:
-                      status = 'MAYBE';
-                    case Enum$RSVPResponse.NO:
-                      status = 'NO';
-                    case Enum$RSVPResponse.$unknown:
-                      return;
-                  }
-
-                  // Update RSVP status
+                if (response != null && response != Enum$RSVPResponse.$unknown) {
+                  // Update RSVP response directly with the generated enum
                   await ref
                       .read(newsFeedControllerProvider.notifier)
-                      .updateRSVP(event.id, status);
+                      .updateRSVP(event.id, response);
 
                   // Show confirmation
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'RSVP updated to: ${status.toUpperCase()}',
+                          'RSVP updated to: ${response.name}',
                         ),
                       ),
                     );

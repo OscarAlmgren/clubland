@@ -1,3 +1,4 @@
+import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/home/presentation/widgets/rsvp_modal.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +14,14 @@ void main() {
         clubId: 'club_1',
         title: 'Wine Tasting Evening',
         description: 'An exclusive wine tasting event',
-        eventType: EventType.dining,
+        eventType: Enum$ClubEventType.SOCIAL,
         startTime: DateTime(2024, 2, 15, 18),
         endTime: DateTime(2024, 2, 15, 21),
         location: 'Main Dining Room',
         capacity: 30,
         currentAttendees: 20,
         availableSpots: 10,
-        guestPolicy: GuestPolicy.membersOnly,
+        guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
         requiresApproval: false,
         requiresPayment: true,
         allowsSubgroupPriority: false,
@@ -96,7 +97,7 @@ void main() {
     testWidgets('returns RSVPResponse.yes when yes is tapped', (
       WidgetTester tester,
     ) async {
-      RSVPResponse? selectedResponse;
+      Enum$RSVPResponse? selectedResponse;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -125,13 +126,13 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify response
-      expect(selectedResponse, RSVPResponse.yes);
+      expect(selectedResponse, Enum$RSVPResponse.YES);
     });
 
     testWidgets('returns RSVPResponse.maybe when maybe is tapped', (
       WidgetTester tester,
     ) async {
-      RSVPResponse? selectedResponse;
+      Enum$RSVPResponse? selectedResponse;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -160,13 +161,13 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify response
-      expect(selectedResponse, RSVPResponse.maybe);
+      expect(selectedResponse, Enum$RSVPResponse.MAYBE);
     });
 
     testWidgets('returns RSVPResponse.no when no is tapped', (
       WidgetTester tester,
     ) async {
-      RSVPResponse? selectedResponse;
+      Enum$RSVPResponse? selectedResponse;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -195,7 +196,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify response
-      expect(selectedResponse, RSVPResponse.no);
+      expect(selectedResponse, Enum$RSVPResponse.NO);
     });
 
     testWidgets('can be closed with close button', (WidgetTester tester) async {

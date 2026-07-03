@@ -87,7 +87,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpApp(
-        EventCard(event: testEvent, userRSVPStatus: 'confirmed'),
+        EventCard(event: testEvent, userRSVPStatus: Enum$RSVPStatus.CONFIRMED),
       );
 
       expect(find.byType(RSVPStatusBadge), findsOneWidget);
@@ -108,7 +108,7 @@ void main() {
       await tester.pumpApp(
         EventCard(
           event: testEvent,
-          userRSVPStatus: 'confirmed',
+          userRSVPStatus: Enum$RSVPStatus.CONFIRMED,
           showRSVPStatus: false,
         ),
       );
@@ -124,7 +124,7 @@ void main() {
         clubId: 'club1',
         title: 'Wine Tasting',
         description: 'Premium wine tasting event',
-        eventType: EventType.dining,
+        eventType: Enum$ClubEventType.SOCIAL,
         startTime: DateTime(2024, 8, 1, 18),
         endTime: DateTime(2024, 8, 1, 21),
         location: 'Wine Cellar',
@@ -153,7 +153,7 @@ void main() {
         clubId: 'club1',
         title: 'Exclusive Dinner',
         description: 'Members only dinner',
-        eventType: EventType.special,
+        eventType: Enum$ClubEventType.OTHER,
         startTime: DateTime(2024, 9, 1, 19),
         endTime: DateTime(2024, 9, 1, 22),
         location: 'Private Dining Room',
@@ -200,7 +200,7 @@ void main() {
         capacity: 50,
         currentAttendees: 25,
         availableSpots: 25,
-        guestPolicy: GuestPolicy.noGuests,
+        guestPolicy: Enum$GuestPolicy.NO_GUESTS,
         requiresApproval: false,
         requiresPayment: false,
         allowsSubgroupPriority: false,
@@ -230,7 +230,7 @@ void main() {
         capacity: 50,
         currentAttendees: 25,
         availableSpots: 25,
-        guestPolicy: GuestPolicy.noGuests,
+        guestPolicy: Enum$GuestPolicy.NO_GUESTS,
         requiresApproval: false,
         requiresPayment: false,
         allowsSubgroupPriority: false,
@@ -261,7 +261,7 @@ void main() {
         capacity: 50,
         currentAttendees: 25,
         availableSpots: 25,
-        guestPolicy: GuestPolicy.noGuests,
+        guestPolicy: Enum$GuestPolicy.NO_GUESTS,
         requiresApproval: false,
         requiresPayment: false,
         allowsSubgroupPriority: false,
@@ -289,14 +289,14 @@ void main() {
           clubId: 'club1',
           title: 'Dinner',
           description: 'Test',
-          eventType: EventType.dining,
+          eventType: Enum$ClubEventType.SOCIAL,
           startTime: DateTime(2024, 7, 15, 19),
           endTime: DateTime(2024, 7, 15, 23),
           location: 'Restaurant',
           capacity: 50,
           currentAttendees: 25,
           availableSpots: 25,
-          guestPolicy: GuestPolicy.noGuests,
+          guestPolicy: Enum$GuestPolicy.NO_GUESTS,
           requiresApproval: false,
           requiresPayment: false,
           allowsSubgroupPriority: false,
@@ -307,7 +307,7 @@ void main() {
 
         await tester.pumpApp(EventCard(event: diningEvent));
 
-        expect(find.text('Dining'), findsOneWidget);
+        expect(find.text('Social'), findsOneWidget); // was 'Dining' — mapped to SOCIAL
       });
 
       testWidgets('should show sports event type badge', (tester) async {
@@ -323,7 +323,7 @@ void main() {
           capacity: 32,
           currentAttendees: 16,
           availableSpots: 16,
-          guestPolicy: GuestPolicy.noGuests,
+          guestPolicy: Enum$GuestPolicy.NO_GUESTS,
           requiresApproval: false,
           requiresPayment: false,
           allowsSubgroupPriority: false,
@@ -345,7 +345,7 @@ void main() {
           clubId: 'club1',
           title: 'Networking Meetup',
           description: 'Test',
-          eventType: EventType.findingFriends,
+          eventType: Enum$ClubEventType.SOCIAL,
           startTime: DateTime(2024, 7, 15, 18),
           endTime: DateTime(2024, 7, 15, 20),
           location: 'Lounge',
@@ -363,7 +363,7 @@ void main() {
 
         await tester.pumpApp(EventCard(event: findingFriendsEvent));
 
-        expect(find.text('Finding Friends'), findsOneWidget);
+        expect(find.text('Social'), findsOneWidget); // was 'Finding Friends' — mapped to SOCIAL
       });
     });
 
@@ -401,7 +401,7 @@ void main() {
           clubId: 'club1',
           title: 'Sold Out Event',
           description: 'This event is full',
-          eventType: EventType.special,
+          eventType: Enum$ClubEventType.OTHER,
           startTime: DateTime(2024, 7, 15, 19),
           endTime: DateTime(2024, 7, 15, 23),
           location: 'Small Venue',

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../events/domain/entities/event_entity.dart';
 import 'lunch_menu_entity.dart';
 import 'news_post_entity.dart';
@@ -20,7 +21,7 @@ class NewsFeedItemEntity extends Equatable {
     this.newsPost,
     this.event,
     this.lunchMenu,
-    this.userRSVPStatus,
+    this.userRSVPResponse,
   }) : assert(
           (type == NewsFeedItemType.newsPost && newsPost != null) ||
               (type == NewsFeedItemType.event && event != null) ||
@@ -37,8 +38,8 @@ class NewsFeedItemEntity extends Equatable {
   final EventEntity? event;
   final LunchMenuEntity? lunchMenu;
 
-  // For events, the user's RSVP status if they have one
-  final String? userRSVPStatus;
+  // For events, the user's RSVP response if they have one
+  final Enum$RSVPResponse? userRSVPResponse;
 
   /// Create a news post feed item
   factory NewsFeedItemEntity.newsPost({
@@ -55,14 +56,14 @@ class NewsFeedItemEntity extends Equatable {
   /// Create an event feed item
   factory NewsFeedItemEntity.event({
     required EventEntity event,
-    String? userRSVPStatus,
+    Enum$RSVPResponse? userRSVPResponse,
   }) {
     return NewsFeedItemEntity(
       id: 'event_${event.id}',
       type: NewsFeedItemType.event,
       timestamp: event.startTime,
       event: event,
-      userRSVPStatus: userRSVPStatus,
+      userRSVPResponse: userRSVPResponse,
     );
   }
 
@@ -86,6 +87,6 @@ class NewsFeedItemEntity extends Equatable {
         newsPost,
         event,
         lunchMenu,
-        userRSVPStatus,
+        userRSVPResponse,
       ];
 }

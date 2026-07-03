@@ -141,6 +141,251 @@ void main() {
     );
   });
 
+    test('should return empty list when no events exist', () async {
+      // Arrange
+      const clubId = 'club123';
+      final mockResponse = <String, dynamic>{
+        'edges': <Map<String, dynamic>>[],
+        'pageInfo': <String, dynamic>{
+          'hasNextPage': false,
+          'hasPreviousPage': false,
+        },
+        'totalCount': 0,
+      };
+
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      // Act
+      final result = await repository.getEvents(clubId: clubId);
+
+      // Assert
+      expect(result.isRight(), true);
+      result.fold((failure) => fail('Should return Right'), (connection) {
+        expect(connection.events, isEmpty);
+        expect(connection.totalCount, 0);
+      });
+    });
+
+    test('should return GraphQLFailure on GraphQL error', () async {
+      // Arrange
+      const clubId = 'club123';
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+        ),
+      ).thenThrow(
+        const app_exceptions.GraphQLException('GraphQL error', 'GRAPHQL_ERROR'),
+      );
+
+      // Act
+      final result = await repository.getEvents(clubId: clubId);
+
+      // Assert
+      expect(result.isLeft(), true);
+      result.fold((failure) {
+        expect(failure, isA<GraphQLFailure>());
+        expect(failure.message, contains('GraphQL error'));
+      }, (_) => fail('Should return Left'));
+    });
+
+    test('should handle filters and pagination parameters', () async {
+      // Arrange
+      const clubId = 'club123';
+      final filters = <String, dynamic>{'eventType': 'SOCIAL'};
+      final mockResponse = <String, dynamic>{
+        'edges': <Map<String, dynamic>>[],
+        'pageInfo': <String, dynamic>{
+          'hasNextPage': false,
+          'hasPreviousPage': false,
+        },
+        'totalCount': 0,
+      };
+
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: filters,
+          page: any(named: 'page'),
+          pageSize: any(named: 'pageSize'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      // Act
+      final result = await repository.getEvents(
+        clubId: clubId,
+        filters: filters,
+        page: 2,
+        pageSize: 10,
+      );
+
+      // Assert
+      expect(result.isRight(), true);
+      verify(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: filters,
+          page: any(named: 'page'),
+          pageSize: any(named: 'pageSize'),
+        ),
+      ).called(1);
+    });
+
+  group('getUpcomingEvents', () {
+    const clubId = 'club123';
+
+    test('should return list of upcoming events', () async {
+      // Arrange
+      final mockResponse = {
+        'edges': [
+          {
+            'node': {
+              'id': 'event1',
+              'clubId': clubId,
+              'title': 'Upcoming Event',
+              'description': 'Description',
+              'eventType': 'SPORTING',
+              'startTime': DateTime.now()
+                  .add(const Duration(days: 1))
+                  .toIso8601String(),
+              'endTime': DateTime.now()
+                  .add(const Duration(days: 1, hours: 2))
+                  .toIso8601String(),
+              'location': 'Sports Hall',
+              'capacity': 30,
+              'currentAttendees': 10,
+              'availableSpots': 20,
+              'guestPolicy': 'MEMBERS_ONLY',
+              'requiresApproval': false,
+              'requiresPayment': true,
+              'price': 50.0,
+              'allowsSubgroupPriority': false,
+              'fullHouseExclusive': false,
+              'createdAt': DateTime.now().toIso8601String(),
+              'updatedAt': DateTime.now().toIso8601String(),
+            },
+          },
+        ],
+        'pageInfo': <String, dynamic>{},
+        'totalCount': 1,
+      };
+
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+          pageSize: any(named: 'pageSize'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      // Act
+      final result = await repository.getUpcomingEvents(clubId: clubId);
+
+      // Assert
+      expect(result.isRight(), true);
+      result.fold((failure) => fail('Should return Right'), (events) {
+        expect(events.length, 1);
+        expect(events.first.id, 'event1');
+        expect(events.first.title, 'Upcoming Event');
+        expect(events.first.eventType, Enum$ClubEventType.SPORTING);
+      });
+    });
+
+    test('should use default limit when not provided', () async {
+      // Arrange
+      final mockResponse = <String, dynamic>{
+        'edges': <Map<String, dynamic>>[],
+        'pageInfo': <String, dynamic>{},
+        'totalCount': 0,
+      };
+
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      // Act
+      await repository.getUpcomingEvents(clubId: clubId);
+
+      // Assert
+      verify(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+        ),
+      ).called(1);
+    });
+
+    test('should use custom limit when provided', () async {
+      // Arrange
+      final mockResponse = <String, dynamic>{
+        'edges': <Map<String, dynamic>>[],
+        'pageInfo': <String, dynamic>{},
+        'totalCount': 0,
+      };
+
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+          pageSize: 5,
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      // Act
+      await repository.getUpcomingEvents(clubId: clubId, limit: 5);
+
+      // Assert
+      verify(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+          pageSize: 5,
+        ),
+      ).called(1);
+    });
+
+    test('should filter events by start date (upcoming)', () async {
+      // Arrange
+      final mockResponse = <String, dynamic>{
+        'edges': <Map<String, dynamic>>[],
+        'pageInfo': <String, dynamic>{},
+        'totalCount': 0,
+      };
+
+      when(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: any(named: 'filters'),
+          pageSize: any(named: 'pageSize'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      // Act
+      await repository.getUpcomingEvents(clubId: clubId);
+
+      // Assert
+      final captured = verify(
+        () => mockRemoteDataSource.getEvents(
+          clubId: clubId,
+          filters: captureAny(named: 'filters'),
+          pageSize: any(named: 'pageSize'),
+        ),
+      ).captured;
+
+      final filters = captured.first as Map<String, dynamic>;
+      expect(filters.containsKey('startDate'), true);
+    });
+  });
+
+
   group('getEventById', () {
     const eventId = 'event123';
 

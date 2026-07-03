@@ -503,7 +503,7 @@ void main() {
         eventId: mockRSVP.eventId,
         memberId: mockRSVP.memberId,
         clubId: mockRSVP.clubId,
-        response: RSVPResponse.maybe,
+        response: Enum$RSVPResponse.MAYBE,
         rsvpType: mockRSVP.rsvpType,
         priority: mockRSVP.priority,
         attendanceCount: 2,
@@ -530,7 +530,7 @@ void main() {
       // Assert
       final state = container.read(rSVPControllerProvider);
       expect(state.value, isNotNull);
-      expect(state.value!.response, RSVPResponse.maybe);
+      expect(state.value!.response, Enum$RSVPResponse.MAYBE);
       verify(
         () => mockUpdateRSVP(UpdateRSVPParams(rsvpId: rsvpId, input: input)),
       ).called(1);

@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../helpers/mock_providers.dart';
 import '../../../../../helpers/test_helpers.dart';
@@ -65,6 +66,18 @@ void main() {
       currentUserProvider.overrideWith((ref) => null),
     ],
     child: const MaterialApp(home: LoginPage()),
+  );
+
+  // Helper to build a minimal session for stubs
+  AuthSessionEntity makeTestSession() => AuthSessionEntity(
+    accessToken: TestConstants.testToken,
+    refreshToken: TestConstants.testRefreshToken,
+    expiresAt: DateTime.now().add(const Duration(hours: 1)),
+    user: UserEntity(
+      id: 'test-id',
+      email: TestConstants.testEmail,
+      createdAt: DateTime.now(),
+    ),
   );
 
   group('LoginPage', () {
@@ -129,6 +142,25 @@ void main() {
       expect(find.text('Please enter your password'), findsOneWidget);
     });
 
+    testWidgets('should validate password minimum length', (tester) async {
+      await tester.pumpWidget(createLoginPage());
+      await tester.pumpAndSettle();
+
+      final emailField = find.byType(AppInputField).first;
+      await tester.enterText(emailField, TestConstants.testEmail);
+      final passwordField = find.byType(AppInputField).last;
+      await tester.enterText(passwordField, '12345');
+
+      final signInButton = find.text('Sign In');
+      await tester.tap(signInButton);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Password must be at least 6 characters'),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('should call login when form is valid', (tester) async {
       when(
         () => mockLoginUseCase.call(
@@ -136,18 +168,7 @@ void main() {
           password: any(named: 'password'),
         ),
       ).thenAnswer(
-        (_) async => Right(
-          AuthSessionEntity(
-            accessToken: TestConstants.testToken,
-            refreshToken: TestConstants.testRefreshToken,
-            expiresAt: DateTime.now().add(const Duration(hours: 1)),
-            user: UserEntity(
-              id: 'test-id',
-              email: TestConstants.testEmail,
-              createdAt: DateTime.now(),
-            ),
-          ),
-        ),
+        (_) async => Right(makeTestSession()),
       );
 
       await tester.pumpWidget(createLoginPage());
@@ -205,6 +226,37 @@ void main() {
       await tester.pumpAndSettle();
     });
 
+    testWidgets('should trim email before login', (tester) async {
+      when(
+        () => mockLoginUseCase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Right(makeTestSession()));
+
+      await tester.pumpWidget(createLoginPage());
+      await tester.pumpAndSettle();
+
+      final emailField = find.byType(AppInputField).first;
+      await tester.enterText(
+        emailField,
+        '  ${TestConstants.testEmail}  ',
+      );
+      final passwordField = find.byType(AppInputField).last;
+      await tester.enterText(passwordField, TestConstants.testPassword);
+
+      await tester.tap(find.text('Sign In'));
+      await tester.pumpAndSettle();
+
+      // assert - should call with trimmed email
+      verify(
+        () => mockLoginUseCase(
+          email: TestConstants.testEmail,
+          password: TestConstants.testPassword,
+        ),
+      ).called(1);
+    });
+
     testWidgets('should toggle password visibility', (tester) async {
       await tester.pumpWidget(createLoginPage());
 
@@ -247,6 +299,98 @@ void main() {
 
       await tester.tap(forgotPasswordButton);
       await tester.pumpAndSettle();
+    });
+
+    testWidgets('should navigate when email provided for Hanko login', (
+      tester,
+    ) async {
+      await tester.pumpWidget(createLoginPage());
+      await tester.pumpAndSettle();
+
+      final emailField = find.byType(AppInputField).first;
+      await tester.enterText(emailField, TestConstants.testEmail);
+
+      await tester.tap(find.text('Continue with Hanko'));
+      await tester.pumpAndSettle();
+
+      // No error snackbar means navigation was attempted
+      expect(find.text('Please enter your email first'), findsNothing);
+    });
+
+    testWidgets('should show error when Hanko login without email', (
+      tester,
+    ) async {
+      await tester.pumpWidget(createLoginPage());
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.text('Continue with Hanko'));
+      await tester.tap(find.text('Continue with Hanko'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Please enter your email first'), findsOneWidget);
+    });
+
+    testWidgets('should disable sign in button when loading', (tester) async {
+      when(
+        () => mockLoginUseCase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer(
+        (_) => Future.delayed(
+          const Duration(milliseconds: 200),
+          () => Right(makeTestSession()),
+        ),
+      );
+
+      await tester.pumpWidget(createLoginPage());
+      await tester.pumpAndSettle();
+
+      final emailField = find.byType(AppInputField).first;
+      final passwordField = find.byType(AppInputField).last;
+      await tester.enterText(emailField, TestConstants.testEmail);
+      await tester.enterText(passwordField, TestConstants.testPassword);
+      await tester.tap(find.text('Sign In'));
+      await tester.pump();
+
+      // Button should be disabled (onPressed == null) when loading
+      final signInButtonFinder = find.ancestor(
+        of: find.text('Sign In'),
+        matching: find.byType(ElevatedButton),
+      );
+      if (signInButtonFinder.evaluate().isNotEmpty) {
+        final button = tester.widget<ElevatedButton>(signInButtonFinder);
+        expect(button.onPressed, isNull);
+      } else {
+        // AppButton uses CircularProgressIndicator when loading
+        expect(find.byType(CircularProgressIndicator), findsWidgets);
+      }
+
+      // Pump past the timer to avoid "A Timer is still pending" error
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('should handle login failure gracefully', (tester) async {
+      when(
+        () => mockLoginUseCase(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => Left(AuthFailure.invalidCredentials()));
+
+      await tester.pumpWidget(createLoginPage());
+      await tester.pumpAndSettle();
+
+      final emailField = find.byType(AppInputField).first;
+      await tester.enterText(emailField, TestConstants.testEmail);
+      final passwordField = find.byType(AppInputField).last;
+      await tester.enterText(passwordField, TestConstants.testPassword);
+      await tester.tap(find.text('Sign In'));
+      await tester.pumpAndSettle();
+
+      // page should still be rendered without crash
+      expect(find.text('Welcome to Clubland'), findsOneWidget);
     });
 
     group('Hanko authentication', () {
