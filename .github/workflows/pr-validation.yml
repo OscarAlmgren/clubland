@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
-  FLUTTER_VERSION: "3.19.0"
+  FLUTTER_VERSION: "3.43.0-0.3.pre"  # must satisfy pubspec sdk: ^3.10.0
 
 jobs:
   validate_pr:
@@ -70,7 +70,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -120,11 +120,6 @@ jobs:
           base: ${{ github.event.pull_request.base.sha }}
           head: HEAD
 
-      - name: Check dependencies for vulnerabilities
-        run: |
-          flutter pub get
-          flutter pub deps --json > dependencies.json
-          # Note: Add actual security scanning tool here
 
   performance_check:
     runs-on: ubuntu-latest
@@ -137,7 +132,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Get dependencies
         run: flutter pub get
@@ -153,11 +148,6 @@ jobs:
           echo "Bundle size analysis:"
           cat .dart_tool/flutter_build/*/web-*/app.dill.tree-shake-sizes.json | jq '.programSize'
 
-      - name: Check for performance regressions
-        run: |
-          # Run performance tests and compare against baseline
-          # This is a placeholder for actual performance testing
-          echo "Performance check completed"
 
   code_quality:
     runs-on: ubuntu-latest
@@ -170,7 +160,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Get dependencies
         run: flutter pub get
@@ -208,7 +198,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Get dependencies
         run: flutter pub get
@@ -235,7 +225,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Get dependencies
         run: flutter pub get
@@ -245,13 +235,6 @@ jobs:
           dart doc --dry-run --validate-links
           echo "Documentation validation completed"
 
-      - name: Check for missing documentation
-        run: |
-          # Check that new public APIs have documentation
-          git diff ${{ github.event.pull_request.base.sha }} --name-only | grep '\.dart$' | while read file; do
-            echo "Checking documentation in $file"
-            # Add actual documentation coverage check here
-          done
 
   approval_requirements:
     runs-on: ubuntu-latest

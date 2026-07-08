@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 env:
-  FLUTTER_VERSION: "3.19.0"
+  FLUTTER_VERSION: "3.43.0-0.3.pre"  # must satisfy pubspec sdk: ^3.10.0
 
 jobs:
   validate_release:
@@ -20,7 +20,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Get dependencies
         run: flutter pub get
@@ -64,7 +64,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Get dependencies
         run: flutter pub get
@@ -111,7 +111,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: 'beta'
 
       - name: Get dependencies
         run: flutter pub get
