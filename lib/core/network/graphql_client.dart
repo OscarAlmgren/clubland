@@ -122,7 +122,13 @@ class GraphQLClientConfig {
     app_error.ErrorHandler.showErrorToUser(failure);
   }
 
-  /// Handle authentication errors
+  /// Handle authentication errors.
+  ///
+  /// Tokens are Hanko-issued; the backend has no refresh mutation, so an
+  /// UNAUTHENTICATED response means the session is over — clear tokens and
+  /// let the auth flow re-authenticate via Hanko. Session refresh, when it
+  /// exists, is driven from AuthController.refreshToken (single-flight),
+  /// not from this static link.
   static Future<void> _handleAuthenticationError() async {
     _logger.w('Authentication error detected, clearing tokens');
 
@@ -177,28 +183,6 @@ class GraphQLClientConfig {
     });
   });
 
-  /// Refresh authentication token
-  static Future<bool> refreshToken() async {
-    try {
-      final refreshToken = await _secureStorage.read(
-        key: StorageKeys.refreshToken,
-      );
-      if (refreshToken == null) {
-        _logger.w('No refresh token available');
-        return false;
-      }
-
-      // TODO(oscaralmgren): Implement token refresh mutation
-      // This would be implemented with the actual GraphQL mutation
-      // For now, return false to indicate refresh failed
-      _logger.w('Token refresh not implemented yet');
-      return false;
-    } on Exception catch (e) {
-      _logger.e('Failed to refresh token: $e');
-      return false;
-    }
-  }
-
   /// Clear cache
   static Future<void> clearCache() async {
     try {
@@ -210,18 +194,6 @@ class GraphQLClientConfig {
   }
 
   /// Update cache for optimistic updates
-  static void updateCache({
-    required String operationName,
-    required Map<String, dynamic> data,
-  }) {
-    try {
-      // TODO(oscaralmgren): Implement cache updates based on operation type
-      _logger.d('Cache update for $operationName: $data');
-    } on Exception catch (e) {
-      _logger.e('Failed to update cache: $e');
-    }
-  }
-
   /// Dispose client resources
   static Future<void> dispose() async {
     try {

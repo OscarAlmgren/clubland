@@ -48,14 +48,9 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
             )
           : null;
 
-      // Convert domain sort to data layer sort
+      // The datasource shares the domain's ClubSortField/SortDirection.
       final dataSort = sort != null
-          ? datasource.ClubSort(
-              field: _convertSortField(sort.field),
-              direction: sort.direction == domain.SortDirection.asc
-                  ? datasource.SortDirection.asc
-                  : datasource.SortDirection.desc,
-            )
+          ? datasource.ClubSort(field: sort.field, direction: sort.direction)
           : null;
 
       final clubs = await _remoteDataSource.getClubs(
@@ -285,19 +280,4 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
   List<ClubEntity> _convertModelsToEntities(List<ClubModel> models) =>
       models.map(_convertModelToEntity).toList();
 
-  /// Convert domain ClubSortField to datasource ClubSortField
-  datasource.ClubSortField _convertSortField(domain.ClubSortField field) {
-    switch (field) {
-      case domain.ClubSortField.name:
-        return datasource.ClubSortField.name;
-      case domain.ClubSortField.rating:
-        return datasource.ClubSortField.rating;
-      case domain.ClubSortField.distance:
-        return datasource.ClubSortField.distance;
-      case domain.ClubSortField.memberCount:
-        return datasource.ClubSortField.memberCount;
-      case domain.ClubSortField.createdAt:
-        return datasource.ClubSortField.createdAt;
-    }
-  }
 }

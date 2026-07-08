@@ -733,50 +733,6 @@ void main() {
       });
     });
 
-    group('updateProfile', () {
-      test('should update user profile when user is authenticated', () async {
-        when(
-          () => mockGetCurrentUserUsecase(),
-        ).thenAnswer((_) async => Right(testUser));
-
-        final container = makeDirectContainer();
-        addTearDown(container.dispose);
-        await container.read(authControllerProvider.future);
-
-        final newProfile = UserProfile(
-          fullName: 'John Doe Updated',
-          phoneNumber: '+1234567890',
-          avatar: 'https://example.com/avatar.jpg',
-        );
-
-        final controller = container.read(authControllerProvider.notifier);
-        await controller.updateProfile(profile: newProfile);
-
-        final state = container.read(authControllerProvider);
-        expect(state.value?.profile, newProfile);
-      });
-
-      test('should do nothing when user is not authenticated', () async {
-        when(
-          () => mockGetCurrentUserUsecase(),
-        ).thenAnswer((_) async => const Right(null));
-
-        final container = makeDirectContainer();
-        addTearDown(container.dispose);
-        await container.read(authControllerProvider.future);
-
-        final newProfile = UserProfile(
-          fullName: 'John Doe',
-          phoneNumber: '+1234567890',
-        );
-
-        final controller = container.read(authControllerProvider.notifier);
-        await controller.updateProfile(profile: newProfile);
-
-        final state = container.read(authControllerProvider);
-        expect(state.value, isNull);
-      });
-    });
 
     group('authenticateWithBiometrics', () {
       test('should call biometric usecase on authentication', () async {

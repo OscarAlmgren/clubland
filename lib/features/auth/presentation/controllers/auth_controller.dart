@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,8 +16,19 @@ part 'auth_controller.g.dart';
 /// Authentication controller managing user auth state
 @riverpod
 class AuthController extends _$AuthController {
+  StreamSubscription<AuthSessionEntity?>? _authStateSubscription;
+
+  /// Guards against concurrent refresh attempts (e.g. several requests
+  /// hitting 401 at once) — all callers await the same in-flight refresh.
+  Future<void>? _refreshInFlight;
+
   @override
   Future<UserEntity?> build() async {
+    ref.onDispose(() {
+      _authStateSubscription?.cancel();
+      _authStateSubscription = null;
+    });
+
     // Initialize and check for existing session
     await _initializeAuth();
     return _loadStoredUser();
@@ -37,8 +50,11 @@ class AuthController extends _$AuthController {
         // 2. Set up the listener regardless of whether the initial read failed or succeeded.
         // If the read failed, this ref.listen will run later when the provider rebuilds.
         ref.listen(authRepositoryProvider, (_, repository) {
-          // NOTE: The 'repository' parameter here is the actual instance passed by the listener.
-          repository.authStateChanges.listen((session) {
+          // Cancel any previous subscription so repository rebuilds don't
+          // leak listeners that keep writing state.
+          _authStateSubscription?.cancel();
+          _authStateSubscription =
+              repository.authStateChanges.listen((session) {
             // Check if the provider is still mounted before updating state
             if (!ref.mounted) return;
 
@@ -218,8 +234,22 @@ class AuthController extends _$AuthController {
     }
   }
 
-  /// Refresh authentication token
-  Future<void> refreshToken() async {
+  /// Refresh authentication token.
+  ///
+  /// Single-flight: concurrent callers share one refresh attempt instead of
+  /// racing each other (and potentially logging out mid-refresh).
+  Future<void> refreshToken() {
+    final inFlight = _refreshInFlight;
+    if (inFlight != null) return inFlight;
+
+    final refresh = _doRefreshToken().whenComplete(() {
+      _refreshInFlight = null;
+    });
+    _refreshInFlight = refresh;
+    return refresh;
+  }
+
+  Future<void> _doRefreshToken() async {
     try {
       final secureStorageService = ref.read(secureStorageServiceProvider);
       final refreshToken = await secureStorageService.getRefreshToken();
@@ -248,20 +278,9 @@ class AuthController extends _$AuthController {
     }
   }
 
-  /// Update user profile
-  Future<void> updateProfile({required UserProfile profile}) async {
-    final currentUser = state.value;
-    if (currentUser == null) return;
-
-    try {
-      // TODO(oscaralmgren): Implement profile update usecase
-      final updatedUser = currentUser.copyWith(profile: profile);
-      state = AsyncData(updatedUser);
-    } on Exception catch (e) {
-      final failure = ErrorHandler.handleException(e);
-      ErrorHandler.showErrorToUser(failure);
-    }
-  }
+  // NOTE: profile updates live in the profile feature
+  // (profileControllerProvider.updateProfile), which persists via the
+  // repository. The former updateProfile here only mutated local state.
 
   /// Authenticate with biometrics
   Future<void> authenticateWithBiometrics() async {

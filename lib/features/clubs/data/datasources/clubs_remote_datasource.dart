@@ -3,6 +3,8 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
 import '../../../../core/graphql/graphql_api.dart';
+import '../../domain/repositories/clubs_repository.dart'
+    show ClubSortField, SortDirection;
 import '../models/club_address_model.dart';
 import '../models/club_model.dart';
 import '../models/club_search_result_model.dart';
@@ -646,10 +648,6 @@ class ClubFilter {
     if (isPublic != null) 'isPublic': isPublic,
   };
 }
-
-enum ClubSortField { name, rating, distance, memberCount, createdAt }
-
-enum SortDirection { asc, desc }
 
 class ClubSort {
   final ClubSortField field;
