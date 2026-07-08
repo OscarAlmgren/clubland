@@ -5,7 +5,6 @@ import 'package:logger/logger.dart';
 
 import 'app/app.dart';
 import 'core/config/environment_config.dart';
-import 'core/security/encryption_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,14 +23,6 @@ Future<void> main() async {
       Logger().e('Configuration validation failed: $e');
       rethrow;
     }
-  }
-
-  // Initialize encryption service
-  try {
-    EncryptionService.instance;
-  } on Exception catch (e) {
-    Logger().e('Failed to initialize encryption service: $e');
-    rethrow;
   }
 
   // Storage initialization is now handled by the StorageManager in app providers

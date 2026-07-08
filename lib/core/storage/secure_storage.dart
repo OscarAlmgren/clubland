@@ -5,7 +5,6 @@ import 'package:logger/logger.dart';
 
 import '../constants/storage_keys.dart';
 import '../errors/exceptions.dart';
-import '../security/encryption_service.dart';
 
 /// Secure storage wrapper for sensitive data.
 ///
@@ -38,11 +37,20 @@ abstract class SecureStorage {
   Future<Map<String, String>> readAll();
 }
 
+/// Default platform-hardened storage: encrypted shared preferences on
+/// Android, first-unlock-this-device accessibility on iOS/macOS.
+const FlutterSecureStorage _defaultSecureStorage = FlutterSecureStorage(
+  aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  iOptions: IOSOptions(
+    accessibility: KeychainAccessibility.first_unlock_this_device,
+  ),
+);
+
 /// Implementation of secure storage using FlutterSecureStorage
 class SecureStorageImpl implements SecureStorage {
   /// Constructs a [SecureStorageImpl]
   SecureStorageImpl({FlutterSecureStorage? storage, Logger? logger})
-    : _storage = storage ?? const FlutterSecureStorage(),
+    : _storage = storage ?? _defaultSecureStorage,
       _logger = logger ?? Logger();
   final FlutterSecureStorage _storage;
   final Logger _logger;
@@ -143,39 +151,6 @@ class EnhancedSecureStorage extends SecureStorageImpl {
     }
   }
 
-  /// Write encrypted string to secure storage
-  Future<void> writeEncrypted(
-    String key,
-    String value, {
-    String? encryptionKey,
-  }) async {
-    try {
-      final encryptionService = EncryptionService.instance;
-      final encryptedValue = encryptionService.encryptText(value);
-      await write(key, encryptedValue);
-      _logger.d('Encrypted write to secure storage for key: $key');
-    } on Exception catch (e) {
-      _logger.e('Failed to write encrypted data: $e');
-      throw StorageException.encryptionFailed();
-    }
-  }
-
-  /// Read encrypted string from secure storage
-  Future<String?> readEncrypted(String key, {String? encryptionKey}) async {
-    try {
-      final encryptedValue = await read(key);
-      if (encryptedValue == null) return null;
-
-      final encryptionService = EncryptionService.instance;
-      final decryptedValue = encryptionService.decryptText(encryptedValue);
-      _logger.d('Encrypted read from secure storage for key: $key');
-      return decryptedValue;
-    } on Exception catch (e) {
-      _logger.e('Failed to read encrypted data: $e');
-      throw StorageException.decryptionFailed();
-    }
-  }
-
   /// Check if storage is available
   Future<bool> isAvailable() async {
     try {
@@ -211,32 +186,6 @@ class EnhancedSecureStorage extends SecureStorageImpl {
     }
   }
 
-  /// Backup all data to a JSON string
-  Future<String> backup() async {
-    try {
-      final allData = await readAll();
-      return jsonEncode(allData);
-    } on Exception catch (e) {
-      _logger.e('Failed to backup secure storage: $e');
-      throw StorageException.readError();
-    }
-  }
-
-  /// Restore data from a backup JSON string
-  Future<void> restore(String backupData) async {
-    try {
-      final data = jsonDecode(backupData) as Map<String, dynamic>;
-
-      for (final entry in data.entries) {
-        await write(entry.key, entry.value.toString());
-      }
-
-      _logger.i('Secure storage restored from backup');
-    } on Exception catch (e) {
-      _logger.e('Failed to restore secure storage: $e');
-      throw StorageException.writeError();
-    }
-  }
 }
 
 /// Secure storage service with predefined key operations

@@ -48,7 +48,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      _logger.d('Attempting login for email: $email');
+      _logger.d('Attempting login');
 
       // Call remote data source
       final result = await _remoteDataSource.login(
@@ -63,7 +63,7 @@ class AuthRepositoryImpl implements AuthRepository {
         // Notify auth state change
         _authStateController.add(session);
 
-        _logger.i('Login successful for user: ${session.user.email}');
+        _logger.i('Login successful for user: ${session.user.id}');
         return Right(session);
       });
     } on Exception catch (e, stackTrace) {
@@ -78,7 +78,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String clubSlug,
   }) async {
     try {
-      _logger.d('Attempting Hanko passkey login for email: $email, clubSlug: $clubSlug');
+      _logger.d('Attempting Hanko passkey login, clubSlug: $clubSlug');
 
       final result = await _remoteDataSource.loginWithHanko(
         email: email,
@@ -88,7 +88,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return result.fold(Left.new, (session) async {
         await _storeSession(session);
         _authStateController.add(session);
-        _logger.i('Hanko passkey login successful for user: ${session.user.email}');
+        _logger.i('Hanko passkey login successful for user: ${session.user.id}');
         return Right(session);
       });
     } on Exception catch (e, stackTrace) {
@@ -106,7 +106,7 @@ class AuthRepositoryImpl implements AuthRepository {
     String? clubId,
   }) async {
     try {
-      _logger.d('Attempting registration for email: $email');
+      _logger.d('Attempting registration');
 
       final result = await _remoteDataSource.register(
         email: email,
@@ -120,7 +120,7 @@ class AuthRepositoryImpl implements AuthRepository {
         await _storeSession(session);
         _authStateController.add(session);
 
-        _logger.i('Registration successful for user: ${session.user.email}');
+        _logger.i('Registration successful for user: ${session.user.id}');
         return Right(session);
       });
     } on Exception catch (e, stackTrace) {
@@ -350,13 +350,13 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
   }) async {
     try {
-      _logger.d('Requesting password reset for email: $email');
+      _logger.d('Requesting password reset');
 
       final result = await _remoteDataSource.requestPasswordReset(email: email);
 
       return result.fold(Left.new, (success) {
         if (success) {
-          _logger.i('Password reset requested for: $email');
+          _logger.i('Password reset requested');
         }
         return Right(success);
       });

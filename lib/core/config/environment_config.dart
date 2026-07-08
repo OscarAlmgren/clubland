@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// Environment types
 /// Environment types for different deployment stages
 enum Environment {
@@ -52,76 +50,40 @@ class EnvironmentConfig {
   static bool get isProduction => _currentEnvironment == Environment.production;
 
   /// API Configuration
-  /// Backend server base URL (henrybook server on local network)
-  static String get apiBaseUrl => const String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://192.168.0.170:30080',
-  );
+  /// Backend server base URL. Defaults only exist for development builds;
+  /// staging/production must pass --dart-define=API_BASE_URL=https://...
+  /// (for LAN device testing use e.g. --dart-define=API_BASE_URL=http://192.168.x.x:30080)
+  static String get apiBaseUrl {
+    const url = String.fromEnvironment('API_BASE_URL');
+    if (url.isNotEmpty) return url;
+    if (isDevelopment) return 'http://localhost:8080';
+    throw StateError(
+      'API_BASE_URL must be provided via --dart-define for '
+      '${currentEnvironment.name} builds',
+    );
+  }
 
-  /// GraphQL endpoint URL
-  static String get graphqlEndpoint => const String.fromEnvironment(
-    'GRAPHQL_ENDPOINT',
-    defaultValue: 'http://192.168.0.170:30080/graphql',
-  );
+  /// GraphQL endpoint URL (derived from apiBaseUrl unless overridden)
+  static String get graphqlEndpoint {
+    const url = String.fromEnvironment('GRAPHQL_ENDPOINT');
+    if (url.isNotEmpty) return url;
+    return '$apiBaseUrl/graphql';
+  }
 
   /// Authentication Configuration
-  static String get hankoBaseUrl => const String.fromEnvironment(
-    'HANKO_BASE_URL',
-    defaultValue: 'http://localhost:8000',
-  );
+  static String get hankoBaseUrl {
+    const url = String.fromEnvironment('HANKO_BASE_URL');
+    if (url.isNotEmpty) return url;
+    if (isDevelopment) return 'http://localhost:8000';
+    throw StateError(
+      'HANKO_BASE_URL must be provided via --dart-define for '
+      '${currentEnvironment.name} builds',
+    );
+  }
 
   /// Hanko authentication API key
   static String get hankoApiKey =>
       const String.fromEnvironment('HANKO_API_KEY');
-
-  /// Security Configuration
-  static String get encryptionKey {
-    const key = String.fromEnvironment('ENCRYPTION_KEY');
-    if (key.isEmpty && isProduction) {
-      throw StateError('ENCRYPTION_KEY must be provided in production');
-    }
-    return key.isEmpty ? _generateDevEncryptionKey() : key;
-  }
-
-  /// JWT secret key for token signing and verification
-  static String get jwtSecret {
-    const secret = String.fromEnvironment('JWT_SECRET');
-    if (secret.isEmpty && isProduction) {
-      throw StateError('JWT_SECRET must be provided in production');
-    }
-    return secret.isEmpty ? 'dev-jwt-secret-key-change-in-production' : secret;
-  }
-
-  /// Database Configuration
-  static String get databaseUrl => const String.fromEnvironment(
-    'DATABASE_URL',
-    defaultValue: 'postgresql://localhost:5432/clubland_dev',
-  );
-
-  /// Redis Configuration
-  static String get redisUrl => const String.fromEnvironment(
-    'REDIS_URL',
-    defaultValue: 'redis://localhost:6379',
-  );
-
-  /// Blockchain Configuration
-  /// Hyperledger Fabric Certificate Authority URL
-  static String get fabricCaUrl => const String.fromEnvironment(
-    'FABRIC_CA_URL',
-    defaultValue: 'http://localhost:7054',
-  );
-
-  /// Hyperledger Fabric Peer URL
-  static String get fabricPeerUrl => const String.fromEnvironment(
-    'FABRIC_PEER_URL',
-    defaultValue: 'grpc://localhost:7051',
-  );
-
-  /// Hyperledger Fabric Orderer URL
-  static String get fabricOrdererUrl => const String.fromEnvironment(
-    'FABRIC_ORDERER_URL',
-    defaultValue: 'grpc://localhost:7050',
-  );
 
   /// Monitoring Configuration
   /// Sentry DSN for error reporting
@@ -186,14 +148,6 @@ class EnvironmentConfig {
     return int.tryParse(timeout) ?? 30000;
   }
 
-  /// Development helpers
-  static String _generateDevEncryptionKey() {
-    if (kDebugMode) {
-      return 'dev-encryption-key-32-characters!!';
-    }
-    return 'fallback-key-for-non-debug-builds!';
-  }
-
   /// Configuration validation
   static void validateConfig() {
     final errors = <String>[];
@@ -205,12 +159,12 @@ class EnvironmentConfig {
       if (sentryDsn.isEmpty) {
         errors.add('SENTRY_DSN is recommended in production');
       }
-      if (const String.fromEnvironment('ENCRYPTION_KEY').isEmpty) {
-        errors.add('ENCRYPTION_KEY is required in production');
-      }
-      if (const String.fromEnvironment('JWT_SECRET').isEmpty) {
-        errors.add('JWT_SECRET is required in production');
-      }
+    }
+    if (!isDevelopment) {
+      // Force the fail-fast getters so misconfigured builds die at startup
+      // rather than on first request.
+      apiBaseUrl;
+      hankoBaseUrl;
     }
 
     if (errors.isNotEmpty) {

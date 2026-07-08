@@ -134,20 +134,45 @@ class GraphQLClientConfig {
     }
   }
 
-  /// Create logger link for debugging
+  /// Variable names whose values must never reach logs.
+  static const _sensitiveVariableNames = {
+    'password',
+    'newPassword',
+    'currentPassword',
+    'token',
+    'accessToken',
+    'refreshToken',
+    'secret',
+    'otp',
+    'code',
+  };
+
+  /// Redacts sensitive values from GraphQL variables before logging.
+  static Map<String, dynamic> _redactVariables(Map<String, dynamic> variables) =>
+      variables.map((key, value) {
+        if (_sensitiveVariableNames.contains(key)) {
+          return MapEntry(key, '<redacted>');
+        }
+        if (value is Map<String, dynamic>) {
+          return MapEntry(key, _redactVariables(value));
+        }
+        return MapEntry(key, value);
+      });
+
+  /// Create logger link for debugging.
+  ///
+  /// Never log response bodies or raw variables — they contain credentials
+  /// and tokens (see CLAUDE.md: never log tokens/PII).
   static Link _createLoggerLink() => Link.function((request, [forward]) {
     _logger.d('GraphQL Request: ${request.operation.operationName}');
-    _logger.d('Variables: ${request.variables}');
+    if (AppConstants.isDebugMode) {
+      _logger.d('Variables: ${_redactVariables(request.variables)}');
+    }
 
     return forward!(request).map((response) {
       if (response.errors?.isNotEmpty ?? false) {
         _logger.e('GraphQL Errors: ${response.errors}');
       }
-
-      if (AppConstants.isDebugMode) {
-        _logger.d('GraphQL Response: ${response.data}');
-      }
-
       return response;
     });
   });
