@@ -66,7 +66,6 @@ flutter run
 
 ```bash
 flutter run                                    # Run app
-flutter run --target lib/simple_main.dart      # Run simplified version
 r                                              # Hot reload (in terminal)
 R                                              # Hot restart (in terminal)
 ```
@@ -103,8 +102,7 @@ flutter build web --release --dart-define=ENVIRONMENT=production
 
 ```text
 lib/
-├── main.dart                    # Main entry point
-├── simple_main.dart             # Simplified entry point
+├── main.dart                    # Entry point
 ├── app/                         # App configuration, router, themes
 ├── core/                        # Shared infrastructure
 │   ├── constants/               # API endpoints, storage keys
@@ -116,8 +114,8 @@ lib/
 │   ├── auth/                    # Authentication
 │   ├── clubs/                   # Club discovery
 │   ├── bookings/                # Reservations
-│   ├── visits/                  # Visit tracking
-│   ├── social/                  # Social features
+│   ├── events/                  # Events & RSVPs
+│   ├── social/                  # Social features (data layer only — WIP)
 │   ├── profile/                 # User profile
 │   └── home/                    # Home screen
 │   └── (each feature has):
