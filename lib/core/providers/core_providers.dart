@@ -1,10 +1,12 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' show GraphQLClient;
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/presentation/controllers/auth_controller.dart';
+import '../config/environment_config.dart';
 import '../design_system/theme/font_service.dart';
 import '../errors/error_handler.dart';
 import '../network/graphql_client.dart';
@@ -72,20 +74,24 @@ Future<AppCacheManager> cacheManager(Ref ref) async {
   return AppCacheManager(manager);
 }
 
-/// GraphQL Client provider
+/// GraphQL Client provider — initializes the client and exposes it.
 @Riverpod(keepAlive: true)
 Future<void> graphqlClient(Ref ref) async {
-  const baseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://192.168.0.170:30080',
-  );
-
   await GraphQLClientConfig.initialize(
-    baseUrl: baseUrl,
+    baseUrl: EnvironmentConfig.apiBaseUrl,
     logger: ref.watch(loggerProvider),
     secureStorage: ref.watch(flutterSecureStorageProvider),
   );
 }
+
+/// Synchronous access to the initialized GraphQL client.
+///
+/// The single sanctioned bridge to [GraphQLClientConfig.client] — feature
+/// datasource/repository providers must depend on this provider instead of
+/// touching the static directly, so the client can be overridden in tests
+/// and eventually constructed here outright.
+@Riverpod(keepAlive: true)
+GraphQLClient gqlClient(Ref ref) => GraphQLClientConfig.client;
 
 /// Connectivity Stream provider
 @riverpod

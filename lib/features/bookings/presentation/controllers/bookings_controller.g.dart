@@ -274,7 +274,7 @@ final class BookingsControllerProvider
 }
 
 String _$bookingsControllerHash() =>
-    r'67a8acf96c269ab20a5c9bbfdcff2cdfca00d2b8';
+    r'f2b12092ad25703b7aeec58e1b46a7dab0d13efd';
 
 /// Main bookings controller for managing booking state and actions
 

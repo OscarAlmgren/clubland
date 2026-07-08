@@ -7,6 +7,7 @@ import '../../data/datasources/clubs_remote_datasource.dart';
 import '../../data/repositories/clubs_repository_impl.dart';
 import '../../domain/entities/simple_club.dart';
 import '../../domain/repositories/clubs_repository.dart';
+import '../../../../core/providers/core_providers.dart';
 
 part 'clubs_controller.g.dart';
 
@@ -393,5 +394,5 @@ Future<bool> locationPermission(Ref ref) async {
 
 /// Provider for the remote datasource
 final clubsRemoteDataSourceProvider = Provider<ClubsRemoteDataSource>(
-  (ref) => ClubsRemoteDataSourceImpl(client: GraphQLClientConfig.client),
+  (ref) => ClubsRemoteDataSourceImpl(client: ref.watch(gqlClientProvider)),
 );

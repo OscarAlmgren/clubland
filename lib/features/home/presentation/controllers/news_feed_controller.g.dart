@@ -38,7 +38,7 @@ final class NewsFeedControllerProvider
 }
 
 String _$newsFeedControllerHash() =>
-    r'5b52eefac7d0a1985a124d8c6219104a55ef681f';
+    r'2f4e8cd20321653fc7b505cbe656ff54b004de93';
 
 /// News feed controller - manages news feed items
 

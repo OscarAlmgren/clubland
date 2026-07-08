@@ -6,6 +6,7 @@ import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../data/datasources/profile_remote_datasource.dart';
 import '../../data/repositories/profile_repository_impl.dart';
 import '../../domain/repositories/profile_repository.dart';
+import '../../../../core/providers/core_providers.dart';
 
 part 'profile_providers.g.dart';
 
@@ -13,7 +14,7 @@ part 'profile_providers.g.dart';
 @riverpod
 ProfileRepository profileRepository(Ref ref) => ProfileRepositoryImpl(
       remoteDataSource: ProfileRemoteDataSourceImpl(
-        client: GraphQLClientConfig.client,
+        client: ref.watch(gqlClientProvider),
       ),
     );
 

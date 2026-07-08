@@ -1,6 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/providers/core_providers.dart';
+import '../../data/datasources/auth_remote_datasource.dart';
+import '../../data/datasources/passkey_service.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/services/hanko_service.dart';
@@ -14,9 +16,15 @@ AuthRepository authRepository(Ref ref) {
   // Ensure GraphQL client is initialized first
   ref.watch(graphqlClientProvider);
 
+  final logger = ref.watch(loggerProvider);
   return AuthRepositoryImpl(
     secureStorage: ref.watch(secureStorageServiceProvider),
-    logger: ref.watch(loggerProvider),
+    logger: logger,
+    remoteDataSource: AuthRemoteDataSourceImpl(
+      graphqlClient: ref.watch(gqlClientProvider),
+      logger: logger,
+      passkeyService: PasskeyService(logger: logger),
+    ),
   );
 }
 

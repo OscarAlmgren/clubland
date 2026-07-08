@@ -52,7 +52,7 @@ final class AuthRepositoryProvider
   }
 }
 
-String _$authRepositoryHash() => r'74dd087a76a4563f418ee63dc44863c4f5bbdc2a';
+String _$authRepositoryHash() => r'5f420fe6e2e5c9bb1617bdf7106a5582d3e0aa0a';
 
 /// Login usecase provider
 

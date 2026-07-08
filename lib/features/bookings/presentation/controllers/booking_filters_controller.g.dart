@@ -45,7 +45,7 @@ final class BookingFiltersControllerProvider
 }
 
 String _$bookingFiltersControllerHash() =>
-    r'0495ae4a456abd7d954ccec0071b748bdd470f04';
+    r'ac4d987ab2ae0430f8a2f263a9cb22b8264b1eb1';
 
 /// Controller for managing booking filters.
 

@@ -58,7 +58,7 @@ final class ProfileRepositoryProvider
   }
 }
 
-String _$profileRepositoryHash() => r'42d4c7eb93d93a5dd569c29725e2a2d514294000';
+String _$profileRepositoryHash() => r'34de09d0f8a07cbb2e8334a0cda976dbe679b19d';
 
 /// Profile controller — wraps auth state and exposes updateProfile.
 ///

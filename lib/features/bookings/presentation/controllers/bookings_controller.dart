@@ -8,6 +8,7 @@ import '../../data/models/booking_model.dart';
 import '../../data/repositories/bookings_repository_impl.dart';
 import '../../domain/entities/booking_entity.dart';
 import '../../domain/repositories/bookings_repository.dart';
+import '../../../../core/providers/core_providers.dart';
 
 part 'bookings_controller.g.dart';
 
@@ -204,7 +205,7 @@ class ModifyBookingRequest {
 /// Provider for the remote datasource
 final bookingsRemoteDataSourceProvider = Provider<BookingsRemoteDataSource>(
   (ref) => BookingsRemoteDataSourceImpl(
-    client: GraphQLClientConfig.client,
+    client: ref.watch(gqlClientProvider),
   ),
 );
 

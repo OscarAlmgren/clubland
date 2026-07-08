@@ -22,6 +22,7 @@ import '../../domain/usecases/get_events.dart';
 import '../../domain/usecases/get_finding_friends_subgroups.dart';
 import '../../domain/usecases/get_my_rsvps.dart';
 import '../../domain/usecases/update_rsvp.dart';
+import '../../../../core/providers/core_providers.dart';
 
 part 'events_controller.g.dart';
 
@@ -32,7 +33,7 @@ part 'events_controller.g.dart';
 /// Provider for the events remote datasource
 final eventsRemoteDataSourceProvider = Provider<EventsRemoteDataSource>(
   (ref) => EventsRemoteDataSourceImpl(
-    client: GraphQLClientConfig.client,
+    client: ref.watch(gqlClientProvider),
   ),
 );
 

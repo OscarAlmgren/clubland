@@ -5,14 +5,12 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/graphql/graphql_api.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../../../../core/storage/secure_storage.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_datasource.dart';
 import '../datasources/auth_remote_datasource.dart';
-import '../datasources/passkey_service.dart';
 
 /// Implementation of AuthRepository
 class AuthRepositoryImpl implements AuthRepository {
@@ -20,14 +18,9 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({
     required SecureStorageService secureStorage,
     required Logger logger,
-    AuthRemoteDataSource? remoteDataSource,
+    required AuthRemoteDataSource remoteDataSource,
     AuthLocalDataSource? localDataSource,
-  }) : _remoteDataSource = remoteDataSource ??
-           AuthRemoteDataSourceImpl(
-             graphqlClient: GraphQLClientConfig.client,
-             logger: logger,
-             passkeyService: PasskeyService(logger: logger),
-           ),
+  }) : _remoteDataSource = remoteDataSource,
        _localDataSource = localDataSource ?? AuthLocalDataSourceImpl(),
        _secureStorage = secureStorage,
        _logger = logger,

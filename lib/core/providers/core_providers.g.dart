@@ -391,17 +391,17 @@ final class CacheManagerProvider
 
 String _$cacheManagerHash() => r'707ae21ffa49764701a09ba9c68ce257eafcc598';
 
-/// GraphQL Client provider
+/// GraphQL Client provider — initializes the client and exposes it.
 
 @ProviderFor(graphqlClient)
 const graphqlClientProvider = GraphqlClientProvider._();
 
-/// GraphQL Client provider
+/// GraphQL Client provider — initializes the client and exposes it.
 
 final class GraphqlClientProvider
     extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
     with $FutureModifier<void>, $FutureProvider<void> {
-  /// GraphQL Client provider
+  /// GraphQL Client provider — initializes the client and exposes it.
   const GraphqlClientProvider._()
     : super(
         from: null,
@@ -427,7 +427,68 @@ final class GraphqlClientProvider
   }
 }
 
-String _$graphqlClientHash() => r'ff60462c402a255942c54fcc208ad63aeb3b7028';
+String _$graphqlClientHash() => r'f9055837ab9aa013fd1ffbd671f08641ae7ab47e';
+
+/// Synchronous access to the initialized GraphQL client.
+///
+/// The single sanctioned bridge to [GraphQLClientConfig.client] — feature
+/// datasource/repository providers must depend on this provider instead of
+/// touching the static directly, so the client can be overridden in tests
+/// and eventually constructed here outright.
+
+@ProviderFor(gqlClient)
+const gqlClientProvider = GqlClientProvider._();
+
+/// Synchronous access to the initialized GraphQL client.
+///
+/// The single sanctioned bridge to [GraphQLClientConfig.client] — feature
+/// datasource/repository providers must depend on this provider instead of
+/// touching the static directly, so the client can be overridden in tests
+/// and eventually constructed here outright.
+
+final class GqlClientProvider
+    extends $FunctionalProvider<GraphQLClient, GraphQLClient, GraphQLClient>
+    with $Provider<GraphQLClient> {
+  /// Synchronous access to the initialized GraphQL client.
+  ///
+  /// The single sanctioned bridge to [GraphQLClientConfig.client] — feature
+  /// datasource/repository providers must depend on this provider instead of
+  /// touching the static directly, so the client can be overridden in tests
+  /// and eventually constructed here outright.
+  const GqlClientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'gqlClientProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$gqlClientHash();
+
+  @$internal
+  @override
+  $ProviderElement<GraphQLClient> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  GraphQLClient create(Ref ref) {
+    return gqlClient(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GraphQLClient value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GraphQLClient>(value),
+    );
+  }
+}
+
+String _$gqlClientHash() => r'6773212ddd27cbecdb4ed3b2395afcc61b84766d';
 
 /// Connectivity Stream provider
 
