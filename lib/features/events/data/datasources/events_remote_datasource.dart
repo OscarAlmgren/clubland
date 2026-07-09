@@ -2,6 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
+import '../../../../core/graphql/graphql_api.dart';
 import '../models/cancel_rsvp_response_model.dart';
 import '../models/event_model.dart';
 import '../models/event_rsvp_model.dart';
@@ -54,12 +55,6 @@ abstract class EventsRemoteDataSource {
   Future<List<FindingFriendsSubgroupModel>> getFindingFriendsSubgroups({
     required String clubId,
   });
-
-  /// Subscribe to RSVP updates for an event
-  Stream<EventRSVPModel> subscribeToRSVPUpdates(String eventId);
-
-  /// Subscribe to event capacity updates
-  Stream<Map<String, dynamic>> subscribeToEventCapacity(String eventId);
 }
 
 /// Implementation of events remote data source using GraphQL
@@ -81,66 +76,19 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     _logger.d('Fetching events for club: $clubId, page: $page');
 
     try {
-      const query = r'''
-        query GetEvents($clubId: ID!, $filters: EventFilters, $pagination: PaginationInput!) {
-          events(clubId: $clubId, filters: $filters, pagination: $pagination) {
-            edges {
-              node {
-                id
-                clubId
-                title
-                description
-                eventType
-                startTime
-                endTime
-                location
-                imageUrl
-                capacity
-                currentAttendees
-                availableSpots
-                tentativeCount
-                waitlistCount
-                guestPolicy
-                maxGuestsPerMember
-                requiresApproval
-                requiresPayment
-                price
-                cancellationDeadline
-                freeCancellationDays
-                cancellationFeePercentage
-                allowsSubgroupPriority
-                fullHouseExclusive
-                rsvpDeadline
-                subgroupId
-                organizerName
-                contactEmail
-                contactPhone
-                paymentInstructions
-                createdAt
-                updatedAt
-              }
-            }
-            pageInfo {
-              hasNextPage
-              hasPreviousPage
-              startCursor
-              endCursor
-            }
-            totalCount
-          }
-        }
-      ''';
-
-      final variables = {
-        'clubId': clubId,
-        'filters': filters,
+      // Schema: events(pagination, status, type, startDate, endDate) —
+      // club scoping comes from the auth context, not an argument.
+      final variables = <String, dynamic>{
         'pagination': {'page': page, 'pageSize': pageSize},
+        if (filters?['status'] != null) 'status': filters!['status'],
+        if (filters?['type'] != null) 'type': filters!['type'],
+        if (filters?['startDate'] != null) 'startDate': filters!['startDate'],
+        if (filters?['endDate'] != null) 'endDate': filters!['endDate'],
       };
 
-      // Execute query with direct client call
       final result = await _client.query(
         QueryOptions(
-          document: gql(query),
+          document: documentNodeQueryGetEvents,
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
@@ -159,7 +107,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         );
       }
 
-      return data as Map<String, dynamic>;
+      return _toLegacyConnection(data as Map<String, dynamic>);
     } on app_exceptions.NetworkException {
       rethrow;
     } on Exception catch (e) {
@@ -176,49 +124,9 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     _logger.d('Fetching event by ID: $eventId');
 
     try {
-      const query = r'''
-        query GetEvent($id: ID!) {
-          event(id: $id) {
-            id
-            clubId
-            title
-            description
-            eventType
-            startTime
-            endTime
-            location
-            imageUrl
-            capacity
-            currentAttendees
-            availableSpots
-            tentativeCount
-            waitlistCount
-            guestPolicy
-            maxGuestsPerMember
-            requiresApproval
-            requiresPayment
-            price
-            cancellationDeadline
-            freeCancellationDays
-            cancellationFeePercentage
-            allowsSubgroupPriority
-            fullHouseExclusive
-            rsvpDeadline
-            subgroupId
-            organizerName
-            contactEmail
-            contactPhone
-            paymentInstructions
-            createdAt
-            updatedAt
-          }
-        }
-      ''';
-
-      // Execute query with direct client call
       final result = await _client.query(
         QueryOptions(
-          document: gql(query),
+          document: documentNodeQueryGetEvent,
           variables: {'id': eventId},
           fetchPolicy: FetchPolicy.cacheFirst,
         ),
@@ -258,28 +166,10 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     );
 
     try {
-      const query = r'''
-        query CheckRSVPEligibility($eventId: ID!, $memberId: ID!) {
-          checkRSVPEligibility(eventId: $eventId, memberId: $memberId) {
-            eligible
-            reason
-            memberInGoodStanding
-            hasOutstandingDebt
-            debtAmount
-            wouldBeWaitlisted
-            estimatedWaitlistPosition
-            availableSpots
-            priority
-            requiresApproval
-            isSubgroupMember
-          }
-        }
-      ''';
-
       // Execute query with direct client call
       final result = await _client.query(
         QueryOptions(
-          document: gql(query),
+          document: documentNodeQueryCheckRSVPEligibility,
           variables: {'eventId': eventId, 'memberId': memberId},
           fetchPolicy: FetchPolicy.networkOnly,
         ),
@@ -318,42 +208,11 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     _logger.d('Creating RSVP with input: $input');
 
     try {
-      const mutation = r'''
-        mutation CreateRSVP($input: CreateRSVPInput!) {
-          createRSVP(input: $input) {
-            id
-            eventId
-            memberId
-            clubId
-            response
-            rsvpType
-            priority
-            attendanceCount
-            guestNames
-            dietaryRestrictions
-            seatingPreferences
-            specialRequests
-            status
-            paymentRequired
-            paymentVerified
-            paymentAmount
-            cancellationFee
-            feeWaived
-            waitlistPosition
-            rsvpedAt
-            updatedAt
-            cancelledAt
-            cancellationReason
-            approvedBy
-            approvedAt
-            declineReason
-          }
-        }
-      ''';
-
-      // Execute mutation with direct client call
       final result = await _client.mutate(
-        MutationOptions(document: gql(mutation), variables: {'input': input}),
+        MutationOptions(
+          document: documentNodeMutationCreateRSVP,
+          variables: {'input': input},
+        ),
       );
 
       if (result.hasException) {
@@ -361,7 +220,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         throw _handleGraphQLException(result.exception!);
       }
 
-      final data = result.data?['createRSVP'];
+      final data = result.data?['createEventRSVP'];
       if (data == null) {
         throw const app_exceptions.NetworkException(
           'No RSVP data received',
@@ -389,43 +248,9 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     _logger.d('Updating RSVP: $rsvpId with input: $input');
 
     try {
-      const mutation = r'''
-        mutation UpdateRSVP($id: ID!, $input: UpdateRSVPInput!) {
-          updateRSVP(id: $id, input: $input) {
-            id
-            eventId
-            memberId
-            clubId
-            response
-            rsvpType
-            priority
-            attendanceCount
-            guestNames
-            dietaryRestrictions
-            seatingPreferences
-            specialRequests
-            status
-            paymentRequired
-            paymentVerified
-            paymentAmount
-            cancellationFee
-            feeWaived
-            waitlistPosition
-            rsvpedAt
-            updatedAt
-            cancelledAt
-            cancellationReason
-            approvedBy
-            approvedAt
-            declineReason
-          }
-        }
-      ''';
-
-      // Execute mutation with direct client call
       final result = await _client.mutate(
         MutationOptions(
-          document: gql(mutation),
+          document: documentNodeMutationUpdateRSVP,
           variables: {'id': rsvpId, 'input': input},
         ),
       );
@@ -435,7 +260,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         throw _handleGraphQLException(result.exception!);
       }
 
-      final data = result.data?['updateRSVP'];
+      final data = result.data?['updateEventRSVP'];
       if (data == null) {
         throw const app_exceptions.NetworkException(
           'No RSVP data received',
@@ -463,21 +288,14 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     _logger.d('Cancelling RSVP: $rsvpId, reason: $reason');
 
     try {
-      const mutation = r'''
-        mutation CancelRSVP($id: ID!) {
-          cancelRSVP(id: $id) {
-            success
-            message
-            cancellationFee
-            refundAmount
-            feeWaived
-          }
-        }
-      ''';
-
-      // Execute mutation with direct client call
       final result = await _client.mutate(
-        MutationOptions(document: gql(mutation), variables: {'id': rsvpId}),
+        MutationOptions(
+          document: documentNodeMutationCancelRSVP,
+          variables: {
+            'id': rsvpId,
+            'reason': reason ?? 'Cancelled by member',
+          },
+        ),
       );
 
       if (result.hasException) {
@@ -485,7 +303,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         throw _handleGraphQLException(result.exception!);
       }
 
-      final data = result.data?['cancelRSVP'];
+      final data = result.data?['cancelEventRSVP'];
       if (data == null) {
         throw const app_exceptions.NetworkException(
           'No cancellation response received',
@@ -493,7 +311,15 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         );
       }
 
-      return CancelRSVPResponseModel.fromJson(data as Map<String, dynamic>);
+      // cancelEventRSVP returns the cancelled EventRSVP, not a
+      // success/message wrapper — derive the response from its status.
+      final rsvp = data as Map<String, dynamic>;
+      return CancelRSVPResponseModel(
+        success: (rsvp['status'] as String?)?.toUpperCase() == 'CANCELLED',
+        message: rsvp['cancellationReason'] as String? ?? '',
+        cancellationFee: (rsvp['cancellationFee'] as num?)?.toDouble(),
+        feeWaived: rsvp['feeWaived'] as bool? ?? false,
+      );
     } on app_exceptions.NetworkException {
       rethrow;
     } on Exception catch (e) {
@@ -515,57 +341,17 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     _logger.d('Fetching my RSVPs for club: $clubId, page: $page');
 
     try {
-      const query = r'''
-        query MyRSVPs($clubId: ID!, $status: [RSVPStatus!], $pagination: PaginationInput!) {
-          myRSVPs(clubId: $clubId, status: $status, pagination: $pagination) {
-            edges {
-              node {
-                id
-                eventId
-                memberId
-                clubId
-                response
-                rsvpType
-                priority
-                attendanceCount
-                guestNames
-                dietaryRestrictions
-                seatingPreferences
-                specialRequests
-                status
-                paymentRequired
-                paymentVerified
-                paymentAmount
-                cancellationFee
-                feeWaived
-                waitlistPosition
-                rsvpedAt
-                updatedAt
-                cancelledAt
-                cancellationReason
-              }
-            }
-            pageInfo {
-              hasNextPage
-              hasPreviousPage
-              startCursor
-              endCursor
-            }
-            totalCount
-          }
-        }
-      ''';
-
-      final variables = {
-        'clubId': clubId,
-        'status': statusFilter,
+      // Schema: myEventRSVPs(pagination, status) — single status filter,
+      // club scoping via auth context.
+      final variables = <String, dynamic>{
         'pagination': {'page': page, 'pageSize': pageSize},
+        if (statusFilter != null && statusFilter.isNotEmpty)
+          'status': statusFilter.first,
       };
 
-      // Execute query with direct client call
       final result = await _client.query(
         QueryOptions(
-          document: gql(query),
+          document: documentNodeQueryMyRSVPs,
           variables: variables,
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
@@ -576,7 +362,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         throw _handleGraphQLException(result.exception!);
       }
 
-      final data = result.data?['myRSVPs'];
+      final data = result.data?['myEventRSVPs'];
       if (data == null) {
         throw const app_exceptions.NetworkException(
           'No RSVPs data received',
@@ -584,7 +370,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
         );
       }
 
-      return data as Map<String, dynamic>;
+      return _toLegacyConnection(data as Map<String, dynamic>);
     } on app_exceptions.NetworkException {
       rethrow;
     } on Exception catch (e) {
@@ -603,25 +389,10 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     _logger.d('Fetching Finding Friends subgroups for club: $clubId');
 
     try {
-      const query = r'''
-        query FindingFriendsSubgroups($clubId: ID!) {
-          findingFriendsSubgroups(clubId: $clubId) {
-            id
-            clubId
-            name
-            description
-            memberCount
-            isActive
-            organizerId
-            organizerName
-          }
-        }
-      ''';
-
       // Execute query with direct client call
       final result = await _client.query(
         QueryOptions(
-          document: gql(query),
+          document: documentNodeQueryFindingFriendsSubgroups,
           variables: {'clubId': clubId},
           fetchPolicy: FetchPolicy.cacheFirst,
         ),
@@ -656,94 +427,28 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     }
   }
 
-  @override
-  Stream<EventRSVPModel> subscribeToRSVPUpdates(String eventId) {
-    _logger.d('Subscribing to RSVP updates for event: $eventId');
-
-    const subscription = r'''
-      subscription RSVPUpdated($eventId: ID!) {
-        rsvpUpdated(eventId: $eventId) {
-          id
-          eventId
-          memberId
-          clubId
-          response
-          rsvpType
-          priority
-          attendanceCount
-          status
-          rsvpedAt
-          updatedAt
-        }
-      }
-    ''';
-
-    return _client
-        .subscribe(
-          SubscriptionOptions(
-            document: gql(subscription),
-            variables: {'eventId': eventId},
-          ),
-        )
-        .map((result) {
-          if (result.hasException) {
-            _logger.e('GraphQL subscription error', error: result.exception);
-            throw _handleGraphQLException(result.exception!);
-          }
-
-          final data = result.data?['rsvpUpdated'];
-          if (data == null) {
-            throw const app_exceptions.NetworkException(
-              'No RSVP update data received',
-              'NO_DATA',
-            );
-          }
-
-          return EventRSVPModel.fromJson(data as Map<String, dynamic>);
-        });
-  }
-
-  @override
-  Stream<Map<String, dynamic>> subscribeToEventCapacity(String eventId) {
-    _logger.d('Subscribing to capacity updates for event: $eventId');
-
-    const subscription = r'''
-      subscription EventCapacityUpdated($eventId: ID!) {
-        eventCapacityUpdated(eventId: $eventId) {
-          eventId
-          availableSpots
-          currentAttendees
-          waitlistCount
-        }
-      }
-    ''';
-
-    return _client
-        .subscribe(
-          SubscriptionOptions(
-            document: gql(subscription),
-            variables: {'eventId': eventId},
-          ),
-        )
-        .map((result) {
-          if (result.hasException) {
-            _logger.e('GraphQL subscription error', error: result.exception);
-            throw _handleGraphQLException(result.exception!);
-          }
-
-          final data = result.data?['eventCapacityUpdated'];
-          if (data == null) {
-            throw const app_exceptions.NetworkException(
-              'No capacity update data received',
-              'NO_DATA',
-            );
-          }
-
-          return data as Map<String, dynamic>;
-        });
-  }
 
   /// Handle GraphQL exceptions and convert to NetworkException
+
+  /// Adapts the schema's {nodes, pageInfo} connection to the legacy
+  /// {edges: [{node}], pageInfo, totalCount} shape the repository parses.
+  Map<String, dynamic> _toLegacyConnection(Map<String, dynamic> connection) {
+    final nodes = connection['nodes'] as List<dynamic>? ?? [];
+    final pageInfo = connection['pageInfo'] as Map<String, dynamic>? ?? {};
+    return {
+      'edges': [
+        for (final node in nodes) {'node': node},
+      ],
+      'pageInfo': {
+        'hasNextPage': pageInfo['hasNextPage'] as bool? ?? false,
+        'hasPreviousPage': pageInfo['hasPrevPage'] as bool? ?? false,
+        'startCursor': null,
+        'endCursor': null,
+      },
+      'totalCount': pageInfo['total'] as int? ?? 0,
+    };
+  }
+
   app_exceptions.NetworkException _handleGraphQLException(
     OperationException exception,
   ) {

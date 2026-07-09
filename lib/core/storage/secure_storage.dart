@@ -37,10 +37,10 @@ abstract class SecureStorage {
   Future<Map<String, String>> readAll();
 }
 
-/// Default platform-hardened storage: encrypted shared preferences on
-/// Android, first-unlock-this-device accessibility on iOS/macOS.
+/// Default platform-hardened storage: encrypted by default on Android
+/// (v10+ uses its own ciphers; the old encryptedSharedPreferences flag is
+/// deprecated and ignored), first-unlock-this-device accessibility on iOS.
 const FlutterSecureStorage _defaultSecureStorage = FlutterSecureStorage(
-  aOptions: AndroidOptions(encryptedSharedPreferences: true),
   iOptions: IOSOptions(
     accessibility: KeychainAccessibility.first_unlock_this_device,
   ),

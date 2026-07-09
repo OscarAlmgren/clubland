@@ -45,7 +45,7 @@ class EventModel extends EventEntity {
       id: json['id'] as String,
       clubId: json['clubId'] as String,
       title: json['title'] as String,
-      description: json['description'] as String,
+      description: json['description'] as String? ?? '',
       eventType: fromJson$Enum$ClubEventType(json['eventType'] as String),
       startTime: DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
@@ -54,7 +54,9 @@ class EventModel extends EventEntity {
       capacity: json['capacity'] as int?,
       currentAttendees: json['currentAttendees'] as int?,
       availableSpots: json['availableSpots'] as int? ?? 0,
-      guestPolicy: fromJson$Enum$GuestPolicy(json['guestPolicy'] as String),
+      guestPolicy: json['guestPolicy'] != null
+          ? fromJson$Enum$GuestPolicy(json['guestPolicy'] as String)
+          : Enum$GuestPolicy.$unknown,
       maxGuestsPerMember: json['maxGuestsPerMember'] as int?,
       requiresApproval: json['requiresApproval'] as bool?,
       requiresPayment: json['requiresPayment'] as bool?,

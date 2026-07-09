@@ -75,6 +75,17 @@ export '../../graphql/facilities/facility.graphql.dart';
 // =================================================================
 // CLUB OPERATIONS
 // =================================================================
+// =================================================================
+// EVENT & RSVP OPERATIONS
+// =================================================================
+export '../../graphql/events/cancel_rsvp.graphql.dart';
+export '../../graphql/events/check_rsvp_eligibility.graphql.dart';
+export '../../graphql/events/create_rsvp.graphql.dart';
+export '../../graphql/events/finding_friends_subgroups.graphql.dart';
+export '../../graphql/events/get_event.graphql.dart';
+export '../../graphql/events/get_events.graphql.dart';
+export '../../graphql/events/my_rsvps.graphql.dart';
+export '../../graphql/events/update_rsvp.graphql.dart';
 export '../../graphql/clubs/check_in.graphql.dart';
 export '../../graphql/clubs/club.graphql.dart';
 export '../../graphql/clubs/featured_clubs.graphql.dart';

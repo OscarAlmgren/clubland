@@ -50,9 +50,8 @@ void main() {
 
     final mockEventsData = {
       'events': {
-        'edges': [
+        'nodes': [
           {
-            'node': {
               'id': 'event1',
               'clubId': clubId,
               'title': 'Summer Gala',
@@ -85,16 +84,16 @@ void main() {
               'paymentInstructions': 'Pay at the door',
               'createdAt': '2024-06-01T10:00:00Z',
               'updatedAt': '2024-06-01T10:00:00Z',
-            },
           },
         ],
         'pageInfo': {
+          'page': 1,
+          'pageSize': 20,
+          'total': 10,
+          'totalPages': 1,
           'hasNextPage': true,
-          'hasPreviousPage': false,
-          'startCursor': 'cursor1',
-          'endCursor': 'cursor2',
+          'hasPrevPage': false,
         },
-        'totalCount': 10,
       },
     };
 
@@ -327,7 +326,7 @@ void main() {
     };
 
     final mockRSVPData = {
-      'createRSVP': {
+      'createEventRSVP': {
         'id': 'rsvp123',
         'eventId': 'event123',
         'memberId': 'member123',
@@ -407,11 +406,12 @@ void main() {
     const rsvpId = 'rsvp123';
 
     final mockCancelData = {
-      'cancelRSVP': {
-        'success': true,
-        'message': 'RSVP cancelled successfully',
+      'cancelEventRSVP': {
+        'id': rsvpId,
+        'status': 'CANCELLED',
+        'cancellationReason': 'RSVP cancelled successfully',
+        'cancelledAt': '2024-06-16T10:00:00Z',
         'cancellationFee': 25.0,
-        'refundAmount': null,
         'feeWaived': false,
       },
     };
@@ -439,11 +439,12 @@ void main() {
     test('should return free cancellation when within deadline', () async {
       // Arrange
       final freeCancelData = {
-        'cancelRSVP': {
-          'success': true,
-          'message': 'RSVP cancelled successfully - no fee',
+        'cancelEventRSVP': {
+          'id': rsvpId,
+          'status': 'CANCELLED',
+          'cancellationReason': 'RSVP cancelled successfully - no fee',
+          'cancelledAt': '2024-06-16T10:00:00Z',
           'cancellationFee': 0.0,
-          'refundAmount': null,
           'feeWaived': true,
         },
       };

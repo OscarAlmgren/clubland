@@ -451,13 +451,6 @@ const documentNodeQueryGetEvents = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'name'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
                         name: NameNode(value: 'title'),
                         alias: null,
                         arguments: [],
@@ -466,13 +459,6 @@ const documentNodeQueryGetEvents = DocumentNode(
                       ),
                       FieldNode(
                         name: NameNode(value: 'description'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'type'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -549,6 +535,20 @@ const documentNodeQueryGetEvents = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'guestPolicy'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'maxGuestsPerMember'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'requiresApproval'),
                         alias: null,
                         arguments: [],
@@ -577,7 +577,42 @@ const documentNodeQueryGetEvents = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'freeCancellationDays'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'cancellationFeePercentage'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'allowsSubgroupPriority'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'fullHouseExclusive'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'rsvpDeadline'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'subgroupId'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -1039,10 +1074,8 @@ class Query$GetEvents$events$nodes {
   Query$GetEvents$events$nodes({
     required this.id,
     required this.clubId,
-    required this.name,
     required this.title,
     this.description,
-    required this.type,
     required this.eventType,
     required this.startTime,
     required this.endTime,
@@ -1053,11 +1086,18 @@ class Query$GetEvents$events$nodes {
     this.availableSpots,
     this.tentativeCount,
     this.waitlistCount,
+    this.guestPolicy,
+    this.maxGuestsPerMember,
     required this.requiresApproval,
     this.requiresPayment,
     this.price,
     this.cancellationDeadline,
+    this.freeCancellationDays,
+    this.cancellationFeePercentage,
+    this.allowsSubgroupPriority,
+    this.fullHouseExclusive,
     this.rsvpDeadline,
+    this.subgroupId,
     this.organizerName,
     this.contactEmail,
     this.contactPhone,
@@ -1070,10 +1110,8 @@ class Query$GetEvents$events$nodes {
   factory Query$GetEvents$events$nodes.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
     final l$clubId = json['clubId'];
-    final l$name = json['name'];
     final l$title = json['title'];
     final l$description = json['description'];
-    final l$type = json['type'];
     final l$eventType = json['eventType'];
     final l$startTime = json['startTime'];
     final l$endTime = json['endTime'];
@@ -1084,11 +1122,18 @@ class Query$GetEvents$events$nodes {
     final l$availableSpots = json['availableSpots'];
     final l$tentativeCount = json['tentativeCount'];
     final l$waitlistCount = json['waitlistCount'];
+    final l$guestPolicy = json['guestPolicy'];
+    final l$maxGuestsPerMember = json['maxGuestsPerMember'];
     final l$requiresApproval = json['requiresApproval'];
     final l$requiresPayment = json['requiresPayment'];
     final l$price = json['price'];
     final l$cancellationDeadline = json['cancellationDeadline'];
+    final l$freeCancellationDays = json['freeCancellationDays'];
+    final l$cancellationFeePercentage = json['cancellationFeePercentage'];
+    final l$allowsSubgroupPriority = json['allowsSubgroupPriority'];
+    final l$fullHouseExclusive = json['fullHouseExclusive'];
     final l$rsvpDeadline = json['rsvpDeadline'];
+    final l$subgroupId = json['subgroupId'];
     final l$organizerName = json['organizerName'];
     final l$contactEmail = json['contactEmail'];
     final l$contactPhone = json['contactPhone'];
@@ -1099,10 +1144,8 @@ class Query$GetEvents$events$nodes {
     return Query$GetEvents$events$nodes(
       id: (l$id as String),
       clubId: (l$clubId as String),
-      name: (l$name as String),
       title: (l$title as String),
       description: (l$description as String?),
-      type: fromJson$Enum$ClubEventType((l$type as String)),
       eventType: fromJson$Enum$ClubEventType((l$eventType as String)),
       startTime: DateTime.parse((l$startTime as String)),
       endTime: DateTime.parse((l$endTime as String)),
@@ -1113,15 +1156,25 @@ class Query$GetEvents$events$nodes {
       availableSpots: (l$availableSpots as int?),
       tentativeCount: (l$tentativeCount as int?),
       waitlistCount: (l$waitlistCount as int?),
+      guestPolicy: l$guestPolicy == null
+          ? null
+          : fromJson$Enum$GuestPolicy((l$guestPolicy as String)),
+      maxGuestsPerMember: (l$maxGuestsPerMember as int?),
       requiresApproval: (l$requiresApproval as bool),
       requiresPayment: (l$requiresPayment as bool?),
       price: (l$price as num?)?.toDouble(),
       cancellationDeadline: l$cancellationDeadline == null
           ? null
           : DateTime.parse((l$cancellationDeadline as String)),
+      freeCancellationDays: (l$freeCancellationDays as int?),
+      cancellationFeePercentage: (l$cancellationFeePercentage as num?)
+          ?.toDouble(),
+      allowsSubgroupPriority: (l$allowsSubgroupPriority as bool?),
+      fullHouseExclusive: (l$fullHouseExclusive as bool?),
       rsvpDeadline: l$rsvpDeadline == null
           ? null
           : DateTime.parse((l$rsvpDeadline as String)),
+      subgroupId: (l$subgroupId as String?),
       organizerName: (l$organizerName as String?),
       contactEmail: (l$contactEmail as String?),
       contactPhone: (l$contactPhone as String?),
@@ -1136,13 +1189,9 @@ class Query$GetEvents$events$nodes {
 
   final String clubId;
 
-  final String name;
-
   final String title;
 
   final String? description;
-
-  final Enum$ClubEventType type;
 
   final Enum$ClubEventType eventType;
 
@@ -1164,6 +1213,10 @@ class Query$GetEvents$events$nodes {
 
   final int? waitlistCount;
 
+  final Enum$GuestPolicy? guestPolicy;
+
+  final int? maxGuestsPerMember;
+
   final bool requiresApproval;
 
   final bool? requiresPayment;
@@ -1172,7 +1225,17 @@ class Query$GetEvents$events$nodes {
 
   final DateTime? cancellationDeadline;
 
+  final int? freeCancellationDays;
+
+  final double? cancellationFeePercentage;
+
+  final bool? allowsSubgroupPriority;
+
+  final bool? fullHouseExclusive;
+
   final DateTime? rsvpDeadline;
+
+  final String? subgroupId;
 
   final String? organizerName;
 
@@ -1194,14 +1257,10 @@ class Query$GetEvents$events$nodes {
     _resultData['id'] = l$id;
     final l$clubId = clubId;
     _resultData['clubId'] = l$clubId;
-    final l$name = name;
-    _resultData['name'] = l$name;
     final l$title = title;
     _resultData['title'] = l$title;
     final l$description = description;
     _resultData['description'] = l$description;
-    final l$type = type;
-    _resultData['type'] = toJson$Enum$ClubEventType(l$type);
     final l$eventType = eventType;
     _resultData['eventType'] = toJson$Enum$ClubEventType(l$eventType);
     final l$startTime = startTime;
@@ -1222,6 +1281,12 @@ class Query$GetEvents$events$nodes {
     _resultData['tentativeCount'] = l$tentativeCount;
     final l$waitlistCount = waitlistCount;
     _resultData['waitlistCount'] = l$waitlistCount;
+    final l$guestPolicy = guestPolicy;
+    _resultData['guestPolicy'] = l$guestPolicy == null
+        ? null
+        : toJson$Enum$GuestPolicy(l$guestPolicy);
+    final l$maxGuestsPerMember = maxGuestsPerMember;
+    _resultData['maxGuestsPerMember'] = l$maxGuestsPerMember;
     final l$requiresApproval = requiresApproval;
     _resultData['requiresApproval'] = l$requiresApproval;
     final l$requiresPayment = requiresPayment;
@@ -1231,8 +1296,18 @@ class Query$GetEvents$events$nodes {
     final l$cancellationDeadline = cancellationDeadline;
     _resultData['cancellationDeadline'] = l$cancellationDeadline
         ?.toIso8601String();
+    final l$freeCancellationDays = freeCancellationDays;
+    _resultData['freeCancellationDays'] = l$freeCancellationDays;
+    final l$cancellationFeePercentage = cancellationFeePercentage;
+    _resultData['cancellationFeePercentage'] = l$cancellationFeePercentage;
+    final l$allowsSubgroupPriority = allowsSubgroupPriority;
+    _resultData['allowsSubgroupPriority'] = l$allowsSubgroupPriority;
+    final l$fullHouseExclusive = fullHouseExclusive;
+    _resultData['fullHouseExclusive'] = l$fullHouseExclusive;
     final l$rsvpDeadline = rsvpDeadline;
     _resultData['rsvpDeadline'] = l$rsvpDeadline?.toIso8601String();
+    final l$subgroupId = subgroupId;
+    _resultData['subgroupId'] = l$subgroupId;
     final l$organizerName = organizerName;
     _resultData['organizerName'] = l$organizerName;
     final l$contactEmail = contactEmail;
@@ -1254,10 +1329,8 @@ class Query$GetEvents$events$nodes {
   int get hashCode {
     final l$id = id;
     final l$clubId = clubId;
-    final l$name = name;
     final l$title = title;
     final l$description = description;
-    final l$type = type;
     final l$eventType = eventType;
     final l$startTime = startTime;
     final l$endTime = endTime;
@@ -1268,11 +1341,18 @@ class Query$GetEvents$events$nodes {
     final l$availableSpots = availableSpots;
     final l$tentativeCount = tentativeCount;
     final l$waitlistCount = waitlistCount;
+    final l$guestPolicy = guestPolicy;
+    final l$maxGuestsPerMember = maxGuestsPerMember;
     final l$requiresApproval = requiresApproval;
     final l$requiresPayment = requiresPayment;
     final l$price = price;
     final l$cancellationDeadline = cancellationDeadline;
+    final l$freeCancellationDays = freeCancellationDays;
+    final l$cancellationFeePercentage = cancellationFeePercentage;
+    final l$allowsSubgroupPriority = allowsSubgroupPriority;
+    final l$fullHouseExclusive = fullHouseExclusive;
     final l$rsvpDeadline = rsvpDeadline;
+    final l$subgroupId = subgroupId;
     final l$organizerName = organizerName;
     final l$contactEmail = contactEmail;
     final l$contactPhone = contactPhone;
@@ -1283,10 +1363,8 @@ class Query$GetEvents$events$nodes {
     return Object.hashAll([
       l$id,
       l$clubId,
-      l$name,
       l$title,
       l$description,
-      l$type,
       l$eventType,
       l$startTime,
       l$endTime,
@@ -1297,11 +1375,18 @@ class Query$GetEvents$events$nodes {
       l$availableSpots,
       l$tentativeCount,
       l$waitlistCount,
+      l$guestPolicy,
+      l$maxGuestsPerMember,
       l$requiresApproval,
       l$requiresPayment,
       l$price,
       l$cancellationDeadline,
+      l$freeCancellationDays,
+      l$cancellationFeePercentage,
+      l$allowsSubgroupPriority,
+      l$fullHouseExclusive,
       l$rsvpDeadline,
+      l$subgroupId,
       l$organizerName,
       l$contactEmail,
       l$contactPhone,
@@ -1331,11 +1416,6 @@ class Query$GetEvents$events$nodes {
     if (l$clubId != lOther$clubId) {
       return false;
     }
-    final l$name = name;
-    final lOther$name = other.name;
-    if (l$name != lOther$name) {
-      return false;
-    }
     final l$title = title;
     final lOther$title = other.title;
     if (l$title != lOther$title) {
@@ -1344,11 +1424,6 @@ class Query$GetEvents$events$nodes {
     final l$description = description;
     final lOther$description = other.description;
     if (l$description != lOther$description) {
-      return false;
-    }
-    final l$type = type;
-    final lOther$type = other.type;
-    if (l$type != lOther$type) {
       return false;
     }
     final l$eventType = eventType;
@@ -1401,6 +1476,16 @@ class Query$GetEvents$events$nodes {
     if (l$waitlistCount != lOther$waitlistCount) {
       return false;
     }
+    final l$guestPolicy = guestPolicy;
+    final lOther$guestPolicy = other.guestPolicy;
+    if (l$guestPolicy != lOther$guestPolicy) {
+      return false;
+    }
+    final l$maxGuestsPerMember = maxGuestsPerMember;
+    final lOther$maxGuestsPerMember = other.maxGuestsPerMember;
+    if (l$maxGuestsPerMember != lOther$maxGuestsPerMember) {
+      return false;
+    }
     final l$requiresApproval = requiresApproval;
     final lOther$requiresApproval = other.requiresApproval;
     if (l$requiresApproval != lOther$requiresApproval) {
@@ -1421,9 +1506,34 @@ class Query$GetEvents$events$nodes {
     if (l$cancellationDeadline != lOther$cancellationDeadline) {
       return false;
     }
+    final l$freeCancellationDays = freeCancellationDays;
+    final lOther$freeCancellationDays = other.freeCancellationDays;
+    if (l$freeCancellationDays != lOther$freeCancellationDays) {
+      return false;
+    }
+    final l$cancellationFeePercentage = cancellationFeePercentage;
+    final lOther$cancellationFeePercentage = other.cancellationFeePercentage;
+    if (l$cancellationFeePercentage != lOther$cancellationFeePercentage) {
+      return false;
+    }
+    final l$allowsSubgroupPriority = allowsSubgroupPriority;
+    final lOther$allowsSubgroupPriority = other.allowsSubgroupPriority;
+    if (l$allowsSubgroupPriority != lOther$allowsSubgroupPriority) {
+      return false;
+    }
+    final l$fullHouseExclusive = fullHouseExclusive;
+    final lOther$fullHouseExclusive = other.fullHouseExclusive;
+    if (l$fullHouseExclusive != lOther$fullHouseExclusive) {
+      return false;
+    }
     final l$rsvpDeadline = rsvpDeadline;
     final lOther$rsvpDeadline = other.rsvpDeadline;
     if (l$rsvpDeadline != lOther$rsvpDeadline) {
+      return false;
+    }
+    final l$subgroupId = subgroupId;
+    final lOther$subgroupId = other.subgroupId;
+    if (l$subgroupId != lOther$subgroupId) {
       return false;
     }
     final l$organizerName = organizerName;
@@ -1483,10 +1593,8 @@ abstract class CopyWith$Query$GetEvents$events$nodes<TRes> {
   TRes call({
     String? id,
     String? clubId,
-    String? name,
     String? title,
     String? description,
-    Enum$ClubEventType? type,
     Enum$ClubEventType? eventType,
     DateTime? startTime,
     DateTime? endTime,
@@ -1497,11 +1605,18 @@ abstract class CopyWith$Query$GetEvents$events$nodes<TRes> {
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
+    Enum$GuestPolicy? guestPolicy,
+    int? maxGuestsPerMember,
     bool? requiresApproval,
     bool? requiresPayment,
     double? price,
     DateTime? cancellationDeadline,
+    int? freeCancellationDays,
+    double? cancellationFeePercentage,
+    bool? allowsSubgroupPriority,
+    bool? fullHouseExclusive,
     DateTime? rsvpDeadline,
+    String? subgroupId,
     String? organizerName,
     String? contactEmail,
     String? contactPhone,
@@ -1525,10 +1640,8 @@ class _CopyWithImpl$Query$GetEvents$events$nodes<TRes>
   TRes call({
     Object? id = _undefined,
     Object? clubId = _undefined,
-    Object? name = _undefined,
     Object? title = _undefined,
     Object? description = _undefined,
-    Object? type = _undefined,
     Object? eventType = _undefined,
     Object? startTime = _undefined,
     Object? endTime = _undefined,
@@ -1539,11 +1652,18 @@ class _CopyWithImpl$Query$GetEvents$events$nodes<TRes>
     Object? availableSpots = _undefined,
     Object? tentativeCount = _undefined,
     Object? waitlistCount = _undefined,
+    Object? guestPolicy = _undefined,
+    Object? maxGuestsPerMember = _undefined,
     Object? requiresApproval = _undefined,
     Object? requiresPayment = _undefined,
     Object? price = _undefined,
     Object? cancellationDeadline = _undefined,
+    Object? freeCancellationDays = _undefined,
+    Object? cancellationFeePercentage = _undefined,
+    Object? allowsSubgroupPriority = _undefined,
+    Object? fullHouseExclusive = _undefined,
     Object? rsvpDeadline = _undefined,
+    Object? subgroupId = _undefined,
     Object? organizerName = _undefined,
     Object? contactEmail = _undefined,
     Object? contactPhone = _undefined,
@@ -1557,18 +1677,12 @@ class _CopyWithImpl$Query$GetEvents$events$nodes<TRes>
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
-      name: name == _undefined || name == null
-          ? _instance.name
-          : (name as String),
       title: title == _undefined || title == null
           ? _instance.title
           : (title as String),
       description: description == _undefined
           ? _instance.description
           : (description as String?),
-      type: type == _undefined || type == null
-          ? _instance.type
-          : (type as Enum$ClubEventType),
       eventType: eventType == _undefined || eventType == null
           ? _instance.eventType
           : (eventType as Enum$ClubEventType),
@@ -1600,6 +1714,12 @@ class _CopyWithImpl$Query$GetEvents$events$nodes<TRes>
       waitlistCount: waitlistCount == _undefined
           ? _instance.waitlistCount
           : (waitlistCount as int?),
+      guestPolicy: guestPolicy == _undefined
+          ? _instance.guestPolicy
+          : (guestPolicy as Enum$GuestPolicy?),
+      maxGuestsPerMember: maxGuestsPerMember == _undefined
+          ? _instance.maxGuestsPerMember
+          : (maxGuestsPerMember as int?),
       requiresApproval:
           requiresApproval == _undefined || requiresApproval == null
           ? _instance.requiresApproval
@@ -1611,9 +1731,24 @@ class _CopyWithImpl$Query$GetEvents$events$nodes<TRes>
       cancellationDeadline: cancellationDeadline == _undefined
           ? _instance.cancellationDeadline
           : (cancellationDeadline as DateTime?),
+      freeCancellationDays: freeCancellationDays == _undefined
+          ? _instance.freeCancellationDays
+          : (freeCancellationDays as int?),
+      cancellationFeePercentage: cancellationFeePercentage == _undefined
+          ? _instance.cancellationFeePercentage
+          : (cancellationFeePercentage as double?),
+      allowsSubgroupPriority: allowsSubgroupPriority == _undefined
+          ? _instance.allowsSubgroupPriority
+          : (allowsSubgroupPriority as bool?),
+      fullHouseExclusive: fullHouseExclusive == _undefined
+          ? _instance.fullHouseExclusive
+          : (fullHouseExclusive as bool?),
       rsvpDeadline: rsvpDeadline == _undefined
           ? _instance.rsvpDeadline
           : (rsvpDeadline as DateTime?),
+      subgroupId: subgroupId == _undefined
+          ? _instance.subgroupId
+          : (subgroupId as String?),
       organizerName: organizerName == _undefined
           ? _instance.organizerName
           : (organizerName as String?),
@@ -1648,10 +1783,8 @@ class _CopyWithStubImpl$Query$GetEvents$events$nodes<TRes>
   call({
     String? id,
     String? clubId,
-    String? name,
     String? title,
     String? description,
-    Enum$ClubEventType? type,
     Enum$ClubEventType? eventType,
     DateTime? startTime,
     DateTime? endTime,
@@ -1662,11 +1795,18 @@ class _CopyWithStubImpl$Query$GetEvents$events$nodes<TRes>
     int? availableSpots,
     int? tentativeCount,
     int? waitlistCount,
+    Enum$GuestPolicy? guestPolicy,
+    int? maxGuestsPerMember,
     bool? requiresApproval,
     bool? requiresPayment,
     double? price,
     DateTime? cancellationDeadline,
+    int? freeCancellationDays,
+    double? cancellationFeePercentage,
+    bool? allowsSubgroupPriority,
+    bool? fullHouseExclusive,
     DateTime? rsvpDeadline,
+    String? subgroupId,
     String? organizerName,
     String? contactEmail,
     String? contactPhone,

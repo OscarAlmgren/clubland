@@ -15,10 +15,8 @@ query GetEvents(
     nodes {
       id
       clubId
-      name
       title
       description
-      type
       eventType
       startTime
       endTime
@@ -29,11 +27,18 @@ query GetEvents(
       availableSpots
       tentativeCount
       waitlistCount
+      guestPolicy
+      maxGuestsPerMember
       requiresApproval
       requiresPayment
       price
       cancellationDeadline
+      freeCancellationDays
+      cancellationFeePercentage
+      allowsSubgroupPriority
+      fullHouseExclusive
       rsvpDeadline
+      subgroupId
       organizerName
       contactEmail
       contactPhone

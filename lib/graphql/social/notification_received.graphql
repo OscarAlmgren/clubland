@@ -1,0 +1,13 @@
+subscription NotificationReceived {
+  notificationReceived {
+    id
+    userId
+    type
+    title
+    message
+    status
+    channels
+    readAt
+    createdAt
+  }
+}

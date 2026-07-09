@@ -338,6 +338,62 @@ const documentNodeQueryMyRSVPs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'response'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'rsvpType'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'priority'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'attendanceCount'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'guestNames'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'dietaryRestrictions'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'seatingPreferences'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'specialRequests'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'status'),
                         alias: null,
                         arguments: [],
@@ -352,20 +408,6 @@ const documentNodeQueryMyRSVPs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'dietaryRestrictions'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'specialRequests'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
                         name: NameNode(value: 'paymentStatus'),
                         alias: null,
                         arguments: [],
@@ -373,14 +415,21 @@ const documentNodeQueryMyRSVPs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'response'),
+                        name: NameNode(value: 'paymentRequired'),
                         alias: null,
                         arguments: [],
                         directives: [],
                         selectionSet: null,
                       ),
                       FieldNode(
-                        name: NameNode(value: 'attendanceCount'),
+                        name: NameNode(value: 'paymentVerified'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'paymentAmount'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -395,6 +444,13 @@ const documentNodeQueryMyRSVPs = DocumentNode(
                       ),
                       FieldNode(
                         name: NameNode(value: 'feeWaived'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'waitlistPosition'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -850,15 +906,23 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     required this.eventId,
     required this.memberId,
     required this.clubId,
+    this.response,
+    this.rsvpType,
+    this.priority,
+    this.attendanceCount,
+    this.guestNames,
+    this.dietaryRestrictions,
+    this.seatingPreferences,
+    this.specialRequests,
     required this.status,
     required this.guestCount,
-    this.dietaryRestrictions,
-    this.specialRequests,
     required this.paymentStatus,
-    this.response,
-    this.attendanceCount,
+    this.paymentRequired,
+    this.paymentVerified,
+    this.paymentAmount,
     this.cancellationFee,
     this.feeWaived,
+    this.waitlistPosition,
     this.rsvpedAt,
     required this.updatedAt,
     this.cancelledAt,
@@ -871,15 +935,23 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     final l$eventId = json['eventId'];
     final l$memberId = json['memberId'];
     final l$clubId = json['clubId'];
+    final l$response = json['response'];
+    final l$rsvpType = json['rsvpType'];
+    final l$priority = json['priority'];
+    final l$attendanceCount = json['attendanceCount'];
+    final l$guestNames = json['guestNames'];
+    final l$dietaryRestrictions = json['dietaryRestrictions'];
+    final l$seatingPreferences = json['seatingPreferences'];
+    final l$specialRequests = json['specialRequests'];
     final l$status = json['status'];
     final l$guestCount = json['guestCount'];
-    final l$dietaryRestrictions = json['dietaryRestrictions'];
-    final l$specialRequests = json['specialRequests'];
     final l$paymentStatus = json['paymentStatus'];
-    final l$response = json['response'];
-    final l$attendanceCount = json['attendanceCount'];
+    final l$paymentRequired = json['paymentRequired'];
+    final l$paymentVerified = json['paymentVerified'];
+    final l$paymentAmount = json['paymentAmount'];
     final l$cancellationFee = json['cancellationFee'];
     final l$feeWaived = json['feeWaived'];
+    final l$waitlistPosition = json['waitlistPosition'];
     final l$rsvpedAt = json['rsvpedAt'];
     final l$updatedAt = json['updatedAt'];
     final l$cancelledAt = json['cancelledAt'];
@@ -890,19 +962,31 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
       eventId: (l$eventId as String),
       memberId: (l$memberId as String),
       clubId: (l$clubId as String),
-      status: fromJson$Enum$RSVPStatus((l$status as String)),
-      guestCount: (l$guestCount as int),
-      dietaryRestrictions: (l$dietaryRestrictions as List<dynamic>?)
-          ?.map((e) => (e as String))
-          .toList(),
-      specialRequests: (l$specialRequests as String?),
-      paymentStatus: fromJson$Enum$PaymentStatus((l$paymentStatus as String)),
       response: l$response == null
           ? null
           : fromJson$Enum$RSVPResponse((l$response as String)),
+      rsvpType: l$rsvpType == null
+          ? null
+          : fromJson$Enum$RSVPType((l$rsvpType as String)),
+      priority: (l$priority as String?),
       attendanceCount: (l$attendanceCount as int?),
+      guestNames: (l$guestNames as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList(),
+      dietaryRestrictions: (l$dietaryRestrictions as List<dynamic>?)
+          ?.map((e) => (e as String))
+          .toList(),
+      seatingPreferences: (l$seatingPreferences as String?),
+      specialRequests: (l$specialRequests as String?),
+      status: fromJson$Enum$RSVPStatus((l$status as String)),
+      guestCount: (l$guestCount as int),
+      paymentStatus: fromJson$Enum$PaymentStatus((l$paymentStatus as String)),
+      paymentRequired: (l$paymentRequired as bool?),
+      paymentVerified: (l$paymentVerified as bool?),
+      paymentAmount: (l$paymentAmount as num?)?.toDouble(),
       cancellationFee: (l$cancellationFee as num?)?.toDouble(),
       feeWaived: (l$feeWaived as bool?),
+      waitlistPosition: (l$waitlistPosition as int?),
       rsvpedAt: l$rsvpedAt == null
           ? null
           : DateTime.parse((l$rsvpedAt as String)),
@@ -923,23 +1007,39 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
 
   final String clubId;
 
+  final Enum$RSVPResponse? response;
+
+  final Enum$RSVPType? rsvpType;
+
+  final String? priority;
+
+  final int? attendanceCount;
+
+  final List<String>? guestNames;
+
+  final List<String>? dietaryRestrictions;
+
+  final String? seatingPreferences;
+
+  final String? specialRequests;
+
   final Enum$RSVPStatus status;
 
   final int guestCount;
 
-  final List<String>? dietaryRestrictions;
-
-  final String? specialRequests;
-
   final Enum$PaymentStatus paymentStatus;
 
-  final Enum$RSVPResponse? response;
+  final bool? paymentRequired;
 
-  final int? attendanceCount;
+  final bool? paymentVerified;
+
+  final double? paymentAmount;
 
   final double? cancellationFee;
 
   final bool? feeWaived;
+
+  final int? waitlistPosition;
 
   final DateTime? rsvpedAt;
 
@@ -961,28 +1061,46 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     _resultData['memberId'] = l$memberId;
     final l$clubId = clubId;
     _resultData['clubId'] = l$clubId;
-    final l$status = status;
-    _resultData['status'] = toJson$Enum$RSVPStatus(l$status);
-    final l$guestCount = guestCount;
-    _resultData['guestCount'] = l$guestCount;
-    final l$dietaryRestrictions = dietaryRestrictions;
-    _resultData['dietaryRestrictions'] = l$dietaryRestrictions
-        ?.map((e) => e)
-        .toList();
-    final l$specialRequests = specialRequests;
-    _resultData['specialRequests'] = l$specialRequests;
-    final l$paymentStatus = paymentStatus;
-    _resultData['paymentStatus'] = toJson$Enum$PaymentStatus(l$paymentStatus);
     final l$response = response;
     _resultData['response'] = l$response == null
         ? null
         : toJson$Enum$RSVPResponse(l$response);
+    final l$rsvpType = rsvpType;
+    _resultData['rsvpType'] = l$rsvpType == null
+        ? null
+        : toJson$Enum$RSVPType(l$rsvpType);
+    final l$priority = priority;
+    _resultData['priority'] = l$priority;
     final l$attendanceCount = attendanceCount;
     _resultData['attendanceCount'] = l$attendanceCount;
+    final l$guestNames = guestNames;
+    _resultData['guestNames'] = l$guestNames?.map((e) => e).toList();
+    final l$dietaryRestrictions = dietaryRestrictions;
+    _resultData['dietaryRestrictions'] = l$dietaryRestrictions
+        ?.map((e) => e)
+        .toList();
+    final l$seatingPreferences = seatingPreferences;
+    _resultData['seatingPreferences'] = l$seatingPreferences;
+    final l$specialRequests = specialRequests;
+    _resultData['specialRequests'] = l$specialRequests;
+    final l$status = status;
+    _resultData['status'] = toJson$Enum$RSVPStatus(l$status);
+    final l$guestCount = guestCount;
+    _resultData['guestCount'] = l$guestCount;
+    final l$paymentStatus = paymentStatus;
+    _resultData['paymentStatus'] = toJson$Enum$PaymentStatus(l$paymentStatus);
+    final l$paymentRequired = paymentRequired;
+    _resultData['paymentRequired'] = l$paymentRequired;
+    final l$paymentVerified = paymentVerified;
+    _resultData['paymentVerified'] = l$paymentVerified;
+    final l$paymentAmount = paymentAmount;
+    _resultData['paymentAmount'] = l$paymentAmount;
     final l$cancellationFee = cancellationFee;
     _resultData['cancellationFee'] = l$cancellationFee;
     final l$feeWaived = feeWaived;
     _resultData['feeWaived'] = l$feeWaived;
+    final l$waitlistPosition = waitlistPosition;
+    _resultData['waitlistPosition'] = l$waitlistPosition;
     final l$rsvpedAt = rsvpedAt;
     _resultData['rsvpedAt'] = l$rsvpedAt?.toIso8601String();
     final l$updatedAt = updatedAt;
@@ -1002,15 +1120,23 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     final l$eventId = eventId;
     final l$memberId = memberId;
     final l$clubId = clubId;
+    final l$response = response;
+    final l$rsvpType = rsvpType;
+    final l$priority = priority;
+    final l$attendanceCount = attendanceCount;
+    final l$guestNames = guestNames;
+    final l$dietaryRestrictions = dietaryRestrictions;
+    final l$seatingPreferences = seatingPreferences;
+    final l$specialRequests = specialRequests;
     final l$status = status;
     final l$guestCount = guestCount;
-    final l$dietaryRestrictions = dietaryRestrictions;
-    final l$specialRequests = specialRequests;
     final l$paymentStatus = paymentStatus;
-    final l$response = response;
-    final l$attendanceCount = attendanceCount;
+    final l$paymentRequired = paymentRequired;
+    final l$paymentVerified = paymentVerified;
+    final l$paymentAmount = paymentAmount;
     final l$cancellationFee = cancellationFee;
     final l$feeWaived = feeWaived;
+    final l$waitlistPosition = waitlistPosition;
     final l$rsvpedAt = rsvpedAt;
     final l$updatedAt = updatedAt;
     final l$cancelledAt = cancelledAt;
@@ -1021,17 +1147,25 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
       l$eventId,
       l$memberId,
       l$clubId,
-      l$status,
-      l$guestCount,
+      l$response,
+      l$rsvpType,
+      l$priority,
+      l$attendanceCount,
+      l$guestNames == null ? null : Object.hashAll(l$guestNames.map((v) => v)),
       l$dietaryRestrictions == null
           ? null
           : Object.hashAll(l$dietaryRestrictions.map((v) => v)),
+      l$seatingPreferences,
       l$specialRequests,
+      l$status,
+      l$guestCount,
       l$paymentStatus,
-      l$response,
-      l$attendanceCount,
+      l$paymentRequired,
+      l$paymentVerified,
+      l$paymentAmount,
       l$cancellationFee,
       l$feeWaived,
+      l$waitlistPosition,
       l$rsvpedAt,
       l$updatedAt,
       l$cancelledAt,
@@ -1069,14 +1203,40 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     if (l$clubId != lOther$clubId) {
       return false;
     }
-    final l$status = status;
-    final lOther$status = other.status;
-    if (l$status != lOther$status) {
+    final l$response = response;
+    final lOther$response = other.response;
+    if (l$response != lOther$response) {
       return false;
     }
-    final l$guestCount = guestCount;
-    final lOther$guestCount = other.guestCount;
-    if (l$guestCount != lOther$guestCount) {
+    final l$rsvpType = rsvpType;
+    final lOther$rsvpType = other.rsvpType;
+    if (l$rsvpType != lOther$rsvpType) {
+      return false;
+    }
+    final l$priority = priority;
+    final lOther$priority = other.priority;
+    if (l$priority != lOther$priority) {
+      return false;
+    }
+    final l$attendanceCount = attendanceCount;
+    final lOther$attendanceCount = other.attendanceCount;
+    if (l$attendanceCount != lOther$attendanceCount) {
+      return false;
+    }
+    final l$guestNames = guestNames;
+    final lOther$guestNames = other.guestNames;
+    if (l$guestNames != null && lOther$guestNames != null) {
+      if (l$guestNames.length != lOther$guestNames.length) {
+        return false;
+      }
+      for (int i = 0; i < l$guestNames.length; i++) {
+        final l$guestNames$entry = l$guestNames[i];
+        final lOther$guestNames$entry = lOther$guestNames[i];
+        if (l$guestNames$entry != lOther$guestNames$entry) {
+          return false;
+        }
+      }
+    } else if (l$guestNames != lOther$guestNames) {
       return false;
     }
     final l$dietaryRestrictions = dietaryRestrictions;
@@ -1095,9 +1255,24 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     } else if (l$dietaryRestrictions != lOther$dietaryRestrictions) {
       return false;
     }
+    final l$seatingPreferences = seatingPreferences;
+    final lOther$seatingPreferences = other.seatingPreferences;
+    if (l$seatingPreferences != lOther$seatingPreferences) {
+      return false;
+    }
     final l$specialRequests = specialRequests;
     final lOther$specialRequests = other.specialRequests;
     if (l$specialRequests != lOther$specialRequests) {
+      return false;
+    }
+    final l$status = status;
+    final lOther$status = other.status;
+    if (l$status != lOther$status) {
+      return false;
+    }
+    final l$guestCount = guestCount;
+    final lOther$guestCount = other.guestCount;
+    if (l$guestCount != lOther$guestCount) {
       return false;
     }
     final l$paymentStatus = paymentStatus;
@@ -1105,14 +1280,19 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     if (l$paymentStatus != lOther$paymentStatus) {
       return false;
     }
-    final l$response = response;
-    final lOther$response = other.response;
-    if (l$response != lOther$response) {
+    final l$paymentRequired = paymentRequired;
+    final lOther$paymentRequired = other.paymentRequired;
+    if (l$paymentRequired != lOther$paymentRequired) {
       return false;
     }
-    final l$attendanceCount = attendanceCount;
-    final lOther$attendanceCount = other.attendanceCount;
-    if (l$attendanceCount != lOther$attendanceCount) {
+    final l$paymentVerified = paymentVerified;
+    final lOther$paymentVerified = other.paymentVerified;
+    if (l$paymentVerified != lOther$paymentVerified) {
+      return false;
+    }
+    final l$paymentAmount = paymentAmount;
+    final lOther$paymentAmount = other.paymentAmount;
+    if (l$paymentAmount != lOther$paymentAmount) {
       return false;
     }
     final l$cancellationFee = cancellationFee;
@@ -1123,6 +1303,11 @@ class Query$MyRSVPs$myEventRSVPs$nodes {
     final l$feeWaived = feeWaived;
     final lOther$feeWaived = other.feeWaived;
     if (l$feeWaived != lOther$feeWaived) {
+      return false;
+    }
+    final l$waitlistPosition = waitlistPosition;
+    final lOther$waitlistPosition = other.waitlistPosition;
+    if (l$waitlistPosition != lOther$waitlistPosition) {
       return false;
     }
     final l$rsvpedAt = rsvpedAt;
@@ -1174,15 +1359,23 @@ abstract class CopyWith$Query$MyRSVPs$myEventRSVPs$nodes<TRes> {
     String? eventId,
     String? memberId,
     String? clubId,
+    Enum$RSVPResponse? response,
+    Enum$RSVPType? rsvpType,
+    String? priority,
+    int? attendanceCount,
+    List<String>? guestNames,
+    List<String>? dietaryRestrictions,
+    String? seatingPreferences,
+    String? specialRequests,
     Enum$RSVPStatus? status,
     int? guestCount,
-    List<String>? dietaryRestrictions,
-    String? specialRequests,
     Enum$PaymentStatus? paymentStatus,
-    Enum$RSVPResponse? response,
-    int? attendanceCount,
+    bool? paymentRequired,
+    bool? paymentVerified,
+    double? paymentAmount,
     double? cancellationFee,
     bool? feeWaived,
+    int? waitlistPosition,
     DateTime? rsvpedAt,
     DateTime? updatedAt,
     DateTime? cancelledAt,
@@ -1206,15 +1399,23 @@ class _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$nodes<TRes>
     Object? eventId = _undefined,
     Object? memberId = _undefined,
     Object? clubId = _undefined,
+    Object? response = _undefined,
+    Object? rsvpType = _undefined,
+    Object? priority = _undefined,
+    Object? attendanceCount = _undefined,
+    Object? guestNames = _undefined,
+    Object? dietaryRestrictions = _undefined,
+    Object? seatingPreferences = _undefined,
+    Object? specialRequests = _undefined,
     Object? status = _undefined,
     Object? guestCount = _undefined,
-    Object? dietaryRestrictions = _undefined,
-    Object? specialRequests = _undefined,
     Object? paymentStatus = _undefined,
-    Object? response = _undefined,
-    Object? attendanceCount = _undefined,
+    Object? paymentRequired = _undefined,
+    Object? paymentVerified = _undefined,
+    Object? paymentAmount = _undefined,
     Object? cancellationFee = _undefined,
     Object? feeWaived = _undefined,
+    Object? waitlistPosition = _undefined,
     Object? rsvpedAt = _undefined,
     Object? updatedAt = _undefined,
     Object? cancelledAt = _undefined,
@@ -1232,33 +1433,57 @@ class _CopyWithImpl$Query$MyRSVPs$myEventRSVPs$nodes<TRes>
       clubId: clubId == _undefined || clubId == null
           ? _instance.clubId
           : (clubId as String),
+      response: response == _undefined
+          ? _instance.response
+          : (response as Enum$RSVPResponse?),
+      rsvpType: rsvpType == _undefined
+          ? _instance.rsvpType
+          : (rsvpType as Enum$RSVPType?),
+      priority: priority == _undefined
+          ? _instance.priority
+          : (priority as String?),
+      attendanceCount: attendanceCount == _undefined
+          ? _instance.attendanceCount
+          : (attendanceCount as int?),
+      guestNames: guestNames == _undefined
+          ? _instance.guestNames
+          : (guestNames as List<String>?),
+      dietaryRestrictions: dietaryRestrictions == _undefined
+          ? _instance.dietaryRestrictions
+          : (dietaryRestrictions as List<String>?),
+      seatingPreferences: seatingPreferences == _undefined
+          ? _instance.seatingPreferences
+          : (seatingPreferences as String?),
+      specialRequests: specialRequests == _undefined
+          ? _instance.specialRequests
+          : (specialRequests as String?),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$RSVPStatus),
       guestCount: guestCount == _undefined || guestCount == null
           ? _instance.guestCount
           : (guestCount as int),
-      dietaryRestrictions: dietaryRestrictions == _undefined
-          ? _instance.dietaryRestrictions
-          : (dietaryRestrictions as List<String>?),
-      specialRequests: specialRequests == _undefined
-          ? _instance.specialRequests
-          : (specialRequests as String?),
       paymentStatus: paymentStatus == _undefined || paymentStatus == null
           ? _instance.paymentStatus
           : (paymentStatus as Enum$PaymentStatus),
-      response: response == _undefined
-          ? _instance.response
-          : (response as Enum$RSVPResponse?),
-      attendanceCount: attendanceCount == _undefined
-          ? _instance.attendanceCount
-          : (attendanceCount as int?),
+      paymentRequired: paymentRequired == _undefined
+          ? _instance.paymentRequired
+          : (paymentRequired as bool?),
+      paymentVerified: paymentVerified == _undefined
+          ? _instance.paymentVerified
+          : (paymentVerified as bool?),
+      paymentAmount: paymentAmount == _undefined
+          ? _instance.paymentAmount
+          : (paymentAmount as double?),
       cancellationFee: cancellationFee == _undefined
           ? _instance.cancellationFee
           : (cancellationFee as double?),
       feeWaived: feeWaived == _undefined
           ? _instance.feeWaived
           : (feeWaived as bool?),
+      waitlistPosition: waitlistPosition == _undefined
+          ? _instance.waitlistPosition
+          : (waitlistPosition as int?),
       rsvpedAt: rsvpedAt == _undefined
           ? _instance.rsvpedAt
           : (rsvpedAt as DateTime?),
@@ -1289,15 +1514,23 @@ class _CopyWithStubImpl$Query$MyRSVPs$myEventRSVPs$nodes<TRes>
     String? eventId,
     String? memberId,
     String? clubId,
+    Enum$RSVPResponse? response,
+    Enum$RSVPType? rsvpType,
+    String? priority,
+    int? attendanceCount,
+    List<String>? guestNames,
+    List<String>? dietaryRestrictions,
+    String? seatingPreferences,
+    String? specialRequests,
     Enum$RSVPStatus? status,
     int? guestCount,
-    List<String>? dietaryRestrictions,
-    String? specialRequests,
     Enum$PaymentStatus? paymentStatus,
-    Enum$RSVPResponse? response,
-    int? attendanceCount,
+    bool? paymentRequired,
+    bool? paymentVerified,
+    double? paymentAmount,
     double? cancellationFee,
     bool? feeWaived,
+    int? waitlistPosition,
     DateTime? rsvpedAt,
     DateTime? updatedAt,
     DateTime? cancelledAt,

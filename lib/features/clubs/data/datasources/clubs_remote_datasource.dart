@@ -271,7 +271,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         QueryOptions(
           document: documentNodeQueryClubs,
           variables: {
-            'filter': {'status': 'ACTIVE'},
+            'filter': const {'status': 'ACTIVE'},
             'pagination': {'limit': limit ?? 20},
           },
           fetchPolicy: FetchPolicy.cacheAndNetwork,
