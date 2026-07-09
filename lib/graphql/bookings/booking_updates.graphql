@@ -1,0 +1,30 @@
+# bookingUpdates emits the changed FacilityBooking directly (no wrapper).
+subscription BookingUpdates($userId: ID) {
+  bookingUpdates(userId: $userId) {
+    id
+    clubId
+    facilityId
+    memberId
+    facility {
+      id
+      name
+      type
+      capacity
+    }
+    startTime
+    endTime
+    status
+    purpose
+    guestCount
+    specialRequests
+    totalCost
+    currency
+    paymentStatus
+    checkInTime
+    checkOutTime
+    cancellationReason
+    cancelledAt
+    createdAt
+    updatedAt
+  }
+}

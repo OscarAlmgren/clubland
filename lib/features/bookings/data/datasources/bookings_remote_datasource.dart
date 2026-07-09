@@ -183,38 +183,53 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     try {
       _logger.d('Fetching availability for facility: $facilityId');
 
-      final variables = {
-        'facilityId': facilityId,
-        'startDate': startDate.toIso8601String(),
-        'endDate': endDate.toIso8601String(),
-      };
-
-      // TODO: Add facilityAvailabilityQuery to GraphQLDocuments when backend schema is available
-      const query = r'''
-        query FacilityAvailability($facilityId: ID!, $startDate: DateTime!, $endDate: DateTime!) {
-          facilityAvailability(facilityId: $facilityId, startDate: $startDate, endDate: $endDate) {
-            facility {
-              id
-              name
-              capacity
-            }
-            availableSlots {
-              startTime
-              endTime
-              available
-              capacity
-              remainingSpots
-            }
-          }
-        }
-      ''';
-
-      // Execute query with timeout
-      final result = await _client
+      // The backend has no facilityAvailability query; it exposes facility
+      // details and per-day availableSlots separately — compose the model
+      // from both.
+      final facilityResult = await _client
           .query(
             QueryOptions(
-              document: gql(query),
-              variables: variables,
+              document: documentNodeQueryFacility,
+              variables: {'id': facilityId},
+              fetchPolicy: FetchPolicy.networkOnly,
+            ),
+          )
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              _logger.w('Facility query timeout');
+              throw app_exceptions.NetworkException.timeout();
+            },
+          );
+
+      if (facilityResult.hasException) {
+        throw app_exceptions.NetworkException.serverError(
+          500,
+          facilityResult.exception?.graphqlErrors.firstOrNull?.message ??
+              'Failed to fetch facility',
+        );
+      }
+
+      final facilityData =
+          facilityResult.data?['facility'] as Map<String, dynamic>?;
+      if (facilityData == null) {
+        throw const app_exceptions.NetworkException(
+          'No facility data received',
+          'NO_DATA',
+        );
+      }
+
+      final minDuration = facilityData['minBookingDuration'] as int? ?? 60;
+
+      final slotsResult = await _client
+          .query(
+            QueryOptions(
+              document: documentNodeQueryAvailableSlots,
+              variables: {
+                'facilityId': facilityId,
+                'date': startDate.toIso8601String(),
+                'slotDuration': minDuration,
+              },
               fetchPolicy:
                   FetchPolicy.networkOnly, // Always get fresh availability
             ),
@@ -222,28 +237,55 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           .timeout(
             const Duration(seconds: 10),
             onTimeout: () {
-              _logger.w('FacilityAvailability query timeout');
+              _logger.w('AvailableSlots query timeout');
               throw app_exceptions.NetworkException.timeout();
             },
           );
 
-      if (result.hasException) {
+      if (slotsResult.hasException) {
         throw app_exceptions.NetworkException.serverError(
           500,
-          result.exception?.graphqlErrors.firstOrNull?.message ??
+          slotsResult.exception?.graphqlErrors.firstOrNull?.message ??
               'Failed to fetch availability',
         );
       }
 
-      final data = result.data?['facilityAvailability'];
-      if (data == null) {
-        throw const app_exceptions.NetworkException(
-          'No availability data received',
-          'NO_DATA',
-        );
-      }
+      final slotsData =
+          slotsResult.data?['availableSlots'] as List<dynamic>? ?? [];
 
-      return FacilityAvailabilityModel.fromJson(data as Map<String, dynamic>);
+      final capacity = facilityData['capacity'] as int? ?? 0;
+      final slots = slotsData.whereType<Map<String, dynamic>>().map((slot) {
+        final available = slot['available'] as bool? ?? false;
+        return AvailableSlot(
+          startTime: DateTime.parse(slot['startTime'] as String),
+          endTime: DateTime.parse(slot['endTime'] as String),
+          available: available,
+          capacity: capacity,
+          remainingSpots: available ? capacity : 0,
+        );
+      }).toList();
+
+      return FacilityAvailabilityModel(
+        facility: FacilityDetails(
+          id: facilityData['id'] as String,
+          name: facilityData['name'] as String,
+          capacity: capacity,
+          bookingSettings: BookingSettings(
+            minBookingDuration: Duration(minutes: minDuration),
+            maxBookingDuration: Duration(
+              minutes: facilityData['maxBookingDuration'] as int? ?? 240,
+            ),
+            advanceBookingLimit: Duration(
+              hours: 24 * (facilityData['advanceBookingDays'] as int? ?? 30),
+            ),
+            cancellationPolicy:
+                'Cancel at least ${facilityData['cancellationDeadline'] as int? ?? 24}h before start',
+          ),
+        ),
+        availableSlots: slots,
+        // The backend does not expose other members' bookings here.
+        bookedSlots: const [],
+      );
     } on app_exceptions.GraphQLException catch (e) {
       _logger.e('GraphQL error fetching availability', error: e);
       throw app_exceptions.NetworkException.serverError(500, e.toString());
@@ -557,30 +599,12 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
     try {
       _logger.d('Subscribing to booking updates for user: $userId');
 
-      // TODO: Add bookingUpdatesSubscription to GraphQLDocuments when backend schema is available
-      const subscription = r'''
-        subscription BookingUpdates($userId: ID!) {
-          bookingUpdates(userId: $userId) {
-            type
-            booking {
-              id
-              startTime
-              endTime
-              status
-              club { id name logo }
-              facility { id name }
-            }
-            message
-            timestamp
-          }
-        }
-      ''';
-
-      // Execute subscription with timeout
+      // Schema: bookingUpdates(clubId, userId) emits the FacilityBooking
+      // itself (no type/message wrapper).
       return _client
           .subscribe(
             SubscriptionOptions(
-              document: gql(subscription),
+              document: documentNodeSubscriptionBookingUpdates,
               variables: {'userId': userId},
             ),
           )
@@ -613,7 +637,12 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
                 'NO_DATA',
               );
             }
-            return BookingUpdateEvent.fromJson(data as Map<String, dynamic>);
+            return BookingUpdateEvent(
+              type: 'UPDATED',
+              booking: BookingModel.fromJson(data as Map<String, dynamic>),
+              message: '',
+              timestamp: DateTime.now(),
+            );
           });
     } on Exception catch (e) {
       _logger.e('Error setting up booking updates subscription', error: e);

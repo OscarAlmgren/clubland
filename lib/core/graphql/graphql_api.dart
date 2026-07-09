@@ -64,11 +64,14 @@ export '../../graphql/bookings/checkout_visit.graphql.dart';
 // =================================================================
 export '../../graphql/bookings/create_member.graphql.dart';
 export '../../graphql/bookings/member.graphql.dart';
+export '../../graphql/bookings/available_slots.graphql.dart';
+export '../../graphql/bookings/booking_updates.graphql.dart';
 export '../../graphql/bookings/members.graphql.dart';
 export '../../graphql/bookings/my_visits.graphql.dart';
 export '../../graphql/bookings/record_visit.graphql.dart';
 export '../../graphql/bookings/update_member.graphql.dart';
 export '../../graphql/bookings/visits.graphql.dart';
+export '../../graphql/facilities/facility.graphql.dart';
 // =================================================================
 // CLUB OPERATIONS
 // =================================================================

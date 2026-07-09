@@ -2,6 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
+import '../../../../graphql/profile/current_user.graphql.dart';
 import '../../../../graphql/profile/update_user.graphql.dart';
 
 /// Abstract interface for profile remote data source
@@ -29,17 +30,12 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   @override
   Future<Map<String, dynamic>> getCurrentUser() async {
     _logger.d('Fetching current user profile');
-    const query = r'''
-      query CurrentUser {
-        me {
-          id clubId email username firstName lastName status roles
-          permissions createdAt updatedAt
-        }
-      }
-    ''';
 
     final result = await _client.query(
-      QueryOptions(document: gql(query), fetchPolicy: FetchPolicy.networkOnly),
+      QueryOptions(
+        document: documentNodeQueryCurrentUser,
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
     );
 
     if (result.hasException) {
