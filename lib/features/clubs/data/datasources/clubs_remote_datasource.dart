@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
@@ -93,30 +95,12 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Fetching clubs with filter: $filter');
 
-      // Fixed: Use proper ClubConnection structure with nodes
-      const clubsQuery = r'''
-        query Clubs {
-          clubs {
-            nodes {
-              id
-              name
-              slug
-              description
-              location
-              address
-              website
-              status
-              createdAt
-              updatedAt
-            }
-          }
-        }
-      ''';
-
-      // Execute query with direct client call
       final result = await _client.query(
         QueryOptions(
-          document: gql(clubsQuery),
+          document: documentNodeQueryClubs,
+          variables: {
+            if (limit != null) 'pagination': {'limit': limit},
+          },
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
@@ -279,43 +263,17 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Fetching nearby clubs at ($latitude, $longitude)');
 
-      const nearbyClubsQuery = r'''
-        query NearbyClubs($latitude: Float!, $longitude: Float!, $radius: Float, $pagination: PaginationInput) {
-          nearbyClubs(latitude: $latitude, longitude: $longitude, radius: $radius, pagination: $pagination) {
-            nodes {
-              id
-              name
-              description
-              location
-              website
-              status
-              settings {
-                allowReciprocal
-                requireApproval
-                maxVisitsPerMonth
-              }
-              createdAt
-              updatedAt
-            }
-            pageInfo {
-              hasNextPage
-            }
-          }
-        }
-      ''';
-
-      final variables = <String, dynamic>{
-        'latitude': latitude,
-        'longitude': longitude,
-        'radius': ?radius,
-        'pagination': {'first': limit ?? 20},
-      };
-
-      // Execute query with direct client call
+      // The backend has no nearbyClubs query; fetch active clubs and rank
+      // by distance client-side using Club.latitude/longitude.
+      // TODO(backend): add a real nearbyClubs(latitude, longitude, radius)
+      // query and switch to it here.
       final result = await _client.query(
         QueryOptions(
-          document: gql(nearbyClubsQuery),
-          variables: variables,
+          document: documentNodeQueryClubs,
+          variables: {
+            'filter': {'status': 'ACTIVE'},
+            'pagination': {'limit': limit ?? 20},
+          },
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
@@ -328,9 +286,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data = result.data?['nearbyClubs'] as Map<String, dynamic>?;
+      final data = result.data?['clubs'] as Map<String, dynamic>?;
       if (data == null) {
-        _logger.w('nearbyClubs data is null from API');
+        _logger.w('clubs data is null from API');
         return [];
       }
 
@@ -339,9 +297,20 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         return [];
       }
 
-      return nodes
-          .map((node) => ClubModel.fromJson(node as Map<String, dynamic>))
-          .toList();
+      final maxDistanceKm = radius ?? 50;
+      final ranked = <(double, Map<String, dynamic>)>[];
+      for (final node in nodes.whereType<Map<String, dynamic>>()) {
+        final lat = (node['latitude'] as num?)?.toDouble();
+        final lon = (node['longitude'] as num?)?.toDouble();
+        if (lat == null || lon == null) continue;
+        final distance = _distanceKm(latitude, longitude, lat, lon);
+        if (distance <= maxDistanceKm) {
+          ranked.add((distance, node));
+        }
+      }
+      ranked.sort((a, b) => a.$1.compareTo(b.$1));
+
+      return ranked.map((entry) => ClubModel.fromJson(entry.$2)).toList();
     } on app_exceptions.GraphQLException catch (e) {
       _logger.e('GraphQL error fetching nearby clubs', error: e);
       throw app_exceptions.NetworkException.serverError(500, e.toString());
@@ -359,47 +328,12 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Fetching featured clubs');
 
-      const featuredClubsQuery = r'''
-        query FeaturedClubs($pagination: PaginationInput) {
-          featuredClubs(pagination: $pagination) {
-            nodes {
-              id
-              name
-              description
-              location
-              website
-              logo
-              coverImage
-              status
-              settings {
-                allowReciprocal
-                reciprocalFee
-              }
-              facilities {
-                id
-                name
-                type
-                capacity
-              }
-              createdAt
-              updatedAt
-            }
-            pageInfo {
-              hasNextPage
-            }
-          }
-        }
-      ''';
-
-      final variables = <String, dynamic>{
-        'pagination': {'first': limit ?? 10},
-      };
-
-      // Execute query with direct client call
       final result = await _client.query(
         QueryOptions(
-          document: gql(featuredClubsQuery),
-          variables: variables,
+          document: documentNodeQueryFeaturedClubs,
+          variables: {
+            'pagination': {'limit': limit ?? 10},
+          },
           fetchPolicy: FetchPolicy.cacheAndNetwork,
         ),
       );
@@ -412,9 +346,9 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data = result.data?['featuredClubs'] as Map<String, dynamic>?;
+      final data = result.data?['clubs'] as Map<String, dynamic>?;
       if (data == null) {
-        _logger.w('featuredClubs data is null from API');
+        _logger.w('featured clubs data is null from API');
         return [];
       }
 
@@ -504,27 +438,12 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
     try {
       _logger.d('Checking in to club: $clubId');
 
-      // TODO: Add checkInToClubMutation to GraphQLDocuments
-      const mutation = '''
-        mutation CheckInToClub(\$clubId: ID!) {
-          checkInToClub(clubId: \$clubId) {
-            success
-            message
-            visit {
-              id
-              checkedInAt
-              club {
-                id
-                name
-              }
-            }
-          }
-        }
-      ''';
-
       // Execute mutation with direct client call
       final result = await _client.mutate(
-        MutationOptions(document: gql(mutation), variables: {'clubId': clubId}),
+        MutationOptions(
+          document: documentNodeMutationCheckInToClub,
+          variables: {'clubId': clubId},
+        ),
       );
 
       if (result.hasException) {
@@ -672,3 +591,19 @@ class LocationInput {
     'longitude': longitude,
   };
 }
+
+
+/// Great-circle distance in kilometres (haversine).
+double _distanceKm(double lat1, double lon1, double lat2, double lon2) {
+  const earthRadiusKm = 6371.0;
+  final dLat = _radians(lat2 - lat1);
+  final dLon = _radians(lon2 - lon1);
+  final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+      math.cos(_radians(lat1)) *
+          math.cos(_radians(lat2)) *
+          math.sin(dLon / 2) *
+          math.sin(dLon / 2);
+  return earthRadiusKm * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+}
+
+double _radians(double degrees) => degrees * math.pi / 180;

@@ -5,6 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 
+import '../../../../core/graphql/graphql_api.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/auth_session_entity.dart';
@@ -117,31 +118,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       _logger.d('Attempting login for email: $email');
 
-      const loginMutation = r'''
-        mutation Login($email: String!, $password: String!) {
-          login(input: { email: $email, password: $password }) {
-            token
-            refreshToken
-            expiresAt
-            user {
-              id
-              clubId
-              email
-              username
-              firstName
-              lastName
-              status
-              roles
-              permissions
-              createdAt
-              updatedAt
-            }
-          }
-        }
-      ''';
-
       final MutationOptions options = MutationOptions(
-        document: gql(loginMutation),
+        document: documentNodeMutationLogin,
         variables: {'email': email, 'password': password},
       );
 
@@ -184,19 +162,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       _logger.d('Initiating passkey login for email: $email, clubSlug: $clubSlug');
 
       // Step 1: Initiate passkey login — get WebAuthn options from backend
-      const initiatePasskeyLoginMutation = r'''
-        mutation InitiatePasskeyLogin($email: String!, $clubSlug: String!) {
-          initiatePasskeyLogin(email: $email, clubSlug: $clubSlug) {
-            options
-            userId
-          }
-        }
-      ''';
-
       final initiateResult = await _graphqlClient
           .mutate(
             MutationOptions(
-              document: gql(initiatePasskeyLoginMutation),
+              document: documentNodeMutationInitiatePasskeyLogin,
               variables: {'email': email, 'clubSlug': clubSlug},
             ),
           )
@@ -228,32 +197,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final credential = await _passkeyService.collectLoginCredential(options);
 
       // Step 3: Complete passkey login — exchange credential for JWT
-      const completePasskeyLoginMutation = r'''
-        mutation CompletePasskeyLogin($clubSlug: String!, $userId: String!, $credential: PasskeyCredentialInput!) {
-          completePasskeyLogin(clubSlug: $clubSlug, userId: $userId, credential: $credential) {
-            token
-            refreshToken
-            expiresAt
-            user {
-              id
-              clubId
-              email
-              username
-              firstName
-              lastName
-              status
-              roles { name }
-              createdAt
-              updatedAt
-            }
-          }
-        }
-      ''';
-
       final completeResult = await _graphqlClient
           .mutate(
             MutationOptions(
-              document: gql(completePasskeyLoginMutation),
+              document: documentNodeMutationCompletePasskeyLogin,
               variables: {
                 'clubSlug': clubSlug,
                 'userId': userId,
@@ -291,13 +238,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   /// Syncs the authenticated user into the backend DB after a successful Hanko login.
   Future<void> _syncUser() async {
     try {
-      const syncUserMutation = r'''
-        mutation SyncUser {
-          syncUser { id }
-        }
-      ''';
       await _graphqlClient.mutate(
-        MutationOptions(document: gql(syncUserMutation)),
+        MutationOptions(document: documentNodeMutationSyncUser),
       );
     } catch (e) {
       // Non-fatal — log and continue
@@ -316,47 +258,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       _logger.d('Attempting registration for email: $email');
 
-      const registerMutation = r'''
-        mutation Register(
-          $email: String!
-          $password: String!
-          $username: String!
-          $clubId: ID!
-          $firstName: String!
-          $lastName: String!
-        ) {
-          register(
-            input: {
-              email: $email
-              password: $password
-              username: $username
-              clubId: $clubId
-              firstName: $firstName
-              lastName: $lastName
-            }
-          ) {
-            token
-            refreshToken
-            expiresAt
-            user {
-              id
-              clubId
-              email
-              username
-              firstName
-              lastName
-              status
-              roles
-              permissions
-              createdAt
-              updatedAt
-            }
-          }
-        }
-      ''';
-
       final MutationOptions options = MutationOptions(
-        document: gql(registerMutation),
+        document: documentNodeMutationRegister,
         variables: {
           'email': email,
           'password': password,
@@ -402,16 +305,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       _logger.d('Attempting logout');
 
-      const logoutMutation = r'''
-        mutation Logout {
-          logout {
-            success
-          }
-        }
-      ''';
-
       final MutationOptions options = MutationOptions(
-        document: gql(logoutMutation),
+        document: documentNodeMutationLogout,
       );
 
       // Execute mutation with timeout
@@ -433,8 +328,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return Left(AuthFailure.unexpected('Logout failed'));
       }
 
-      final logoutData = result.data!['logout'] as Map<String, dynamic>;
-      final success = logoutData['success'] as bool? ?? false;
+      final success = result.data!['logout'] as bool? ?? false;
 
       if (success) {
         _logger.d('Logout successful');
@@ -456,31 +350,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       _logger.d('Attempting token refresh');
 
-      const refreshMutation = r'''
-        mutation RefreshToken($refreshToken: String!) {
-          refreshToken(refreshToken: $refreshToken) {
-            token
-            refreshToken
-            expiresAt
-            user {
-              id
-              clubId
-              email
-              username
-              firstName
-              lastName
-              status
-              roles
-              permissions
-              createdAt
-              updatedAt
-            }
-          }
-        }
-      ''';
-
       final MutationOptions options = MutationOptions(
-        document: gql(refreshMutation),
+        document: documentNodeMutationRefreshToken,
         variables: {'refreshToken': refreshToken},
       );
 

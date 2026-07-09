@@ -342,6 +342,20 @@ const documentNodeMutationRefreshToken = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'createdAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'updatedAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: '__typename'),
                         alias: null,
                         arguments: [],
@@ -675,6 +689,8 @@ class Mutation$RefreshToken$refreshToken$user {
     required this.status,
     required this.roles,
     required this.permissions,
+    required this.createdAt,
+    required this.updatedAt,
     this.$__typename = 'User',
   });
 
@@ -690,6 +706,8 @@ class Mutation$RefreshToken$refreshToken$user {
     final l$status = json['status'];
     final l$roles = json['roles'];
     final l$permissions = json['permissions'];
+    final l$createdAt = json['createdAt'];
+    final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
     return Mutation$RefreshToken$refreshToken$user(
       id: (l$id as String),
@@ -713,6 +731,8 @@ class Mutation$RefreshToken$refreshToken$user {
             ),
           )
           .toList(),
+      createdAt: DateTime.parse((l$createdAt as String)),
+      updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -734,6 +754,10 @@ class Mutation$RefreshToken$refreshToken$user {
   final List<Mutation$RefreshToken$refreshToken$user$roles> roles;
 
   final List<Mutation$RefreshToken$refreshToken$user$permissions> permissions;
+
+  final DateTime createdAt;
+
+  final DateTime updatedAt;
 
   final String $__typename;
 
@@ -757,6 +781,10 @@ class Mutation$RefreshToken$refreshToken$user {
     _resultData['roles'] = l$roles.map((e) => e.toJson()).toList();
     final l$permissions = permissions;
     _resultData['permissions'] = l$permissions.map((e) => e.toJson()).toList();
+    final l$createdAt = createdAt;
+    _resultData['createdAt'] = l$createdAt.toIso8601String();
+    final l$updatedAt = updatedAt;
+    _resultData['updatedAt'] = l$updatedAt.toIso8601String();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -773,6 +801,8 @@ class Mutation$RefreshToken$refreshToken$user {
     final l$status = status;
     final l$roles = roles;
     final l$permissions = permissions;
+    final l$createdAt = createdAt;
+    final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
@@ -784,6 +814,8 @@ class Mutation$RefreshToken$refreshToken$user {
       l$status,
       Object.hashAll(l$roles.map((v) => v)),
       Object.hashAll(l$permissions.map((v) => v)),
+      l$createdAt,
+      l$updatedAt,
       l$$__typename,
     ]);
   }
@@ -856,6 +888,16 @@ class Mutation$RefreshToken$refreshToken$user {
         return false;
       }
     }
+    final l$createdAt = createdAt;
+    final lOther$createdAt = other.createdAt;
+    if (l$createdAt != lOther$createdAt) {
+      return false;
+    }
+    final l$updatedAt = updatedAt;
+    final lOther$updatedAt = other.updatedAt;
+    if (l$updatedAt != lOther$updatedAt) {
+      return false;
+    }
     final l$$__typename = $__typename;
     final lOther$$__typename = other.$__typename;
     if (l$$__typename != lOther$$__typename) {
@@ -893,6 +935,8 @@ abstract class CopyWith$Mutation$RefreshToken$refreshToken$user<TRes> {
     Enum$UserStatus? status,
     List<Mutation$RefreshToken$refreshToken$user$roles>? roles,
     List<Mutation$RefreshToken$refreshToken$user$permissions>? permissions,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? $__typename,
   });
   TRes roles(
@@ -940,6 +984,8 @@ class _CopyWithImpl$Mutation$RefreshToken$refreshToken$user<TRes>
     Object? status = _undefined,
     Object? roles = _undefined,
     Object? permissions = _undefined,
+    Object? createdAt = _undefined,
+    Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Mutation$RefreshToken$refreshToken$user(
@@ -969,6 +1015,12 @@ class _CopyWithImpl$Mutation$RefreshToken$refreshToken$user<TRes>
           ? _instance.permissions
           : (permissions
                 as List<Mutation$RefreshToken$refreshToken$user$permissions>),
+      createdAt: createdAt == _undefined || createdAt == null
+          ? _instance.createdAt
+          : (createdAt as DateTime),
+      updatedAt: updatedAt == _undefined || updatedAt == null
+          ? _instance.updatedAt
+          : (updatedAt as DateTime),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1030,6 +1082,8 @@ class _CopyWithStubImpl$Mutation$RefreshToken$refreshToken$user<TRes>
     Enum$UserStatus? status,
     List<Mutation$RefreshToken$refreshToken$user$roles>? roles,
     List<Mutation$RefreshToken$refreshToken$user$permissions>? permissions,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? $__typename,
   }) => _res;
 

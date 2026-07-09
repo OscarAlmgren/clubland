@@ -41,9 +41,11 @@ class ClubModel extends ClubEntity {
   factory ClubModel.fromJson(Map<String, dynamic> json) => ClubModel(
     id: json['id'] as String,
     name: json['name'] as String,
-    slug: json['slug'] as String,
+    slug: json['slug'] as String? ?? '',
     description: json['description'] as String? ?? '',
-    address: ClubAddressModel.fromJson(json['address'] as Map<String, dynamic>),
+    address: json['address'] != null
+        ? ClubAddressModel.fromJson(json['address'] as Map<String, dynamic>)
+        : ClubAddressModel.empty,
     logo: json['logo'] as String?,
     coverImage: json['coverImage'] as String?,
     images: (json['images'] as List<dynamic>?)

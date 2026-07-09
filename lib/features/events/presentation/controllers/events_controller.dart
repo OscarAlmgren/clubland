@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/events_remote_datasource.dart';
 import '../../data/repositories/events_repository_impl.dart';
 import '../../domain/entities/cancel_rsvp_response_entity.dart';

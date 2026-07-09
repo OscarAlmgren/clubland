@@ -316,6 +316,13 @@ const documentNodeQueryClubs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'slug'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'description'),
                         alias: null,
                         arguments: [],
@@ -331,6 +338,72 @@ const documentNodeQueryClubs = DocumentNode(
                       ),
                       FieldNode(
                         name: NameNode(value: 'address'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(
+                          selections: [
+                            FieldNode(
+                              name: NameNode(value: 'street'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'city'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'state'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'postalCode'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'country'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: '__typename'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                          ],
+                        ),
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'logo'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'latitude'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'longitude'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -365,7 +438,59 @@ const documentNodeQueryClubs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'settings'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(
+                          selections: [
+                            FieldNode(
+                              name: NameNode(value: 'allowReciprocal'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'requireApproval'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'maxVisitsPerMonth'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'reciprocalFee'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: '__typename'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                          ],
+                        ),
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'createdAt'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'updatedAt'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -777,32 +902,45 @@ class Query$Clubs$clubs$nodes {
   Query$Clubs$clubs$nodes({
     required this.id,
     required this.name,
+    required this.slug,
     this.description,
     this.location,
     this.address,
+    this.logo,
+    this.latitude,
+    this.longitude,
     this.contactEmail,
     this.contactPhone,
     this.website,
     required this.status,
+    required this.settings,
     required this.createdAt,
+    required this.updatedAt,
     this.$__typename = 'Club',
   });
 
   factory Query$Clubs$clubs$nodes.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
     final l$name = json['name'];
+    final l$slug = json['slug'];
     final l$description = json['description'];
     final l$location = json['location'];
     final l$address = json['address'];
+    final l$logo = json['logo'];
+    final l$latitude = json['latitude'];
+    final l$longitude = json['longitude'];
     final l$contactEmail = json['contactEmail'];
     final l$contactPhone = json['contactPhone'];
     final l$website = json['website'];
     final l$status = json['status'];
+    final l$settings = json['settings'];
     final l$createdAt = json['createdAt'];
+    final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
     return Query$Clubs$clubs$nodes(
       id: (l$id as String),
       name: (l$name as String),
+      slug: (l$slug as String),
       description: (l$description as String?),
       location: (l$location as String?),
       address: l$address == null
@@ -810,11 +948,18 @@ class Query$Clubs$clubs$nodes {
           : Query$Clubs$clubs$nodes$address.fromJson(
               (l$address as Map<String, dynamic>),
             ),
+      logo: (l$logo as String?),
+      latitude: (l$latitude as num?)?.toDouble(),
+      longitude: (l$longitude as num?)?.toDouble(),
       contactEmail: (l$contactEmail as String?),
       contactPhone: (l$contactPhone as String?),
       website: (l$website as String?),
       status: fromJson$Enum$ClubStatus((l$status as String)),
+      settings: Query$Clubs$clubs$nodes$settings.fromJson(
+        (l$settings as Map<String, dynamic>),
+      ),
       createdAt: DateTime.parse((l$createdAt as String)),
+      updatedAt: DateTime.parse((l$updatedAt as String)),
       $__typename: (l$$__typename as String),
     );
   }
@@ -823,11 +968,19 @@ class Query$Clubs$clubs$nodes {
 
   final String name;
 
+  final String slug;
+
   final String? description;
 
   final String? location;
 
   final Query$Clubs$clubs$nodes$address? address;
+
+  final String? logo;
+
+  final double? latitude;
+
+  final double? longitude;
 
   final String? contactEmail;
 
@@ -837,7 +990,11 @@ class Query$Clubs$clubs$nodes {
 
   final Enum$ClubStatus status;
 
+  final Query$Clubs$clubs$nodes$settings settings;
+
   final DateTime createdAt;
+
+  final DateTime updatedAt;
 
   final String $__typename;
 
@@ -847,12 +1004,20 @@ class Query$Clubs$clubs$nodes {
     _resultData['id'] = l$id;
     final l$name = name;
     _resultData['name'] = l$name;
+    final l$slug = slug;
+    _resultData['slug'] = l$slug;
     final l$description = description;
     _resultData['description'] = l$description;
     final l$location = location;
     _resultData['location'] = l$location;
     final l$address = address;
     _resultData['address'] = l$address?.toJson();
+    final l$logo = logo;
+    _resultData['logo'] = l$logo;
+    final l$latitude = latitude;
+    _resultData['latitude'] = l$latitude;
+    final l$longitude = longitude;
+    _resultData['longitude'] = l$longitude;
     final l$contactEmail = contactEmail;
     _resultData['contactEmail'] = l$contactEmail;
     final l$contactPhone = contactPhone;
@@ -861,8 +1026,12 @@ class Query$Clubs$clubs$nodes {
     _resultData['website'] = l$website;
     final l$status = status;
     _resultData['status'] = toJson$Enum$ClubStatus(l$status);
+    final l$settings = settings;
+    _resultData['settings'] = l$settings.toJson();
     final l$createdAt = createdAt;
     _resultData['createdAt'] = l$createdAt.toIso8601String();
+    final l$updatedAt = updatedAt;
+    _resultData['updatedAt'] = l$updatedAt.toIso8601String();
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -872,26 +1041,38 @@ class Query$Clubs$clubs$nodes {
   int get hashCode {
     final l$id = id;
     final l$name = name;
+    final l$slug = slug;
     final l$description = description;
     final l$location = location;
     final l$address = address;
+    final l$logo = logo;
+    final l$latitude = latitude;
+    final l$longitude = longitude;
     final l$contactEmail = contactEmail;
     final l$contactPhone = contactPhone;
     final l$website = website;
     final l$status = status;
+    final l$settings = settings;
     final l$createdAt = createdAt;
+    final l$updatedAt = updatedAt;
     final l$$__typename = $__typename;
     return Object.hashAll([
       l$id,
       l$name,
+      l$slug,
       l$description,
       l$location,
       l$address,
+      l$logo,
+      l$latitude,
+      l$longitude,
       l$contactEmail,
       l$contactPhone,
       l$website,
       l$status,
+      l$settings,
       l$createdAt,
+      l$updatedAt,
       l$$__typename,
     ]);
   }
@@ -914,6 +1095,11 @@ class Query$Clubs$clubs$nodes {
     if (l$name != lOther$name) {
       return false;
     }
+    final l$slug = slug;
+    final lOther$slug = other.slug;
+    if (l$slug != lOther$slug) {
+      return false;
+    }
     final l$description = description;
     final lOther$description = other.description;
     if (l$description != lOther$description) {
@@ -927,6 +1113,21 @@ class Query$Clubs$clubs$nodes {
     final l$address = address;
     final lOther$address = other.address;
     if (l$address != lOther$address) {
+      return false;
+    }
+    final l$logo = logo;
+    final lOther$logo = other.logo;
+    if (l$logo != lOther$logo) {
+      return false;
+    }
+    final l$latitude = latitude;
+    final lOther$latitude = other.latitude;
+    if (l$latitude != lOther$latitude) {
+      return false;
+    }
+    final l$longitude = longitude;
+    final lOther$longitude = other.longitude;
+    if (l$longitude != lOther$longitude) {
       return false;
     }
     final l$contactEmail = contactEmail;
@@ -949,9 +1150,19 @@ class Query$Clubs$clubs$nodes {
     if (l$status != lOther$status) {
       return false;
     }
+    final l$settings = settings;
+    final lOther$settings = other.settings;
+    if (l$settings != lOther$settings) {
+      return false;
+    }
     final l$createdAt = createdAt;
     final lOther$createdAt = other.createdAt;
     if (l$createdAt != lOther$createdAt) {
+      return false;
+    }
+    final l$updatedAt = updatedAt;
+    final lOther$updatedAt = other.updatedAt;
+    if (l$updatedAt != lOther$updatedAt) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -980,17 +1191,24 @@ abstract class CopyWith$Query$Clubs$clubs$nodes<TRes> {
   TRes call({
     String? id,
     String? name,
+    String? slug,
     String? description,
     String? location,
     Query$Clubs$clubs$nodes$address? address,
+    String? logo,
+    double? latitude,
+    double? longitude,
     String? contactEmail,
     String? contactPhone,
     String? website,
     Enum$ClubStatus? status,
+    Query$Clubs$clubs$nodes$settings? settings,
     DateTime? createdAt,
+    DateTime? updatedAt,
     String? $__typename,
   });
   CopyWith$Query$Clubs$clubs$nodes$address<TRes> get address;
+  CopyWith$Query$Clubs$clubs$nodes$settings<TRes> get settings;
 }
 
 class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
@@ -1006,14 +1224,20 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
   TRes call({
     Object? id = _undefined,
     Object? name = _undefined,
+    Object? slug = _undefined,
     Object? description = _undefined,
     Object? location = _undefined,
     Object? address = _undefined,
+    Object? logo = _undefined,
+    Object? latitude = _undefined,
+    Object? longitude = _undefined,
     Object? contactEmail = _undefined,
     Object? contactPhone = _undefined,
     Object? website = _undefined,
     Object? status = _undefined,
+    Object? settings = _undefined,
     Object? createdAt = _undefined,
+    Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
     Query$Clubs$clubs$nodes(
@@ -1021,6 +1245,9 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
       name: name == _undefined || name == null
           ? _instance.name
           : (name as String),
+      slug: slug == _undefined || slug == null
+          ? _instance.slug
+          : (slug as String),
       description: description == _undefined
           ? _instance.description
           : (description as String?),
@@ -1030,6 +1257,13 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
       address: address == _undefined
           ? _instance.address
           : (address as Query$Clubs$clubs$nodes$address?),
+      logo: logo == _undefined ? _instance.logo : (logo as String?),
+      latitude: latitude == _undefined
+          ? _instance.latitude
+          : (latitude as double?),
+      longitude: longitude == _undefined
+          ? _instance.longitude
+          : (longitude as double?),
       contactEmail: contactEmail == _undefined
           ? _instance.contactEmail
           : (contactEmail as String?),
@@ -1040,9 +1274,15 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$ClubStatus),
+      settings: settings == _undefined || settings == null
+          ? _instance.settings
+          : (settings as Query$Clubs$clubs$nodes$settings),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
+      updatedAt: updatedAt == _undefined || updatedAt == null
+          ? _instance.updatedAt
+          : (updatedAt as DateTime),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1058,6 +1298,14 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
             (e) => call(address: e),
           );
   }
+
+  CopyWith$Query$Clubs$clubs$nodes$settings<TRes> get settings {
+    final local$settings = _instance.settings;
+    return CopyWith$Query$Clubs$clubs$nodes$settings(
+      local$settings,
+      (e) => call(settings: e),
+    );
+  }
 }
 
 class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
@@ -1069,36 +1317,102 @@ class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
   call({
     String? id,
     String? name,
+    String? slug,
     String? description,
     String? location,
     Query$Clubs$clubs$nodes$address? address,
+    String? logo,
+    double? latitude,
+    double? longitude,
     String? contactEmail,
     String? contactPhone,
     String? website,
     Enum$ClubStatus? status,
+    Query$Clubs$clubs$nodes$settings? settings,
     DateTime? createdAt,
+    DateTime? updatedAt,
     String? $__typename,
   }) => _res;
 
   CopyWith$Query$Clubs$clubs$nodes$address<TRes> get address =>
       CopyWith$Query$Clubs$clubs$nodes$address.stub(_res);
+
+  CopyWith$Query$Clubs$clubs$nodes$settings<TRes> get settings =>
+      CopyWith$Query$Clubs$clubs$nodes$settings.stub(_res);
 }
 
 class Query$Clubs$clubs$nodes$address {
-  Query$Clubs$clubs$nodes$address();
+  Query$Clubs$clubs$nodes$address({
+    required this.street,
+    required this.city,
+    required this.state,
+    required this.postalCode,
+    required this.country,
+    this.$__typename = 'Address',
+  });
 
   factory Query$Clubs$clubs$nodes$address.fromJson(Map<String, dynamic> json) {
-    return Query$Clubs$clubs$nodes$address();
+    final l$street = json['street'];
+    final l$city = json['city'];
+    final l$state = json['state'];
+    final l$postalCode = json['postalCode'];
+    final l$country = json['country'];
+    final l$$__typename = json['__typename'];
+    return Query$Clubs$clubs$nodes$address(
+      street: (l$street as String),
+      city: (l$city as String),
+      state: (l$state as String),
+      postalCode: (l$postalCode as String),
+      country: (l$country as String),
+      $__typename: (l$$__typename as String),
+    );
   }
+
+  final String street;
+
+  final String city;
+
+  final String state;
+
+  final String postalCode;
+
+  final String country;
+
+  final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
+    final l$street = street;
+    _resultData['street'] = l$street;
+    final l$city = city;
+    _resultData['city'] = l$city;
+    final l$state = state;
+    _resultData['state'] = l$state;
+    final l$postalCode = postalCode;
+    _resultData['postalCode'] = l$postalCode;
+    final l$country = country;
+    _resultData['country'] = l$country;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
     return _resultData;
   }
 
   @override
   int get hashCode {
-    return Object.hashAll([]);
+    final l$street = street;
+    final l$city = city;
+    final l$state = state;
+    final l$postalCode = postalCode;
+    final l$country = country;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$street,
+      l$city,
+      l$state,
+      l$postalCode,
+      l$country,
+      l$$__typename,
+    ]);
   }
 
   @override
@@ -1108,6 +1422,36 @@ class Query$Clubs$clubs$nodes$address {
     }
     if (other is! Query$Clubs$clubs$nodes$address ||
         runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$street = street;
+    final lOther$street = other.street;
+    if (l$street != lOther$street) {
+      return false;
+    }
+    final l$city = city;
+    final lOther$city = other.city;
+    if (l$city != lOther$city) {
+      return false;
+    }
+    final l$state = state;
+    final lOther$state = other.state;
+    if (l$state != lOther$state) {
+      return false;
+    }
+    final l$postalCode = postalCode;
+    final lOther$postalCode = other.postalCode;
+    if (l$postalCode != lOther$postalCode) {
+      return false;
+    }
+    final l$country = country;
+    final lOther$country = other.country;
+    if (l$country != lOther$country) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
       return false;
     }
     return true;
@@ -1129,7 +1473,14 @@ abstract class CopyWith$Query$Clubs$clubs$nodes$address<TRes> {
   factory CopyWith$Query$Clubs$clubs$nodes$address.stub(TRes res) =
       _CopyWithStubImpl$Query$Clubs$clubs$nodes$address;
 
-  TRes call();
+  TRes call({
+    String? street,
+    String? city,
+    String? state,
+    String? postalCode,
+    String? country,
+    String? $__typename,
+  });
 }
 
 class _CopyWithImpl$Query$Clubs$clubs$nodes$address<TRes>
@@ -1142,7 +1493,35 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes$address<TRes>
 
   static const _undefined = <dynamic, dynamic>{};
 
-  TRes call() => _then(Query$Clubs$clubs$nodes$address());
+  TRes call({
+    Object? street = _undefined,
+    Object? city = _undefined,
+    Object? state = _undefined,
+    Object? postalCode = _undefined,
+    Object? country = _undefined,
+    Object? $__typename = _undefined,
+  }) => _then(
+    Query$Clubs$clubs$nodes$address(
+      street: street == _undefined || street == null
+          ? _instance.street
+          : (street as String),
+      city: city == _undefined || city == null
+          ? _instance.city
+          : (city as String),
+      state: state == _undefined || state == null
+          ? _instance.state
+          : (state as String),
+      postalCode: postalCode == _undefined || postalCode == null
+          ? _instance.postalCode
+          : (postalCode as String),
+      country: country == _undefined || country == null
+          ? _instance.country
+          : (country as String),
+      $__typename: $__typename == _undefined || $__typename == null
+          ? _instance.$__typename
+          : ($__typename as String),
+    ),
+  );
 }
 
 class _CopyWithStubImpl$Query$Clubs$clubs$nodes$address<TRes>
@@ -1151,7 +1530,194 @@ class _CopyWithStubImpl$Query$Clubs$clubs$nodes$address<TRes>
 
   TRes _res;
 
-  call() => _res;
+  call({
+    String? street,
+    String? city,
+    String? state,
+    String? postalCode,
+    String? country,
+    String? $__typename,
+  }) => _res;
+}
+
+class Query$Clubs$clubs$nodes$settings {
+  Query$Clubs$clubs$nodes$settings({
+    required this.allowReciprocal,
+    required this.requireApproval,
+    required this.maxVisitsPerMonth,
+    this.reciprocalFee,
+    this.$__typename = 'ClubSettings',
+  });
+
+  factory Query$Clubs$clubs$nodes$settings.fromJson(Map<String, dynamic> json) {
+    final l$allowReciprocal = json['allowReciprocal'];
+    final l$requireApproval = json['requireApproval'];
+    final l$maxVisitsPerMonth = json['maxVisitsPerMonth'];
+    final l$reciprocalFee = json['reciprocalFee'];
+    final l$$__typename = json['__typename'];
+    return Query$Clubs$clubs$nodes$settings(
+      allowReciprocal: (l$allowReciprocal as bool),
+      requireApproval: (l$requireApproval as bool),
+      maxVisitsPerMonth: (l$maxVisitsPerMonth as int),
+      reciprocalFee: (l$reciprocalFee as num?)?.toDouble(),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final bool allowReciprocal;
+
+  final bool requireApproval;
+
+  final int maxVisitsPerMonth;
+
+  final double? reciprocalFee;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$allowReciprocal = allowReciprocal;
+    _resultData['allowReciprocal'] = l$allowReciprocal;
+    final l$requireApproval = requireApproval;
+    _resultData['requireApproval'] = l$requireApproval;
+    final l$maxVisitsPerMonth = maxVisitsPerMonth;
+    _resultData['maxVisitsPerMonth'] = l$maxVisitsPerMonth;
+    final l$reciprocalFee = reciprocalFee;
+    _resultData['reciprocalFee'] = l$reciprocalFee;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$allowReciprocal = allowReciprocal;
+    final l$requireApproval = requireApproval;
+    final l$maxVisitsPerMonth = maxVisitsPerMonth;
+    final l$reciprocalFee = reciprocalFee;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$allowReciprocal,
+      l$requireApproval,
+      l$maxVisitsPerMonth,
+      l$reciprocalFee,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Query$Clubs$clubs$nodes$settings ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$allowReciprocal = allowReciprocal;
+    final lOther$allowReciprocal = other.allowReciprocal;
+    if (l$allowReciprocal != lOther$allowReciprocal) {
+      return false;
+    }
+    final l$requireApproval = requireApproval;
+    final lOther$requireApproval = other.requireApproval;
+    if (l$requireApproval != lOther$requireApproval) {
+      return false;
+    }
+    final l$maxVisitsPerMonth = maxVisitsPerMonth;
+    final lOther$maxVisitsPerMonth = other.maxVisitsPerMonth;
+    if (l$maxVisitsPerMonth != lOther$maxVisitsPerMonth) {
+      return false;
+    }
+    final l$reciprocalFee = reciprocalFee;
+    final lOther$reciprocalFee = other.reciprocalFee;
+    if (l$reciprocalFee != lOther$reciprocalFee) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$Clubs$clubs$nodes$settings
+    on Query$Clubs$clubs$nodes$settings {
+  CopyWith$Query$Clubs$clubs$nodes$settings<Query$Clubs$clubs$nodes$settings>
+  get copyWith => CopyWith$Query$Clubs$clubs$nodes$settings(this, (i) => i);
+}
+
+abstract class CopyWith$Query$Clubs$clubs$nodes$settings<TRes> {
+  factory CopyWith$Query$Clubs$clubs$nodes$settings(
+    Query$Clubs$clubs$nodes$settings instance,
+    TRes Function(Query$Clubs$clubs$nodes$settings) then,
+  ) = _CopyWithImpl$Query$Clubs$clubs$nodes$settings;
+
+  factory CopyWith$Query$Clubs$clubs$nodes$settings.stub(TRes res) =
+      _CopyWithStubImpl$Query$Clubs$clubs$nodes$settings;
+
+  TRes call({
+    bool? allowReciprocal,
+    bool? requireApproval,
+    int? maxVisitsPerMonth,
+    double? reciprocalFee,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Query$Clubs$clubs$nodes$settings<TRes>
+    implements CopyWith$Query$Clubs$clubs$nodes$settings<TRes> {
+  _CopyWithImpl$Query$Clubs$clubs$nodes$settings(this._instance, this._then);
+
+  final Query$Clubs$clubs$nodes$settings _instance;
+
+  final TRes Function(Query$Clubs$clubs$nodes$settings) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? allowReciprocal = _undefined,
+    Object? requireApproval = _undefined,
+    Object? maxVisitsPerMonth = _undefined,
+    Object? reciprocalFee = _undefined,
+    Object? $__typename = _undefined,
+  }) => _then(
+    Query$Clubs$clubs$nodes$settings(
+      allowReciprocal: allowReciprocal == _undefined || allowReciprocal == null
+          ? _instance.allowReciprocal
+          : (allowReciprocal as bool),
+      requireApproval: requireApproval == _undefined || requireApproval == null
+          ? _instance.requireApproval
+          : (requireApproval as bool),
+      maxVisitsPerMonth:
+          maxVisitsPerMonth == _undefined || maxVisitsPerMonth == null
+          ? _instance.maxVisitsPerMonth
+          : (maxVisitsPerMonth as int),
+      reciprocalFee: reciprocalFee == _undefined
+          ? _instance.reciprocalFee
+          : (reciprocalFee as double?),
+      $__typename: $__typename == _undefined || $__typename == null
+          ? _instance.$__typename
+          : ($__typename as String),
+    ),
+  );
+}
+
+class _CopyWithStubImpl$Query$Clubs$clubs$nodes$settings<TRes>
+    implements CopyWith$Query$Clubs$clubs$nodes$settings<TRes> {
+  _CopyWithStubImpl$Query$Clubs$clubs$nodes$settings(this._res);
+
+  TRes _res;
+
+  call({
+    bool? allowReciprocal,
+    bool? requireApproval,
+    int? maxVisitsPerMonth,
+    double? reciprocalFee,
+    String? $__typename,
+  }) => _res;
 }
 
 class Query$Clubs$clubs$pageInfo {

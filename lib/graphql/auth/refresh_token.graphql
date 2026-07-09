@@ -13,6 +13,8 @@ mutation RefreshToken($refreshToken: String!) {
       status
       roles
       permissions
+      createdAt
+      updatedAt
     }
   }
 }

@@ -12,13 +12,24 @@ class ClubAddressModel extends ClubAddressEntity {
   });
 
   factory ClubAddressModel.fromJson(Map<String, dynamic> json) => ClubAddressModel(
-    street: json['street'] as String,
-    city: json['city'] as String,
-    state: json['state'] as String,
-    zipCode: json['zipCode'] as String,
-    country: json['country'] as String,
-    latitude: json['latitude'] as double?,
-    longitude: json['longitude'] as double?,
+    street: json['street'] as String? ?? '',
+    city: json['city'] as String? ?? '',
+    state: json['state'] as String? ?? '',
+    // GraphQL Address uses postalCode; older payloads used zipCode.
+    zipCode: (json['zipCode'] ?? json['postalCode']) as String? ?? '',
+    country: json['country'] as String? ?? '',
+    latitude: (json['latitude'] as num?)?.toDouble(),
+    longitude: (json['longitude'] as num?)?.toDouble(),
+  );
+
+  /// Placeholder for clubs whose address is not set (Club.address is
+  /// nullable in the schema, but the domain entity requires one).
+  static const empty = ClubAddressModel(
+    street: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: '',
   );
 
   Map<String, dynamic> toJson() => {

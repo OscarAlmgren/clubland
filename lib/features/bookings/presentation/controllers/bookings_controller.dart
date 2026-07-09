@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/graphql/graphql_api.dart';
-import '../../../../core/network/graphql_client.dart';
 import '../../data/datasources/bookings_remote_datasource.dart';
 import '../../data/models/booking_model.dart';
 import '../../data/repositories/bookings_repository_impl.dart';

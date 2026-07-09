@@ -1,5 +1,7 @@
-query Clubs($filter: ClubFilterInput, $pagination: PaginationInput) {
-  clubs(filter: $filter, pagination: $pagination) {
+# The backend has no dedicated featuredClubs query; featured clubs are the
+# clubs query filtered on isFeatured.
+query FeaturedClubs($pagination: PaginationInput) {
+  clubs(filter: { isFeatured: true }, pagination: $pagination) {
     nodes {
       id
       name
@@ -14,28 +16,17 @@ query Clubs($filter: ClubFilterInput, $pagination: PaginationInput) {
         country
       }
       logo
-      latitude
-      longitude
-      contactEmail
-      contactPhone
       website
       status
       settings {
         allowReciprocal
-        requireApproval
-        maxVisitsPerMonth
         reciprocalFee
       }
       createdAt
       updatedAt
     }
     pageInfo {
-      page
-      pageSize
-      total
-      totalPages
       hasNextPage
-      hasPrevPage
     }
   }
 }

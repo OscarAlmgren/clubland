@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/network/graphql_client.dart';
 import '../../../auth/domain/entities/user_entity.dart';
 import '../../../auth/presentation/controllers/auth_controller.dart';
 import '../../data/datasources/profile_remote_datasource.dart';

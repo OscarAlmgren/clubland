@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/network/graphql_client.dart';
 import '../../../../core/services/location_service.dart';
 import '../../data/datasources/clubs_remote_datasource.dart';
 import '../../data/repositories/clubs_repository_impl.dart';

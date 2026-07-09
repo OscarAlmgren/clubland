@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
 
-class Variables$Query$Clubs {
-  factory Variables$Query$Clubs({Input$PaginationInput? pagination}) =>
-      Variables$Query$Clubs._({
+class Variables$Query$FeaturedClubs {
+  factory Variables$Query$FeaturedClubs({Input$PaginationInput? pagination}) =>
+      Variables$Query$FeaturedClubs._({
         if (pagination != null) r'pagination': pagination,
       });
 
-  Variables$Query$Clubs._(this._$data);
+  Variables$Query$FeaturedClubs._(this._$data);
 
-  factory Variables$Query$Clubs.fromJson(Map<String, dynamic> data) {
+  factory Variables$Query$FeaturedClubs.fromJson(Map<String, dynamic> data) {
     final result$data = <String, dynamic>{};
     if (data.containsKey('pagination')) {
       final l$pagination = data['pagination'];
@@ -21,7 +21,7 @@ class Variables$Query$Clubs {
               (l$pagination as Map<String, dynamic>),
             );
     }
-    return Variables$Query$Clubs._(result$data);
+    return Variables$Query$FeaturedClubs._(result$data);
   }
 
   Map<String, dynamic> _$data;
@@ -38,15 +38,16 @@ class Variables$Query$Clubs {
     return result$data;
   }
 
-  CopyWith$Variables$Query$Clubs<Variables$Query$Clubs> get copyWith =>
-      CopyWith$Variables$Query$Clubs(this, (i) => i);
+  CopyWith$Variables$Query$FeaturedClubs<Variables$Query$FeaturedClubs>
+  get copyWith => CopyWith$Variables$Query$FeaturedClubs(this, (i) => i);
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Variables$Query$Clubs || runtimeType != other.runtimeType) {
+    if (other is! Variables$Query$FeaturedClubs ||
+        runtimeType != other.runtimeType) {
       return false;
     }
     final l$pagination = pagination;
@@ -70,30 +71,30 @@ class Variables$Query$Clubs {
   }
 }
 
-abstract class CopyWith$Variables$Query$Clubs<TRes> {
-  factory CopyWith$Variables$Query$Clubs(
-    Variables$Query$Clubs instance,
-    TRes Function(Variables$Query$Clubs) then,
-  ) = _CopyWithImpl$Variables$Query$Clubs;
+abstract class CopyWith$Variables$Query$FeaturedClubs<TRes> {
+  factory CopyWith$Variables$Query$FeaturedClubs(
+    Variables$Query$FeaturedClubs instance,
+    TRes Function(Variables$Query$FeaturedClubs) then,
+  ) = _CopyWithImpl$Variables$Query$FeaturedClubs;
 
-  factory CopyWith$Variables$Query$Clubs.stub(TRes res) =
-      _CopyWithStubImpl$Variables$Query$Clubs;
+  factory CopyWith$Variables$Query$FeaturedClubs.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Query$FeaturedClubs;
 
   TRes call({Input$PaginationInput? pagination});
 }
 
-class _CopyWithImpl$Variables$Query$Clubs<TRes>
-    implements CopyWith$Variables$Query$Clubs<TRes> {
-  _CopyWithImpl$Variables$Query$Clubs(this._instance, this._then);
+class _CopyWithImpl$Variables$Query$FeaturedClubs<TRes>
+    implements CopyWith$Variables$Query$FeaturedClubs<TRes> {
+  _CopyWithImpl$Variables$Query$FeaturedClubs(this._instance, this._then);
 
-  final Variables$Query$Clubs _instance;
+  final Variables$Query$FeaturedClubs _instance;
 
-  final TRes Function(Variables$Query$Clubs) _then;
+  final TRes Function(Variables$Query$FeaturedClubs) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({Object? pagination = _undefined}) => _then(
-    Variables$Query$Clubs._({
+    Variables$Query$FeaturedClubs._({
       ..._instance._$data,
       if (pagination != _undefined)
         'pagination': (pagination as Input$PaginationInput?),
@@ -101,28 +102,30 @@ class _CopyWithImpl$Variables$Query$Clubs<TRes>
   );
 }
 
-class _CopyWithStubImpl$Variables$Query$Clubs<TRes>
-    implements CopyWith$Variables$Query$Clubs<TRes> {
-  _CopyWithStubImpl$Variables$Query$Clubs(this._res);
+class _CopyWithStubImpl$Variables$Query$FeaturedClubs<TRes>
+    implements CopyWith$Variables$Query$FeaturedClubs<TRes> {
+  _CopyWithStubImpl$Variables$Query$FeaturedClubs(this._res);
 
   TRes _res;
 
   call({Input$PaginationInput? pagination}) => _res;
 }
 
-class Query$Clubs {
-  Query$Clubs({required this.clubs, this.$__typename = 'Query'});
+class Query$FeaturedClubs {
+  Query$FeaturedClubs({required this.clubs, this.$__typename = 'Query'});
 
-  factory Query$Clubs.fromJson(Map<String, dynamic> json) {
+  factory Query$FeaturedClubs.fromJson(Map<String, dynamic> json) {
     final l$clubs = json['clubs'];
     final l$$__typename = json['__typename'];
-    return Query$Clubs(
-      clubs: Query$Clubs$clubs.fromJson((l$clubs as Map<String, dynamic>)),
+    return Query$FeaturedClubs(
+      clubs: Query$FeaturedClubs$clubs.fromJson(
+        (l$clubs as Map<String, dynamic>),
+      ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final Query$Clubs$clubs clubs;
+  final Query$FeaturedClubs$clubs clubs;
 
   final String $__typename;
 
@@ -147,7 +150,7 @@ class Query$Clubs {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Clubs || runtimeType != other.runtimeType) {
+    if (other is! Query$FeaturedClubs || runtimeType != other.runtimeType) {
       return false;
     }
     final l$clubs = clubs;
@@ -164,67 +167,72 @@ class Query$Clubs {
   }
 }
 
-extension UtilityExtension$Query$Clubs on Query$Clubs {
-  CopyWith$Query$Clubs<Query$Clubs> get copyWith =>
-      CopyWith$Query$Clubs(this, (i) => i);
+extension UtilityExtension$Query$FeaturedClubs on Query$FeaturedClubs {
+  CopyWith$Query$FeaturedClubs<Query$FeaturedClubs> get copyWith =>
+      CopyWith$Query$FeaturedClubs(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Clubs<TRes> {
-  factory CopyWith$Query$Clubs(
-    Query$Clubs instance,
-    TRes Function(Query$Clubs) then,
-  ) = _CopyWithImpl$Query$Clubs;
+abstract class CopyWith$Query$FeaturedClubs<TRes> {
+  factory CopyWith$Query$FeaturedClubs(
+    Query$FeaturedClubs instance,
+    TRes Function(Query$FeaturedClubs) then,
+  ) = _CopyWithImpl$Query$FeaturedClubs;
 
-  factory CopyWith$Query$Clubs.stub(TRes res) = _CopyWithStubImpl$Query$Clubs;
+  factory CopyWith$Query$FeaturedClubs.stub(TRes res) =
+      _CopyWithStubImpl$Query$FeaturedClubs;
 
-  TRes call({Query$Clubs$clubs? clubs, String? $__typename});
-  CopyWith$Query$Clubs$clubs<TRes> get clubs;
+  TRes call({Query$FeaturedClubs$clubs? clubs, String? $__typename});
+  CopyWith$Query$FeaturedClubs$clubs<TRes> get clubs;
 }
 
-class _CopyWithImpl$Query$Clubs<TRes> implements CopyWith$Query$Clubs<TRes> {
-  _CopyWithImpl$Query$Clubs(this._instance, this._then);
+class _CopyWithImpl$Query$FeaturedClubs<TRes>
+    implements CopyWith$Query$FeaturedClubs<TRes> {
+  _CopyWithImpl$Query$FeaturedClubs(this._instance, this._then);
 
-  final Query$Clubs _instance;
+  final Query$FeaturedClubs _instance;
 
-  final TRes Function(Query$Clubs) _then;
+  final TRes Function(Query$FeaturedClubs) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({Object? clubs = _undefined, Object? $__typename = _undefined}) =>
       _then(
-        Query$Clubs(
+        Query$FeaturedClubs(
           clubs: clubs == _undefined || clubs == null
               ? _instance.clubs
-              : (clubs as Query$Clubs$clubs),
+              : (clubs as Query$FeaturedClubs$clubs),
           $__typename: $__typename == _undefined || $__typename == null
               ? _instance.$__typename
               : ($__typename as String),
         ),
       );
 
-  CopyWith$Query$Clubs$clubs<TRes> get clubs {
+  CopyWith$Query$FeaturedClubs$clubs<TRes> get clubs {
     final local$clubs = _instance.clubs;
-    return CopyWith$Query$Clubs$clubs(local$clubs, (e) => call(clubs: e));
+    return CopyWith$Query$FeaturedClubs$clubs(
+      local$clubs,
+      (e) => call(clubs: e),
+    );
   }
 }
 
-class _CopyWithStubImpl$Query$Clubs<TRes>
-    implements CopyWith$Query$Clubs<TRes> {
-  _CopyWithStubImpl$Query$Clubs(this._res);
+class _CopyWithStubImpl$Query$FeaturedClubs<TRes>
+    implements CopyWith$Query$FeaturedClubs<TRes> {
+  _CopyWithStubImpl$Query$FeaturedClubs(this._res);
 
   TRes _res;
 
-  call({Query$Clubs$clubs? clubs, String? $__typename}) => _res;
+  call({Query$FeaturedClubs$clubs? clubs, String? $__typename}) => _res;
 
-  CopyWith$Query$Clubs$clubs<TRes> get clubs =>
-      CopyWith$Query$Clubs$clubs.stub(_res);
+  CopyWith$Query$FeaturedClubs$clubs<TRes> get clubs =>
+      CopyWith$Query$FeaturedClubs$clubs.stub(_res);
 }
 
-const documentNodeQueryClubs = DocumentNode(
+const documentNodeQueryFeaturedClubs = DocumentNode(
   definitions: [
     OperationDefinitionNode(
       type: OperationType.query,
-      name: NameNode(value: 'Clubs'),
+      name: NameNode(value: 'FeaturedClubs'),
       variableDefinitions: [
         VariableDefinitionNode(
           variable: VariableNode(name: NameNode(value: 'pagination')),
@@ -243,6 +251,17 @@ const documentNodeQueryClubs = DocumentNode(
             name: NameNode(value: 'clubs'),
             alias: null,
             arguments: [
+              ArgumentNode(
+                name: NameNode(value: 'filter'),
+                value: ObjectValueNode(
+                  fields: [
+                    ObjectFieldNode(
+                      name: NameNode(value: 'isFeatured'),
+                      value: BooleanValueNode(value: true),
+                    ),
+                  ],
+                ),
+              ),
               ArgumentNode(
                 name: NameNode(value: 'pagination'),
                 value: VariableNode(name: NameNode(value: 'pagination')),
@@ -294,6 +313,65 @@ const documentNodeQueryClubs = DocumentNode(
                         selectionSet: null,
                       ),
                       FieldNode(
+                        name: NameNode(value: 'address'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(
+                          selections: [
+                            FieldNode(
+                              name: NameNode(value: 'street'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'city'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'state'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'postalCode'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: 'country'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                            FieldNode(
+                              name: NameNode(value: '__typename'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null,
+                            ),
+                          ],
+                        ),
+                      ),
+                      FieldNode(
+                        name: NameNode(value: 'logo'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null,
+                      ),
+                      FieldNode(
                         name: NameNode(value: 'website'),
                         alias: null,
                         arguments: [],
@@ -316,20 +394,6 @@ const documentNodeQueryClubs = DocumentNode(
                           selections: [
                             FieldNode(
                               name: NameNode(value: 'allowReciprocal'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'requireApproval'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: null,
-                            ),
-                            FieldNode(
-                              name: NameNode(value: 'maxVisitsPerMonth'),
                               alias: null,
                               arguments: [],
                               directives: [],
@@ -384,42 +448,7 @@ const documentNodeQueryClubs = DocumentNode(
                   selectionSet: SelectionSetNode(
                     selections: [
                       FieldNode(
-                        name: NameNode(value: 'page'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'pageSize'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'total'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'totalPages'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
                         name: NameNode(value: 'hasNextPage'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null,
-                      ),
-                      FieldNode(
-                        name: NameNode(value: 'hasPrevPage'),
                         alias: null,
                         arguments: [],
                         directives: [],
@@ -457,23 +486,24 @@ const documentNodeQueryClubs = DocumentNode(
     ),
   ],
 );
-Query$Clubs _parserFn$Query$Clubs(Map<String, dynamic> data) =>
-    Query$Clubs.fromJson(data);
-typedef OnQueryComplete$Query$Clubs =
-    FutureOr<void> Function(Map<String, dynamic>?, Query$Clubs?);
+Query$FeaturedClubs _parserFn$Query$FeaturedClubs(Map<String, dynamic> data) =>
+    Query$FeaturedClubs.fromJson(data);
+typedef OnQueryComplete$Query$FeaturedClubs =
+    FutureOr<void> Function(Map<String, dynamic>?, Query$FeaturedClubs?);
 
-class Options$Query$Clubs extends graphql.QueryOptions<Query$Clubs> {
-  Options$Query$Clubs({
+class Options$Query$FeaturedClubs
+    extends graphql.QueryOptions<Query$FeaturedClubs> {
+  Options$Query$FeaturedClubs({
     String? operationName,
-    Variables$Query$Clubs? variables,
+    Variables$Query$FeaturedClubs? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
-    Query$Clubs? typedOptimisticResult,
+    Query$FeaturedClubs? typedOptimisticResult,
     Duration? pollInterval,
     graphql.Context? context,
-    OnQueryComplete$Query$Clubs? onComplete,
+    OnQueryComplete$Query$FeaturedClubs? onComplete,
     graphql.OnQueryError? onError,
   }) : onCompleteWithParsed = onComplete,
        super(
@@ -489,14 +519,14 @@ class Options$Query$Clubs extends graphql.QueryOptions<Query$Clubs> {
              ? null
              : (data) => onComplete(
                  data,
-                 data == null ? null : _parserFn$Query$Clubs(data),
+                 data == null ? null : _parserFn$Query$FeaturedClubs(data),
                ),
          onError: onError,
-         document: documentNodeQueryClubs,
-         parserFn: _parserFn$Query$Clubs,
+         document: documentNodeQueryFeaturedClubs,
+         parserFn: _parserFn$Query$FeaturedClubs,
        );
 
-  final OnQueryComplete$Query$Clubs? onCompleteWithParsed;
+  final OnQueryComplete$Query$FeaturedClubs? onCompleteWithParsed;
 
   @override
   List<Object?> get properties => [
@@ -507,15 +537,16 @@ class Options$Query$Clubs extends graphql.QueryOptions<Query$Clubs> {
   ];
 }
 
-class WatchOptions$Query$Clubs extends graphql.WatchQueryOptions<Query$Clubs> {
-  WatchOptions$Query$Clubs({
+class WatchOptions$Query$FeaturedClubs
+    extends graphql.WatchQueryOptions<Query$FeaturedClubs> {
+  WatchOptions$Query$FeaturedClubs({
     String? operationName,
-    Variables$Query$Clubs? variables,
+    Variables$Query$FeaturedClubs? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
     Object? optimisticResult,
-    Query$Clubs? typedOptimisticResult,
+    Query$FeaturedClubs? typedOptimisticResult,
     graphql.Context? context,
     Duration? pollInterval,
     bool? eagerlyFetchResults,
@@ -529,91 +560,92 @@ class WatchOptions$Query$Clubs extends graphql.WatchQueryOptions<Query$Clubs> {
          cacheRereadPolicy: cacheRereadPolicy,
          optimisticResult: optimisticResult ?? typedOptimisticResult?.toJson(),
          context: context,
-         document: documentNodeQueryClubs,
+         document: documentNodeQueryFeaturedClubs,
          pollInterval: pollInterval,
          eagerlyFetchResults: eagerlyFetchResults,
          carryForwardDataOnException: carryForwardDataOnException,
          fetchResults: fetchResults,
-         parserFn: _parserFn$Query$Clubs,
+         parserFn: _parserFn$Query$FeaturedClubs,
        );
 }
 
-class FetchMoreOptions$Query$Clubs extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$Clubs({
+class FetchMoreOptions$Query$FeaturedClubs extends graphql.FetchMoreOptions {
+  FetchMoreOptions$Query$FeaturedClubs({
     required graphql.UpdateQuery updateQuery,
-    Variables$Query$Clubs? variables,
+    Variables$Query$FeaturedClubs? variables,
   }) : super(
          updateQuery: updateQuery,
          variables: variables?.toJson() ?? {},
-         document: documentNodeQueryClubs,
+         document: documentNodeQueryFeaturedClubs,
        );
 }
 
-extension ClientExtension$Query$Clubs on graphql.GraphQLClient {
-  Future<graphql.QueryResult<Query$Clubs>> query$Clubs([
-    Options$Query$Clubs? options,
-  ]) async => await this.query(options ?? Options$Query$Clubs());
+extension ClientExtension$Query$FeaturedClubs on graphql.GraphQLClient {
+  Future<graphql.QueryResult<Query$FeaturedClubs>> query$FeaturedClubs([
+    Options$Query$FeaturedClubs? options,
+  ]) async => await this.query(options ?? Options$Query$FeaturedClubs());
 
-  graphql.ObservableQuery<Query$Clubs> watchQuery$Clubs([
-    WatchOptions$Query$Clubs? options,
-  ]) => this.watchQuery(options ?? WatchOptions$Query$Clubs());
+  graphql.ObservableQuery<Query$FeaturedClubs> watchQuery$FeaturedClubs([
+    WatchOptions$Query$FeaturedClubs? options,
+  ]) => this.watchQuery(options ?? WatchOptions$Query$FeaturedClubs());
 
-  void writeQuery$Clubs({
-    required Query$Clubs data,
-    Variables$Query$Clubs? variables,
+  void writeQuery$FeaturedClubs({
+    required Query$FeaturedClubs data,
+    Variables$Query$FeaturedClubs? variables,
     bool broadcast = true,
   }) => this.writeQuery(
     graphql.Request(
-      operation: graphql.Operation(document: documentNodeQueryClubs),
+      operation: graphql.Operation(document: documentNodeQueryFeaturedClubs),
       variables: variables?.toJson() ?? const {},
     ),
     data: data.toJson(),
     broadcast: broadcast,
   );
 
-  Query$Clubs? readQuery$Clubs({
-    Variables$Query$Clubs? variables,
+  Query$FeaturedClubs? readQuery$FeaturedClubs({
+    Variables$Query$FeaturedClubs? variables,
     bool optimistic = true,
   }) {
     final result = this.readQuery(
       graphql.Request(
-        operation: graphql.Operation(document: documentNodeQueryClubs),
+        operation: graphql.Operation(document: documentNodeQueryFeaturedClubs),
         variables: variables?.toJson() ?? const {},
       ),
       optimistic: optimistic,
     );
-    return result == null ? null : Query$Clubs.fromJson(result);
+    return result == null ? null : Query$FeaturedClubs.fromJson(result);
   }
 }
 
-class Query$Clubs$clubs {
-  Query$Clubs$clubs({
+class Query$FeaturedClubs$clubs {
+  Query$FeaturedClubs$clubs({
     required this.nodes,
     required this.pageInfo,
     this.$__typename = 'ClubConnection',
   });
 
-  factory Query$Clubs$clubs.fromJson(Map<String, dynamic> json) {
+  factory Query$FeaturedClubs$clubs.fromJson(Map<String, dynamic> json) {
     final l$nodes = json['nodes'];
     final l$pageInfo = json['pageInfo'];
     final l$$__typename = json['__typename'];
-    return Query$Clubs$clubs(
+    return Query$FeaturedClubs$clubs(
       nodes: (l$nodes as List<dynamic>)
           .map(
-            (e) =>
-                Query$Clubs$clubs$nodes.fromJson((e as Map<String, dynamic>)),
+            (e) => Query$FeaturedClubs$clubs$nodes.fromJson(
+              (e as Map<String, dynamic>),
+            ),
           )
           .toList(),
-      pageInfo: Query$Clubs$clubs$pageInfo.fromJson(
+      pageInfo: Query$FeaturedClubs$clubs$pageInfo.fromJson(
         (l$pageInfo as Map<String, dynamic>),
       ),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final List<Query$Clubs$clubs$nodes> nodes;
+  final List<Query$FeaturedClubs$clubs$nodes> nodes;
 
-  final Query$Clubs$clubs$pageInfo pageInfo;
+  final Query$FeaturedClubs$clubs$pageInfo pageInfo;
 
   final String $__typename;
 
@@ -645,7 +677,8 @@ class Query$Clubs$clubs {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Clubs$clubs || runtimeType != other.runtimeType) {
+    if (other is! Query$FeaturedClubs$clubs ||
+        runtimeType != other.runtimeType) {
       return false;
     }
     final l$nodes = nodes;
@@ -674,41 +707,46 @@ class Query$Clubs$clubs {
   }
 }
 
-extension UtilityExtension$Query$Clubs$clubs on Query$Clubs$clubs {
-  CopyWith$Query$Clubs$clubs<Query$Clubs$clubs> get copyWith =>
-      CopyWith$Query$Clubs$clubs(this, (i) => i);
+extension UtilityExtension$Query$FeaturedClubs$clubs
+    on Query$FeaturedClubs$clubs {
+  CopyWith$Query$FeaturedClubs$clubs<Query$FeaturedClubs$clubs> get copyWith =>
+      CopyWith$Query$FeaturedClubs$clubs(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Clubs$clubs<TRes> {
-  factory CopyWith$Query$Clubs$clubs(
-    Query$Clubs$clubs instance,
-    TRes Function(Query$Clubs$clubs) then,
-  ) = _CopyWithImpl$Query$Clubs$clubs;
+abstract class CopyWith$Query$FeaturedClubs$clubs<TRes> {
+  factory CopyWith$Query$FeaturedClubs$clubs(
+    Query$FeaturedClubs$clubs instance,
+    TRes Function(Query$FeaturedClubs$clubs) then,
+  ) = _CopyWithImpl$Query$FeaturedClubs$clubs;
 
-  factory CopyWith$Query$Clubs$clubs.stub(TRes res) =
-      _CopyWithStubImpl$Query$Clubs$clubs;
+  factory CopyWith$Query$FeaturedClubs$clubs.stub(TRes res) =
+      _CopyWithStubImpl$Query$FeaturedClubs$clubs;
 
   TRes call({
-    List<Query$Clubs$clubs$nodes>? nodes,
-    Query$Clubs$clubs$pageInfo? pageInfo,
+    List<Query$FeaturedClubs$clubs$nodes>? nodes,
+    Query$FeaturedClubs$clubs$pageInfo? pageInfo,
     String? $__typename,
   });
   TRes nodes(
-    Iterable<Query$Clubs$clubs$nodes> Function(
-      Iterable<CopyWith$Query$Clubs$clubs$nodes<Query$Clubs$clubs$nodes>>,
+    Iterable<Query$FeaturedClubs$clubs$nodes> Function(
+      Iterable<
+        CopyWith$Query$FeaturedClubs$clubs$nodes<
+          Query$FeaturedClubs$clubs$nodes
+        >
+      >,
     )
     _fn,
   );
-  CopyWith$Query$Clubs$clubs$pageInfo<TRes> get pageInfo;
+  CopyWith$Query$FeaturedClubs$clubs$pageInfo<TRes> get pageInfo;
 }
 
-class _CopyWithImpl$Query$Clubs$clubs<TRes>
-    implements CopyWith$Query$Clubs$clubs<TRes> {
-  _CopyWithImpl$Query$Clubs$clubs(this._instance, this._then);
+class _CopyWithImpl$Query$FeaturedClubs$clubs<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs<TRes> {
+  _CopyWithImpl$Query$FeaturedClubs$clubs(this._instance, this._then);
 
-  final Query$Clubs$clubs _instance;
+  final Query$FeaturedClubs$clubs _instance;
 
-  final TRes Function(Query$Clubs$clubs) _then;
+  final TRes Function(Query$FeaturedClubs$clubs) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -717,13 +755,13 @@ class _CopyWithImpl$Query$Clubs$clubs<TRes>
     Object? pageInfo = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Clubs$clubs(
+    Query$FeaturedClubs$clubs(
       nodes: nodes == _undefined || nodes == null
           ? _instance.nodes
-          : (nodes as List<Query$Clubs$clubs$nodes>),
+          : (nodes as List<Query$FeaturedClubs$clubs$nodes>),
       pageInfo: pageInfo == _undefined || pageInfo == null
           ? _instance.pageInfo
-          : (pageInfo as Query$Clubs$clubs$pageInfo),
+          : (pageInfo as Query$FeaturedClubs$clubs$pageInfo),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -731,50 +769,58 @@ class _CopyWithImpl$Query$Clubs$clubs<TRes>
   );
 
   TRes nodes(
-    Iterable<Query$Clubs$clubs$nodes> Function(
-      Iterable<CopyWith$Query$Clubs$clubs$nodes<Query$Clubs$clubs$nodes>>,
+    Iterable<Query$FeaturedClubs$clubs$nodes> Function(
+      Iterable<
+        CopyWith$Query$FeaturedClubs$clubs$nodes<
+          Query$FeaturedClubs$clubs$nodes
+        >
+      >,
     )
     _fn,
   ) => call(
     nodes: _fn(
-      _instance.nodes.map((e) => CopyWith$Query$Clubs$clubs$nodes(e, (i) => i)),
+      _instance.nodes.map(
+        (e) => CopyWith$Query$FeaturedClubs$clubs$nodes(e, (i) => i),
+      ),
     ).toList(),
   );
 
-  CopyWith$Query$Clubs$clubs$pageInfo<TRes> get pageInfo {
+  CopyWith$Query$FeaturedClubs$clubs$pageInfo<TRes> get pageInfo {
     final local$pageInfo = _instance.pageInfo;
-    return CopyWith$Query$Clubs$clubs$pageInfo(
+    return CopyWith$Query$FeaturedClubs$clubs$pageInfo(
       local$pageInfo,
       (e) => call(pageInfo: e),
     );
   }
 }
 
-class _CopyWithStubImpl$Query$Clubs$clubs<TRes>
-    implements CopyWith$Query$Clubs$clubs<TRes> {
-  _CopyWithStubImpl$Query$Clubs$clubs(this._res);
+class _CopyWithStubImpl$Query$FeaturedClubs$clubs<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs<TRes> {
+  _CopyWithStubImpl$Query$FeaturedClubs$clubs(this._res);
 
   TRes _res;
 
   call({
-    List<Query$Clubs$clubs$nodes>? nodes,
-    Query$Clubs$clubs$pageInfo? pageInfo,
+    List<Query$FeaturedClubs$clubs$nodes>? nodes,
+    Query$FeaturedClubs$clubs$pageInfo? pageInfo,
     String? $__typename,
   }) => _res;
 
   nodes(_fn) => _res;
 
-  CopyWith$Query$Clubs$clubs$pageInfo<TRes> get pageInfo =>
-      CopyWith$Query$Clubs$clubs$pageInfo.stub(_res);
+  CopyWith$Query$FeaturedClubs$clubs$pageInfo<TRes> get pageInfo =>
+      CopyWith$Query$FeaturedClubs$clubs$pageInfo.stub(_res);
 }
 
-class Query$Clubs$clubs$nodes {
-  Query$Clubs$clubs$nodes({
+class Query$FeaturedClubs$clubs$nodes {
+  Query$FeaturedClubs$clubs$nodes({
     required this.id,
     required this.name,
     required this.slug,
     this.description,
     this.location,
+    this.address,
+    this.logo,
     this.website,
     required this.status,
     required this.settings,
@@ -783,27 +829,35 @@ class Query$Clubs$clubs$nodes {
     this.$__typename = 'Club',
   });
 
-  factory Query$Clubs$clubs$nodes.fromJson(Map<String, dynamic> json) {
+  factory Query$FeaturedClubs$clubs$nodes.fromJson(Map<String, dynamic> json) {
     final l$id = json['id'];
     final l$name = json['name'];
     final l$slug = json['slug'];
     final l$description = json['description'];
     final l$location = json['location'];
+    final l$address = json['address'];
+    final l$logo = json['logo'];
     final l$website = json['website'];
     final l$status = json['status'];
     final l$settings = json['settings'];
     final l$createdAt = json['createdAt'];
     final l$updatedAt = json['updatedAt'];
     final l$$__typename = json['__typename'];
-    return Query$Clubs$clubs$nodes(
+    return Query$FeaturedClubs$clubs$nodes(
       id: (l$id as String),
       name: (l$name as String),
       slug: (l$slug as String),
       description: (l$description as String?),
       location: (l$location as String?),
+      address: l$address == null
+          ? null
+          : Query$FeaturedClubs$clubs$nodes$address.fromJson(
+              (l$address as Map<String, dynamic>),
+            ),
+      logo: (l$logo as String?),
       website: (l$website as String?),
       status: fromJson$Enum$ClubStatus((l$status as String)),
-      settings: Query$Clubs$clubs$nodes$settings.fromJson(
+      settings: Query$FeaturedClubs$clubs$nodes$settings.fromJson(
         (l$settings as Map<String, dynamic>),
       ),
       createdAt: DateTime.parse((l$createdAt as String)),
@@ -822,11 +876,15 @@ class Query$Clubs$clubs$nodes {
 
   final String? location;
 
+  final Query$FeaturedClubs$clubs$nodes$address? address;
+
+  final String? logo;
+
   final String? website;
 
   final Enum$ClubStatus status;
 
-  final Query$Clubs$clubs$nodes$settings settings;
+  final Query$FeaturedClubs$clubs$nodes$settings settings;
 
   final DateTime createdAt;
 
@@ -846,6 +904,10 @@ class Query$Clubs$clubs$nodes {
     _resultData['description'] = l$description;
     final l$location = location;
     _resultData['location'] = l$location;
+    final l$address = address;
+    _resultData['address'] = l$address?.toJson();
+    final l$logo = logo;
+    _resultData['logo'] = l$logo;
     final l$website = website;
     _resultData['website'] = l$website;
     final l$status = status;
@@ -868,6 +930,8 @@ class Query$Clubs$clubs$nodes {
     final l$slug = slug;
     final l$description = description;
     final l$location = location;
+    final l$address = address;
+    final l$logo = logo;
     final l$website = website;
     final l$status = status;
     final l$settings = settings;
@@ -880,6 +944,8 @@ class Query$Clubs$clubs$nodes {
       l$slug,
       l$description,
       l$location,
+      l$address,
+      l$logo,
       l$website,
       l$status,
       l$settings,
@@ -894,7 +960,8 @@ class Query$Clubs$clubs$nodes {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Clubs$clubs$nodes || runtimeType != other.runtimeType) {
+    if (other is! Query$FeaturedClubs$clubs$nodes ||
+        runtimeType != other.runtimeType) {
       return false;
     }
     final l$id = id;
@@ -920,6 +987,16 @@ class Query$Clubs$clubs$nodes {
     final l$location = location;
     final lOther$location = other.location;
     if (l$location != lOther$location) {
+      return false;
+    }
+    final l$address = address;
+    final lOther$address = other.address;
+    if (l$address != lOther$address) {
+      return false;
+    }
+    final l$logo = logo;
+    final lOther$logo = other.logo;
+    if (l$logo != lOther$logo) {
       return false;
     }
     final l$website = website;
@@ -956,19 +1033,20 @@ class Query$Clubs$clubs$nodes {
   }
 }
 
-extension UtilityExtension$Query$Clubs$clubs$nodes on Query$Clubs$clubs$nodes {
-  CopyWith$Query$Clubs$clubs$nodes<Query$Clubs$clubs$nodes> get copyWith =>
-      CopyWith$Query$Clubs$clubs$nodes(this, (i) => i);
+extension UtilityExtension$Query$FeaturedClubs$clubs$nodes
+    on Query$FeaturedClubs$clubs$nodes {
+  CopyWith$Query$FeaturedClubs$clubs$nodes<Query$FeaturedClubs$clubs$nodes>
+  get copyWith => CopyWith$Query$FeaturedClubs$clubs$nodes(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Clubs$clubs$nodes<TRes> {
-  factory CopyWith$Query$Clubs$clubs$nodes(
-    Query$Clubs$clubs$nodes instance,
-    TRes Function(Query$Clubs$clubs$nodes) then,
-  ) = _CopyWithImpl$Query$Clubs$clubs$nodes;
+abstract class CopyWith$Query$FeaturedClubs$clubs$nodes<TRes> {
+  factory CopyWith$Query$FeaturedClubs$clubs$nodes(
+    Query$FeaturedClubs$clubs$nodes instance,
+    TRes Function(Query$FeaturedClubs$clubs$nodes) then,
+  ) = _CopyWithImpl$Query$FeaturedClubs$clubs$nodes;
 
-  factory CopyWith$Query$Clubs$clubs$nodes.stub(TRes res) =
-      _CopyWithStubImpl$Query$Clubs$clubs$nodes;
+  factory CopyWith$Query$FeaturedClubs$clubs$nodes.stub(TRes res) =
+      _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes;
 
   TRes call({
     String? id,
@@ -976,23 +1054,26 @@ abstract class CopyWith$Query$Clubs$clubs$nodes<TRes> {
     String? slug,
     String? description,
     String? location,
+    Query$FeaturedClubs$clubs$nodes$address? address,
+    String? logo,
     String? website,
     Enum$ClubStatus? status,
-    Query$Clubs$clubs$nodes$settings? settings,
+    Query$FeaturedClubs$clubs$nodes$settings? settings,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   });
-  CopyWith$Query$Clubs$clubs$nodes$settings<TRes> get settings;
+  CopyWith$Query$FeaturedClubs$clubs$nodes$address<TRes> get address;
+  CopyWith$Query$FeaturedClubs$clubs$nodes$settings<TRes> get settings;
 }
 
-class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
-    implements CopyWith$Query$Clubs$clubs$nodes<TRes> {
-  _CopyWithImpl$Query$Clubs$clubs$nodes(this._instance, this._then);
+class _CopyWithImpl$Query$FeaturedClubs$clubs$nodes<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$nodes<TRes> {
+  _CopyWithImpl$Query$FeaturedClubs$clubs$nodes(this._instance, this._then);
 
-  final Query$Clubs$clubs$nodes _instance;
+  final Query$FeaturedClubs$clubs$nodes _instance;
 
-  final TRes Function(Query$Clubs$clubs$nodes) _then;
+  final TRes Function(Query$FeaturedClubs$clubs$nodes) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
@@ -1002,6 +1083,8 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
     Object? slug = _undefined,
     Object? description = _undefined,
     Object? location = _undefined,
+    Object? address = _undefined,
+    Object? logo = _undefined,
     Object? website = _undefined,
     Object? status = _undefined,
     Object? settings = _undefined,
@@ -1009,7 +1092,7 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
     Object? updatedAt = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Clubs$clubs$nodes(
+    Query$FeaturedClubs$clubs$nodes(
       id: id == _undefined || id == null ? _instance.id : (id as String),
       name: name == _undefined || name == null
           ? _instance.name
@@ -1023,13 +1106,17 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
       location: location == _undefined
           ? _instance.location
           : (location as String?),
+      address: address == _undefined
+          ? _instance.address
+          : (address as Query$FeaturedClubs$clubs$nodes$address?),
+      logo: logo == _undefined ? _instance.logo : (logo as String?),
       website: website == _undefined ? _instance.website : (website as String?),
       status: status == _undefined || status == null
           ? _instance.status
           : (status as Enum$ClubStatus),
       settings: settings == _undefined || settings == null
           ? _instance.settings
-          : (settings as Query$Clubs$clubs$nodes$settings),
+          : (settings as Query$FeaturedClubs$clubs$nodes$settings),
       createdAt: createdAt == _undefined || createdAt == null
           ? _instance.createdAt
           : (createdAt as DateTime),
@@ -1042,18 +1129,30 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes<TRes>
     ),
   );
 
-  CopyWith$Query$Clubs$clubs$nodes$settings<TRes> get settings {
+  CopyWith$Query$FeaturedClubs$clubs$nodes$address<TRes> get address {
+    final local$address = _instance.address;
+    return local$address == null
+        ? CopyWith$Query$FeaturedClubs$clubs$nodes$address.stub(
+            _then(_instance),
+          )
+        : CopyWith$Query$FeaturedClubs$clubs$nodes$address(
+            local$address,
+            (e) => call(address: e),
+          );
+  }
+
+  CopyWith$Query$FeaturedClubs$clubs$nodes$settings<TRes> get settings {
     final local$settings = _instance.settings;
-    return CopyWith$Query$Clubs$clubs$nodes$settings(
+    return CopyWith$Query$FeaturedClubs$clubs$nodes$settings(
       local$settings,
       (e) => call(settings: e),
     );
   }
 }
 
-class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
-    implements CopyWith$Query$Clubs$clubs$nodes<TRes> {
-  _CopyWithStubImpl$Query$Clubs$clubs$nodes(this._res);
+class _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$nodes<TRes> {
+  _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes(this._res);
 
   TRes _res;
 
@@ -1063,47 +1162,251 @@ class _CopyWithStubImpl$Query$Clubs$clubs$nodes<TRes>
     String? slug,
     String? description,
     String? location,
+    Query$FeaturedClubs$clubs$nodes$address? address,
+    String? logo,
     String? website,
     Enum$ClubStatus? status,
-    Query$Clubs$clubs$nodes$settings? settings,
+    Query$FeaturedClubs$clubs$nodes$settings? settings,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? $__typename,
   }) => _res;
 
-  CopyWith$Query$Clubs$clubs$nodes$settings<TRes> get settings =>
-      CopyWith$Query$Clubs$clubs$nodes$settings.stub(_res);
+  CopyWith$Query$FeaturedClubs$clubs$nodes$address<TRes> get address =>
+      CopyWith$Query$FeaturedClubs$clubs$nodes$address.stub(_res);
+
+  CopyWith$Query$FeaturedClubs$clubs$nodes$settings<TRes> get settings =>
+      CopyWith$Query$FeaturedClubs$clubs$nodes$settings.stub(_res);
 }
 
-class Query$Clubs$clubs$nodes$settings {
-  Query$Clubs$clubs$nodes$settings({
+class Query$FeaturedClubs$clubs$nodes$address {
+  Query$FeaturedClubs$clubs$nodes$address({
+    required this.street,
+    required this.city,
+    required this.state,
+    required this.postalCode,
+    required this.country,
+    this.$__typename = 'Address',
+  });
+
+  factory Query$FeaturedClubs$clubs$nodes$address.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final l$street = json['street'];
+    final l$city = json['city'];
+    final l$state = json['state'];
+    final l$postalCode = json['postalCode'];
+    final l$country = json['country'];
+    final l$$__typename = json['__typename'];
+    return Query$FeaturedClubs$clubs$nodes$address(
+      street: (l$street as String),
+      city: (l$city as String),
+      state: (l$state as String),
+      postalCode: (l$postalCode as String),
+      country: (l$country as String),
+      $__typename: (l$$__typename as String),
+    );
+  }
+
+  final String street;
+
+  final String city;
+
+  final String state;
+
+  final String postalCode;
+
+  final String country;
+
+  final String $__typename;
+
+  Map<String, dynamic> toJson() {
+    final _resultData = <String, dynamic>{};
+    final l$street = street;
+    _resultData['street'] = l$street;
+    final l$city = city;
+    _resultData['city'] = l$city;
+    final l$state = state;
+    _resultData['state'] = l$state;
+    final l$postalCode = postalCode;
+    _resultData['postalCode'] = l$postalCode;
+    final l$country = country;
+    _resultData['country'] = l$country;
+    final l$$__typename = $__typename;
+    _resultData['__typename'] = l$$__typename;
+    return _resultData;
+  }
+
+  @override
+  int get hashCode {
+    final l$street = street;
+    final l$city = city;
+    final l$state = state;
+    final l$postalCode = postalCode;
+    final l$country = country;
+    final l$$__typename = $__typename;
+    return Object.hashAll([
+      l$street,
+      l$city,
+      l$state,
+      l$postalCode,
+      l$country,
+      l$$__typename,
+    ]);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other is! Query$FeaturedClubs$clubs$nodes$address ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$street = street;
+    final lOther$street = other.street;
+    if (l$street != lOther$street) {
+      return false;
+    }
+    final l$city = city;
+    final lOther$city = other.city;
+    if (l$city != lOther$city) {
+      return false;
+    }
+    final l$state = state;
+    final lOther$state = other.state;
+    if (l$state != lOther$state) {
+      return false;
+    }
+    final l$postalCode = postalCode;
+    final lOther$postalCode = other.postalCode;
+    if (l$postalCode != lOther$postalCode) {
+      return false;
+    }
+    final l$country = country;
+    final lOther$country = other.country;
+    if (l$country != lOther$country) {
+      return false;
+    }
+    final l$$__typename = $__typename;
+    final lOther$$__typename = other.$__typename;
+    if (l$$__typename != lOther$$__typename) {
+      return false;
+    }
+    return true;
+  }
+}
+
+extension UtilityExtension$Query$FeaturedClubs$clubs$nodes$address
+    on Query$FeaturedClubs$clubs$nodes$address {
+  CopyWith$Query$FeaturedClubs$clubs$nodes$address<
+    Query$FeaturedClubs$clubs$nodes$address
+  >
+  get copyWith =>
+      CopyWith$Query$FeaturedClubs$clubs$nodes$address(this, (i) => i);
+}
+
+abstract class CopyWith$Query$FeaturedClubs$clubs$nodes$address<TRes> {
+  factory CopyWith$Query$FeaturedClubs$clubs$nodes$address(
+    Query$FeaturedClubs$clubs$nodes$address instance,
+    TRes Function(Query$FeaturedClubs$clubs$nodes$address) then,
+  ) = _CopyWithImpl$Query$FeaturedClubs$clubs$nodes$address;
+
+  factory CopyWith$Query$FeaturedClubs$clubs$nodes$address.stub(TRes res) =
+      _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes$address;
+
+  TRes call({
+    String? street,
+    String? city,
+    String? state,
+    String? postalCode,
+    String? country,
+    String? $__typename,
+  });
+}
+
+class _CopyWithImpl$Query$FeaturedClubs$clubs$nodes$address<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$nodes$address<TRes> {
+  _CopyWithImpl$Query$FeaturedClubs$clubs$nodes$address(
+    this._instance,
+    this._then,
+  );
+
+  final Query$FeaturedClubs$clubs$nodes$address _instance;
+
+  final TRes Function(Query$FeaturedClubs$clubs$nodes$address) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? street = _undefined,
+    Object? city = _undefined,
+    Object? state = _undefined,
+    Object? postalCode = _undefined,
+    Object? country = _undefined,
+    Object? $__typename = _undefined,
+  }) => _then(
+    Query$FeaturedClubs$clubs$nodes$address(
+      street: street == _undefined || street == null
+          ? _instance.street
+          : (street as String),
+      city: city == _undefined || city == null
+          ? _instance.city
+          : (city as String),
+      state: state == _undefined || state == null
+          ? _instance.state
+          : (state as String),
+      postalCode: postalCode == _undefined || postalCode == null
+          ? _instance.postalCode
+          : (postalCode as String),
+      country: country == _undefined || country == null
+          ? _instance.country
+          : (country as String),
+      $__typename: $__typename == _undefined || $__typename == null
+          ? _instance.$__typename
+          : ($__typename as String),
+    ),
+  );
+}
+
+class _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes$address<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$nodes$address<TRes> {
+  _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes$address(this._res);
+
+  TRes _res;
+
+  call({
+    String? street,
+    String? city,
+    String? state,
+    String? postalCode,
+    String? country,
+    String? $__typename,
+  }) => _res;
+}
+
+class Query$FeaturedClubs$clubs$nodes$settings {
+  Query$FeaturedClubs$clubs$nodes$settings({
     required this.allowReciprocal,
-    required this.requireApproval,
-    required this.maxVisitsPerMonth,
     this.reciprocalFee,
     this.$__typename = 'ClubSettings',
   });
 
-  factory Query$Clubs$clubs$nodes$settings.fromJson(Map<String, dynamic> json) {
+  factory Query$FeaturedClubs$clubs$nodes$settings.fromJson(
+    Map<String, dynamic> json,
+  ) {
     final l$allowReciprocal = json['allowReciprocal'];
-    final l$requireApproval = json['requireApproval'];
-    final l$maxVisitsPerMonth = json['maxVisitsPerMonth'];
     final l$reciprocalFee = json['reciprocalFee'];
     final l$$__typename = json['__typename'];
-    return Query$Clubs$clubs$nodes$settings(
+    return Query$FeaturedClubs$clubs$nodes$settings(
       allowReciprocal: (l$allowReciprocal as bool),
-      requireApproval: (l$requireApproval as bool),
-      maxVisitsPerMonth: (l$maxVisitsPerMonth as int),
       reciprocalFee: (l$reciprocalFee as num?)?.toDouble(),
       $__typename: (l$$__typename as String),
     );
   }
 
   final bool allowReciprocal;
-
-  final bool requireApproval;
-
-  final int maxVisitsPerMonth;
 
   final double? reciprocalFee;
 
@@ -1113,10 +1416,6 @@ class Query$Clubs$clubs$nodes$settings {
     final _resultData = <String, dynamic>{};
     final l$allowReciprocal = allowReciprocal;
     _resultData['allowReciprocal'] = l$allowReciprocal;
-    final l$requireApproval = requireApproval;
-    _resultData['requireApproval'] = l$requireApproval;
-    final l$maxVisitsPerMonth = maxVisitsPerMonth;
-    _resultData['maxVisitsPerMonth'] = l$maxVisitsPerMonth;
     final l$reciprocalFee = reciprocalFee;
     _resultData['reciprocalFee'] = l$reciprocalFee;
     final l$$__typename = $__typename;
@@ -1127,17 +1426,9 @@ class Query$Clubs$clubs$nodes$settings {
   @override
   int get hashCode {
     final l$allowReciprocal = allowReciprocal;
-    final l$requireApproval = requireApproval;
-    final l$maxVisitsPerMonth = maxVisitsPerMonth;
     final l$reciprocalFee = reciprocalFee;
     final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$allowReciprocal,
-      l$requireApproval,
-      l$maxVisitsPerMonth,
-      l$reciprocalFee,
-      l$$__typename,
-    ]);
+    return Object.hashAll([l$allowReciprocal, l$reciprocalFee, l$$__typename]);
   }
 
   @override
@@ -1145,23 +1436,13 @@ class Query$Clubs$clubs$nodes$settings {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Clubs$clubs$nodes$settings ||
+    if (other is! Query$FeaturedClubs$clubs$nodes$settings ||
         runtimeType != other.runtimeType) {
       return false;
     }
     final l$allowReciprocal = allowReciprocal;
     final lOther$allowReciprocal = other.allowReciprocal;
     if (l$allowReciprocal != lOther$allowReciprocal) {
-      return false;
-    }
-    final l$requireApproval = requireApproval;
-    final lOther$requireApproval = other.requireApproval;
-    if (l$requireApproval != lOther$requireApproval) {
-      return false;
-    }
-    final l$maxVisitsPerMonth = maxVisitsPerMonth;
-    final lOther$maxVisitsPerMonth = other.maxVisitsPerMonth;
-    if (l$maxVisitsPerMonth != lOther$maxVisitsPerMonth) {
       return false;
     }
     final l$reciprocalFee = reciprocalFee;
@@ -1178,58 +1459,53 @@ class Query$Clubs$clubs$nodes$settings {
   }
 }
 
-extension UtilityExtension$Query$Clubs$clubs$nodes$settings
-    on Query$Clubs$clubs$nodes$settings {
-  CopyWith$Query$Clubs$clubs$nodes$settings<Query$Clubs$clubs$nodes$settings>
-  get copyWith => CopyWith$Query$Clubs$clubs$nodes$settings(this, (i) => i);
+extension UtilityExtension$Query$FeaturedClubs$clubs$nodes$settings
+    on Query$FeaturedClubs$clubs$nodes$settings {
+  CopyWith$Query$FeaturedClubs$clubs$nodes$settings<
+    Query$FeaturedClubs$clubs$nodes$settings
+  >
+  get copyWith =>
+      CopyWith$Query$FeaturedClubs$clubs$nodes$settings(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Clubs$clubs$nodes$settings<TRes> {
-  factory CopyWith$Query$Clubs$clubs$nodes$settings(
-    Query$Clubs$clubs$nodes$settings instance,
-    TRes Function(Query$Clubs$clubs$nodes$settings) then,
-  ) = _CopyWithImpl$Query$Clubs$clubs$nodes$settings;
+abstract class CopyWith$Query$FeaturedClubs$clubs$nodes$settings<TRes> {
+  factory CopyWith$Query$FeaturedClubs$clubs$nodes$settings(
+    Query$FeaturedClubs$clubs$nodes$settings instance,
+    TRes Function(Query$FeaturedClubs$clubs$nodes$settings) then,
+  ) = _CopyWithImpl$Query$FeaturedClubs$clubs$nodes$settings;
 
-  factory CopyWith$Query$Clubs$clubs$nodes$settings.stub(TRes res) =
-      _CopyWithStubImpl$Query$Clubs$clubs$nodes$settings;
+  factory CopyWith$Query$FeaturedClubs$clubs$nodes$settings.stub(TRes res) =
+      _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes$settings;
 
   TRes call({
     bool? allowReciprocal,
-    bool? requireApproval,
-    int? maxVisitsPerMonth,
     double? reciprocalFee,
     String? $__typename,
   });
 }
 
-class _CopyWithImpl$Query$Clubs$clubs$nodes$settings<TRes>
-    implements CopyWith$Query$Clubs$clubs$nodes$settings<TRes> {
-  _CopyWithImpl$Query$Clubs$clubs$nodes$settings(this._instance, this._then);
+class _CopyWithImpl$Query$FeaturedClubs$clubs$nodes$settings<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$nodes$settings<TRes> {
+  _CopyWithImpl$Query$FeaturedClubs$clubs$nodes$settings(
+    this._instance,
+    this._then,
+  );
 
-  final Query$Clubs$clubs$nodes$settings _instance;
+  final Query$FeaturedClubs$clubs$nodes$settings _instance;
 
-  final TRes Function(Query$Clubs$clubs$nodes$settings) _then;
+  final TRes Function(Query$FeaturedClubs$clubs$nodes$settings) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
     Object? allowReciprocal = _undefined,
-    Object? requireApproval = _undefined,
-    Object? maxVisitsPerMonth = _undefined,
     Object? reciprocalFee = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Clubs$clubs$nodes$settings(
+    Query$FeaturedClubs$clubs$nodes$settings(
       allowReciprocal: allowReciprocal == _undefined || allowReciprocal == null
           ? _instance.allowReciprocal
           : (allowReciprocal as bool),
-      requireApproval: requireApproval == _undefined || requireApproval == null
-          ? _instance.requireApproval
-          : (requireApproval as bool),
-      maxVisitsPerMonth:
-          maxVisitsPerMonth == _undefined || maxVisitsPerMonth == null
-          ? _instance.maxVisitsPerMonth
-          : (maxVisitsPerMonth as int),
       reciprocalFee: reciprocalFee == _undefined
           ? _instance.reciprocalFee
           : (reciprocalFee as double?),
@@ -1240,79 +1516,41 @@ class _CopyWithImpl$Query$Clubs$clubs$nodes$settings<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$Clubs$clubs$nodes$settings<TRes>
-    implements CopyWith$Query$Clubs$clubs$nodes$settings<TRes> {
-  _CopyWithStubImpl$Query$Clubs$clubs$nodes$settings(this._res);
+class _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes$settings<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$nodes$settings<TRes> {
+  _CopyWithStubImpl$Query$FeaturedClubs$clubs$nodes$settings(this._res);
 
   TRes _res;
 
-  call({
-    bool? allowReciprocal,
-    bool? requireApproval,
-    int? maxVisitsPerMonth,
-    double? reciprocalFee,
-    String? $__typename,
-  }) => _res;
+  call({bool? allowReciprocal, double? reciprocalFee, String? $__typename}) =>
+      _res;
 }
 
-class Query$Clubs$clubs$pageInfo {
-  Query$Clubs$clubs$pageInfo({
-    required this.page,
-    required this.pageSize,
-    required this.total,
-    required this.totalPages,
+class Query$FeaturedClubs$clubs$pageInfo {
+  Query$FeaturedClubs$clubs$pageInfo({
     required this.hasNextPage,
-    required this.hasPrevPage,
     this.$__typename = 'PageInfo',
   });
 
-  factory Query$Clubs$clubs$pageInfo.fromJson(Map<String, dynamic> json) {
-    final l$page = json['page'];
-    final l$pageSize = json['pageSize'];
-    final l$total = json['total'];
-    final l$totalPages = json['totalPages'];
+  factory Query$FeaturedClubs$clubs$pageInfo.fromJson(
+    Map<String, dynamic> json,
+  ) {
     final l$hasNextPage = json['hasNextPage'];
-    final l$hasPrevPage = json['hasPrevPage'];
     final l$$__typename = json['__typename'];
-    return Query$Clubs$clubs$pageInfo(
-      page: (l$page as int),
-      pageSize: (l$pageSize as int),
-      total: (l$total as int),
-      totalPages: (l$totalPages as int),
+    return Query$FeaturedClubs$clubs$pageInfo(
       hasNextPage: (l$hasNextPage as bool),
-      hasPrevPage: (l$hasPrevPage as bool),
       $__typename: (l$$__typename as String),
     );
   }
 
-  final int page;
-
-  final int pageSize;
-
-  final int total;
-
-  final int totalPages;
-
   final bool hasNextPage;
-
-  final bool hasPrevPage;
 
   final String $__typename;
 
   Map<String, dynamic> toJson() {
     final _resultData = <String, dynamic>{};
-    final l$page = page;
-    _resultData['page'] = l$page;
-    final l$pageSize = pageSize;
-    _resultData['pageSize'] = l$pageSize;
-    final l$total = total;
-    _resultData['total'] = l$total;
-    final l$totalPages = totalPages;
-    _resultData['totalPages'] = l$totalPages;
     final l$hasNextPage = hasNextPage;
     _resultData['hasNextPage'] = l$hasNextPage;
-    final l$hasPrevPage = hasPrevPage;
-    _resultData['hasPrevPage'] = l$hasPrevPage;
     final l$$__typename = $__typename;
     _resultData['__typename'] = l$$__typename;
     return _resultData;
@@ -1320,22 +1558,9 @@ class Query$Clubs$clubs$pageInfo {
 
   @override
   int get hashCode {
-    final l$page = page;
-    final l$pageSize = pageSize;
-    final l$total = total;
-    final l$totalPages = totalPages;
     final l$hasNextPage = hasNextPage;
-    final l$hasPrevPage = hasPrevPage;
     final l$$__typename = $__typename;
-    return Object.hashAll([
-      l$page,
-      l$pageSize,
-      l$total,
-      l$totalPages,
-      l$hasNextPage,
-      l$hasPrevPage,
-      l$$__typename,
-    ]);
+    return Object.hashAll([l$hasNextPage, l$$__typename]);
   }
 
   @override
@@ -1343,38 +1568,13 @@ class Query$Clubs$clubs$pageInfo {
     if (identical(this, other)) {
       return true;
     }
-    if (other is! Query$Clubs$clubs$pageInfo ||
+    if (other is! Query$FeaturedClubs$clubs$pageInfo ||
         runtimeType != other.runtimeType) {
-      return false;
-    }
-    final l$page = page;
-    final lOther$page = other.page;
-    if (l$page != lOther$page) {
-      return false;
-    }
-    final l$pageSize = pageSize;
-    final lOther$pageSize = other.pageSize;
-    if (l$pageSize != lOther$pageSize) {
-      return false;
-    }
-    final l$total = total;
-    final lOther$total = other.total;
-    if (l$total != lOther$total) {
-      return false;
-    }
-    final l$totalPages = totalPages;
-    final lOther$totalPages = other.totalPages;
-    if (l$totalPages != lOther$totalPages) {
       return false;
     }
     final l$hasNextPage = hasNextPage;
     final lOther$hasNextPage = other.hasNextPage;
     if (l$hasNextPage != lOther$hasNextPage) {
-      return false;
-    }
-    final l$hasPrevPage = hasPrevPage;
-    final lOther$hasPrevPage = other.hasPrevPage;
-    if (l$hasPrevPage != lOther$hasPrevPage) {
       return false;
     }
     final l$$__typename = $__typename;
@@ -1386,68 +1586,44 @@ class Query$Clubs$clubs$pageInfo {
   }
 }
 
-extension UtilityExtension$Query$Clubs$clubs$pageInfo
-    on Query$Clubs$clubs$pageInfo {
-  CopyWith$Query$Clubs$clubs$pageInfo<Query$Clubs$clubs$pageInfo>
-  get copyWith => CopyWith$Query$Clubs$clubs$pageInfo(this, (i) => i);
+extension UtilityExtension$Query$FeaturedClubs$clubs$pageInfo
+    on Query$FeaturedClubs$clubs$pageInfo {
+  CopyWith$Query$FeaturedClubs$clubs$pageInfo<
+    Query$FeaturedClubs$clubs$pageInfo
+  >
+  get copyWith => CopyWith$Query$FeaturedClubs$clubs$pageInfo(this, (i) => i);
 }
 
-abstract class CopyWith$Query$Clubs$clubs$pageInfo<TRes> {
-  factory CopyWith$Query$Clubs$clubs$pageInfo(
-    Query$Clubs$clubs$pageInfo instance,
-    TRes Function(Query$Clubs$clubs$pageInfo) then,
-  ) = _CopyWithImpl$Query$Clubs$clubs$pageInfo;
+abstract class CopyWith$Query$FeaturedClubs$clubs$pageInfo<TRes> {
+  factory CopyWith$Query$FeaturedClubs$clubs$pageInfo(
+    Query$FeaturedClubs$clubs$pageInfo instance,
+    TRes Function(Query$FeaturedClubs$clubs$pageInfo) then,
+  ) = _CopyWithImpl$Query$FeaturedClubs$clubs$pageInfo;
 
-  factory CopyWith$Query$Clubs$clubs$pageInfo.stub(TRes res) =
-      _CopyWithStubImpl$Query$Clubs$clubs$pageInfo;
+  factory CopyWith$Query$FeaturedClubs$clubs$pageInfo.stub(TRes res) =
+      _CopyWithStubImpl$Query$FeaturedClubs$clubs$pageInfo;
 
-  TRes call({
-    int? page,
-    int? pageSize,
-    int? total,
-    int? totalPages,
-    bool? hasNextPage,
-    bool? hasPrevPage,
-    String? $__typename,
-  });
+  TRes call({bool? hasNextPage, String? $__typename});
 }
 
-class _CopyWithImpl$Query$Clubs$clubs$pageInfo<TRes>
-    implements CopyWith$Query$Clubs$clubs$pageInfo<TRes> {
-  _CopyWithImpl$Query$Clubs$clubs$pageInfo(this._instance, this._then);
+class _CopyWithImpl$Query$FeaturedClubs$clubs$pageInfo<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$pageInfo<TRes> {
+  _CopyWithImpl$Query$FeaturedClubs$clubs$pageInfo(this._instance, this._then);
 
-  final Query$Clubs$clubs$pageInfo _instance;
+  final Query$FeaturedClubs$clubs$pageInfo _instance;
 
-  final TRes Function(Query$Clubs$clubs$pageInfo) _then;
+  final TRes Function(Query$FeaturedClubs$clubs$pageInfo) _then;
 
   static const _undefined = <dynamic, dynamic>{};
 
   TRes call({
-    Object? page = _undefined,
-    Object? pageSize = _undefined,
-    Object? total = _undefined,
-    Object? totalPages = _undefined,
     Object? hasNextPage = _undefined,
-    Object? hasPrevPage = _undefined,
     Object? $__typename = _undefined,
   }) => _then(
-    Query$Clubs$clubs$pageInfo(
-      page: page == _undefined || page == null ? _instance.page : (page as int),
-      pageSize: pageSize == _undefined || pageSize == null
-          ? _instance.pageSize
-          : (pageSize as int),
-      total: total == _undefined || total == null
-          ? _instance.total
-          : (total as int),
-      totalPages: totalPages == _undefined || totalPages == null
-          ? _instance.totalPages
-          : (totalPages as int),
+    Query$FeaturedClubs$clubs$pageInfo(
       hasNextPage: hasNextPage == _undefined || hasNextPage == null
           ? _instance.hasNextPage
           : (hasNextPage as bool),
-      hasPrevPage: hasPrevPage == _undefined || hasPrevPage == null
-          ? _instance.hasPrevPage
-          : (hasPrevPage as bool),
       $__typename: $__typename == _undefined || $__typename == null
           ? _instance.$__typename
           : ($__typename as String),
@@ -1455,19 +1631,11 @@ class _CopyWithImpl$Query$Clubs$clubs$pageInfo<TRes>
   );
 }
 
-class _CopyWithStubImpl$Query$Clubs$clubs$pageInfo<TRes>
-    implements CopyWith$Query$Clubs$clubs$pageInfo<TRes> {
-  _CopyWithStubImpl$Query$Clubs$clubs$pageInfo(this._res);
+class _CopyWithStubImpl$Query$FeaturedClubs$clubs$pageInfo<TRes>
+    implements CopyWith$Query$FeaturedClubs$clubs$pageInfo<TRes> {
+  _CopyWithStubImpl$Query$FeaturedClubs$clubs$pageInfo(this._res);
 
   TRes _res;
 
-  call({
-    int? page,
-    int? pageSize,
-    int? total,
-    int? totalPages,
-    bool? hasNextPage,
-    bool? hasPrevPage,
-    String? $__typename,
-  }) => _res;
+  call({bool? hasNextPage, String? $__typename}) => _res;
 }
