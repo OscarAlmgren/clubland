@@ -94,9 +94,7 @@ class ConnectivityTest {
       // Send a simple introspection query
       final response = await dio.post<Map<String, dynamic>>(
         ApiConstants.graphqlUrl,
-        data: {
-          'query': '{ __schema { queryType { name } } }',
-        },
+        data: {'query': '{ __schema { queryType { name } } }'},
         options: Options(
           headers: {'Content-Type': 'application/json'},
           sendTimeout: const Duration(seconds: 5),

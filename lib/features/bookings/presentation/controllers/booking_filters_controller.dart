@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/graphql/graphql_api.dart';
-import '../../domain/entities/booking_entity.dart';
 
 part 'booking_filters_controller.g.dart';
 
@@ -63,10 +62,7 @@ class BookingFiltersController extends _$BookingFiltersController {
 
   /// Sets the date range filter.
   void setDateRangeFilter({DateTime? startDate, DateTime? endDate}) {
-    state = state.copyWith(
-      startDate: () => startDate,
-      endDate: () => endDate,
-    );
+    state = state.copyWith(startDate: () => startDate, endDate: () => endDate);
   }
 
   /// Sets the club ID filter.
@@ -90,10 +86,7 @@ class BookingFiltersController extends _$BookingFiltersController {
       case 'status':
         state = state.copyWith(status: () => null);
       case 'dateRange':
-        state = state.copyWith(
-          startDate: () => null,
-          endDate: () => null,
-        );
+        state = state.copyWith(startDate: () => null, endDate: () => null);
       case 'club':
         state = state.copyWith(clubId: () => null);
       case 'search':
@@ -104,19 +97,13 @@ class BookingFiltersController extends _$BookingFiltersController {
   /// Quick filter for upcoming bookings.
   void showUpcomingOnly() {
     final now = DateTime.now();
-    state = state.copyWith(
-      startDate: () => now,
-      endDate: () => null,
-    );
+    state = state.copyWith(startDate: () => now, endDate: () => null);
   }
 
   /// Quick filter for past bookings.
   void showPastOnly() {
     final now = DateTime.now();
-    state = state.copyWith(
-      startDate: () => null,
-      endDate: () => now,
-    );
+    state = state.copyWith(startDate: () => null, endDate: () => now);
   }
 
   /// Quick filter for today's bookings.

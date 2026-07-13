@@ -10,16 +10,17 @@ class ClubMembershipModel extends ClubMembershipEntity {
     super.isAvailable = true,
   });
 
-  factory ClubMembershipModel.fromJson(Map<String, dynamic> json) => ClubMembershipModel(
-    type: json['type'] as String,
-    price: (json['price'] as num).toDouble(),
-    currency: json['currency'] as String,
-    duration: json['duration'] as String?,
-    benefits: (json['benefits'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    isAvailable: json['isAvailable'] as bool? ?? true,
-  );
+  factory ClubMembershipModel.fromJson(Map<String, dynamic> json) =>
+      ClubMembershipModel(
+        type: json['type'] as String,
+        price: (json['price'] as num).toDouble(),
+        currency: json['currency'] as String,
+        duration: json['duration'] as String?,
+        benefits: (json['benefits'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(),
+        isAvailable: json['isAvailable'] as bool? ?? true,
+      );
 
   Map<String, dynamic> toJson() => {
     'type': type,

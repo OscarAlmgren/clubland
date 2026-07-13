@@ -55,7 +55,9 @@ void main() {
           email: any(named: 'email'),
           password: any(named: 'password'),
         ),
-      ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(_testSession));
+      ).thenAnswer(
+        (_) async => Right<Failure, AuthSessionEntity>(_testSession),
+      );
 
       final result = await useCase.call(
         email: 'test@example.com',
@@ -192,7 +194,9 @@ void main() {
           email: any(named: 'email'),
           password: any(named: 'password'),
         ),
-      ).thenAnswer((_) async => Right<Failure, AuthSessionEntity>(_testSession));
+      ).thenAnswer(
+        (_) async => Right<Failure, AuthSessionEntity>(_testSession),
+      );
 
       final result = await useCase.call(
         email: ' Test@Example.COM ',
@@ -238,10 +242,8 @@ void main() {
       ).thenThrow(Exception('Network error'));
 
       expect(
-        () => useCase.call(
-          email: 'test@example.com',
-          password: 'password12345',
-        ),
+        () =>
+            useCase.call(email: 'test@example.com', password: 'password12345'),
         throwsA(isA<Exception>()),
       );
     });
@@ -310,25 +312,24 @@ void main() {
       );
     });
 
-    test('should return ValidationFailure when email format is invalid',
-        () async {
-      final result = await useCase(
-        email: 'invalid-email',
-        clubSlug: 'test-club',
-      );
+    test(
+      'should return ValidationFailure when email format is invalid',
+      () async {
+        final result = await useCase(
+          email: 'invalid-email',
+          clubSlug: 'test-club',
+        );
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'INVALID_EMAIL');
-      }, (_) => fail('Should return Left'));
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'INVALID_EMAIL');
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
     test('should return ValidationFailure when clubSlug is empty', () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        clubSlug: '',
-      );
+      final result = await useCase(email: 'test@example.com', clubSlug: '');
 
       expect(result.isLeft(), true);
       result.fold((failure) {
@@ -382,35 +383,38 @@ void main() {
       ).called(1);
     });
 
-    test('should return AuthSessionEntity when registration succeeds', () async {
-      when(
-        () => mockAuthRepository.checkEmailAvailability(
-          email: any(named: 'email'),
-        ),
-      ).thenAnswer((_) async => const Right(true));
-      when(
-        () => mockAuthRepository.register(
-          email: any(named: 'email'),
-          password: any(named: 'password'),
-          firstName: any(named: 'firstName'),
-          lastName: any(named: 'lastName'),
-          clubId: any(named: 'clubId'),
-        ),
-      ).thenAnswer((_) async => Right(_testSession));
+    test(
+      'should return AuthSessionEntity when registration succeeds',
+      () async {
+        when(
+          () => mockAuthRepository.checkEmailAvailability(
+            email: any(named: 'email'),
+          ),
+        ).thenAnswer((_) async => const Right(true));
+        when(
+          () => mockAuthRepository.register(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+            firstName: any(named: 'firstName'),
+            lastName: any(named: 'lastName'),
+            clubId: any(named: 'clubId'),
+          ),
+        ).thenAnswer((_) async => Right(_testSession));
 
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      expect(result.isRight(), true);
-      result.fold((failure) => fail('Should return Right'), (session) {
-        expect(session.user.email, 'test@example.com');
-      });
-    });
+        expect(result.isRight(), true);
+        result.fold((failure) => fail('Should return Right'), (session) {
+          expect(session.user.email, 'test@example.com');
+        });
+      },
+    );
 
     test('should return ValidationFailure when email is empty', () async {
       final result = await useCase(
@@ -428,125 +432,139 @@ void main() {
       }, (_) => fail('Should return Left'));
     });
 
-    test('should return ValidationFailure when email format is invalid',
-        () async {
-      final result = await useCase(
-        email: 'invalid-email',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when email format is invalid',
+      () async {
+        final result = await useCase(
+          email: 'invalid-email',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'INVALID_EMAIL');
-      }, (_) => fail('Should return Left'));
-    });
-
-    test('should return ValidationFailure when password is too short', () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'Pass1!',
-        confirmPassword: 'Pass1!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
-
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'WEAK_PASSWORD');
-      }, (_) => fail('Should return Left'));
-    });
-
-    test('should return ValidationFailure when password missing uppercase',
-        () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'password123!',
-        confirmPassword: 'password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
-
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'WEAK_PASSWORD');
-      }, (_) => fail('Should return Left'));
-    });
-
-    test('should return ValidationFailure when password missing lowercase',
-        () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'PASSWORD123!',
-        confirmPassword: 'PASSWORD123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
-
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'WEAK_PASSWORD');
-      }, (_) => fail('Should return Left'));
-    });
-
-    test('should return ValidationFailure when password missing number',
-        () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'Password!',
-        confirmPassword: 'Password!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
-
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'WEAK_PASSWORD');
-      }, (_) => fail('Should return Left'));
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'INVALID_EMAIL');
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
     test(
-        'should return ValidationFailure when password missing special character',
-        () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'Password123',
-        confirmPassword: 'Password123',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+      'should return ValidationFailure when password is too short',
+      () async {
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'Pass1!',
+          confirmPassword: 'Pass1!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'WEAK_PASSWORD');
-      }, (_) => fail('Should return Left'));
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'WEAK_PASSWORD');
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when passwords do not match',
-        () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'Password123!',
-        confirmPassword: 'DifferentPassword123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when password missing uppercase',
+      () async {
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'password123!',
+          confirmPassword: 'password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'INVALID_INPUT');
-        expect(failure.message, contains('Passwords do not match'));
-      }, (_) => fail('Should return Left'));
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'WEAK_PASSWORD');
+        }, (_) => fail('Should return Left'));
+      },
+    );
+
+    test(
+      'should return ValidationFailure when password missing lowercase',
+      () async {
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'PASSWORD123!',
+          confirmPassword: 'PASSWORD123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
+
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'WEAK_PASSWORD');
+        }, (_) => fail('Should return Left'));
+      },
+    );
+
+    test(
+      'should return ValidationFailure when password missing number',
+      () async {
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'Password!',
+          confirmPassword: 'Password!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
+
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'WEAK_PASSWORD');
+        }, (_) => fail('Should return Left'));
+      },
+    );
+
+    test(
+      'should return ValidationFailure when password missing special character',
+      () async {
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'Password123',
+          confirmPassword: 'Password123',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
+
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'WEAK_PASSWORD');
+        }, (_) => fail('Should return Left'));
+      },
+    );
+
+    test(
+      'should return ValidationFailure when passwords do not match',
+      () async {
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'Password123!',
+          confirmPassword: 'DifferentPassword123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
+
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'INVALID_INPUT');
+          expect(failure.message, contains('Passwords do not match'));
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
     test('should return ValidationFailure when firstName is empty', () async {
       final result = await useCase(
@@ -564,55 +582,59 @@ void main() {
       }, (_) => fail('Should return Left'));
     });
 
-    test('should return ValidationFailure when firstName is too short',
-        () async {
-      final result = await useCase(
-        email: 'test@example.com',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'J',
-        lastName: 'Doe',
-      );
+    test(
+      'should return ValidationFailure when firstName is too short',
+      () async {
+        final result = await useCase(
+          email: 'test@example.com',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'J',
+          lastName: 'Doe',
+        );
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'INVALID_INPUT');
-        expect(failure.message, contains('at least 2 characters'));
-      }, (_) => fail('Should return Left'));
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'INVALID_INPUT');
+          expect(failure.message, contains('at least 2 characters'));
+        }, (_) => fail('Should return Left'));
+      },
+    );
 
-    test('should return ValidationFailure when email is not available',
-        () async {
-      when(
-        () => mockAuthRepository.checkEmailAvailability(
-          email: any(named: 'email'),
-        ),
-      ).thenAnswer((_) async => const Right(false));
+    test(
+      'should return ValidationFailure when email is not available',
+      () async {
+        when(
+          () => mockAuthRepository.checkEmailAvailability(
+            email: any(named: 'email'),
+          ),
+        ).thenAnswer((_) async => const Right(false));
 
-      final result = await useCase(
-        email: 'taken@example.com',
-        password: 'Password123!',
-        confirmPassword: 'Password123!',
-        firstName: 'John',
-        lastName: 'Doe',
-      );
+        final result = await useCase(
+          email: 'taken@example.com',
+          password: 'Password123!',
+          confirmPassword: 'Password123!',
+          firstName: 'John',
+          lastName: 'Doe',
+        );
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.message, contains('already taken'));
-      }, (_) => fail('Should return Left'));
-      verifyNever(
-        () => mockAuthRepository.register(
-          email: any(named: 'email'),
-          password: any(named: 'password'),
-          firstName: any(named: 'firstName'),
-          lastName: any(named: 'lastName'),
-          clubId: any(named: 'clubId'),
-        ),
-      );
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.message, contains('already taken'));
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockAuthRepository.register(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+            firstName: any(named: 'firstName'),
+            lastName: any(named: 'lastName'),
+            clubId: any(named: 'clubId'),
+          ),
+        );
+      },
+    );
   });
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -643,8 +665,7 @@ void main() {
     test('should return failure from repository', () async {
       when(
         () => mockAuthRepository.logout(),
-      ).thenAnswer(
-          (_) async => Left(AuthFailure.unexpected('Logout failed')));
+      ).thenAnswer((_) async => Left(AuthFailure.unexpected('Logout failed')));
 
       final result = await useCase();
 
@@ -668,9 +689,8 @@ void main() {
 
     test('should return new session when token refresh succeeds', () async {
       when(
-        () => mockAuthRepository.refreshToken(
-          refreshToken: 'test_refresh_token',
-        ),
+        () =>
+            mockAuthRepository.refreshToken(refreshToken: 'test_refresh_token'),
       ).thenAnswer((_) async => Right(_testSession));
 
       final result = await useCase(refreshToken: 'test_refresh_token');
@@ -682,21 +702,23 @@ void main() {
       );
     });
 
-    test('should return ValidationFailure when refreshToken is empty',
-        () async {
-      final result = await useCase(refreshToken: '');
+    test(
+      'should return ValidationFailure when refreshToken is empty',
+      () async {
+        final result = await useCase(refreshToken: '');
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<ValidationFailure>());
-        expect(failure.code, 'FIELD_REQUIRED');
-      }, (_) => fail('Should return Left'));
-      verifyNever(
-        () => mockAuthRepository.refreshToken(
-          refreshToken: any(named: 'refreshToken'),
-        ),
-      );
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<ValidationFailure>());
+          expect(failure.code, 'FIELD_REQUIRED');
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockAuthRepository.refreshToken(
+            refreshToken: any(named: 'refreshToken'),
+          ),
+        );
+      },
+    );
   });
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -765,50 +787,56 @@ void main() {
       useCase = BiometricAuthUsecase(mockAuthRepository);
     });
 
-    test('isAvailable should return true when biometrics are available',
-        () async {
-      when(
-        () => mockAuthRepository.isBiometricAvailable(),
-      ).thenAnswer((_) async => true);
+    test(
+      'isAvailable should return true when biometrics are available',
+      () async {
+        when(
+          () => mockAuthRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
 
-      final result = await useCase.isAvailable();
+        final result = await useCase.isAvailable();
 
-      expect(result, true);
-    });
+        expect(result, true);
+      },
+    );
 
-    test('authenticate should return true when authentication succeeds',
-        () async {
-      when(
-        () => mockAuthRepository.isBiometricAvailable(),
-      ).thenAnswer((_) async => true);
-      when(
-        () => mockAuthRepository.authenticateWithBiometrics(),
-      ).thenAnswer((_) async => const Right(true));
+    test(
+      'authenticate should return true when authentication succeeds',
+      () async {
+        when(
+          () => mockAuthRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockAuthRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => const Right(true));
 
-      final result = await useCase.authenticate();
+        final result = await useCase.authenticate();
 
-      expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (success) => expect(success, true),
-      );
-    });
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Should return Right'),
+          (success) => expect(success, true),
+        );
+      },
+    );
 
-    test('authenticate should return failure when biometrics not available',
-        () async {
-      when(
-        () => mockAuthRepository.isBiometricAvailable(),
-      ).thenAnswer((_) async => false);
+    test(
+      'authenticate should return failure when biometrics not available',
+      () async {
+        when(
+          () => mockAuthRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => false);
 
-      final result = await useCase.authenticate();
+        final result = await useCase.authenticate();
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<AuthFailure>());
-        expect(failure.code, 'BIOMETRIC_UNAVAILABLE');
-      }, (_) => fail('Should return Left'));
-      verifyNever(() => mockAuthRepository.authenticateWithBiometrics());
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<AuthFailure>());
+          expect(failure.code, 'BIOMETRIC_UNAVAILABLE');
+        }, (_) => fail('Should return Left'));
+        verifyNever(() => mockAuthRepository.authenticateWithBiometrics());
+      },
+    );
 
     test('setBiometricAuth should enable biometrics when available', () async {
       when(
@@ -828,40 +856,43 @@ void main() {
     });
 
     test(
-        'setBiometricAuth should return failure when enabling but not available',
-        () async {
-      when(
-        () => mockAuthRepository.isBiometricAvailable(),
-      ).thenAnswer((_) async => false);
+      'setBiometricAuth should return failure when enabling but not available',
+      () async {
+        when(
+          () => mockAuthRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => false);
 
-      final result = await useCase.setBiometricAuth(enabled: true);
+        final result = await useCase.setBiometricAuth(enabled: true);
 
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<AuthFailure>());
-        expect(failure.code, 'BIOMETRIC_UNAVAILABLE');
-      }, (_) => fail('Should return Left'));
-      verifyNever(
-        () =>
-            mockAuthRepository.setBiometricAuth(enabled: any(named: 'enabled')),
-      );
-    });
+        expect(result.isLeft(), true);
+        result.fold((failure) {
+          expect(failure, isA<AuthFailure>());
+          expect(failure.code, 'BIOMETRIC_UNAVAILABLE');
+        }, (_) => fail('Should return Left'));
+        verifyNever(
+          () => mockAuthRepository.setBiometricAuth(
+            enabled: any(named: 'enabled'),
+          ),
+        );
+      },
+    );
 
     test(
-        'setBiometricAuth should disable biometrics without checking availability',
-        () async {
-      when(
-        () => mockAuthRepository.setBiometricAuth(enabled: false),
-      ).thenAnswer((_) async => const Right(true));
+      'setBiometricAuth should disable biometrics without checking availability',
+      () async {
+        when(
+          () => mockAuthRepository.setBiometricAuth(enabled: false),
+        ).thenAnswer((_) async => const Right(true));
 
-      final result = await useCase.setBiometricAuth(enabled: false);
+        final result = await useCase.setBiometricAuth(enabled: false);
 
-      expect(result.isRight(), true);
-      result.fold(
-        (failure) => fail('Should return Right'),
-        (success) => expect(success, true),
-      );
-      verifyNever(() => mockAuthRepository.isBiometricAvailable());
-    });
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Should return Right'),
+          (success) => expect(success, true),
+        );
+        verifyNever(() => mockAuthRepository.isBiometricAvailable());
+      },
+    );
   });
 }

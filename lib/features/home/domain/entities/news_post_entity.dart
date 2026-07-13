@@ -22,12 +22,12 @@ class NewsPostEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        clubId,
-        title,
-        content,
-        postedAt,
-        imageUrl,
-        author,
-      ];
+    id,
+    clubId,
+    title,
+    content,
+    postedAt,
+    imageUrl,
+    author,
+  ];
 }

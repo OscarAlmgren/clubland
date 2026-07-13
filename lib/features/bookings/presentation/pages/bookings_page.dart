@@ -5,7 +5,6 @@ import '../../../../core/design_system/design_system.dart';
 import '../../../../core/graphql/graphql_api.dart';
 import '../../../../shared/widgets/app_error_widget.dart';
 import '../../../../shared/widgets/app_loading_widget.dart';
-import '../../domain/entities/booking_entity.dart';
 import '../controllers/bookings_controller.dart';
 import '../widgets/booking_card_widget.dart';
 import '../widgets/booking_filters_widget.dart';

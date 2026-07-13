@@ -53,8 +53,9 @@ class AuthController extends _$AuthController {
           // Cancel any previous subscription so repository rebuilds don't
           // leak listeners that keep writing state.
           _authStateSubscription?.cancel();
-          _authStateSubscription =
-              repository.authStateChanges.listen((session) {
+          _authStateSubscription = repository.authStateChanges.listen((
+            session,
+          ) {
             // Check if the provider is still mounted before updating state
             if (!ref.mounted) return;
 
@@ -114,13 +115,10 @@ class AuthController extends _$AuthController {
     final monitor = PerformanceMonitor();
 
     try {
-      final result = await monitor.timeOperation(
-        'auth_login',
-        () async {
-          final loginUsecase = ref.read(loginUsecaseProvider);
-          return await loginUsecase(email: email, password: password);
-        },
-      );
+      final result = await monitor.timeOperation('auth_login', () async {
+        final loginUsecase = ref.read(loginUsecaseProvider);
+        return await loginUsecase(email: email, password: password);
+      });
 
       result.fold(
         (failure) {
@@ -149,10 +147,7 @@ class AuthController extends _$AuthController {
   }) async {
     try {
       final hankoLoginUsecase = ref.read(hankoLoginUsecaseProvider);
-      final result = await hankoLoginUsecase(
-        email: email,
-        clubSlug: clubSlug,
-      );
+      final result = await hankoLoginUsecase(email: email, clubSlug: clubSlug);
 
       result.fold(
         (failure) {

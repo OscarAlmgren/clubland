@@ -72,17 +72,17 @@ class VisitModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        memberId,
-        clubId,
-        visitingClubId,
-        status,
-        checkedInAt,
-        checkedOutAt,
-        services,
-        cost,
-        verified,
-        blockchainTxId,
-        createdAt,
-      ];
+    id,
+    memberId,
+    clubId,
+    visitingClubId,
+    status,
+    checkedInAt,
+    checkedOutAt,
+    services,
+    cost,
+    verified,
+    blockchainTxId,
+    createdAt,
+  ];
 }

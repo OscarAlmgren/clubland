@@ -15,7 +15,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../helpers/mock_providers.dart';
 import '../../../../../helpers/test_helpers.dart';
@@ -167,9 +166,7 @@ void main() {
           email: any(named: 'email'),
           password: any(named: 'password'),
         ),
-      ).thenAnswer(
-        (_) async => Right(makeTestSession()),
-      );
+      ).thenAnswer((_) async => Right(makeTestSession()));
 
       await tester.pumpWidget(createLoginPage());
 
@@ -238,10 +235,7 @@ void main() {
       await tester.pumpAndSettle();
 
       final emailField = find.byType(AppInputField).first;
-      await tester.enterText(
-        emailField,
-        '  ${TestConstants.testEmail}  ',
-      );
+      await tester.enterText(emailField, '  ${TestConstants.testEmail}  ');
       final passwordField = find.byType(AppInputField).last;
       await tester.enterText(passwordField, TestConstants.testPassword);
 

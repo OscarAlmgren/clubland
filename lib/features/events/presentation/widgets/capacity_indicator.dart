@@ -32,10 +32,12 @@ class CapacityIndicator extends StatelessWidget {
 
     // Determine color based on capacity - WCAG AAA compliant
     final color = isFull
-        ? AppColors.error // 7.56:1 contrast
+        ? AppColors
+              .error // 7.56:1 contrast
         : isNearlyFull
-            ? AppColors.warning // 7.81:1 contrast
-            : AppColors.success; // 7.23:1 contrast
+        ? AppColors
+              .warning // 7.81:1 contrast
+        : AppColors.success; // 7.23:1 contrast
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +113,9 @@ class CompactCapacityIndicator extends StatelessWidget {
         Text(
           '$currentAttendees/$capacity',
           style: theme.textTheme.bodySmall?.copyWith(
-            color: isFull ? AppColors.error : theme.colorScheme.onSurfaceVariant,
+            color: isFull
+                ? AppColors.error
+                : theme.colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
         ),

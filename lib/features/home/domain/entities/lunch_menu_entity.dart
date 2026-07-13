@@ -48,19 +48,29 @@ class LunchMenuEntity extends Equatable {
 
   String _monthName(int month) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return months[month - 1];
   }
 
   @override
   List<Object?> get props => [
-        id,
-        clubId,
-        weekStartDate,
-        weekEndDate,
-        menuItems,
-        specialNotes,
-      ];
+    id,
+    clubId,
+    weekStartDate,
+    weekEndDate,
+    menuItems,
+    specialNotes,
+  ];
 }

@@ -10,14 +10,15 @@ class ClubAmenityModel extends ClubAmenityEntity {
     super.isAvailable = true,
   });
 
-  factory ClubAmenityModel.fromJson(Map<String, dynamic> json) => ClubAmenityModel(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    type: json['type'] as String,
-    description: json['description'] as String?,
-    icon: json['icon'] as String?,
-    isAvailable: json['isAvailable'] as bool? ?? true,
-  );
+  factory ClubAmenityModel.fromJson(Map<String, dynamic> json) =>
+      ClubAmenityModel(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        type: json['type'] as String,
+        description: json['description'] as String?,
+        icon: json['icon'] as String?,
+        isAvailable: json['isAvailable'] as bool? ?? true,
+      );
 
   Map<String, dynamic> toJson() => {
     'id': id,

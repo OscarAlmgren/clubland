@@ -9,7 +9,7 @@ import '../datasources/profile_remote_datasource.dart';
 /// Profile repository implementation
 class ProfileRepositoryImpl implements ProfileRepository {
   ProfileRepositoryImpl({required ProfileRemoteDataSource remoteDataSource})
-      : _remoteDataSource = remoteDataSource;
+    : _remoteDataSource = remoteDataSource;
 
   final ProfileRemoteDataSource _remoteDataSource;
 
@@ -46,23 +46,23 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   UserEntity _parseUser(Map<String, dynamic> data) => UserEntity(
-        id: data['id'] as String,
-        email: data['email'] as String,
-        firstName: data['firstName'] as String?,
-        lastName: data['lastName'] as String?,
-        username: data['username'] as String?,
-        clubId: data['clubId'] as String?,
-        createdAt: DateTime.parse(data['createdAt'] as String),
-        updatedAt: data['updatedAt'] != null
-            ? DateTime.parse(data['updatedAt'] as String)
-            : null,
-        roles: (data['roles'] as List<dynamic>?)
-                ?.map((r) => r as String)
-                .toList() ??
-            [],
-        permissions: (data['permissions'] as List<dynamic>?)
-                ?.map((p) => p as String)
-                .toList() ??
-            [],
-      );
+    id: data['id'] as String,
+    email: data['email'] as String,
+    firstName: data['firstName'] as String?,
+    lastName: data['lastName'] as String?,
+    username: data['username'] as String?,
+    clubId: data['clubId'] as String?,
+    createdAt: DateTime.parse(data['createdAt'] as String),
+    updatedAt: data['updatedAt'] != null
+        ? DateTime.parse(data['updatedAt'] as String)
+        : null,
+    roles:
+        (data['roles'] as List<dynamic>?)?.map((r) => r as String).toList() ??
+        [],
+    permissions:
+        (data['permissions'] as List<dynamic>?)
+            ?.map((p) => p as String)
+            .toList() ??
+        [],
+  );
 }

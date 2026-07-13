@@ -12,8 +12,12 @@ class ProfileSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLanguage = ref.watch<AsyncValue<AppLanguage?>>(languageProvider);
-    final currentThemeMode = ref.watch<AsyncValue<AppThemeMode>>(themeModeProvider);
+    final currentLanguage = ref.watch<AsyncValue<AppLanguage?>>(
+      languageProvider,
+    );
+    final currentThemeMode = ref.watch<AsyncValue<AppThemeMode>>(
+      themeModeProvider,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -108,7 +112,9 @@ class ProfileSettingsPage extends ConsumerWidget {
             onChanged: (AppLanguage? value) {
               if (value != null) {
                 // Update Riverpod state
-                ref.read<LanguageNotifier>(languageProvider.notifier).setLanguage(value);
+                ref
+                    .read<LanguageNotifier>(languageProvider.notifier)
+                    .setLanguage(value);
                 // Close the dialog immediately after selection
                 Navigator.of(context).pop();
               }
@@ -175,7 +181,8 @@ class ProfileSettingsPage extends ConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (context) {
-        final selectedThemeMode = currentThemeModeAsync.value ?? AppThemeMode.system;
+        final selectedThemeMode =
+            currentThemeModeAsync.value ?? AppThemeMode.system;
         final languageAsync = ref.watch(languageProvider);
         final languageCode = languageAsync.value?.code ?? 'en';
 
@@ -186,7 +193,9 @@ class ProfileSettingsPage extends ConsumerWidget {
             onChanged: (AppThemeMode? value) {
               if (value != null) {
                 // Update Riverpod state
-                ref.read<ThemeModeNotifier>(themeModeProvider.notifier).setThemeMode(value);
+                ref
+                    .read<ThemeModeNotifier>(themeModeProvider.notifier)
+                    .setThemeMode(value);
                 // Close the dialog immediately after selection
                 Navigator.of(context).pop();
               }

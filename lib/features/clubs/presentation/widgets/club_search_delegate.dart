@@ -6,10 +6,11 @@ import '../controllers/clubs_controller.dart';
 import 'club_card_widget.dart';
 
 class ClubSearchDelegate extends SearchDelegate<SimpleClub?> {
-  ClubSearchDelegate() : super(
-    searchFieldLabel: 'Search clubs...',
-    searchFieldStyle: const TextStyle(fontSize: 16),
-  );
+  ClubSearchDelegate()
+    : super(
+        searchFieldLabel: 'Search clubs...',
+        searchFieldStyle: const TextStyle(fontSize: 16),
+      );
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -39,9 +40,7 @@ class ClubSearchDelegate extends SearchDelegate<SimpleClub?> {
   @override
   Widget buildSuggestions(BuildContext context) {
     if (query.isEmpty) {
-      return const Center(
-        child: Text('Enter club name to search'),
-      );
+      return const Center(child: Text('Enter club name to search'));
     }
 
     return _buildSearchResults(context);
@@ -55,14 +54,10 @@ class ClubSearchDelegate extends SearchDelegate<SimpleClub?> {
     return Consumer(
       builder: (context, ref, child) {
         return FutureBuilder<List<SimpleClub>>(
-          future: ref
-              .read(clubsControllerProvider.notifier)
-              .searchClubs(query),
+          future: ref.read(clubsControllerProvider.notifier).searchClubs(query),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (snapshot.hasError) {
@@ -77,10 +72,7 @@ class ClubSearchDelegate extends SearchDelegate<SimpleClub?> {
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      'Search failed',
-                      style: theme.textTheme.titleMedium,
-                    ),
+                    Text('Search failed', style: theme.textTheme.titleMedium),
                     const SizedBox(height: 8),
                     Text(
                       'Please try again',
@@ -107,10 +99,7 @@ class ClubSearchDelegate extends SearchDelegate<SimpleClub?> {
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      'No clubs found',
-                      style: theme.textTheme.titleMedium,
-                    ),
+                    Text('No clubs found', style: theme.textTheme.titleMedium),
                     const SizedBox(height: 8),
                     Text(
                       'Try a different search term',

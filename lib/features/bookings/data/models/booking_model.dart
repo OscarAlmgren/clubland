@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/graphql/graphql_api.dart';
-import '../../domain/entities/booking_entity.dart';
 
 enum BookingUpdateType {
   created,
@@ -48,13 +47,12 @@ class BookingModel extends Equatable {
       id: json['id'] as String,
       startTime: DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
-      status: fromJson$Enum$BookingStatus(json['status'] as String? ?? 'PENDING'),
+      status: fromJson$Enum$BookingStatus(
+        json['status'] as String? ?? 'PENDING',
+      ),
       notes: json['notes'] as String?,
       // Backend returns clubId scalar — no nested club relation in schema
-      club: ClubSummary(
-        id: (json['clubId'] as String?) ?? '',
-        name: '',
-      ),
+      club: ClubSummary(id: (json['clubId'] as String?) ?? '', name: ''),
       facility: json['facility'] != null
           ? FacilitySummary.fromJson(json['facility'] as Map<String, dynamic>)
           : FacilitySummary(
@@ -73,15 +71,17 @@ class BookingModel extends Equatable {
           : null,
       // Backend returns flat cancellationReason/cancelledAt fields, not nested object
       cancellation: json['cancellation'] != null
-          ? BookingCancellation.fromJson(json['cancellation'] as Map<String, dynamic>)
+          ? BookingCancellation.fromJson(
+              json['cancellation'] as Map<String, dynamic>,
+            )
           : json['cancellationReason'] != null
-              ? BookingCancellation(
-                  reason: json['cancellationReason'] as String,
-                  cancelledAt: json['cancelledAt'] != null
-                      ? DateTime.parse(json['cancelledAt'] as String)
-                      : DateTime.now(),
-                )
-              : null,
+          ? BookingCancellation(
+              reason: json['cancellationReason'] as String,
+              cancelledAt: json['cancelledAt'] != null
+                  ? DateTime.parse(json['cancelledAt'] as String)
+                  : DateTime.now(),
+            )
+          : null,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'] as String)
@@ -109,30 +109,35 @@ class BookingModel extends Equatable {
 
   bool get isUpcoming => DateTime.now().isBefore(startTime);
   bool get isPast => DateTime.now().isAfter(endTime);
-  bool get isActive => DateTime.now().isAfter(startTime) && DateTime.now().isBefore(endTime);
+  bool get isActive =>
+      DateTime.now().isAfter(startTime) && DateTime.now().isBefore(endTime);
 
   /// Whether this booking can be cancelled
-  bool get canBeCancelled => status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
+  bool get canBeCancelled =>
+      status == Enum$BookingStatus.CONFIRMED ||
+      status == Enum$BookingStatus.PENDING;
 
   /// Whether this booking can be modified
-  bool get canBeModified => status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
+  bool get canBeModified =>
+      status == Enum$BookingStatus.CONFIRMED ||
+      status == Enum$BookingStatus.PENDING;
 
   @override
   List<Object?> get props => [
-        id,
-        startTime,
-        endTime,
-        status,
-        notes,
-        club,
-        facility,
-        user,
-        participants,
-        payment,
-        cancellation,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    startTime,
+    endTime,
+    status,
+    notes,
+    club,
+    facility,
+    user,
+    participants,
+    payment,
+    cancellation,
+    createdAt,
+    updatedAt,
+  ];
 }
 
 class BookingUpdate {
@@ -184,12 +189,7 @@ class ClubSummary extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'logo': logo,
-      'address': address,
-    };
+    return {'id': id, 'name': name, 'logo': logo, 'address': address};
   }
 
   @override
@@ -291,12 +291,7 @@ class BookingParticipant extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'user': user.toJson(),
-      'role': role,
-      'status': status,
-    };
+    return {'id': id, 'user': user.toJson(), 'role': role, 'status': status};
   }
 
   @override

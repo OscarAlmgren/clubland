@@ -7,8 +7,7 @@ import 'base_usecase.dart';
 
 /// Use case for getting Finding Friends subgroups for a club
 class GetFindingFriendsSubgroups
-    implements
-        UseCase<List<FindingFriendsSubgroupEntity>, String> {
+    implements UseCase<List<FindingFriendsSubgroupEntity>, String> {
   final EventsRepository repository;
 
   const GetFindingFriendsSubgroups(this.repository);

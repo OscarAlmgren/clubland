@@ -558,26 +558,40 @@ class EventDetailsPage extends ConsumerWidget {
 
   String _getEventTypeLabel(Enum$ClubEventType type) {
     switch (type) {
-      case Enum$ClubEventType.SOCIAL: return 'Social';
-      case Enum$ClubEventType.SPORTING: return 'Sports';
-      case Enum$ClubEventType.CULTURAL: return 'Cultural';
-      case Enum$ClubEventType.EDUCATIONAL: return 'Educational';
-      case Enum$ClubEventType.NETWORKING: return 'Networking';
-      case Enum$ClubEventType.FUNDRAISING: return 'Fundraising';
-      case Enum$ClubEventType.MEETING: return 'Meeting';
+      case Enum$ClubEventType.SOCIAL:
+        return 'Social';
+      case Enum$ClubEventType.SPORTING:
+        return 'Sports';
+      case Enum$ClubEventType.CULTURAL:
+        return 'Cultural';
+      case Enum$ClubEventType.EDUCATIONAL:
+        return 'Educational';
+      case Enum$ClubEventType.NETWORKING:
+        return 'Networking';
+      case Enum$ClubEventType.FUNDRAISING:
+        return 'Fundraising';
+      case Enum$ClubEventType.MEETING:
+        return 'Meeting';
       case Enum$ClubEventType.OTHER:
-      case Enum$ClubEventType.$unknown: return 'Other';
+      case Enum$ClubEventType.$unknown:
+        return 'Other';
     }
   }
 
   String _getGuestPolicyLabel(Enum$GuestPolicy policy) {
     switch (policy) {
-      case Enum$GuestPolicy.NO_GUESTS: return 'No Guests Allowed';
-      case Enum$GuestPolicy.MEMBERS_ONLY: return 'Members Only';
-      case Enum$GuestPolicy.MALE_GUESTS_ONLY: return 'Male Guests Only';
-      case Enum$GuestPolicy.FEMALE_GUESTS_ONLY: return 'Female Guests Only';
-      case Enum$GuestPolicy.FRIENDS_AND_FAMILY: return 'Friends & Family Welcome';
-      case Enum$GuestPolicy.$unknown: return 'Unknown Policy';
+      case Enum$GuestPolicy.NO_GUESTS:
+        return 'No Guests Allowed';
+      case Enum$GuestPolicy.MEMBERS_ONLY:
+        return 'Members Only';
+      case Enum$GuestPolicy.MALE_GUESTS_ONLY:
+        return 'Male Guests Only';
+      case Enum$GuestPolicy.FEMALE_GUESTS_ONLY:
+        return 'Female Guests Only';
+      case Enum$GuestPolicy.FRIENDS_AND_FAMILY:
+        return 'Friends & Family Welcome';
+      case Enum$GuestPolicy.$unknown:
+        return 'Unknown Policy';
     }
   }
 }
@@ -665,29 +679,45 @@ class _EventHeader extends StatelessWidget {
   /// Returns WCAG AAA compliant color for event type badges.
   Color _getEventTypeColor(Enum$ClubEventType type) {
     switch (type) {
-      case Enum$ClubEventType.SOCIAL: return AppColors.getEventTypeColor('social');
-      case Enum$ClubEventType.SPORTING: return AppColors.getEventTypeColor('sports');
-      case Enum$ClubEventType.CULTURAL: return AppColors.getEventTypeColor('cultural');
-      case Enum$ClubEventType.EDUCATIONAL: return AppColors.getEventTypeColor('educational');
-      case Enum$ClubEventType.NETWORKING: return AppColors.getEventTypeColor('networking');
-      case Enum$ClubEventType.FUNDRAISING: return AppColors.getEventTypeColor('cultural');
-      case Enum$ClubEventType.MEETING: return AppColors.getEventTypeColor('networking');
+      case Enum$ClubEventType.SOCIAL:
+        return AppColors.getEventTypeColor('social');
+      case Enum$ClubEventType.SPORTING:
+        return AppColors.getEventTypeColor('sports');
+      case Enum$ClubEventType.CULTURAL:
+        return AppColors.getEventTypeColor('cultural');
+      case Enum$ClubEventType.EDUCATIONAL:
+        return AppColors.getEventTypeColor('educational');
+      case Enum$ClubEventType.NETWORKING:
+        return AppColors.getEventTypeColor('networking');
+      case Enum$ClubEventType.FUNDRAISING:
+        return AppColors.getEventTypeColor('cultural');
+      case Enum$ClubEventType.MEETING:
+        return AppColors.getEventTypeColor('networking');
       case Enum$ClubEventType.OTHER:
-      case Enum$ClubEventType.$unknown: return AppColors.getEventTypeColor('social');
+      case Enum$ClubEventType.$unknown:
+        return AppColors.getEventTypeColor('social');
     }
   }
 
   String _getEventTypeLabel(Enum$ClubEventType type) {
     switch (type) {
-      case Enum$ClubEventType.SOCIAL: return 'Social';
-      case Enum$ClubEventType.SPORTING: return 'Sports';
-      case Enum$ClubEventType.CULTURAL: return 'Cultural';
-      case Enum$ClubEventType.EDUCATIONAL: return 'Educational';
-      case Enum$ClubEventType.NETWORKING: return 'Networking';
-      case Enum$ClubEventType.FUNDRAISING: return 'Fundraising';
-      case Enum$ClubEventType.MEETING: return 'Meeting';
+      case Enum$ClubEventType.SOCIAL:
+        return 'Social';
+      case Enum$ClubEventType.SPORTING:
+        return 'Sports';
+      case Enum$ClubEventType.CULTURAL:
+        return 'Cultural';
+      case Enum$ClubEventType.EDUCATIONAL:
+        return 'Educational';
+      case Enum$ClubEventType.NETWORKING:
+        return 'Networking';
+      case Enum$ClubEventType.FUNDRAISING:
+        return 'Fundraising';
+      case Enum$ClubEventType.MEETING:
+        return 'Meeting';
       case Enum$ClubEventType.OTHER:
-      case Enum$ClubEventType.$unknown: return 'Other';
+      case Enum$ClubEventType.$unknown:
+        return 'Other';
     }
   }
 }

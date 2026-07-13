@@ -88,10 +88,8 @@ class AuthFailure extends Failure {
   );
 
   /// Factory constructor for biometric authentication failure.
-  factory AuthFailure.biometricFailed() => const AuthFailure(
-    'Biometric authentication failed',
-    'BIOMETRIC_FAILED',
-  );
+  factory AuthFailure.biometricFailed() =>
+      const AuthFailure('Biometric authentication failed', 'BIOMETRIC_FAILED');
 
   /// Factory constructor for biometric lockout.
   factory AuthFailure.biometricLockout() => const AuthFailure(
@@ -100,16 +98,12 @@ class AuthFailure extends Failure {
   );
 
   /// Factory constructor for authentication timeout.
-  factory AuthFailure.timeout() => const AuthFailure(
-    'Authentication timed out',
-    'AUTH_TIMEOUT',
-  );
+  factory AuthFailure.timeout() =>
+      const AuthFailure('Authentication timed out', 'AUTH_TIMEOUT');
 
   /// Factory constructor for unknown authentication errors.
-  factory AuthFailure.unknown() => const AuthFailure(
-    'Unknown authentication error',
-    'UNKNOWN_ERROR',
-  );
+  factory AuthFailure.unknown() =>
+      const AuthFailure('Unknown authentication error', 'UNKNOWN_ERROR');
 
   /// Factory constructor for permission denied errors.
   factory AuthFailure.permissionDenied() => const AuthFailure(

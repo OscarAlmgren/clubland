@@ -8,14 +8,15 @@ class ClubContactModel extends ClubContactEntity {
     super.socialMedia,
   });
 
-  factory ClubContactModel.fromJson(Map<String, dynamic> json) => ClubContactModel(
-    phone: json['phone'] as String?,
-    email: json['email'] as String?,
-    website: json['website'] as String?,
-    socialMedia: json['socialMedia'] != null
-        ? Map<String, String>.from(json['socialMedia'] as Map)
-        : null,
-  );
+  factory ClubContactModel.fromJson(Map<String, dynamic> json) =>
+      ClubContactModel(
+        phone: json['phone'] as String?,
+        email: json['email'] as String?,
+        website: json['website'] as String?,
+        socialMedia: json['socialMedia'] != null
+            ? Map<String, String>.from(json['socialMedia'] as Map)
+            : null,
+      );
 
   Map<String, dynamic> toJson() => {
     if (phone != null) 'phone': phone,

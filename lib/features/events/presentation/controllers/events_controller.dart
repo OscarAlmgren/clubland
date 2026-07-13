@@ -31,9 +31,7 @@ part 'events_controller.g.dart';
 
 /// Provider for the events remote datasource
 final eventsRemoteDataSourceProvider = Provider<EventsRemoteDataSource>(
-  (ref) => EventsRemoteDataSourceImpl(
-    client: ref.watch(gqlClientProvider),
-  ),
+  (ref) => EventsRemoteDataSourceImpl(client: ref.watch(gqlClientProvider)),
 );
 
 /// Provider for the events repository
@@ -210,16 +208,10 @@ Future<RSVPEligibilityEntity> rsvpEligibility(
 ) async {
   final useCase = ref.read(checkRSVPEligibilityUseCaseProvider);
   final result = await useCase(
-    CheckRSVPEligibilityParams(
-      eventId: eventId,
-      memberId: memberId,
-    ),
+    CheckRSVPEligibilityParams(eventId: eventId, memberId: memberId),
   );
 
-  return result.fold(
-    (failure) => throw failure,
-    (eligibility) => eligibility,
-  );
+  return result.fold((failure) => throw failure, (eligibility) => eligibility);
 }
 
 /// Provider for fetching member's RSVPs
@@ -276,10 +268,7 @@ Future<List<FindingFriendsSubgroupEntity>> findingFriendsSubgroups(
   final useCase = ref.read(getFindingFriendsSubgroupsUseCaseProvider);
   final result = await useCase(clubId);
 
-  return result.fold(
-    (failure) => throw failure,
-    (subgroups) => subgroups,
-  );
+  return result.fold((failure) => throw failure, (subgroups) => subgroups);
 }
 
 // ============================================================================
@@ -340,11 +329,7 @@ class EventsListController extends _$EventsListController {
     Map<String, dynamic>? filters,
   }) async {
     final connection = await ref.read(
-      clubEventsProvider(
-        clubId,
-        filters: filters,
-        page: _currentPage,
-      ).future,
+      clubEventsProvider(clubId, filters: filters, page: _currentPage).future,
     );
 
     if (_currentPage == 1) {
@@ -387,7 +372,10 @@ class EventsListController extends _$EventsListController {
     _currentPage++;
 
     try {
-      final newState = await _fetchEvents(clubId, filters: currentState.filters);
+      final newState = await _fetchEvents(
+        clubId,
+        filters: currentState.filters,
+      );
       state = AsyncData(newState.copyWith(isLoadingMore: false));
     } catch (e, stack) {
       // Revert page increment on error
@@ -475,10 +463,7 @@ class EventDetailsController extends _$EventDetailsController {
       eligibility = null;
     }
 
-    return EventDetailsState(
-      event: event,
-      eligibility: eligibility,
-    );
+    return EventDetailsState(event: event, eligibility: eligibility);
   }
 
   /// Reload event details
@@ -530,10 +515,7 @@ class RSVPController extends _$RSVPController {
     final useCase = ref.read(createRSVPUseCaseProvider);
     state = await AsyncValue.guard(() async {
       final result = await useCase(input);
-      return result.fold(
-        (failure) => throw failure,
-        (rsvp) => rsvp,
-      );
+      return result.fold((failure) => throw failure, (rsvp) => rsvp);
     });
   }
 
@@ -546,10 +528,7 @@ class RSVPController extends _$RSVPController {
       final result = await useCase(
         UpdateRSVPParams(rsvpId: rsvpId, input: input),
       );
-      return result.fold(
-        (failure) => throw failure,
-        (rsvp) => rsvp,
-      );
+      return result.fold((failure) => throw failure, (rsvp) => rsvp);
     });
   }
 
@@ -563,14 +542,11 @@ class RSVPController extends _$RSVPController {
       CancelRSVPParams(rsvpId: rsvpId, reason: reason),
     );
 
-    return result.fold(
-      (failure) => throw failure,
-      (response) {
-        // Clear current RSVP state on successful cancellation
-        state = const AsyncData(null);
-        return response;
-      },
-    );
+    return result.fold((failure) => throw failure, (response) {
+      // Clear current RSVP state on successful cancellation
+      state = const AsyncData(null);
+      return response;
+    });
   }
 }
 

@@ -24,10 +24,7 @@ Future<List<BookingEntity>> allBookings(Ref ref) async {
   final repository = ref.read(bookingsRepositoryProvider);
   final result = await repository.getUserBookings();
 
-  return result.fold(
-    (failure) => throw failure,
-    (bookings) => bookings,
-  );
+  return result.fold((failure) => throw failure, (bookings) => bookings);
 }
 
 /// Provider for upcoming bookings only
@@ -36,10 +33,7 @@ Future<List<BookingEntity>> upcomingBookings(Ref ref) async {
   final repository = ref.read(bookingsRepositoryProvider);
   final result = await repository.getUpcomingBookings();
 
-  return result.fold(
-    (failure) => throw failure,
-    (bookings) => bookings,
-  );
+  return result.fold((failure) => throw failure, (bookings) => bookings);
 }
 
 /// Provider for past bookings only
@@ -48,10 +42,7 @@ Future<List<BookingEntity>> pastBookings(Ref ref) async {
   final repository = ref.read(bookingsRepositoryProvider);
   final result = await repository.getPastBookings();
 
-  return result.fold(
-    (failure) => throw failure,
-    (bookings) => bookings,
-  );
+  return result.fold((failure) => throw failure, (bookings) => bookings);
 }
 
 /// Provider for real-time booking updates
@@ -97,14 +88,11 @@ class BookingsController extends _$BookingsController {
         reason: reason,
       );
 
-      return result.fold(
-        (failure) => throw failure,
-        (_) async {
-          // Refresh all bookings after cancellation
-          ref.invalidate(allBookingsProvider);
-          return await ref.read(allBookingsProvider.future);
-        },
-      );
+      return result.fold((failure) => throw failure, (_) async {
+        // Refresh all bookings after cancellation
+        ref.invalidate(allBookingsProvider);
+        return await ref.read(allBookingsProvider.future);
+      });
     });
   }
 
@@ -121,14 +109,11 @@ class BookingsController extends _$BookingsController {
         participantIds: request.participants,
       );
 
-      return result.fold(
-        (failure) => throw failure,
-        (_) async {
-          // Refresh all bookings after creation
-          ref.invalidate(allBookingsProvider);
-          return await ref.read(allBookingsProvider.future);
-        },
-      );
+      return result.fold((failure) => throw failure, (_) async {
+        // Refresh all bookings after creation
+        ref.invalidate(allBookingsProvider);
+        return await ref.read(allBookingsProvider.future);
+      });
     });
   }
 
@@ -148,14 +133,11 @@ class BookingsController extends _$BookingsController {
         participantIds: request.participants,
       );
 
-      return result.fold(
-        (failure) => throw failure,
-        (_) async {
-          // Refresh all bookings after modification
-          ref.invalidate(allBookingsProvider);
-          return await ref.read(allBookingsProvider.future);
-        },
-      );
+      return result.fold((failure) => throw failure, (_) async {
+        // Refresh all bookings after modification
+        ref.invalidate(allBookingsProvider);
+        return await ref.read(allBookingsProvider.future);
+      });
     });
   }
 
@@ -203,9 +185,7 @@ class ModifyBookingRequest {
 
 /// Provider for the remote datasource
 final bookingsRemoteDataSourceProvider = Provider<BookingsRemoteDataSource>(
-  (ref) => BookingsRemoteDataSourceImpl(
-    client: ref.watch(gqlClientProvider),
-  ),
+  (ref) => BookingsRemoteDataSourceImpl(client: ref.watch(gqlClientProvider)),
 );
 
 /// Represents a real-time booking update notification
@@ -222,4 +202,3 @@ class BookingUpdate {
   final BookingEntity? updatedBooking;
   final DateTime? timestamp;
 }
-

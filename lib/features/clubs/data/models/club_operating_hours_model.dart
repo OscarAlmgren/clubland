@@ -8,12 +8,13 @@ class ClubOperatingHoursModel extends ClubOperatingHoursEntity {
     super.isOpen = true,
   });
 
-  factory ClubOperatingHoursModel.fromJson(Map<String, dynamic> json) => ClubOperatingHoursModel(
-    dayOfWeek: json['dayOfWeek'] as String,
-    openTime: json['openTime'] as String,
-    closeTime: json['closeTime'] as String,
-    isOpen: json['isOpen'] as bool? ?? true,
-  );
+  factory ClubOperatingHoursModel.fromJson(Map<String, dynamic> json) =>
+      ClubOperatingHoursModel(
+        dayOfWeek: json['dayOfWeek'] as String,
+        openTime: json['openTime'] as String,
+        closeTime: json['closeTime'] as String,
+        isOpen: json['isOpen'] as bool? ?? true,
+      );
 
   Map<String, dynamic> toJson() => {
     'dayOfWeek': dayOfWeek,

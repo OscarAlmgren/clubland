@@ -16,10 +16,13 @@ class MockLogger extends Mock implements Logger {}
 
 // För Options-klasserna: Använd Mock istället för Fake om de klagar,
 // ELLER använd de riktiga klasserna som FallbackValues då de är enkla databehållare.
+// ignore: avoid_implementing_value_types
 class MockQueryOptions extends Mock implements QueryOptions {}
 
+// ignore: avoid_implementing_value_types
 class MockMutationOptions extends Mock implements MutationOptions {}
 
+// ignore: avoid_implementing_value_types
 class MockSubscriptionOptions extends Mock implements SubscriptionOptions {}
 
 void main() {
@@ -52,38 +55,38 @@ void main() {
       'events': {
         'nodes': [
           {
-              'id': 'event1',
-              'clubId': clubId,
-              'title': 'Summer Gala',
-              'description': 'Annual summer event',
-              'eventType': 'SOCIAL',
-              'startTime': '2024-07-01T18:00:00Z',
-              'endTime': '2024-07-01T23:00:00Z',
-              'location': 'Main Hall',
-              'imageUrl': null,
-              'capacity': 100,
-              'currentAttendees': 50,
-              'availableSpots': 50,
-              'tentativeCount': 10,
-              'waitlistCount': 0,
-              'guestPolicy': 'FRIENDS_AND_FAMILY',
-              'maxGuestsPerMember': 2,
-              'requiresApproval': false,
-              'requiresPayment': true,
-              'price': 50.0,
-              'cancellationDeadline': null,
-              'freeCancellationDays': 3,
-              'cancellationFeePercentage': 100.0,
-              'allowsSubgroupPriority': false,
-              'fullHouseExclusive': false,
-              'rsvpDeadline': '2024-06-30T23:59:59Z',
-              'subgroupId': null,
-              'organizerName': 'John Doe',
-              'contactEmail': 'john@club.com',
-              'contactPhone': '+1234567890',
-              'paymentInstructions': 'Pay at the door',
-              'createdAt': '2024-06-01T10:00:00Z',
-              'updatedAt': '2024-06-01T10:00:00Z',
+            'id': 'event1',
+            'clubId': clubId,
+            'title': 'Summer Gala',
+            'description': 'Annual summer event',
+            'eventType': 'SOCIAL',
+            'startTime': '2024-07-01T18:00:00Z',
+            'endTime': '2024-07-01T23:00:00Z',
+            'location': 'Main Hall',
+            'imageUrl': null,
+            'capacity': 100,
+            'currentAttendees': 50,
+            'availableSpots': 50,
+            'tentativeCount': 10,
+            'waitlistCount': 0,
+            'guestPolicy': 'FRIENDS_AND_FAMILY',
+            'maxGuestsPerMember': 2,
+            'requiresApproval': false,
+            'requiresPayment': true,
+            'price': 50.0,
+            'cancellationDeadline': null,
+            'freeCancellationDays': 3,
+            'cancellationFeePercentage': 100.0,
+            'allowsSubgroupPriority': false,
+            'fullHouseExclusive': false,
+            'rsvpDeadline': '2024-06-30T23:59:59Z',
+            'subgroupId': null,
+            'organizerName': 'John Doe',
+            'contactEmail': 'john@club.com',
+            'contactPhone': '+1234567890',
+            'paymentInstructions': 'Pay at the door',
+            'createdAt': '2024-06-01T10:00:00Z',
+            'updatedAt': '2024-06-01T10:00:00Z',
           },
         ],
         'pageInfo': {

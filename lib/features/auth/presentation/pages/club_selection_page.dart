@@ -54,7 +54,8 @@ class _ClubSelectionPageState extends ConsumerState<ClubSelectionPage> {
                 ),
                 filled: true,
               ),
-              onChanged: (value) => setState(() => _query = value.toLowerCase()),
+              onChanged: (value) =>
+                  setState(() => _query = value.toLowerCase()),
             ),
           ),
           Expanded(
@@ -63,12 +64,12 @@ class _ClubSelectionPageState extends ConsumerState<ClubSelectionPage> {
                 final filtered = _query.isEmpty
                     ? clubs
                     : clubs
-                        .where(
-                          (c) =>
-                              c.name.toLowerCase().contains(_query) ||
-                              c.description.toLowerCase().contains(_query),
-                        )
-                        .toList();
+                          .where(
+                            (c) =>
+                                c.name.toLowerCase().contains(_query) ||
+                                c.description.toLowerCase().contains(_query),
+                          )
+                          .toList();
 
                 if (filtered.isEmpty) {
                   return Center(
@@ -87,8 +88,7 @@ class _ClubSelectionPageState extends ConsumerState<ClubSelectionPage> {
                       _ClubTile(club: filtered[index], email: widget.email),
                 );
               },
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, _) => Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -134,10 +134,7 @@ class _ClubTile extends StatelessWidget {
                 ),
               )
             : _defaultLogo(context),
-        title: Text(
-          club.name,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: Text(club.name, style: Theme.of(context).textTheme.titleMedium),
         subtitle: club.description.isNotEmpty
             ? Text(
                 club.description,
@@ -155,15 +152,12 @@ class _ClubTile extends StatelessWidget {
   }
 
   Widget _defaultLogo(BuildContext context) => Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(
-          Icons.business,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      );
+    width: 48,
+    height: 48,
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Icon(Icons.business, color: Theme.of(context).colorScheme.primary),
+  );
 }

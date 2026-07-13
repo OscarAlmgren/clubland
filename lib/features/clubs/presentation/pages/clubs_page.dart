@@ -180,36 +180,36 @@ class _EmptyClubsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.location_city_outlined,
-              size: 80,
-              color: Theme.of(context).colorScheme.outline,
-            ),
-            AppSpacing.verticalSpaceLG,
-            Text(
-              'No Clubs Found',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-            ),
-            AppSpacing.verticalSpaceMD,
-            Text(
-              'Try adjusting your filters or search in a different area.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-            AppSpacing.verticalSpaceLG,
-            FilledButton.icon(
-              onPressed: () => context.go('/clubs'),
-              icon: const Icon(Icons.refresh),
-              label: const Text('Refresh'),
-            ),
-          ],
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.location_city_outlined,
+          size: 80,
+          color: Theme.of(context).colorScheme.outline,
         ),
-      );
+        AppSpacing.verticalSpaceLG,
+        Text(
+          'No Clubs Found',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        AppSpacing.verticalSpaceMD,
+        Text(
+          'Try adjusting your filters or search in a different area.',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        AppSpacing.verticalSpaceLG,
+        FilledButton.icon(
+          onPressed: () => context.go('/clubs'),
+          icon: const Icon(Icons.refresh),
+          label: const Text('Refresh'),
+        ),
+      ],
+    ),
+  );
 }

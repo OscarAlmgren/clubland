@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/graphql/graphql_api.dart';
 import '../../domain/entities/event_entity.dart';
-import '../../domain/entities/event_rsvp_entity.dart';
 import '../../domain/entities/rsvp_eligibility_entity.dart';
 import '../controllers/events_controller.dart';
 

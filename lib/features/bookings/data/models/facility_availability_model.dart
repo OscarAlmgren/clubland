@@ -13,7 +13,9 @@ class FacilityAvailabilityModel extends Equatable {
 
   factory FacilityAvailabilityModel.fromJson(Map<String, dynamic> json) {
     return FacilityAvailabilityModel(
-      facility: FacilityDetails.fromJson(json['facility'] as Map<String, dynamic>),
+      facility: FacilityDetails.fromJson(
+        json['facility'] as Map<String, dynamic>,
+      ),
       availableSlots: (json['availableSlots'] as List<dynamic>)
           .map((slot) => AvailableSlot.fromJson(slot as Map<String, dynamic>))
           .toList(),
@@ -105,11 +107,11 @@ class BookingSettings extends Equatable {
 
   @override
   List<Object?> get props => [
-        minBookingDuration,
-        maxBookingDuration,
-        advanceBookingLimit,
-        cancellationPolicy,
-      ];
+    minBookingDuration,
+    maxBookingDuration,
+    advanceBookingLimit,
+    cancellationPolicy,
+  ];
 }
 
 class AvailableSlot extends Equatable {
@@ -155,13 +157,13 @@ class AvailableSlot extends Equatable {
 
   @override
   List<Object?> get props => [
-        startTime,
-        endTime,
-        available,
-        capacity,
-        remainingSpots,
-        price,
-      ];
+    startTime,
+    endTime,
+    available,
+    capacity,
+    remainingSpots,
+    price,
+  ];
 }
 
 class BookedSlot extends Equatable {
@@ -202,10 +204,7 @@ class BookedSlot extends Equatable {
 }
 
 class SlotPrice extends Equatable {
-  const SlotPrice({
-    required this.amount,
-    required this.currency,
-  });
+  const SlotPrice({required this.amount, required this.currency});
 
   final double amount;
   final String currency;
@@ -218,10 +217,7 @@ class SlotPrice extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'amount': amount,
-      'currency': currency,
-    };
+    return {'amount': amount, 'currency': currency};
   }
 
   @override
@@ -248,11 +244,7 @@ class SlotParticipant extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
-    };
+    return {'id': id, 'firstName': firstName, 'lastName': lastName};
   }
 
   String get fullName => '$firstName $lastName';

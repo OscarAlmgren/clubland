@@ -146,9 +146,7 @@ abstract class EventsRepository {
   /// - [Right<List<FindingFriendsSubgroupEntity>>]: List of subgroups on success
   /// - [Left<Failure>]: Failure object on error
   Future<Either<Failure, List<FindingFriendsSubgroupEntity>>>
-      getFindingFriendsSubgroups({
-    required String clubId,
-  });
+  getFindingFriendsSubgroups({required String clubId});
 
   /// Get a specific RSVP by ID
   ///

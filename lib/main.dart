@@ -41,15 +41,12 @@ Future<void> main() async {
   // no-op when uninitialized.
   final sentryDsn = EnvironmentConfig.sentryDsn;
   if (sentryDsn.isNotEmpty && EnvironmentConfig.enableCrashReporting) {
-    await SentryFlutter.init(
-      (options) {
-        options
-          ..dsn = sentryDsn
-          ..environment = EnvironmentConfig.currentEnvironment.name
-          ..tracesSampleRate = 0.2;
-      },
-      appRunner: () => runApp(const ProviderScope(child: ClublandApp())),
-    );
+    await SentryFlutter.init((options) {
+      options
+        ..dsn = sentryDsn
+        ..environment = EnvironmentConfig.currentEnvironment.name
+        ..tracesSampleRate = 0.2;
+    }, appRunner: () => runApp(const ProviderScope(child: ClublandApp())));
   } else {
     runApp(const ProviderScope(child: ClublandApp()));
   }

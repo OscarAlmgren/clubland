@@ -81,7 +81,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return result.fold(Left.new, (session) async {
         await _storeSession(session);
         _authStateController.add(session);
-        _logger.i('Hanko passkey login successful for user: ${session.user.id}');
+        _logger.i(
+          'Hanko passkey login successful for user: ${session.user.id}',
+        );
         return Right(session);
       });
     } on Exception catch (e, stackTrace) {

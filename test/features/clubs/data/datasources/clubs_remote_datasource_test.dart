@@ -13,8 +13,12 @@ void main() {
 
   setUpAll(() {
     // Register fallback values for mocktail
-    registerFallbackValue(QueryOptions<Map<String, dynamic>>(document: gql('')));
-    registerFallbackValue(MutationOptions<Map<String, dynamic>>(document: gql('')));
+    registerFallbackValue(
+      QueryOptions<Map<String, dynamic>>(document: gql('')),
+    );
+    registerFallbackValue(
+      MutationOptions<Map<String, dynamic>>(document: gql('')),
+    );
   });
 
   setUp(() {
@@ -23,55 +27,60 @@ void main() {
   });
 
   group('getClubs', () {
-    test('should return a list of ClubModel when the call is successful', () async {
-      // Arrange
-      final mockData = {
-        'clubs': {
-          'nodes': [
-            {
-              'id': '1',
-              'name': 'Test Club 1',
-              'slug': 'test-club-1',
-              'description': 'Description 1',
-              'address': {
-                'street': '123 Test St',
-                'city': 'Test City',
-                'state': 'TS',
-                'zipCode': '12345',
-                'country': 'Test Country',
+    test(
+      'should return a list of ClubModel when the call is successful',
+      () async {
+        // Arrange
+        final mockData = {
+          'clubs': {
+            'nodes': [
+              {
+                'id': '1',
+                'name': 'Test Club 1',
+                'slug': 'test-club-1',
+                'description': 'Description 1',
+                'address': {
+                  'street': '123 Test St',
+                  'city': 'Test City',
+                  'state': 'TS',
+                  'zipCode': '12345',
+                  'country': 'Test Country',
+                },
+                'website': 'https://test.com',
+                'status': 'ACTIVE',
+                'createdAt': '2024-01-01T00:00:00Z',
+                'updatedAt': '2024-01-01T00:00:00Z',
               },
-              'website': 'https://test.com',
-              'status': 'ACTIVE',
-              'createdAt': '2024-01-01T00:00:00Z',
-              'updatedAt': '2024-01-01T00:00:00Z',
-            },
-          ],
-        },
-      };
+            ],
+          },
+        };
 
-      when(() => mockClient.query(any()))
-          .thenAnswer((_) async => QueryResult(
-                source: QueryResultSource.network,
-                data: mockData,
-                options: QueryOptions(document: gql('')),
-              ));
+        when(() => mockClient.query(any())).thenAnswer(
+          (_) async => QueryResult(
+            source: QueryResultSource.network,
+            data: mockData,
+            options: QueryOptions(document: gql('')),
+          ),
+        );
 
-      // Act
-      final result = await dataSource.getClubs();
+        // Act
+        final result = await dataSource.getClubs();
 
-      // Assert
-      expect(result.length, 1);
-      expect(result.first.name, 'Test Club 1');
-    });
+        // Assert
+        expect(result.length, 1);
+        expect(result.first.name, 'Test Club 1');
+      },
+    );
 
     test('should throw NetworkException when the call fails', () async {
       // Arrange
-      when(() => mockClient.query(any()))
-          .thenAnswer((_) async => QueryResult(
-                source: QueryResultSource.network,
-                options: QueryOptions(document: gql('')),
-                exception: OperationException(),
-              ));
+      when(() => mockClient.query(any())).thenAnswer(
+        (_) async => QueryResult(
+          source: QueryResultSource.network,
+          options: QueryOptions(document: gql('')),
+          exception: OperationException(),
+        ),
+      );
 
       // Act & Assert
       expect(
@@ -100,12 +109,13 @@ void main() {
         },
       };
 
-      when(() => mockClient.query(any()))
-          .thenAnswer((_) async => QueryResult(
-                source: QueryResultSource.network,
-                data: mockData,
-                options: QueryOptions(document: gql('')),
-              ));
+      when(() => mockClient.query(any())).thenAnswer(
+        (_) async => QueryResult(
+          source: QueryResultSource.network,
+          data: mockData,
+          options: QueryOptions(document: gql('')),
+        ),
+      );
 
       // Act
       final result = await dataSource.searchClubs(query: 'test');
@@ -141,18 +151,20 @@ void main() {
       };
 
       // toggleFavoriteClub calls mutate; stub it with null data (= no failure)
-      when(() => mockClient.mutate(any()))
-          .thenAnswer((_) async => QueryResult(
-                source: QueryResultSource.network,
-                options: MutationOptions(document: gql('')),
-              ));
+      when(() => mockClient.mutate(any())).thenAnswer(
+        (_) async => QueryResult(
+          source: QueryResultSource.network,
+          options: MutationOptions(document: gql('')),
+        ),
+      );
       // After mutate it calls getClubById, which calls query and reads data['club']
-      when(() => mockClient.query(any()))
-          .thenAnswer((_) async => QueryResult(
-                source: QueryResultSource.network,
-                data: mockClubData,
-                options: QueryOptions(document: gql('')),
-              ));
+      when(() => mockClient.query(any())).thenAnswer(
+        (_) async => QueryResult(
+          source: QueryResultSource.network,
+          data: mockClubData,
+          options: QueryOptions(document: gql('')),
+        ),
+      );
 
       // Act
       final result = await dataSource.toggleFavoriteClub(clubId);
@@ -166,12 +178,15 @@ void main() {
   group('getClubReviews', () {
     test('should return empty list when club has no reviews', () async {
       // Arrange - stub query to return empty nodes
-      when(() => mockClient.query(any()))
-          .thenAnswer((_) async => QueryResult(
-                source: QueryResultSource.network,
-                data: {'clubReviews': {'nodes': <dynamic>[]}},
-                options: QueryOptions(document: gql('')),
-              ));
+      when(() => mockClient.query(any())).thenAnswer(
+        (_) async => QueryResult(
+          source: QueryResultSource.network,
+          data: {
+            'clubReviews': {'nodes': <dynamic>[]},
+          },
+          options: QueryOptions(document: gql('')),
+        ),
+      );
 
       // Act
       final result = await dataSource.getClubReviews('1');

@@ -12,10 +12,10 @@ part 'profile_providers.g.dart';
 /// Profile repository provider
 @riverpod
 ProfileRepository profileRepository(Ref ref) => ProfileRepositoryImpl(
-      remoteDataSource: ProfileRemoteDataSourceImpl(
-        client: ref.watch(gqlClientProvider),
-      ),
-    );
+  remoteDataSource: ProfileRemoteDataSourceImpl(
+    client: ref.watch(gqlClientProvider),
+  ),
+);
 
 /// Profile controller — wraps auth state and exposes updateProfile.
 ///
@@ -50,14 +50,11 @@ class ProfileController extends _$ProfileController {
       lastName: lastName,
     );
 
-    return result.fold(
-      (_) => false,
-      (UserEntity updatedUser) {
-        state = AsyncData(updatedUser);
-        // Refresh auth state so ProfilePage stays in sync
-        ref.invalidate(authControllerProvider);
-        return true;
-      },
-    );
+    return result.fold((_) => false, (UserEntity updatedUser) {
+      state = AsyncData(updatedUser);
+      // Refresh auth state so ProfilePage stays in sync
+      ref.invalidate(authControllerProvider);
+      return true;
+    });
   }
 }

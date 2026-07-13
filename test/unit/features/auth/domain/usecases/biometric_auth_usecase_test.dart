@@ -20,8 +20,9 @@ void main() {
     group('isAvailable', () {
       test('should return true when biometric is available', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
 
         // Act
         final result = await usecase.isAvailable();
@@ -33,8 +34,9 @@ void main() {
 
       test('should return false when biometric is not available', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => false);
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => false);
 
         // Act
         final result = await usecase.isAvailable();
@@ -46,57 +48,57 @@ void main() {
 
       test('should handle repository errors gracefully', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenThrow(Exception('Device check failed'));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenThrow(Exception('Device check failed'));
 
         // Act & Assert
-        expect(
-          () => usecase.isAvailable(),
-          throwsException,
-        );
+        expect(() => usecase.isAvailable(), throwsException);
       });
     });
 
     group('authenticate', () {
-      test('should successfully authenticate when biometric is available',
-          () async {
-        // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => const Right(true));
+      test(
+        'should successfully authenticate when biometric is available',
+        () async {
+          // Arrange
+          when(
+            () => mockRepository.isBiometricAvailable(),
+          ).thenAnswer((_) async => true);
+          when(
+            () => mockRepository.authenticateWithBiometrics(),
+          ).thenAnswer((_) async => const Right(true));
 
-        // Act
-        final result = await usecase.authenticate();
+          // Act
+          final result = await usecase.authenticate();
 
-        // Assert
-        expect(result.isRight(), true);
-        result.fold(
-          (failure) => fail('Should return success'),
-          (success) => expect(success, true),
-        );
+          // Assert
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return success'),
+            (success) => expect(success, true),
+          );
 
-        verify(() => mockRepository.isBiometricAvailable()).called(1);
-        verify(() => mockRepository.authenticateWithBiometrics()).called(1);
-      });
+          verify(() => mockRepository.isBiometricAvailable()).called(1);
+          verify(() => mockRepository.authenticateWithBiometrics()).called(1);
+        },
+      );
 
       test('should return failure when biometric is not available', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => false);
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => false);
 
         // Act
         final result = await usecase.authenticate();
 
         // Assert
         expect(result.isLeft(), true);
-        result.fold(
-          (failure) {
-            expect(failure, isA<AuthFailure>());
-            expect(failure.message, contains('not available'));
-          },
-          (success) => fail('Should return failure'),
-        );
+        result.fold((failure) {
+          expect(failure, isA<AuthFailure>());
+          expect(failure.message, contains('not available'));
+        }, (success) => fail('Should return failure'));
 
         verify(() => mockRepository.isBiometricAvailable()).called(1);
         verifyNever(() => mockRepository.authenticateWithBiometrics());
@@ -104,10 +106,12 @@ void main() {
 
       test('should return failure when authentication fails', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => Left(AuthFailure.biometricFailed()));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => Left(AuthFailure.biometricFailed()));
 
         // Act
         final result = await usecase.authenticate();
@@ -125,10 +129,12 @@ void main() {
 
       test('should return false when user cancels authentication', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => const Right(false));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => const Right(false));
 
         // Act
         final result = await usecase.authenticate();
@@ -143,10 +149,12 @@ void main() {
 
       test('should handle multiple authentication attempts', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => const Right(true));
 
         // Act
         final result1 = await usecase.authenticate();
@@ -164,10 +172,12 @@ void main() {
 
       test('should handle authentication timeout', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => Left(AuthFailure.timeout()));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => Left(AuthFailure.timeout()));
 
         // Act
         final result = await usecase.authenticate();
@@ -182,99 +192,114 @@ void main() {
 
       test('should handle device lockout scenario', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => Left(AuthFailure.biometricLockout()));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => Left(AuthFailure.biometricLockout()));
 
         // Act
         final result = await usecase.authenticate();
 
         // Assert
         expect(result.isLeft(), true);
-        result.fold(
-          (failure) {
-            expect(failure, isA<AuthFailure>());
-            expect(failure.message, contains('locked'));
-          },
-          (success) => fail('Should return failure'),
-        );
+        result.fold((failure) {
+          expect(failure, isA<AuthFailure>());
+          expect(failure.message, contains('locked'));
+        }, (success) => fail('Should return failure'));
       });
     });
 
     group('setBiometricAuth', () {
-      test('should successfully enable biometric auth when available',
-          () async {
-        // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => const Right(true));
+      test(
+        'should successfully enable biometric auth when available',
+        () async {
+          // Arrange
+          when(
+            () => mockRepository.isBiometricAvailable(),
+          ).thenAnswer((_) async => true);
+          when(
+            () => mockRepository.setBiometricAuth(enabled: true),
+          ).thenAnswer((_) async => const Right(true));
 
-        // Act
-        final result = await usecase.setBiometricAuth(enabled: true);
+          // Act
+          final result = await usecase.setBiometricAuth(enabled: true);
 
-        // Assert
-        expect(result.isRight(), true);
-        result.fold(
-          (failure) => fail('Should return success'),
-          (success) => expect(success, true),
-        );
+          // Assert
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return success'),
+            (success) => expect(success, true),
+          );
 
-        verify(() => mockRepository.isBiometricAvailable()).called(1);
-        verify(() => mockRepository.setBiometricAuth(enabled: true)).called(1);
-      });
+          verify(() => mockRepository.isBiometricAvailable()).called(1);
+          verify(
+            () => mockRepository.setBiometricAuth(enabled: true),
+          ).called(1);
+        },
+      );
 
-      test('should return failure when enabling but biometric not available',
-          () async {
-        // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => false);
+      test(
+        'should return failure when enabling but biometric not available',
+        () async {
+          // Arrange
+          when(
+            () => mockRepository.isBiometricAvailable(),
+          ).thenAnswer((_) async => false);
 
-        // Act
-        final result = await usecase.setBiometricAuth(enabled: true);
+          // Act
+          final result = await usecase.setBiometricAuth(enabled: true);
 
-        // Assert
-        expect(result.isLeft(), true);
-        result.fold(
-          (failure) {
+          // Assert
+          expect(result.isLeft(), true);
+          result.fold((failure) {
             expect(failure, isA<AuthFailure>());
             expect(failure.message, contains('not available'));
-          },
-          (success) => fail('Should return failure'),
-        );
+          }, (success) => fail('Should return failure'));
 
-        verify(() => mockRepository.isBiometricAvailable()).called(1);
-        verifyNever(() => mockRepository.setBiometricAuth(enabled: any(named: 'enabled')));
-      });
+          verify(() => mockRepository.isBiometricAvailable()).called(1);
+          verifyNever(
+            () =>
+                mockRepository.setBiometricAuth(enabled: any(named: 'enabled')),
+          );
+        },
+      );
 
-      test('should successfully disable biometric auth without checking availability',
-          () async {
-        // Arrange
-        when(() => mockRepository.setBiometricAuth(enabled: false))
-            .thenAnswer((_) async => const Right(true));
+      test(
+        'should successfully disable biometric auth without checking availability',
+        () async {
+          // Arrange
+          when(
+            () => mockRepository.setBiometricAuth(enabled: false),
+          ).thenAnswer((_) async => const Right(true));
 
-        // Act
-        final result = await usecase.setBiometricAuth(enabled: false);
+          // Act
+          final result = await usecase.setBiometricAuth(enabled: false);
 
-        // Assert
-        expect(result.isRight(), true);
-        result.fold(
-          (failure) => fail('Should return success'),
-          (success) => expect(success, true),
-        );
+          // Assert
+          expect(result.isRight(), true);
+          result.fold(
+            (failure) => fail('Should return success'),
+            (success) => expect(success, true),
+          );
 
-        // Should not check availability when disabling
-        verifyNever(() => mockRepository.isBiometricAvailable());
-        verify(() => mockRepository.setBiometricAuth(enabled: false)).called(1);
-      });
+          // Should not check availability when disabling
+          verifyNever(() => mockRepository.isBiometricAvailable());
+          verify(
+            () => mockRepository.setBiometricAuth(enabled: false),
+          ).called(1);
+        },
+      );
 
       test('should handle repository failure when enabling', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => Left(AuthFailure.unknown()));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.setBiometricAuth(enabled: true),
+        ).thenAnswer((_) async => Left(AuthFailure.unknown()));
 
         // Act
         final result = await usecase.setBiometricAuth(enabled: true);
@@ -286,8 +311,9 @@ void main() {
 
       test('should handle repository failure when disabling', () async {
         // Arrange
-        when(() => mockRepository.setBiometricAuth(enabled: false))
-            .thenAnswer((_) async => Left(AuthFailure.unknown()));
+        when(
+          () => mockRepository.setBiometricAuth(enabled: false),
+        ).thenAnswer((_) async => Left(AuthFailure.unknown()));
 
         // Act
         final result = await usecase.setBiometricAuth(enabled: false);
@@ -299,12 +325,15 @@ void main() {
 
       test('should handle multiple enable/disable operations', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => const Right(true));
-        when(() => mockRepository.setBiometricAuth(enabled: false))
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.setBiometricAuth(enabled: true),
+        ).thenAnswer((_) async => const Right(true));
+        when(
+          () => mockRepository.setBiometricAuth(enabled: false),
+        ).thenAnswer((_) async => const Right(true));
 
         // Act
         final enable1 = await usecase.setBiometricAuth(enabled: true);
@@ -323,10 +352,12 @@ void main() {
 
       test('should handle permission denied scenario', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => Left(AuthFailure.permissionDenied()));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.setBiometricAuth(enabled: true),
+        ).thenAnswer((_) async => Left(AuthFailure.permissionDenied()));
 
         // Act
         final result = await usecase.setBiometricAuth(enabled: true);
@@ -343,12 +374,15 @@ void main() {
     group('Integration Scenarios', () {
       test('should complete full biometric setup flow', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => const Right(true));
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.setBiometricAuth(enabled: true),
+        ).thenAnswer((_) async => const Right(true));
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => const Right(true));
 
         // Act - Check availability
         final isAvailable = await usecase.isAvailable();
@@ -370,8 +404,9 @@ void main() {
 
       test('should handle device without biometric support', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => false);
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => false);
 
         // Act - Check availability
         final isAvailable = await usecase.isAvailable();
@@ -387,78 +422,91 @@ void main() {
 
         // Assert
         verify(() => mockRepository.isBiometricAvailable()).called(3);
-        verifyNever(() => mockRepository.setBiometricAuth(enabled: any(named: 'enabled')));
+        verifyNever(
+          () => mockRepository.setBiometricAuth(enabled: any(named: 'enabled')),
+        );
         verifyNever(() => mockRepository.authenticateWithBiometrics());
       });
 
-      test('should handle user disabling previously enabled biometric auth',
-          () async {
-        // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.setBiometricAuth(enabled: true))
-            .thenAnswer((_) async => const Right(true));
-        when(() => mockRepository.setBiometricAuth(enabled: false))
-            .thenAnswer((_) async => const Right(true));
+      test(
+        'should handle user disabling previously enabled biometric auth',
+        () async {
+          // Arrange
+          when(
+            () => mockRepository.isBiometricAvailable(),
+          ).thenAnswer((_) async => true);
+          when(
+            () => mockRepository.setBiometricAuth(enabled: true),
+          ).thenAnswer((_) async => const Right(true));
+          when(
+            () => mockRepository.setBiometricAuth(enabled: false),
+          ).thenAnswer((_) async => const Right(true));
 
-        // Act - Enable
-        final enableResult = await usecase.setBiometricAuth(enabled: true);
-        expect(enableResult.isRight(), true);
+          // Act - Enable
+          final enableResult = await usecase.setBiometricAuth(enabled: true);
+          expect(enableResult.isRight(), true);
 
-        // Act - Disable
-        final disableResult = await usecase.setBiometricAuth(enabled: false);
-        expect(disableResult.isRight(), true);
+          // Act - Disable
+          final disableResult = await usecase.setBiometricAuth(enabled: false);
+          expect(disableResult.isRight(), true);
 
-        // Assert
-        verify(() => mockRepository.setBiometricAuth(enabled: true)).called(1);
-        verify(() => mockRepository.setBiometricAuth(enabled: false)).called(1);
-      });
+          // Assert
+          verify(
+            () => mockRepository.setBiometricAuth(enabled: true),
+          ).called(1);
+          verify(
+            () => mockRepository.setBiometricAuth(enabled: false),
+          ).called(1);
+        },
+      );
 
-      test('should handle failed authentication followed by successful retry',
-          () async {
-        // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
+      test(
+        'should handle failed authentication followed by successful retry',
+        () async {
+          // Arrange
+          when(
+            () => mockRepository.isBiometricAvailable(),
+          ).thenAnswer((_) async => true);
 
-        var callCount = 0;
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async {
-              callCount++;
-              return callCount == 1 ? const Right(false) : const Right(true);
-            });
+          var callCount = 0;
+          when(() => mockRepository.authenticateWithBiometrics()).thenAnswer((
+            _,
+          ) async {
+            callCount++;
+            return callCount == 1 ? const Right(false) : const Right(true);
+          });
 
-        // Act - First attempt fails
-        final result1 = await usecase.authenticate();
-        expect(result1.isRight(), true);
-        result1.fold(
-          (failure) => fail('Should return success'),
-          (success) => expect(success, false),
-        );
+          // Act - First attempt fails
+          final result1 = await usecase.authenticate();
+          expect(result1.isRight(), true);
+          result1.fold(
+            (failure) => fail('Should return success'),
+            (success) => expect(success, false),
+          );
 
-        // Act - Second attempt succeeds
-        final result2 = await usecase.authenticate();
-        expect(result2.isRight(), true);
-        result2.fold(
-          (failure) => fail('Should return success'),
-          (success) => expect(success, true),
-        );
+          // Act - Second attempt succeeds
+          final result2 = await usecase.authenticate();
+          expect(result2.isRight(), true);
+          result2.fold(
+            (failure) => fail('Should return success'),
+            (success) => expect(success, true),
+          );
 
-        // Assert
-        verify(() => mockRepository.authenticateWithBiometrics()).called(2);
-      });
+          // Assert
+          verify(() => mockRepository.authenticateWithBiometrics()).called(2);
+        },
+      );
     });
 
     group('Edge Cases', () {
       test('should handle rapid successive availability checks', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
 
         // Act
-        final futures = List.generate(
-          10,
-          (_) => usecase.isAvailable(),
-        );
+        final futures = List.generate(10, (_) => usecase.isAvailable());
         final results = await Future.wait(futures);
 
         // Assert
@@ -468,16 +516,15 @@ void main() {
 
       test('should handle concurrent authentication attempts', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async => const Right(true));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenAnswer((_) async => const Right(true));
 
         // Act
-        final futures = List.generate(
-          3,
-          (_) => usecase.authenticate(),
-        );
+        final futures = List.generate(3, (_) => usecase.authenticate());
         final results = await Future.wait(futures);
 
         // Assert
@@ -487,27 +534,26 @@ void main() {
 
       test('should handle repository throwing unexpected errors', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async => true);
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenThrow(Exception('Unexpected error'));
+        when(
+          () => mockRepository.isBiometricAvailable(),
+        ).thenAnswer((_) async => true);
+        when(
+          () => mockRepository.authenticateWithBiometrics(),
+        ).thenThrow(Exception('Unexpected error'));
 
         // Act & Assert
-        expect(
-          () => usecase.authenticate(),
-          throwsException,
-        );
+        expect(() => usecase.authenticate(), throwsException);
       });
 
       test('should handle delayed repository responses', () async {
         // Arrange
-        when(() => mockRepository.isBiometricAvailable())
-            .thenAnswer((_) async {
+        when(() => mockRepository.isBiometricAvailable()).thenAnswer((_) async {
           await Future<void>.delayed(const Duration(milliseconds: 100));
           return true;
         });
-        when(() => mockRepository.authenticateWithBiometrics())
-            .thenAnswer((_) async {
+        when(() => mockRepository.authenticateWithBiometrics()).thenAnswer((
+          _,
+        ) async {
           await Future<void>.delayed(const Duration(milliseconds: 200));
           return const Right(true);
         });

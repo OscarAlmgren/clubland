@@ -18,13 +18,12 @@ void main() {
       );
     });
 
-    testWidgets('renders news post information correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders news post information correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: NewsPostCard(newsPost: testNewsPost),
-          ),
+          home: Scaffold(body: NewsPostCard(newsPost: testNewsPost)),
         ),
       );
 
@@ -41,8 +40,9 @@ void main() {
       expect(find.text('NEWS'), findsOneWidget);
     });
 
-    testWidgets('displays card without author when author is null',
-        (WidgetTester tester) async {
+    testWidgets('displays card without author when author is null', (
+      WidgetTester tester,
+    ) async {
       final newsPostWithoutAuthor = NewsPostEntity(
         id: '1',
         clubId: 'club_1',
@@ -53,9 +53,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: NewsPostCard(newsPost: newsPostWithoutAuthor),
-          ),
+          home: Scaffold(body: NewsPostCard(newsPost: newsPostWithoutAuthor)),
         ),
       );
 
@@ -66,8 +64,7 @@ void main() {
       expect(find.byIcon(Icons.person), findsNothing);
     });
 
-    testWidgets('calls onTap when card is tapped',
-        (WidgetTester tester) async {
+    testWidgets('calls onTap when card is tapped', (WidgetTester tester) async {
       bool wasTapped = false;
 
       await tester.pumpWidget(

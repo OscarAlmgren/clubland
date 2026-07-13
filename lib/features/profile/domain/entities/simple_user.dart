@@ -1,4 +1,3 @@
-
 /// A data model containing a summary of a user's key profile information and statistics.
 class SimpleUser {
   /// Constructs a [SimpleUser] model.

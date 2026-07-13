@@ -35,8 +35,8 @@ abstract class SocialRemoteDataSource {
 /// GraphQL implementation of [SocialRemoteDataSource]
 class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
   SocialRemoteDataSourceImpl({required GraphQLClient client, Logger? logger})
-      : _client = client,
-        _logger = logger ?? Logger();
+    : _client = client,
+      _logger = logger ?? Logger();
 
   final GraphQLClient _client;
   final Logger _logger;
@@ -76,7 +76,8 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
       // boolean.
       return NotificationModel.fromJson({
         ...node,
-        'read': node['readAt'] != null ||
+        'read':
+            node['readAt'] != null ||
             (node['status'] as String?)?.toUpperCase() == 'READ',
       });
     }).toList();
@@ -108,9 +109,7 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
     _logger.d('Marking all notifications as read');
 
     final result = await _client.mutate(
-      MutationOptions(
-        document: documentNodeMutationMarkAllNotificationsRead,
-      ),
+      MutationOptions(document: documentNodeMutationMarkAllNotificationsRead),
     );
 
     if (result.hasException) {
@@ -137,27 +136,27 @@ class SocialRemoteDataSourceImpl implements SocialRemoteDataSource {
           ),
         )
         .map((result) {
-      if (result.hasException) {
-        throw NetworkException.serverError(
-          500,
-          result.exception?.graphqlErrors.firstOrNull?.message ??
-              'Notification subscription error',
-        );
-      }
+          if (result.hasException) {
+            throw NetworkException.serverError(
+              500,
+              result.exception?.graphqlErrors.firstOrNull?.message ??
+                  'Notification subscription error',
+            );
+          }
 
-      final data = result.data?['notificationReceived'];
-      if (data == null) {
-        throw const NetworkException(
-          'No notification data received',
-          'NO_DATA',
-        );
-      }
+          final data = result.data?['notificationReceived'];
+          if (data == null) {
+            throw const NetworkException(
+              'No notification data received',
+              'NO_DATA',
+            );
+          }
 
-      final node = data as Map<String, dynamic>;
-      return NotificationModel.fromJson({
-        ...node,
-        'read': node['readAt'] != null,
-      });
-    });
+          final node = data as Map<String, dynamic>;
+          return NotificationModel.fromJson({
+            ...node,
+            'read': node['readAt'] != null,
+          });
+        });
   }
 }

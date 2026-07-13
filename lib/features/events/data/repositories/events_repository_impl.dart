@@ -19,9 +19,8 @@ import '../models/event_rsvp_model.dart';
 /// between data models and domain entities. It also handles error mapping
 /// from exceptions to failures.
 class EventsRepositoryImpl implements EventsRepository {
-  const EventsRepositoryImpl({
-    required EventsRemoteDataSource remoteDataSource,
-  }) : _remoteDataSource = remoteDataSource;
+  const EventsRepositoryImpl({required EventsRemoteDataSource remoteDataSource})
+    : _remoteDataSource = remoteDataSource;
 
   final EventsRemoteDataSource _remoteDataSource;
 
@@ -83,9 +82,7 @@ class EventsRepositoryImpl implements EventsRepository {
     int? limit,
   }) async {
     try {
-      final filters = {
-        'startDate': DateTime.now().toIso8601String(),
-      };
+      final filters = {'startDate': DateTime.now().toIso8601String()};
 
       final data = await _remoteDataSource.getEvents(
         clubId: clubId,
@@ -298,12 +295,11 @@ class EventsRepositoryImpl implements EventsRepository {
 
   @override
   Future<Either<Failure, List<FindingFriendsSubgroupEntity>>>
-      getFindingFriendsSubgroups({
-    required String clubId,
-  }) async {
+  getFindingFriendsSubgroups({required String clubId}) async {
     try {
-      final subgroups =
-          await _remoteDataSource.getFindingFriendsSubgroups(clubId: clubId);
+      final subgroups = await _remoteDataSource.getFindingFriendsSubgroups(
+        clubId: clubId,
+      );
       return Right(subgroups);
     } on NetworkException catch (e) {
       if (e.code == 'UNAUTHENTICATED') {

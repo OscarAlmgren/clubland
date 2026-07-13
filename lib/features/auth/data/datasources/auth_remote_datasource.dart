@@ -100,10 +100,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required Logger logger,
     required PasskeyService passkeyService,
     LocalAuthentication? localAuth,
-  })  : _graphqlClient = graphqlClient,
-        _logger = logger,
-        _passkeyService = passkeyService,
-        _localAuth = localAuth ?? LocalAuthentication();
+  }) : _graphqlClient = graphqlClient,
+       _logger = logger,
+       _passkeyService = passkeyService,
+       _localAuth = localAuth ?? LocalAuthentication();
 
   final GraphQLClient _graphqlClient;
   final Logger _logger;
@@ -124,13 +124,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       // Execute mutation with timeout
-      final QueryResult result = await _graphqlClient.mutate(options).timeout(
-        const Duration(seconds: 20),
-        onTimeout: () {
-          _logger.w('Login mutation timeout');
-          throw NetworkException.timeout();
-        },
-      );
+      final QueryResult result = await _graphqlClient
+          .mutate(options)
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('Login mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e('Login failed: ${result.exception}');
@@ -159,7 +161,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String clubSlug,
   }) async {
     try {
-      _logger.d('Initiating passkey login for email: $email, clubSlug: $clubSlug');
+      _logger.d(
+        'Initiating passkey login for email: $email, clubSlug: $clubSlug',
+      );
 
       // Step 1: Initiate passkey login — get WebAuthn options from backend
       final initiateResult = await _graphqlClient
@@ -175,11 +179,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           );
 
       if (initiateResult.hasException) {
-        _logger.e('Passkey login initiation failed: ${initiateResult.exception}');
+        _logger.e(
+          'Passkey login initiation failed: ${initiateResult.exception}',
+        );
         return Left(_handleGraphQLException(initiateResult.exception!));
       }
 
-      final initiateData = initiateResult.data!['initiatePasskeyLogin'] as Map<String, dynamic>;
+      final initiateData =
+          initiateResult.data!['initiatePasskeyLogin'] as Map<String, dynamic>;
       final optionsRaw = initiateData['options'];
       final userId = initiateData['userId'] as String;
 
@@ -191,7 +198,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         options = optionsRaw as Map<String, dynamic>;
       }
 
-      _logger.d('Passkey login initiated, userId: $userId. Collecting credential from device.');
+      _logger.d(
+        'Passkey login initiated, userId: $userId. Collecting credential from device.',
+      );
 
       // Step 2: Collect WebAuthn credential from device (triggers platform prompt)
       final credential = await _passkeyService.collectLoginCredential(options);
@@ -214,11 +223,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           );
 
       if (completeResult.hasException) {
-        _logger.e('Passkey login completion failed: ${completeResult.exception}');
+        _logger.e(
+          'Passkey login completion failed: ${completeResult.exception}',
+        );
         return Left(_handleGraphQLException(completeResult.exception!));
       }
 
-      final authPayload = completeResult.data!['completePasskeyLogin'] as Map<String, dynamic>;
+      final authPayload =
+          completeResult.data!['completePasskeyLogin'] as Map<String, dynamic>;
       final session = _parseAuthSession(authPayload);
 
       // Step 4: Sync user record in backend DB
@@ -271,13 +283,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       // Execute mutation with timeout
-      final QueryResult result = await _graphqlClient.mutate(options).timeout(
-        const Duration(seconds: 20),
-        onTimeout: () {
-          _logger.w('Register mutation timeout');
-          throw NetworkException.timeout();
-        },
-      );
+      final QueryResult result = await _graphqlClient
+          .mutate(options)
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('Register mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e('Registration failed: ${result.exception}');
@@ -310,13 +324,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       // Execute mutation with timeout
-      final QueryResult result = await _graphqlClient.mutate(options).timeout(
-        const Duration(seconds: 20),
-        onTimeout: () {
-          _logger.w('Logout mutation timeout');
-          throw NetworkException.timeout();
-        },
-      );
+      final QueryResult result = await _graphqlClient
+          .mutate(options)
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('Logout mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e('Logout failed: ${result.exception}');
@@ -356,13 +372,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       // Execute mutation with timeout
-      final QueryResult result = await _graphqlClient.mutate(options).timeout(
-        const Duration(seconds: 20),
-        onTimeout: () {
-          _logger.w('RefreshToken mutation timeout');
-          throw NetworkException.timeout();
-        },
-      );
+      final QueryResult result = await _graphqlClient
+          .mutate(options)
+          .timeout(
+            const Duration(seconds: 20),
+            onTimeout: () {
+              _logger.w('RefreshToken mutation timeout');
+              throw NetworkException.timeout();
+            },
+          );
 
       if (result.hasException) {
         _logger.e('Token refresh failed: ${result.exception}');

@@ -14,34 +14,34 @@ class ProfileStatsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildStatItem(
-            context,
-            S.of(context).visits,
-            user.visitCount.toString(),
-            Icons.location_on,
-          ),
-          _buildStatItem(
-            context,
-            S.of(context).reviews,
-            user.reviewCount.toString(),
-            Icons.rate_review,
-          ),
-          _buildStatItem(
-            context,
-            S.of(context).clubs,
-            user.clubCount.toString(),
-            Icons.business,
-          ),
-          _buildStatItem(
-            context,
-            S.of(context).points,
-            user.points.toString(),
-            Icons.star,
-          ),
-        ],
-      );
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      _buildStatItem(
+        context,
+        S.of(context).visits,
+        user.visitCount.toString(),
+        Icons.location_on,
+      ),
+      _buildStatItem(
+        context,
+        S.of(context).reviews,
+        user.reviewCount.toString(),
+        Icons.rate_review,
+      ),
+      _buildStatItem(
+        context,
+        S.of(context).clubs,
+        user.clubCount.toString(),
+        Icons.business,
+      ),
+      _buildStatItem(
+        context,
+        S.of(context).points,
+        user.points.toString(),
+        Icons.star,
+      ),
+    ],
+  );
 
   // Private method: documentation is not required for private members
   Widget _buildStatItem(
@@ -49,28 +49,25 @@ class ProfileStatsWidget extends StatelessWidget {
     String label,
     String value,
     IconData icon,
-  ) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 24, color: Theme.of(context).colorScheme.primary),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-          ),
-        ],
-      );
+  ) => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Icon(icon, size: 24, color: Theme.of(context).colorScheme.primary),
+      const SizedBox(height: 4),
+      Text(
+        value,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      ),
+      const SizedBox(height: 2),
+      Text(
+        label,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+      ),
+    ],
+  );
 }

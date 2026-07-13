@@ -73,7 +73,6 @@ class AppColors {
     primary: brandPrimary, // #1B365D
     primaryContainer: Color(0xFFE3F2FD),
     onPrimaryContainer: Color(0xFF0D47A1), // (7.03:1)
-
     // Secondary Colors - Dark Green with white text (7.36:1)
     secondary: brandSecondary, // #1B5E20
     onSecondary: Colors.white,
@@ -85,7 +84,6 @@ class AppColors {
     onTertiary: Colors.white, // High contrast
     tertiaryContainer: Color(0xFFFFF8E1),
     onTertiaryContainer: Color(0xFF5D4C00), // Even darker (9.12:1)
-
     // Error Colors - Darker Red (7.56:1)
     error: error, // #B71C1C
     errorContainer: Color(0xFFFFEBEE),
@@ -95,7 +93,6 @@ class AppColors {
     onSurface: neutral900, // #212529 (15.43:1)
     surfaceContainerHighest: neutral100,
     onSurfaceVariant: neutral700, // #333333 (10.71:1)
-
     // Outline Colors
     outline: neutral600, // Darker for better visibility (7.01:1)
     outlineVariant: neutral400,
@@ -139,14 +136,18 @@ class AppColors {
     onErrorContainer: Color(0xFFFFEBEE),
 
     // Surface Colors - Improved contrast ratios
-    onSurface: Color(0xFFF5F5F5), // Much lighter for better contrast (ratio: 13.4:1)
-    surfaceContainerHighest: Color(0xFF2C2C2C), // Slightly lighter than previous
-    onSurfaceVariant: Color(0xFFD0D0D0), // Lighter for better readability (ratio: 9.8:1)
-
+    onSurface: Color(
+      0xFFF5F5F5,
+    ), // Much lighter for better contrast (ratio: 13.4:1)
+    surfaceContainerHighest: Color(
+      0xFF2C2C2C,
+    ), // Slightly lighter than previous
+    onSurfaceVariant: Color(
+      0xFFD0D0D0,
+    ), // Lighter for better readability (ratio: 9.8:1)
     // Outline Colors - Enhanced visibility
     outline: Color(0xFF757575), // Lighter for better visibility
     outlineVariant: Color(0xFF525252), // Improved contrast
-
     // Shadow and Scrim
     shadow: Colors.black87,
     scrim: Colors.black87,

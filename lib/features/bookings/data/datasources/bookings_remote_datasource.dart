@@ -3,7 +3,6 @@ import 'package:logger/logger.dart';
 
 import '../../../../core/errors/exceptions.dart' as app_exceptions;
 import '../../../../core/graphql/graphql_api.dart';
-import '../../domain/entities/booking_entity.dart';
 import '../models/booking_model.dart';
 import '../models/facility_availability_model.dart';
 import '../models/visit_model.dart';
@@ -474,9 +473,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           .mutate(
             MutationOptions(
               document: documentNodeMutationConfirmBooking,
-              variables:
-                  Variables$Mutation$ConfirmBooking(bookingId: bookingId)
-                      .toJson(),
+              variables: Variables$Mutation$ConfirmBooking(
+                bookingId: bookingId,
+              ).toJson(),
             ),
           )
           .timeout(
@@ -517,9 +516,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           .mutate(
             MutationOptions(
               document: documentNodeMutationCheckInBooking,
-              variables:
-                  Variables$Mutation$CheckInBooking(bookingId: bookingId)
-                      .toJson(),
+              variables: Variables$Mutation$CheckInBooking(
+                bookingId: bookingId,
+              ).toJson(),
             ),
           )
           .timeout(
@@ -560,9 +559,9 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
           .mutate(
             MutationOptions(
               document: documentNodeMutationCheckOutBooking,
-              variables:
-                  Variables$Mutation$CheckOutBooking(bookingId: bookingId)
-                      .toJson(),
+              variables: Variables$Mutation$CheckOutBooking(
+                bookingId: bookingId,
+              ).toJson(),
             ),
           )
           .timeout(
@@ -795,8 +794,7 @@ class BookingsRemoteDataSourceImpl implements BookingsRemoteDataSource {
         );
       }
 
-      final visitData =
-          result.data?['checkOutVisit'] as Map<String, dynamic>?;
+      final visitData = result.data?['checkOutVisit'] as Map<String, dynamic>?;
       if (visitData == null) {
         throw const app_exceptions.NetworkException(
           'No visit data returned',

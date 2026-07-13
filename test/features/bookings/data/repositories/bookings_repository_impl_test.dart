@@ -3,7 +3,6 @@ import 'package:clubland/core/graphql/graphql_api.dart';
 import 'package:clubland/features/bookings/data/datasources/bookings_remote_datasource.dart';
 import 'package:clubland/features/bookings/data/models/booking_model.dart';
 import 'package:clubland/features/bookings/data/repositories/bookings_repository_impl.dart';
-import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

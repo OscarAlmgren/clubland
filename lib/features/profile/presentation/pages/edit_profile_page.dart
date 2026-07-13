@@ -42,7 +42,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
 
     setState(() => _isSaving = true);
 
-    final success = await ref.read(profileControllerProvider.notifier).updateProfile(
+    final success = await ref
+        .read(profileControllerProvider.notifier)
+        .updateProfile(
           userId: user.id,
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
@@ -55,7 +57,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       context.pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to save profile. Please try again.')),
+        const SnackBar(
+          content: Text('Failed to save profile. Please try again.'),
+        ),
       );
     }
   }

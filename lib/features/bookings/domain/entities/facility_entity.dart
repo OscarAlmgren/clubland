@@ -55,24 +55,24 @@ class FacilityEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        clubId,
-        name,
-        type,
-        description,
-        location,
-        capacity,
-        amenities,
-        images,
-        pricePerHour,
-        minimumBookingDuration,
-        maximumBookingDuration,
-        advanceBookingDays,
-        cancellationPolicy,
-        isActive,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    clubId,
+    name,
+    type,
+    description,
+    location,
+    capacity,
+    amenities,
+    images,
+    pricePerHour,
+    minimumBookingDuration,
+    maximumBookingDuration,
+    advanceBookingDays,
+    cancellationPolicy,
+    isActive,
+    createdAt,
+    updatedAt,
+  ];
 }
 
 /// Facility availability slot

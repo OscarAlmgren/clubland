@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/graphql/graphql_api.dart';
-import '../../domain/entities/booking_entity.dart';
 
 class BookingFiltersWidget extends StatelessWidget {
   const BookingFiltersWidget({

@@ -51,5 +51,6 @@ class ClubSearchResultEntity extends Equatable {
   ];
 
   @override
-  String toString() => 'ClubSearchResultEntity(id: $id, name: $name, distance: $distance)';
+  String toString() =>
+      'ClubSearchResultEntity(id: $id, name: $name, distance: $distance)';
 }

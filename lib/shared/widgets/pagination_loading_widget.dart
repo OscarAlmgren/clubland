@@ -10,8 +10,6 @@ class PaginationLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Padding(
     padding: EdgeInsets.symmetric(vertical: 16.0),
-    child: Center(
-      child: CircularProgressIndicator(),
-    ),
+    child: Center(child: CircularProgressIndicator()),
   );
 }

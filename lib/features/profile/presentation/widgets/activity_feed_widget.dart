@@ -58,23 +58,19 @@ class ActivityTile extends StatelessWidget {
       ),
       title: Text(
         activity.title,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       ),
       subtitle: Text(
         activity.description,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-        ),
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
       trailing: compact
           ? null
           : Text(
               _formatDate(activity.timestamp),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
     );
   }

@@ -18,14 +18,7 @@ class ClubAmenityEntity extends Equatable {
   final bool isAvailable;
 
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    type,
-    description,
-    icon,
-    isAvailable,
-  ];
+  List<Object?> get props => [id, name, type, description, icon, isAvailable];
 
   @override
   String toString() => 'ClubAmenityEntity($name)';

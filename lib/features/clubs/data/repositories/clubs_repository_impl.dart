@@ -279,5 +279,4 @@ class ClubsRepositoryImpl implements domain.ClubsRepository {
 
   List<ClubEntity> _convertModelsToEntities(List<ClubModel> models) =>
       models.map(_convertModelToEntity).toList();
-
 }

@@ -3,10 +3,12 @@
 enum Environment {
   /// Development environment for local development
   development,
+
   /// Staging environment for testing
   staging,
+
   /// Production environment for live deployment
-  production
+  production,
 }
 
 /// Comprehensive environment configuration for the Clubland app
@@ -87,8 +89,7 @@ class EnvironmentConfig {
 
   /// Monitoring Configuration
   /// Sentry DSN for error reporting
-  static String get sentryDsn =>
-      const String.fromEnvironment('SENTRY_DSN');
+  static String get sentryDsn => const String.fromEnvironment('SENTRY_DSN');
 
   /// Amplitude API key for analytics
   static String get amplitudeApiKey =>

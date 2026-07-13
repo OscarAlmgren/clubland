@@ -22,5 +22,6 @@ class ClubStatsEntity extends Equatable {
   ];
 
   @override
-  String toString() => 'ClubStatsEntity(members: $memberCount, rating: $averageRating)';
+  String toString() =>
+      'ClubStatsEntity(members: $memberCount, rating: $averageRating)';
 }

@@ -37,7 +37,8 @@ class VisitEntity extends Equatable {
   final DateTime? updatedAt;
 
   /// Whether the visit is currently active (checked in but not checked out)
-  bool get isActive => checkedOutAt == null && status == Enum$VisitStatus.CHECKED_IN;
+  bool get isActive =>
+      checkedOutAt == null && status == Enum$VisitStatus.CHECKED_IN;
 
   /// Duration of the visit (if checked out)
   Duration? get duration {
@@ -53,21 +54,21 @@ class VisitEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        clubId,
-        userId,
-        status,
-        checkedInAt,
-        checkedOutAt,
-        purpose,
-        notes,
-        guestCount,
-        rating,
-        review,
-        blockchainTxId,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    clubId,
+    userId,
+    status,
+    checkedInAt,
+    checkedOutAt,
+    purpose,
+    notes,
+    guestCount,
+    rating,
+    review,
+    blockchainTxId,
+    createdAt,
+    updatedAt,
+  ];
 }
 
 /// Visit summary for display in lists
@@ -90,11 +91,11 @@ class VisitSummaryEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        clubName,
-        clubLogo,
-        checkedInAt,
-        checkedOutAt,
-        status,
-      ];
+    id,
+    clubName,
+    clubLogo,
+    checkedInAt,
+    checkedOutAt,
+    status,
+  ];
 }

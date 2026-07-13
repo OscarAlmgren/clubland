@@ -141,100 +141,100 @@ void main() {
     );
   });
 
-    test('should return empty list when no events exist', () async {
-      // Arrange
-      const clubId = 'club123';
-      final mockResponse = <String, dynamic>{
-        'edges': <Map<String, dynamic>>[],
-        'pageInfo': <String, dynamic>{
-          'hasNextPage': false,
-          'hasPreviousPage': false,
-        },
-        'totalCount': 0,
-      };
+  test('should return empty list when no events exist', () async {
+    // Arrange
+    const clubId = 'club123';
+    final mockResponse = <String, dynamic>{
+      'edges': <Map<String, dynamic>>[],
+      'pageInfo': <String, dynamic>{
+        'hasNextPage': false,
+        'hasPreviousPage': false,
+      },
+      'totalCount': 0,
+    };
 
-      when(
-        () => mockRemoteDataSource.getEvents(
-          clubId: clubId,
-          filters: any(named: 'filters'),
-        ),
-      ).thenAnswer((_) async => mockResponse);
+    when(
+      () => mockRemoteDataSource.getEvents(
+        clubId: clubId,
+        filters: any(named: 'filters'),
+      ),
+    ).thenAnswer((_) async => mockResponse);
 
-      // Act
-      final result = await repository.getEvents(clubId: clubId);
+    // Act
+    final result = await repository.getEvents(clubId: clubId);
 
-      // Assert
-      expect(result.isRight(), true);
-      result.fold((failure) => fail('Should return Right'), (connection) {
-        expect(connection.events, isEmpty);
-        expect(connection.totalCount, 0);
-      });
+    // Assert
+    expect(result.isRight(), true);
+    result.fold((failure) => fail('Should return Right'), (connection) {
+      expect(connection.events, isEmpty);
+      expect(connection.totalCount, 0);
     });
+  });
 
-    test('should return GraphQLFailure on GraphQL error', () async {
-      // Arrange
-      const clubId = 'club123';
-      when(
-        () => mockRemoteDataSource.getEvents(
-          clubId: clubId,
-          filters: any(named: 'filters'),
-        ),
-      ).thenThrow(
-        const app_exceptions.GraphQLException('GraphQL error', 'GRAPHQL_ERROR'),
-      );
+  test('should return GraphQLFailure on GraphQL error', () async {
+    // Arrange
+    const clubId = 'club123';
+    when(
+      () => mockRemoteDataSource.getEvents(
+        clubId: clubId,
+        filters: any(named: 'filters'),
+      ),
+    ).thenThrow(
+      const app_exceptions.GraphQLException('GraphQL error', 'GRAPHQL_ERROR'),
+    );
 
-      // Act
-      final result = await repository.getEvents(clubId: clubId);
+    // Act
+    final result = await repository.getEvents(clubId: clubId);
 
-      // Assert
-      expect(result.isLeft(), true);
-      result.fold((failure) {
-        expect(failure, isA<GraphQLFailure>());
-        expect(failure.message, contains('GraphQL error'));
-      }, (_) => fail('Should return Left'));
-    });
+    // Assert
+    expect(result.isLeft(), true);
+    result.fold((failure) {
+      expect(failure, isA<GraphQLFailure>());
+      expect(failure.message, contains('GraphQL error'));
+    }, (_) => fail('Should return Left'));
+  });
 
-    test('should handle filters and pagination parameters', () async {
-      // Arrange
-      const clubId = 'club123';
-      final filters = <String, dynamic>{'eventType': 'SOCIAL'};
-      final mockResponse = <String, dynamic>{
-        'edges': <Map<String, dynamic>>[],
-        'pageInfo': <String, dynamic>{
-          'hasNextPage': false,
-          'hasPreviousPage': false,
-        },
-        'totalCount': 0,
-      };
+  test('should handle filters and pagination parameters', () async {
+    // Arrange
+    const clubId = 'club123';
+    final filters = <String, dynamic>{'eventType': 'SOCIAL'};
+    final mockResponse = <String, dynamic>{
+      'edges': <Map<String, dynamic>>[],
+      'pageInfo': <String, dynamic>{
+        'hasNextPage': false,
+        'hasPreviousPage': false,
+      },
+      'totalCount': 0,
+    };
 
-      when(
-        () => mockRemoteDataSource.getEvents(
-          clubId: clubId,
-          filters: filters,
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-        ),
-      ).thenAnswer((_) async => mockResponse);
-
-      // Act
-      final result = await repository.getEvents(
+    when(
+      () => mockRemoteDataSource.getEvents(
         clubId: clubId,
         filters: filters,
-        page: 2,
-        pageSize: 10,
-      );
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+      ),
+    ).thenAnswer((_) async => mockResponse);
 
-      // Assert
-      expect(result.isRight(), true);
-      verify(
-        () => mockRemoteDataSource.getEvents(
-          clubId: clubId,
-          filters: filters,
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-        ),
-      ).called(1);
-    });
+    // Act
+    final result = await repository.getEvents(
+      clubId: clubId,
+      filters: filters,
+      page: 2,
+      pageSize: 10,
+    );
+
+    // Assert
+    expect(result.isRight(), true);
+    verify(
+      () => mockRemoteDataSource.getEvents(
+        clubId: clubId,
+        filters: filters,
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+      ),
+    ).called(1);
+  });
 
   group('getUpcomingEvents', () {
     const clubId = 'club123';
@@ -384,7 +384,6 @@ void main() {
       expect(filters.containsKey('startDate'), true);
     });
   });
-
 
   group('getEventById', () {
     const eventId = 'event123';

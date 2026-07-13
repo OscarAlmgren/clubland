@@ -41,11 +41,7 @@ void main() {
         createdAt: DateTime.now(),
       ),
     );
-    registerFallbackValue(
-      const UserProfile(
-        fullName: 'Fallback User',
-      ),
-    );
+    registerFallbackValue(const UserProfile(fullName: 'Fallback User'));
   });
 
   setUp(() {
@@ -387,12 +383,8 @@ void main() {
         when(
           () => mockRemoteDataSource.logout(),
         ).thenAnswer((_) async => const Right<Failure, bool>(true));
-        when(
-          () => mockLocalDataSource.clearSession(),
-        ).thenAnswer((_) async {});
-        when(
-          () => mockLocalDataSource.clearUser(),
-        ).thenAnswer((_) async {});
+        when(() => mockLocalDataSource.clearSession()).thenAnswer((_) async {});
+        when(() => mockLocalDataSource.clearUser()).thenAnswer((_) async {});
         when(
           () => mockSecureStorageService.deleteAccessToken(),
         ).thenAnswer((_) async {});
@@ -479,9 +471,7 @@ void main() {
         final expiredSession = testSession.copyWith(
           expiresAt: DateTime.now().subtract(const Duration(hours: 1)),
         );
-        when(
-          () => mockLocalDataSource.getCurrentSession(),
-        ).thenAnswer(
+        when(() => mockLocalDataSource.getCurrentSession()).thenAnswer(
           (_) async => Right<Failure, AuthSessionEntity?>(expiredSession),
         );
 
@@ -626,9 +616,7 @@ void main() {
           () => mockLocalDataSource.storeUser(any()),
         ).thenAnswer((_) async {});
         // Mock getCurrentSession since updateProfile calls it internally
-        when(
-          () => mockLocalDataSource.getCurrentSession(),
-        ).thenAnswer(
+        when(() => mockLocalDataSource.getCurrentSession()).thenAnswer(
           (_) async => Right<Failure, AuthSessionEntity?>(testSession),
         );
         // Mock session storage methods called by _storeSession
@@ -720,26 +708,23 @@ void main() {
     });
 
     group('requestPasswordReset', () {
-      test(
-        'should return true when password reset request succeeds',
-        () async {
-          when(
-            () => mockRemoteDataSource.requestPasswordReset(
-              email: 'test@example.com',
-            ),
-          ).thenAnswer((_) async => const Right<Failure, bool>(true));
-
-          final result = await repository.requestPasswordReset(
+      test('should return true when password reset request succeeds', () async {
+        when(
+          () => mockRemoteDataSource.requestPasswordReset(
             email: 'test@example.com',
-          );
+          ),
+        ).thenAnswer((_) async => const Right<Failure, bool>(true));
 
-          expect(result.isRight(), true);
-          result.fold(
-            (failure) => fail('Should return Right'),
-            (success) => expect(success, true),
-          );
-        },
-      );
+        final result = await repository.requestPasswordReset(
+          email: 'test@example.com',
+        );
+
+        expect(result.isRight(), true);
+        result.fold(
+          (failure) => fail('Should return Right'),
+          (success) => expect(success, true),
+        );
+      });
     });
 
     group('resetPassword', () {
@@ -806,9 +791,7 @@ void main() {
           when(
             () => mockLocalDataSource.clearSession(),
           ).thenAnswer((_) async {});
-          when(
-            () => mockLocalDataSource.clearUser(),
-          ).thenAnswer((_) async {});
+          when(() => mockLocalDataSource.clearUser()).thenAnswer((_) async {});
           when(
             () => mockSecureStorageService.deleteAccessToken(),
           ).thenAnswer((_) async {});
@@ -865,9 +848,7 @@ void main() {
         final permissions = ['read', 'write', 'admin'];
         when(
           () => mockRemoteDataSource.getUserPermissions(),
-        ).thenAnswer(
-          (_) async => Right<Failure, List<String>>(permissions),
-        );
+        ).thenAnswer((_) async => Right<Failure, List<String>>(permissions));
 
         final result = await repository.getUserPermissions();
 

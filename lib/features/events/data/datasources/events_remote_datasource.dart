@@ -291,10 +291,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       final result = await _client.mutate(
         MutationOptions(
           document: documentNodeMutationCancelRSVP,
-          variables: {
-            'id': rsvpId,
-            'reason': reason ?? 'Cancelled by member',
-          },
+          variables: {'id': rsvpId, 'reason': reason ?? 'Cancelled by member'},
         ),
       );
 
@@ -426,7 +423,6 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
       );
     }
   }
-
 
   /// Handle GraphQL exceptions and convert to NetworkException
 

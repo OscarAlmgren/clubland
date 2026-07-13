@@ -63,9 +63,7 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(home: SplashPage()),
-      ),
+      const ProviderScope(child: MaterialApp(home: SplashPage())),
     );
 
     expect(find.text('Clubland'), findsOneWidget);

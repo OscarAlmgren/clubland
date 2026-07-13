@@ -81,9 +81,8 @@ class EventModel extends EventEntity {
       paymentInstructions: json['paymentInstructions'] as String?,
       tentativeCount: json['tentativeCount'] as int?,
       waitlistCount: json['waitlistCount'] as int?,
-      tags: (json['tags'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
           const [],
     );
   }

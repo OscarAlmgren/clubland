@@ -9,10 +9,7 @@ void main() {
   group('CapacityIndicator', () {
     testWidgets('should render with low capacity (green)', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 20,
-          capacity: 100,
-        ),
+        const CapacityIndicator(currentAttendees: 20, capacity: 100),
       );
 
       expect(find.text('80 spots available'), findsOneWidget);
@@ -31,10 +28,7 @@ void main() {
 
     testWidgets('should render nearly full capacity (orange)', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 85,
-          capacity: 100,
-        ),
+        const CapacityIndicator(currentAttendees: 85, capacity: 100),
       );
 
       expect(find.text('15 spots available'), findsOneWidget);
@@ -52,10 +46,7 @@ void main() {
 
     testWidgets('should render full capacity (red)', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 100,
-          capacity: 100,
-        ),
+        const CapacityIndicator(currentAttendees: 100, capacity: 100),
       );
 
       expect(find.text('Event Full'), findsOneWidget);
@@ -73,10 +64,7 @@ void main() {
 
     testWidgets('should render over capacity (red)', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 105,
-          capacity: 100,
-        ),
+        const CapacityIndicator(currentAttendees: 105, capacity: 100),
       );
 
       expect(find.text('Event Full'), findsOneWidget);
@@ -94,10 +82,7 @@ void main() {
 
     testWidgets('should handle singular spot text correctly', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 9,
-          capacity: 10,
-        ),
+        const CapacityIndicator(currentAttendees: 9, capacity: 10),
       );
 
       expect(find.text('1 spot available'), findsOneWidget);
@@ -105,10 +90,7 @@ void main() {
 
     testWidgets('should handle plural spots text correctly', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 8,
-          capacity: 10,
-        ),
+        const CapacityIndicator(currentAttendees: 8, capacity: 10),
       );
 
       expect(find.text('2 spots available'), findsOneWidget);
@@ -143,13 +125,9 @@ void main() {
       expect(progressIndicator.minHeight, 12);
     });
 
-    testWidgets('should use default height when not specified',
-        (tester) async {
+    testWidgets('should use default height when not specified', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 50,
-          capacity: 100,
-        ),
+        const CapacityIndicator(currentAttendees: 50, capacity: 100),
       );
 
       final progressIndicator = tester.widget<LinearProgressIndicator>(
@@ -160,10 +138,7 @@ void main() {
 
     testWidgets('should handle zero capacity gracefully', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 0,
-          capacity: 0,
-        ),
+        const CapacityIndicator(currentAttendees: 0, capacity: 0),
       );
 
       expect(find.text('Event Full'), findsOneWidget);
@@ -175,13 +150,11 @@ void main() {
       expect(progressIndicator.value, 0.0);
     });
 
-    testWidgets('should calculate progress correctly at 80% threshold',
-        (tester) async {
+    testWidgets('should calculate progress correctly at 80% threshold', (
+      tester,
+    ) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 80,
-          capacity: 100,
-        ),
+        const CapacityIndicator(currentAttendees: 80, capacity: 100),
       );
 
       final progressIndicator = tester.widget<LinearProgressIndicator>(
@@ -197,10 +170,7 @@ void main() {
 
     testWidgets('should be green just below 80% threshold', (tester) async {
       await tester.pumpApp(
-        const CapacityIndicator(
-          currentAttendees: 79,
-          capacity: 100,
-        ),
+        const CapacityIndicator(currentAttendees: 79, capacity: 100),
       );
 
       final progressIndicator = tester.widget<LinearProgressIndicator>(
@@ -215,13 +185,11 @@ void main() {
   });
 
   group('CompactCapacityIndicator', () {
-    testWidgets('should render compact view with available spots',
-        (tester) async {
+    testWidgets('should render compact view with available spots', (
+      tester,
+    ) async {
       await tester.pumpApp(
-        const CompactCapacityIndicator(
-          currentAttendees: 30,
-          capacity: 100,
-        ),
+        const CompactCapacityIndicator(currentAttendees: 30, capacity: 100),
       );
 
       expect(find.text('30/100'), findsOneWidget);
@@ -230,10 +198,7 @@ void main() {
 
     testWidgets('should render compact view when full', (tester) async {
       await tester.pumpApp(
-        const CompactCapacityIndicator(
-          currentAttendees: 100,
-          capacity: 100,
-        ),
+        const CompactCapacityIndicator(currentAttendees: 100, capacity: 100),
       );
 
       expect(find.text('100/100'), findsOneWidget);
@@ -243,13 +208,9 @@ void main() {
       expect(icon.color, AppColors.error);
     });
 
-    testWidgets('should show correct icon for available spots',
-        (tester) async {
+    testWidgets('should show correct icon for available spots', (tester) async {
       await tester.pumpApp(
-        const CompactCapacityIndicator(
-          currentAttendees: 50,
-          capacity: 100,
-        ),
+        const CompactCapacityIndicator(currentAttendees: 50, capacity: 100),
       );
 
       expect(find.byIcon(Icons.people), findsOneWidget);
@@ -258,10 +219,7 @@ void main() {
 
     testWidgets('should render with proper icon size', (tester) async {
       await tester.pumpApp(
-        const CompactCapacityIndicator(
-          currentAttendees: 30,
-          capacity: 100,
-        ),
+        const CompactCapacityIndicator(currentAttendees: 30, capacity: 100),
       );
 
       final icon = tester.widget<Icon>(find.byIcon(Icons.people));
@@ -270,10 +228,7 @@ void main() {
 
     testWidgets('should handle zero attendees', (tester) async {
       await tester.pumpApp(
-        const CompactCapacityIndicator(
-          currentAttendees: 0,
-          capacity: 50,
-        ),
+        const CompactCapacityIndicator(currentAttendees: 0, capacity: 50),
       );
 
       expect(find.text('0/50'), findsOneWidget);
@@ -283,10 +238,7 @@ void main() {
     group('accessibility', () {
       testWidgets('should be accessible', (tester) async {
         await tester.pumpApp(
-          const CapacityIndicator(
-            currentAttendees: 50,
-            capacity: 100,
-          ),
+          const CapacityIndicator(currentAttendees: 50, capacity: 100),
         );
 
         expect(find.byType(CapacityIndicator), findsOneWidget);

@@ -117,7 +117,9 @@ class EventEntity extends Equatable {
 
   /// Capacity utilization percentage (0.0 to 1.0)
   double get capacityUtilization {
-    if (capacity == null || capacity == 0 || currentAttendees == null) return 0.0;
+    if (capacity == null || capacity == 0 || currentAttendees == null) {
+      return 0.0;
+    }
     return currentAttendees! / capacity!;
   }
 

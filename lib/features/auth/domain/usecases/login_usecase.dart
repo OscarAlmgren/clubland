@@ -32,10 +32,7 @@ class LoginUsecase {
     }
 
     // Execute login
-    return _repository.login(
-      email: normalizedEmail,
-      password: password,
-    );
+    return _repository.login(email: normalizedEmail, password: password);
   }
 
   /// Validate email format
@@ -84,7 +81,9 @@ class HankoLoginUsecase {
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
-    if (!emailRegex.hasMatch(normalizedEmail)) return Left(ValidationFailure.invalidEmail());
+    if (!emailRegex.hasMatch(normalizedEmail)) {
+      return Left(ValidationFailure.invalidEmail());
+    }
 
     if (clubSlug.isEmpty) {
       return Left(ValidationFailure.fieldRequired('Club'));

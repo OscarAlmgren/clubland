@@ -235,10 +235,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   void _handleHankoLogin() {
     if (_emailController.text.trim().isEmpty) {
-      AppSnackBar.showError(
-        context,
-        'Please enter your email first',
-      );
+      AppSnackBar.showError(context, 'Please enter your email first');
       return;
     }
 

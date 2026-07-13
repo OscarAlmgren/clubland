@@ -307,7 +307,10 @@ void main() {
 
         await tester.pumpApp(EventCard(event: diningEvent));
 
-        expect(find.text('Social'), findsOneWidget); // was 'Dining' — mapped to SOCIAL
+        expect(
+          find.text('Social'),
+          findsOneWidget,
+        ); // was 'Dining' — mapped to SOCIAL
       });
 
       testWidgets('should show sports event type badge', (tester) async {
@@ -363,7 +366,10 @@ void main() {
 
         await tester.pumpApp(EventCard(event: findingFriendsEvent));
 
-        expect(find.text('Social'), findsOneWidget); // was 'Finding Friends' — mapped to SOCIAL
+        expect(
+          find.text('Social'),
+          findsOneWidget,
+        ); // was 'Finding Friends' — mapped to SOCIAL
       });
     });
 

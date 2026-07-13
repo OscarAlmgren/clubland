@@ -35,16 +35,16 @@ class AppErrorWidget extends StatelessWidget {
             Text(
               errorMessage['title']!,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               errorMessage['subtitle']!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               textAlign: TextAlign.center,
             ),
             if (onRetry != null) ...[
@@ -68,7 +68,8 @@ class AppErrorWidget extends StatelessWidget {
         case 'NO_DATA':
           return {
             'title': 'No Data Found',
-            'subtitle': 'The requested information could not be located. Please try again later.',
+            'subtitle':
+                'The requested information could not be located. Please try again later.',
           };
         case 'NOT_FOUND':
           return {
@@ -78,18 +79,21 @@ class AppErrorWidget extends StatelessWidget {
         case 'UNAUTHORIZED':
           return {
             'title': 'Session Expired',
-            'subtitle': 'Your session has expired. Please log in again to continue.',
+            'subtitle':
+                'Your session has expired. Please log in again to continue.',
           };
         default:
           return {
             'title': 'Network Error',
-            'subtitle': 'Could not connect to our servers. Please check your internet connection and try again.',
+            'subtitle':
+                'Could not connect to our servers. Please check your internet connection and try again.',
           };
       }
     } else {
       return {
         'title': 'An Unexpected Error Occurred',
-        'subtitle': 'We are sorry, but something went wrong. Please try again later.',
+        'subtitle':
+            'We are sorry, but something went wrong. Please try again later.',
       };
     }
   }

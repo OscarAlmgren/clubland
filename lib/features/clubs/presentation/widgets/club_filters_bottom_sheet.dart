@@ -106,10 +106,7 @@ class _ClubFiltersBottomSheetState extends State<ClubFiltersBottomSheet> {
     return ListTile(
       title: Text(title),
       trailing: isSelected
-          ? Icon(
-              Icons.check,
-              color: Theme.of(context).colorScheme.primary,
-            )
+          ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
           : null,
       onTap: () => setState(() => _selectedFilter = value),
     );

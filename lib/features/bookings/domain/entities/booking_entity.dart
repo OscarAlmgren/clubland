@@ -46,31 +46,33 @@ class BookingEntity extends Equatable {
 
   /// Whether this booking can be cancelled
   bool get canBeCancelled =>
-      status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
+      status == Enum$BookingStatus.CONFIRMED ||
+      status == Enum$BookingStatus.PENDING;
 
   /// Whether this booking can be modified
   bool get canBeModified =>
-      status == Enum$BookingStatus.CONFIRMED || status == Enum$BookingStatus.PENDING;
+      status == Enum$BookingStatus.CONFIRMED ||
+      status == Enum$BookingStatus.PENDING;
 
   /// Duration of the booking
   Duration get duration => endTime.difference(startTime);
 
   @override
   List<Object?> get props => [
-        id,
-        startTime,
-        endTime,
-        status,
-        notes,
-        club,
-        facility,
-        user,
-        participants,
-        payment,
-        cancellation,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    startTime,
+    endTime,
+    status,
+    notes,
+    club,
+    facility,
+    user,
+    participants,
+    payment,
+    cancellation,
+    createdAt,
+    updatedAt,
+  ];
 }
 
 /// Club summary entity for bookings

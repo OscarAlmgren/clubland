@@ -543,13 +543,20 @@ class _UpdateRSVPPageState extends ConsumerState<UpdateRSVPPage> {
 
   String _getStatusLabel(Enum$RSVPStatus status) {
     switch (status) {
-      case Enum$RSVPStatus.CONFIRMED: return 'Confirmed';
-      case Enum$RSVPStatus.PENDING: return 'Pending Approval';
-      case Enum$RSVPStatus.WAITLISTED: return 'Waitlist';
-      case Enum$RSVPStatus.ATTENDED: return 'Attended';
-      case Enum$RSVPStatus.NO_SHOW: return 'No Show';
-      case Enum$RSVPStatus.CANCELLED: return 'Cancelled';
-      case Enum$RSVPStatus.$unknown: return 'Unknown';
+      case Enum$RSVPStatus.CONFIRMED:
+        return 'Confirmed';
+      case Enum$RSVPStatus.PENDING:
+        return 'Pending Approval';
+      case Enum$RSVPStatus.WAITLISTED:
+        return 'Waitlist';
+      case Enum$RSVPStatus.ATTENDED:
+        return 'Attended';
+      case Enum$RSVPStatus.NO_SHOW:
+        return 'No Show';
+      case Enum$RSVPStatus.CANCELLED:
+        return 'Cancelled';
+      case Enum$RSVPStatus.$unknown:
+        return 'Unknown';
     }
   }
 }

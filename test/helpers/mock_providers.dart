@@ -29,7 +29,6 @@ class MockRefreshTokenUsecase extends Mock implements RefreshTokenUsecase {}
 
 class MockLogger extends Mock implements Logger {}
 
-
 class MockProviders {
   static final localStorage = MockLocalStorage();
   static final secureStorage = MockSecureStorage();

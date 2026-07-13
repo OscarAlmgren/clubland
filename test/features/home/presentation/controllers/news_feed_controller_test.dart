@@ -113,8 +113,7 @@ void main() {
   }
 
   group('NewsFeedController -', () {
-    test('returns repository items for an authenticated club member',
-        () async {
+    test('returns repository items for an authenticated club member', () async {
       final container = makeContainer(
         user: testUser,
         feedResult: Right(feedItems),

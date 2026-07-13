@@ -306,7 +306,9 @@ class _RSVPCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final status = fromJson$Enum$RSVPStatus(rsvpData['status'] as String? ?? '');
+    final status = fromJson$Enum$RSVPStatus(
+      rsvpData['status'] as String? ?? '',
+    );
     final response = rsvpData['response'] as String? ?? 'yes';
     final eventTitle = rsvpData['eventTitle'] as String? ?? 'Event';
     final eventDate = rsvpData['eventDate'] as String?;

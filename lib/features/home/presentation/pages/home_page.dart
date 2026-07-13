@@ -96,7 +96,11 @@ class HomePage extends ConsumerWidget {
                     padding: const EdgeInsets.all(32.0),
                     child: Column(
                       children: [
-                        Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                        Icon(
+                          Icons.error_outline,
+                          size: 48,
+                          color: AppColors.error,
+                        ),
                         AppSpacing.verticalSpaceMD,
                         Text(
                           'Failed to load news feed',
@@ -108,7 +112,9 @@ class HomePage extends ConsumerWidget {
                         Text(
                           error.toString(),
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -178,7 +184,8 @@ class HomePage extends ConsumerWidget {
                   event: event,
                 );
 
-                if (response != null && response != Enum$RSVPResponse.$unknown) {
+                if (response != null &&
+                    response != Enum$RSVPResponse.$unknown) {
                   // Update RSVP response directly with the generated enum
                   await ref
                       .read(newsFeedControllerProvider.notifier)
@@ -188,9 +195,7 @@ class HomePage extends ConsumerWidget {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          'RSVP updated to: ${response.name}',
-                        ),
+                        content: Text('RSVP updated to: ${response.name}'),
                       ),
                     );
                   }

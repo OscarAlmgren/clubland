@@ -14,12 +14,7 @@ class ClubContactEntity extends Equatable {
   final Map<String, String>? socialMedia;
 
   @override
-  List<Object?> get props => [
-    phone,
-    email,
-    website,
-    socialMedia,
-  ];
+  List<Object?> get props => [phone, email, website, socialMedia];
 
   @override
   String toString() => 'ClubContactEntity($email, $phone)';

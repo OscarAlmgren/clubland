@@ -430,7 +430,9 @@ void main() {
         const config = RetryConfig(
           initialDelay: Duration(milliseconds: 500),
           backoffMultiplier: 10.0,
-          maxDelay: Duration(milliseconds: 100), // Much smaller than calculated delay
+          maxDelay: Duration(
+            milliseconds: 100,
+          ), // Much smaller than calculated delay
         );
 
         var callCount = 0;

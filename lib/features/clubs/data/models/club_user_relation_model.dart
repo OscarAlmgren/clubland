@@ -8,14 +8,15 @@ class ClubUserRelationModel extends ClubUserRelationEntity {
     super.isFavorite = false,
   });
 
-  factory ClubUserRelationModel.fromJson(Map<String, dynamic> json) => ClubUserRelationModel(
-    isMember: json['isMember'] as bool? ?? false,
-    membershipType: json['membershipType'] as String?,
-    joinDate: json['joinDate'] != null
-        ? DateTime.parse(json['joinDate'] as String)
-        : null,
-    isFavorite: json['isFavorite'] as bool? ?? false,
-  );
+  factory ClubUserRelationModel.fromJson(Map<String, dynamic> json) =>
+      ClubUserRelationModel(
+        isMember: json['isMember'] as bool? ?? false,
+        membershipType: json['membershipType'] as String?,
+        joinDate: json['joinDate'] != null
+            ? DateTime.parse(json['joinDate'] as String)
+            : null,
+        isFavorite: json['isFavorite'] as bool? ?? false,
+      );
 
   Map<String, dynamic> toJson() => {
     'isMember': isMember,

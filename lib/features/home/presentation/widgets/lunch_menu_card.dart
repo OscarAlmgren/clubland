@@ -27,7 +27,9 @@ class LunchMenuCard extends StatelessWidget {
             // Header with lunch menu badge - WCAG AAA compliant
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: AppColors.getEventTypeColor('dining').withValues(alpha: 0.1),
+              color: AppColors.getEventTypeColor(
+                'dining',
+              ).withValues(alpha: 0.1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -37,7 +39,9 @@ class LunchMenuCard extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.getEventTypeColor('dining'), // 7.12:1 contrast
+                      color: AppColors.getEventTypeColor(
+                        'dining',
+                      ), // 7.12:1 contrast
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -121,7 +125,9 @@ class LunchMenuCard extends StatelessWidget {
                                             style: theme.textTheme.bodyMedium
                                                 ?.copyWith(
                                                   fontWeight: FontWeight.w600,
-                                                  color: theme.colorScheme.onSurface,
+                                                  color: theme
+                                                      .colorScheme
+                                                      .onSurface,
                                                 ),
                                           ),
                                         ),

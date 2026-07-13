@@ -21,8 +21,8 @@ abstract class ProfileRemoteDataSource {
 /// GraphQL implementation of [ProfileRemoteDataSource]
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   ProfileRemoteDataSourceImpl({required GraphQLClient client, Logger? logger})
-      : _client = client,
-        _logger = logger ?? Logger();
+    : _client = client,
+      _logger = logger ?? Logger();
 
   final GraphQLClient _client;
   final Logger _logger;

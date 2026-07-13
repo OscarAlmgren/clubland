@@ -154,16 +154,17 @@ class GraphQLClientConfig {
   };
 
   /// Redacts sensitive values from GraphQL variables before logging.
-  static Map<String, dynamic> _redactVariables(Map<String, dynamic> variables) =>
-      variables.map((key, value) {
-        if (_sensitiveVariableNames.contains(key)) {
-          return MapEntry(key, '<redacted>');
-        }
-        if (value is Map<String, dynamic>) {
-          return MapEntry(key, _redactVariables(value));
-        }
-        return MapEntry(key, value);
-      });
+  static Map<String, dynamic> _redactVariables(
+    Map<String, dynamic> variables,
+  ) => variables.map((key, value) {
+    if (_sensitiveVariableNames.contains(key)) {
+      return MapEntry(key, '<redacted>');
+    }
+    if (value is Map<String, dynamic>) {
+      return MapEntry(key, _redactVariables(value));
+    }
+    return MapEntry(key, value);
+  });
 
   /// Create logger link for debugging.
   ///
@@ -306,26 +307,28 @@ class GraphQLHelpers {
 
       // Add timeout for initial connection
       if (connectionTimeout != null) {
-        return stream.timeout(
-          connectionTimeout,
-          onTimeout: (sink) {
-            GraphQLClientConfig._logger.w(
-              'GraphQL subscription timeout${operationName != null ? ' for $operationName' : ''}',
-            );
-            sink.addError(
-              const NetworkException(
-                'Subscription connection timed out',
-                'SUBSCRIPTION_TIMEOUT',
-              ),
-            );
-            sink.close();
-          },
-        ).handleError((Object error) {
-          if (showErrorToUser) {
-            final failure = app_error.ErrorHandler.handleException(error);
-            app_error.ErrorHandler.showErrorToUser(failure);
-          }
-        });
+        return stream
+            .timeout(
+              connectionTimeout,
+              onTimeout: (sink) {
+                GraphQLClientConfig._logger.w(
+                  'GraphQL subscription timeout${operationName != null ? ' for $operationName' : ''}',
+                );
+                sink.addError(
+                  const NetworkException(
+                    'Subscription connection timed out',
+                    'SUBSCRIPTION_TIMEOUT',
+                  ),
+                );
+                sink.close();
+              },
+            )
+            .handleError((Object error) {
+              if (showErrorToUser) {
+                final failure = app_error.ErrorHandler.handleException(error);
+                app_error.ErrorHandler.showErrorToUser(failure);
+              }
+            });
       }
 
       return stream.handleError((Object error) {

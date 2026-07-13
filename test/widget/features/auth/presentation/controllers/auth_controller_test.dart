@@ -112,7 +112,9 @@ void main() {
         getCurrentUserUsecaseProvider.overrideWithValue(
           mockGetCurrentUserUsecase,
         ),
-        secureStorageServiceProvider.overrideWithValue(mockSecureStorageService),
+        secureStorageServiceProvider.overrideWithValue(
+          mockSecureStorageService,
+        ),
         loggerProvider.overrideWithValue(Logger(level: Level.off)),
       ],
     );
@@ -732,7 +734,6 @@ void main() {
         expect(state.value, isNull);
       });
     });
-
 
     group('authenticateWithBiometrics', () {
       test('should call biometric usecase on authentication', () async {

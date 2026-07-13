@@ -93,9 +93,13 @@ class RetryService {
       }
     }
 
-    return lastResult ?? Left(
-      NetworkFailure.serverError(0, '$opName failed after all retry attempts'),
-    );
+    return lastResult ??
+        Left(
+          NetworkFailure.serverError(
+            0,
+            '$opName failed after all retry attempts',
+          ),
+        );
   }
 
   /// Execute operation with simple retry (non-Either pattern).

@@ -208,27 +208,30 @@ void main() {
     });
 
     group('layout constraints', () {
-      testWidgets('should handle full-width button without constraint violations',
-          (tester) async {
-        // This test verifies the fix for BoxConstraints issue where full-width buttons
-        // with Row(MainAxisSize.min) caused infinite width constraints
-        await tester.pumpApp(
-          SizedBox(
-            width: 300,
-            child: AppButton.primary(
-              text: 'Full Width Button',
-              onPressed: () {},
+      testWidgets(
+        'should handle full-width button without constraint violations',
+        (tester) async {
+          // This test verifies the fix for BoxConstraints issue where full-width buttons
+          // with Row(MainAxisSize.min) caused infinite width constraints
+          await tester.pumpApp(
+            SizedBox(
+              width: 300,
+              child: AppButton.primary(
+                text: 'Full Width Button',
+                onPressed: () {},
+              ),
             ),
-          ),
-        );
+          );
 
-        expect(find.text('Full Width Button'), findsOneWidget);
-        // Verify button renders without throwing BoxConstraints errors
-        expect(tester.takeException(), isNull);
-      });
+          expect(find.text('Full Width Button'), findsOneWidget);
+          // Verify button renders without throwing BoxConstraints errors
+          expect(tester.takeException(), isNull);
+        },
+      );
 
-      testWidgets('should handle compact button with proper constraints',
-          (tester) async {
+      testWidgets('should handle compact button with proper constraints', (
+        tester,
+      ) async {
         await tester.pumpApp(
           AppButton.primary(
             text: 'Compact',
@@ -241,8 +244,9 @@ void main() {
         expect(tester.takeException(), isNull);
       });
 
-      testWidgets('should handle button with leading and trailing icons',
-          (tester) async {
+      testWidgets('should handle button with leading and trailing icons', (
+        tester,
+      ) async {
         await tester.pumpApp(
           AppButton.primary(
             text: 'Button',

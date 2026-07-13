@@ -29,10 +29,7 @@ class CancelRSVPParams extends Equatable {
   final String rsvpId;
   final String? reason;
 
-  const CancelRSVPParams({
-    required this.rsvpId,
-    this.reason,
-  });
+  const CancelRSVPParams({required this.rsvpId, this.reason});
 
   @override
   List<Object?> get props => [rsvpId, reason];

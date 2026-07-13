@@ -26,10 +26,7 @@ class UpdateRSVPParams extends Equatable {
   final String rsvpId;
   final Map<String, dynamic> input;
 
-  const UpdateRSVPParams({
-    required this.rsvpId,
-    required this.input,
-  });
+  const UpdateRSVPParams({required this.rsvpId, required this.input});
 
   @override
   List<Object?> get props => [rsvpId, input];

@@ -23,8 +23,15 @@ void main() {
     endTime: DateTime.now().add(const Duration(days: 1, hours: 1)),
     status: Enum$BookingStatus.CONFIRMED,
     club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
-    facility: const FacilitySummaryEntity(id: 'facility1', name: 'Tennis Court'),
-    user: const UserSummaryEntity(id: 'user1', firstName: 'John', lastName: 'Doe'),
+    facility: const FacilitySummaryEntity(
+      id: 'facility1',
+      name: 'Tennis Court',
+    ),
+    user: const UserSummaryEntity(
+      id: 'user1',
+      firstName: 'John',
+      lastName: 'Doe',
+    ),
     createdAt: DateTime.now(),
   );
 
@@ -37,7 +44,11 @@ void main() {
     status: Enum$BookingStatus.CHECKED_OUT,
     club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
     facility: const FacilitySummaryEntity(id: 'facility2', name: 'Pool'),
-    user: const UserSummaryEntity(id: 'user1', firstName: 'John', lastName: 'Doe'),
+    user: const UserSummaryEntity(
+      id: 'user1',
+      firstName: 'John',
+      lastName: 'Doe',
+    ),
     createdAt: DateTime.now().subtract(const Duration(days: 2)),
   );
 
@@ -74,8 +85,9 @@ void main() {
   group('upcomingBookingsProvider -', () {
     test('should return only upcoming bookings', () async {
       // arrange
-      when(() => mockRepository.getUpcomingBookings())
-          .thenAnswer((_) async => Right([tBooking1]));
+      when(
+        () => mockRepository.getUpcomingBookings(),
+      ).thenAnswer((_) async => Right([tBooking1]));
 
       final container = ProviderContainer(
         overrides: [
@@ -96,8 +108,9 @@ void main() {
   group('pastBookingsProvider -', () {
     test('should return only past bookings', () async {
       // arrange
-      when(() => mockRepository.getPastBookings())
-          .thenAnswer((_) async => Right([tBooking2]));
+      when(
+        () => mockRepository.getPastBookings(),
+      ).thenAnswer((_) async => Right([tBooking2]));
 
       final container = ProviderContainer(
         overrides: [
@@ -271,7 +284,10 @@ void main() {
         endTime: DateTime.now().add(const Duration(days: 2, hours: 1)),
         status: Enum$BookingStatus.PENDING,
         club: const ClubSummaryEntity(id: 'club1', name: 'Test Club'),
-        facility: const FacilitySummaryEntity(id: 'facility1', name: 'Tennis Court'),
+        facility: const FacilitySummaryEntity(
+          id: 'facility1',
+          name: 'Tennis Court',
+        ),
         user: const UserSummaryEntity(
           id: 'user1',
           firstName: 'John',

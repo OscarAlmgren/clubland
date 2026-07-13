@@ -185,7 +185,6 @@ class EnhancedSecureStorage extends SecureStorageImpl {
       return 0;
     }
   }
-
 }
 
 /// Secure storage service with predefined key operations

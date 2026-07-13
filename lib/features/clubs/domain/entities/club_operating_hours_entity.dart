@@ -14,13 +14,9 @@ class ClubOperatingHoursEntity extends Equatable {
   final bool isOpen;
 
   @override
-  List<Object?> get props => [
-    dayOfWeek,
-    openTime,
-    closeTime,
-    isOpen,
-  ];
+  List<Object?> get props => [dayOfWeek, openTime, closeTime, isOpen];
 
   @override
-  String toString() => 'ClubOperatingHoursEntity($dayOfWeek: $openTime - $closeTime)';
+  String toString() =>
+      'ClubOperatingHoursEntity($dayOfWeek: $openTime - $closeTime)';
 }

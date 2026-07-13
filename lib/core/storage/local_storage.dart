@@ -44,9 +44,11 @@ abstract class LocalStorage {
 
 /// SharedPreferences implementation of local storage
 class SharedPreferencesLocalStorage implements LocalStorage {
-  SharedPreferencesLocalStorage({String boxName = 'app_storage', Logger? logger})
-      : _boxName = boxName,
-        _logger = logger ?? Logger();
+  SharedPreferencesLocalStorage({
+    String boxName = 'app_storage',
+    Logger? logger,
+  }) : _boxName = boxName,
+       _logger = logger ?? Logger();
 
   late SharedPreferences _prefs;
   final Logger _logger;
@@ -152,7 +154,10 @@ class SharedPreferencesLocalStorage implements LocalStorage {
     try {
       _ensureInitialized();
       // Only clear keys with our box prefix
-      final keys = _prefs.getKeys().where((key) => key.startsWith('${_boxName}_')).toList();
+      final keys = _prefs
+          .getKeys()
+          .where((key) => key.startsWith('${_boxName}_'))
+          .toList();
       for (final key in keys) {
         await _prefs.remove(key);
       }
@@ -179,7 +184,8 @@ class SharedPreferencesLocalStorage implements LocalStorage {
   Future<List<String>> getKeys() async {
     try {
       _ensureInitialized();
-      return _prefs.getKeys()
+      return _prefs
+          .getKeys()
           .where((key) => key.startsWith('${_boxName}_'))
           .map((key) => key.substring('${_boxName}_'.length))
           .toList();
@@ -339,7 +345,9 @@ class StorageManager {
       await _initializeBox(StorageKeys.offlineDataPrefix);
 
       _isInitialized = true;
-      _logger.i('Storage manager initialized with ${_storages.length} storage prefixes');
+      _logger.i(
+        'Storage manager initialized with ${_storages.length} storage prefixes',
+      );
     } on Exception catch (e) {
       _logger.e('Failed to initialize storage manager: $e');
       throw const StorageException('Failed to initialize storage manager');
@@ -373,22 +381,27 @@ class StorageManager {
   TypedLocalStorage get clubsStorage => getStorage(StorageKeys.clubsDataPrefix);
 
   /// Get bookings storage
-  TypedLocalStorage get bookingsStorage => getStorage(StorageKeys.bookingsDataPrefix);
+  TypedLocalStorage get bookingsStorage =>
+      getStorage(StorageKeys.bookingsDataPrefix);
 
   /// Get visits storage
-  TypedLocalStorage get visitsStorage => getStorage(StorageKeys.visitsDataPrefix);
+  TypedLocalStorage get visitsStorage =>
+      getStorage(StorageKeys.visitsDataPrefix);
 
   /// Get social storage
-  TypedLocalStorage get socialStorage => getStorage(StorageKeys.socialDataPrefix);
+  TypedLocalStorage get socialStorage =>
+      getStorage(StorageKeys.socialDataPrefix);
 
   /// Get cache storage
   TypedLocalStorage get cacheStorage => getStorage(StorageKeys.cacheDataPrefix);
 
   /// Get settings storage
-  TypedLocalStorage get settingsStorage => getStorage(StorageKeys.settingsDataPrefix);
+  TypedLocalStorage get settingsStorage =>
+      getStorage(StorageKeys.settingsDataPrefix);
 
   /// Get offline storage
-  TypedLocalStorage get offlineStorage => getStorage(StorageKeys.offlineDataPrefix);
+  TypedLocalStorage get offlineStorage =>
+      getStorage(StorageKeys.offlineDataPrefix);
 
   /// Clear all data
   Future<void> clearAll() async {

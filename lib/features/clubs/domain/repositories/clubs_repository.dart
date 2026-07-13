@@ -90,9 +90,7 @@ abstract class ClubsRepository {
   /// Returns:
   /// - [Right<List<ClubEntity>>]: Featured clubs on success
   /// - [Left<Failure>]: Failure object on error
-  Future<Either<Failure, List<ClubEntity>>> getFeaturedClubs({
-    int? limit,
-  });
+  Future<Either<Failure, List<ClubEntity>>> getFeaturedClubs({int? limit});
 
   /// Get user's favorite clubs
   ///
@@ -165,20 +163,17 @@ class ClubFilterCriteria {
   final bool? isPublic;
 
   Map<String, dynamic> toJson() => {
-        if (city != null) 'city': city,
-        if (state != null) 'state': state,
-        if (amenities != null) 'amenities': amenities,
-        if (featured != null) 'featured': featured,
-        if (favorited != null) 'favorited': favorited,
-        if (latitude != null && longitude != null)
-          'location': {
-            'latitude': latitude,
-            'longitude': longitude,
-          },
-        if (radius != null) 'radius': radius,
-        if (minRating != null) 'minRating': minRating,
-        if (isPublic != null) 'isPublic': isPublic,
-      };
+    if (city != null) 'city': city,
+    if (state != null) 'state': state,
+    if (amenities != null) 'amenities': amenities,
+    if (featured != null) 'featured': featured,
+    if (favorited != null) 'favorited': favorited,
+    if (latitude != null && longitude != null)
+      'location': {'latitude': latitude, 'longitude': longitude},
+    if (radius != null) 'radius': radius,
+    if (minRating != null) 'minRating': minRating,
+    if (isPublic != null) 'isPublic': isPublic,
+  };
 }
 
 /// Sort criteria for clubs query
@@ -196,9 +191,9 @@ class ClubSortCriteria {
   final SortDirection direction;
 
   Map<String, dynamic> toJson() => {
-        'field': field.name.toUpperCase(),
-        'direction': direction.name.toUpperCase(),
-      };
+    'field': field.name.toUpperCase(),
+    'direction': direction.name.toUpperCase(),
+  };
 }
 
 /// Club review entity

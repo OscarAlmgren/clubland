@@ -256,7 +256,7 @@ class _EventFiltersSheetState extends State<_EventFiltersSheet> {
       final eventTypes = widget.currentFilters!['eventTypes'] as List<String>?;
       if (eventTypes != null) {
         _selectedEventTypes = eventTypes
-            .map((type) => fromJson$Enum$ClubEventType(type))
+            .map(fromJson$Enum$ClubEventType)
             .where((t) => t != Enum$ClubEventType.$unknown)
             .toSet();
       }
@@ -330,22 +330,25 @@ class _EventFiltersSheetState extends State<_EventFiltersSheet> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: Enum$ClubEventType.values.where((t) => t != Enum$ClubEventType.$unknown).map((type) {
-                      final isSelected = _selectedEventTypes.contains(type);
-                      return FilterChip(
-                        label: Text(_getEventTypeLabel(type)),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          setState(() {
-                            if (selected) {
-                              _selectedEventTypes.add(type);
-                            } else {
-                              _selectedEventTypes.remove(type);
-                            }
-                          });
-                        },
-                      );
-                    }).toList(),
+                    children: Enum$ClubEventType.values
+                        .where((t) => t != Enum$ClubEventType.$unknown)
+                        .map((type) {
+                          final isSelected = _selectedEventTypes.contains(type);
+                          return FilterChip(
+                            label: Text(_getEventTypeLabel(type)),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              setState(() {
+                                if (selected) {
+                                  _selectedEventTypes.add(type);
+                                } else {
+                                  _selectedEventTypes.remove(type);
+                                }
+                              });
+                            },
+                          );
+                        })
+                        .toList(),
                   ),
 
                   const SizedBox(height: 24),

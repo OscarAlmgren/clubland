@@ -1,5 +1,4 @@
 import 'package:clubland/core/graphql/graphql_api.dart';
-import 'package:clubland/features/bookings/domain/entities/booking_entity.dart';
 import 'package:clubland/features/bookings/presentation/controllers/booking_filters_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,7 +42,9 @@ void main() {
       const original = BookingFilters(status: Enum$BookingStatus.PENDING);
 
       // act
-      final copied = original.copyWith(status: () => Enum$BookingStatus.CONFIRMED);
+      final copied = original.copyWith(
+        status: () => Enum$BookingStatus.CONFIRMED,
+      );
 
       // assert
       expect(copied.status, equals(Enum$BookingStatus.CONFIRMED));

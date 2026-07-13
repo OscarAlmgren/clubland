@@ -216,8 +216,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data =
-          result.data?['searchClubs'] as Map<String, dynamic>?;
+      final data = result.data?['searchClubs'] as Map<String, dynamic>?;
       if (data == null) return [];
 
       final nodes = data['nodes'] as List<dynamic>? ?? [];
@@ -411,8 +410,7 @@ class ClubsRemoteDataSourceImpl implements ClubsRemoteDataSource {
         );
       }
 
-      final data =
-          result.data?['toggleFavoriteClub'] as Map<String, dynamic>?;
+      final data = result.data?['toggleFavoriteClub'] as Map<String, dynamic>?;
       if (data != null && data['success'] == false) {
         throw app_exceptions.NetworkException(
           (data['message'] as String?) ?? 'Failed to toggle favorite',
@@ -592,13 +590,13 @@ class LocationInput {
   };
 }
 
-
 /// Great-circle distance in kilometres (haversine).
 double _distanceKm(double lat1, double lon1, double lat2, double lon2) {
   const earthRadiusKm = 6371.0;
   final dLat = _radians(lat2 - lat1);
   final dLon = _radians(lon2 - lon1);
-  final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+  final a =
+      math.sin(dLat / 2) * math.sin(dLat / 2) +
       math.cos(_radians(lat1)) *
           math.cos(_radians(lat2)) *
           math.sin(dLon / 2) *

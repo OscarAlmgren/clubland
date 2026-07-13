@@ -6,11 +6,7 @@ import 'lunch_menu_entity.dart';
 import 'news_post_entity.dart';
 
 /// Type of news feed item
-enum NewsFeedItemType {
-  newsPost,
-  event,
-  lunchMenu,
-}
+enum NewsFeedItemType { newsPost, event, lunchMenu }
 
 /// News feed item entity - wrapper for different types of content
 class NewsFeedItemEntity extends Equatable {
@@ -23,11 +19,11 @@ class NewsFeedItemEntity extends Equatable {
     this.lunchMenu,
     this.userRSVPResponse,
   }) : assert(
-          (type == NewsFeedItemType.newsPost && newsPost != null) ||
-              (type == NewsFeedItemType.event && event != null) ||
-              (type == NewsFeedItemType.lunchMenu && lunchMenu != null),
-          'Content must match the specified type',
-        );
+         (type == NewsFeedItemType.newsPost && newsPost != null) ||
+             (type == NewsFeedItemType.event && event != null) ||
+             (type == NewsFeedItemType.lunchMenu && lunchMenu != null),
+         'Content must match the specified type',
+       );
 
   final String id;
   final NewsFeedItemType type;
@@ -42,9 +38,7 @@ class NewsFeedItemEntity extends Equatable {
   final Enum$RSVPResponse? userRSVPResponse;
 
   /// Create a news post feed item
-  factory NewsFeedItemEntity.newsPost({
-    required NewsPostEntity newsPost,
-  }) {
+  factory NewsFeedItemEntity.newsPost({required NewsPostEntity newsPost}) {
     return NewsFeedItemEntity(
       id: 'news_${newsPost.id}',
       type: NewsFeedItemType.newsPost,
@@ -68,9 +62,7 @@ class NewsFeedItemEntity extends Equatable {
   }
 
   /// Create a lunch menu feed item
-  factory NewsFeedItemEntity.lunchMenu({
-    required LunchMenuEntity lunchMenu,
-  }) {
+  factory NewsFeedItemEntity.lunchMenu({required LunchMenuEntity lunchMenu}) {
     return NewsFeedItemEntity(
       id: 'lunch_${lunchMenu.id}',
       type: NewsFeedItemType.lunchMenu,
@@ -81,12 +73,12 @@ class NewsFeedItemEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        type,
-        timestamp,
-        newsPost,
-        event,
-        lunchMenu,
-        userRSVPResponse,
-      ];
+    id,
+    type,
+    timestamp,
+    newsPost,
+    event,
+    lunchMenu,
+    userRSVPResponse,
+  ];
 }

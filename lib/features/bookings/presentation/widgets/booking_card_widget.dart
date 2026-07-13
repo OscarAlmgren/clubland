@@ -133,9 +133,7 @@ class _StatusChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: statusInfo.color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: statusInfo.color.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: statusInfo.color.withValues(alpha: 0.3)),
       ),
       child: Text(
         statusInfo.label,
@@ -161,9 +159,15 @@ class _StatusChip extends StatelessWidget {
       case Enum$BookingStatus.CHECKED_OUT:
         return _BookingStatusInfo(color: AppColors.info, label: 'Completed');
       case Enum$BookingStatus.NO_SHOW:
-        return _BookingStatusInfo(color: AppColors.neutral600, label: 'No Show');
+        return _BookingStatusInfo(
+          color: AppColors.neutral600,
+          label: 'No Show',
+        );
       case Enum$BookingStatus.$unknown:
-        return _BookingStatusInfo(color: AppColors.neutral600, label: 'Unknown');
+        return _BookingStatusInfo(
+          color: AppColors.neutral600,
+          label: 'Unknown',
+        );
     }
   }
 }

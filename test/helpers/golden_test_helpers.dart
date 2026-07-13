@@ -23,9 +23,7 @@ class GoldenTestHelpers {
             name: 'default',
             child: MaterialApp(
               theme: ThemeData(brightness: brightness ?? Brightness.light),
-              home: Scaffold(
-                body: createTestWidget(child: widget),
-              ),
+              home: Scaffold(body: createTestWidget(child: widget)),
               debugShowCheckedModeBanner: false,
             ),
           ),
@@ -40,11 +38,13 @@ class GoldenTestHelpers {
     String goldenFileName, {
     List<Size>? sizes,
   }) async {
-    final testSizes = sizes ?? [
-      const Size(375, 812), // iPhone
-      const Size(414, 896), // iPhone 11
-      const Size(768, 1024), // iPad Portrait
-    ];
+    final testSizes =
+        sizes ??
+        [
+          const Size(375, 812), // iPhone
+          const Size(414, 896), // iPhone 11
+          const Size(768, 1024), // iPad Portrait
+        ];
 
     await goldenTest(
       goldenFileName,
@@ -58,9 +58,7 @@ class GoldenTestHelpers {
                   width: size.width,
                   height: size.height,
                   child: MaterialApp(
-                    home: Scaffold(
-                      body: createTestWidget(child: widget),
-                    ),
+                    home: Scaffold(body: createTestWidget(child: widget)),
                     debugShowCheckedModeBanner: false,
                   ),
                 ),
@@ -85,9 +83,7 @@ class GoldenTestHelpers {
             name: 'light_theme',
             child: MaterialApp(
               theme: ThemeData(brightness: Brightness.light),
-              home: Scaffold(
-                body: createTestWidget(child: widget),
-              ),
+              home: Scaffold(body: createTestWidget(child: widget)),
               debugShowCheckedModeBanner: false,
             ),
           ),
@@ -95,9 +91,7 @@ class GoldenTestHelpers {
             name: 'dark_theme',
             child: MaterialApp(
               theme: ThemeData(brightness: Brightness.dark),
-              home: Scaffold(
-                body: createTestWidget(child: widget),
-              ),
+              home: Scaffold(body: createTestWidget(child: widget)),
               debugShowCheckedModeBanner: false,
             ),
           ),
@@ -121,9 +115,7 @@ class GoldenTestHelpers {
             child: MediaQuery(
               data: const MediaQueryData(textScaler: TextScaler.noScaling),
               child: MaterialApp(
-                home: Scaffold(
-                  body: createTestWidget(child: widget),
-                ),
+                home: Scaffold(body: createTestWidget(child: widget)),
                 debugShowCheckedModeBanner: false,
               ),
             ),
@@ -133,9 +125,7 @@ class GoldenTestHelpers {
             child: MediaQuery(
               data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
               child: MaterialApp(
-                home: Scaffold(
-                  body: createTestWidget(child: widget),
-                ),
+                home: Scaffold(body: createTestWidget(child: widget)),
                 debugShowCheckedModeBanner: false,
               ),
             ),
@@ -145,9 +135,7 @@ class GoldenTestHelpers {
             child: MediaQuery(
               data: const MediaQueryData(textScaler: TextScaler.linear(2.0)),
               child: MaterialApp(
-                home: Scaffold(
-                  body: createTestWidget(child: widget),
-                ),
+                home: Scaffold(body: createTestWidget(child: widget)),
                 debugShowCheckedModeBanner: false,
               ),
             ),
