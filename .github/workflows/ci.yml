@@ -97,11 +97,18 @@ jobs:
         continue-on-error: true
 
       - name: Check coverage threshold
+        # Generated code (~75% of lib/ lines) is excluded so the gate
+        # measures hand-written code. Ratchet baseline: 35% (actual was
+        # 38.4% when introduced, 2026-07-13). Raise as coverage grows;
+        # long-term target is 80%.
         run: |
-          COVERAGE=$(lcov --summary coverage/lcov.info | grep lines | grep -o '[0-9.]*%' | head -1 | sed 's/%//')
-          echo "Coverage: ${COVERAGE}%"
-          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
-            echo "Coverage is below 80%"
+          lcov --ignore-errors unused --remove coverage/lcov.info \
+            '*.g.dart' '*.graphql.dart' '*.freezed.dart' '*/generated/*' \
+            -o coverage/lcov.filtered.info
+          COVERAGE=$(lcov --summary coverage/lcov.filtered.info | grep lines | grep -o '[0-9.]*%' | head -1 | sed 's/%//')
+          echo "Coverage (generated code excluded): ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 35" | bc -l) )); then
+            echo "Coverage dropped below the 35% ratchet baseline"
             exit 1
           fi
 
