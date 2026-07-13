@@ -61,9 +61,11 @@ dependencies:
   # Push Notifications
   firebase_analytics: ^12.0.2
   firebase_core: ^4.1.1
-  firebase_crashlytics: ^5.0.2
   firebase_messaging: ^16.0.2
   firebase_performance: ^0.11.1
+
+  # Crash reporting
+  sentry_flutter: ^9.0.0
 
   # QR Codes
   mobile_scanner: ^7.0.1

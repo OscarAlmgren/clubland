@@ -1,5 +1,4 @@
 import 'package:clubland/core/design_system/design_system.dart';
-import 'package:clubland/features/auth/data/datasources/hanko_datasource.dart';
 import 'package:clubland/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:clubland/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,9 +81,6 @@ class TestHelpers {
         email: 'test@example.com',
         createdAt: DateTime.now(),
       ),
-    );
-    registerFallbackValue(
-      const HankoAuthResponse(sessionId: 'test-session-id', status: 'pending'),
     );
   }
 

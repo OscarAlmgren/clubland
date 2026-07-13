@@ -385,32 +385,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
+  // The account-management operations below are not supported by the backend
+  // yet. They throw instead of returning canned success so any future UI
+  // wiring fails loudly rather than silently lying to the user.
+
   @override
   Future<Either<Failure, bool>> checkEmailAvailability({
     required String email,
   }) async {
-    // TODO(oscaralmgren): Implement actual email availability check
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-
-    // Mock: test@example.com is taken
-    if (email == 'test@example.com') {
-      return const Right(false);
-    }
-
-    return const Right(true);
+    throw UnimplementedError(
+      'checkEmailAvailability is not supported by the backend yet',
+    );
   }
 
   @override
   Future<Either<Failure, List<String>>> getUserPermissions() async {
-    // TODO(oscaralmgren): Implement actual permissions fetch
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-
-    return const Right([
-      'read:profile',
-      'write:profile',
-      'read:bookings',
-      'write:bookings',
-    ]);
+    throw UnimplementedError(
+      'getUserPermissions is not supported by the backend yet',
+    );
   }
 
   @override
@@ -492,21 +484,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String userId,
     required UserProfile profile,
   }) async {
-    // TODO(oscaralmgren): Implement actual profile update
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    final updatedUser = UserEntity(
-      id: userId,
-      email: 'updated@example.com',
-      firstName: profile.fullName.split(' ').first,
-      lastName: profile.fullName.split(' ').length > 1
-          ? profile.fullName.split(' ').last
-          : '',
-      profile: profile,
-      createdAt: DateTime.now().subtract(const Duration(days: 30)),
+    // Real profile updates go through ProfileRepositoryImpl (generated
+    // GraphQL); this auth-scoped variant has no backend support.
+    throw UnimplementedError(
+      'updateProfile is not supported by the backend yet — use the profile '
+      'feature repository instead',
     );
-
-    return Right(updatedUser);
   }
 
   @override
@@ -514,29 +497,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String currentPassword,
     required String newPassword,
   }) async {
-    // TODO(oscaralmgren): Implement actual password change
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    // Mock validation
-    if (currentPassword.isEmpty || newPassword.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    // Hanko owns credentials (passkeys); there is no password to change.
+    throw UnimplementedError(
+      'changePassword is not supported — credentials are managed by Hanko',
+    );
   }
 
   @override
   Future<Either<Failure, bool>> requestPasswordReset({
     required String email,
   }) async {
-    // TODO(oscaralmgren): Implement actual password reset request
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    if (email.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    throw UnimplementedError(
+      'requestPasswordReset is not supported — credentials are managed by Hanko',
+    );
   }
 
   @override
@@ -544,47 +517,30 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String token,
     required String newPassword,
   }) async {
-    // TODO(oscaralmgren): Implement actual password reset
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    if (token.isEmpty || newPassword.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    throw UnimplementedError(
+      'resetPassword is not supported — credentials are managed by Hanko',
+    );
   }
 
   @override
   Future<Either<Failure, bool>> deleteAccount({
     required String password,
   }) async {
-    // TODO(oscaralmgren): Implement actual account deletion
-    await Future<void>.delayed(const Duration(seconds: 2));
-
-    if (password.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    throw UnimplementedError(
+      'deleteAccount is not supported by the backend yet',
+    );
   }
 
   @override
   Future<Either<Failure, bool>> verifyEmail({required String token}) async {
-    // TODO(oscaralmgren): Implement actual email verification
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    if (token.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    throw UnimplementedError('verifyEmail is not supported by the backend yet');
   }
 
   @override
   Future<Either<Failure, bool>> resendEmailVerification() async {
-    // TODO(oscaralmgren): Implement actual email verification resend
-    await Future<void>.delayed(const Duration(seconds: 1));
-    return const Right(true);
+    throw UnimplementedError(
+      'resendEmailVerification is not supported by the backend yet',
+    );
   }
 
   @override
@@ -592,96 +548,41 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String provider,
     required String token,
   }) async {
-    // TODO(oscaralmgren): Implement actual social account linking
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    if (provider.isEmpty || token.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    throw UnimplementedError(
+      'linkSocialAccount is not supported by the backend yet',
+    );
   }
 
   @override
   Future<Either<Failure, bool>> unlinkSocialAccount({
     required String provider,
   }) async {
-    // TODO(oscaralmgren): Implement actual social account unlinking
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    if (provider.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    throw UnimplementedError(
+      'unlinkSocialAccount is not supported by the backend yet',
+    );
   }
 
   @override
   Future<Either<Failure, List<SocialAccount>>> getLinkedAccounts() async {
-    // TODO(oscaralmgren): Implement actual linked accounts fetch
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    final accounts = [
-      SocialAccount(
-        id: '1',
-        provider: 'google',
-        providerUserId: 'google-123',
-        email: 'user@gmail.com',
-        linkedAt: DateTime.now().subtract(const Duration(days: 30)),
-      ),
-      SocialAccount(
-        id: '2',
-        provider: 'apple',
-        providerUserId: 'apple-456',
-        email: 'user@icloud.com',
-        linkedAt: DateTime.now().subtract(const Duration(days: 15)),
-      ),
-    ];
-
-    return Right(accounts);
+    throw UnimplementedError(
+      'getLinkedAccounts is not supported by the backend yet',
+    );
   }
 
   @override
   Future<Either<Failure, List<AuthSession>>> getSessionHistory() async {
-    // TODO(oscaralmgren): Implement actual session history fetch
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    final sessions = [
-      AuthSession(
-        id: 'session-1',
-        deviceName: 'iPhone 14 Pro',
-        location: 'San Francisco, CA',
-        ipAddress: '192.168.1.1',
-        createdAt: DateTime.now().subtract(const Duration(days: 7)),
-        lastActiveAt: DateTime.now().subtract(const Duration(hours: 2)),
-        isActive: true,
-      ),
-      AuthSession(
-        id: 'session-2',
-        deviceName: 'MacBook Pro',
-        location: 'San Francisco, CA',
-        ipAddress: '192.168.1.2',
-        createdAt: DateTime.now().subtract(const Duration(days: 30)),
-        lastActiveAt: DateTime.now().subtract(const Duration(days: 1)),
-        isActive: false,
-      ),
-    ];
-
-    return Right(sessions);
+    throw UnimplementedError(
+      'getSessionHistory is not supported by the backend yet',
+    );
   }
 
   @override
   Future<Either<Failure, bool>> revokeSession({
     required String sessionId,
   }) async {
-    // TODO(oscaralmgren): Implement actual session revocation
-    await Future<void>.delayed(const Duration(seconds: 1));
-
-    if (sessionId.isEmpty) {
-      return Left(AuthFailure.invalidCredentials());
-    }
-
-    return const Right(true);
+    throw UnimplementedError(
+      'revokeSession is not supported by the backend yet',
+    );
   }
 
   @override

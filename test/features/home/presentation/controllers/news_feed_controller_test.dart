@@ -1,355 +1,257 @@
+import 'package:clubland/core/errors/failures.dart';
 import 'package:clubland/core/graphql/graphql_api.dart';
+import 'package:clubland/features/auth/domain/entities/user_entity.dart';
+import 'package:clubland/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:clubland/features/events/domain/entities/event_entity.dart';
 import 'package:clubland/features/home/domain/entities/news_feed_item_entity.dart';
+import 'package:clubland/features/home/domain/repositories/home_feed_repository.dart';
 import 'package:clubland/features/home/presentation/controllers/news_feed_controller.dart';
+import 'package:clubland/features/home/presentation/providers/home_providers.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+class _FakeAuthController extends AuthController {
+  _FakeAuthController(this._user);
+
+  final UserEntity? _user;
+
+  @override
+  Future<UserEntity?> build() async => _user;
+}
+
+class _FakeHomeFeedRepository implements HomeFeedRepository {
+  _FakeHomeFeedRepository(this._result);
+
+  final Either<Failure, List<NewsFeedItemEntity>> _result;
+  int getFeedCalls = 0;
+
+  @override
+  Future<Either<Failure, List<NewsFeedItemEntity>>> getFeed({
+    required String clubId,
+  }) async {
+    getFeedCalls++;
+    return _result;
+  }
+
+  @override
+  Future<Either<Failure, NewsFeedItemEntity>> getEventDetails({
+    required String eventId,
+  }) async => Left(NetworkFailure.serverError(0, 'not stubbed'));
+
+  @override
+  Future<Either<Failure, List<NewsFeedItemEntity>>> refreshFeed({
+    required String clubId,
+  }) async => _result;
+}
+
+EventEntity _testEvent(String id) {
+  final now = DateTime.now();
+  return EventEntity(
+    id: id,
+    clubId: 'club_1',
+    title: 'Event $id',
+    description: 'Test event $id',
+    eventType: Enum$ClubEventType.SOCIAL,
+    startTime: now.add(const Duration(days: 1)),
+    endTime: now.add(const Duration(days: 1, hours: 2)),
+    location: 'Test Room',
+    capacity: 10,
+    currentAttendees: 5,
+    availableSpots: 5,
+    guestPolicy: Enum$GuestPolicy.MEMBERS_ONLY,
+    requiresApproval: false,
+    requiresPayment: false,
+    allowsSubgroupPriority: false,
+    fullHouseExclusive: false,
+    createdAt: now,
+    updatedAt: now,
+  );
+}
+
 void main() {
+  final testUser = UserEntity(
+    id: 'user-1',
+    email: 'member@example.com',
+    firstName: 'Test',
+    lastName: 'User',
+    clubId: '550e8400-e29b-41d4-a716-446655440001',
+    createdAt: DateTime.now(),
+  );
+
+  final feedItems = [
+    NewsFeedItemEntity.event(event: _testEvent('1')),
+    NewsFeedItemEntity.event(event: _testEvent('2')),
+  ];
+
+  ProviderContainer makeContainer({
+    required Either<Failure, List<NewsFeedItemEntity>> feedResult,
+    UserEntity? user,
+  }) {
+    final container = ProviderContainer(
+      // Disable Riverpod 3's automatic retry-with-backoff so error-path
+      // tests observe the failure instead of a perpetually pending future.
+      retry: (retryCount, error) => null,
+      overrides: [
+        authControllerProvider.overrideWith(() => _FakeAuthController(user)),
+        homeFeedRepositoryProvider.overrideWithValue(
+          _FakeHomeFeedRepository(feedResult),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+    // Keep the autodispose provider alive across async gaps in the tests.
+    // onError swallows AsyncError transitions so error-path tests can assert
+    // on them explicitly instead of failing via the zone handler.
+    final sub = container.listen(
+      newsFeedControllerProvider,
+      (_, _) {},
+      onError: (_, _) {},
+    );
+    addTearDown(sub.close);
+    return container;
+  }
+
   group('NewsFeedController -', () {
-    test('should load news feed items on build', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-
-      // assert
-      expect(newsFeed, isA<List<NewsFeedItemEntity>>());
-      expect(newsFeed.isNotEmpty, true);
-    });
-
-    test('should return mixed content types in news feed', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-
-      // assert
-      final hasNewsPost = newsFeed.any(
-        (item) => item.type == NewsFeedItemType.newsPost,
-      );
-      final hasEvent = newsFeed.any(
-        (item) => item.type == NewsFeedItemType.event,
-      );
-      final hasLunchMenu = newsFeed.any(
-        (item) => item.type == NewsFeedItemType.lunchMenu,
+    test('returns repository items for an authenticated club member',
+        () async {
+      final container = makeContainer(
+        user: testUser,
+        feedResult: Right(feedItems),
       );
 
-      expect(hasNewsPost, true, reason: 'Should contain news posts');
-      expect(hasEvent, true, reason: 'Should contain events');
-      expect(hasLunchMenu, true, reason: 'Should contain lunch menus');
+      final newsFeed = await container.read(newsFeedControllerProvider.future);
+
+      expect(newsFeed, hasLength(2));
+      expect(newsFeed.every((i) => i.type == NewsFeedItemType.event), isTrue);
     });
 
-    test('should include news posts with proper data', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
+    test('returns an empty feed when no user is signed in', () async {
+      final container = makeContainer(feedResult: Right(feedItems));
 
-      // act
       final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final newsPostItems = newsFeed
-          .where((item) => item.type == NewsFeedItemType.newsPost)
-          .toList();
 
-      // assert
-      expect(newsPostItems.isNotEmpty, true);
-
-      for (final item in newsPostItems) {
-        final newsPost = item.newsPost;
-        expect(newsPost, isNotNull);
-        expect(newsPost?.id, isNotEmpty);
-        expect(newsPost?.title, isNotEmpty);
-        expect(newsPost?.content, isNotEmpty);
-        expect(newsPost?.postedAt, isNotNull);
-      }
+      expect(newsFeed, isEmpty);
     });
 
-    test('should include events with proper data', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final eventItems = newsFeed
-          .where((item) => item.type == NewsFeedItemType.event)
-          .toList();
-
-      // assert
-      expect(eventItems.isNotEmpty, true);
-
-      for (final item in eventItems) {
-        final event = item.event;
-        expect(event, isNotNull);
-        expect(event?.id, isNotEmpty);
-        expect(event?.title, isNotEmpty);
-        expect(event?.description, isNotEmpty);
-        expect(event?.startTime, isNotNull);
-        expect(event?.endTime, isNotNull);
-        expect(event?.capacity, greaterThan(0));
-      }
-    });
-
-    test('should include lunch menu with items', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final lunchMenuItems = newsFeed
-          .where((item) => item.type == NewsFeedItemType.lunchMenu)
-          .toList();
-
-      // assert
-      expect(lunchMenuItems.isNotEmpty, true);
-
-      for (final item in lunchMenuItems) {
-        final lunchMenu = item.lunchMenu;
-        expect(lunchMenu, isNotNull);
-        expect(lunchMenu?.id, isNotEmpty);
-        expect(lunchMenu?.menuItems, isNotEmpty);
-        expect(lunchMenu?.weekStartDate, isNotNull);
-        expect(lunchMenu?.weekEndDate, isNotNull);
-      }
-    });
-
-    test('should include events with various guest policies', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final events = newsFeed
-          .where((item) => item.type == NewsFeedItemType.event)
-          .map((item) => item.event!)
-          .toList();
-
-      // assert
-      final hasMembersOnly = events.any(
-        (e) => e.guestPolicy == Enum$GuestPolicy.MEMBERS_ONLY,
-      );
-      final hasFriendsAndFamily = events.any(
-        (e) => e.guestPolicy == Enum$GuestPolicy.FRIENDS_AND_FAMILY,
+    test('returns an empty feed when the user has no club', () async {
+      final container = makeContainer(
+        user: UserEntity(
+          id: 'user-2',
+          email: 'noclub@example.com',
+          firstName: 'No',
+          lastName: 'Club',
+          createdAt: DateTime.now(),
+        ),
+        feedResult: Right(feedItems),
       );
 
-      expect(hasMembersOnly, true);
-      expect(hasFriendsAndFamily, true);
-    });
-
-    test('should include events with different availability states', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
       final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final events = newsFeed
-          .where((item) => item.type == NewsFeedItemType.event)
-          .map((item) => item.event!)
-          .toList();
 
-      // assert
-      final hasAvailableSpots = events.any((e) => e.availableSpots > 0);
-      final hasFullyBooked = events.any((e) => e.availableSpots == 0);
-
-      expect(hasAvailableSpots, true);
-      expect(hasFullyBooked, true);
+      expect(newsFeed, isEmpty);
     });
 
-    test('should track user RSVP status for events', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
+    test('returns an empty feed when the backend has no items', () async {
+      final container = makeContainer(
+        user: testUser,
+        feedResult: const Right([]),
+      );
 
-      // act
       final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final eventItems = newsFeed
-          .where((item) => item.type == NewsFeedItemType.event)
-          .toList();
 
-      // assert
-      final hasConfirmedRSVP = eventItems.any(
-        (item) => item.userRSVPResponse == Enum$RSVPResponse.YES,
-      );
-      final hasNoRSVP = eventItems.any((item) => item.userRSVPResponse == null);
-
-      expect(
-        hasConfirmedRSVP,
-        true,
-        reason: 'Should have events user is attending',
-      );
-      expect(
-        hasNoRSVP,
-        true,
-        reason: "Should have events user has not RSVP'd to",
-      );
+      expect(newsFeed, isEmpty);
     });
 
-    test('should refresh news feed', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
+    test('surfaces repository failures as an error state', () async {
+      final container = makeContainer(
+        user: testUser,
+        feedResult: Left(NetworkFailure.serverError(500, 'boom')),
+      );
 
-      // Get initial state
+      // Riverpod 3 may surface the failure wrapped (ProviderException), so
+      // match on the underlying NetworkFailure either way.
+      await expectLater(
+        container.read(newsFeedControllerProvider.future),
+        throwsA(
+          predicate(
+            (e) => e is NetworkFailure || e.toString().contains('boom'),
+          ),
+        ),
+      );
+      expect(container.read(newsFeedControllerProvider).hasError, isTrue);
+    });
+
+    test('refresh re-fetches the feed', () async {
+      final container = makeContainer(
+        user: testUser,
+        feedResult: Right(feedItems),
+      );
+
       final initial = await container.read(newsFeedControllerProvider.future);
-      expect(initial.isNotEmpty, true);
+      expect(initial, hasLength(2));
 
-      // act
       final controller = container.read(newsFeedControllerProvider.notifier);
       await controller.refresh();
 
-      // assert
-      final refreshed = await container.read(newsFeedControllerProvider.future);
-      expect(refreshed.isNotEmpty, true);
-      expect(refreshed.length, initial.length);
+      final refreshed = container.read(newsFeedControllerProvider).value;
+      expect(refreshed, hasLength(2));
     });
 
-    test('should update RSVP status for event', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // Get initial state
-      final initial = await container.read(newsFeedControllerProvider.future);
-      final eventItem = initial.firstWhere(
-        (item) => item.type == NewsFeedItemType.event && item.event != null,
-      );
-      final eventId = eventItem.event!.id;
-
-      // act
-      final controller = container.read(newsFeedControllerProvider.notifier);
-      await controller.updateRSVP(eventId, Enum$RSVPResponse.YES);
-
-      // assert
-      final updated = container.read(newsFeedControllerProvider).value;
-      final updatedEvent = updated!.firstWhere(
-        (item) =>
-            item.type == NewsFeedItemType.event && item.event?.id == eventId,
+    test('updates RSVP status for a matching event', () async {
+      final container = makeContainer(
+        user: testUser,
+        feedResult: Right(feedItems),
       );
 
-      expect(updatedEvent.userRSVPResponse, Enum$RSVPResponse.YES);
-    });
-
-    test('should not update RSVP for non-matching event', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // Get initial state
       await container.read(newsFeedControllerProvider.future);
 
-      // act
       final controller = container.read(newsFeedControllerProvider.notifier);
-      await controller.updateRSVP('non_existent_event', Enum$RSVPResponse.YES);
+      await controller.updateRSVP('1', Enum$RSVPResponse.YES);
 
-      // assert - should complete without error
-      final state = container.read(newsFeedControllerProvider).value;
-      expect(state, isNotNull);
-    });
-
-    test('should handle multiple RSVP status updates', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      final initial = await container.read(newsFeedControllerProvider.future);
-      final eventItems = initial
-          .where(
-            (item) => item.type == NewsFeedItemType.event && item.event != null,
-          )
-          .toList();
-
-      expect(eventItems.length, greaterThan(1));
-
-      final firstEventId = eventItems[0].event!.id;
-      final secondEventId = eventItems[1].event!.id;
-
-      // act
-      final controller = container.read(newsFeedControllerProvider.notifier);
-      await controller.updateRSVP(firstEventId, Enum$RSVPResponse.YES);
-      await controller.updateRSVP(secondEventId, Enum$RSVPResponse.MAYBE);
-
-      // assert
       final updated = container.read(newsFeedControllerProvider).value!;
+      final updatedEvent = updated.firstWhere((i) => i.event?.id == '1');
+      final untouchedEvent = updated.firstWhere((i) => i.event?.id == '2');
 
-      final firstUpdated = updated.firstWhere(
-        (item) =>
-            item.type == NewsFeedItemType.event &&
-            item.event?.id == firstEventId,
-      );
-      final secondUpdated = updated.firstWhere(
-        (item) =>
-            item.type == NewsFeedItemType.event &&
-            item.event?.id == secondEventId,
-      );
-
-      expect(firstUpdated.userRSVPResponse, Enum$RSVPResponse.YES);
-      expect(secondUpdated.userRSVPResponse, Enum$RSVPResponse.MAYBE);
+      expect(updatedEvent.userRSVPResponse, Enum$RSVPResponse.YES);
+      expect(untouchedEvent.userRSVPResponse, isNull);
     });
 
-    test('should include paid and free events', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final events = newsFeed
-          .where((item) => item.type == NewsFeedItemType.event)
-          .map((item) => item.event!)
-          .toList();
-
-      // assert
-      final hasPaidEvents = events.any(
-        (e) => (e.requiresPayment ?? false) && e.price != null,
+    test('leaves state intact when RSVP target does not exist', () async {
+      final container = makeContainer(
+        user: testUser,
+        feedResult: Right(feedItems),
       );
-      final hasFreeEvents = events.any((e) => !(e.requiresPayment ?? false));
 
-      expect(hasPaidEvents, true);
-      expect(hasFreeEvents, true);
+      await container.read(newsFeedControllerProvider.future);
+
+      final controller = container.read(newsFeedControllerProvider.notifier);
+      await controller.updateRSVP('non_existent', Enum$RSVPResponse.YES);
+
+      final state = container.read(newsFeedControllerProvider).value;
+      expect(state, hasLength(2));
+      expect(state!.every((i) => i.userRSVPResponse == null), isTrue);
     });
 
-    test('should include full house exclusive events', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
+    test('handles multiple RSVP updates', () async {
+      final container = makeContainer(
+        user: testUser,
+        feedResult: Right(feedItems),
+      );
 
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final events = newsFeed
-          .where((item) => item.type == NewsFeedItemType.event)
-          .map((item) => item.event!)
-          .toList();
+      await container.read(newsFeedControllerProvider.future);
 
-      // assert
-      final hasFullHouseExclusive = events.any((e) => e.fullHouseExclusive);
+      final controller = container.read(newsFeedControllerProvider.notifier);
+      await controller.updateRSVP('1', Enum$RSVPResponse.YES);
+      await controller.updateRSVP('2', Enum$RSVPResponse.MAYBE);
 
-      expect(hasFullHouseExclusive, true);
-    });
-
-    test('should include events with different types', () async {
-      // arrange
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-
-      // act
-      final newsFeed = await container.read(newsFeedControllerProvider.future);
-      final events = newsFeed
-          .where((item) => item.type == NewsFeedItemType.event)
-          .map((item) => item.event!)
-          .toList();
-
-      // assert - check for various event types
-      final eventTypes = events.map((e) => e.eventType).toSet();
+      final updated = container.read(newsFeedControllerProvider).value!;
       expect(
-        eventTypes.length,
-        greaterThan(1),
-        reason: 'Should have multiple event types',
+        updated.firstWhere((i) => i.event?.id == '1').userRSVPResponse,
+        Enum$RSVPResponse.YES,
+      );
+      expect(
+        updated.firstWhere((i) => i.event?.id == '2').userRSVPResponse,
+        Enum$RSVPResponse.MAYBE,
       );
     });
   });

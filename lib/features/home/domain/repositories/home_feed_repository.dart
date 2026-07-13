@@ -7,9 +7,8 @@ import '../entities/news_feed_item_entity.dart';
 abstract class HomeFeedRepository {
   /// Fetch the feed for the given club.
   ///
-  /// Returns real events from the backend. News posts and lunch menus are
-  /// provided by the mock fallback in [NewsFeedController] until the backend
-  /// adds those schemas.
+  /// Returns real events from the backend. News posts and lunch menus will
+  /// join the feed once the backend adds those schemas.
   Future<Either<Failure, List<NewsFeedItemEntity>>> getFeed({
     required String clubId,
   });

@@ -5,7 +5,6 @@ import '../../data/datasources/auth_remote_datasource.dart';
 import '../../data/datasources/passkey_service.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../../domain/services/hanko_service.dart';
 import '../../domain/usecases/login_usecase.dart';
 
 part 'auth_providers.g.dart';
@@ -67,7 +66,3 @@ CheckAuthStatusUsecase checkAuthStatusUsecase(Ref ref) =>
 @riverpod
 BiometricAuthUsecase biometricAuthUsecase(Ref ref) =>
     BiometricAuthUsecase(ref.watch(authRepositoryProvider));
-
-/// Hanko service provider
-@riverpod
-HankoService hankoService(Ref ref) => HankoServiceImpl();

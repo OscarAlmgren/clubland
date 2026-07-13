@@ -4,14 +4,14 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:dio/dio.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as flutter_services;
 import 'package:graphql_flutter/graphql_flutter.dart' hide NetworkException;
 import 'package:logger/logger.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../constants/app_constants.dart';
+import '../config/environment_config.dart';
 import '../design_system/widgets/app_snackbar.dart';
 import 'exceptions.dart';
 import 'failures.dart';
@@ -408,19 +408,17 @@ class ErrorHandler {
     Object error,
     StackTrace? stack,
   ) async {
-    if (!AppConstants.enableCrashReporting) return;
+    if (!EnvironmentConfig.enableCrashReporting) return;
 
     try {
-      // Report to Firebase Crashlytics
-      await FirebaseCrashlytics.instance.recordError(
+      await Sentry.captureException(
         error,
-        stack,
-        fatal: true,
-        reason: 'Unhandled error in Flutter framework',
+        stackTrace: stack,
+        hint: Hint.withMap({'reason': 'Unhandled error in Flutter framework'}),
       );
 
       developer.log(
-        'Reported crash to Firebase Crashlytics',
+        'Reported crash to Sentry',
         name: 'ErrorHandler',
         error: error,
         stackTrace: stack,

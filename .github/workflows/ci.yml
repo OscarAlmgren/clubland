@@ -125,7 +125,7 @@ jobs:
           dart run intl_utils:generate
 
       - name: Run integration tests
-        run: flutter test integration_test/
+        run: flutter test test/integration/
 
   build_web:
     runs-on: ubuntu-latest

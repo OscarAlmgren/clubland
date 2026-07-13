@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../config/environment_config.dart';
 import 'failures.dart';
@@ -196,31 +196,33 @@ class ErrorReportingService {
       _logger.d('Processing error batch: ${batch.length} errors');
     }
 
-    // TODO(oscaralmgren): Send to actual crash reporting service (Sentry, Firebase, etc.)
     _sendToRemoteService(batch);
   }
 
-  /// Send errors to remote service
+  /// Send errors to Sentry (no-op when Sentry is not initialized, e.g. dev
+  /// builds without SENTRY_DSN)
   Future<void> _sendToRemoteService(List<ErrorReport> reports) async {
     try {
-      // Send to Firebase Crashlytics
       for (final report in reports) {
-        await FirebaseCrashlytics.instance.recordError(
+        await Sentry.captureException(
           report.failure,
-          report.stackTrace,
-          reason: report.operation,
-          information: [
-            'Message: ${report.failure.message}',
-            'Code: ${report.failure.code}',
-            'Severity: ${report.failure.severity.name}',
-            'Timestamp: ${report.timestamp}',
-          ],
-          fatal: report.failure.severity == FailureSeverity.critical,
+          stackTrace: report.stackTrace,
+          withScope: (scope) {
+            scope.level = _toSentryLevel(report.severity);
+            scope.setTag('operation', report.operation);
+            scope.setContexts('report', {
+              'code': report.failure.code,
+              'severity': report.failure.severity.name,
+              'timestamp': report.timestamp.toIso8601String(),
+              'environment': report.environment,
+              'buildNumber': report.buildNumber,
+            });
+          },
         );
 
         if (kDebugMode) {
           _logger.d(
-            'Sent error report to Crashlytics: ${report.operation} - ${report.failure.message}',
+            'Sent error report to Sentry: ${report.operation} - ${report.failure.message}',
           );
         }
       }
@@ -229,6 +231,22 @@ class ErrorReportingService {
 
       // Re-queue reports for next batch
       _errorQueue.addAll(reports);
+    }
+  }
+
+  /// Map internal severity to Sentry's level scale
+  SentryLevel _toSentryLevel(ErrorSeverity severity) {
+    switch (severity) {
+      case ErrorSeverity.debug:
+        return SentryLevel.debug;
+      case ErrorSeverity.info:
+        return SentryLevel.info;
+      case ErrorSeverity.warning:
+        return SentryLevel.warning;
+      case ErrorSeverity.error:
+        return SentryLevel.error;
+      case ErrorSeverity.critical:
+        return SentryLevel.fatal;
     }
   }
 
