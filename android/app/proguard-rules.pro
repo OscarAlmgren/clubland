@@ -9,6 +9,10 @@
 -keep class io.flutter.** { *; }
 -keep class io.flutter.plugins.** { *; }
 
+## Play Core (deferred components) — the app doesn't ship Play Core, but the
+## Flutter engine references it; silence R8's missing-class errors.
+-dontwarn com.google.android.play.core.**
+
 ## Gson rules
 -keepattributes Signature
 -keepattributes *Annotation*
@@ -17,10 +21,6 @@
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
-
-## Firebase
--keep class com.google.firebase.** { *; }
--keep class com.google.android.gms.** { *; }
 
 ## GraphQL
 -keep class com.apollographql.apollo.** { *; }

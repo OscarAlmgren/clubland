@@ -50,19 +50,12 @@ dependencies:
   # Maps & Location
   geocoding: ^4.0.0
   geolocator: ^14.0.2
-  google_maps_flutter: ^2.5.0
 
   # Navigation
   go_router: ^16.2.2
 
   # Permissions
   permission_handler: ^12.0.1
-
-  # Push Notifications
-  firebase_analytics: ^12.0.2
-  firebase_core: ^4.1.1
-  firebase_messaging: ^16.0.2
-  firebase_performance: ^0.11.1
 
   # Crash reporting
   sentry_flutter: ^9.0.0

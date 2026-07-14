@@ -267,63 +267,13 @@ jobs:
           path: ./
           extra_args: --results=verified
 
-  deploy_staging:
-    runs-on: ubuntu-latest
-    name: Deploy to Staging
-    needs: [build_web, build_android, security_scan]
-    if: github.ref == 'refs/heads/develop'
-    environment: staging
-    steps:
-      - name: Download web artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: web-build
-          path: build/web
-
-      - name: Deploy to Firebase Hosting (Staging)
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_STAGING }}'
-          channelId: staging
-          projectId: clubland-staging
-
-  deploy_production:
-    runs-on: ubuntu-latest
-    name: Deploy to Production
-    needs: [build_web, build_android, integration_test, security_scan]
-    if: github.ref == 'refs/heads/main'
-    environment: production
-    steps:
-      - name: Download web artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: web-build
-          path: build/web
-
-      - name: Deploy to Firebase Hosting (Production)
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PRODUCTION }}'
-          channelId: live
-          projectId: clubland-production
-
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+  # Web hosting deploy removed with the Firebase purge — pick a non-Firebase
+  # hosting target before reintroducing deploy jobs here.
 
   notify:
     runs-on: ubuntu-latest
     name: Notify Team
-    needs: [deploy_production]
+    needs: [build_web, build_android, build_ios]
     if: always()
     steps:
       - name: Send Slack notification
